@@ -1,0 +1,2 @@
+class YahooSearch < Service
+end

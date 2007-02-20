@@ -1,0 +1,10 @@
+xml.OpenSearchDescription(:xmlns=>'http://a9.com/-/spec/opensearch/1.1/') do
+  xml.ShortName('FindIt')
+  xml.LongName("Find It! @ Georgia Tech")
+  xml.Tags("journals articles")
+  xml.Description("Georgia Tech's eJournal Finder")
+  ['rss','atom', 'xhtml'].each { | type |
+    xml.Url(:type=>'application/'+type+'+xml', :template=>'http://'+request.host()+url_for(:action=>'opensearch')+'?query={searchTerms}&page={startPage?}&type='+type)
+  }
+  xml.Query(:role=>'example', :searchTerms=>'nature')
+end

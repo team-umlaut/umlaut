@@ -1,0 +1,166 @@
+
+<% @current_context_object = @context_object 
+unless @current_context_object.referent.metadata['genre'].nil?
+	type = @current_context_object.referent.metadata['genre'].capitalize+'s'
+else
+	type = 'Resources'
+end
+%>
+<h1>Finding <%=type%></h1>
+  <div class="resourceInfo">
+  <%= render :partial=>'citation' %>
+	  <!--close resourceInfo-->
+  </div>  
+<div class="availability">
+<p><strong>Electronic version  via:</strong></p>
+<% if @dispatch_response.fulltext_links.length > 0 %>
+<ul>
+<% @dispatch_response.fulltext_links.each { | ft | %>
+<li> <%= link_to ft[:display_text], {:controller=>'link_router', :id=>@context_object_handler.id, :url=>CGI.escape(ft[:url]), :service=>'FullText', :source=>ft[:source], :source_id=>ft[:source_id]}, 'target'=>"_blank" %>
+<br />
+<% if ft.has_key?(:coverage) %>
+<%= ft[:coverage] %>
+</li>
+<% 
+end
+} 
+
+%>
+</ul>
+<% 
+else 
+%>
+<p class="notAvailable">Not Available </p>
+<%
+end 
+%>
+  <p>&nbsp;</p>
+
+  <p><strong>Paper version  via:</strong></p>
+  <%
+if @dispatch_response.print_locations.length > 0
+%>
+
+<ul>
+<%
+src = ""
+@dispatch_response.print_locations.each { |p|
+  if src != p[:source_name]
+  %>
+  <p><strong><%= p[:source_name] %></strong></p>
+  <%
+  src = p[:source_name]
+  end
+  if p[:call_number] == ""
+  	display_text = p[:display_text]
+  else
+  	display_text = p[:call_number]
+  end
+  %>
+<li><em><%= link_to display_text, {:controller=>'link_router', :id=>@context_object_handler.id, :url=>CGI.escape(p[:url]), :service=>'Print Holdings', :source=>p[:source_name], :source_id=>p[:source_id]}, 'target'=>'_blank' %>
+</em>
+<%
+    unless display_text == p[:display_text]%>
+    <br /><%= p[:display_text] %>
+    <% end 
+    if p.has_key?(:status)%>
+      <br />
+      <% if p[:status] == "Not Charged" or p[:status] == "Available" %>
+      <span class='available'><%= p[:status].sub(/Not Charged/, "Available")%></span>
+      <% else %>
+      <%= p[:status] %>
+      <% end %>
+      
+      <%
+      end%>
+      </li>
+  <%
+
+  }
+  %>
+
+</ul>
+
+
+
+<% 
+else 
+    unless title_search = search_opac_for_title(@context_object)
+%>
+<p class="notAvailable">Not Available </p>
+<%
+else %>
+<p><%= title_search -%></p>
+<% end end %>
+
+<% if session[:coins] %>
+  <p>&nbsp;</p>
+
+  <p><strong>Check for holdings:</strong></p>
+<p><ul>
+<%    session[:coins].each { | coins |
+        unless coins[:text]
+          label = image_tag(coins[:icon], :border=>0)
+        else
+          label = coins[:text]
+        end
+    %>
+    <li><a href="<%= coins[:host]%>?<%= @context_object.kev %>" target="_blank"><%= label %></a></li>
+    
+    <%}%>
+    </ul></p>
+<%   end
+%>
+
+<% if display_ill?
+%>
+  <p>&nbsp;</p>
+  <p><strong>Request a copy via:</strong></p>
+  <ul>
+<% @dispatch_response.document_delivery.each { | doc_del |
+    
+    if @context_object.referent.format and @context_object.referent.format == 'journal'
+        doc_del[:url].sub!(/genre=[^\&]*/, 'genre=article')
+    end
+    %>
+	<li><%= link_to doc_del[:display_text], {:controller=>'link_router', :id=>@context_object_handler.id, :url=>CGI.escape(doc_del[:url]), :service=>'Document Delivery', :source=>doc_del[:source], :source_id=>doc_del[:source_id]}, 'target'=>'_blank'%>
+	</li>
+<% } %>
+  </ul>
+<% end %>
+  <!--close availability--></div>
+
+<%
+if @dispatch_response.relevant_links.length > 0 %>
+  <div class="line"></div>
+  <div class="closestResults">
+  <div id="show_closest_web_results">
+  <p><strong>Closest Web Results:</strong>  [<%= link_to_function "hide", "activelyHideWebResults()"%>]</p>
+<ul>
+<% @dispatch_response.relevant_links.each {|web|
+    
+%>
+<li><%= link_to web[:title], {:controller=>'link_router', :id=>@context_object_handler.id, :url=>CGI.escape(web[:url]), :service=>'Relevant Web Search Results', :source=>'web', :source_id=>nil}, 'target'=>"_blank"%>
+<br />
+<%= web[:description] %>
+<% 
+}%>
+
+</ul>
+</li>
+</div>
+  <div id="hidden_closest_web_results">
+  <p>[<%= link_to_function "Show closest web results", "activelyShowWebResults()"%>]</p>
+  </div>
+</div>
+<% end %>
+
+      <!--close twoColumns--></div>
+  <div id="rightColumn">      
+  <%= render :partial=>"menu" %>
+  <%= render :partial=>"highlighted_links_start" %>
+  </div>
+
+
+
+

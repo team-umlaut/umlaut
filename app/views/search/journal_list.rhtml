@@ -1,0 +1,30 @@
+<% @page_title = 'Browse by Journal Title:  '+params[:id]%>
+
+<div class="oneColumn">
+<h1>Browse by Journal Title: <%= params[:id] %></h1>
+
+
+<%= render :partial=>"a_to_z" %>
+<div class="journalList">
+
+<% cache do %>           <!- Here's the content we cache ->
+ 
+    <% for journal in @journals
+        args = {"rft.jtitle"=>journal.title, "rft.object_id"=>journal.object_id} 
+        if journal.issn
+          args["rft.issn"] = journal.issn
+        end
+    -%>
+
+      <%= link_to journal.title, args.merge(:action=>'journal_search') %>
+      <% unless journal.issn.blank? %>
+     <span class="smallText"> [ISSN: <%= journal.issn %>]</span><% end %> <br />
+ 
+    <% end -%>
+
+<% end %>
+<%= render :partial=>"a_to_z" %>
+<!--close journalList-->
+</div>
+ <!--close oneColumn-->
+</div>     

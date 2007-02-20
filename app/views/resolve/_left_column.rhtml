@@ -1,0 +1,51 @@
+<div id="leftColumn">
+  <ul class="leftnav">
+  <%
+  unless controller.controller_name == "resolve" and @action_name == 'index'
+
+  %>
+  <li><%= link_to "Start", :action=>'index', 'res_id'=>@context_object_handler.id %></li>  
+  
+<%end
+
+  if @dispatch_response.document_delivery.length > 0 %>
+  <li>Request via <a href="<%= @dispatch_response.document_delivery[0][:url] %>"><%= @dispatch_response.document_delivery[0][:display_text] %></a></li>
+    
+  <% end 
+  unless controller.action_name == "toc"
+  if @dispatch_response.table_of_contents.length > 0
+
+  %>
+  <li><%= link_to "Table of Contents", :action=>"toc", 'res_id'=>@context_object_handler.id %></li>
+  <% end end 
+  unless controller.action_name == "description"
+  if @dispatch_response.description.length > 0
+  %>
+  <li><%= link_to "Description", :action=>"description", 'res_id'=>@context_object_handler.id %></li>
+  <% end end
+  unless controller.action_name == "related_titles"
+  if @dispatch_response.related_titles.length > 0
+    linkhash = {:controller=>"related_titles", "umlaut.id"=>@context_object.admin['ctx_id']['value']}
+    linkhash.merge!(@context_object.to_hash)
+  %>
+  <li><%= link_to "Related Titles", :action=>"related_titles", 'res_id'=>@context_object_handler.id %></li>
+
+  <% end end    
+  unless controller.action_name == "more_like_this"
+  unless @dispatch_response.subjects.empty? and @dispatch_response.similar_items.empty? 
+  %>
+  <li><%= link_to "Get more like this", :action=>"more_like_this", 'res_id'=>@context_object_handler.id %></li>
+  <% end end 
+  unless controller.action_name == "web_search"
+  unless @dispatch_response.external_links.empty?
+  %>
+  <li><%= link_to "Web Search Results", :action=>"web_search", 'res_id'=>@context_object_handler.id %></li>
+  <% end end 
+  if session[:history]
+  %>
+  <li><%= link_to "Session History", :controller=>'history', 'umlaut.id'=>@context_object.admin['ctx_id']['value']%></li>
+  <%
+  end
+  %>  
+</ul>   
+  </div>

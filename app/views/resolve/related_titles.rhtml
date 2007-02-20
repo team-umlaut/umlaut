@@ -1,0 +1,28 @@
+<h2>Related Titles</h2>
+<% @current_context_object = @context_object %>
+<%= 
+render :partial=>'resolve/citation' 
+%>      
+<p><h3>This might also appear under the following titles:</h3></p>
+<ul>
+
+<%
+@dispatch_response.related_titles.each { |item|%>
+
+    
+  <li><%= item[:title] %> 
+  
+<%
+    if item[:relation] %>
+    (<%= item[:relation]%>)
+    <% end %>
+    </li>
+ <%   
+}
+%>
+</ul>
+</div>
+  <div id="rightColumn">      
+  <%= render :partial=>"menu" %>
+  <%= render :partial=>"highlighted_links_start" %>
+  </div>

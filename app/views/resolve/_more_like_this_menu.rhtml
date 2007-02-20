@@ -1,0 +1,15 @@
+<% if @dispatch_response.similar_items.keys.length > 1 %> 
+<div class="seeAlso">
+<div class="smGrayBox">
+<strong>Sources:</strong>
+
+<%
+@dispatch_response.similar_items.each_key { |si|
+%>      
+<p class="tightbullets"><%= link_to @dispatch_response.dispatched_services[si].label, {:action=>'more_like_this', :id=>@context_object_handler.id, :view=>si.to_s} %></a> <span class="smallText">[ISSN:<%= @dispatch_response.similar_items[si].length %>]</span></p>
+<% } %>
+</div></div>
+<%
+end
+%>
+

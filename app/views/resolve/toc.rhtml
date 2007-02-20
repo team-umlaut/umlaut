@@ -1,0 +1,30 @@
+
+<% @current_context_object = @context_object %>
+<h1>Table of Contents</h1>
+<%= 
+render :partial=>'resolve/citation' 
+%>      
+
+<%
+
+@dispatch_response.table_of_contents.each { |toc|
+
+  if toc.kind_of? OpenURL::ContextObject
+	  @current_context_object = OpenURL::ContextObject.new
+	  @current_context_object.import_context_object(toc)
+	  
+%>      
+<%= render :partial=>'resolve/citation' %>
+<%
+
+	else 
+	%>
+	<div><%= toc %></div>
+	<%
+	end
+
+}
+%>
+
+</div>
+  <%= render :partial=>"resolve/right_column" %>

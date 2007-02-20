@@ -1,0 +1,21 @@
+<div class="oneColumn">
+<% @page_title = "Error!"%>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td width="70"><img src="http://www.library.gatech.edu/pix/error.gif" width="59" height="58" align="left"></td>
+    <td><div class="formError">Sorry, there was an error processing your request</div></td>
+  </tr>
+  <tr>
+    <td width="70">&nbsp;</td>
+    <td><div class="line"></div><h2>Please try one of the following options:</h2>
+     <ol class="numberedListlg">
+          <li>Sometimes it helps to just try again: <%= link_to "Try again", {:action=>'index'}.merge(@params) -%></li>
+          <li>If that doesn't work: <%= link_to "Try your request against SFX", 'http://sfx.galib.uga.edu/sfx_git1?'+request.env["QUERY_STRING"]+'&sfx.ignore_date_threshold=1' -%> </li>
+          <li>If you're really stuck: <%= link_to "Ask Us! for help", "http://www.library.gatech.edu/research_help/ask.html"%></li>
+        </ol>
+    </td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</div>

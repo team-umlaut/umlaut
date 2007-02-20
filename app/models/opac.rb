@@ -1,0 +1,2 @@
+class Opac < Service
+end

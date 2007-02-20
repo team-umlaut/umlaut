@@ -1,0 +1,2 @@
+module LinkRouterHelper
+end

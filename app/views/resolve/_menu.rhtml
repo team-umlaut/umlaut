@@ -1,0 +1,61 @@
+<div class="seeAlso" id='umlaut_menu'>
+<%= @context_object.coins %>
+  <ul class="news">
+  <%
+  unless controller.controller_name == "resolve" and (@action_name == 'index' or @action_name == 'start')
+
+  %>
+  <p><li><%= link_to "Start", :action=>'index', :id=>@context_object_handler.id %></li></p>
+  
+<%end
+
+  unless @action_name == "toc"
+  if @dispatch_response.table_of_contents.length > 0
+    li_display= 'block'
+  else
+    li_display = 'none'
+  end
+  %>
+  <p><li id='umlaut-table_of_contents' style="display:<%=li_display%>"><%= link_to "Table of Contents", :action=>"toc", :id=>@context_object_handler.id %></li></p>
+  <% end 
+  unless @action_name == "description"
+  if @dispatch_response.description.length > 0
+    li_display= 'block'
+  else
+    li_display = 'none'
+  end
+  %>  
+  <p><li id='umlaut-description' style="display:<%=li_display%>"><%= link_to "Description", :action=>"description", :id=>@context_object_handler.id %></li></p>
+  <% end
+
+  unless @action_name == "more_like_this"
+  unless @dispatch_response.similar_items.empty? 
+    li_display= 'block'
+  else
+    li_display = 'none'
+  end  
+  %>
+  <p><li id='umlaut-similar_items' style="display:<%=li_display%>"><%= link_to "Get more like this", :action=>"more_like_this", :id=>@context_object_handler.id %></li></p>
+  <% end 
+  unless controller.action_name == "web_search"
+  unless @dispatch_response.external_links.empty?
+    li_display= 'block'
+  else
+    li_display = 'none'
+  end    
+  %>
+  <p><li id='umlaut-external_links' style="display:<%=li_display%>"><%= link_to "Web Search Results", :action=>"web_search", :id=>@context_object_handler.id %></li></p>
+  <%  end 
+  if session[:history]
+  %>
+  <p><li><%= link_to "Session History", :controller=>'history', :id=>@context_object_handler.id%></li></p>
+  <%
+  end
+  unless controller.action_name == "help"
+  %>  
+  <p><li><%= link_to "Need Help?", :action=>"help", :id=>@context_object_handler.id %> </li></p>
+  <% end %>
+</ul>   
+</div>
+
+

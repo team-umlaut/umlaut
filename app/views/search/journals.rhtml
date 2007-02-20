@@ -1,0 +1,267 @@
+  <div class="oneColumn">
+  <h1>Journals</h1>
+  <p class="smallText">WARNING: Systematic downloading of data is prohibited.
+    Please see <a href="#" class="smallTextlink" onClick="window.open('http://www.library.gatech.edu/search_locate/policy.html','image','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,height=380,width=650');">Policy
+                                for Use of Online Info</a>.</p>
+
+<%= render :partial=>"a_to_z" %>
+  <p class="exlargeText">Searching for a specific journal?</p>
+  <p>&nbsp;</p>
+
+
+
+                                        <script type="text/javascript" language="JavaScript1.1">
+<!--
+function clearOpenURL2() {
+   document.OpenURL.atitle.value = "";
+   document.OpenURL.title.value = "";
+   document.OpenURL.date.value = "";
+   document.OpenURL.volume.value = "";
+   document.OpenURL.issue.value = "";
+
+   document.OpenURL.issn.value = "";
+   document.OpenURL.doi.value = "";
+
+}
+
+function clearOpenURL() {
+   document.forms[0].reset();
+}
+
+function updateObjectId(elem, val) {
+    document.getElementById('rft_object_id').value = val.attributes['title'].value;
+    document.getElementById('rft_title').value = elem.value
+    document.getElementById('sfx_title_search').selectedIndex = 2
+}
+function clearObjectId() {
+    if(document.getElementById('rft_title').value != document.getElementById('journal_title').value) {
+        document.getElementById('rft_object_id').value = '';
+        document.getElementById('rft_title').value = '';
+    }
+}
+
+function setDate() {
+        var selYear  = document.OpenURL.__year.selectedIndex;
+        var selMonth = document.OpenURL.__month.selectedIndex;
+        var selDay   = document.OpenURL.__day.selectedIndex;
+        var year     = document.OpenURL.__year.options[selYear].value;
+        var month    = document.OpenURL.__month.options[selMonth].value;
+        var day      = document.OpenURL.__day.options[selDay].value;
+        var isodate  = "";
+        if (year != "****") {
+                isodate += year;
+                if (month != "***") {
+                        isodate += "-" + month;
+                        if (day != "**") {
+                                isodate += "-" + day;
+                        }
+                }
+        }
+        document.OpenURL.date.value = isodate;
+}
+
+// -->
+                                      </script>
+                                  
+                                    <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'}, nil)  %>
+  <div class="citationLinker">                                      
+
+                                          <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation">
+
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="5">
+                                          <tr>
+                                            <td colspan="3" valign="bottom"><strong>Enter
+                                                the journal title or the ISSN.
+                                                If you have both the journal
+                                                title
+                                        &amp; ISSN, use the ISSN.</strong></td>
+                                          <input type="hidden" id="rft_title" name="rft.title">
+                                            <input type="hidden" id="rft_object_id" name="rft.object_id">
+                                            <input type="hidden" id="date" name="rft.date">
+                                          </tr>
+                                          <tr>
+
+                                            
+                                            <td width="89%">Journal Title: 
+<%= text_field_with_auto_complete :journal, :title, {:onchange=>'clearObjectId();'}, {:after_update_element=>'updateObjectId'}%>
+                                                                                         
+                                              <select name="sfx.title_search" id="sfx_title_search">
+                                                <option value="contains">contains</option>
+                                                <option value="begins">begins
+                                                with</option>
+                                                <option value="exact">exact match</option>
+
+                                              </select>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;ISSN:
+                                            <input type=text name="rft.issn" size="10" maxlength="9"></td>
+                                          </tr>
+                                          
+                                        </table>
+                                        	  <!--close citationLinker-->
+  </div><p>&nbsp;</p>
+  <p class="exlargeText">&nbsp;</p>
+  <p class="exlargeText">Searching for a specific article?</p>
+
+  <p>&nbsp;</p>
+  <div class="citationLinker">
+    <table width="100%" border="0" cellspacing="0" cellpadding="5">
+      <tr>
+        <td><strong>Enter as much as you know of the following: </strong></td>
+      </tr>
+      <tr>
+       
+        <td width="46%">Date: 
+          <select name="__year" onChange="setDate('rft.date',document.OpenURL)">
+
+          <option value="" selected>Year
+            <option value="2005">2005
+            <option value="2004">2004
+            <option value="2003">2003
+            <option value="2002">2002
+            <option value="2001">2001
+            <option value="2000">2000
+            <option value="1999">1999
+            <option value="1998">1998
+            <option value="1997">1997
+            <option value="1996">1996
+            <option value="1995">1995
+            <option value="1994">1994
+            <option value="1993">1993
+            <option value="1992">1992
+            <option value="1991">1991
+            <option value="1990">1990
+            <option value="1989">1989
+            <option value="1988">1988
+            <option value="1987">1987
+            <option value="1986">1986
+            <option value="1985">1985
+            <option value="1984">1984
+            <option value="1983">1983
+            <option value="1982">1982
+            <option value="1981">1981
+            <option value="1980">1980
+            <option value="1979">1979
+            <option value="1978">1978
+            <option value="1977">1977
+            <option value="1976">1976
+            <option value="1975">1975
+            <option value="1974">1974
+            <option value="1973">1973
+            <option value="1972">1972
+            <option value="1971">1971
+            <option value="1970">1970
+            <option value="1969">1969
+            <option value="1968">1968
+            <option value="1967">1967
+            <option value="1966">1966
+            <option value="1965">1965
+            <option value="1964">1964
+            <option value="1963">1963
+            <option value="1962">1962
+            <option value="1961">1961
+            <option value="1960">1960
+            <option value="1959">1959
+            <option value="1958">1958
+            <option value="1957">1957
+            <option value="1956">1956
+            <option value="1955">1955
+            <option value="1954">1954
+            <option value="1953">1953
+            <option value="1952">1952
+            <option value="1951">1951
+            <option value="1950">1950
+          </select>
+
+          <select name="__month" onChange="setDate('rft.date',document.OpenURL)">
+            <option value="" selected>Month
+            <option value="01">Jan
+            <option value="02">Feb
+            <option value="03">Mar
+            <option value="04">Apr
+            <option value="05">May
+            <option value="06">Jun
+            <option value="07">Jul
+            <option value="08">Aug
+            <option value="09">Sep
+            <option value="10">Oct
+            <option value="11">Nov
+            <option value="12">Dec
+          </select>
+
+          <select name="__day" onChange="setDate('rft.date',document.OpenURL)">
+            <option value="" selected>Day
+            <option value="01">01
+            <option value="02">02
+            <option value="03">03
+            <option value="04">04
+            <option value="05">05
+            <option value="06">06
+            <option value="07">07
+            <option value="08">08
+            <option value="09">09
+            <option value="10">10
+            <option value="11">11
+            <option value="12">12
+            <option value="13">13
+            <option value="14">14
+            <option value="15">15
+            <option value="16">16
+            <option value="17">17
+            <option value="18">18
+            <option value="19">19
+            <option value="20">20
+            <option value="21">21
+            <option value="22">22
+            <option value="23">23
+            <option value="24">24
+            <option value="25">25
+            <option value="26">26
+            <option value="27">27
+            <option value="28">28
+            <option value="29">29
+            <option value="30">30
+          </select>
+
+          &nbsp;&nbsp;&nbsp;Volume:
+          <input type=text name="rft.volume" size="5" maxlength="5" value="">&nbsp;&nbsp;&nbsp;Issue:
+          <input type=text name="rft.issue" size="5" value="">  
+</td>
+      
+      </tr>
+      <tr>
+        <td><strong>DOI or Pubmed Identifier: </strong></td>
+      </tr>
+      <tr>
+        <td>
+
+          <select name='rft_id_type'>
+            <option value='doi'>DOI:</option>
+            <option value='pmid'>PMID:</option>
+          </select>&nbsp;&nbsp;&nbsp;
+           <input name="rft_id_value" type=text value="" size=25>
+        </td>
+      </tr>      
+      <tr>      
+    </table>
+  </div> 
+    <p align="center">&nbsp;</p>
+    <p align="center">
+
+      <input type="submit" name="Generate_OpenURL2" value="Submit">
+    </p>
+    <p align="center">&nbsp;</p>
+                                      </form>
+<div class="line2"></div>
+<p><strong><img src="http://www.library.gatech.edu/pix/icon_question1.gif" alt=" " width="11" height="11" align="ABSMIDDLE"> Having
+    Trouble?</strong></p>
+<p>&nbsp;</p>
+<ul class="bullets">
+  <li>Try entering less information
+    about your article. If one piece of information is wrong, it could be causing
+    the problem.</li>
+  <li>For technical support, including access problems, please <a href="http://www.library.gatech.edu/email_form.php?type=org&amp;id=265">contact us</a>.</li>
+  </ul>
+
+<p>&nbsp;</p>
+<!--close oneColumn-->
+  </div>

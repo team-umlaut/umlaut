@@ -1,0 +1,2 @@
+class Worldcat < Service
+end

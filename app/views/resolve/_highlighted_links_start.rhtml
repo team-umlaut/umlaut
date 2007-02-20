@@ -1,0 +1,11 @@
+<% unless @dispatch_response.highlighted_links.empty? %>
+<div class="seeAlso">
+<div class="smGrayBox">
+<strong>See also:</strong>
+<% @dispatch_response.highlighted_links.each { |hl| %>
+<p class="tightbullets"><%= link_to hl[:title], {:controller=>'link_router', :id=>@context_object_handler.id, :url=>CGI.escape(hl[:url]), :service=>'Highlighted Link', :source=>hl[:type], :source_id=>nil}, :target=>'_blank' %>
+</p>
+<%}%>
+</div>
+</div>
+<% end %>

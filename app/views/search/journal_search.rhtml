@@ -1,0 +1,66 @@
+<% @page_title = 'Journal titles that '
+if params["sfx.title_search"] == "begins"
+    @page_title += 'begin with '
+else 
+    @page_title += 'contain '
+end
+if params[:journal] and params[:journal][:title]
+    @page_title += params[:journal][:title]
+else 
+    @page_title += params['rft.jtitle']
+end
+if params[:page]
+    start = params[:page].to_i
+    start_result = start * 10 - 9
+else
+    start = 1
+    start_result = 1
+end
+if @hits < start * 10
+    end_result = @hits
+else
+    end_result = start * 10
+end
+%>
+
+<div class="oneColumn">
+<h1>Your search for "<%= params[:journal][:title]%>" returned <%= @hits %>
+result<% unless @hits == 1 %>s<%end%>
+</h1>
+<% unless @hits == 0%>
+<h3>Showing results <%= start_result %> through <%= end_result %></h3>
+<% end %>
+<% if @params["sfx.title_search"] == "begins"%>
+<p><em><strong>Note:</strong> Alternate titles might have begun with your search terms</em></p>
+<p>&nbsp;</p>
+<% end %>
+
+
+<% @search_results.each { | result | 
+@current_context_object = result
+%>
+
+  <%= render :partial=>'citation' %>
+ 
+  <div class='line'></div>
+<% } %>
+<div class='pagination'>
+<% 
+args = {"sfx.title_search"=>params["sfx.title_search"]}
+%>
+<% unless start == 1
+args[:page] = start-1
+%>
+<strong><span class='previous_page'><%= link_to 'Previous', args.merge({:action=>'journal_search'}).merge({"journal[title]"=>params[:journal][:title]}) -%></span></strong>
+<% end
+if start != 1 and end_result != @hits %>
+ | 
+<% end
+if end_result != @hits 
+args[:page] = start+1
+%>
+<strong><span class='next_page'><%= link_to 'Next', args.merge({:action=>'journal_search'}).merge({"journal[title]"=>params[:journal][:title]}) -%></span></strong>
+<% end %>
+</div>
+ <!--close oneColumn-->
+</div>  

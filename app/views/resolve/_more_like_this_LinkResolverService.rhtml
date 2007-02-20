@@ -1,0 +1,16 @@
+<p>&nbsp;</p>
+<p class="largeTextb">Similar Journals</p>
+<p>&nbsp;</p>
+<ol class="numberedList">
+<%
+if @params[:view]
+  @dispatch_response.similar_items[@params[:view].to_sym].each { |item|	  
+%>      
+<li><strong><%= link_to(item[:context_object].referent.metadata['jtitle'], item[:context_object].to_hash.merge(:controller=>"resolve")) %></strong>&nbsp;<span class="smallText">[ISSN: <%= item[:context_object].referent.metadata['issn'] %>]</span></li>
+<%
+
+	
+}
+end
+%>
+</ol>

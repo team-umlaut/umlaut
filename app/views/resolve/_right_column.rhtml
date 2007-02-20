@@ -1,0 +1,51 @@
+
+<%= @context_object.coins %>
+<abbr class="unapi-id" title="<%= CGI.escape(@context_object.kev) %>"></abbr>
+<div class="seeAlso">
+  <ul>
+  <%
+  unless controller.controller_name == "resolve" and (@action_name == 'index' or @action_name == 'start')
+
+  %>
+  <p><li><%= link_to "Start", :action=>'index', :id=>@context_object_handler.id %></li></p>
+  
+<%end
+
+  unless @action_name == "toc"
+  if @dispatch_response.table_of_contents.length > 0
+
+  %>
+  <p><li><%= link_to "Table of Contents", :action=>"toc", :id=>@context_object_handler.id %></li></p>
+  <% end end 
+  unless @action_name == "description"
+  if @dispatch_response.description.length > 0
+  %>
+  <p><li><%= link_to "Description", :action=>"description", :id=>@context_object_handler.id %></li></p>
+  <% end end
+  unless @action_name == "related_titles"
+  if @dispatch_response.related_titles.length > 0
+
+  %>
+  <p><li><%= link_to "Related Titles", :action=>"related_titles", :id=>@context_object_handler.id %></li></p>
+
+  <% end end    
+  unless @action_name == "more_like_this"
+  unless @dispatch_response.subjects.empty? and @dispatch_response.similar_items.empty? 
+  %>
+  <p><li><%= link_to "Get more like this", :action=>"more_like_this", :id=>@context_object_handler.id %></li></p>
+  <% end end 
+  unless controller.action_name == "web_search"
+  unless @dispatch_response.external_links.empty?
+  %>
+  <p><li><%= link_to "Web Search Results", :action=>"web_search", :id=>@context_object_handler.id %></li></p>
+  <% end end 
+  if session[:history]
+  %>
+  <p><li><%= link_to "Session History", :controller=>'history', :id=>@context_object_handler.id%></li></p>
+  <%
+  end
+  %>  
+</ul>   
+</div>
+
+

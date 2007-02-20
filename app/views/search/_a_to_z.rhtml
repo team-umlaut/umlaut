@@ -1,0 +1,11 @@
+
+  
+
+  <p>&nbsp;</p>
+  <p class="azNav">
+  <% ('A' .. 'Z').to_a.each { | letter |%>
+  <%= link_to letter, :action=>"journal_list", :id=>letter%>
+  <%}%>
+  </p>
+  <p>&nbsp;</p>
+  <div class="line2"></div>

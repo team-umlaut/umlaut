@@ -1,0 +1,19 @@
+
+<h1>Session History</h1>
+
+<% @history.each { | event | 
+@current_context_object = OpenURL::ContextObject.new
+@current_context_object.referent = Marshal.load event.request.referent.referent
+%>
+
+  <%= render :partial=>'citation' %>
+ 
+  <div class='line'></div>
+<% } %>
+
+<!--close twoColumns-->
+ </div>
+  <div id="rightColumn">      
+  <%= render :partial=>"right_column" %>
+<!--close rightColumn-->
+</div>

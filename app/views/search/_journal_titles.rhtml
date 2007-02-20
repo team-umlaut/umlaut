@@ -1,0 +1,9 @@
+<ul>
+<% 
+if @titles
+for title in @titles do -%>
+  <li class="journal_title" title='<%= title[:object_id]%>'><%= title.title %></li>
+<% end 
+end
+%>
+</ul>
