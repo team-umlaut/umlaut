@@ -140,4 +140,74 @@ class Referent < ActiveRecord::Base
     end
     return co
   end
+  
+  def to_citation
+    citation = {}
+    if self.metadata['atitle']
+      citation[:title] = self.metadata['atitle']
+      citation[:title_label], citation[:subtitle_label] = case self.metadata['genre']
+        when /article|journal|issue/ then ['Article Title', 'Journal Title']
+		when /bookitem|book/ then ['Chapter/Part Title', 'Book Title']
+		when /proceeding|conference/ then ['Proceeding Title', 'Conference Name']
+		when 'report' then ['Report Title','Report']    
+		when nil
+		  if self.format == 'book'
+		    ['Chapter/Part Title', 'Title']
+		  elsif self.format == 'journal'
+ 		    ['Article Title', 'Title']
+ 		  end
+      end
+      ['title','btitle','jtitle'].each do | t_type |
+        if self.metadata[t_type]
+          citation[:subtitle] = self.metadata[t_type]
+          break
+        end
+      end
+    else      
+      citation[:title_label] = case @user_request.referent.metadata["genre"]
+  		when /article|journal|issue/ then 'Journal Title'
+  		when /bookitem|book/ then 'Book Title'
+  		when /proceeding|conference/ then 'Conference Name'
+  		when 'report' then 'Report Title'
+  		when nil then 'Title'
+      end
+      ['title','btitle','jtitle'].each do | t_type |
+        if self.metadata[t_type]
+          citation[:title] = self.metadata[t_type]
+          break
+        end
+      end      
+    end
+    ['issn','isbn','volume','issue','date'].each do | key |
+      citation[key.to_sym] = self.metadata[key]
+    end
+    if self.metadata["au"]
+      citation[:author] = self.metadata["au"]
+    elsif self.metadata["aulast"]
+      citation[:author] = self.metadata["aulast"]
+      if self.metadata["aufirst"]
+   		citation[:author] += ',	'+self.metadata["aufirst"]
+      else
+        if self.metadata["auinit"]
+          citation[:author] += ',	'+self.metadata["auinit"]
+        else
+		  if self.metadata["auinit1"]
+            citation[:author] += ',	'+self.metadata["auinit1"]
+   		  end
+       	  if self.metadata["auinitm"]
+            citation[:author] += self.metadata["auinitm"]
+   		  end
+   	    end
+   	  end
+   	end 
+   	if self.metadata['spage']
+   	  citation[:page] = self.metadata['spage']
+   	  citation[:page] += ' - ' + self.metadata['epage'] if self.metadata['epage']
+   	end
+   	citation[:identifiers] = []
+   	self.identifiers.each do | id |
+   	  citation[:identifiers] << id unless id.match(/^tag:/)
+   	end
+   	return citation
+  end
 end

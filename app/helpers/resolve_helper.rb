@@ -6,6 +6,13 @@ module ResolveHelper
       render :partial=>action+'_default'
      end
   end
+  def get_service_type(svc_type)
+    responses = []
+    @user_request.service_types.find(:all, :conditions=>["service_type = ?", svc_type]).each do | response |
+      responses << response
+    end
+    return responses
+  end
   
   def search_opac_for_title(context_object)
     require 'sru'
@@ -33,9 +40,9 @@ module ResolveHelper
   end
   
   def display_ill?
-    return true if @dispatch_response.fulltext_links.empty? and @dispatch_response.print_locations.empty?
-    return false unless @context_object.referent.format == 'journal'
-    if @context_object.referent.metadata['atitle'] and @context_object.referent.metadata['atitle'] != ''
+    return true if get_service_type('fulltext').empty? and get_service_type('holding').empty?
+    return false unless @user_request.referent.format == 'journal'
+    if @user_request.referent.metadata['atitle'] and @user_request.referent.metadata['atitle'] != ''
       return false
     else
       return true

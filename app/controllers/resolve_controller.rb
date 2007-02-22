@@ -14,6 +14,7 @@ class ResolveController < ApplicationController
   def index
     self.init_processing
     self.service_dispatch('foreground')
+    @user_request.save
   end
 
   

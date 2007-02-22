@@ -1,5 +1,5 @@
 <div class="seeAlso" id='umlaut_menu'>
-<%= @context_object.coins %>
+<%= @user_request.referent.to_context_object.coins %>
   <ul class="news">
   <%
   unless controller.controller_name == "resolve" and (@action_name == 'index' or @action_name == 'start')

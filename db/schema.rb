@@ -14,8 +14,8 @@ ActiveRecord::Schema.define() do
   create_table "catalogs", :force => true do |t|
     t.column "service_id", :integer, :default => 0, :null => false
     t.column "url", :text, :default => "", :null => false
-    t.column "opac_records", :boolean, :limit => 4, :default => 0, :null => false
-    t.column "consortial_catalog", :boolean, :limit => 4, :default => 0, :null => false
+    t.column "opac_records", :boolean, :default => 0, :null => false
+    t.column "consortial_catalog", :boolean, :default => 0, :null => false
     t.column "consortial_code", :string, :limit => 20
     t.column "opac_url", :text
   end
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define() do
   create_table "dispatched_services", :force => true do |t|
     t.column "request_id", :integer, :default => 0, :null => false
     t.column "service_id", :integer, :default => 0, :null => false
-    t.column "successful", :integer, :limit => 4, :default => 0, :null => false
+    t.column "successful", :boolean, :default => 0, :null => false
     t.column "updated_at", :datetime, :null => false
   end
 
@@ -65,7 +65,10 @@ ActiveRecord::Schema.define() do
 
   create_table "institutions", :force => true do |t|
     t.column "name", :string, :default => "", :null => false
-    t.column "default_institution", :integer, :limit => 4, :default => 0, :null => false
+    t.column "default_institution", :boolean, :default => 0, :null => false
+    t.column "postal_code", :string, :limit => 10
+    t.column "worldcat_registry_id", :string, :limit => 25
+    t.column "oclc_symbol", :string, :limit => 10
   end
 
   add_index "institutions", ["name"], :name => "inst_name"
@@ -134,8 +137,8 @@ ActiveRecord::Schema.define() do
     t.column "key_name", :string, :limit => 50, :default => "", :null => false
     t.column "value", :text, :default => ""
     t.column "normalized_value", :string
-    t.column "metadata", :boolean, :limit => 4, :default => 0, :null => false
-    t.column "private_data", :boolean, :limit => 4, :default => 0, :null => false
+    t.column "metadata", :boolean, :default => 0, :null => false
+    t.column "private_data", :boolean, :default => 0, :null => false
   end
 
   add_index "referent_values", ["referent_id", "key_name", "normalized_value"], :name => "rft_val_referent_idx"
@@ -178,13 +181,12 @@ ActiveRecord::Schema.define() do
   create_table "service_responses", :force => true do |t|
     t.column "service_id", :integer, :default => 0, :null => false
     t.column "key", :string, :limit => 100, :default => "", :null => false
-    t.column "value", :text
-    t.column "value2", :text
-    t.column "value3", :text
-    t.column "value4", :text
+    t.column "value_string", :string, :limit => 255
+    t.column "value_alt_string", :text, :limit => 255
+    t.column "value_text", :text
   end
 
-  add_index "service_responses", ["service_id", "key"], :name => "svc_resp_service_id"
+  add_index "service_responses", ["service_id", "key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"
 
   create_table "service_types", :force => true do |t|
     t.column "request_id", :integer, :default => 0, :null => false

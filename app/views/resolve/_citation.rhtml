@@ -1,173 +1,55 @@
 
     <table width="100%" cellpadding="3" cellspacing="0">
 <%
-if (@current_context_object == @context_object) and @dispatch_response.cover_art[:medium]%>
+unless get_service_type('cover_art').empty? %>
 <tr><td><table width="100%" cellpadding="3" cellspacing="0">
-<% end
-atitle_label = nil
-title_label = nil
-if @current_context_object.referent.metadata.has_key?("atitle") %>
-        <tr>
-          <td class="largeTextb" width="90" valign="TOP"><div align="right">
-<% 
-unless @current_context_object.referent.metadata['genre'].nil?
-	case @current_context_object.referent.metadata["genre"]
-		when /article|journal|issue/
-			atitle_label = 'Article Title'
-			title_label = 'Journal Title'
-		when /bookitem|book/
-			atitle_label = 'Chapter/Part Title'
-			title_label = 'Book Title'
-		when /proceeding|conference/
-			atitle_label = 'Proceeding Title'
-			title_label = 'Conference Name'
-		when 'report'
-			atitle_label = 'Report Title'
-			title_label = 'Report'
-	end
-else 
-	if @current_context_object.referent.format == 'book'
-		atitle_label = 'Chapter/Part Title'
-	elsif @current_context_object.referent.format == 'journal'
-		atitle_label = 'Article Title'
-	end
-	title_label = 'Title'
-end
+<% end 
+cite = @user_request.referent.to_citation
 %>
 
-<%= atitle_label %>:</div></td> <td class="largeText">
+    <tr>
+      <td class="largeTextb" width="90" valign="TOP"><div align="right">
 
-<%= @current_context_object.referent.metadata["atitle"] %>
+<%= cite[:title_label] %>:</div></td> <td class="largeText">
 
-<% unless @current_context_object.referent.metadata["atitle"] == @context_object.referent.metadata["atitle"]%>
-	<%= link_to image_tag('http://sfx.galib.uga.edu/sfx_git1/sfx.gif', :border=>0), @current_context_object.to_hash.merge(:controller=>"resolve")%>
-<% end%>
+<%= cite[:title] %>
+
 </td>
 </tr>
 <%
-@page_title = @current_context_object.referent.metadata["atitle"]
-end
-author_row = ''
-title_row = ''
-unless @current_context_object.referent.metadata["au"].nil? and @current_context_object.referent.metadata['aulast'].nil?
-author_row = '<tr><td width="90" class="largeTextb"><div align="right">Author:</div></td><td class="largeText">' 
-	unless @current_context_object.referent.metadata["au"].nil?
-		author_row += @current_context_object.referent.metadata["au"]
-	else 
-	author_row += @current_context_object.referent.metadata["aulast"]
-	unless @current_context_object.referent.metadata["aufirst"].nil?
-		author_row += ',	'+@current_context_object.referent.metadata["aufirst"]
-	else
-		unless @current_context_object.referent.metadata["auinit"].nil?
-			author_row += ',	'+@current_context_object.referent.metadata["auinit"]
-		else
-			unless @current_context_object.referent.metadata["auinit1"].nil?
-				author_row += ',	'+@current_context_object.referent.metadata["auinit1"]
-			end
-			unless @current_context_object.referent.metadata["auinitm"].nil?
-				author_row += @current_context_object.referent.metadata["auinitm"]
-			end
-		end
-	end
-	end
-	author_row += '</td></tr>'
-end 
- if @current_context_object.referent.metadata.has_key?("jtitle")  or @current_context_object.referent.metadata.has_key?("title") or @current_context_object.referent.metadata.has_key?("btitle")
-    @co = OpenURL::ContextObject.new
-    @co.import_context_object(@current_context_object)
-    @co.referent.metadata["atitle"] = nil
-    @co.referent.metadata["volume"] = nil
-    @co.referent.metadata["spage"] = nil
-    @co.referent.metadata["epage"] = nil
-    @co.referent.metadata["issue"] = nil
-    @co.referent.metadata["date"] = nil
-    @co.referent.metadata["aulast"] = nil
-    @co.referent.metadata["au"] = nil
-    @co.referent.metadata["auinit"] = nil
-    @co.referent.metadata["auinit1"] = nil
-    @co.referent.set_identifier(nil)
-    if @co.referent.metadata.has_key?("title")
-      title = @co.referent.metadata["title"]
-    elsif @co.referent.metadata.has_key?("btitle")
-      title = @co.referent.metadata["btitle"]
-    else @co.referent.metadata.has_key?("jtitle")
-      title = @co.referent.metadata["jtitle"]
-    end
-		if title_label.nil?
-			unless @current_context_object.referent.metadata['genre'].nil?
-				case @current_context_object.referent.metadata["genre"]
-					when /article|journal|issue/
-						title_label = 'Journal Title'
-					when /bookitem|book/
-						title_label = 'Book Title'
-					when /proceeding|conference/
-						title_label = 'Conference Name'
-					when 'report'
-						title_label = 'Report Title'
-				end
-			else 
-				title_label = 'Title'
-			end		
-		end	
-
-style = 'largeText'
-unless @current_context_object.referent.metadata['atitle'].nil?
-	style = 'smallText'
-end
-title_row = '<tr><td width="90"><div align="right" class="'+style+'"><strong>'+title_label+':</strong></td><td><span class="'+style+'">'
-unless @current_context_object.referent.metadata['atitle'].nil?
- title_row += link_to title, @co.to_hash.merge(:controller=>"resolve", :action=>'start')
-else 
-	title_row += title
-	if @current_context_object != @context_object_handler.context_object
-		title_row += link_to(image_tag('http://sfx.galib.uga.edu/sfx_git1/sfx.gif', :border=>0), @current_context_object.to_hash.merge(:controller=>"resolve"))
-	end
-end
-title_row += '</span></td></tr>'
-  unless @page_title
-   @page_title = title
-  end
-end
-unless @current_context_object.referent.metadata['atitle'].nil? %>
-<%= author_row.to_s + title_row.to_s %>
-<% else %>
-<%= title_row.to_s+author_row.to_s %>
+@page_title = cite[:title]
+%>
+<tr><td width="90" class="largeTextb"><div align="right">Author:</div></td><td class="largeText">
+<%= cite[:author] %> 
+</td></tr>
+<% if cite[:subtitle] %>
+<tr><td width="90"><div align="right" class="smallTextb"><strong><%= cite[:subtitle_label] %>:</strong></td><td><span class="smallText">
+<%= cite[:subtitle] %>
+</span></td></tr>
 <%
 end
-if @current_context_object.referent.metadata.has_key?("issn") %>
+if cite[:issn] %>
 <tr>
   <td><div align="right" class="smallTextb">ISSN:
 </strong></div></td>
-<td><span class="smallText"><%=@current_context_object.referent.metadata["issn"] %></span></td>
+<td><span class="smallText"><%=cite[:issn] %></span></td>
 </tr>
 <%
 end
 
-if @current_context_object.referent.metadata.has_key?("isbn") %>
+if cite[:isbn] %>
 <tr>
   <td><div align="right" class="smallTextb">ISBN:
 </strong></div></td>
 <td><span class="smallText">  
-<%=@current_context_object.referent.metadata["isbn"] %></span></td></tr>
+<%= cite[:isbn] %></span></td></tr>
 <%
 end
 pub = []
-if @current_context_object.referent.metadata.has_key?("date")
-	pub << @current_context_object.referent.metadata["date"].to_s
-end
-if @current_context_object.referent.metadata.has_key?("volume") 
-	pub << 'Volume:&nbsp;&nbsp;'+@current_context_object.referent.metadata["volume"].to_s
-end
-if @current_context_object.referent.metadata.has_key?("issue")
-	pub << 'Issue:&nbsp;&nbsp;'+@current_context_object.referent.metadata["issue"].to_s
-end
-
-if @current_context_object.referent.metadata.has_key?("spage") 
-	pub << 'Page:&nbsp;&nbsp;'+@current_context_object.referent.metadata["spage"].to_s
-end
-if @current_context_object.referent.metadata.has_key?("epage")
-	pub << '-  '+@current_context_object.referent.metadata["epage"].to_s
-end
+pub << cite[:date] if cite[:date]	
+pub << 'Volume:&nbsp;&nbsp;'+cite[:volume] if cite[:volume]
+pub << 'Issue:&nbsp;&nbsp;'+cite[:issue] << if cite[:issue]	
+pub << 'Page:&nbsp;&nbsp;'+cite[:page] if cite[:page]
 if pub.length > 0
 %>
  <tr> <td><div align="right" class="smallTextb">Published:</div></td>
@@ -177,12 +59,8 @@ if pub.length > 0
 <% end %>
       </table>
 <%
-if (@current_context_object == @context_object) and @dispatch_response.cover_art[:medium]%>
+unless get_service_type('cover_image').empty?%>
 </td><td align='right'><%= tag('img', {'src'=>@dispatch_response.cover_art[:medium]})%></td></tr></table>
-<% end
+<% end 
 
-%>      
-
-
-
-
+end%>

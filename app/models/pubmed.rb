@@ -5,13 +5,26 @@ class Pubmed < Service
   require 'net/http'
   attr_reader :description,:subjects,:issn,:eissn,:volume,:issue,:date,:jtitle,:stitle,:atitle,:pages,:aulast,:aufirst,:auinit
   
-  def handler(request)
-    return true unless id = self.can_resolve?(request)
-    return false unless response = self.fetch_record(id)
-    self.parse_record(response)
-    self.enhance_request(request)
+  def handle(request)
+    return request.dispatched(self, true) unless id = self.can_resolve?(request)
+    if request.dispatched?(self)
+      self.load_from_request(request)
+    else
+      return request.dispatched(self, false) unless response = self.fetch_record(id)
+      self.parse_record(response, request)
+    end
   end
   
+  def load_from_request(request)
+    @subjects = {}
+    request.service_responses.find(:all, :conditions=>["service_id = ?", self.id]).each do | resp |
+      @description = resp.value if resp.key == 'description'
+      if resp.key == 'subject'
+        @subjects[resp.value2] = [] unless @subjects[resp.value2]
+        @subjects[resp.value2] << resp.value
+      end        
+    end
+  end
   # Only request for things with PMIDs
   def can_resolve?(req)
     id = nil
@@ -32,29 +45,33 @@ class Pubmed < Service
     id.sub!(/^(info:pmid\/)|(pmid:)/, "")
     pmid_url = self.url + "?db=pubmed&retmode=xml&rettype=full&id="+id
     begin
-      response = Net::HTTP.get_response(URI.parse(pmid_url+id))
+      response = Net::HTTP.get_response(URI.parse(pmid_url))
     rescue
       return false
     end
     return false if response.body.match("<ERROR>Empty id list - nothing todo</ERROR>")
-    begin
-      doc = REXML::Document.new response.body
-      return doc
-    rescue REXML::ParseException
-      return false
-    end
+    #begin
+    #  doc = REXML::Document.new response.body
+    #  return doc
+    #rescue REXML::ParseException
+    #  return false
+    #end
+    return response.body
   end    
   
   # Pull everything useful out of the Pubmed record
-  def parse_record(doc)    
-    return unless cite = doc.elements["/PubmedArticleSet/PubmedArticle/MedlineCitation"] # Nothing of interest here
+  def parse_record(body, request)   
+    require 'hpricot'
+    doc = Hpricot(body)
+    return unless cite = (doc/"/PubmedArticleSet/PubmedArticle/MedlineCitation") # Nothing of interest here
     
     # Get the MeSH subject headings
-    @subjects = []
-    cite.each_element('/MeshHeadingList/MeshHeading') { | mesh |
+    @subjects = {}
+    (cite/'/MeshHeadingList/MeshHeading').each do | mesh |
+      @subjects["mesh"] = [] unless @subjects["mesh"]
       subjects = []
       major = ''
-      if dn = mesh.elements['DescriptorName']
+      (mesh/'DescriptorName').each do | dn |
         subjects << dn.get_text.value
         major = '*' if dn.attributes['MajorTopicYN'] == "Y"                      
       end
@@ -62,17 +79,14 @@ class Pubmed < Service
         subjects << qn.get_text.value
         major = '*' if qn.attributes['MajorTopicYN'] == "Y"                      
       end  
-      @subjects << subjects.join("/")+major        
-    }
-    return unless article = cite.elements["Article"] # No more useful metadata   
-    @description = abstract.get_text.value if abstract = article.elements["/Abstract/AbstractText"] and abstract.has_text?
+      @subjects["mesh"] << subjects.join("/")+major 
+      request.add_service_response({:service=>self,:key=>'subject',:value_string=>subjects.join("/")+major,:value_alt_string=>'mesh'}, ['subject'])             
+    end
     
-    if journal = query.elements['Journal']      
-      context_object = {}
-      valid_keys = ['format','genre','issn','eissn','volume','issue','date','jtitle','stitle','atitle','pages','aulast','aufirst','auinit']
-      request.referent_values.each { | rft |
-        context_object[rft.key_name.to_sym] = rft.value if valid_keys.index(rft.key_name)
-      }
+    return unless article = (cite/"Article") # No more useful metadata   
+    @description = abstract.inner_html if abstract = (article/"/Abstract/AbstractText")
+    request.add_service_response({:service=>self,:key=>'abstract',:value_text=>@description}, ['abstract']) unless @description.blank?
+    if journal = (article/"journal")
 
       if journal.elements['ISSN']
         if journal.elements['ISSN'].attributes['IssnType']=="Print"

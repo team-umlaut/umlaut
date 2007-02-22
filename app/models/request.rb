@@ -15,4 +15,18 @@ class Request < ActiveRecord::Base
     req.save
     return req
   end
+  
+  def dispatched(service, success)
+    ds = self.dispatched_service    
+    ds.service = service
+    ds.successful = success
+    ds.save
+  end
+  
+  def dispatched?(service)
+    self.dispatched_services.each do | ds |
+      return true if ds.service == service
+    end
+    return false
+  end
 end

@@ -1,7 +1,7 @@
 
-<% @current_context_object = @context_object 
-unless @current_context_object.referent.metadata['genre'].nil?
-	type = @current_context_object.referent.metadata['genre'].capitalize+'s'
+<% 
+unless genre = @user_request.referent.metadata['genre']
+	type = genre.value.capitalize+'s'
 else
 	type = 'Resources'
 end
@@ -13,62 +13,66 @@ end
   </div>  
 <div class="availability">
 <p><strong>Electronic version  via:</strong></p>
-<% if @dispatch_response.fulltext_links.length > 0 %>
 <ul>
-<% @dispatch_response.fulltext_links.each { | ft | %>
-<li> <%= link_to ft[:display_text], {:controller=>'link_router', :id=>@context_object_handler.id, :url=>CGI.escape(ft[:url]), :service=>'FullText', :source=>ft[:source], :source_id=>ft[:source_id]}, 'target'=>"_blank" %>
+<% fulltxt = get_service_type('fulltext').each do | ft | 
+    target = ft.service.to_fulltext
+%>
+<li> <%= link_to target[:display_text], {:controller=>'link_router', :id=>ft.id}, 'target'=>"_blank" %>
+
+<% if target.has_key?(:coverage) %>
 <br />
-<% if ft.has_key?(:coverage) %>
-<%= ft[:coverage] %>
+<%= target[:coverage] %>
+<% end
+%>
+<% if target.has_key?(:notes) %>
+<br />
+<%= target[:notes] %>
+<% end
+%>
 </li>
 <% 
 end
-} 
 
+if fulltxt.empty? 
 %>
-</ul>
-<% 
-else 
-%>
-<p class="notAvailable">Not Available </p>
+<li><p class="notAvailable">Not Available </p></li>
 <%
 end 
 %>
+</ul>
   <p>&nbsp;</p>
 
   <p><strong>Paper version  via:</strong></p>
-  <%
-if @dispatch_response.print_locations.length > 0
-%>
 
 <ul>
 <%
 src = ""
-@dispatch_response.print_locations.each { |p|
-  if src != p[:source_name]
+holdings = get_service_type('holding').each do |p|
+  target = p.service.to_holding
+  if src != target[:source_name]
   %>
-  <p><strong><%= p[:source_name] %></strong></p>
+  <p><strong><%= target[:source_name] %></strong></p>
   <%
-  src = p[:source_name]
+  src = target[:source_name]
   end
-  if p[:call_number] == ""
-  	display_text = p[:display_text]
+  if target[:call_number] == ""
+  	display_text = target[:display_text]
   else
-  	display_text = p[:call_number]
+  	display_text = target[:call_number]
   end
   %>
-<li><em><%= link_to display_text, {:controller=>'link_router', :id=>@context_object_handler.id, :url=>CGI.escape(p[:url]), :service=>'Print Holdings', :source=>p[:source_name], :source_id=>p[:source_id]}, 'target'=>'_blank' %>
+<li><em><%= link_to display_text, {:controller=>'link_router', :id=>p.id}, 'target'=>'_blank' %>
 </em>
 <%
-    unless display_text == p[:display_text]%>
-    <br /><%= p[:display_text] %>
+    unless display_text == target[:display_text]%>
+    <br /><%= target[:display_text] %>
     <% end 
-    if p.has_key?(:status)%>
+    if target.has_key?(:status)%>
       <br />
-      <% if p[:status] == "Not Charged" or p[:status] == "Available" %>
+      <% if target[:status] == "Not Charged" or target[:status] == "Available" %>
       <span class='available'><%= p[:status].sub(/Not Charged/, "Available")%></span>
       <% else %>
-      <%= p[:status] %>
+      <%= target[:status] %>
       <% end %>
       
       <%
@@ -76,23 +80,23 @@ src = ""
       </li>
   <%
 
-  }
+  end
   %>
 
-</ul>
+
 
 
 
 <% 
-else 
-    unless title_search = search_opac_for_title(@context_object)
+unless holdings.empty?
+    unless title_search = search_opac_for_title(@user_request)
 %>
 <p class="notAvailable">Not Available </p>
 <%
 else %>
-<p><%= title_search -%></p>
+<li><p><%= title_search -%></p></li>
 <% end end %>
-
+</ul>
 <% if session[:coins] %>
   <p>&nbsp;</p>
 
@@ -105,7 +109,7 @@ else %>
           label = coins[:text]
         end
     %>
-    <li><a href="<%= coins[:host]%>?<%= @context_object.kev %>" target="_blank"><%= label %></a></li>
+    <li><a href="<%= coins[:host]%>?<%= @user_request.referent.to_context_object.kev %>" target="_blank"><%= label %></a></li>
     
     <%}%>
     </ul></p>
@@ -117,34 +121,34 @@ else %>
   <p>&nbsp;</p>
   <p><strong>Request a copy via:</strong></p>
   <ul>
-<% @dispatch_response.document_delivery.each { | doc_del |
+<% get_service_type('document_delivery').each do | doc_del |
     
-    if @context_object.referent.format and @context_object.referent.format == 'journal'
+    if @user_request.referent.format == 'journal'
         doc_del[:url].sub!(/genre=[^\&]*/, 'genre=article')
     end
     %>
-	<li><%= link_to doc_del[:display_text], {:controller=>'link_router', :id=>@context_object_handler.id, :url=>CGI.escape(doc_del[:url]), :service=>'Document Delivery', :source=>doc_del[:source], :source_id=>doc_del[:source_id]}, 'target'=>'_blank'%>
+	<li><%= link_to doc_del[:display_text], {:controller=>'link_router', :id=>doc_del.id}, 'target'=>'_blank'%>
 	</li>
-<% } %>
+<% end %>
   </ul>
 <% end %>
   <!--close availability--></div>
 
 <%
-if @dispatch_response.relevant_links.length > 0 %>
+unless get_service_type('relevant_links').empty? %>
   <div class="line"></div>
   <div class="closestResults">
   <div id="show_closest_web_results">
   <p><strong>Closest Web Results:</strong>  [<%= link_to_function "hide", "activelyHideWebResults()"%>]</p>
 <ul>
-<% @dispatch_response.relevant_links.each {|web|
-    
+<% get_service_type('relevant_links').each do |web|
+   target = web.service.to_web_link
 %>
-<li><%= link_to web[:title], {:controller=>'link_router', :id=>@context_object_handler.id, :url=>CGI.escape(web[:url]), :service=>'Relevant Web Search Results', :source=>'web', :source_id=>nil}, 'target'=>"_blank"%>
+<li><%= link_to target[:title], {:controller=>'link_router', :id=>web.id}, 'target'=>"_blank"%>
 <br />
-<%= web[:description] %>
+<%= target[:description] %>
 <% 
-}%>
+end %>
 
 </ul>
 </li>
