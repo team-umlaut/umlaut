@@ -9,7 +9,9 @@ class Referent < ActiveRecord::Base
     if id = rft.identifier
       id = [id] unless id.is_a?(Array)
       id.each do | ident |
-        return rft_val.referent if rft_val = ReferentValue.find_by_key_name_and_normalized_value('identifier', ident.downcase)
+        if rft_val = ReferentValue.find_by_key_name_and_normalized_value('identifier', ident.downcase)
+          return rft_val.referent 
+        end
       end
     end
     
@@ -210,4 +212,35 @@ class Referent < ActiveRecord::Base
    	end
    	return citation
   end
+  
+  def enhance_referent(key, value, metadata=true, private_data=false)
+    match = false
+    unless metadata      
+      match = self.referent_values.find(:all, :conditions=>['key_name = ? AND value = ?', key, value])
+    else
+      self.referent_values.find(:all, :conditions=>['key_name = ?', key]).each do | val |
+        match = true
+        next unless val.metadata?
+        unless val.value == value
+          val.value = value
+          val.save
+        end          
+      end      
+    end    
+    unless match
+      val = self.referent_values.create(:key_name => key, :value => value, :normalized_value => value.downcase, :metadata => metadata, :private_data => private_data)
+      val.save
+    end 
+    if key.match((/^([ajb]?title)|(is[sb]n)|(volume)|(date)$/))
+      case key
+        when 'date' then self.year = value.downcase
+        when 'volume' then self.volume = value.downcase
+        when 'issn' then self.issn = value.downcase
+        when 'isbn' then self.isbn = value.downcase
+        when 'atitle' then self.atitle = value.downcase
+        else self.title = value.downcase      
+      end
+      self.save
+    end
+  end  
 end

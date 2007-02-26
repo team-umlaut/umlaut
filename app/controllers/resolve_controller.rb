@@ -9,6 +9,7 @@ class ResolveController < ApplicationController
   def init_processing
     @user_request = Request.new_request(params, session)
     @collection = Collection.new(request.remote_ip, session)      
+    @user_request.save
   end
  		
   def index
@@ -160,8 +161,11 @@ class ResolveController < ApplicationController
     end
     service_list.each do | priority |
       if priority.length > 1
-        bundle = ServiceBundle.new(priority)
-        bundle.handle(@user_request)
+        priority.each do | pri |
+#        bundle = ServiceBundle.new(priority)
+#        bundle.handle(@user_request)
+          pri.handle(@user_request)       
+        end
       else
         priority[0].handle(@user_request)
       end      

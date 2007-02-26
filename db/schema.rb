@@ -190,11 +190,11 @@ ActiveRecord::Schema.define() do
 
   create_table "service_types", :force => true do |t|
     t.column "request_id", :integer, :default => 0, :null => false
-    t.column "service_reponse_id", :integer, :default => 0, :null => false
+    t.column "service_response_id", :integer, :default => 0, :null => false
     t.column "service_type", :string, :limit => 35, :default => "", :null => false
   end
 
-  add_index "service_types", ["request_id", "service_reponse_id", "service_type"], :name => "svc_type_idx"
+  add_index "service_types", ["request_id", "service_response_id", "service_type"], :name => "svc_type_idx"
 
   create_table "services", :force => true do |t|
     t.column "name", :string, :limit => 100, :default => "", :null => false
@@ -235,5 +235,10 @@ ActiveRecord::Schema.define() do
   
   add_index "permalinks", ["referent_id"], :name => "plink_referent_idx"
  
+  create_table "crossref_lookups", :force => true do |t|
+    t.column "doi", :string, :limit => "100", :default => "", :null => false
+    t.column "created_on", :datetime
+  end
+  add_index "crossref_lookups", ["doi", "created_on"], :name => 'xref_lookup_doi' 
 
 end

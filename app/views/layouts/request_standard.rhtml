@@ -45,7 +45,7 @@ function activelyShowWebResults() {
 <body>
 <%end%>
 <div id="unapi-container">
-<abbr class="unapi-id" title="<%= CGI.escape(@context_object.kev) %>"></abbr>
+<abbr class="unapi-id" title="<%= CGI.escape(@user_request.referent.to_context_object.kev) %>"></abbr>
 </div>
 
 <div id="presentationContainer">
@@ -72,10 +72,10 @@ function activelyShowWebResults() {
 
     <td width="33%"><div align="right">URL: 
     <% 
-  shortcut = @request.host
-  shortcut += url_for :controller=>"store", :id=>@context_object_handler.id
+  shortcut = request.host
+  shortcut += url_for :controller=>"store", :id=>@user_request.referent.permalinks[0].id
   %>
-  <%= link_to shortcut, :controller=>"store", :id=>@context_object_handler.id
+  <%= link_to shortcut, :controller=>"store", :id=>@user_request.referent.permalinks[0].id
   %></div></td>
   </tr>
 </table>

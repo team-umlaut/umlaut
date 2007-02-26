@@ -17,7 +17,10 @@ class Request < ActiveRecord::Base
   end
   
   def dispatched(service, success)
-    ds = self.dispatched_service    
+    ds = self.dispatched_services.find(:first, :conditions=>["service_id = ?", service.id])
+    unless ds
+      ds = self.dispatched_services.create()
+    end
     ds.service = service
     ds.successful = success
     ds.save
@@ -25,8 +28,40 @@ class Request < ActiveRecord::Base
   
   def dispatched?(service)
     self.dispatched_services.each do | ds |
-      return true if ds.service == service
+      if (ds.service == service and ds.successful?)
+        puts ds.inspect
+        puts ds.service
+        puts ds.successful?
+        return true
+      end
     end
     return false
   end
+  
+  def add_service_response(response_data,service_type=[])
+    unless response_data.empty?
+      svc_resp = nil
+      ServiceResponse.find(:all, :conditions=>["service_id = ? and key = ? and value_string = ? and value_alt_string = ?", response_data[:service].id, response_data[:key], response_data[:value_string], response_data[:value_alt_string]]).each do | resp |
+        svc_resp = resp if resp.value_text = response_data[:value_text]
+      end
+      unless svc_resp
+        svc_resp = ServiceResponse.new
+        svc_resp.service = response_data[:service]
+        svc_resp.key = response_data[:key]
+        svc_resp.value_string = response_data[:value_string]
+        svc_resp.value_alt_string = response_data[:value_alt_string]
+        svc_resp.value_text = response_data[:value_text]           
+        svc_resp.save
+      end
+    end
+    unless service_type.empty?
+      service_type.each do | st |
+        stype = ServiceType.find(:first, :conditions=>["request_id = ? and service_response_id = ? and service_type = ?",self.id, svc_resp.id, st])
+        unless stype
+          stype = ServiceType.new(:request_id => self.id, :service_response_id => svc_resp.id, :service_type => st)
+          stype.save
+        end
+      end
+    end
+  end    
 end

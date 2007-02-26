@@ -1,7 +1,7 @@
 
 <% 
-unless genre = @user_request.referent.metadata['genre']
-	type = genre.value.capitalize+'s'
+if genre = @user_request.referent.metadata['genre']
+	type = genre.capitalize+'s'
 else
 	type = 'Resources'
 end
@@ -135,13 +135,13 @@ else %>
   <!--close availability--></div>
 
 <%
-unless get_service_type('relevant_links').empty? %>
+unless get_service_type('relevant links').empty? %>
   <div class="line"></div>
   <div class="closestResults">
   <div id="show_closest_web_results">
   <p><strong>Closest Web Results:</strong>  [<%= link_to_function "hide", "activelyHideWebResults()"%>]</p>
 <ul>
-<% get_service_type('relevant_links').each do |web|
+<% get_service_type('relevant links').each do |web|
    target = web.service.to_web_link
 %>
 <li><%= link_to target[:title], {:controller=>'link_router', :id=>web.id}, 'target'=>"_blank"%>

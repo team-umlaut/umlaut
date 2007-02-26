@@ -7,37 +7,20 @@ class Pubmed < Service
   
   def handle(request)
     return request.dispatched(self, true) unless id = self.can_resolve?(request)
-    if request.dispatched?(self)
-      self.load_from_request(request)
-    else
+    unless request.dispatched?(self)
       return request.dispatched(self, false) unless response = self.fetch_record(id)
       self.parse_record(response, request)
+      return request.dispatched(self, true)
     end
   end
   
-  def load_from_request(request)
-    @subjects = {}
-    request.service_responses.find(:all, :conditions=>["service_id = ?", self.id]).each do | resp |
-      @description = resp.value if resp.key == 'description'
-      if resp.key == 'subject'
-        @subjects[resp.value2] = [] unless @subjects[resp.value2]
-        @subjects[resp.value2] << resp.value
-      end        
-    end
-  end
   # Only request for things with PMIDs
-  def can_resolve?(req)
-    id = nil
-    req.referent_values.each { | val |
-      id = val.value if val.key_name == 'identifier'
-    }
-    return unless id
-    # PMIDs can come in with either of these prefixes
-    if id.match(/^(info:pmid\/)|(pmid:)/)
-      return id
-    else 
-      return false
-    end
+  def can_resolve?(req)    
+    req.referent.referent_values.find(:all, :conditions=>['key_name = ?', 'identifier']).each do | val |
+      # PMIDs can come in with either of these prefixes
+      return val.value if val.value.match(/^(info:pmid\/)|(pmid:)/)          
+    end    
+    return false
   end
   
   # Do the request.  Takes the PMID as inputs 
@@ -50,12 +33,6 @@ class Pubmed < Service
       return false
     end
     return false if response.body.match("<ERROR>Empty id list - nothing todo</ERROR>")
-    #begin
-    #  doc = REXML::Document.new response.body
-    #  return doc
-    #rescue REXML::ParseException
-    #  return false
-    #end
     return response.body
   end    
   
@@ -71,80 +48,74 @@ class Pubmed < Service
       @subjects["mesh"] = [] unless @subjects["mesh"]
       subjects = []
       major = ''
-      (mesh/'DescriptorName').each do | dn |
-        subjects << dn.get_text.value
-        major = '*' if dn.attributes['MajorTopicYN'] == "Y"                      
+      if dn = (mesh/'/DescriptorName').first
+        subjects << dn.inner_html
+        major = '*' if dn.attributes['majortopicyn'] == "Y"                              
       end
-      if qn = mesh.elements['QualifierName']
-        subjects << qn.get_text.value
-        major = '*' if qn.attributes['MajorTopicYN'] == "Y"                      
+      if qn = (mesh/'/QualifierName').first
+        subjects << qn.inner_html
+        major = '*' if qn.attributes['majortopicyn'] == "Y"                      
       end  
       @subjects["mesh"] << subjects.join("/")+major 
       request.add_service_response({:service=>self,:key=>'subject',:value_string=>subjects.join("/")+major,:value_alt_string=>'mesh'}, ['subject'])             
     end
     
-    return unless article = (cite/"Article") # No more useful metadata   
-    @description = abstract.inner_html if abstract = (article/"/Abstract/AbstractText")
+    return unless article = (cite/"/Article").first # No more useful metadata   
+    if abstract = (article/"/Abstract/AbstractText").first
+      @description = abstract.inner_html 
+    end
     request.add_service_response({:service=>self,:key=>'abstract',:value_text=>@description}, ['abstract']) unless @description.blank?
-    if journal = (article/"journal")
-
-      if journal.elements['ISSN']
-        if journal.elements['ISSN'].attributes['IssnType']=="Print"
-          
-          context_object_entity.set_metadata('issn', journal.elements['ISSN'].get_text.value)
+    if journal = (article/"/journal").first
+      if issn = (journal/'/ISSN').first
+        if issn.attributes['issntype']=="Print"                  
+          request.referent.enhance_referent('issn', issn.inner_html, true, false)
         else 
-          context_object_entity.set_metadata('eissn', journal.elements['ISSN'].get_text.value)
+          request.referent.enhance_referent('eissn', issn.inner_html, true, false)        
         end
       end
-      if journal.elements['JournalIssue']
-        if journal.elements['JournalIssue/Volume']
-          context_object_entity.set_metadata('volume', journal.elements['JournalIssue/Volume'].get_text.value)
+      if jrnlissue = (journal/'/JournalIssue').first
+        if (jrnlissue/'/Volume').first
+          request.referent.enhance_referent('volume', (jrnlissue/'/Volume').first.inner_html, true, false)
         end
-        if journal.elements['JournalIssue/Issue']
-          context_object_entity.set_metadata('issue', journal.elements['JournalIssue/Issue'].get_text.value)
+        if (jrnlissue/'/Issue').first
+          request.referent.enhance_referent('issue', (jrnlissue/'/Issue').first.inner_html, true, false)
         end   
-        if journal.elements['JournalIssue/PubDate']
-          if journal.elements['JournalIssue/PubDate/Year']
-            context_object_entity.set_metadata('date', journal.elements['JournalIssue/PubDate/Year'].get_text.value)
+        if (jrnlissue/'/PubDate').first
+          if (jrnlissue/'/PubDate/Year').first
+            request.referent.enhance_referent('date', (jrnlissue/'/PubDate/Year').first.inner_html, true, false)
           end
         end              
       end
       
-      if journal.elements['Title']
-        context_object_entity.set_metadata('jtitle', journal.elements['Title'].get_text.value)          
+      if (journal/'/Title').first
+        request.referent.enhance_referent('jtitle', (journal/'/Title').first.inner_html, true, false)          
       end
-      if journal.elements['ISOAbbreviation']
-        context_object_entity.set_metadata('stitle', journal.elements['ISOAbbreviation'].get_text.value)
+      if (journal/'/ISOAbbreviation').first
+        request.referent.enhance_referent('stitle', (journal/'/ISOAbbreviation').first.inner_html, true, false)
       end         
-      if query.elements['ArticleTitle']
-        context_object_entity.set_metadata('atitle', query.elements['ArticleTitle'].get_text.value)
+      if (journal/'/ArticleTitle').first
+        request.referent.enhance_referent('atitle', (journal/'/ArticleTitle').first.inner_html, true, false)
       end   
       
-      if query.elements['Pagination/MedlinePgn']
-        context_object_entity.set_metadata('pages', query.elements['Pagination/MedlinePgn'].get_text.value)        
+      if (article/'/Pagination/MedlinePgn').first
+        request.referent.enhance_referent('pages', (article/'/Pagination/MedlinePgn').first.inner_html, true, false)        
       end                
 
-      if query.elements['AuthorList/Author']
-        if query.elements['AuthorList/Author/LastName']
-          context_object_entity.set_metadata('aulast', query.elements['AuthorList/Author/LastName'].get_text.value)
+      if (article/'/AuthorList/Author').first
+        if (article/'/AuthorList/Author/LastName').first
+          request.referent.enhance_referent('aulast', (article/'/AuthorList/Author/LastName').first.inner_html, true, false)
         end
-        if query.elements['AuthorList/Author/ForeName']
-          context_object_entity.set_metadata('aufirst', query.elements['AuthorList/Author/ForeName'].get_text.value)
+        if (article/'/AuthorList/Author/ForeName').first
+          request.referent.enhance_referent('aufirst', (article/'/AuthorList/Author/ForeName').first.inner_html, true, false)
         end          
-        if query.elements['AuthorList/Author/Initials']
-          context_object_entity.set_metadata('auinit', query.elements['AuthorList/Author/Initials'].get_text.value)
+        if (article/'AuthorList/Author/Initials').first
+          request.referent.enhance_referent('auinit', (article/'AuthorList/Author/Initials').first.inner_html, true, false)
         end          
       end   
-     
+      request.referent.save
+      request.save     
     end      
   
-  end
-
-  def enhance_request(req)
-      context_object_entity.set_format('journal')
-      context_object_entity.set_metadata('genre','article')    
-    #Subject.new({:request_id=>request.id, :service_id => self.id, :authority=>'MeSH', :term=""})
-    #request.descriptions << Description.new({:service_id=>self.id, :request_id=>request.id, :description=>abstract.get_text.value})    
   end
 
 end
