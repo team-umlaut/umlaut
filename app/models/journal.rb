@@ -1,9 +1,10 @@
 class Journal < ActiveRecord::Base
+  require 'acts_as_ferret'
   has_many :journal_titles
   has_many :coverages
   has_and_belongs_to_many :categories
   belongs_to :title_source
-  
+  acts_as_ferret :fields => [:title, :alternate_titles, :subjects]
   def self.find_similar(journal)
     categories = []
     journal_cats = []
@@ -33,4 +34,20 @@ class Journal < ActiveRecord::Base
     end
     
   end
+  
+  def alternate_titles
+    titles = []
+    self.journal_titles.each do | jrnl_title |
+      titles << jrnl_title.title
+    end
+    return titles.join(" ")
+  end
+  
+  def subjects
+    subjects = []
+    self.categories.each do | category |
+      subjects << category.category+' '+category.subcategory
+    end
+    return subjects.join(" ")
+  end  
 end

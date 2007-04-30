@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
   layout "layouts/search_standard", :except => [ :opensearch, :opensearch_description ]
-  require RAILS_ROOT+'/vendor/open_url'
+  require 'open_url'
   def index
     self.journals
   	render :action=>'journals'    
@@ -92,15 +92,7 @@ class SearchController < ApplicationController
   auto_complete_for :journal_title, :titles, :limit=>10
   
   def auto_complete_for_journal_title
-    alt_titles = JournalTitle.find_by_contents("title:*"+params[:journal][:title]+"*")
-    ids = []
-    alt_titles.each { | title | 
-      ids << title.journal_id unless ids.index(title.journal_id)
-    }
-    @titles = []
-    if ids.length > 0
-      @titles = Journal.find(ids)
-    end
+    @titles = Journal.find_by_contents("alternate_titles:*"+params[:journal][:title]+"*")
     render :partial => 'journal_titles'  
   end
   
@@ -148,19 +140,19 @@ class SearchController < ApplicationController
   
   def find_via_local_title_source
     offset = 0
-    offset = params[:page].to_i *10-10 if params['page']
+    offset = ((params[:page].to_i * 10)-10) if params['page']
 
     unless session[:search] == {:title_search=>params['sfx.title_search'], :title=>params[:journal][:title]}
       session[:search] = {:title_search=>params['sfx.title_search'], :title=>params[:journal][:title]}
 
       titles = case params['sfx.title_search']    
         when 'begins'          
-          JournalTitle.find(:all, :conditions=>['lower(title) LIKE ?', params[:journal][:title].downcase+"%"], :offset=>offset)
+          Journal.find(:all, :conditions=>['lower(title) LIKE ?', params[:journal][:title].downcase+"%"], :offset=>offset)
         else
           qry = params[:journal][:title]
           qry = '"'+qry+'"' if qry.match(/\s/)        
           options = {:limit=>:all, :offset=>offset}
-          JournalTitle.find_by_contents('title:'+qry, options)         
+          Journal.find_by_contents('alternate_titles:'+qry, options)         
         end
       
       ids = []
@@ -212,53 +204,119 @@ class SearchController < ApplicationController
     else
       type = 'atom'
     end
+    
+    if params[:type] == 'json'
+      self.json_response
+      return
+    end
     if params['page'] and params['page'] != ""
       offset = (params['page'].to_i * 25) - 25
     else
       params['page'] = "1"
       offset = 0
     end
-    titles = Journal.find_by_title(params['query'], 25, offset, 'default')
+    titles = Journal.find_by_contents(params['query'], {:limit=>25, :offset=>offset})
     search_results = []
     if titles
       for title in titles do
-        co = OpenURL::ContextObject.new
-        co.referent.set_metadata('jtitle', title.title)
-        if title.issn[0]
-          co.referent.set_metadata('issn', title.issn[0])
-        end
-        co.referent.set_format('journal')
-        co.referent.set_metadata('genre', 'journal')
-        co.referent.set_metadata('object_id', title.id)
-        search_results << co
+
       end
     end
-    attrs={:search_terms=>params['query'], :total_results=>titles.length.to_s,
+    attrs={:search_terms=>params['query'], :total_results=>titles.total_hits.to_s,
       :start_index=>offset.to_s, :count=>"25"}
     feed = FeedTools::OpensearchFeed.new(attrs)
     feed.title = "Search for "+params['query']
     feed.author = "Georgia Tech Library"
-    puts request.request_uri
     feed.id='http://'+request.host+request.request_uri
     feed.previous_page = url_for(:action=>'opensearch', :query=>params['query'], :page=>(params['page'].to_i - 1).to_s, :type=>type) unless params['page'] == 1
-    last = titles.length/25
+    last = titles.total_hits/25
     feed.next_page=url_for(:action=>'opensearch', :query=>params['query'], :page=>(params['page'].to_i + 1).to_s, :type=>type) unless params['page'] == last.to_s
     feed.last_page=url_for(:action=>'opensearch', :query=>params['query'], :page=>last.to_s, :type=>type)
     feed.href=CGI::escapeHTML('http://'+request.host+request.request_uri)
     feed.search_page=url_for(:action=>'opensearch_description')
-  
-    search_results.each {|result|
+    feed.feed_type = params[:type]
+    titles.each do |title|
+      co = OpenURL::ContextObject.new
+      co.referent.set_metadata('jtitle', title.title)
+      issn = nil
+      if title.issn
+        co.referent.set_metadata('issn', title.issn)
+        issn = title.issn
+      elsif title.eissn
+        co.referent.set_metadata('eissn', title.eissn)      
+        title.eissn
+      end
+      co.referent.set_format('journal')
+      co.referent.set_metadata('genre', 'journal')
+      co.referent.set_metadata('object_id', title.object_id)
+      search_results << co    
       f = FeedTools::FeedItem.new
-      f.title = result.referent.metadata['jtitle']
-      f.link= url_for result.to_hash.merge({:controller=>'resolve'})
+      
+      f.title = co.referent.metadata['jtitle']
+      f.title << " ("+issn+")" if issn
+      f.link= url_for co.to_hash.merge({:controller=>'resolve'})
       f.id = f.link
-
+      smry = []
+      title.coverages.each do | cvr |
+        smry << cvr.provider+':  '+cvr.coverage unless smry.index(cvr.provider+':  '+cvr.coverage)
+      end
+      f.summary = smry.join('<br />')
       feed << f
-    }    
+    end    
   	@headers["Content-Type"] = "application/"+type+"+xml"
   	render_text feed.build_xml    
             
   end 
+  
+  def json_response
+    if params[:page] and params[:page] != ""
+      offset = (params['page'].to_i * 25) - 25
+    else
+      params[:page] = "1"
+      offset = 0
+    end
+    journals = Journal.find_by_contents(params['query'], {:limit=>25, :offset=>offset})
+    
+    results={:searchTerms=>params['query'], :totalResults=>journals.total_hits,
+      :startIndex=>offset, :itemsPerPage=>"25", :items=>[]}
+
+    results[:title] = "Search for "+params['query']
+    results[:author] = "Georgia Tech Library"
+    results[:description] = "Georgia Tech Library eJournals"
+    results[:id] = 'http://'+request.host+request.request_uri
+    results[:previous] = url_for(:action=>'opensearch', :query=>params['query'], :page=>(params[:page].to_i - 1).to_s, :type=>type) unless params[:page] == 1
+    last = journals.total_hits/25
+    results[:next]=url_for(:action=>'opensearch', :query=>params['query'], :page=>(params[:page].to_i + 1).to_s, :type=>type) unless params[:page] == last.to_s
+    results[:last]=url_for(:action=>'opensearch', :query=>params['query'], :page=>last.to_s, :type=>type)
+    results[:href]=CGI::escapeHTML('http://'+request.host+request.request_uri)
+    results[:search]=url_for(:action=>'opensearch_description')
+  
+    journals.each {|result|
+      issn = ''
+      if result.issn
+        issn = ' ('+result.issn+')'
+      elsif result.eissn
+        issn = ' ('+result.eissn+')'      
+      end
+      item = {:title=>result.title+issn}
+      co = OpenURL::ContextObject.new
+      co.referent.set_format('journal')
+      co.referent.set_metadata('issn', issn) unless issn.blank?
+      co.referent.set_metadata('jtitle', result.title)
+      item[:link]= url_for(co.to_hash.merge({:controller=>'resolve'}))
+      item[:id] = item[:link]
+      smry = []
+      result.coverages.each do | cvr |
+        smry << cvr.provider+':  '+cvr.coverage unless smry.index(cvr.provider+':  '+cvr.coverage)
+      end
+      item[:description] = smry.join('<br />')      
+      item[:author] = "Georgia Tech Library"
+      results[:items] << item
+    }    
+  	@headers["Content-Type"] = "text/plain"
+  	render_text results.to_json
+  end
+    
   
   def opensearch_description
     @headers['Content-Type'] = 'application/opensearchdescription+xml' 

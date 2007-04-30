@@ -15,18 +15,18 @@ end
 <p><strong>Electronic version  via:</strong></p>
 <ul>
 <% fulltxt = get_service_type('fulltext').each do | ft | 
-    target = ft.service.to_fulltext
+    target = ft.service_response.service.to_fulltext(ft.service_response)
 %>
 <li> <%= link_to target[:display_text], {:controller=>'link_router', :id=>ft.id}, 'target'=>"_blank" %>
 
-<% if target.has_key?(:coverage) %>
+<% unless target[:coverage].blank? %>
 <br />
 <%= target[:coverage] %>
 <% end
 %>
-<% if target.has_key?(:notes) %>
+<% unless target[:note].blank? %>
 <br />
-<%= target[:notes] %>
+<%= target[:note] %>
 <% end
 %>
 </li>
@@ -48,7 +48,7 @@ end
 <%
 src = ""
 holdings = get_service_type('holding').each do |p|
-  target = p.service.to_holding
+  target = p.service_response.service.to_holding(p.service_response)
   if src != target[:source_name]
   %>
   <p><strong><%= target[:source_name] %></strong></p>
@@ -70,7 +70,7 @@ holdings = get_service_type('holding').each do |p|
     if target.has_key?(:status)%>
       <br />
       <% if target[:status] == "Not Charged" or target[:status] == "Available" %>
-      <span class='available'><%= p[:status].sub(/Not Charged/, "Available")%></span>
+      <span class='available'><%= target[:status].sub(/Not Charged/, "Available")%></span>
       <% else %>
       <%= target[:status] %>
       <% end %>
@@ -88,7 +88,7 @@ holdings = get_service_type('holding').each do |p|
 
 
 <% 
-unless holdings.empty?
+if holdings.empty?
     unless title_search = search_opac_for_title(@user_request)
 %>
 <p class="notAvailable">Not Available </p>
@@ -124,7 +124,7 @@ else %>
 <% get_service_type('document_delivery').each do | doc_del |
     
     if @user_request.referent.format == 'journal'
-        doc_del[:url].sub!(/genre=[^\&]*/, 'genre=article')
+        #doc_del[:url].sub!(/genre=[^\&]*/, 'genre=article')
     end
     %>
 	<li><%= link_to doc_del[:display_text], {:controller=>'link_router', :id=>doc_del.id}, 'target'=>'_blank'%>

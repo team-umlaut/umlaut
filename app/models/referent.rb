@@ -15,7 +15,7 @@ class Referent < ActiveRecord::Base
       end
     end
     
-    shortcuts = {:atitle=>nil, :title=>nil, :issn=>nil, :isbn=>nil, :volume=>nil, :year=>nil}    
+    shortcuts = {:atitle=>"", :title=>"", :issn=>"", :isbn=>"", :volume=>"", :year=>""}    
     shortcuts[:atitle] = rft.metadata['atitle'].downcase[0..254] if rft.metadata['atitle']
     if rft.metadata['jtitle']
       shortcuts[:title] = rft.metadata['jtitle'].downcase[0..254]
@@ -58,7 +58,7 @@ class Referent < ActiveRecord::Base
     rft.referent_values << val
     rft.referent_values.each do | val |
       rft.atitle = val.normalized_value if val.key_name == 'atitle' and val.metadata?
-      rft.title = val.normalized_value if val.key_name.match(/title|btitle|jtitle/) and val.metadata? 
+      rft.title = val.normalized_value if val.key_name.match(/^[bj]?title$/) and val.metadata? 
       rft.issn = val.normalized_value if val.key_name == 'issn' and val.metadata?
       rft.isbn = val.normalized_value if val.key_name == 'isbn' and val.metadata?      
       rft.volume = val.normalized_value if val.key_name == 'volume' and val.metadata?
@@ -166,7 +166,7 @@ class Referent < ActiveRecord::Base
         end
       end
     else      
-      citation[:title_label] = case @user_request.referent.metadata["genre"]
+      citation[:title_label] = case self.metadata["genre"]
   		when /article|journal|issue/ then 'Journal Title'
   		when /bookitem|book/ then 'Book Title'
   		when /proceeding|conference/ then 'Conference Name'
@@ -231,14 +231,14 @@ class Referent < ActiveRecord::Base
       val = self.referent_values.create(:key_name => key, :value => value, :normalized_value => value.downcase, :metadata => metadata, :private_data => private_data)
       val.save
     end 
-    if key.match((/^([ajb]?title)|(is[sb]n)|(volume)|(date)$/))
+    if key.match((/(^[ajb]?title$)|(^is[sb]n$)|(^volume$)|(^date$)/))
       case key
         when 'date' then self.year = value.downcase
         when 'volume' then self.volume = value.downcase
         when 'issn' then self.issn = value.downcase
         when 'isbn' then self.isbn = value.downcase
         when 'atitle' then self.atitle = value.downcase
-        else self.title = value.downcase      
+        else self.title = value.downcase 
       end
       self.save
     end

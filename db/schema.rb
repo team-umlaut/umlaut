@@ -14,10 +14,12 @@ ActiveRecord::Schema.define() do
   create_table "catalogs", :force => true do |t|
     t.column "service_id", :integer, :default => 0, :null => false
     t.column "url", :text, :default => "", :null => false
+    t.column "protocol", :string, :limit => 50
     t.column "opac_records", :boolean, :default => 0, :null => false
     t.column "consortial_catalog", :boolean, :default => 0, :null => false
     t.column "consortial_code", :string, :limit => 20
     t.column "opac_url", :text
+    t.column "opac_protocol", :string, :limit => 50    
   end
 
   add_index "catalogs", ["service_id"], :name => "cat_service_id"

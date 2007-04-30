@@ -14,17 +14,16 @@ module ResolveHelper
     return responses
   end
   
-  def search_opac_for_title(context_object)
+  def search_opac_for_title(request)
     require 'sru'
-    require 'uri'
-    inst = Institution.find_by_default_institution('true')
-    opac = inst.catalogs[0]
-    if context_object.referent.metadata.has_key?('jtitle') and context_object.referent.metadata['jtitle'] != ""
-      title = context_object.referent.metadata['jtitle'].gsub(/[^A-z0-9\s]/, '')
-    elsif context_object.referent.metadata.has_key?('btitle') and context_object.referent.metadata['btitle'] != ""
-      title = context_object.referent.metadata['btitle'].gsub(/[^A-z0-9\s]/, '')
-    elsif context_object.referent.metadata.has_key?('title') and context_object.referent.metadata['title'] != ""
-      title = context_object.referent.metadata['title'].gsub(/[^A-z0-9\s]/, '')
+    require 'uri'    
+    opac = Catalog.find(1)
+    if request.referent.metadata['jtitle']
+      title = request.referent.metadata['jtitle'].gsub(/[^A-z0-9\s]/, '')
+    elsif request.referent.metadata['btitle']
+      title = request.referent.metadata['btitle'].gsub(/[^A-z0-9\s]/, '')
+    elsif request.referent.metadata['title']
+      title = request.referent.metadata['title'].gsub(/[^A-z0-9\s]/, '')
     else 
       return false
     end
@@ -35,7 +34,7 @@ module ResolveHelper
              when 1 then ''
              else 'es'
              end
-    link = "<ul><li><a href='http://gil.gatech.edu/cgi-bin/Pwebrecon.cgi?SAB1="+URI.escape(title.gsub(/\s(and|or)\s/, ' '))+"&BOOL1=all+of+these&FLD1=Title+%28TKEY%29&CNT=25&HIST=1' target='_blank'>"+results.number_of_records.to_s+" possible match"+suffix+" in "+opac.name+"</a></li></ul>"
+    link = "<ul><li><a href='http://gil.gatech.edu/cgi-bin/Pwebrecon.cgi?SAB1="+URI.escape(title.gsub(/\s(and|or)\s/, ' '))+"&BOOL1=all+of+these&FLD1=Title+%28TKEY%29&CNT=25&HIST=1' target='_blank'>"+results.number_of_records.to_s+" possible match"+suffix+" in "+opac.service.name+"</a></li></ul>"
     return link
   end
   

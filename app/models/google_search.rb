@@ -1,6 +1,6 @@
-class YahooSearch < Service
+class GoogleSearch < Service
+  require 'google'
   require 'md5'
-  require 'json/lexer'
   def handle(request)
     query = self.build_query(request.referent)
     links = self.do_query(query)
@@ -42,42 +42,34 @@ class YahooSearch < Service
   def build_query(rft)
     query = ""
     metadata = rft.metadata
-    ['atitle','title','jtitle','btitle','au','aulast', 'date'].each do | field |
+    ['atitle','title','jtitle','btitle','au','aulast'].each do | field |
       query << ' "'+metadata[field]+'"' if metadata[field]
     end
-	if query == ""
-		return false
-	end   
-    return 'appid='+self.password+'&query='+CGI::escape(query)+'&results=50&start=1&output=json'    
+    return query
   end
   
   def do_query(query)
     links = []
-    yws = '/WebSearchService/V1/webSearch'
-    yahoo_uri = URI.parse(self.url+yws)
-
-    # send the request
-    http = Net::HTTP.new(yahoo_uri.host, 80)  
-    http_response = http.send_request('POST', yahoo_uri.path + '?' + query)
     begin
-      json = JSON::Lexer.new(http_response.body).nextvalue
-      if json.nil?
-        return
-      elsif json["ResultSet"]["totalResultsReturned"] == 0
-      	return
-      end
-      json["ResultSet"]["Result"].each do |result|
-        links << {
-            :title => result['Title'],
-            :description => result['Summary'],
-            :url => result['Url'],
-            :hash => MD5.new(result['Url'])}
-      end
-    rescue RuntimeError
-      return nil
-    end    
+      google = Google::Search.new(self.password)
+      begin      
+      # send the request  
+        google.search(query).resultElements.each do |result|
+          # extract and collect info from the SOAP response
+          links << {
+            :title => result.send('title').to_s,
+            :description => result.send('snippet').to_s,
+            :url => result.send('url').to_s,
+            :related_links => result.send('relatedInformationPresent').to_s,
+            :hash => MD5.new(result.send('url').to_s)
+            }
+          end
+	    rescue SOAP::HTTPStreamError
+	      return nil
+	    end    
+	  rescue  WSDL::XMLSchema::Parser::UnknownElementError
+	    return nil
+	  end 
     return links
   end    
-
-
 end

@@ -1,14 +1,11 @@
 class LinkRouterController < ApplicationController
   require 'cgi'
   def index
-    redirect_to CGI.unescape(@params[:url]) 
-    history = History.find_by_session_id_and_request_id(session.session_id, @params[:id])
+    svc_type = ServiceType.find(params[:id])    
+    redirect_to svc_type.service_response.service.response_url(svc_type.service_response)
     clickthrough = Clickthrough.new
-    clickthrough.target_source = @params[:source]
-    clickthrough.target_source_id = @params[:source_id]
-    clickthrough.service = @params[:service]
-    clickthrough.url = CGI.unescape(@params[:url])
-    clickthrough.history_id = history.id
+    clickthrough.request_id = svc_type.request_id
+    clickthrough.service_response_id = svc_type.service_response_id
     clickthrough.save
   end
 end

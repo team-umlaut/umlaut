@@ -149,6 +149,9 @@ class ResolveController < ApplicationController
     list_key = []
     @collection.collections[:institutions].each do | inst |
       inst.services.each do | svc |
+        if ds = @user_request.dispatched_services.find(:first, :conditions=>['service_id = ?', svc.id])
+          next if ds.successful?
+        end
         if range.to_a.index(svc.dispatch_priority)
           if idx = list_key.index(svc.dispatch_priority)
             service_list[idx] << svc

@@ -18,11 +18,14 @@ cite = @user_request.referent.to_citation
 </tr>
 <%
 @page_title = cite[:title]
+if cite[:subtitle] 
 %>
 <tr><td width="90" class="largeTextb"><div align="right">Author:</div></td><td class="largeText">
 <%= cite[:author] %> 
 </td></tr>
-<% if cite[:subtitle] %>
+<% 
+end
+if cite[:subtitle] %>
 <tr><td width="90"><div align="right" class="smallTextb"><strong><%= cite[:subtitle_label] %>:</strong></td><td><span class="smallText">
 <%= cite[:subtitle] %>
 </span></td></tr>
