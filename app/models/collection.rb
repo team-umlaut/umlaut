@@ -36,7 +36,7 @@ class Collection
       session[:collection] = {:institutions=>[default_institution.id], :services=>{}}
       
       # Get any institutions that the user has associated with themself
-      self.get_user_institutions(session) if session[:user]
+      self.get_user_institutions(session)
       
       # Check if they are eligible for other services
       # based on their physical location
@@ -50,6 +50,9 @@ class Collection
   end
   
   def get_user_institutions(session)
+    #can only do it if we have a user
+	return unless session[:user]
+	  
     user = User.find_by_id(session[:user][:id])
     user.institutions.each do | uinst |
       @collections[:institutions] << uinst unless @collections[:institutions].index(uinst) 
@@ -78,7 +81,7 @@ class Collection
   
   # Checks if the resolver is already in the collection object
   def in_collection?(resolver_host)
-    @collection[:institutions].each do | inst |
+    @collections[:institutions].each do | inst |
       inst.services.each do | svc |
         return true if svc.url == resolver_host
       end
@@ -108,8 +111,12 @@ class Collection
       session[:coins] = []
     end
     session[:coins] << {:host=>host, :icon=>icon, :text=>text}    
-  end  
-  
+  end
+
+
+
+	  
+	  end
   def check_oclc_symbol(nuc)
     @collections[:institutions].each do | inst |
       inst.services.each do | svc |
