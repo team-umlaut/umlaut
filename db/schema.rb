@@ -4,26 +4,6 @@
 
 ActiveRecord::Schema.define() do
 
-  create_table "background_services", :force => true do |t|
-    t.column "request_id", :integer, :default => 0, :null => false
-    t.column "service_id", :integer, :default => 0, :null => false
-  end
-
-  add_index "background_services", ["request_id", "service_id"], :name => "bkgrd_svc_req"
-
-  create_table "catalogs", :force => true do |t|
-    t.column "service_id", :integer, :default => 0, :null => false
-    t.column "url", :text, :default => "", :null => false
-    t.column "protocol", :string, :limit => 50
-    t.column "opac_records", :boolean, :default => 0, :null => false
-    t.column "consortial_catalog", :boolean, :default => 0, :null => false
-    t.column "consortial_code", :string, :limit => 20
-    t.column "opac_url", :text
-    t.column "opac_protocol", :string, :limit => 50    
-  end
-
-  add_index "catalogs", ["service_id"], :name => "cat_service_id"
-
   create_table "categories", :force => true do |t|
     t.column "category", :string, :limit => 100, :default => "", :null => false
     t.column "subcategory", :string, :limit => 100
@@ -113,6 +93,7 @@ ActiveRecord::Schema.define() do
     t.column "issn", :string, :limit => 10
     t.column "eissn", :string, :limit => 10
     t.column "title_source_id", :integer, :default => 0, :null => false
+    t.column "updated_at", :datetime
   end
 
   add_index "journals", ["object_id"], :name => "j_object_id"
@@ -120,6 +101,7 @@ ActiveRecord::Schema.define() do
   add_index "journals", ["title_source_id"], :name => "jrnl_title_source_id"
   add_index "journals", ["title"], :name => "jrnl_title_idx"
   add_index "journals", ["issn", "eissn"], :name => "jrnl_issn_idx"
+  add_index "journals", ["updated_at"], :name=>"jrnl_tstamp_idx"  
 
   create_table "keywords", :force => true do |t|
     t.column "term", :string, :default => "", :null => false
@@ -181,14 +163,14 @@ ActiveRecord::Schema.define() do
   add_index "requests", ["created_at"], :name => "req_created_at"
 
   create_table "service_responses", :force => true do |t|
-    t.column "service_id", :integer, :default => 0, :null => false
+    t.column "service", :string, :limit=> 25, :null => false
     t.column "key", :string, :limit => 100, :default => "", :null => false
     t.column "value_string", :string, :limit => 255
-    t.column "value_alt_string", :text, :limit => 255
+    t.column "value_alt_string", :string, :limit => 255
     t.column "value_text", :text
   end
 
-  add_index "service_responses", ["service_id", "key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"
+  add_index "service_responses", ["service", "key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"
 
   create_table "service_types", :force => true do |t|
     t.column "request_id", :integer, :default => 0, :null => false
@@ -198,15 +180,6 @@ ActiveRecord::Schema.define() do
 
   add_index "service_types", ["request_id", "service_response_id", "service_type"], :name => "svc_type_idx"
 
-  create_table "services", :force => true do |t|
-    t.column "name", :string, :limit => 100, :default => "", :null => false
-    t.column "type", :string, :limit => 100, :default => "", :null => false
-    t.column "url", :string, :default => "", :null => true
-    t.column "username", :string, :limit => 100, :default => "", :null => true
-    t.column "password", :string, :limit => 100, :default => "", :null => true
-  end
-
-  add_index "services", ["type"], :name => "service_type_idx"
 
   create_table "sessions", :force => true do |t|
     t.column "sessid", :string, :limit => 32
