@@ -147,7 +147,7 @@ class ResolveController < ApplicationController
     end
     service_list = []
     list_key = []
-    @collection.collections[:institutions].each do | inst |
+    @collection.institutions.each do | inst |
       inst.services.each do | svc |
         if ds = @user_request.dispatched_services.find(:first, :conditions=>['service_id = ?', svc.id])
           next if ds.successful?
