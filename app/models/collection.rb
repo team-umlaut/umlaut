@@ -8,13 +8,14 @@ class Collection
   # and either finds the collections from the user or recreates it from
   # their session.
   
-  attr_accessor :collections
-	require 'open_url'
+  attr_accessor :institutions, :services
+  require 'open_url'
   
   # Build a new Collection object and gather appropriate institutions
   # and services.
   def initialize(ip, session)
-    @collections = {:institutions=>[], :services=>[]}
+    @institutions= []
+    @services= []
     if session[:refresh_collection] == true
       session[:collection] = nil
       session[:refresh_collection] = false
@@ -31,7 +32,7 @@ class Collection
     unless session[:collection] 
       default_institution = Institution.find_by_default_institution(1)
       # Users always get the home institution
-      @collections[:institutions] << default_institution
+      @institutions << default_institution
       # Just set the collection id to the session
       session[:collection] = {:institutions=>[default_institution.id], :services=>{}}
       
@@ -44,18 +45,17 @@ class Collection
     else 
       # Build collection object from session
       session[:collection][:institutions].each do  | inst |
-        @collections[:institutions] << Institution.find(inst)
+        @institutions << Institution.find(inst)
       end
     end
   end
   
   def get_user_institutions(session)
     #can only do it if we have a user
-	return unless session[:user]
-	  
+	return unless session[:user]  
     user = User.find_by_id(session[:user][:id])
     user.institutions.each do | uinst |
-      @collections[:institutions] << uinst unless @collections[:institutions].index(uinst) 
+      @institutions << uinst unless @institutions.index(uinst) 
     end
   end
   
@@ -70,7 +70,7 @@ class Collection
       if inst.resolver.vendor == 'sfx' or vendor.get_text.value.downcase == 'other'
         if check_supported_browser(inst.resolver.base_url)
           sfx = Sfx.new({:name=>inst.name, :url=>inst.resolver.base_url})
-          @collections[:services] << sfx unless @collections[:services].index(sfx)
+          @services << sfx unless @services.index(sfx)
           session[:collection][:services] << sfx.to_yaml
         end         
       else
@@ -81,7 +81,7 @@ class Collection
   
   # Checks if the resolver is already in the collection object
   def in_collection?(resolver_host)
-    @collections[:institutions].each do | inst |
+    @institutions.each do | inst |
       inst.services.each do | svc |
         return true if svc.url == resolver_host
       end
@@ -111,17 +111,11 @@ class Collection
       session[:coins] = []
     end
     session[:coins] << {:host=>host, :icon=>icon, :text=>text}    
-  end
-
-
-
-	  
-	  end
+  end  
+  
   def check_oclc_symbol(nuc)
-    @collections[:institutions].each do | inst |
-      inst.services.each do | svc |
-        return true if svc.catalog and svc.catalog.consortial_code == nuc
-      end
+    @institutions.each do | inst |
+      return true if inst.oclc_symbol == nuc
     end
     return false  
   end
