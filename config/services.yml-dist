@@ -1,0 +1,91 @@
+# Global services
+Crossref:
+  name: Crossref
+  type: Crossref
+  url: http://www.crossref.org/openurl
+  username: 
+  password: 
+  priority: 1
+  status: active
+  
+Pubmed:
+  name: Pubmed
+  type: Pubmed
+  url: http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi
+  priority: 1
+  status: active
+  
+Amazon:
+  name: Amazon
+  type: Amazon
+  url: http://webservices.amazon.com/onca/xml
+  api_key: 
+  priority: 3
+  status: active
+  
+Google:
+  name: Google
+  type: GoogleSearch
+  url: http://google.com/
+  api_key: 
+  priority: 3
+  status: active
+
+Yahoo:
+  name: Yahoo
+  type: YahooSearch
+  url: http://search.yahooapis.com/
+  api_key: 
+  priority: 3
+  status: active
+  
+MyWeb:
+  name: Yahoo MyWeb
+  type: YahooMyWeb
+  url: http://search.yahooapis.com/
+  api_key: 
+  priority: background
+  status: active  
+
+Connotea:
+  name: Connotea
+  type: Connotea
+  url:
+  priority: background
+  status: disabled
+  
+CiteULike:
+# Start institution specific services  
+Opac:
+  name: GT Catalog
+  type: VoyagerNative
+  url: http://gil.gatech.edu/cgi-bin/Pwebrecon.cgi?DB=local
+  sru_url: http://search.library.gatech.edu/srw/GT/GIT
+  dsn: 
+  username: 
+  password: 
+  priority: 2
+  status: active
+  
+Opac2:
+  name: GIL Express
+  type: Voyager
+  url: http://giluc.usg.edu/cgi-bin/Pwebrecon.cgi?DB=local
+  sru_url: http://search.library.gatech.edu/srw/GILUC/Voyager
+  priority: 2
+  status: active
+  
+GT_SFX:
+  name: Find It @ GT
+  type: Sfx
+  base_url: http://sfx.galib.uga.edu/sfx_git1
+  priority: 2
+  status: active
+
+GT_EZProxy:
+  name: EZProxy
+  type: Ezproxy  
+  status: disabled
+  host:  http://www.library.gatech.edu:2048
+  password: 
+  path: /proxy_url  
