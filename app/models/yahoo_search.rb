@@ -2,6 +2,9 @@ class YahooSearch < Service
   require 'md5'
   require 'json/lexer'
   def handle(request)
+	  raise "YahooSearch: Url or API key are nil. They must be filled out in config for YahooSearch service." if self.url.nil? || self.password.nil?
+
+	  
     query = self.build_query(request.referent)
     links = self.do_query(query)
     return request.dispatched(self, false) unless links.is_a?(Array)
