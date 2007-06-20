@@ -2,7 +2,7 @@ class YahooSearch < Service
   require 'md5'
   require 'json/lexer'
   def handle(request)
-	  raise "YahooSearch: Url or API key are nil. They must be filled out in config for YahooSearch service." if self.url.nil? || self.password.nil?
+	  raise "YahooSearch: Url or API key are nil. They must be filled out in config for YahooSearch service. The password should be an API key from Yahoo: https://developer.yahoo.com/wsregapp/index.php" if self.url.nil? || self.password.nil?
 
 	  
     query = self.build_query(request.referent)
