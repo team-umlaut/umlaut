@@ -48,9 +48,8 @@ ActiveRecord::Schema.define() do
   create_table "institutions", :force => true do |t|
     t.column "name", :string, :default => "", :null => false
     t.column "default_institution", :boolean, :default => 0, :null => false
-    t.column "postal_code", :string, :limit => 10
     t.column "worldcat_registry_id", :string, :limit => 25
-    t.column "oclc_symbol", :string, :limit => 10
+    t.column "configuration", :text
   end
 
   add_index "institutions", ["name"], :name => "inst_name"

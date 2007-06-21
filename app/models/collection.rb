@@ -8,19 +8,24 @@ class Collection
   # and either finds the collections from the user or recreates it from
   # their session.
   
-  attr_accessor :institutions, :services
+  attr_accessor :institutions
   require 'open_url'
   
   # Build a new Collection object and gather appropriate institutions
   # and services.
   def initialize(ip, session)
     @institutions= []
-    @services= []
+    @services = {} 
+    (0..9).each do | priority |
+      @services[priority] = []
+    end
+    @services['background'] = []
     if session[:refresh_collection] == true
       session[:collection] = nil
       session[:refresh_collection] = false
     end      
     self.gather_institutions(ip, session)
+    self.gather_services
   end
   
   def gather_institutions(ip, session)
@@ -30,7 +35,9 @@ class Collection
     # Collection needs to be rebuilt, set the ':refresh_collection'
     # key to true
     unless session[:collection] 
-      default_institution = Institution.find_by_default_institution(1)
+      Institution.find_by_default_institution(:all).each do | dflt |
+        @institutions << dflt
+      end
       # Users always get the home institution
       @institutions << default_institution
       # Just set the collection id to the session
@@ -118,5 +125,21 @@ class Collection
       return true if inst.oclc_symbol == nuc
     end
     return false  
+  end
+  
+  def gather_services
+    InstitutionList.get('global')["services"].each do | svc |   
+      s = ServiceList.get(svc)
+      @services[s.priority] << s
+    end
+    @institutions.each do | inst |
+      inst.services.each do | svc |
+        @services[svc.priority] << svc
+      end
+    end
+  end
+  
+  def service_level(level)
+    return @services[level]
   end
 end

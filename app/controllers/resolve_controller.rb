@@ -141,36 +141,16 @@ class ResolveController < ApplicationController
   
   protected
   def service_dispatch(stage)
-    range = case stage
-      when 'foreground' then ('1'..'9')
-      when 'background' then ('a'..'z')
-    end
-    service_list = []
-    list_key = []
-    @collection.institutions.each do | inst |
-      inst.services.each do | svc |
-        if ds = @user_request.dispatched_services.find(:first, :conditions=>['service_id = ?', svc.id])
-          next if ds.successful?
-        end
-        if range.to_a.index(svc.dispatch_priority)
-          if idx = list_key.index(svc.dispatch_priority)
-            service_list[idx] << svc
-          else
-            list_key << svc.dispatch_priority
-            service_list[list_key.index(svc.dispatch_priority)] = [svc]
-          end
-        end
-      end
-    end
-    service_list.each do | priority |
-      if priority.length > 1
-        priority.each do | pri |
+    (0..9).each do | priority |
+      next if @collection.service_level(priority).empty?
+      if @collection.service_level(priority).length > 1
+        @collection.service_level(priority).each do | pri |
 #        bundle = ServiceBundle.new(priority)
 #        bundle.handle(@user_request)
           pri.handle(@user_request)       
         end
       else
-        priority[0].handle(@user_request)
+        @collection.service_level(priority)[0].handle(@user_request)
       end      
     end  
   end
