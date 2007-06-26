@@ -1,5 +1,6 @@
 class Crossref < Service
   require 'open_url'
+  attr_reader :url, :username, :password
   def handle(request)
     return request.dispatched(self, true) unless id = self.can_resolve?(request)
     return request.dispatched(self, true) if self.already_resolved?(id)
@@ -56,7 +57,7 @@ class Crossref < Service
     require 'hpricot'
     doc = Hpricot(body)
     query = (doc/"/crossref_result/query_result/body/query").first
-    if query.attributes['status'] == 'resolved'
+    if query && query.attributes['status'] == 'resolved'
       case (query/'/doi').first.attributes['type']
         when "journal_article"          
           request.referent.enhance_referent('format', 'book', false, false)

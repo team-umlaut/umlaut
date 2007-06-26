@@ -1,14 +1,13 @@
 class Opac < Service
   attr_reader :record_attributes
   def handle(request)
-    if request.referent.format == 'journal' and self.catalog.consortial_catalog?
+    if request.referent.format == 'journal' and @consortial
       return request.dispatched(self, true)
     end  
     @record_attributes = {}
     self.search_bib_data(request)
-    if self.catalog.opac_records?
-      opac_client_string = self.catalog.opac_protocol.capitalize+"Client"    
-      opac_client = eval(opac_client_string).new(self,self.catalog.opac_url)
+    if self.respond_to?(:init_holdings_client)
+      opac_client = self.init_holdings_client
       opac_client.get_holdings(@record_attributes.keys)  
       self.check_holdings(opac_client.results, request)    
     else
@@ -19,8 +18,7 @@ class Opac < Service
   
   def search_bib_data(request)
 
-    client_string = self.catalog.protocol.capitalize+"Client"
-    client = eval(client_string).new(self, self.catalog.url)
+    client = self.init_bib_client
     client.search_by_referent(request.referent)
     self.collect_record_attributes(client, request)
     

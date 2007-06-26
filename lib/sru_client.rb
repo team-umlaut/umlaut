@@ -5,8 +5,8 @@ class SruClient
   include XISBN
   attr_reader :number_of_results, :results, :accuracy
   attr_accessor :record_schema, :start_record, :maximum_records
-  def initialize(service, url)
-    @client = SRU::Client.new(url)
+  def initialize(service)
+    @client = SRU::Client.new(service.sru_url)
     # set client defaults
     @start_record = 1
     @maximum_records = 5
@@ -96,7 +96,7 @@ class SruClient
   def construct_issn_query(rft)
     issn = rft.metadata["issn"]
     issn = rft.metadata["eissn"] unless issn
-    return false unless issn
+    return false if issn.nil? or issn.blank?
     issn = issn.insert(4, '-') unless issn[4,1] == "-"   
     @accuracy = 5   
     return "bath.issn = "+issn

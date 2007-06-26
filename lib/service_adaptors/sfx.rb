@@ -8,7 +8,7 @@ class Sfx < Service
     return request.dispatched(self, true)    
   end
   def initialize_client(request)
-    transport = OpenURL::Transport.new(self.url)
+    transport = OpenURL::Transport.new(@base_url)
     context_object = request.referent.to_context_object
     context_object.referrer.set_identifier(request.referrer.identifier)if request.referrer
     transport.add_context_object(context_object)
@@ -117,7 +117,7 @@ class Sfx < Service
     end  
     if journal
       journal.categories.each do | category |
-        if svc_resp = self.service_responses.find(:first, :conditions=>["key = ? AND value_string = ? AND value_alt_string =?", 'SFX', category.category, category.subcategory])
+        if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string_and_value_alt_string(self.id, 'SFX', category.category, category.subcategory)
           svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'subject') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'subject'])        
         else        
           svc_resp = self.service_responses.create(:key=>'SFX',:value_string=>category.category,:value_text=>category.subcategory)
@@ -132,7 +132,7 @@ class Sfx < Service
         source = "SFX"+URI.parse(self.url).path
       end    
       if (target/"/service_type").inner_html == "getFullTxt"      
-        if svc_resp = self.service_responses.find(:first, :conditions=>["key = ? AND value_string = ?", (target/"/target_public_name").inner_html, (target/"/target_service_id").inner_html])
+        if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string(self.id, (target/"/target_public_name").inner_html, (target/"/target_service_id").inner_html)
           svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'fulltext') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'fulltext'])        
         else
           coverage = ''
@@ -148,11 +148,11 @@ class Sfx < Service
             :source=>source,
             :coverage=>coverage
           }
-          svc_resp = self.service_responses.create(:key=>(target/"/target_public_name").inner_html,:value_string=>(target/"/target_service_id").inner_html,:value_text=>value_text.to_yaml)
+          svc_resp = ServiceResponse.create(:service=>self.id, :key=>(target/"/target_public_name").inner_html,:value_string=>(target/"/target_service_id").inner_html,:value_text=>value_text.to_yaml)
           request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'fulltext')
         end
       elsif (target/"/service_type").inner_html == "getDocumentDelivery"
-        if svc_resp = self.service_responses.find(:first, :conditions=>["key = ? AND value_string = ?", (target/"/target_public_name").inner_html, request_id])
+        if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string(self.id, (target/"/target_public_name").inner_html, request_id)
           svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'document_delivery') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'document_delivery'])        
         else
           value_text = {
@@ -160,7 +160,7 @@ class Sfx < Service
             :note=>CGI.unescapeHTML((target/"/note").inner_html),
             :source=>source
           }
-          svc_resp = self.service_responses.create(:key=>(target/"/target_public_name").inner_html,:value_string=>request_id,:value_text=>value_text.to_yaml)
+          svc_resp = ServiceResponse.create(:service=>self.id, :key=>(target/"/target_public_name").inner_html,:value_string=>request_id,:value_text=>value_text.to_yaml)
           request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'document_delivery')
         end	      
       end    

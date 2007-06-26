@@ -1,10 +1,10 @@
 class VoyagerClient
   attr_reader :number_of_results, :results
   require 'oci8'	
-  def initialize(service, url)
+  def initialize(service)
     @results = []
     begin
-      @conn = OCI8.new(service.username, service.password, url)
+      @conn = OCI8.new(service.username, service.password, service.dsn)
   	rescue OCIError
   	end
   end
