@@ -35,7 +35,7 @@ class Collection
     # Collection needs to be rebuilt, set the ':refresh_collection'
     # key to true
     unless session[:collection] 
-      Institution.find_by_default_institution(:all).each do | dflt |
+      Institution.find_all_by_default_institution(true).each do | dflt |
         @institutions << dflt
       end
       # Users always get the home institution

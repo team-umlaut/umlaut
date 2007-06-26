@@ -22,8 +22,8 @@ class GoogleSearch < Service
         value_text.merge!(link[:fulltext])
       end
       svc_resp = nil
-      unless svc_resp = self.service_responses.find(:first, :conditions=>["key = ? AND value_string = ?", link[:title], link[:hash]])
-        svc_resp = self.service_responses.create(:key=>link[:title],:value_string=>MD5.new(link[:url]),:value_text=>value_text.to_yaml)
+      unless svc_resp = ServiceResponse.find_by_service_and_key_and_value_string(self.id, link[:title], link[:hash])
+        svc_resp = ServiceResponse.create(:service=>self.id, :key=>link[:title],:value_string=>MD5.new(link[:url]),:value_text=>value_text.to_yaml)
       end	
       svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'web_link') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'web_link'])                  
       if link[:relevant]
@@ -51,7 +51,7 @@ class GoogleSearch < Service
   def do_query(query)
     links = []
     begin
-      google = Google::Search.new(self.password)
+      google = Google::Search.new(@api_key)
       begin      
       # send the request  
         google.search(query).resultElements.each do |result|

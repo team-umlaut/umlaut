@@ -1,5 +1,5 @@
 class Opac < Service
-  attr_reader :record_attributes
+  attr_reader :record_attributes, :display_name
   def handle(request)
     if request.referent.format == 'journal' and @consortial
       return request.dispatched(self, true)
@@ -94,10 +94,10 @@ class Opac < Service
               end
             end
             if copy_match == true
-              if svc_resp = self.service_responses.find(:first, :conditions=>["key = ? AND value_string = ? AND value_alt_string = ? AND value_text = ?", holding.identifier.to_s, location.name, item.call_number, item.status])
+              if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string_and_value_alt_string_and_value_text(self.id, holding.identifier.to_s, location.name, item.call_number, item.status)
                 request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'holding') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'holding'])        
               else
-                svc_resp = self.service_responses.create(:key=>holding.identifier.to_s,:value_string=>location.name, :value_alt_string=>item.call_number, :value_text=>item.status)
+                svc_resp = ServiceResponse.create(:service=>self.id, :key=>holding.identifier.to_s,:value_string=>location.name, :value_alt_string=>item.call_number, :value_text=>item.status)
                 request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'holding')
               end            
 	          break
@@ -185,7 +185,7 @@ class Opac < Service
     return {:display_text=>response.key}
   end
   def to_holding(response)
-    return {:display_text=>response.value_string,:call_number=>response.value_alt_string,:status=>response.value_text,:source_name=>self.name}
+    return {:display_text=>response.value_string,:call_number=>response.value_alt_string,:status=>response.value_text,:source_name=>self.display_name}
   end 
   
   def collect_subjects(marc, request)
@@ -197,10 +197,10 @@ class Opac < Service
         subj << subject['x']
       end
       unless subj.blank?
-        if svc_resp = self.service_responses.find(:first, :conditions=>["key = ? AND value_string = ?", 'LCSH', subj])
+        if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string(self.id, 'LCSH', subj)
           request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'subject') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'subject'])        
         else
-          svc_resp = self.service_responses.create(:key=>'LCSH',:value_string=>subj)
+          svc_resp = ServiceResponse.create(:service=>self.id, :key=>'LCSH',:value_string=>subj)
           request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'subj')
         end 
       end        

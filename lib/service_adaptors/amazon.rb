@@ -1,15 +1,16 @@
 class Amazon < Service
   require 'hpricot'
+  attr_reader :url
   def handle(request)
     return request.dispatched(self, true) unless request.referent.metadata["isbn"]
     # get the Amazon query
-    query = 'Service=AWSECommerceService&SubscriptionId='+self.password+'&Operation=ItemLookup&ResponseGroup=Large,Subjects&ItemId='+request.referent.metadata["isbn"].gsub(/[^0-9X]/,'')           
+    query = "Service=AWSECommerceService&SubscriptionId=#{@api_key}&Operation=ItemLookup&ResponseGroup=Large,Subjects&ItemId="+request.referent.metadata["isbn"].gsub(/[^0-9X]/,'')           
     uri = URI.parse(self.url+'?'+query)
     links = []
     # send the request
     http = Net::HTTP.new(uri.host, 80)  
-    http.open_timeout = '5'
-    http.read_timeout = '5'
+    http.open_timeout = 5
+    http.read_timeout = 5
     begin
       http_response = http.send_request('POST', uri.path + '?' + uri.query)    
     rescue TimeoutError

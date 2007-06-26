@@ -10,7 +10,10 @@ class Ezproxy < Service
     @proxy_password = conf['password']
     @proxy_url_path = conf['path']
   end
-
+  
+  def handle(request)
+    
+  end
   def proxy_url(urls)
     url_doc = REXML::Document.new
     doc_root = url_doc.add_element "proxy_url_request", {"password"=>@proxy_password}
