@@ -1,0 +1,29 @@
+# After making changes to your institutions.yml file, run:
+# rake institutions:sync_to_db
+# to update database to match. 
+
+# Global 'institution' reserved for services that
+# aren't directly tied to a particular institution
+global:
+  default_institution: true
+  display_name: 
+  services:
+    - Crossref
+    - Pubmed
+    - Amazon
+    - Google
+    - Yahoo
+    - YahooMyWeb
+    - Connotea
+
+# Define institution specific services here    
+Georgia_Tech:
+  default_institution: true
+  display_name: Georgia Tech
+  postal_code: 30332
+  oclc_symbol: GAT
+  services:
+    - Opac
+    - Opac2
+    - GT_SFX
+    - GT_EZProxy
