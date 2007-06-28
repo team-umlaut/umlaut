@@ -103,10 +103,10 @@ class Opac < Service
 	          break
 	        end   	                            		
 	      else  
-            if svc_resp = self.service_responses.find(:first, :conditions=>["key = ? AND value_string = ? AND value_alt_string = ? AND value_text = ?", holding.identifier.to_s, location.name, item.call_number, item.status.to_s])
+            if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string_and_value_alt_string_and_value_text(self.id, holding.identifier.to_s, location.name, item.call_number, item.status.to_s)
               request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'holding') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'holding'])        
             else
-              svc_resp = self.service_responses.create(:key=>holding.identifier.to_s,:value_string=>location.name, :value_alt_string=>item.call_number, :value_text=>item.status.to_s)
+              svc_resp = ServiceResponse.create(:service=>self.id, :key=>holding.identifier.to_s,:value_string=>location.name, :value_alt_string=>item.call_number, :value_text=>item.status.to_s)
               request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'holding')
             end   
 	      end  	         			
@@ -269,9 +269,9 @@ class Opac < Service
     unless metadata["genre"]
       if self.is_conference?(marc)
         if metadata["atitle"]
-          request.referent_enhance('genre', 'proceeding')
+          request.referent.enhance_referent('genre', 'proceeding')
         else
-          request.referent_enhance('genre', 'conference')
+          request.referent.enhance_referent('genre', 'conference')
         end
       elsif type = self.nature_of_contents(marc)
         case type
