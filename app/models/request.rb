@@ -17,7 +17,7 @@ class Request < ActiveRecord::Base
   end
   
   def dispatched(service, success)
-    ds = self.dispatched_services.find(:first, :conditions=>["service_id = ?", service.id])
+    ds = self.dispatched_services.find(:first, :conditions=>["service_name = ?", service.id])
     unless ds
       ds = self.dispatched_services.create()
     end
@@ -28,10 +28,7 @@ class Request < ActiveRecord::Base
   
   def dispatched?(service)
     self.dispatched_services.each do | ds |
-      if (ds.service == service and ds.successful?)
-        puts ds.inspect
-        puts ds.service
-        puts ds.successful?
+      if (ds.service_name == service.id and ds.successful?)
         return true
       end
     end
