@@ -18,9 +18,8 @@ class YahooSearch < Service
       value_text = {:description => link[:description],
         :url => link[:url]
       }
-      if link[:fulltext]
-        value_text.merge!(link[:fulltext])
-      end
+      value_text.merge!(link[:fulltext]) if link[:fulltext]
+        
       svc_resp = nil
       unless svc_resp = ServiceResponse.find_by_service_and_key_and_value_string(self.id, link[:title], link[:hash])
         svc_resp = ServiceResponse.create(:service=>self.id,:key=>link[:title],:value_string=>MD5.new(link[:url]),:value_text=>value_text.to_yaml)
@@ -61,11 +60,8 @@ class YahooSearch < Service
     http_response = http.send_request('POST', yahoo_uri.path + '?' + query)
     begin
       json = JSON::Lexer.new(http_response.body).nextvalue
-      if json.nil?
-        return
-      elsif json["ResultSet"]["totalResultsReturned"] == 0
-      	return
-      end
+      return if json.nil? or json["ResultSet"]["totalResultsReturned"] == 0
+
       json["ResultSet"]["Result"].each do |result|
         links << {
             :title => result['Title'],
