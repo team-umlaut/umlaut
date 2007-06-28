@@ -38,8 +38,7 @@ class Collection
       Institution.find_all_by_default_institution(true).each do | dflt |
         @institutions << dflt
       end
-      # Users always get the home institution
-      @institutions << default_institution
+
       # Just set the collection id to the session
       session[:collection] = {:institutions=>[default_institution.id], :services=>{}}
       
