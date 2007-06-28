@@ -1,6 +1,7 @@
+require 'google'
+require 'md5'
+
 class GoogleSearch < Service
-  require 'google'
-  require 'md5'
   def handle(request)
     query = self.build_query(request.referent)
     links = self.do_query(query)
@@ -51,25 +52,31 @@ class GoogleSearch < Service
   def do_query(query)
     links = []
     begin
-      google = Google::Search.new(@api_key)
-      begin      
-      # send the request  
-        google.search(query).resultElements.each do |result|
-          # extract and collect info from the SOAP response
-          links << {
-            :title => result.send('title').to_s,
-            :description => result.send('snippet').to_s,
-            :url => result.send('url').to_s,
-            :related_links => result.send('relatedInformationPresent').to_s,
-            :hash => MD5.new(result.send('url').to_s)
-            }
-          end
-	    rescue SOAP::HTTPStreamError
-	      return nil
-	    end    
-	  rescue  WSDL::XMLSchema::Parser::UnknownElementError
-	    return nil
-	  end 
+      Timeout::timeout(5) {
+        begin
+          google = Google::Search.new(@api_key)
+          begin      
+          # send the request  
+            google.search(query).resultElements.each do |result|
+              # extract and collect info from the SOAP response
+              links << {
+                :title => result.send('title').to_s,
+                :description => result.send('snippet').to_s,
+                :url => result.send('url').to_s,
+                :related_links => result.send('relatedInformationPresent').to_s,
+                :hash => MD5.new(result.send('url').to_s)
+                }
+              end
+    	    rescue SOAP::HTTPStreamError
+    	      return nil
+    	    end    
+    	  rescue  WSDL::XMLSchema::Parser::UnknownElementError
+    	    return nil
+    	  end 
+      }
+    rescue Timeout::Error
+      return nil
+    end
     return links
   end    
 end
