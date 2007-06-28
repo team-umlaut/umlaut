@@ -17,7 +17,7 @@ module ResolveHelper
   def search_opac_for_title(request)
     require 'sru'
     require 'uri'    
-    opac = Catalog.find(1)
+    opac = ServiceList.get('Opac')
     if request.referent.metadata['jtitle']
       title = request.referent.metadata['jtitle'].gsub(/[^A-z0-9\s]/, '')
     elsif request.referent.metadata['btitle']
@@ -27,14 +27,14 @@ module ResolveHelper
     else 
       return false
     end
-    search = SRU::Client.new(opac.url)
+    search = SRU::Client.new(opac.sru_url)
     results = search.search_retrieve('dc.title all "'+title+'"', :recordSchema=>'mods', :startRecord=>1, :maximumRecords=>1)
     return false unless results.number_of_records > 0
     suffix = case results.number_of_records
              when 1 then ''
              else 'es'
              end
-    link = "<ul><li><a href='http://gil.gatech.edu/cgi-bin/Pwebrecon.cgi?SAB1="+URI.escape(title.gsub(/\s(and|or)\s/, ' '))+"&BOOL1=all+of+these&FLD1=Title+%28TKEY%29&CNT=25&HIST=1' target='_blank'>"+results.number_of_records.to_s+" possible match"+suffix+" in "+opac.service.name+"</a></li></ul>"
+    link = "<ul><li><a href='http://gil.gatech.edu/cgi-bin/Pwebrecon.cgi?SAB1="+URI.escape(title.gsub(/\s(and|or)\s/, ' '))+"&BOOL1=all+of+these&FLD1=Title+%28TKEY%29&CNT=25&HIST=1' target='_blank'>"+results.number_of_records.to_s+" possible match"+suffix+" in "+opac.display_name+"</a></li></ul>"
     return link
   end
   
