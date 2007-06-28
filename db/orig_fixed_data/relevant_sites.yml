@@ -1,0 +1,70 @@
+citeseer1:
+     hostname: citeseer.ist.psu.edu
+
+citeseer2:
+     hostname: citeseer.csail.mit.edu
+     
+unizh:
+     hostname: sherry.ifi.unizh.ch
+     
+citeseer3: 
+     hostname: citeseer.comp.nus.edu.sg
+
+ncbi:     
+     hostname: ncbi.nlm.nih.gov
+     
+washington:
+     hostname: faculty.washington.edu
+     
+naca-nasa: 
+     hostname: naca.larc.nasa.gov
+     
+naca-uk:     
+     hostname: naca.central.cranfield.ac.uk
+     
+casi: 
+     hostname: www.casi.ca
+     
+arxiv: 
+     hostname: arxiv.org
+     
+lanl:
+     hostname: xxx.lanl.gov
+     
+arxiv-au:
+     hostname: au.arxiv.org
+     
+arxiv-br:
+     hostname: br.arxiv.org
+     
+arxiv-uk:
+     hostname: uk.arxiv.org
+     
+arxiv-aps:
+     hostname: aps.arxiv.org
+     
+arxiv-lanl:
+     hostname: lanl.arxiv.org
+     
+citebase:
+     hostname: www.citebase.org
+     
+citebase2:
+     hostname: citebase.eprints.org
+     
+citebase3: 
+     hostname: citebase.org
+     
+citebase4:
+     hostname: www.citeulike.org
+     
+smartech:
+     hostname: smartech.gatech.edu
+     
+lanl-2:
+     hostname: public.lanl.gov
+     
+ieeexlore:
+     hostname: ieeexplore.ieee.org
+     type: ieee
+

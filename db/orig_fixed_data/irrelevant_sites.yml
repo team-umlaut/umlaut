@@ -1,0 +1,17 @@
+amazon:
+     hostname: www.amazon.com
+     
+amazon-ca:
+     hostname: www.amazon.ca
+     
+ezfolk:
+     hostname: www.ezfolk.com
+     
+gale:
+     hostname: www.gale.com
+     
+galegroup:
+     hostname: www.galegroup.com
+     
+shop4author:
+     hostname: www.shop4author.com
