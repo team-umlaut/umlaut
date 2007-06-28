@@ -38,12 +38,12 @@ ActiveRecord::Schema.define() do
 
   create_table "dispatched_services", :force => true do |t|
     t.column "request_id", :integer, :default => 0, :null => false
-    t.column "service_id", :integer, :default => 0, :null => false
+    t.column "service_name", :string, :limit=>'30', :null => false
     t.column "successful", :boolean, :default => 0, :null => false
     t.column "updated_at", :datetime, :null => false
   end
 
-  add_index "dispatched_services", ["request_id", "service_id"], :name => "dptch_request_id"
+  add_index "dispatched_services", ["request_id", "service_name"], :name => "dptch_request_id"
 
   create_table "institutions", :force => true do |t|
     t.column "name", :string, :default => "", :null => false
