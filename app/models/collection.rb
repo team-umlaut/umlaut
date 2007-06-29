@@ -55,7 +55,11 @@ class Collection
     else 
       # Build collection object from session
       session[:collection][:institutions].each do  | inst |
-        @institutions << Institution.find(inst)
+        begin
+          @institutions << Institution.find(inst)
+        rescue ActiveRecord::RecordNotFound
+          # Institution in session isn't in db anymore? Okay, just ignore it. 
+        end
       end
     end
   end
