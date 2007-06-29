@@ -12,7 +12,7 @@ class ServiceList
     require 'service_adaptors/'+@@services[name]["type"].underscore
     
     className = @@services[name]["type"]
-    classConst = Kernel.const_get(className)\
+    classConst = Kernel.const_get(className)
     
     return classConst.new(@@services[name].merge({"id"=>name}))
   end
