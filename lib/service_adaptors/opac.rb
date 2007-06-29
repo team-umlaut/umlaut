@@ -17,32 +17,27 @@ class Opac < Service
   end
   
   def search_bib_data(request)
-
+    
     client = self.init_bib_client
     client.search_by_referent(request.referent)
     self.collect_record_attributes(client, request)
     
   end
-
+  
   def parse_for_fulltext_links(marc, request)
-
+    
     eight_fifty_sixes = []
-
+    
     marc.find_all { | f| '856' === f.tag}.each do | link |
       eight_fifty_sixes << link
     end
-
+    
     eight_fifty_sixes.each do | link |
       next if link.indicator2.match(/[28]/)
       next if link['u'].match(/(sfx\.galib\.uga\.edu)|(findit\.library\.gatech\.edu)/)
       label = link['z']
       label = 'Electronic Access' unless label
-      if svc_resp = self.service_responses.find(:first, :conditions=>["key = ? AND value_string = ?", label, link['u']])
-        svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'fulltext') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'fulltext'])        
-      else
-        svc_resp = self.service_responses.create(:key=>label,:value_string=>link['u'])
-        request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'fulltext')
-      end
+      request.add_service_response({:service=>self,:key=>label,:value_string=>link['u']},['fulltext'])
     end 
   end   
   
@@ -66,7 +61,7 @@ class Opac < Service
       end    
     end
   end
-
+  
   def check_holdings(holdings, request)      
     return if holdings.empty?
     electronic_locations = ['INTERNET', 'NETLIBRARY', 'GALILEO']
@@ -77,11 +72,11 @@ class Opac < Service
         location.items.each do | item |         
           if request.referent.format == 'journal' and request.referent.metadata["volume"] and @record_attributes[holding.identifier.to_s][:conference] == false
             copy_match = false
-    		if item.enumeration
+            if item.enumeration
               if vol_match = item.enumeration.match(/VOL [A-z0-9\-]*/) 
                 vol = vol_match[0]                
-    			vol.sub!(/^VOL\s*/, '')
-                (svol, evol) = vol.split('-')
+                vol.sub!(/^VOL\s*/, '')
+                 (svol, evol) = vol.split('-')
                 if request.referent.metadata["volume"] == svol
                   copy_match = true
                 elsif evol
@@ -94,27 +89,17 @@ class Opac < Service
               end
             end
             if copy_match == true
-              if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string_and_value_alt_string_and_value_text(self.id, holding.identifier.to_s, location.name, item.call_number, item.status)
-                request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'holding') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'holding'])        
-              else
-                svc_resp = ServiceResponse.create(:service=>self.id, :key=>holding.identifier.to_s,:value_string=>location.name, :value_alt_string=>item.call_number, :value_text=>item.status)
-                request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'holding')
-              end            
-	          break
-	        end   	                            		
-	      else  
-            if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string_and_value_alt_string_and_value_text(self.id, holding.identifier.to_s, location.name, item.call_number, item.status.to_s)
-              request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'holding') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'holding'])        
-            else
-              svc_resp = ServiceResponse.create(:service=>self.id, :key=>holding.identifier.to_s,:value_string=>location.name, :value_alt_string=>item.call_number, :value_text=>item.status.to_s)
-              request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'holding')
-            end   
-	      end  	         			
-    	end
+              request.add_service_response({:service=>self,:key=>holding.identifier.to_s,:value_string=>location.name,:value_alt_string=>item.call_number,:value_text=>item.status.to_s},['holding'])         
+              break
+            end   	                            		
+          else  
+            request.add_service_response({:service=>self,:key=>holding.identifier.to_s,:value_string=>location.name,:value_alt_string=>item.call_number,:value_text=>item.status.to_s},['holding'])
+          end  	         			
+        end
       end
     end         
   end   
-
+  
   def is_conference?(marc)
     # Check the leader/008 for books and serials
     return true if marc['008'].value[29,1] == '1' && marc.leader[6,1].match(/[at]/) && marc.leader[7,1].match(/[abcdms]/)      
@@ -182,7 +167,7 @@ class Opac < Service
   end  
   
   def to_fulltext(response)
-    return {:display_text=>response.key}
+    return {:display_text=>response.response_key}
   end
   def to_holding(response)
     return {:display_text=>response.value_string,:call_number=>response.value_alt_string,:status=>response.value_text,:source_name=>self.display_name}
@@ -196,14 +181,8 @@ class Opac < Service
         subj << ' ' unless subj.blank?
         subj << subject['x']
       end
-      unless subj.blank?
-        if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string(self.id, 'LCSH', subj)
-          request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'subject') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'subject'])        
-        else
-          svc_resp = ServiceResponse.create(:service=>self.id, :key=>'LCSH',:value_string=>subj)
-          request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'subj')
-        end 
-      end        
+      request.add_service_response({:service=>self,:key=>'LCSH',:value_string=>subj},['subject']) \
+      unless subj.blank?        
     end         
   end
   
@@ -211,9 +190,9 @@ class Opac < Service
     return unless accuracy > 2
     
     title_key = case request.referent.format
-      when "book" then "btitle"
-      when "journal" then "jtitle"
-      when "dissertation" then "title"
+    when "book" then "btitle"
+    when "journal" then "jtitle"
+    when "dissertation" then "title"
     end
     metadata = request.referent.metadata
     unless metadata[title_key]
@@ -275,9 +254,9 @@ class Opac < Service
         end
       elsif type = self.nature_of_contents(marc)
         case type
-          when "dissertation" then request.referent.enhance_referent('format', 'dissertation', false)            
-          when "patent" then request.referent.enhance_referent('format', 'patent', false)
-          when "report" then request.referent.enhance_referent('genre', 'report')
+        when "dissertation" then request.referent.enhance_referent('format', 'dissertation', false)            
+        when "patent" then request.referent.enhance_referent('format', 'patent', false)
+        when "report" then request.referent.enhance_referent('genre', 'report')
         end
       else
         type = self.record_type(marc)
@@ -300,7 +279,7 @@ class Opac < Service
         end
       end
     end
-
+    
     unless metadata["isbn"]
       if marc['020'] && marc['020']['a']
         request.referent.enhance_referent('isbn', marc['020']['a'])
@@ -325,11 +304,7 @@ class Opac < Service
   end 
   
   def response_url(response)
-    if response.value_string.match(/^http(s)?:\/\//)
-      return CGI.unescapeHTML(response.value_string)
-    else
-      return 'http://gil.gatech.edu/cgi-bin/Pwebrecon.cgi?DB=local&BBID='+response.key      
-    end
-
+    return CGI.unescapeHTML(response.value_string) if response.value_string.match(/^http(s)?:\/\//)
+    return @url+'&'+@direct_link_arg+response.response_key          
   end
 end

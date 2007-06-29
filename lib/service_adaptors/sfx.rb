@@ -117,12 +117,7 @@ class Sfx < Service
     end  
     if journal
       journal.categories.each do | category |
-        if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string_and_value_alt_string(self.id, 'SFX', category.category, category.subcategory)
-          svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'subject') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'subject'])        
-        else        
-          svc_resp = self.service_responses.create(:key=>'SFX',:value_string=>category.category,:value_text=>category.subcategory)
-          request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'subject')        
-        end
+        request.add_service_response({:service=>self,:key=>'SFX',:value_string=>category.category,:value_text=>category.subcategory},['subject'])
       end
     end
     (doc/"/ctx_obj_set/ctx_obj/ctx_obj_targets/target").each do|target|  
@@ -131,45 +126,36 @@ class Sfx < Service
       else
         source = "SFX"+URI.parse(self.url).path
       end    
-      if (target/"/service_type").inner_html == "getFullTxt"      
-        if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string(self.id, (target/"/target_public_name").inner_html, (target/"/target_service_id").inner_html)
-          svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'fulltext') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'fulltext'])        
-        else
-          coverage = ''
-          if @get_coverage
-            if journal 
-              cvg = journal.coverages.find(:first, :conditions=>['provider = ?', (target/"/target_public_name").inner_html])
-              coverage = cvg.coverage if cvg
-            end
+      if (target/"/service_type").inner_html == "getFullTxt" 
+        coverage = ''
+        if @get_coverage
+          if journal 
+            cvg = journal.coverages.find(:first, :conditions=>['provider = ?', (target/"/target_public_name").inner_html])
+            coverage = cvg.coverage if cvg
           end
-          value_text = {
-            :url=>CGI.unescapeHTML((target/"/target_url").inner_html),
-            :note=>CGI.unescapeHTML((target/"/note").inner_html),
-            :source=>source,
-            :coverage=>coverage
-          }
-          svc_resp = ServiceResponse.create(:service=>self.id, :key=>(target/"/target_public_name").inner_html,:value_string=>(target/"/target_service_id").inner_html,:value_text=>value_text.to_yaml)
-          request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'fulltext')
         end
+        value_text = {
+          :url=>CGI.unescapeHTML((target/"/target_url").inner_html),
+          :note=>CGI.unescapeHTML((target/"/note").inner_html),
+          :source=>source,
+          :coverage=>coverage
+        }   
+        request.add_service_response({:service=>self,:key=>(target/"/target_public_name").inner_html,:value_string=>(target/"/target_service_id").inner_html,:value_text=>value_text.to_yaml},['fulltext'])
+
       elsif (target/"/service_type").inner_html == "getDocumentDelivery"
-        if svc_resp = ServiceResponse.find_by_service_and_key_and_value_string(self.id, (target/"/target_public_name").inner_html, request_id)
-          svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'document_delivery') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'document_delivery'])        
-        else
-          value_text = {
-            :url=>CGI.unescapeHTML((target/"/target_url").inner_html),
-            :note=>CGI.unescapeHTML((target/"/note").inner_html),
-            :source=>source
-          }
-          svc_resp = ServiceResponse.create(:service=>self.id, :key=>(target/"/target_public_name").inner_html,:value_string=>request_id,:value_text=>value_text.to_yaml)
-          request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'document_delivery')
-        end	      
+        value_text = {
+          :url=>CGI.unescapeHTML((target/"/target_url").inner_html),
+          :note=>CGI.unescapeHTML((target/"/note").inner_html),
+          :source=>source
+        }
+        request.add_service_response({:service=>self,:key=>(target/"/target_public_name").inner_html,:value_string=>request_id,:value_text=>value_text.to_yaml},['document_delivery'])
       end    
     end   
   end
   
   def to_fulltext(response)  
     value_text = YAML.load(response.value_text)     
-    return {:display_text=>response.key, :note=>value_text[:note],:coverage=>value_text[:coverage],:source=>value_text[:source]}
+    return {:display_text=>response.response_key, :note=>value_text[:note],:coverage=>value_text[:coverage],:source=>value_text[:source]}
   end
   
   def response_url(response)

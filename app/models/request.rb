@@ -17,18 +17,18 @@ class Request < ActiveRecord::Base
   end
   
   def dispatched(service, success)
-    ds = self.dispatched_services.find(:first, :conditions=>["service_name = ?", service.id])
+    ds = self.dispatched_services.find(:first, :conditions=>["service_id = ?", service.id])
     unless ds
-      ds = self.dispatched_services.create()
+      ds = self.dispatched_services.new()
     end
-    ds.service = service
+    ds.service_id = service.id
     ds.successful = success
     ds.save
   end
   
   def dispatched?(service)
     self.dispatched_services.each do | ds |
-      if (ds.service_name == service.id and ds.successful?)
+      if (ds.service_id == service.id and ds.successful?)
         return true
       end
     end
@@ -38,13 +38,13 @@ class Request < ActiveRecord::Base
   def add_service_response(response_data,service_type=[])
     unless response_data.empty?
       svc_resp = nil
-      ServiceResponse.find(:all, :conditions=>["service_id = ? and key = ? and value_string = ? and value_alt_string = ?", response_data[:service].id, response_data[:key], response_data[:value_string], response_data[:value_alt_string]]).each do | resp |
-        svc_resp = resp if resp.value_text = response_data[:value_text]
+      ServiceResponse.find(:all, :conditions=>{:service_id => response_data[:service].id, :response_key => response_data[:key], :value_string => response_data[:value_string],:value_alt_string => response_data[:value_alt_string]}).each do | resp |
+        svc_resp = resp if YAML.load(resp.value_text.to_s) == YAML.load(response_data[:value_text].to_s)
       end
       unless svc_resp
         svc_resp = ServiceResponse.new
-        svc_resp.service = response_data[:service]
-        svc_resp.key = response_data[:key]
+        svc_resp.service_id = response_data[:service].id
+        svc_resp.response_key = response_data[:key]
         svc_resp.value_string = response_data[:value_string]
         svc_resp.value_alt_string = response_data[:value_alt_string]
         svc_resp.value_text = response_data[:value_text]           
@@ -53,7 +53,7 @@ class Request < ActiveRecord::Base
     end
     unless service_type.empty?
       service_type.each do | st |
-        stype = ServiceType.find(:first, :conditions=>["request_id = ? and service_response_id = ? and service_type = ?",self.id, svc_resp.id, st])
+        stype = ServiceType.find(:first, :conditions=>{:request_id => self.id, :service_response_id => svc_resp.id,:service_type => st})
         unless stype
           stype = ServiceType.new(:request_id => self.id, :service_response_id => svc_resp.id, :service_type => st)
           stype.save

@@ -31,51 +31,27 @@ class Amazon < Service
     # collect cover art urls
     ["small","medium","large"].each do | size |
       if img = (aws/"/ItemLookupResponse/Items/Item/"+size.capitalize+"Image/URL")
-        if svc_resp = ServiceResponse.find_by_service_id_and_key_and_value_string(self.id, size, asin)
-          svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'image') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'image'])        
-        else
-          svc_resp = ServiceResponse.create(:service=>service.id, :key=>size,:value_string=>asin, :value_text=>img.inner_html)
-          request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'image')
-        end	                
+        request.add_service_response({:service=>self, :key=>size, :value_string=>asin},['image'])            
       end
     end               
     
     # get description
     if desc = (aws/"/ItemLookupResponse/Items/Item/EditorialReviews/EditorialReview/Content")
-      if svc_resp = ServiceResponse.find_by_service_id_and_key_and_value_string(self.id, 'description', asin)
-        svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'abstract') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'abstract'])        
-      else
-        svc_resp = ServiceResponse.create(:service_id=>self.id, :key=>'description',:value_string=>asin, :value_text=>desc.inner_html)
-        request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'description')
-      end	
+      request.add_service_response({:service=>self, :key=>'description', :value_string=>asin, :value_text=>desc.inner_html},['description'])
     end
     
     # we want to highlight Amazon to link to 'search in this book', etc.
     item_url = (aws/"ItemLookupResponse/Items/Item/DetailPageURL")
-    if svc_resp = ServiceResponse.find_by_service_id_and_key_and_value_string(self.id, 'url', asin)
-      svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'highlighted_link') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'highlighted_link'])        
-    else
-      svc_resp = ServiceResponse.create(:service_id=>self.id, :key=>'url',:value_string=>asin, :value_text=>item_url.inner_html)
-      request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'highlighted_link')
-    end	
+    request.add_service_response({:service=>self,:key=>'url',:value_string=>asin, :value_text=>item_url.inner_html},['highlighted_link'])
+
     # gather Amazon's subject headings
     (aws/"/ItemLookupResponse/Items/Item/Subjects/Subject").each do |subject|
-      if svc_resp = ServiceResponse.find_by_service_id_and_key_and_value_string(self.id, 'Amazon', subject.inner_html)
-        svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'subject') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'subject'])        
-      else
-        svc_resp = ServiceResponse.create(:service_id=>self.id, :key=>'Amazon',:value_string=>subject.inner_html)
-        request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'subject')
-      end	
+      request.add_service_response({:service=>self, :key=>'Amazon',:value_string=>asin,:value_alt_string=>subject.inner_html},['subject'])
     end
     
     # Get Amazon's 'similar products' to help recommend other useful items
     (aws/"/ItemLookupResponse/Items/Item/SimilarProducts/SimilarProduct").each do |similar|
-      if svc_resp = ServiceResponse.find_by_service_id_and_key_and_value_string_and_value_alt_string(self.id, 'book', (similar/"/ASIN").inner_html, (similar/"/Title").inner_html)
-        svc_type = request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'similar_item') unless request.service_types.find(:first, :conditions=>["service_response_id = ? AND service_type = ?", svc_resp.id, 'similar_item'])        
-      else
-        svc_resp = ServiceResponse.create(:service_id=>self.id, :key=>'book',:value_string=>(similar/"/ASIN").inner_html, :value_alt_string=>(similar/"/Title").inner_html)
-        request.service_types.create(:service_response_id=>svc_resp.id, :service_type=>'subject')
-      end      
+      request.add_service_response({:service=>self,:key=>'book', :value_string=>(similar/"/ASIN").inner_html, :value_alt_string=>(similar/"/Title").inner_html},['similar_item'])
     end
     request.referent.enhance_referent('format', 'book', false) unless request.referent.format == 'book'
     unless request.referent.metadata['btitle']
