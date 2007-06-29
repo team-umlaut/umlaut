@@ -38,12 +38,12 @@ ActiveRecord::Schema.define() do
 
   create_table "dispatched_services", :force => true do |t|
     t.column "request_id", :integer, :default => 0, :null => false
-    t.column "service_name", :string, :limit=>'30', :null => false
+    t.column "service_id", :string, :limit=>'30', :null => false
     t.column "successful", :boolean, :default => 0, :null => false
     t.column "updated_at", :datetime, :null => false
   end
 
-  add_index "dispatched_services", ["request_id", "service_name"], :name => "dptch_request_id"
+  add_index "dispatched_services", ["request_id", "service_id"], :name => "dptch_request_id"
 
   create_table "institutions", :force => true do |t|
     t.column "name", :string, :default => "", :null => false
@@ -54,14 +54,6 @@ ActiveRecord::Schema.define() do
 
   add_index "institutions", ["name"], :name => "inst_name"
   add_index "institutions", ["default_institution"], :name => "inst_dflt_idx"
-
-  create_table "institutions_services", :id => false, :force => true do |t|
-    t.column "institution_id", :integer, :default => 0, :null => false
-    t.column "service_id", :integer, :default => 0, :null => false
-    t.column "dispatch_priority", :string, :limit => 2, :default => "", :null => false
-  end
-
-  add_index "institutions_services", ["institution_id", "service_id", "dispatch_priority"], :name => "inst_svc_pri_idx"
 
   create_table "institutions_users", :force => true do |t|
     t.column "institution_id", :integer, :default => 0, :null => false
@@ -162,14 +154,14 @@ ActiveRecord::Schema.define() do
   add_index "requests", ["created_at"], :name => "req_created_at"
 
   create_table "service_responses", :force => true do |t|
-    t.column "service", :string, :limit=> 25, :null => false
+    t.column "service_id", :string, :limit=> 25, :null => false
     t.column "key", :string, :limit => 100, :default => "", :null => false
     t.column "value_string", :string, :limit => 255
     t.column "value_alt_string", :string, :limit => 255
     t.column "value_text", :text
   end
 
-  add_index "service_responses", ["service", "key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"
+  add_index "service_responses", ["service_id", "key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"
 
   create_table "service_types", :force => true do |t|
     t.column "request_id", :integer, :default => 0, :null => false
