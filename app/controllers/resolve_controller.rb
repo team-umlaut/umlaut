@@ -149,12 +149,12 @@ class ResolveController < ApplicationController
             bundle = ServiceBundle.new(@collection.service_level(priority))
             bundle.handle(@user_request)            
           else
-            @collection.service_level(priority).each do | pri |
-              pri.handle(@user_request)
+            @collection.service_level(priority).each do | svc |
+              svc.handle(@user_request) unless @user_request.dispatched?(svc)
             end
           end
         else
-          @collection.service_level(priority)[0].handle(@user_request)
+          @collection.service_level(priority)[0].handle(@user_request) unless @user_request.dispatched?(@collection.service_level(priority)[0])
         end      
       end  
     end

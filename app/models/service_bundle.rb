@@ -8,7 +8,7 @@ class ServiceBundle
     @services.each { | service |
       threads << Thread.new(request, service) { | Thread.current[:request], Thread.current[:service] |
         curr = Thread.current
-        curr[:service].handle(curr[:request])
+        curr[:service].handle(curr[:request]) unless curr[:request].dispatched?(curr[:service])
       }
     }    
     threads.each { |aThread|  

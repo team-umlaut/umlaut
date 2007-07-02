@@ -38,7 +38,9 @@ class YahooSearch < Service
     http_response = http.send_request('POST', yahoo_uri.path + '?' + query)
     begin
       json = JSON::Lexer.new(http_response.body).nextvalue
-      return if json.nil? or json["ResultSet"]["totalResultsReturned"] == 0
+      return if json.nil?
+      
+      return [] if json["ResultSet"]["totalResultsReturned"] == 0
 
       json["ResultSet"]["Result"].each do |result|
         links << {
