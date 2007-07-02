@@ -1,6 +1,20 @@
 class Opac < Service
   attr_reader :record_attributes, :display_name
+
+  # The Opac class has a few assumptions
+  # * You have some sort of bib client to get MARC records from your OPAC
+  # * This operates independently of holdings data
+  # * If your client can supply holdings information, you have the methods:
+  # - init_holdings_client
+  # - get_holdings
+  #
+  # The Opac class should be extended with your local connection client and
+  # not called directly.
+  
   def handle(request)
+    # It's unlikely that consortial catalogs allow borrowing
+    # of journals, but this may need to pushed to a client class
+    
     if request.referent.format == 'journal' and @consortial
       return request.dispatched(self, true)
     end  
@@ -16,40 +30,30 @@ class Opac < Service
     return request.dispatched(self, true)    
   end
   
-  def search_bib_data(request)
-    
+  # Searches the bibliographic database
+  def search_bib_data(request)    
     client = self.init_bib_client
     client.search_by_referent(request.referent)
-    self.collect_record_attributes(client, request)
-    
+    self.collect_record_attributes(client, request)    
   end
   
-  def parse_for_fulltext_links(marc, request)
-    
-    eight_fifty_sixes = []
-    
-    marc.find_all { | f| '856' === f.tag}.each do | link |
-      eight_fifty_sixes << link
-    end
-    
-    eight_fifty_sixes.each do | link |
-      next if link.indicator2.match(/[28]/)
-      next if link['u'].match(/(sfx\.galib\.uga\.edu)|(findit\.library\.gatech\.edu)/)
-      label = link['z']
-      label = 'Electronic Access' unless label
-      request.add_service_response({:service=>self,:key=>label,:value_string=>link['u']},['fulltext'])
-    end 
-  end   
-  
+  # The client is expected to respond to <b>results</b> and return
+  # an array of MARC records.  Override this method (and parse_for_fulltext,
+  # collect_subjects, and enhance_referent) if your client does not return 
+  # MARC.
   def collect_record_attributes(client, request) 
     require 'marc'    
     client.results.each do | record |
       MARC::XMLReader.new(StringIO.new(record.to_s)).each do | rec |
         id = nil
+        
+        # Assumes your local control number to be defined in 001
         rec.find_all { | f| '001' === f.tag}.each do | bibnum |
           id = bibnum.value
           @record_attributes[id] = {}
         end 
+        
+        # Conferences have their own crazy logic
         if self.is_conference?(rec)
           @record_attributes[id][:conference] = true
         else
@@ -60,10 +64,28 @@ class Opac < Service
         self.enhance_referent(rec, request, client.accuracy)
       end    
     end
-  end
+  end  
   
+  # Searches the MARC record for 856 tags, checks to see
+  # if they seem to be digital representations and, if so,
+  # adds them as fulltext service types
+  def parse_for_fulltext_links(marc, request)    
+    eight_fifty_sixes = []    
+    marc.find_all { | f| '856' === f.tag}.each do | link |
+      eight_fifty_sixes << link
+    end    
+    eight_fifty_sixes.each do | link |
+      next if link.indicator2.match(/[28]/)
+      next if link['u'].match(/(sfx\.galib\.uga\.edu)|(findit\.library\.gatech\.edu)/)
+      label = (link['z']||'Electronic Access')
+      request.add_service_response({:service=>self,:key=>label,:value_string=>link['u']},['fulltext'])
+    end 
+  end   
+  
+  # The client should be able to return an array of holdings objects
   def check_holdings(holdings, request)      
     return if holdings.empty?
+    # These need to moved to services.yml
     electronic_locations = ['INTERNET', 'NETLIBRARY', 'GALILEO']
     holdings.each do | holding | 
       @record_attributes[holding.identifier.to_s][:holdings] = holding
@@ -100,6 +122,8 @@ class Opac < Service
     end         
   end   
   
+  # Check the leader to determine if this is defined as a conference or proceeding
+  # in the MARC
   def is_conference?(marc)
     # Check the leader/008 for books and serials
     return true if marc['008'].value[29,1] == '1' && marc.leader[6,1].match(/[at]/) && marc.leader[7,1].match(/[abcdms]/)      
@@ -113,39 +137,9 @@ class Opac < Service
     return false  
   end 
   
-  def nature_of_contents(marc)
-    types = {'m'=>'dissertation','t'=>'report','j'=>'patent'}
-    idx = nil
-    if self.record_type(marc) == 'BKS'
-      idx = 24
-      len = 4
-    elsif self.record_type(marc) == 'SER'
-      idx = 25
-      len = 3
-    end
-    if idx
-      marc['008'].value[idx,len].split(//).each do | char | 
-        return types[char] if types.keys.index(char)
-      end
-    end
-    marc.find_all {|f| ('006') === f.tag}.each do | fxd_fld |
-      idx = nil
-      if fxd_fld.value[0,1].match(/[at]{1}/)
-        idx = 7
-        len = 4
-      elsif fxd_fld.value[0,1].match('s')
-        idx = 8
-        len = 3
-      end     
-      if idx 
-        fxd_fld.value[idx,len].split(//).each do | char | 
-          return types[char] if types.keys.index(char)
-        end
-      end  
-    end        
-    return false      
-  end  
-  
+
+  # Determines the kind of record referred to in the MARC leader/fixed fields
+  # (Book, Serial, Map, etc.)
   def record_type(marc)
     type = marc.leader[6,1]
     blvl = marc.leader[7,1]
@@ -166,13 +160,22 @@ class Opac < Service
     end 
   end  
   
+  # When given a ServiceResponse object as its argument, returns the anchor text and URL
   def to_fulltext(response)
-    return {:display_text=>response.response_key}
+    return {:display_text=>response.response_key, :url=>response.value_string}
   end
+  
+  # When given a ServiceResponse object as its argument, returns the object as a hash
+  # with the keys:
+  # - :display_text
+  # - :call_number
+  # - :status
+  # - :source_name (which equates to self.display_name)
   def to_holding(response)
     return {:display_text=>response.value_string,:call_number=>response.value_alt_string,:status=>response.value_text,:source_name=>self.display_name}
   end 
   
+  # Gathers the subject headings from the MARC 6xx fields and creates service types
   def collect_subjects(marc, request)
     marc.find_all {|f| ('600'..'699') === f.tag}.each do | subject |
       subj = ''
@@ -181,11 +184,18 @@ class Opac < Service
         subj << ' ' unless subj.blank?
         subj << subject['x']
       end
+      
+      # This may need to be modified to handle DDC, MeSH, etc.
       request.add_service_response({:service=>self,:key=>'LCSH',:value_string=>subj},['subject']) \
       unless subj.blank?        
     end         
   end
   
+  # When given a MARC record, this method fills in any missing
+  # pieces of the Request.referent.  'accuracy' is a 3 point scale
+  # determined by the client, 1 = 'possibly the correct resource', 2 = 
+  # same resource, but not necessarily the same edition, 3 = exactly the 
+  # same resource
   def enhance_referent(marc, request, accuracy)
     return unless accuracy > 2
     
@@ -303,6 +313,43 @@ class Opac < Service
     end    
   end 
   
+  # When given a MARC record, determines if the referent should be
+  # defined as a dissertation, report or patent.
+  def nature_of_contents(marc)
+    types = {'m'=>'dissertation','t'=>'report','j'=>'patent'}
+    idx = nil
+    if self.record_type(marc) == 'BKS'
+      idx = 24
+      len = 4
+    elsif self.record_type(marc) == 'SER'
+      idx = 25
+      len = 3
+    end
+    if idx
+      marc['008'].value[idx,len].split(//).each do | char | 
+        return types[char] if types.keys.index(char)
+      end
+    end
+    marc.find_all {|f| ('006') === f.tag}.each do | fxd_fld |
+      idx = nil
+      if fxd_fld.value[0,1].match(/[at]{1}/)
+        idx = 7
+        len = 4
+      elsif fxd_fld.value[0,1].match('s')
+        idx = 8
+        len = 3
+      end     
+      if idx 
+        fxd_fld.value[idx,len].split(//).each do | char | 
+          return types[char] if types.keys.index(char)
+        end
+      end  
+    end        
+    return false      
+  end    
+  
+  # Builds a URL either based on a URL in the value_string or builds a link to the 
+  # OPAC using the direct_link_arg and the bib ID.
   def response_url(response)
     return CGI.unescapeHTML(response.value_string) if response.value_string.match(/^http(s)?:\/\//)
     return @url+'&'+@direct_link_arg+response.response_key          
