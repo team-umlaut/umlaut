@@ -141,17 +141,22 @@ class ResolveController < ApplicationController
   
   protected
   def service_dispatch(stage)
-    (0..9).each do | priority |
-      next if @collection.service_level(priority).empty?
-      if @collection.service_level(priority).length > 1
-        @collection.service_level(priority).each do | pri |
-#        bundle = ServiceBundle.new(priority)
-#        bundle.handle(@user_request)
-          pri.handle(@user_request)       
-        end
-      else
-        @collection.service_level(priority)[0].handle(@user_request)
-      end      
-    end  
+    if stage == 'foreground'
+      (0..9).each do | priority |
+        next if @collection.service_level(priority).empty?
+        if @collection.service_level(priority).length > 1          
+          if AppConfig[:threaded_services]
+            bundle = ServiceBundle.new(@collection.service_level(priority))
+            bundle.handle(@user_request)            
+          else
+            @collection.service_level(priority).each do | pri |
+              pri.handle(@user_request)
+            end
+          end
+        else
+          @collection.service_level(priority)[0].handle(@user_request)
+        end      
+      end  
+    end
   end
 end
