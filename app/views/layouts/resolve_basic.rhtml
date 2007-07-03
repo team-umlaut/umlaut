@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<html lang="EN">
+<head>
+<title>Umlaut Find It | <%= @page_title %></title>
+ <%= stylesheet_link_tag 'basic' %> 
+
+
+<%= render(:partial => "layout_helpers/resolve_head_content" ) %>
+
+</head>
+
+<%= render(:partial => "layout_helpers/resolve_body_open" ) %>
+
+
+
+  
+  
+<div id="menuWrapper">
+
+   <div id="headerStatusBar">
+    <div align="right"  class="largeText">URL: 
+        <% 
+          shortcut = request.host
+          shortcut += ':' + request.port.to_s if request.port != 80
+          shortcut += url_for :controller=>"store", :id=>@user_request.referent.permalinks[0].id
+        %>
+        <%= link_to shortcut, :controller=>"store", :id=>@user_request.referent.permalinks[0].id
+        %>
+      </div>
+   </div>
+
+    <%= @content_for_layout %>
+    
+    <!-- even with nothing in it, footer neccesary for CSS clear=both -->
+    <div id="footer" class="footer"></div>
+</div>
+
+</body>
+
+</html>
