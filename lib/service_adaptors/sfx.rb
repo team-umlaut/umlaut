@@ -3,9 +3,14 @@ class Sfx < Service
   require 'open_url'
   def handle(request)
     client = self.initialize_client(request)
-    response = self.do_request(client)
-    self.parse_response(response, request)
-    return request.dispatched(self, true)    
+    begin
+      response = self.do_request(client)
+      self.parse_response(response, request)
+      return request.dispatched(self, true)
+    rescue Errno::ETIMEDOUT
+      # Request to SFX timed out. Record this as unsuccesful in the dispatch table. 
+      return request.dispatched(self, false)
+    end
   end
   def initialize_client(request)
     transport = OpenURL::Transport.new(@base_url)
@@ -157,6 +162,12 @@ class Sfx < Service
     value_text = YAML.load(response.value_text)     
     return {:display_text=>response.response_key, :note=>value_text[:note],:coverage=>value_text[:coverage],:source=>value_text[:source]}
   end
+  def response_to_view_data(response)
+    # default for any type, same as to_fulltext
+    return to_fulltext(response)
+  end
+  
+
   
   def response_url(response)
     txt = YAML.load(response.value_text)
