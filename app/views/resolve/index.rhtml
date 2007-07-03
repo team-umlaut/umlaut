@@ -133,7 +133,7 @@ else %>
     
 
     %>
-	<li>valueHash? <%= valueHash.keys %> <%= link_to valueHash[:display_text], {:controller=>'link_router', :id=>doc_del_type.id}, 'target'=>'_blank'%>
+	<li><%= link_to valueHash[:display_text], {:controller=>'link_router', :id=>doc_del_type.id}, 'target'=>'_blank'%>
 	</li>
 <% end %>
   </ul>
