@@ -1,5 +1,6 @@
 class ResolveController < ApplicationController
-  layout "layouts/request_standard"  
+  # Take layout from config, default to resolve_basic.rhtml layout. 
+  layout AppConfig.param("resolve_layout", "resolve_basic")
   require 'json/lexer'
   require 'json/objects'
   require 'oai'
