@@ -1,3 +1,5 @@
+<div id="bothColumns"> <!-- actual wrapper for both columns -->
+<div id="twoColumns"> <!-- called twoColumns, but it's really just the left column -->
 
 <% 
 if genre = @user_request.referent.metadata['genre']
@@ -152,19 +154,19 @@ end %>
 
 </ul>
 </li>
-</div>
+</div><!-- close show_closest_web_results -->
   <div id="hidden_closest_web_results">
   <p>[<%= link_to_function "Show closest web results", "activelyShowWebResults()"%>]</p>
   </div>
-</div>
+</div> 
 <% end %>
-
-      <!--close twoColumns--></div>
   <div id="rightColumn">      
   <%= render :partial=>"menu" %>
   <%= render :partial=>"highlighted_links_start" %>
   </div>
+<!--close twoColumns--></div>
 
 
 
+<!-- close bothColumns --></div> 
 
