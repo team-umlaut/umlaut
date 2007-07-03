@@ -1,0 +1,10 @@
+<% if controller.controller_name() == 'request' %>
+<body onload="<%= display_closest_web_results? -%><%= remote_function(:url => { :action => :do_background_services, :id=>@context_object_handler.id, :background_id=>@background_id }, :success=>"showIDs(request.responseText)")-%>">
+<% else %>
+<body>
+<%end%>
+
+<div id="unapi-container">
+<abbr class="unapi-id" title="<%= CGI.escape(@user_request.referent.to_context_object.kev) %>"></abbr>
+</div>
+
