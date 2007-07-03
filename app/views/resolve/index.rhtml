@@ -17,7 +17,7 @@ end
 <p><strong>Electronic version  via:</strong></p>
 <ul>
 <% fulltxt = get_service_type('fulltext').each do | ft | 
-    target = ServiceList.get(ft.service_response.service_id).to_fulltext(ft.service_response)
+    target = ft.service_response.service.to_fulltext(ft.service_response)
 %>
 <li> <%= link_to target[:display_text], {:controller=>'link_router', :id=>ft.id}, 'target'=>"_blank" %>
 
@@ -50,7 +50,7 @@ end
 <%
 src = ""
 holdings = get_service_type('holding').each do |p|
-  target = ServiceList.get(p.service_response.service_id).to_holding(p.service_response)
+  target = p.service_response.service.to_holding(p.service_response)
   if src != target[:source_name]
   %>
   <p><strong><%= target[:source_name] %></strong></p>
@@ -123,13 +123,17 @@ else %>
   <p>&nbsp;</p>
   <p><strong>Request a copy via:</strong></p>
   <ul>
-<% get_service_type('document_delivery').each do | doc_del |
-    
+<% get_service_type('document_delivery').each do | doc_del_type |
+  
+    valueHash = doc_del_type.view_data_from_service_type
+
     if @user_request.referent.format == 'journal'
-        #doc_del[:url].sub!(/genre=[^\&]*/, 'genre=article')
+        #valueHash[:url].sub!(/genre=[^\&]*/, 'genre=article')
     end
+    
+
     %>
-	<li><%= link_to doc_del[:display_text], {:controller=>'link_router', :id=>doc_del.id}, 'target'=>'_blank'%>
+	<li>valueHash? <%= valueHash.keys %> <%= link_to valueHash[:display_text], {:controller=>'link_router', :id=>doc_del_type.id}, 'target'=>'_blank'%>
 	</li>
 <% end %>
   </ul>
