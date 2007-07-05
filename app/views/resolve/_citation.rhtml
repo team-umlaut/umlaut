@@ -18,7 +18,7 @@ cite = @user_request.referent.to_citation
 </tr>
 <%
 @page_title = cite[:title]
-if cite[:subtitle] 
+if cite[:subtitle]  
 %>
 <tr><td width="90" class="largeTextb"><div align="right">Author:</div></td><td class="largeText">
 <%= cite[:author] %> 
@@ -31,7 +31,8 @@ if cite[:subtitle] %>
 </span></td></tr>
 <%
 end
-if cite[:issn] %>
+
+if (cite[:issn] && ! cite[:issn].empty?) %>
 <tr>
   <td><div align="right" class="smallTextb">ISSN:
 </strong></div></td>
@@ -40,7 +41,7 @@ if cite[:issn] %>
 <%
 end
 
-if cite[:isbn] %>
+if (cite[:isbn] && ! cite[:isbn].empty?) %>
 <tr>
   <td><div align="right" class="smallTextb">ISBN:
 </strong></div></td>
