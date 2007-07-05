@@ -61,9 +61,9 @@ class Sfx < Service
       object_id = object_id_node.inner_html
     end
     
+    enhance_referent(request, perl_data)
+    # generate new metadata object, since we have enhanced our metadata
     metadata = request.referent.metadata
-    
-    enhance_metadata(request, metadata, perl_data)
 
     request_id = nil
     request_id_node = (perl_data/"//hash/item[@key='sfx.request_id']") 
@@ -73,8 +73,8 @@ class Sfx < Service
 
     if object_id
       journal = Journal.find_by_object_id(object_id)
-    elsif request.referent.metadata['issn']
-      journal = Journal.find_by_issn_or_eissn(request.referent.metadata['issn'], request.referent.metadata['issn'])
+    elsif metadata['issn']
+      journal = Journal.find_by_issn_or_eissn(metadata['issn'], metadata['eissn'])
     end  
     if journal
       journal.categories.each do | category |
@@ -183,63 +183,50 @@ class Sfx < Service
 
 
   protected
-  def enhance_metadata(request, metadata, perl_data)
-
-    if request.referent.format == 'journal'
-      unless metadata["jtitle"]
-        jtitle_node = (perl_data/"//hash/item[@key='rft.jtitle']")
-        if jtitle_node
-          request.referent.enhance_referent('jtitle', jtitle_node.inner_html) 
-        end
-      end
-    end
-    if request.referent.format == 'book'
-      unless metadata["btitle"]
-        btitle_node = (perl_data/"//hash/item[@key='rft.btitle']")
-        if btitle_node
-          request.referent.enhance_referent('btitle', btitle_node.inner_html) 
-        end
-      end
-    end    
-    issn_node = (perl_data/"//hash/item[@key='rft.issn']")
-    if issn_node
-      unless metadata['issn'] 
-        request.referent.enhance_referent('issn', issn_node.inner_html)
-      end
-    end    
-    eissn_node = (perl_data/"//hash/item[@key='rft.eissn']")
-    if eissn_node
-      unless metadata['eissn'] 
-        request.referent.enhance_referent('eissn', eissn_node.inner_html)
-      end
-    end      
-    isbn_node = (perl_data/"//hash/item[@key='rft.isbn']")
-    if isbn_node
-      unless metadata['isbn'] 
-        request.referent.enhance_referent('isbn', isbn_node.inner_html)
-      end
-    end  
-    genre_node = (perl_data/"//hash/item[@key='rft.genre']")
-    if genre_node 
-      unless metadata['genre']
-        request.referent.enhance_referent('genre', genre_node.inner_html)
-      end
-    end    
+  def enhance_referent(request, perl_data)
+    metadata = request.referent.metadata
     
-    issue_node = (perl_data/"//hash/item[@key='rft.issue']")
-    if issue_node 
-      unless metadata['issue']
-        request.referent.enhance_referent('issue', issue_node.inner_html)
-      end
-    end      
-    vol_node = (perl_data/"//hash/item[@key='rft.volume']")
-    if vol_node 
-      unless metadata['volume']
-        request.referent.enhance_referent('volume', vol_node.inner_html)
-      end
-    end      
+    if request.referent.format == 'journal'
+        # If we already had metadata for journal title and the SFX one
+        # differs, we want to over-write it. This is good for ambiguous
+        # incoming OpenURLs, among other things.
+        enhance_referent_value(request, "jtitle", (perl_data/"//hash/item[@key='rft.jtitle']"))                
+    end
+    
+    if (request.referent.format == 'book' && ! metadata[btitle])      
+        enhance_referent_value(request, 'btitle', (perl_data/"//hash/item[@key='rft.btitle']"))
+    end
+
+    unless metadata['issn']
+      enhance_referent_value(request, 'issn', (perl_data/"//hash/item[@key='rft.issn']"))
+    end
+    
+    unless metadata['eissn']
+      enhance_referent_value(request, 'eissn', (perl_data/"//hash/item[@key='rft.eissn']"))
+    end
+
+    unless metadata['isbn']
+      enhance_referent_value(request, 'isbn', (perl_data/"//hash/item[@key='rft.isbn']"))
+    end
+
+    unless metadata['genre']
+      enhance_referent_value(request, 'genre', (perl_data/"//hash/item[@key='rft.genre']"))
+    end
+    
+    unless metadata['issue']
+      enhance_referent_value(request, 'issue', (perl_data/"//hash/item[@key='rft.issue']"))
+    end
+
+    unless metadata['volume']
+      enhance_referent_value(request, 'volume', (perl_data/"//hash/item[@key='rft.volume']"))
+    end
+                    
   end
 
-
+  # First arg is key for referent_value, second arg is an hpricot
+  # element which we'll call .inner_html on to get the value.
+  def enhance_referent_value(request, key, value_element)
+    request.referent.enhance_referent(key, value_element.inner_html) if value_element
+  end
   
 end
