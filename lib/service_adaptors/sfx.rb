@@ -6,6 +6,20 @@
 class Sfx < Service
   require 'uri'
   require 'open_url'
+
+  required_config_params :base_url
+  
+  def initialize(config)
+
+    super(config)
+  
+    # class variable. Key is sfx service_type, value is umlaut servicetype string.
+    # These are the SFX service types we will translate to umlaut
+    "getFullTxt" || sfx_service_type == "getDocumentDelivery"
+    @services_of_interest = {'getFullTxt'          => 'fulltext',
+                             'getDocumentDelivery' => 'document_delivery'}
+  
+  end
   
   def handle(request)
     client = self.initialize_client(request)
@@ -18,6 +32,7 @@ class Sfx < Service
       return request.dispatched(self, false)
     end
   end
+  
   def initialize_client(request)
     transport = OpenURL::Transport.new(@base_url)
     context_object = request.referent.to_context_object
@@ -85,11 +100,12 @@ class Sfx < Service
     # Each target delivered by SFX
     (doc/"/ctx_obj_set/ctx_obj/ctx_obj_targets/target").each_with_index do|target, target_index|  
 
-
       value_text = {}
 
       sfx_service_type = (target/"/service_type").inner_html
-      if (sfx_service_type == "getFullTxt" || sfx_service_type == "getDocumentDelivery")
+      umlaut_service = @services_of_interest[sfx_service_type]
+      
+      if ( umlaut_service ) # Okay, it's in services of interest
 
         if (target/"/displayer")
           source = "SFX/"+(target/"/displayer").inner_html
@@ -105,14 +121,12 @@ class Sfx < Service
           end
         end
 
-        if ( sfx_service_type == "getFullTxt")
-          value_string = (target/"/target_service_id").inner_html
-          umlaut_service = 'fulltext'
-        else
+        if ( sfx_service_type == 'getDocumentDelivery' )
           value_string = request_id
-          umlaut_service = 'document_delivery'
+        else
+          value_string = (target/"/target_service_id").inner_html          
         end
-        
+                
         value_text[:url] = CGI.unescapeHTML((target/"/target_url").inner_html)
         value_text[:notes] = CGI.unescapeHTML((target/"/note").inner_html)
         value_text[:source] = source
