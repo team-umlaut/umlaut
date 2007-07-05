@@ -1,6 +1,12 @@
+# config parameters in services.yml
+# name: display name
+# base_url
+# click_passthrough: When set to true, Umlaut will send all SFX clicks through SFX, for SFX to capture statistics. This is currently done using a backdoor into the SFX sfxresolve.cgi script. Defaults to false, or the app_config.sfx_click_passthrough value. 
+
 class Sfx < Service
   require 'uri'
   require 'open_url'
+  
   def handle(request)
     client = self.initialize_client(request)
     begin
@@ -48,13 +54,137 @@ class Sfx < Service
         related_items << item.inner_html
       } 
     }
-
+    
     object_id_node = (perl_data/"//hash/item[@key='rft.object_id']")
     object_id = nil
     if object_id_node
       object_id = object_id_node.inner_html
     end
+    
     metadata = request.referent.metadata
+    
+    enhance_metadata(request, metadata, perl_data)
+
+    request_id = nil
+    request_id_node = (perl_data/"//hash/item[@key='sfx.request_id']") 
+    if request_id_node
+      request_id = request_id_node.inner_html
+    end    
+
+    if object_id
+      journal = Journal.find_by_object_id(object_id)
+    elsif request.referent.metadata['issn']
+      journal = Journal.find_by_issn_or_eissn(request.referent.metadata['issn'], request.referent.metadata['issn'])
+    end  
+    if journal
+      journal.categories.each do | category |
+        request.add_service_response({:service=>self,:key=>'SFX',:value_string=>category.category,:value_text=>category.subcategory},['subject'])
+      end
+    end
+
+    # Each target delivered by SFX
+    (doc/"/ctx_obj_set/ctx_obj/ctx_obj_targets/target").each_with_index do|target, target_index|  
+
+
+      value_text = {}
+
+      sfx_service_type = (target/"/service_type").inner_html
+      if (sfx_service_type == "getFullTxt" || sfx_service_type == "getDocumentDelivery")
+
+        if (target/"/displayer")
+          source = "SFX/"+(target/"/displayer").inner_html
+        else
+          source = "SFX"+URI.parse(self.url).path
+        end
+        
+        coverage = nil
+        if (sfx_service_type == "getFullTxt" && @get_coverage )
+          if journal 
+            cvg = journal.coverages.find(:first, :conditions=>['provider = ?', (target/"/target_public_name").inner_html])
+            coverage = cvg.coverage if cvg
+          end
+        end
+
+        if ( sfx_service_type == "getFullTxt")
+          value_string = (target/"/target_service_id").inner_html
+          umlaut_service = 'fulltext'
+        else
+          value_string = request_id
+          umlaut_service = 'document_delivery'
+        end
+        
+        value_text[:url] = CGI.unescapeHTML((target/"/target_url").inner_html)
+        value_text[:notes] = CGI.unescapeHTML((target/"/note").inner_html)
+        value_text[:source] = source
+        value_text[:covarege] = coverage if coverage
+
+        # Sfx metadata we want
+        value_text[:sfx_target_index] = target_index + 1 # sfx is 1 indexed
+        value_text[:sfx_request_id] = (perl_data/"//hash/item[@key='sfx.request_id']").first.inner_html
+        value_text[:sfx_target_service_id] = (target/"target_service_id").inner_html
+        # At url-generation time, the request isn't available to us anymore,
+        # so we better store this citation info here now, since we need it
+        # for sfx click passthrough
+        value_text[:citation_year] = metadata['date'] 
+        value_text[:citation_volume] = metadata['volume'];
+        value_text[:citation_issue] = metadata['issue']
+        value_text[:citation_spage] = metadata['spage']
+        
+
+        request.add_service_response({:service=>self,:key=>(target/"/target_public_name").inner_html,:value_string=>value_string,:value_text=>value_text.to_yaml},[umlaut_service])
+      end
+    end   
+  end
+  
+  def to_fulltext(response)  
+    value_text = YAML.load(response.value_text)     
+    return {:display_text=>response.response_key, :note=>value_text[:note],:coverage=>value_text[:coverage],:source=>value_text[:source]}
+  end
+  
+  def response_to_view_data(response)
+    # default for any type, same as to_fulltext
+    return to_fulltext(response)
+  end
+  
+  def sfx_click_passthrough
+    # From config, or if not that, from app default, or if not that, default
+    # to false. 
+    return @click_passthrough || AppConfig.default_sfx_click_passthrough || false;
+  end
+  
+  def response_url(response)
+
+    customData = YAML.load(response.value_text)
+              
+    if ( ! self.sfx_click_passthrough )
+      return CGI.unescapeHTML(customData[:url])
+    else
+      # Okay, wacky abuse of SFX undocumented back-ends to pass the click
+      # through SFX, so statistics are captured by SFX. 
+      
+      sfx_resolver_cgi_url =  @base_url + "/cgi/core/sfxresolver.cgi"      
+      # Not sure if fixing tmp_ctx_obj_id to 1 is safe, but it seems to work,
+      # and I don't know what the value is or how else to know it. 
+      dataString = "?tmp_ctx_svc_id=#{customData[:sfx_target_index]}"
+      dataString += "&tmp_ctx_obj_id=1&service_id=#{customData[:sfx_target_service_id]}"
+      dataString += "&request_id=#{customData[:sfx_request_id]}"
+      dataString += "&rft.year="
+      dataString += customData[:citation_year].to_s if customData[:citation_year]
+      dataString += "&rft.volume="
+      dataString += customData[:citation_volume].to_s if customData[:citation_volume]
+      dataString += "&rft.issue="
+      dataString += customData[:citation_issue].to_s if customData[:citation_issue]
+      dataString += "&rft.spage="
+      dataString += customData[:citation_spage].to_s if customData[:citation_issue]
+
+      return sfx_resolver_cgi_url + dataString       
+    end
+  end
+
+
+  protected
+  def enhance_metadata(request, metadata, perl_data)
+
     if request.referent.format == 'journal'
       unless metadata["jtitle"]
         jtitle_node = (perl_data/"//hash/item[@key='rft.jtitle']")
@@ -108,69 +238,8 @@ class Sfx < Service
         request.referent.enhance_referent('volume', vol_node.inner_html)
       end
     end      
-
-    request_id = nil
-    request_id_node = (perl_data/"//hash/item[@key='sfx.request_id']") 
-    if request_id_node
-      request_id = request_id_node.inner_html
-    end    
-
-    if object_id
-      journal = Journal.find_by_object_id(object_id)
-    elsif request.referent.metadata['issn']
-      journal = Journal.find_by_issn_or_eissn(request.referent.metadata['issn'], request.referent.metadata['issn'])
-    end  
-    if journal
-      journal.categories.each do | category |
-        request.add_service_response({:service=>self,:key=>'SFX',:value_string=>category.category,:value_text=>category.subcategory},['subject'])
-      end
-    end
-    (doc/"/ctx_obj_set/ctx_obj/ctx_obj_targets/target").each do|target|  
-      if (target/"/displayer")
-        source = "SFX/"+(target/"/displayer").inner_html
-      else
-        source = "SFX"+URI.parse(self.url).path
-      end    
-      if (target/"/service_type").inner_html == "getFullTxt" 
-        coverage = ''
-        if @get_coverage
-          if journal 
-            cvg = journal.coverages.find(:first, :conditions=>['provider = ?', (target/"/target_public_name").inner_html])
-            coverage = cvg.coverage if cvg
-          end
-        end
-        value_text = {
-          :url=>CGI.unescapeHTML((target/"/target_url").inner_html),
-          :note=>CGI.unescapeHTML((target/"/note").inner_html),
-          :source=>source,
-          :coverage=>coverage
-        }   
-        request.add_service_response({:service=>self,:key=>(target/"/target_public_name").inner_html,:value_string=>(target/"/target_service_id").inner_html,:value_text=>value_text.to_yaml},['fulltext'])
-
-      elsif (target/"/service_type").inner_html == "getDocumentDelivery"
-        value_text = {
-          :url=>CGI.unescapeHTML((target/"/target_url").inner_html),
-          :note=>CGI.unescapeHTML((target/"/note").inner_html),
-          :source=>source
-        }
-        request.add_service_response({:service=>self,:key=>(target/"/target_public_name").inner_html,:value_string=>request_id,:value_text=>value_text.to_yaml},['document_delivery'])
-      end    
-    end   
   end
-  
-  def to_fulltext(response)  
-    value_text = YAML.load(response.value_text)     
-    return {:display_text=>response.response_key, :note=>value_text[:note],:coverage=>value_text[:coverage],:source=>value_text[:source]}
-  end
-  def response_to_view_data(response)
-    # default for any type, same as to_fulltext
-    return to_fulltext(response)
-  end
-  
+
 
   
-  def response_url(response)
-    txt = YAML.load(response.value_text)
-    return CGI.unescapeHTML(txt[:url])
-  end
 end
