@@ -1,3 +1,3 @@
 class Referrer < ActiveRecord::Base
-	has_many :request
+	has_many :requests
 end
