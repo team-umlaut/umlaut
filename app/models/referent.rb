@@ -90,7 +90,11 @@ class Referent < ActiveRecord::Base
       rft_key.save
     }
   end
-   
+
+  # Creates a hash of values from referrent_values, to assemble what was
+  # spread accross differnet db rows into one easy-lookup hash, for
+  # easy access. See also #to_citation for a different hash, specifically
+  # for use in View to print citation. And #to_context_object. 
   def metadata
     self.referent_values
     metadata = {}
@@ -142,7 +146,8 @@ class Referent < ActiveRecord::Base
     end
     return co
   end
-  
+
+  # Creates a hash for use in View code to display a citation
   def to_citation
     citation = {}
     if self.metadata['atitle']
