@@ -14,7 +14,7 @@
 class Sfx < Service
   require 'uri'
   require 'open_url'
-  require 'ruby-debug'
+  #require 'ruby-debug'
 
   required_config_params :base_url
   
@@ -84,13 +84,13 @@ class Sfx < Service
         related_items << item.inner_html
       } 
     }
-    
-    object_id_node = (perl_data/"//hash/item[@key='rft.object_id']")
+
+    object_id_node = perl_data.at("//hash/item[@key='rft.object_id']")
     object_id = nil
     if object_id_node
       object_id = object_id_node.inner_html
     end
-
+    
     sfx_target_service_ids = doc.search('//target/target_service_id').collect {|e| e.inner_html}
     
     enhance_referent(request, perl_data)
@@ -118,7 +118,7 @@ class Sfx < Service
     # configured, and if we have the right data to do so. We load em all in bulk in
     # one request, rather than a request per service. 
     loaded_coverage_strings = nil
-    if ( @coverage_api_url && object_id && (sfx_target_service_ids.length > 0)  )      
+    if ( @coverage_api_url && object_id  && (sfx_target_service_ids.length > 0)  )      
       require 'net/http'
       require 'uri'
       require 'hpricot'
@@ -137,7 +137,7 @@ class Sfx < Service
 
       error = cov_doc.at('/sfxcoverage/exception')
       if ( error )
-        logger.error("Error in SFX coverage API result. #{coverage_url.to_s} ; #{error.to_s}")
+        request.logger.error("Error in SFX coverage API result. #{coverage_url.to_s} ; #{error.to_s}")
       end
 
       cov_doc.search('/sfxcoverage/targets/target').each do |target|
@@ -267,8 +267,8 @@ class Sfx < Service
         # incoming OpenURLs, among other things.
         enhance_referent_value(request, "jtitle", (perl_data/"//hash/item[@key='rft.jtitle']"))                
     end
-    
-    if (request.referent.format == 'book' && ! metadata[btitle])      
+
+    if (request.referent.format == 'book' && ! metadata['btitle'])      
         enhance_referent_value(request, 'btitle', (perl_data/"//hash/item[@key='rft.btitle']"))
     end
 
