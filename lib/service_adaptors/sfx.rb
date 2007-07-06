@@ -1,7 +1,13 @@
 # config parameters in services.yml
 # name: display name
-# base_url
-# click_passthrough: When set to true, Umlaut will send all SFX clicks through SFX, for SFX to capture statistics. This is currently done using a backdoor into the SFX sfxresolve.cgi script. Defaults to false, or the app_config.sfx_click_passthrough value. 
+# base_url: 
+# click_passthrough: When set to true, Umlaut will send all SFX clicks 
+#     through SFX, for SFX to capture statistics. This is currently done
+#     using a backdoor into the SFX sfxresolve.cgi script. Defaults to false, or the 
+#     app_config.default_sfx_click_passthrough value.
+# coverage_api_url: http url to the script Jonathan Rochkind wrote to interrogate
+#     the SFX db to get 'coverage' information. Since SFX API does not currently provide
+#     this info, this is 'extra' third-party API to do so.  [Not quite implemented yet].
 
 class Sfx < Service
   require 'uri'
@@ -44,7 +50,7 @@ class Sfx < Service
       transport.extra_args["sfx.ignore_date_threshold"]="1"
       transport.extra_args["sfx.show_availability"]="1"
       @get_coverage = true
-    end  
+    end
     if context_object.referent.identifier and context_object.referent.identifier.match(/^info:doi\//)
       transport.extra_args['sfx.doi_url']='http://dx.doi.org'
     end
@@ -75,6 +81,8 @@ class Sfx < Service
     if object_id_node
       object_id = object_id_node.inner_html
     end
+
+    sfx_target_service_ids = doc.search('//target/target_service_id').collect {|e| e.inner_html}
     
     enhance_referent(request, perl_data)
     # generate new metadata object, since we have enhanced our metadata
@@ -97,6 +105,39 @@ class Sfx < Service
       end
     end
 
+    # Load coverage/availability string from Rochkind's 'extra' SFX coverage API, if
+    # configured, and if we have the right data to do so. We load em all in bulk in
+    # one request, rather than a request per service. 
+    loaded_coverage_strings = nil
+    if ( @coverage_api_url && object_id && (sfx_target_service_ids.length > 0)  )      
+      require 'net/http'
+      require 'uri'
+      require 'hpricot'
+
+      loaded_coverage_strings = {}
+
+      coverage_url = URI.parse(@coverage_api_url)
+      coverage_url.query = "rft.object_id=#{object_id}&target_service_id=#{sfx_target_service_ids.join(',')}"
+      
+      response = Net::HTTP.get_response( coverage_url )
+      unless (response.kind_of? Net::HTTPSuccess)
+        response.error!
+      end
+      
+      cov_doc = Hpricot( response.body )
+
+      error = cov_doc.at('/sfxcoverage/exception')
+      if ( error )
+        logger.error("Error in SFX coverage API result. #{coverage_url.to_s} ; #{error.to_s}")
+      end
+
+      cov_doc.search('/sfxcoverage/targets/target').each do |target|
+        service_id = target.at('target_service_id').inner_html
+        coverage_str = target.at('availability_string').inner_html
+        loaded_coverage_strings[service_id] = coverage_str
+      end                        
+    end
+
     # Each target delivered by SFX
     (doc/"/ctx_obj_set/ctx_obj/ctx_obj_targets/target").each_with_index do|target, target_index|  
 
@@ -112,10 +153,14 @@ class Sfx < Service
         else
           source = "SFX"+URI.parse(self.url).path
         end
+
+        target_service_id = (target/"target_service_id").inner_html
         
         coverage = nil
         if (sfx_service_type == "getFullTxt" && @get_coverage )
-          if journal 
+          if ( loaded_coverage_strings ) # used the external extra SFX api
+            coverage = loaded_coverage_strings[target_service_id]           
+          elsif journal  # Umlaut journal index
             cvg = journal.coverages.find(:first, :conditions=>['provider = ?', (target/"/target_public_name").inner_html])
             coverage = cvg.coverage if cvg
           end
@@ -130,12 +175,12 @@ class Sfx < Service
         value_text[:url] = CGI.unescapeHTML((target/"/target_url").inner_html)
         value_text[:notes] = CGI.unescapeHTML((target/"/note").inner_html)
         value_text[:source] = source
-        value_text[:covarege] = coverage if coverage
+        value_text[:coverage] = coverage if coverage
 
         # Sfx metadata we want
         value_text[:sfx_target_index] = target_index + 1 # sfx is 1 indexed
         value_text[:sfx_request_id] = (perl_data/"//hash/item[@key='sfx.request_id']").first.inner_html
-        value_text[:sfx_target_service_id] = (target/"target_service_id").inner_html
+        value_text[:sfx_target_service_id] = target_service_id
         # At url-generation time, the request isn't available to us anymore,
         # so we better store this citation info here now, since we need it
         # for sfx click passthrough
@@ -151,7 +196,7 @@ class Sfx < Service
   end
   
   def to_fulltext(response)  
-    value_text = YAML.load(response.value_text)     
+    value_text = YAML.load(response.value_text)
     return {:display_text=>response.response_key, :note=>value_text[:note],:coverage=>value_text[:coverage],:source=>value_text[:source]}
   end
   
