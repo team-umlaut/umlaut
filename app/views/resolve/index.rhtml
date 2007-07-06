@@ -17,7 +17,7 @@ end
 <p><strong>Electronic version  via:</strong></p>
 <ul>
 <% fulltxt = get_service_type('fulltext').each do | ft | 
-    target = ft.service_response.service.to_fulltext(ft.service_response)
+    target = ft.view_data
 %>
 <li> <%= link_to target[:display_text], {:controller=>'link_router', :id=>ft.id}, 'target'=>"_blank" %>
 
@@ -166,7 +166,26 @@ end %>
 <% end %>
 <!--close twoColumns--></div>
   
-<div id="rightColumn">      
+<div id="rightColumn">
+  <% help_responses = get_service_type('help')
+     unless (help_responses.empty?) %>
+     <div id="help">
+        <span id="helpicon">?</span>
+        <span class="smallText">Question? Problem? Need help? Contact a librarian:</span>
+        <ul>
+        <% help_responses.each do |help|
+              value_hash = help.view_data %>
+              <li> <%= link_to value_hash[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %>  
+              <% unless value_hash[:note].blank? %>
+                <br />
+                <%= value_hash[:note] %>
+              <% end %>
+              </li>             
+        <% end %>
+        </ul>
+        <span class="clear"></span>
+     </div>
+  <% end %>
   <%= render :partial=>"menu" %>
   <%= render :partial=>"highlighted_links_start" %>
   </div>

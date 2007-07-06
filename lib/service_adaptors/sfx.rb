@@ -7,24 +7,33 @@
 #     app_config.default_sfx_click_passthrough value.
 # coverage_api_url: http url to the script Jonathan Rochkind wrote to interrogate
 #     the SFX db to get 'coverage' information. Since SFX API does not currently provide
-#     this info, this is 'extra' third-party API to do so.  [Not quite implemented yet].
+#     this info, this is 'extra' third-party API to do so.
+# extra_targets_of_interest: sfx target_names of targets you want to make sure to include
+#     in umlaut. A hash with target_name as key, and umlaut response type as value. 
 
 class Sfx < Service
   require 'uri'
   require 'open_url'
+  require 'ruby-debug'
 
   required_config_params :base_url
   
   def initialize(config)
 
-    super(config)
-  
-    # class variable. Key is sfx service_type, value is umlaut servicetype string.
+    # Key is sfx service_type, value is umlaut servicetype string.
     # These are the SFX service types we will translate to umlaut
-    "getFullTxt" || sfx_service_type == "getDocumentDelivery"
     @services_of_interest = {'getFullTxt'          => 'fulltext',
                              'getDocumentDelivery' => 'document_delivery'}
-  
+
+    # Special targets. Key is SFX target_name.
+    # Value is umlaut service type.
+    # These targets will be included even if their sfx service_type doesn't
+    # match our services_of_interest, and the umlaut service ID string given
+    # here will take precedence and be used even if these targets DO match
+    # services_of_interest. Generally loaded from yml config in super.    
+    @extra_targets_of_interest = {}
+                                  
+    super(config)                              
   end
   
   def handle(request)
@@ -143,10 +152,17 @@ class Sfx < Service
 
       value_text = {}
 
-      sfx_service_type = (target/"/service_type").inner_html
-      umlaut_service = @services_of_interest[sfx_service_type]
+      # First check @extra_targets_of_interest
+      sfx_target_name = target.at('target_name').inner_html
+      umlaut_service = @extra_targets_of_interest[sfx_target_name]
+
+      # If not found, look for it in services_of_interest
+      unless ( umlaut_service )
+        sfx_service_type = target.at("/service_type").inner_html
+        umlaut_service = @services_of_interest[sfx_service_type]
+      end
       
-      if ( umlaut_service ) # Okay, it's in services of interest
+      if ( umlaut_service ) # Okay, it's in services or targets of interest
 
         if (target/"/displayer")
           source = "SFX/"+(target/"/displayer").inner_html
