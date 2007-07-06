@@ -20,6 +20,8 @@ class Request < ActiveRecord::Base
     ds = self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
     unless ds
       ds = self.dispatched_services.new()
+      # AR isn't setting the request_id above for some reason
+      ds.request_id = self.id      
     end
     ds.service_id = service.id
     ds.successful = success
