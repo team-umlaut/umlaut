@@ -259,7 +259,6 @@ class Sfx < Service
 
   protected
   def enhance_referent(request, perl_data)
-    debugger
     
     metadata = request.referent.metadata
     
