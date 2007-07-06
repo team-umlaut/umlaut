@@ -81,7 +81,8 @@ class Collection
     client.lookup_all(ip).each do | inst |
       next if self.in_collection?(inst.resolver.base_url)
       next if self.check_oclc_symbol(inst.oclc_inst_symbol)
-      if inst.resolver.vendor == 'sfx' or vendor.get_text.value.downcase == 'other'
+
+      if inst.resolver.vendor == 'sfx' or inst.resolver.vendor.get_text.value.downcase == 'other'
         if check_supported_browser(inst.resolver.base_url)
           sfx = Sfx.new({:name=>inst.name, :url=>inst.resolver.base_url})
           @services << sfx unless @services.index(sfx)
