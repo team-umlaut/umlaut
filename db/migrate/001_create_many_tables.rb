@@ -147,14 +147,14 @@ class CreateManyTables < ActiveRecord::Migration
 	  add_index "requests", ["created_at"], :name => "req_created_at"
 	  
 	  create_table "service_responses", :force => true do |t|
-	  t.column "service", :string, :limit=> 25, :null => false
-	  t.column "key", :string, :limit => 100, :default => "", :null => false
+	  t.column "service_id", :string, :limit=> 25, :null => false
+	  t.column "response_key", :string, :limit => 100, :default => "", :null => false
 	  t.column "value_string", :string, :limit => 255
 	  t.column "value_alt_string", :string, :limit => 255
 	  t.column "value_text", :text
 	  end
 	  
-	  add_index "service_responses", ["service", "key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"
+	  add_index "service_responses", ["service_id", "response_key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"
 	  
 	  create_table "service_types", :force => true do |t|
 	  t.column "request_id", :integer, :default => 0, :null => false
