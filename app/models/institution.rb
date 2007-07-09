@@ -16,11 +16,6 @@ class Institution < ActiveRecord::Base
     return @oclc_symbol
   end
 
-  def worldcat_registry_id
-    self.load_configuration unless @worldcat_registry_id
-    return @worldcat_registry_id
-  end
-
   def services
     self.load_configuration unless @services
     return @services
