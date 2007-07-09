@@ -1,5 +1,4 @@
 class Request < ActiveRecord::Base
-  require 'ruby-debug'
   
   has_many :dispatched_services
   has_many :service_types
@@ -11,7 +10,6 @@ class Request < ActiveRecord::Base
     # First look in the db for a full request that had the exact same
     # params as this one, in the same session. That's a reload, use
     # the same request, already done.
-    debugger
     req = Request.find(:first, :conditions => ["session_id = ? and params = ?", session.session_id, params.to_yaml])
     return req if req
 
@@ -42,7 +40,6 @@ class Request < ActiveRecord::Base
   end
   
   def dispatched(service, success)
-    debugger
     ds = self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
     unless ds
       # For some reason, this way of creating wasn't working to set up
@@ -61,7 +58,6 @@ class Request < ActiveRecord::Base
   end
   
   def dispatched?(service)
-    debugger
     ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
     return true if ds and ds.successful?
     return false

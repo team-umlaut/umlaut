@@ -129,7 +129,6 @@ class ResolveController < ApplicationController
       end
       unless @dispatch_response.external_links.empty?
         menu << 'umlaut-external_links'
-      end    
       render :text=>menu.join(",") 	
   		history = History.find_or_create_by_session_id_and_request_id(session.session_id, @context_object_handler.id)
   		history.cached_response = Marshal.dump @dispatch_response
@@ -145,12 +144,11 @@ class ResolveController < ApplicationController
     if stage == 'foreground'
       (0..9).each do | priority |
         next if @collection.service_level(priority).empty?
-        debugger
+        
         if AppConfig[:threaded_services]
           bundle = ServiceBundle.new(@collection.service_level(priority))
           bundle.handle(@user_request)            
         else
-          debugger
           @collection.service_level(priority).each do | svc |
             svc.handle(@user_request) unless @user_request.dispatched?(svc)
           end
