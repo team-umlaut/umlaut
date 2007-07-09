@@ -8,7 +8,7 @@ class ResolveController < ApplicationController
   require 'collection'
 
   def init_processing
-    @user_request = Request.new_request(params, session)
+    @user_request = Request.new_request(params, session )
     @collection = Collection.new(request.remote_ip, session)      
     @user_request.save
   end
@@ -145,18 +145,16 @@ class ResolveController < ApplicationController
     if stage == 'foreground'
       (0..9).each do | priority |
         next if @collection.service_level(priority).empty?
-        if @collection.service_level(priority).length > 1          
-          if AppConfig[:threaded_services]
-            bundle = ServiceBundle.new(@collection.service_level(priority))
-            bundle.handle(@user_request)            
-          else
-            @collection.service_level(priority).each do | svc |
-              svc.handle(@user_request) unless @user_request.dispatched?(svc)
-            end
-          end
+        debugger
+        if AppConfig[:threaded_services]
+          bundle = ServiceBundle.new(@collection.service_level(priority))
+          bundle.handle(@user_request)            
         else
-          @collection.service_level(priority)[0].handle(@user_request) unless @user_request.dispatched?(@collection.service_level(priority)[0])
-        end      
+          debugger
+          @collection.service_level(priority).each do | svc |
+            svc.handle(@user_request) unless @user_request.dispatched?(svc)
+          end
+        end
       end  
     end
   end

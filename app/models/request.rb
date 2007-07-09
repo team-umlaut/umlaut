@@ -1,34 +1,67 @@
 class Request < ActiveRecord::Base
+  require 'ruby-debug'
+  
   has_many :dispatched_services
   has_many :service_types
   belongs_to :referent
   belongs_to :referrer
-  
-  def self.new_request(params, session)
+
+  def self.new_request(params, session )
+    
+    # First look in the db for a full request that had the exact same
+    # params as this one, in the same session. That's a reload, use
+    # the same request, already done.
+    debugger
+    req = Request.find(:first, :conditions => ["session_id = ? and params = ?", session.session_id, params.to_yaml])
+    return req if req
+
+    # Nope, okay, we don't have a complete Request, but let's try finding
+    # an already existing referent and/or referrer to use, if possible, or
+    # else create new ones. 
+
+    # Find or create a Referent
     context_object = OpenURL::ContextObject.new
     context_object.import_hash(params)
-    puts context_object.kev
     rft = Referent.find_or_create_by_context_object(context_object)
-    rfr_id = nil
-    rfr_id = Referrer.find_or_create_by_identifier(context_object.referrer.identifier).id unless context_object.referrer.empty?
-    req = Request.find_or_create_by_referent_id_and_session_id_and_referrer_id(rft.id, session.session_id, rfr_id)
-    req.save
+
+    # Find or create a referrer, if we have a referrer in our OpenURL
+    rfr = nil
+    rfr = Referrer.find_or_create_by_identifier(context_object.referrer.identifier) unless context_object.referrer.empty?
+
+    # Create the Request
+    req = Request.new
+    req.session_id = session.session_id
+    req.params = params.to_yaml
+    rft.requests << req
+    (rfr.requests << req) if rfr
+    req.save!
+
+
+    
     return req
   end
   
   def dispatched(service, success)
+    debugger
     ds = self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
     unless ds
-      ds = self.dispatched_services.new()
-      # AR isn't setting the request_id above for some reason
-      ds.request_id = self.id      
-    end
-    ds.service_id = service.id
+      # For some reason, this way of creating wasn't working to set up
+      # the relationship properly. I think maybe cause the save was failing
+      # silently validation, due to null service_id.
+      # This new way does instead.
+      #ds = self.dispatched_services.new()
+      ds = DispatchedService.new
+      ds.service_id = service.id
+      ds.successful = success
+      self.dispatched_services << ds
+    end    
     ds.successful = success
-    ds.save
+
+    ds.save!
   end
   
   def dispatched?(service)
+    debugger
     ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
     return true if ds and ds.successful?
     return false
