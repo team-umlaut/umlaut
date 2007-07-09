@@ -1,4 +1,5 @@
 class Referent < ActiveRecord::Base
+  
   has_many :requests
   has_many :referent_values
   has_many :permalinks
@@ -29,7 +30,7 @@ class Referent < ActiveRecord::Base
     shortcuts[:isbn] = rft.metadata['isbn'].downcase if rft.metadata['isbn']    
     shortcuts[:volume] = rft.metadata['volume'].downcase if rft.metadata['volume']
     shortcuts[:year] = rft.metadata['date'].downcase if rft.metadata['date']
-
+    
     return nil unless rft = Referent.find_by_atitle_and_title_and_issn_and_isbn_and_volume_and_year(shortcuts[:atitle],
       shortcuts[:title], shortcuts[:issn], shortcuts[:isbn], shortcuts[:volume], shortcuts[:year])
     if ReferentMatch.match?(co.referent, rft.to_context_object.referent)
@@ -132,7 +133,9 @@ class Referent < ActiveRecord::Base
       end
     }    
   end
-  
+
+  # Creates an OpenURL::ContextObject assembling all the data in this
+  # referrent. 
   def to_context_object
     co = OpenURL::ContextObject.new
     rft = co.referent
