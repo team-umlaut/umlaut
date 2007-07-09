@@ -1,0 +1,326 @@
+html, body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+/* hide from IE mac \*/
+html {
+    min-height: 100%;
+    margin-bottom: 1px;
+}
+/* end hiding from IE5 mac */
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+ul { 
+	list-style-type: none;
+}
+h1 {
+	font-size: 18px;;
+	font-style:italic;
+	font-weight:bold;
+	margin-bottom:15px;
+}
+h2 {
+	font-size: 15px;
+	font-weight:bold;
+	margin-bottom:10px;
+}
+h3 {
+	font-size: 14px;
+	font-weight:bold;
+	margin-bottom:10px;
+}
+h4 {
+	font-size: 12px;
+	font-weight:bold;
+	margin-top:5px;
+
+}
+
+
+
+
+#menuWrapper {
+	width: 780px;
+	position: relative;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: auto;
+  margin-right: auto;
+	padding:0;
+	display: block; 
+  border: 1px solid #eeb211;
+}
+#headerStatusBar {
+  border-bottom: 1px solid #eeb211;
+  background-color: #FCF1D4;
+  padding: 3px; 
+}
+
+/*  2 columns: This is actually the class for the left column div, sorry.  */
+	
+#twoColumns {
+	width: 550px;
+	padding: 10px;
+	margin:0;
+	float: left;
+	font-size:12px;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #eeb211;
+}
+#twoColumns ol, ul{
+	margin-left: 20px;
+}
+
+#bothColumns {
+  font-size: 12px;
+}
+
+/*  Right Column */
+	
+#rightColumn {
+/*	width: 190px;*/
+	margin-left:570px;
+	padding-top: 5px;
+
+}
+
+/* Help section */
+
+#help {
+  padding: 5px;
+  margin: 6px;
+  border: 2px solid #E9E9E9;
+}
+
+#help li 	{
+  text-align: right;
+  padding: 2px 0px 2px 10px;
+}
+
+#helpicon {
+  font-size: 45px;
+  font-weight: bold;
+  float: left;
+  background-color: #FCF1D4;
+  margin-right: 12px;
+  padding-right: 6px;
+  padding-left: 6px;
+}
+.clear {
+  clear=both;
+}
+
+/*  Horizontal Line */
+
+.line {
+	width: 100%;
+	border-bottom: 1px solid #e9e9e9;
+	margin: 10px 0px 15px;}
+	
+.line2 {
+	width: 100%;
+	border-bottom: 1px solid #eeb211;
+	margin: 10px 0px 15px;}
+
+
+  
+/* Below here, not sure which of these we use exactly at present in non-GATech specific stuff.  */  
+  
+  
+/*  Box with yellow outline */
+
+.outlineBox {
+	border:1px solid #eeb211;
+	padding: 10px;
+	background-color:#eee;
+}
+.formError {
+	font-size: 18px;
+	font-weight: bold;
+	color: #EA0000;
+	font-style: italic;
+}
+.leftToc {
+	float:  left;
+	width:  180px;
+	background-color:  #eeeeee;
+	border:  1px solid #eeb211;
+	padding:  5px;
+	margin-right: 8px;
+	margin-bottom: 5px;
+
+}
+.error {
+	color:#CC0000;
+	font-size:14px;
+	font-weight:bold;
+}
+
+/*  Specific application styles */
+
+.notAvailable {
+	color: #FF0000;
+	font-style: italic;
+	font-size:12px;
+}
+.available {
+	color: #00CC33;
+	font-style: italic;
+	font-size: 12px;
+}
+.resourceInfo {
+	font-size:11px;
+	padding: 2px;
+	width: 540px;
+	border: 1px solid #e9e9e9;
+}	
+.resourceInfo a:link { text-decoration:underline; color : #666; }
+
+.citationLinker {
+	font-size:11px;
+	padding: 2px;
+	border: 1px solid #ebb211;
+	background-color: #eee;
+}	
+.citationLinker a:link { text-decoration:underline; color : #666; }
+
+.seeAlso {
+	font-size:11px;
+	padding:5px;
+}
+.seeAlso a:link { text-decoration:underline; color : #0066cc; }
+.seeAlso a:visited { text-decoration:underline; color : #0066cc; }
+.seeAlso a:hover { color : #eeb211; text-decoration:underline; }
+.seeAlso a:focus { color : #eeb211; text-decoration:underline; }
+.seeAlso a:active { color : #0066cc; }
+
+.availability {
+	margin: 10px 0px 10px 30px;
+}
+.availability li {
+	/* background: url(../images/icon-goldarrow.gif) no-repeat 0px 7px; */
+	padding: 2px 0px 8px 10px;
+}
+.availability a:link{
+	text-decoration:underline;
+	color:#0066cc;
+	font-weight: bold;
+}
+.availability a:visited { text-decoration:underline; color : #0066cc; font-weight: bold;}
+.availability a:hover { color : #eeb211; text-decoration:underline; font-weight: bold;}
+.availability a:focus { color : #eeb211; text-decoration:underline; font-weight: bold;}
+.availability a:active { color : #0066cc; font-weight: bold;}
+
+.closestResults {
+	font-size: 11px;
+	margin: 5px 0px;
+}
+.closestResults li {
+	list-style-type: disc;
+	padding-top: 10px;
+}
+.closestResults a:link{ text-decoration:underline; color:#666; }
+.closestResults a:visited { text-decoration:underline; color : #666; }
+.closestResults a:hover { color : #eeb211; text-decoration:underline;}
+.closestResults a:focus { color : #eeb211; text-decoration:underline;}
+.closestResults a:active { color : #666; }
+
+.largeText { font-size:12px;}
+.largeTextb { font-size:12px; font-weight:bold;}
+.exlargeText {
+	font-size:14px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.smallText { font-size:10px;}
+.smallTextb { font-size:10px; font-weight:bold;}
+.smallTextlink { font-size:10px; color:#0066CC} 
+
+/*  Footer */
+
+#footer {
+	clear: both;
+}
+	
+
+	
+
+
+
+.smGrayBox {
+	border:1px solid #e9e9e9;
+	margin: 1px;
+	padding: 10px;
+/*	width: 155px;*/
+
+}
+.tightbullets {
+	/* background: url(../images/bullet_basic.gif) no-repeat 0px 6px; */
+	padding-left: 10px;
+	padding-bottom: 5px;
+	margin-left:5px;
+	line-height:13px;
+}
+ul.news {
+	margin: 5px 5px 10px 0px;
+}
+	
+ul.news li {
+	/* background: url(/images/icon-goldarrow.gif) no-repeat 5px 4px; */
+	padding: 0px 0px 10px 20px;
+	line-height: 13px; }
+	
+ul.news li a { font-weight: bold; color : #0066CC; }
+ul.news li a:hover { color : #eeb211; }
+ul.news li a:focus { color : #eeb211; }
+
+ul.bullets li {
+	/* background: url(../images/bullet_basic.gif) no-repeat 0px 6px; */
+	padding-left: 10px;
+	padding-bottom: 5px;
+	margin-left:5px;
+	font-size: 11px;
+}
+ol.numberedList {
+	padding: 0px 5px 0px 15px;
+	font-size: 11px;
+}
+ol.numberedList li {
+	padding-bottom:10px; 
+}
+ol.numberedList a {
+	color: #0066CC; 
+}
+ol.numberedListlg {
+	padding: 0px 5px 0px 35px;
+	font-size: 12px;
+}
+ol.numberedListlg li {
+	padding-bottom:10px; 
+}
+ol.numberedListlg a {
+	color: #0066CC; 
+}
+
+.journalList {
+	line-height:18px;
+}
+.journalList a {color: #0066CC; }
+	
+/* A-Z NAVIGATION */
+.azNav {
+	text-align: left;
+	}
+.azNav a {
+   	font-weight: bold;
+   	padding:2px 4px 2px 4px;
+	border: 1px solid #bbb;
+	text-decoration: none;
+	color : #0066CC;
+	}
+.azNav a:hover {
+	background-color: #eee;
+	}
