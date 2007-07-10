@@ -38,6 +38,9 @@ class Collection
       #@institutions << default_institution
       # Just set the collection id to the session
       session[:collection] = {:institutions=>[], :services => {}}
+      (0..9).each do | priority |
+        session[:collection][:services][priority] = []
+      end
       @institutions.each do | inst |
         session[:collection][:institutions] << inst.id
       end
@@ -77,7 +80,7 @@ class Collection
     client = ResolverRegistry::Client.new
     client.lookup_all(ip).each do | inst |
       # If we already have an institution matching this guy, skip it. 
-      next if self.worldcat_institution_in_collection?(inst, :check_resolver_url => true)
+      #next if self.worldcat_institution_in_collection?(inst, :check_resolver_url => true)
           
       # If we can possibly have an SFX resolver, check for it.
       if ( (! inst.resolver.base_url.nil?) &&
@@ -87,9 +90,9 @@ class Collection
            check_supported_resolver(inst.resolver.base_url))
 
            # We checked for it, it's good
-           sfx = Sfx.new({:name=>inst.name, :url=>inst.resolver.base_url})
-           @services << sfx unless @services.index(sfx)
-           session[:collection][:services] << sfx.to_yaml
+           sfx = Sfx.new({"id"=>"#{inst.oclc_inst_symbol}_SFX", "priority"=>2, "display_name"=>inst.name, "base_url"=>inst.resolver.base_url})
+           @services[2] << sfx unless @services[2].index(sfx)
+           session[:collection][:services][2] << sfx.to_yaml
       elsif (! inst.resolver.base_url.nil?)
         # Okay, no SFX, but we can still do coins! 
         self.enable_session_coins(inst.resolver.base_url, inst.resolver.link_icon, inst.name, session)
@@ -104,26 +107,27 @@ class Collection
   def worldcat_institution_in_collection?(worldcat_inst, params={})      
     matched = false
 
-    catch (:found) do
-      @institutions.each do | coll_inst |
-        
-        matched = matched || 
-          (coll_inst.oclc_symbol ==  worldcat_inst.oclc_inst_symbol )      
-        matched = matched || 
-          (coll_inst.worldcat_registry_id == worldcat_inst.institution_id )
 
-        throw :found if matched # no need to keep looking if we've matched
-          
-        if params[:check_resolver_url]
-          coll_inst.services.each do | svc |
-            matched = matched || 
-              (svc.url == worldcat_inst.resolver.base_url )
-            throw :found if matched # don't need to keep looking if we've found
-          end          
-        end
+    @institutions.each do | coll_inst |
+      
+      matched = matched || 
+        (coll_inst.oclc_symbol ==  worldcat_inst.oclc_inst_symbol )      
+      matched = matched || 
+        (coll_inst.worldcat_registry_id == worldcat_inst.institution_id )
+
+      break if matched # no need to keep looking if we've matched
         
+      if params[:check_resolver_url]
+        coll_inst.services.each do | svc |
+          next unless svc.responds_to?(:base_url)          
+          matched = matched || 
+            (svc.base_url == worldcat_inst.resolver.base_url )
+          break if matched # don't need to keep looking if we've found
+        end          
       end
+      
     end
+
     return matched
   end
   
@@ -144,22 +148,21 @@ class Collection
     # currently work, so I've temporarily disabled it, all foreign
     # SFX instances will be assumed NOT available.
 
-    return false
-    
-  
-    require 'sfx_client'
+    require 'service_adaptors/sfx'
     ctx = OpenURL::ContextObject.new
     ctx.import_kev 'ctx_enc=info%3Aofi%2Fenc%3AUTF-8&ctx_id=10_1&ctx_tim=2006-8-4T14%3A11%3A44EDT&ctx_ver=Z39.88-2004&res_id=http%3A%2F%2Forion.galib.uga.edu%2Fsfx_git1&rft.atitle=Opening+up+OpenURLs+with+Autodiscovery&rft.aufirst=Daniel&rft.aulast=Chudnov&rft.date=2005-04-30&rft.genre=article&rft.issn=1361-3200&rft.issue=43&rft.jtitle=Ariadne&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&svc_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Asch_svc&url_ctx_fmt=info%3Aofi%3Afmt%3Akev%3Amtx%3Actx&url_ver=Z39.88-2004'
-    sfx = SfxClient.new(ctx, resolver)
-    response = sfx.do_request
+    sfx = Sfx.new({"base_url"=>resolver})
+    transport = OpenURL::Transport.new(resolver)
+    transport.add_context_object(ctx)
+    transport.extra_args["sfx.response_type"]="multi_obj_xml"    
+    response = sfx.do_request(transport)
     begin
       doc = REXML::Document.new response
     rescue REXML::ParseException
       return false
     end
-    unless set = doc.elements['ctx_obj_set']
-      return false
-    end
+    return false unless doc.elements['ctx_obj_set']
+      
     return true
   end    
   
