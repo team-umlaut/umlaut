@@ -15,6 +15,8 @@ end
   # Monkey patching to fix. 
   module ActiveRecord
      class Base
+       class << self
+
        def clear_reloadable_connections!
          if @@allow_concurrency           
            # Hash keyed by thread_id in @@active_connections. Hash of hashes.
@@ -36,5 +38,6 @@ end
  	         end
  	       end
 	     end 
-     end 
+     end
+     end  
   end
