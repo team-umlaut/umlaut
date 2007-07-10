@@ -6,9 +6,8 @@ class YahooSearch < Service
   attr_reader :url, :api_key
   
   def handle(request)
-    raise "YahooSearch: Url or API key are nil. They must be filled out in config for YahooSearch service. The password should be an API key from Yahoo: https://developer.yahoo.com/wsregapp/index.php" if self.url.nil? or self.api_key.nil?
+    raise "YahooSearch: Url or API key are nil. They must be filled out in config for YahooSearch service. The API key should be an API key from Yahoo: https://developer.yahoo.com/wsregapp/index.php" if self.url.nil? or self.api_key.nil?
 
-    debugger
     catch (:no_op) do
       query = self.build_query(request.referent)
       links = self.do_query(query)
@@ -27,7 +26,6 @@ class YahooSearch < Service
   end
   
   def build_query(rft)
-    debugger
     query = ""
     metadata = rft.metadata
     ['atitle','title','jtitle','btitle','au','aulast', 'date'].each do | field |
