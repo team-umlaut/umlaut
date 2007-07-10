@@ -76,7 +76,6 @@ class Collection
 
     client = ResolverRegistry::Client.new
     client.lookup_all(ip).each do | inst |
-      debugger
       # If we already have an institution matching this guy, skip it. 
       next if self.worldcat_institution_in_collection?(inst, :check_resolver_url => true)
           
@@ -108,7 +107,6 @@ class Collection
     catch (:found) do
       @institutions.each do | coll_inst |
         
-      debugger
         matched = matched || 
           (coll_inst.oclc_symbol ==  worldcat_inst.oclc_inst_symbol )      
         matched = matched || 
@@ -180,11 +178,15 @@ class Collection
   #end
   
   def gather_services
-    InstitutionList.get('global')["services"].each do | svc |   
-      s = ServiceList.get(svc)
-      @services[s.priority] << s
-    end
+    # Global institution should be marked as a default, we don't need
+    # special treatment for it. 
+    #InstitutionList.get('global')["services"].each do | svc |   
+    #  s = ServiceList.get(svc)
+    #  @services[s.priority] << s
+    #end
     @institutions.each do | inst |
+      next if inst.services.nil?  
+    
       inst.services.each do | svc |
         @services[svc.priority] << svc
       end
