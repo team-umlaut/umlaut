@@ -8,7 +8,7 @@ class ServiceBundle
   def handle(request)
     threads = []
     @services.each do | service |      
-      threads << Thread.new(request.id, service) do | t_request_id, t_service |
+      threads << Thread.new(request.id, service.clone) do | t_request_id, t_service |
         begin
           # Reload the request, to make sure we have our own copy, not
           # shared with other threads. A bit inefficient, but we help
