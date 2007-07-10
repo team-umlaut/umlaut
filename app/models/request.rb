@@ -39,7 +39,7 @@ class Request < ActiveRecord::Base
     return req
   end
   
-  def dispatched(service, success)
+  def dispatched(service, success, exception=nil)
     ds = self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
     unless ds
       # For some reason, this way of creating wasn't working to set up
@@ -53,6 +53,7 @@ class Request < ActiveRecord::Base
       self.dispatched_services << ds
     end    
     ds.successful = success
+    ds.exception = exception.to_yaml if exception
 
     ds.save!
   end
