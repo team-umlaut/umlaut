@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 3) do
+ActiveRecord::Schema.define(:version => 4) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -24,9 +24,9 @@ ActiveRecord::Schema.define(:version => 3) do
     t.column "created_at",          :datetime,                :null => false
   end
 
-  add_index "clickthroughs", ["created_at"], :name => "click_created_idx"
-  add_index "clickthroughs", ["service_response_id"], :name => "click_serv_resp_idx"
   add_index "clickthroughs", ["request_id"], :name => "click_req_id"
+  add_index "clickthroughs", ["service_response_id"], :name => "click_serv_resp_idx"
+  add_index "clickthroughs", ["created_at"], :name => "click_created_idx"
 
   create_table "coverages", :force => true do |t|
     t.column "journal_id", :integer, :default => 0,  :null => false
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 3) do
     t.column "service_id", :string,   :default => "0",   :null => false
     t.column "successful", :boolean,  :default => false, :null => false
     t.column "updated_at", :datetime,                    :null => false
+    t.column "exception",  :text
   end
 
   add_index "dispatched_services", ["request_id", "service_id"], :name => "dptch_request_id"
@@ -59,8 +60,8 @@ ActiveRecord::Schema.define(:version => 3) do
     t.column "configuration",        :text
   end
 
-  add_index "institutions", ["default_institution"], :name => "inst_dflt_idx"
   add_index "institutions", ["name"], :name => "inst_name"
+  add_index "institutions", ["default_institution"], :name => "inst_dflt_idx"
 
   create_table "institutions_users", :force => true do |t|
     t.column "institution_id", :integer, :default => 0, :null => false
@@ -94,12 +95,12 @@ ActiveRecord::Schema.define(:version => 3) do
     t.column "updated_at",       :datetime
   end
 
-  add_index "journals", ["updated_at"], :name => "jrnl_tstamp_idx"
-  add_index "journals", ["issn", "eissn"], :name => "jrnl_issn_idx"
-  add_index "journals", ["title"], :name => "jrnl_title_idx"
-  add_index "journals", ["title_source_id"], :name => "jrnl_title_source_id"
-  add_index "journals", ["normalized_title", "page"], :name => "jrnl_norm_title"
   add_index "journals", ["object_id"], :name => "j_object_id"
+  add_index "journals", ["normalized_title", "page"], :name => "jrnl_norm_title"
+  add_index "journals", ["title_source_id"], :name => "jrnl_title_source_id"
+  add_index "journals", ["title"], :name => "jrnl_title_idx"
+  add_index "journals", ["issn", "eissn"], :name => "jrnl_issn_idx"
+  add_index "journals", ["updated_at"], :name => "jrnl_tstamp_idx"
 
   create_table "keywords", :force => true do |t|
     t.column "term",         :string, :default => "", :null => false
@@ -118,7 +119,7 @@ ActiveRecord::Schema.define(:version => 3) do
   create_table "referent_values", :force => true do |t|
     t.column "referent_id",      :integer,               :default => 0,     :null => false
     t.column "key_name",         :string,  :limit => 50, :default => "",    :null => false
-    t.column "value",            :text,                  :default => ""
+    t.column "value",            :text
     t.column "normalized_value", :string
     t.column "metadata",         :boolean,               :default => false, :null => false
     t.column "private_data",     :boolean,               :default => false, :null => false
@@ -158,12 +159,12 @@ ActiveRecord::Schema.define(:version => 3) do
     t.column "params",      :string,   :limit => 1024
   end
 
-  add_index "requests", ["created_at"], :name => "req_created_at"
-  add_index "requests", ["session_id"], :name => "req_sess_idx"
   add_index "requests", ["referent_id", "referrer_id"], :name => "context_object_idx"
+  add_index "requests", ["session_id"], :name => "req_sess_idx"
+  add_index "requests", ["created_at"], :name => "req_created_at"
 
   create_table "service_responses", :force => true do |t|
-    t.column "service_id",       :string, :limit => 25,                  :null => false
+    t.column "service_id",       :string, :limit => 25,  :default => "", :null => false
     t.column "response_key",     :string, :limit => 100, :default => "", :null => false
     t.column "value_string",     :string
     t.column "value_alt_string", :string
