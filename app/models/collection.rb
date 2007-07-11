@@ -119,7 +119,7 @@ class Collection
         
       if params[:check_resolver_url]
         coll_inst.services.each do | svc |
-          next unless svc.responds_to?(:base_url)          
+          next unless svc.respond_to?(:base_url)          
           matched = matched || 
             (svc.base_url == worldcat_inst.resolver.base_url )
           break if matched # don't need to keep looking if we've found
