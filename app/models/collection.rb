@@ -90,7 +90,7 @@ class Collection
            check_supported_resolver(inst.resolver.base_url))
 
            # We checked for it, it's good
-           sfx = Sfx.new({"id"=>"#{inst.oclc_inst_symbol}_SFX", "priority"=>2, "display_name"=>inst.name, "base_url"=>inst.resolver.base_url})
+           sfx = Sfx.new({"id"=>"#{inst.oclc_inst_symbol}_#{inst.institution_id}_SFX", "priority"=>2, "display_name"=>inst.name, "base_url"=>inst.resolver.base_url})
            @services[2] << sfx unless @services[2].index(sfx)
            session[:collection][:services][2] << sfx.to_yaml
       elsif (! inst.resolver.base_url.nil?)
@@ -109,20 +109,19 @@ class Collection
 
 
     @institutions.each do | coll_inst |
+      break if matched # no need to keep looking if we've matched
       
       matched = matched || 
         (coll_inst.oclc_symbol ==  worldcat_inst.oclc_inst_symbol )      
       matched = matched || 
         (coll_inst.worldcat_registry_id == worldcat_inst.institution_id )
-
-      break if matched # no need to keep looking if we've matched
         
       if params[:check_resolver_url]
         coll_inst.services.each do | svc |
+          break if matched # don't need to keep looking if we've found          
           next unless svc.respond_to?(:base_url)          
           matched = matched || 
-            (svc.base_url == worldcat_inst.resolver.base_url )
-          break if matched # don't need to keep looking if we've found
+            (svc.base_url == worldcat_inst.resolver.base_url )      
         end          
       end
       
