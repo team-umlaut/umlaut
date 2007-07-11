@@ -143,9 +143,7 @@ class Collection
   
   def check_supported_resolver(resolver)
     # This method is supposed to test a suspected foreign SFX instance
-    # to see if we can succesfully connect to the API. However, it doesn't
-    # currently work, so I've temporarily disabled it, all foreign
-    # SFX instances will be assumed NOT available.
+    # to see if we can succesfully connect to the API. 
 
     require 'service_adaptors/sfx'
     ctx = OpenURL::ContextObject.new
