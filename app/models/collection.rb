@@ -80,7 +80,7 @@ class Collection
     client = ResolverRegistry::Client.new
     client.lookup_all(ip).each do | inst |
       # If we already have an institution matching this guy, skip it. 
-      #next if self.worldcat_institution_in_collection?(inst, :check_resolver_url => true)
+      next if self.worldcat_institution_in_collection?(inst, :check_resolver_url => true)
           
       # If we can possibly have an SFX resolver, check for it.
       if ( (! inst.resolver.base_url.nil?) &&
