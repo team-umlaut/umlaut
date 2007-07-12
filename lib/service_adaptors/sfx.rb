@@ -75,7 +75,10 @@ class Sfx < Service
     require 'hpricot'
     require 'cgi'
 
-    journal_index_on = AppConfig.param("use_umlaut_journal_index", true)
+    #journal_index_on = AppConfig.param("use_umlaut_journal_index", true)
+    # Bug in appconfig
+    journal_index_on = AppConfig["use_umlaut_journal_index"]
+    journal_index_on = true if journal_index_on.nil?
     
     doc = Hpricot(resolver_response)     
     # parse perl_data from response
@@ -110,7 +113,7 @@ class Sfx < Service
       if object_id
         journal = Journal.find_by_object_id(object_id)
       elsif metadata['issn']
-        journal = Journal.find_by_issn(metadata['issn'], metadata['eissn'])
+        journal = Journal.find_by_issn_or_eissn(metadata['issn'], metadata['eissn'])
       end  
       if journal
         journal.categories.each do | category |
