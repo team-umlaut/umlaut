@@ -74,6 +74,9 @@ class Sfx < Service
   def parse_response(resolver_response, request)
     require 'hpricot'
     require 'cgi'
+
+    journal_index_on = AppConfig.param("use_umlaut_journal_index", true)
+    
     doc = Hpricot(resolver_response)     
     # parse perl_data from response
     related_items = []
@@ -103,14 +106,16 @@ class Sfx < Service
       request_id = request_id_node.inner_html
     end    
 
-    if object_id
-      journal = Journal.find_by_object_id(object_id)
-    elsif metadata['issn']
-      journal = Journal.find_by_issn_or_eissn(metadata['issn'], metadata['eissn'])
-    end  
-    if journal
-      journal.categories.each do | category |
-        request.add_service_response({:service=>self,:key=>'SFX',:value_string=>category.category,:value_text=>category.subcategory},['subject'])
+    if ( journal_index_on )
+      if object_id
+        journal = Journal.find_by_object_id(object_id)
+      elsif metadata['issn']
+        journal = Journal.find_by_issn(metadata['issn'], metadata['eissn'])
+      end  
+      if journal
+        journal.categories.each do | category |
+          request.add_service_response({:service=>self,:key=>'SFX',:value_string=>category.category,:value_text=>category.subcategory},['subject'])
+        end
       end
     end
 
@@ -176,7 +181,7 @@ class Sfx < Service
         if (sfx_service_type == "getFullTxt" && @get_coverage )
           if ( loaded_coverage_strings ) # used the external extra SFX api
             coverage = loaded_coverage_strings[target_service_id]           
-          elsif journal  # Umlaut journal index
+          elsif (journal_index_on && journal)  # Umlaut journal index
             cvg = journal.coverages.find(:first, :conditions=>['provider = ?', (target/"/target_public_name").inner_html])
             coverage = cvg.coverage if cvg
           end
