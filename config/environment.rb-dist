@@ -68,3 +68,8 @@ config.app_config.threaded_services = true
 # screens. Recommend that you put local layouts in
 # app/views/layouts/local/
 # config.app_config.resolve_layout = "local/my_local_layout"
+
+# Are we using the Umlaut journal db system? jrochkind does not. Defaults
+# to true, however. 
+# config.app_config.use_umlaut_journal_index = false
+
