@@ -9,7 +9,7 @@
 #  Specific service_adaptor classes may have specific addtional configuration,
 #  commonly including 'password' or 'api_key'.
 #  specific service can put " required_config_parms :param1, :param2"
-#  in definition, for requirement exception throwing on initialize. 
+#  in definition, for requirement exception raising on initialize. 
 
 class Service
   require 'ruby-debug' 
@@ -23,21 +23,23 @@ class Service
     end
 
     # check required params, and throw if neccesary
-    
-    required_params = @@required_params_for_subclass[self.class.name]
-    unless (required_params.nil?)
-      required_params.each do |param|
-        begin
+
+    required_params = Array.new
+    # Some things required for all services
+    required_params << "priority"
+    # Custom things for this particular sub-class
+    required_params.concat( @@required_params_for_subclass[self.class.name] )
+    required_params.each do |param|
+      begin
           value = self.instance_variable_get('@' + param.to_s)
           # docs say it raises a nameerror if it doesn't exist, docs
           # lie. So we'll just raise one ourselves, and catch it, to
           # handle both cases.
           raise NameError if value.nil?          
-        rescue NameError
-          raise ArgumentError.new("Missing Service configuration parameter. Service type #{self.class} requires a config parameter named '#{param}''. Check your config/services.yml file.")
-        end      
-      end
-    end
+      rescue NameError
+      raise ArgumentError.new("Missing Service configuration parameter. Service type #{self.class} (id: #{self.id}) requires a config parameter named '#{param}'. Check your config/services.yml file.")
+      end      
+    end    
   end
 
   def display_name
@@ -52,7 +54,7 @@ class Service
   # means of a set of methods "to_[service type name]" implemented in sub-class
   #. parseResponse will find those. Subclasses will not generally override
   # view_data_from_service_type. 
-  def view_data_from_service_type(service_type_obj)
+  def view_data_from_service_type(service_type_obj)  
     service_type_code = service_type_obj.service_type
     service_response = service_type_obj.service_response
     begin
@@ -85,7 +87,8 @@ class Service
       # Key on name of specific sub-class. Since this is a class
       # method, that should be self.name
       @@required_params_for_subclass[self.name] ||= Array.new
-      @@required_params_for_subclass[self.name].push( p )
+      a = @@required_params_for_subclass[self.name]
+      a.push( p ) unless a.include?( p )
     end
   end
   
