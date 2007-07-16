@@ -38,8 +38,9 @@ class Request < ActiveRecord::Base
     
     return req
   end
-  
-  def dispatched(service, success, exception=nil)
+
+  # Status can be true, false, or one of the DispatchedService status codes.
+  def dispatched(service, status, exception=nil)
     ds = self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
     unless ds
       # For some reason, this way of creating wasn't working to set up
@@ -49,19 +50,33 @@ class Request < ActiveRecord::Base
       #ds = self.dispatched_services.new()
       ds = DispatchedService.new
       ds.service_id = service.id
-      ds.successful = success
+      ds.status = status
       self.dispatched_services << ds
     end    
-    ds.successful = success
-    ds.exception = exception.to_yaml if exception
+    ds.status = status
 
+    if (exception)
+      # Oops, that doesn't keep the backtrace, which is what we wanted. Doh!
+      # ds.exception = exception.to_yaml if exception
+      e_hash = Hash.new
+      e_hash[:class_name] = exception.class.name
+      e_hash[:message] = exception.message
+      e_hash[:backtrace] = exception.backtrace
+      ds.exception = e_hash.to_yaml
+    end
+    
     ds.save!
   end
-  
+
+  # This method checks to see if a particular service has been dispatched, and
+  # is succesful or in progress---that is, if this method returns false,
+  # you might want to dispatch the service (again). If it returns true though,
+  # don't, it's been done. 
   def dispatched?(service)
     ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
-    return true if ds and ds.successful?
-    return false
+    # Return true if it exists and is any value but FailedTemporary.
+    # FailedTemporary, it's worth running again, the others we shouldn't. 
+    return (! ds.nil?) && (ds.status != DispatchedService::FailedTemporary)
   end
   
   def add_service_response(response_data,service_type=[])
