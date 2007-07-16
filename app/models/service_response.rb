@@ -5,13 +5,14 @@ be displayed on the resolve menu.
 
 ServiceResponses have a service type, represented by a string. When displaying, ServiceResponses are typically grouped into lists by service type. ServiceResponses are tied to the Service that created them, with the service accessor.
 
-ServiceResponses are tied to one or more requests. The data architecture allows a ServiceResponse to be tied to multiple requests, perhaps to support some kind of cacheing re-use in the future. But at present, the code doesn't do this, a ServiceResponse will really only be related to one request. 
-
 ServiceResponses have a few basic attributes stored in columns in the db: 'display_text' is the text to put in the hyperlink. 'notes' is available for longer explanatory text (\n in notes will be converted to <br> by view). 'url' can be used to store the url to link to (but see below on linking mechanism). 
 
 [The legacy columns response_key, value_string, value_alt_string and value_text are deprecated and should not be used, but some legacy Services still use them, so they're still there for now].
 
-In addition, there's a Hash (automatically serialized by ActiveRecord) that's stored in service_data, for arbitrary additional data that a Service can store--whatever you want, just put it in. However, there are conventions that may save you time when passing data to the View. See below. You can also access [] directly on teh ServiceResponse to get to this hash. 
+In addition, there's a Hash (automatically serialized by ActiveRecord) that's stored in service_data, for arbitrary additional data that a Service can store--whatever you want, just put it in. However, there are conventions that may save you time when passing data to the View. See below. You can also access [] directly on teh ServiceResponse to get to this hash.
+
+ServiceResponse is connected to a Request via the ServiceType join table. The data architecture allows a ServiceResponse to be tied to multiple requests, perhaps to support some kind of cacheing re-use in the future. But at present, the code doesn't do this, a ServiceResponse will really only be related to one request. However, a ServiceResponse can be related to a single Request more than once--once per each type of service response. ServiceType is really a three way join, representing a ServiceResponse, attached to a particular Request, with a particular ServiceTypeValue.  
+
 
 View Display of ServiceResponse
 
