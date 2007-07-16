@@ -55,7 +55,7 @@ class Sfx < Service
     transport.add_context_object(context_object)
     transport.extra_args["sfx.response_type"]="multi_obj_xml"
     @get_coverage = false
-    unless context_object.referent.metadata.has_key?("issue") or context_object.referent.metadata.has_key?("volume") or context_object.referent.metadata.has_key?("date")    
+    if (context_object.referent.metadata["issue"].blank? && context_object.referent.metadata["volume"].blank? && context_object.referent.metadata["date"].blank?)    
       transport.extra_args["sfx.ignore_date_threshold"]="1"
       transport.extra_args["sfx.show_availability"]="1"
       @get_coverage = true
@@ -74,7 +74,7 @@ class Sfx < Service
   def parse_response(resolver_response, request)
     require 'hpricot'
     require 'cgi'
-
+    
     #journal_index_on = AppConfig.param("use_umlaut_journal_index", true)
     # Bug in appconfig
     journal_index_on = AppConfig["use_umlaut_journal_index"]
@@ -212,35 +212,45 @@ class Sfx < Service
         value_text[:citation_volume] = metadata['volume'];
         value_text[:citation_issue] = metadata['issue']
         value_text[:citation_spage] = metadata['spage']
-        
 
-        request.add_service_response({:service=>self,:key=>(target/"/target_public_name").inner_html,:value_string=>value_string,:value_text=>value_text.to_yaml},[umlaut_service])
+        display_text = (target/"/target_public_name").inner_html
+
+        #        :value_text=>value_text.to_yaml,
+
+        initHash = {:service=>self,
+        #:value_text=>value_text.to_yaml,
+        :service_data=>value_text, :display_text=>display_text,
+        :notes=>value_text[:notes]}
+        request.add_service_response(initHash , [umlaut_service])
       end
     end   
   end
   
-  def to_fulltext(response)  
-    value_text = YAML.load(response.value_text)
-    return {:display_text=>response.response_key, :note=>value_text[:note],:coverage=>value_text[:coverage],:source=>value_text[:source]}
-  end
+  #def to_fulltext(response)
+
+  #  return response
+    
+    #value_text = YAML.load(response.value_text)
+    #hash = {:display_text=>response.response_key, :notes=>value_text[:notes],:coverage=>value_text[:coverage],:source=>value_text[:source]}
+    #1+1
+    #hash = response
+    #return hash 
+  #end
   
-  def response_to_view_data(response)
-    # default for any type, same as to_fulltext
-    return to_fulltext(response)
-  end
+  #def response_to_view_data(response)
+  #  return response
+  #end
   
   def sfx_click_passthrough
     # From config, or if not that, from app default, or if not that, default
     # to false. 
     return @click_passthrough || AppConfig.default_sfx_click_passthrough || false;
   end
-  
-  def response_url(response)
 
-    customData = YAML.load(response.value_text)
-              
+  # Handles click passthrough to SFX, if configured so. 
+  def response_url(response)              
     if ( ! self.sfx_click_passthrough )
-      return CGI.unescapeHTML(customData[:url])
+      return CGI.unescapeHTML(response[:url])
     else
       # Okay, wacky abuse of SFX undocumented back-ends to pass the click
       # through SFX, so statistics are captured by SFX. 
@@ -248,17 +258,17 @@ class Sfx < Service
       sfx_resolver_cgi_url =  @base_url + "/cgi/core/sfxresolver.cgi"      
       # Not sure if fixing tmp_ctx_obj_id to 1 is safe, but it seems to work,
       # and I don't know what the value is or how else to know it. 
-      dataString = "?tmp_ctx_svc_id=#{customData[:sfx_target_index]}"
-      dataString += "&tmp_ctx_obj_id=1&service_id=#{customData[:sfx_target_service_id]}"
-      dataString += "&request_id=#{customData[:sfx_request_id]}"
+      dataString = "?tmp_ctx_svc_id=#{response[:sfx_target_index]}"
+      dataString += "&tmp_ctx_obj_id=1&service_id=#{response[:sfx_target_service_id]}"
+      dataString += "&request_id=#{response[:sfx_request_id]}"
       dataString += "&rft.year="
-      dataString += customData[:citation_year].to_s if customData[:citation_year]
+      dataString += response[:citation_year].to_s if response[:citation_year]
       dataString += "&rft.volume="
-      dataString += customData[:citation_volume].to_s if customData[:citation_volume]
+      dataString += response[:citation_volume].to_s if response[:citation_volume]
       dataString += "&rft.issue="
-      dataString += customData[:citation_issue].to_s if customData[:citation_issue]
+      dataString += response[:citation_issue].to_s if response[:citation_issue]
       dataString += "&rft.spage="
-      dataString += customData[:citation_spage].to_s if customData[:citation_issue]
+      dataString += response[:citation_spage].to_s if response[:citation_issue]
 
       return sfx_resolver_cgi_url + dataString       
     end

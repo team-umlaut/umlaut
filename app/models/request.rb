@@ -1,7 +1,11 @@
 class Request < ActiveRecord::Base
   
   has_many :dispatched_services
-  has_many :service_types
+  # Order service_type joins (ie, service_responses) by id, so the first
+  # added to the db comes first. Less confusing to have a consistent order.
+  # Also lets installation be sure services run first will have their
+  # responses show up first. 
+  has_many :service_types, :order=>'id ASC'
   belongs_to :referent
   belongs_to :referrer
 
@@ -81,27 +85,36 @@ class Request < ActiveRecord::Base
   
   def add_service_response(response_data,service_type=[])
     unless response_data.empty?
-      svc_resp = nil
-      ServiceResponse.find(:all, :conditions=>{:service_id => response_data[:service].id, :response_key => response_data[:key], :value_string => response_data[:value_string],:value_alt_string => response_data[:value_alt_string]}).each do | resp |
-        svc_resp = resp if YAML.load(resp.value_text.to_s) == YAML.load(response_data[:value_text].to_s)
-      end
-      unless svc_resp
+      #svc_resp = nil
+      
+      #ServiceResponse.find(:all, :conditions=>{:service_id => #response_data[:service].id, :response_key => response_data[:key], #:value_string => response_data[:value_string],:value_alt_string => response_data[:value_alt_string]}).each do | resp |
+      #  svc_resp = resp if YAML.load(resp.value_text.to_s) == YAML.load(response_data[:value_text].to_s)
+      #end
+      #unless svc_resp
         svc_resp = ServiceResponse.new
+
+        svc_resp.url = response_data[:url]
+        svc_resp.notes = response_data[:notes]
+        svc_resp.display_text = response_data[:display_text]
+        svc_resp.service_data = response_data[:service_data]
+        
         svc_resp.service_id = response_data[:service].id
         svc_resp.response_key = response_data[:key]
         svc_resp.value_string = response_data[:value_string]
         svc_resp.value_alt_string = response_data[:value_alt_string]
         svc_resp.value_text = response_data[:value_text]           
-        svc_resp.save
-      end
+        svc_resp.save!
+        
+      #end
     end
     unless service_type.empty?
       service_type.each do | st |
-        stype = ServiceType.find(:first, :conditions=>{:request_id => self.id, :service_response_id => svc_resp.id,:service_type => st})
-        unless stype
-          stype = ServiceType.new(:request_id => self.id, :service_response_id => svc_resp.id, :service_type => st)
-          stype.save
-        end
+        #stype = ServiceType.find(:first, :conditions=>{:request_id => self.id, :service_response_id => svc_resp.id,:service_type => st})
+        
+        #unless stype
+          stype = ServiceType.new(:request => self, :service_response => svc_resp, :service_type => st)
+          stype.save!
+        #end
       end
     end
   end    

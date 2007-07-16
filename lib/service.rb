@@ -54,7 +54,8 @@ class Service
   # means of a set of methods "to_[service type name]" implemented in sub-class
   #. parseResponse will find those. Subclasses will not generally override
   # view_data_from_service_type. 
-  def view_data_from_service_type(service_type_obj)  
+  def view_data_from_service_type(service_type_obj)
+  
     service_type_code = service_type_obj.service_type
     service_response = service_type_obj.service_response
     begin
@@ -69,11 +70,13 @@ class Service
   end
 
   # Default implementation to take a ServiceResponse and parse
-  # into a hash of values useful to the view. Usually sub-classes
-  # will over-ride, but this is a nice generic basic implementation. 
+  # into a hash of values useful to the view. Basic implementation
+  # just returns the service_response itself, as ServiceResponse
+  # implements the hash accessor method [] . 
   def response_to_view_data(service_response)
       # That's it, pretty simple.
-      return { :display_text => service_response.response_key }
+      return service_response
+      #return { :display_text => service_response.response_key }
   end
 
   # Sub-class can call class method like:
@@ -91,5 +94,16 @@ class Service
       a.push( p ) unless a.include?( p )
     end
   end
+
+ # This method is called by Umlaut when user clicks on a service response. 
+ # Default implementation here just returns response['url']. You can
+ # over-ride in a sub-class to provide custom implementation of on-demand
+ # url generation.
+ def response_url(response)
+   url = response[:url]
+   raise "No url provided by service response" if url.nil? || url.empty?
+   return url
+ end
+
   
 end
