@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 4) do
+ActiveRecord::Schema.define(:version => 6) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -44,11 +44,11 @@ ActiveRecord::Schema.define(:version => 4) do
   add_index "crossref_lookups", ["doi", "created_on"], :name => "xref_lookup_doi"
 
   create_table "dispatched_services", :force => true do |t|
-    t.column "request_id", :integer,  :default => 0,     :null => false
-    t.column "service_id", :string,   :default => "0",   :null => false
-    t.column "successful", :boolean,  :default => false, :null => false
-    t.column "updated_at", :datetime,                    :null => false
+    t.column "request_id", :integer,  :default => 0,   :null => false
+    t.column "service_id", :string,   :default => "0", :null => false
+    t.column "updated_at", :datetime,                  :null => false
     t.column "exception",  :text
+    t.column "status",     :string
   end
 
   add_index "dispatched_services", ["request_id", "service_id"], :name => "dptch_request_id"
@@ -164,11 +164,15 @@ ActiveRecord::Schema.define(:version => 4) do
   add_index "requests", ["created_at"], :name => "req_created_at"
 
   create_table "service_responses", :force => true do |t|
-    t.column "service_id",       :string, :limit => 25,  :default => "", :null => false
-    t.column "response_key",     :string, :limit => 100, :default => "", :null => false
+    t.column "service_id",       :string, :limit => 25, :default => "", :null => false
+    t.column "response_key",     :string,               :default => ""
     t.column "value_string",     :string
     t.column "value_alt_string", :string
     t.column "value_text",       :text
+    t.column "display_text",     :string
+    t.column "url",              :string
+    t.column "notes",            :text
+    t.column "service_data",     :text
   end
 
   add_index "service_responses", ["service_id", "response_key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"
