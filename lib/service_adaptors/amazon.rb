@@ -1,8 +1,9 @@
 require 'hpricot'
 class Amazon < Service
+  required_config_params :url, :api_key
   attr_reader :url
   def handle(request)
-    return request.dispatched(self, true) if request.referent.metadata["isbn"].nil? or request.referent.metadata["isbn"].blank?
+    return request.dispatched(self, true) if request.referent.metadata["isbn"].blank? 
     # get the Amazon query
     query = "Service=AWSECommerceService&SubscriptionId=#{@api_key}&Operation=ItemLookup&ResponseGroup=Large,Subjects&ItemId="+request.referent.metadata["isbn"].gsub(/[^0-9X]/,'')           
     uri = URI.parse(self.url+'?'+query)
@@ -31,7 +32,7 @@ class Amazon < Service
     # collect cover art urls
     ["small","medium","large"].each do | size |
       if img = (aws/"/ItemLookupResponse/Items/Item/"+size.capitalize+"Image/URL")
-        request.add_service_response({:service=>self, :key=>size, :value_string=>asin},['image'])            
+        request.add_service_response({:service=>self, :key=>size, :value_string=>asin},['cover_image'])            
       end
     end               
     
