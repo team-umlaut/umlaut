@@ -143,13 +143,14 @@ else %>
   <!--close availability--></div>
 
 <%
-unless get_service_type('relevant links').empty? %>
+relevant_links = get_service_type('relevant_link')
+unless relevant_links.empty? %>
   <div class="line"></div>
   <div class="closestResults">
   <div id="show_closest_web_results">
   <p><strong>Closest Web Results:</strong>  [<%= link_to_function "hide", "activelyHideWebResults()"%>]</p>
 <ul>
-<% get_service_type('relevant links').each do |web|
+<% relevant_link.each do |web|
    target = web.service.to_web_link
 %>
 <li><%= link_to target[:title], {:controller=>'link_router', :id=>web.id}, 'target'=>"_blank"%>

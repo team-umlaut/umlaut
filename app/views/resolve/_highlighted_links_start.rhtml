@@ -1,8 +1,9 @@
-<% unless get_service_type('highlighted links').empty? %>
+<% highlighted_links = get_service_type('highlighted_link')
+   unless highlighted_links.empty? %>
 <div class="seeAlso">
 <div class="smGrayBox">
 <strong>See also:</strong>
-<% get_service_type('highlighted links').each do |hl| 
+<% highlighted_link.each do |hl| 
     target = hl.service.to_highlighted_link
 %>
 <p class="tightbullets"><%= link_to target[:title], {:controller=>'link_router', :id=>hl.id}, :target=>'_blank' %>

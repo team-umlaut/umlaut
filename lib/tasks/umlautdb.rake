@@ -1,10 +1,8 @@
 namespace :umlautdb do
-  desc "Loads in initial fixed data for an umlaut installation."
-
-  task :load_initial_data => :environment do
+  desc "Loads in initial set of irrelvant_sites and relevant_sites"
+  task :load_sites => :environment do
     require 'active_record/fixtures'
-  
-  
+    
     # Load a starting set of relevant_sites and irrelevant_sites
     # Magic from Rails book to load a fixture in a migration
     fixed_data_dir = File.join(RAILS_ROOT, "db", "orig_fixed_data")
@@ -24,6 +22,38 @@ namespace :umlautdb do
       puts "irrelevant_sites is not empty, so not loading initial data set."
     end
   end
+
+  desc "Loads in standard Rails service_type_values."
+  task :load_service_type_values => :environment do
+    require 'yaml'
+  
+    # Load in starting set of ServiceTypeValue.
+    puts "Loading service type values from db/orig_fixed_data/service_type_values.yml"
+    ServiceTypeValue.enumeration_model_updates_permitted = true
+    
+    fixed_data_dir = File.join(RAILS_ROOT, "db", "orig_fixed_data")
+    service_type_values = YAML.load_file( File::join(fixed_data_dir, 'service_type_values.yml') )
+    
+    service_type_values.each_pair do |name, hash|
+      #require 'ruby-debug'
+      #debugger
+      existing = ServiceTypeValue.find(:first, :conditions=>["id = ?", hash['id'] ])
+      if (existing)
+        puts "ServiceTypeValue #{value['name']} NOT inserted, as id #{value['id']} already exists in db."
+      else
+        # Add the YAML label to the hash, for initialization of our AR without
+        # needing to repeat ourselves. 
+        hash[:name] = name
+        new_value = ServiceTypeValue.new( hash )
+        new_value.id = hash['id']
+        new_value.save!
+      end      
+    end
+    ServiceTypeValue.enumeration_model_updates_permitted = false    
+  end
+  
+  desc "Loads in all initial fixed data for an umlaut installation."
+  task :load_initial_data => [:load_sites, :load_service_type_values] 
 
   desc "Syncs db to match config/institutions.yml. Will create institutions as neccesary, but will never delete any institutions from db. "
   

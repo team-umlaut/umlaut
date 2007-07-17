@@ -82,7 +82,10 @@ class Request < ActiveRecord::Base
     # FailedTemporary, it's worth running again, the others we shouldn't. 
     return (! ds.nil?) && (ds.status != DispatchedService::FailedTemporary)
   end
-  
+
+  # second arg is an array of ServiceTypeValue objects, or
+  # an array of 'names' of ServiceTypeValue objects. Ie,
+  # ServiceTypeValue[:fulltext], or "fulltext" both work. 
   def add_service_response(response_data,service_type=[])
     unless response_data.empty?
       #svc_resp = nil
@@ -112,7 +115,7 @@ class Request < ActiveRecord::Base
         #stype = ServiceType.find(:first, :conditions=>{:request_id => self.id, :service_response_id => svc_resp.id,:service_type => st})
         
         #unless stype
-          stype = ServiceType.new(:request => self, :service_response => svc_resp, :service_type => st)
+          stype = ServiceType.new(:request => self, :service_response => svc_resp, :service_type_value => st)
           stype.save!
         #end
       end

@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 6) do
+ActiveRecord::Schema.define(:version => 9) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -177,13 +177,19 @@ ActiveRecord::Schema.define(:version => 6) do
 
   add_index "service_responses", ["service_id", "response_key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"
 
-  create_table "service_types", :force => true do |t|
-    t.column "request_id",          :integer,               :default => 0,  :null => false
-    t.column "service_response_id", :integer,               :default => 0,  :null => false
-    t.column "service_type",        :string,  :limit => 35, :default => "", :null => false
+  create_table "service_type_values", :force => true do |t|
+    t.column "name",                :string
+    t.column "display_name",        :string
+    t.column "display_name_plural", :string
   end
 
-  add_index "service_types", ["request_id", "service_response_id", "service_type"], :name => "svc_type_idx"
+  create_table "service_types", :force => true do |t|
+    t.column "request_id",            :integer, :default => 0, :null => false
+    t.column "service_response_id",   :integer, :default => 0, :null => false
+    t.column "service_type_value_id", :integer,                :null => false
+  end
+
+  add_index "service_types", ["request_id", "service_response_id"], :name => "svc_type_idx"
 
   create_table "sessions", :force => true do |t|
     t.column "sessid", :string, :limit => 32

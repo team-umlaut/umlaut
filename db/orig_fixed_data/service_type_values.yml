@@ -1,0 +1,49 @@
+fulltext:
+  id: 1
+  display_name: Electronic Version
+  
+holding:
+  id: 2
+  display_name: Copy in Library
+  display_name_plural: Copies in Library
+  
+document_delivery:
+  id: 3
+  display_name: Request Service
+  
+help:
+  id: 4
+  display_name: Help Link
+  display_name_plural: Help Links
+  
+web_link:
+  id: 5
+  display_name: Web Result
+  
+relevant_link:
+  id: 6
+  display_name: Closest Web Result
+  
+abstract:
+  id: 11
+  display_name: Abstract
+  display_name_plural: Abstracts
+  
+table_of_contents:
+  id: 12
+  display_name: Table of Contents
+  display_name_plural: Tables of Contents
+
+# Why this and cover art both? Who knows, but it's in code right now.   
+cover_image:
+  id: 13
+  display_name: Cover Image
+  
+# Links to known destinations, like Amazon or OCLC
+highlighted_link:
+  id: 14
+  display_name: See Also Link
+
+  
+# If you want to add your own custom ones, make them start with ids at 1000,
+# to leave plenty of space for future standard umlaut use. 

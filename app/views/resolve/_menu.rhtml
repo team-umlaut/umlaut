@@ -7,9 +7,9 @@
   <p><li><%= link_to "Start", :action=>'start', :id=>@user_request.id %></li></p>
   
 <%end
-[{:action=>'toc', :service_type=>'table of contents', :label=>'Table of Contents'},
+[{:action=>'toc', :service_type=>'table_of_contents', :label=>'Table of Contents'},
 {:action=>'abstract', :service_type=>'abstract', :label=>'Description'},
-{:action=>'web_search', :service_type=>'web links', :label=>'Web Search Results'}].each do | menu |
+{:action=>'web_search', :service_type=>'web_link', :label=>'Web Search Results'}].each do | menu |
     unless controller.action_name == menu[:action]
         if get_service_type(menu[:service_type]).length > 0
             li_display= 'block'

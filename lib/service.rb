@@ -56,7 +56,7 @@ class Service
   # view_data_from_service_type. 
   def view_data_from_service_type(service_type_obj)
   
-    service_type_code = service_type_obj.service_type
+    service_type_code = service_type_obj.service_type_value.name
     service_response = service_type_obj.service_response
     begin
       # try to call a method named "to_#{service_type_code}", implemented by sub-class
