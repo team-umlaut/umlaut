@@ -25,6 +25,8 @@ class DispatchedService < ActiveRecord::Base
     a_status = FailedTemporary if a_status.kind_of?(FalseClass)
     a_status = Successful if a_status.kind_of?(TrueClass)
 
-    @status = a_status
+    # NO: @status = a_status
+    # Instead, this is how you 'override' an AR attribute:
+    write_attribute(:status, a_status)
   end
 end
