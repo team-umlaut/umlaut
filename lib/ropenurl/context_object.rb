@@ -288,7 +288,8 @@ module OpenURL
       return matches
     end
     
-    def import_hash(hash)    
+    def import_hash(hash)
+      
       require 'cgi'
       ref = {}
       openurl_keys = ["url_ver", "url_tim", "url_ctx_fmt"]

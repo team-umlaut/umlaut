@@ -28,6 +28,7 @@ class Request < ActiveRecord::Base
     # Find or create a Referent
     context_object = OpenURL::ContextObject.new
     context_object.import_hash(params)
+    
     rft = Referent.find_or_create_by_context_object(context_object)
 
     # Find or create a referrer, if we have a referrer in our OpenURL

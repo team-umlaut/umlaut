@@ -7,14 +7,14 @@ class Referent < ActiveRecord::Base
   # When provided an OpenURL::ContextObject, it will return a Referent object (if one exists)
   def self.find_by_context_object(co)
     rft = co.referent
-    if id = rft.identifier
-      id = [id] unless id.is_a?(Array)
-      id.each do | ident |
-        if rft_val = ReferentValue.find_by_key_name_and_normalized_value('identifier', ident.downcase)
-          return rft_val.referent 
-        end
+
+    # First try to find by id. There could be several. 
+    rft.identifiers.each do | ident |
+      if rft_val = ReferentValue.find_by_key_name_and_normalized_value('identifier', ident.downcase)
+        return rft_val.referent 
       end
     end
+    
     
     shortcuts = {:atitle=>"", :title=>"", :issn=>"", :isbn=>"", :volume=>"", :year=>""}    
     shortcuts[:atitle] = rft.metadata['atitle'].downcase[0..254] if rft.metadata['atitle']
@@ -43,6 +43,8 @@ class Referent < ActiveRecord::Base
   # When provided an OpenURL::ContextObject, it will return a Referent object
   # (creating one if doesn't already exist)  
   def self.find_or_create_by_context_object(co)
+
+    
     if rft = Referent.find_by_context_object(co) 
       return rft 
     end
@@ -72,9 +74,11 @@ class Referent < ActiveRecord::Base
   # Populate the referent_values table with a ropenurl contextobject object
   def set_values_from_context_object(co)
     rft = co.referent
-    if rft.identifier
-      id = ReferentValue.find_or_create_by_referent_id_and_key_name_and_value(self.id,'identifier',rft.identifier)
-      id.normalized_value = rft.identifier unless id.normalized_value
+
+    # Multiple identifiers are possible! 
+    rft.identifiers.each do |id_string|
+      id = ReferentValue.find_or_create_by_referent_id_and_key_name_and_value(self.id,'identifier',id_string)
+      id.normalized_value = id_string unless id.normalized_value
       id.save
     end
     if rft.format

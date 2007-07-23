@@ -1,9 +1,11 @@
 module OpenURL
 
   class ContextObjectEntity
-    attr_reader(:identifier, :reference, :format, :metadata, :private_data, :abbr, :label)
+    # identifiers should always be an array, but it might be an empty one. 
+    attr_reader(:identifiers, :reference, :format, :metadata, :private_data, :abbr, :label)
+    
     def initialize
-      @identifier = nil
+      @identifiers = []
       @reference = {"format"=>nil, "location"=>nil}
       @format = nil
       @metadata = {}
@@ -14,9 +16,20 @@ module OpenURL
       @reference["location"] = loc
       @reference["format"] = fmt
     end
+
+    # Should really be called "add identifier", since we can have more
+    # than one. But for legacy, it's "set_identifier". 
     def set_identifier(val)
-      @identifier = val
+      @identifiers.push(val)
     end
+    #alias :set_identifier :add_identifier
+    
+    # We can actually have more than one, but certain code calls this
+    # method as if there's only one. We return the first. 
+    def identifier
+      return @identifiers[0]
+    end
+    
     
     def set_private_data(val)
       @private_data = val
@@ -56,9 +69,12 @@ module OpenURL
         meta["ref_loc"].text = @reference["location"]          
       end
       
-      if @identifier
+      @identifiers.each do |id|
+        # Yes, meta["identifier"] will get over-written if there's more than
+        # one identifier. But I dont' think this meta hash is used for much
+        # I don't think it's a problem. -JR 
         meta["identifier"] = meta["container"].add_element("ctx:identifier")
-        meta["identifier"].text = @identifier
+        meta["identifier"].text = id
       end
       if @private_data
         meta["private-data"] = meta["container"].add_element("ctx:private-data")
@@ -85,9 +101,10 @@ module OpenURL
         kevs.push(@abbr+"_ref="+CGI.escape(@reference["location"]))
       end
       
-      if @identifier
-        kevs.push(@abbr+"_id="+CGI.escape(@identifier))
+      @identifiers.each do |id| 
+          kevs.push(@abbr+"_id="+CGI.escape( id ))
       end
+      
       if @private_data
         kevs.push(@abbr+"_dat="+CGI.escape(@private_data))
       end        
@@ -112,8 +129,10 @@ module OpenURL
         co_hash[@abbr+"_ref"]=@reference["location"]
       end
       
-      if @identifier
-        co_hash[@abbr+"_id"]=@identifier
+      @identifiers.each do |id|
+        # Put em in a list. 
+        co_hash[@abbr+"_id"] ||= Array.new
+        co_hash[@abbr+"_id"].push( id )
       end
       if @private_data
         co_hash[@abbr+"_dat"]=@private_data
@@ -122,7 +141,7 @@ module OpenURL
     end    
     
     def empty?
-      if @identifier or @reference["format"] or @reference["location"] or @metadata.length > 0 or @format or @private_data
+      if (@identifiers.length > 0 ) or @reference["format"] or @reference["location"] or @metadata.length > 0 or @format or @private_data
         return false
       else
         return true
@@ -159,9 +178,12 @@ module OpenURL
         meta["ref_loc"].text = @reference["location"]          
       end
       
-      if @identifier
+      @identifiers.each do |id|
+        # Yes, if there's more htan one, meta["identifier"] will get
+        # overwritten with last. I don't think this is a problem, cause
+        # meta["identifier"] isn't used anywhere. 
         meta["identifier"] = meta["container"].add_element("ctx:identifier")
-        meta["identifier"].text = @identifier
+        meta["identifier"].text = id
       end
       if @private_data
         meta["private-data"] = meta["container"].add_element("ctx:private-data")
@@ -255,5 +277,5 @@ module OpenURL
       end    
     end
   end
-
+  
 end

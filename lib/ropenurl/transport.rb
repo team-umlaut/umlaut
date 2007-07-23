@@ -28,7 +28,9 @@ module OpenURL
       extras = ""
       @extra_args.each_key {|key|
         extras += "&"+key+"="+@extra_args[key]
-      }      
+      }
+      require 'ruby-debug'
+      debugger
 			open( @host+"?"+self.transport_metadata_get("info:ofi/fmt:kev:mtx:ctx")+extras+"&"+@context_objects[idx].kev ) do |r|
 				@response = r.read
 			end 		
