@@ -95,6 +95,12 @@ class SearchController < ApplicationController
     @titles = Journal.find_by_contents("alternate_titles:*"+params[:journal][:title]+"*")
     render :partial => 'journal_titles'  
   end
+
+  # Talk directly to SFX mysql to find the hits. 
+  # Works with SFX 3.0. Will probably break with SFX 4.0, naturally.
+  def find_via_direct_sfx_db
+    
+  end
   
   def find_via_remote_title_source
       inst = Institution.find_by_default_institution('true')

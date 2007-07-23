@@ -1,4 +1,12 @@
+# Requests to the Resolve controller are OpenURLs.
+# There is one exception: Instead of an OpenURL, you can include the
+# parameter umlaut.request_id=[some id] to hook up to a pre-existing
+# umlaut request (that presumably was an OpenURL). 
+
 class ResolveController < ApplicationController
+  before_filter :init_processing
+  after_filter :save_request
+  
   # Take layout from config, default to resolve_basic.rhtml layout. 
   layout AppConfig.param("resolve_layout", "resolve_basic")
   require 'json/lexer'
@@ -7,16 +15,43 @@ class ResolveController < ApplicationController
   require 'open_url'
   require 'collection'
 
+  # Divs to be updated by the background updater. See background_update.rjs
+  # Sorry that this is in a class variable for now, maybe we can come up
+  # with a better way to encapsulate this info.
+  @@background_divs = [ { :div_id => "fulltext", :partial => "fulltext", :service_type_value => "fulltext"},
+                        { :div_id => "holding", :partial => "holding", :service_type_value => "holding"} ]
+
+  # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
-    @user_request = Request.new_request(params, session )
+    # First see if this HTTP request told us to use an already existing Umlaut request
+    # Sorry that this is an illegal OpenURL
+    begin 
+      request_id = params['umlaut.request_id']
+      # Be sure to use session id too to guard against spoofing by guessing
+      # request ids from another session.
+      #require 'ruby-debug'
+      #debugger
+      @user_request = Request.find(:first, :conditions => ["session_id = ? and id = ?", session.session_id, request_id] ) unless request_id.nil? || @user_request
+    rescue  ActiveRecord::RecordNotFound
+      # Bad request id? Okay, pretend we never had a request_id at all. 
+      request_id = nil
+      @user_request = nil
+    end
+
+    # Only if we didn't load a request from umlaut.request_id...
+    @user_request ||= Request.new_request(params, session )
     @collection = Collection.new(request.remote_ip, session)      
-    @user_request.save
+    @user_request.save    
+  end
+
+  def save_request
+    @user_request.save!
   end
  		
   def index
-    self.init_processing
-    self.service_dispatch('foreground')
-    @user_request.save
+    #self.init_processing # handled by before_filter 
+    self.service_dispatch()
+    @user_request.save! # should be handled by after_filter?
   end
 
   
@@ -29,6 +64,34 @@ class ResolveController < ApplicationController
   	@headers["Content-Type"] = "text/javascript; charset=utf-8"
   	render_text @dispatch_hash.to_json 
 		@context_object_handler.store(@dispatch_response)  	
+  end
+
+  # Action called by AJAXy thing to update resolve menu with
+  # new stuff that got done in the background. 
+  def background_update
+    # Might be a better way to store/pass this info.
+    # Divs that may possibly have new content. 
+    @divs = @@background_divs || []
+    # Now fall through to background_update.rjs
+  end
+
+  # Display a non-javascript background service status page--or
+  # redirect back to index if we're done.
+  def background_status
+
+    unless ( @user_request.any_services_in_progress? )
+      # Just redirect to ordinary index, no need to show progress status. 
+      # Re-construct the original request url
+      params_hash = @user_request.original_co_params(:add_request_id => true)
+            
+      redirect_to(params_hash.merge({:controller=>"resolve", :action=>'index'}))
+    else
+      # If we fall through, we'll show the background_status view, a non-js
+      # meta-refresh update on progress of background services.
+      # Your layout should respect this instance var--it will if it uses
+      # the resolve_head_content partial, which it should.
+      @meta_refresh_self = 5  
+    end
   end
   
   def xml
@@ -140,22 +203,59 @@ class ResolveController < ApplicationController
   end
   
   protected
-  def service_dispatch(stage)
-    if stage == 'foreground'
-      (0..9).each do | priority |
-        next if @collection.service_level(priority).empty?
-      
-        if AppConfig[:threaded_services]
-          bundle = ServiceBundle.new(@collection.service_level(priority))
-          bundle.handle(@user_request)            
-        else
-          
-          @collection.service_level(priority).each do | svc |
-            svc.handle(@user_request) unless @user_request.dispatched?(svc)
-          end
-        end
-      end  
-    end
-  end
   
+  def service_dispatch()
+    # Foreground services
+    (0..9).each do | priority |
+      next if @collection.service_level(priority).empty?
+ 
+      if AppConfig[:threaded_services]
+        bundle = ServiceBundle.new(@collection.service_level(priority))
+        bundle.handle(@user_request)            
+      else          
+        @collection.service_level(priority).each do | svc |
+          svc.handle(@user_request) unless @user_request.dispatched?(svc)
+        end
+      end        
+    end
+
+    # Background services. First register them all as queued, so status
+    # checkers can see that.
+    ('a'..'z').each do | priority |
+      @collection.service_level(priority).each do | service |
+        @user_request.dispatched_queued(service)
+      end
+    end
+    # Now we do some crazy magic, start a Thread to run our background
+    # services. We are NOT going to wait for this thread to join,
+    # we're going to let it keep doing it's thing in the background after
+    # we return a response to the browser
+    backgroundThread = Thread.new(@collection, @user_request) do | t_collection,  t_request|
+      begin
+        logger.info("Starting background services in Thread #{Thread.current.object_id}")
+        ('a'..'z').each do | priority |
+           service_list = t_collection.service_level(priority)
+           next if service_list.empty?
+           logger.info("background: Making service bundle for #{priority}")
+           #debugger
+           bundle = ServiceBundle.new( service_list )
+           bundle.debugging = true
+           bundle.handle( t_request )
+           logger.info("background: Done handling for #{priority}")
+        end
+        logger.info("Background services complete")
+     rescue Exception => e
+        # We are divorced from any request at this point, not much
+        # we can do except log it. Actually, we'll also store it in the
+        # db, and clean up after any dispatched services that need cleaning up.
+        # If we're catching an exception here, service processing was
+        # probably interrupted, which is bad. You should not intentionally
+        # raise exceptions to be caught here. 
+        Thread.current[:exception] = e
+        logger.error("Background Service execution exception: #{e}")
+        logger.error( e.backtrace.join("\n") )
+     end
+    end    
+  end  
 end
+

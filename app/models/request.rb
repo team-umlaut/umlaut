@@ -1,5 +1,4 @@
 class Request < ActiveRecord::Base
-  
   has_many :dispatched_services
   # Order service_type joins (ie, service_responses) by id, so the first
   # added to the db comes first. Less confusing to have a consistent order.
@@ -14,7 +13,12 @@ class Request < ActiveRecord::Base
     # First look in the db for a full request that had the exact same
     # params as this one, in the same session. That's a reload, use
     # the same request, already done.
-    req = Request.find(:first, :conditions => ["session_id = ? and params = ?", session.session_id, params.to_yaml])
+    # Except we don't preserve certain Rails and app controller params--
+    # only the ones that are actually the OpenURL, is the idea.
+    
+    serialized_params = self.serialized_co_params( params )
+    
+    req = Request.find(:first, :conditions => ["session_id = ? and params = ?", session.session_id, serialized_params ])
     return req if req
 
     # Nope, okay, we don't have a complete Request, but let's try finding
@@ -33,7 +37,7 @@ class Request < ActiveRecord::Base
     # Create the Request
     req = Request.new
     req.session_id = session.session_id
-    req.params = params.to_yaml
+    req.params = serialized_params
     rft.requests << req
     (rfr.requests << req) if rfr
     req.save!
@@ -44,34 +48,24 @@ class Request < ActiveRecord::Base
   end
 
   # Status can be true, false, or one of the DispatchedService status codes.
+  # If row already exists in the db, that row will be re-used, over-written
+  # with new status value.
   def dispatched(service, status, exception=nil)
-    ds = self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
+    
+    ds = self.find_dispatch_object( service )
     unless ds
-      # For some reason, this way of creating wasn't working to set up
-      # the relationship properly. I think maybe cause the save was failing
-      # silently validation, due to null service_id.
-      # This new way does instead.
-      #ds = self.dispatched_services.new()
-      ds = DispatchedService.new
-      ds.service_id = service.id
-      ds.status = status
-      self.dispatched_services << ds
-    end    
-    ds.status = status
-
-    if (exception)
-      # Oops, that doesn't keep the backtrace, which is what we wanted. Doh!
-      # ds.exception = exception.to_yaml if exception
-      e_hash = Hash.new
-      e_hash[:class_name] = exception.class.name
-      e_hash[:message] = exception.message
-      e_hash[:backtrace] = exception.backtrace
-      ds.exception = e_hash.to_yaml
+      ds= self.new_dispatch_object!(service, status)
     end
+    # In case it was already in the db, make sure to over-write status.
+    # and add the exception either way.     
+    ds.status = status
+    ds.store_exception( exception )
     
     ds.save!
   end
 
+
+  # See can_dispatch below, you probably want that instead.
   # This method checks to see if a particular service has been dispatched, and
   # is succesful or in progress---that is, if this method returns false,
   # you might want to dispatch the service (again). If it returns true though,
@@ -82,6 +76,27 @@ class Request < ActiveRecord::Base
     # FailedTemporary, it's worth running again, the others we shouldn't. 
     return (! ds.nil?) && (ds.status != DispatchedService::FailedTemporary)
   end
+  # Someone asks us if it's okay to dispatch this guy. Only if it's
+  # marked as Queued, or Failed---otherwise it should be already working,
+  # or done. 
+  def can_dispatch?(service)
+    ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
+    
+    return ds.nil? || (ds.status == DispatchedService::Queued) || (ds.status == DispatchedService::FailedTemporary)        
+  end
+
+  # Will set dispatch record to queued for service--but only if it
+  # wasn't already set to somethign else! Existing status will not
+  # be-overwritten. Used preliminarily to dispatching background
+  # services. 
+  def dispatched_queued(service)
+    ds = find_dispatch_object(service)
+    unless ( ds )
+      ds = new_dispatch_object!(service, DispatchedService::Queued)
+    end
+    return ds
+  end
+  
 
   # second arg is an array of ServiceTypeValue objects, or
   # an array of 'names' of ServiceTypeValue objects. Ie,
@@ -120,5 +135,103 @@ class Request < ActiveRecord::Base
         #end
       end
     end
-  end    
+  end
+
+  # original context object params. 
+  # We serialize our params in weird ways. (See below). Use this to turn em
+  # back into a params hash. Returns hash. 
+  def original_co_params(arguments = {})
+    
+    
+    new_hash = {}
+    list = YAML.load( self.params )
+    list.each do | mini_hash |
+      new_hash.merge!(mini_hash)
+    end
+
+    # If requested we put in the request_id, even though it's not really
+    # a context object element.
+    new_hash['umlaut.request_id'] = self.id if arguments[:add_request_id]
+    
+    return new_hash
+  end
+
+  # Methods to look at status of dispatched services
+  def failed_service_dispatches
+    return self.dispatched_services.find(:all, 
+      :conditions => ['status IN (?, ?)', 
+      DispatchedService::FailedTemporary, DispatchedService::FailedFatal])
+  end
+
+  # Returns array of Services in progress or queued. 
+  def services_in_progress
+    
+    # Intentionally using the in-memory array instead of going to db.
+    # that's what the "to_a" is. Minimize race-condition on progress
+    # check, to some extent, although it doesn't really get rid of it. 
+    dispatches = self.dispatched_services.to_a.find_all do | ds |
+      (ds.status == DispatchedService::Queued) || 
+      (ds.status == DispatchedService::InProgress)
+    end
+
+    svcs = dispatches.collect { |ds| ds.service }
+    return svcs
+  end
+  #pass in ServiceTypeValue or string name of same.   
+  def service_type_in_progress?(svc_type)
+    svc_type = ServiceTypeValue[svc_type] if svc_type.kind_of?(String)
+    
+    services_in_progress.each do |s| 
+      return true if s.service_types_generated.include?(svc_type)
+    end
+    return false;
+  end
+  def any_services_in_progress?
+    return services_in_progress.length > 0
+  end
+
+
+  
+  protected
+
+  def find_dispatch_object(service)
+    return self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
+  end
+  # Warning, doesn't check for existing object first. Use carefully, usually
+  # paired with find_dispatch_object. Doesn't actually call save though,
+  # caller must do that (in case caller wants to further initialize first). 
+  def new_dispatch_object!(service, status)
+    ds = DispatchedService.new
+    ds.service_id = service.id
+    ds.status = status
+    self.dispatched_services << ds
+    return ds
+  end
+
+
+  
+  # Serialized context object params. 
+  # We save our incoming params to disk, so later we can compare to see
+  # if we have the same request. Two problems: 1) Just serializing a hash is
+  # no good for later string comparison in the db, because hash key order
+  # can be different. 2) Our hash includes some Rails (and umlaut) only
+  # stuff that isn't really part of the context object, and we don't want
+  # to include. So this method takes care of both, and returns a string.
+  def self.serialized_co_params(params)
+
+    excluded_keys = ["action", "controller", "umlaut.request_id"]
+        
+    # Okay, we're going to turn it into a list of one-element hashes,
+    # alphabetized by key. To attempt to make it so the same hash
+    # always turns into the exact same yaml string. Hopefully it'll work.
+    list = []
+    params.keys.sort.each do |key|
+      next if excluded_keys.include?(key)
+
+      list.push ( {key => params[key]})
+    end
+
+    return list.to_yaml
+  end
+
 end

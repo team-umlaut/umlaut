@@ -1,3 +1,14 @@
+<script type="text/javascript">
+//<![CDATA[
+background_update_check = true;
+//]]>
+</script> 
+<%= 
+periodically_call_remote :url => {:action => "background_update", :"umlaut.request_id" => @user_request.id }, 
+    :condition => 'background_update_check',
+    :frequency => 4          
+%> 
+         
 <div id="bothColumns"> <!-- actual wrapper for both columns -->
 <div id="twoColumns"> <!-- called twoColumns, but it's really just the left column -->
 
@@ -14,112 +25,18 @@ end
 	  <!--close resourceInfo-->
   </div>  
 <div class="availability">
-<p><strong>Electronic version via:</strong></p>
-<ul>
-<%  
-fulltxt = get_service_type('fulltext').each do | ft | 
-    target = ft.view_data
-%>
-<li> <%= link_to target[:display_text], {:controller=>'link_router', :id=>ft.id}, 'target'=>"_blank" %>
+<!-- full text in progress: <%= service_type_in_progress?("fulltext") %> -->
+<div id="fulltext">
+  <%= render(:partial => "fulltext") %>
+</div>
+<!-- full text in progress: <%= service_type_in_progress?("fulltext") %> -->
 
-<% unless target[:coverage].blank? %>
-<br />
-<%= target[:coverage] %>
-<% end
-%>
-<% unless target[:notes].blank? %>
-<br />
-<%= target[:notes] %>
-<% end
-%>
-</li>
-<% 
-end
-
-if fulltxt.empty? 
-%>
-<li><p class="notAvailable">Not Available </p></li>
-<%
-end 
-%>
-</ul>
   <p>&nbsp;</p>
 
-  <p><strong>Paper version  via:</strong></p>
-
-<ul>
-<%
-src = ""
-holdings = get_service_type('holding').each do |p|
-  target = p.view_data
-  if src != target[:source_name]
-  %>
-  <p><strong><%= target[:source_name] %></strong></p>
-  <%
-  src = target[:source_name]
-  end
-  display_text = ""
-  if (target[:call_number].nil? || target[:call_number].empty? )
-  	display_text = target[:display_text]
-  else
-  	display_text = target[:call_number]
-  end
-  %>
-<li><em><%= link_to display_text, {:controller=>'link_router', :id=>p.id}, 'target'=>'_blank' %>
-</em>
-<%
-    unless display_text == target[:display_text]%>
-    <br /><%= target[:display_text] %>
-    <% end 
-    unless target[:status].blank?%>
-      <br />
-      <% if target[:status] == "Not Charged" or target[:status] == "Available" %>
-      <span class='available'><%= target[:status].sub(/Not Charged/, "Available")%></span>
-      <% else %>
-      <%= target[:status] %>
-      <% end %>
-      
-      <%
-      end%>
-      </li>
-  <%
-
-  end
-  %>
-
-
-
-
-
-<% 
-if holdings.empty?
-    unless title_search = search_opac_for_title(@user_request)
-%>
-<p class="notAvailable">Not Available </p>
-<%
-else %>
-<li><p><%= title_search -%></p></li>
-<% end end %>
-</ul>
-<% if session[:coins] %>
-  <p>&nbsp;</p>
-
-  <p><strong>Check for holdings:</strong></p>
-<p><ul>
-<%    session[:coins].each { | coins |
-        unless coins[:text]
-          label = image_tag(coins[:icon], :border=>0)
-        else
-          label = coins[:text]
-        end
-    %>
-    <li><a href="<%= coins[:host]%>?<%= @user_request.referent.to_context_object.kev %>" target="_blank"><%= label %></a></li>
-    
-    <%}%>
-    </ul></p>
-<%   end
-%>
-
+<div id="holding">
+  <%= render(:partial => "holding") %>
+</div>
+<!-- holding in progress: <%= service_type_in_progress?('holding') %> -->
 <% if display_ill?
 %>
   <p>&nbsp;</p>
@@ -172,7 +89,7 @@ end %>
 <div id="rightColumn">
   <% help_responses = get_service_type('help')
      unless (help_responses.empty?) %>
-     <div id="help">
+     <div id="help" class="small_right_box">
         <span id="helpicon">?</span>
         <span class="smallText">Question? Problem? Need help? Contact a librarian:</span>
         <ul>
@@ -191,7 +108,52 @@ end %>
   <% end %>
   <%= render :partial=>"menu" %>
   <%= render :partial=>"highlighted_links_start" %>
-  </div>
+  
+  <!-- service errors -->         
+       <div id="service_errors" class="small_right_box">
+         <% 
+         failed_dispatches = failed_service_dispatches()
+         unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
+
+       <script type="text/javascript">
+        function toggle_visible(el) {
+         if (el.style.visibility == 'hidden' ) {
+          el.style.visibility='visible'; 
+          el.style.height='auto';
+         }
+         else {
+          el.style.visibility='hidden'; 
+          el.style.height=0;
+         }
+        }
+       </script>
+        <span class="error_icon">[!]</span><span class="smallText">Warning! Due to error, some sources could not be included:</span>
+        <ul>
+          <% failed_dispatches.each do | dispatch | %>
+            <li class="smallText"> <a onclick="el = document.getElementById('error_info<%= dispatch.id %>'); toggle_visible(el);"><strong><%= dispatch.service.display_name %> </strong></a>
+              <% exception_info = dispatch.exception_info %>
+                <div id="error_info<%= dispatch.id %>" style="visibility: hidden; height:0">
+                technical error information
+                <ul>
+                   <li> <%= exception_info[:class_name] %> </li>
+                   <li> <%= exception_info[:message] %> </li>
+                   <li> id: <%= dispatch.id %>  </li>                    
+                </ul>
+                </div>
+            </li>
+          <% end %>
+        </ul>
+       <span class="clear"></span>
+       <% end %> 
+       </div>
+       
+  
+</div>
+  
 
 <!-- close bothColumns --> </div> 
 
+
+<!-- END SERVICE IN PROGRESS:<br>
+fulltext: <%= service_type_in_progress?('fulltext') %> <br>
+holding: <%= service_type_in_progress?('holding') %> <br> -->

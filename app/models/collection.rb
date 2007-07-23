@@ -12,9 +12,10 @@ class Collection
   def initialize(ip, session)
     @institutions= []
     @services = {} 
-    (0..9).each do | priority |
-      @services[priority] = []
-    end
+    #(0..9).each do | priority |
+    #  @services[priority] = []
+    #end
+    
     @services['background'] = []
     if session[:refresh_collection] == true
       session[:collection] = nil
@@ -50,7 +51,7 @@ class Collection
       
       # Check if they are eligible for other services
       # based on their physical location
-      self.get_institutions_for_ip(ip, session)
+      #self.get_institutions_for_ip(ip, session)
     else 
       # Build collection object from session
       session[:collection][:institutions].each do  | inst |
@@ -91,7 +92,7 @@ class Collection
 
            # We checked for it, it's good
            sfx = Sfx.new({"id"=>"#{inst.oclc_inst_symbol}_#{inst.institution_id}_SFX", "priority"=>2, "display_name"=>inst.name, "base_url"=>inst.resolver.base_url})
-           @services[2] << sfx unless @services[2].index(sfx)
+           service_level(2) << sfx unless service_level(2).index(sfx)
            session[:collection][:services][2] << sfx.to_yaml
       elsif (! inst.resolver.base_url.nil?)
         # Okay, no SFX, but we can still do coins! 
@@ -188,14 +189,15 @@ class Collection
       next if inst.services.nil?  
     
       inst.services.each do | svc |
-        @services[svc.priority] << svc
+        service_level(svc.priority) << svc
       end
     end
   end
 
   # Returns all services at the given level. 0-9 for foreground,
   # a-z for background. 
-  def service_level(level)
-    return @services[level]
+  def service_level(level)    
+    # lazy init to empty array if neccesary
+    return (@services[level] ||= [])
   end
 end

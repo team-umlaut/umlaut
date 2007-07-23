@@ -1,0 +1,35 @@
+<%   # Note this is called background_progress, but also degrades nicely to
+     # non-javascript. Or at least it soon will. 
+     
+     # Pass in local variable service_type with String or ServiceTypeValue
+     # that we should be paying attention to.
+     #
+     # div will be given id "progress_#{svc_type.name}". Pass in local
+     # var div_id to over-ride this, especially if this won't be unique!
+     
+     # Strategy of this output: We start out outputting our non-js
+     # version. Then we immediately use js to over-write it with our
+     # js version. So js people get js, non get non, everyone is happy.
+     # Further investigation may need to be done to optimize specifically
+     # for JAWS (which is neither full js nor non js, but some js--right
+     # now I think they'll just get the non-js version, but we can do better.)
+   
+  svc_type = ServiceTypeValue[:svc_type] if svc_type.kind_of?(String)
+  div_id = "progress_#{svc_type.name}" unless div_id
+%>
+
+<% # only display if there are more! 
+     if service_type_in_progress?(svc_type) %>
+<div id="<%= div_id %>">
+  More <%= svc_type.display_name_pluralize %> may be available. 
+  <%= link_to "Load complete #{svc_type.display_name_pluralize}", {:action => "background_status", :"umlaut.request_id" => @user_request.id} %>
+  <!-- <%= image_tag 'spinner.gif' %> Searching for more <%= svc_type.display_name_pluralize %> -->
+  
+</div>
+<script type="text/javascript">
+<%= update_page do |page|
+     page.replace_html div_id, "#{image_tag('spinner.gif')} Searching for more #{svc_type.display_name_pluralize}"
+end
+%>
+</script>
+<% end %>

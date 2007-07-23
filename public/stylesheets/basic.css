@@ -78,6 +78,11 @@ h4 {
   font-size: 12px;
 }
 
+.content {
+  font-size: 12px;
+  padding: 10px;
+}
+
 /*  Right Column */
 	
 #rightColumn {
@@ -87,17 +92,17 @@ h4 {
 
 }
 
-/* Help section */
+/* Small boxes for the right column, like Help and Errors */
 
-#help {
+.small_right_box {
   padding: 5px;
   margin: 6px;
   border: 2px solid #E9E9E9;
 }
 
-#help li 	{
+.small_right_box li 	{
   text-align: right;
-  padding: 2px 0px 2px 10px;
+  padding: 2px 0px 2px 4px;
 }
 
 #helpicon {
@@ -109,6 +114,16 @@ h4 {
   padding-right: 6px;
   padding-left: 6px;
 }
+
+.error_icon {
+  font-size: 22px;
+  font-weight: bold;
+  float: left;
+  background-color: #FFFF66;
+  color: 	#CC3333;
+  margin-right: 4px;
+}
+
 .clear {
   clear=both;
 }

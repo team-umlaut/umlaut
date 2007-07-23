@@ -13,5 +13,8 @@
 # change the name attribute of standard umlaut ones, or umlaut code will break!
 class ServiceTypeValue < ActiveRecord::Base
   acts_as_enumerated :on_lookup_failure => :enforce_strict
-  
+
+  def display_name_pluralize
+    return self.display_name_plural || self.display_name.pluralize
+  end
 end

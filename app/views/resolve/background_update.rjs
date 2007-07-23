@@ -1,0 +1,31 @@
+# Calculate whether there are still outstanding resonses _before_
+# we actually output them, to try and avoid race condition.
+# If no other services are running that might need to be
+# updated, stop the darn auto-checker! The author checker watches
+# a js boolean variable 'background_update_check'.
+svc_types =  @divs.collect {|d| d[:service_type_value]}
+keep_updater_going = false
+svc_types.each do |type|
+  keep_updater_going ||= service_type_in_progress?(type)
+  break if keep_updater_going # good enough, we need the updater to keep going
+end
+# reset the background_update_check variable
+page << "background_update_check = #{keep_updater_going.to_s};"
+
+# Now update our content. 
+@divs.each do |div|
+  div_id = div[:div_id]
+  next if div_id.nil?  
+  partial = div[:partial] || div_id # default to partial with same name as div_id
+
+  # Okay, for each div, we want to replace it's contents only if there are
+  # new responses seen. For that, we need to check the last id seen
+  # in the request, and 
+
+  page.replace_html div_id, :partial => partial
+
+
+end
+
+
+

@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 9) do
+ActiveRecord::Schema.define(:version => 10) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -44,11 +44,11 @@ ActiveRecord::Schema.define(:version => 9) do
   add_index "crossref_lookups", ["doi", "created_on"], :name => "xref_lookup_doi"
 
   create_table "dispatched_services", :force => true do |t|
-    t.column "request_id", :integer,  :default => 0,   :null => false
-    t.column "service_id", :string,   :default => "0", :null => false
-    t.column "updated_at", :datetime,                  :null => false
-    t.column "exception",  :text
-    t.column "status",     :string
+    t.column "request_id",     :integer,  :default => 0,   :null => false
+    t.column "service_id",     :string,   :default => "0", :null => false
+    t.column "updated_at",     :datetime,                  :null => false
+    t.column "exception_info", :text
+    t.column "status",         :string,   :default => "",  :null => false
   end
 
   add_index "dispatched_services", ["request_id", "service_id"], :name => "dptch_request_id"
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(:version => 9) do
   end
 
   add_index "service_types", ["request_id", "service_response_id"], :name => "svc_type_idx"
+  add_index "service_types", ["service_type_value_id"], :name => "index_service_types_on_service_type_value_id"
 
   create_table "sessions", :force => true do |t|
     t.column "sessid", :string, :limit => 32

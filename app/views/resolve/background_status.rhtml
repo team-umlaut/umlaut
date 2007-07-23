@@ -1,0 +1,19 @@
+<div class="content">
+<h1>Loading complete information</h1>
+<p>Please wait, the following information is still loading. You will be automatically returned to the <%= app_name %> screen when finished.  
+  <div class="small_right_box">
+  <table>
+  <tr><th>Source</th><th>Content type</th></tr>
+    <% @user_request.services_in_progress.each do |service|  %>
+       <tr><td style="padding-right: 10px; vertical-align: top;"><strong><%= service.display_name %></strong></td>
+           <td> <%= service.service_types_generated.collect {|st| st.display_name_pluralize}.join('<br/>') %> </td>
+       </tr>
+    <% end %>
+  </table>
+  </div>
+  
+  <%= link_to "View Current Results",  { :action => 'index' }.merge!( @user_request.original_co_params( :add_request_id => true  ) )   %>
+</div>
+
+                
+

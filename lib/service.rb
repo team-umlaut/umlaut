@@ -9,7 +9,14 @@
 #  Specific service_adaptor classes may have specific addtional configuration,
 #  commonly including 'password' or 'api_key'.
 #  specific service can put " required_config_parms :param1, :param2"
-#  in definition, for requirement exception raising on initialize. 
+#  in definition, for requirement exception raising on initialize.
+#
+#  Service Sub-classes
+#
+#  Should define #service_types_generated returning an array of
+#  ServiceTypeValues.  This is neccesary for the Service to be
+#  run as a background service, and have the auto background updater
+#  work. 
 
 class Service
   require 'ruby-debug' 

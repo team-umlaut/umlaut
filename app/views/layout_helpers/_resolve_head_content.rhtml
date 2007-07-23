@@ -31,3 +31,7 @@ function activelyShowWebResults() {
 
 <link rel="unapi-server" type="application/xml" title="unAPI" href="/unapi">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<% if ( @meta_refresh_self ) %>
+  <meta http-equiv="refresh" content="<%= @meta_refresh_self %>">
+<% end %>

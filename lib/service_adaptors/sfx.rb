@@ -35,6 +35,16 @@ class Sfx < Service
                                   
     super(config)                              
   end
+
+  # Standard method, used by auto background updater. See Service docs. 
+  def service_types_generated
+    service_strings = []
+    service_strings << @services_of_interest.values()
+    service_strings << @extra_targets_of_interest.values()
+    service_strings.unique!
+
+    return service_strings.collect { |s| ServiceTypeValue[s] }
+  end
   
   def handle(request)
     client = self.initialize_client(request)

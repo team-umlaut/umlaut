@@ -1,0 +1,30 @@
+<p><strong>Electronic version via:</strong></p>
+<ul>
+<%  
+fulltxt = get_service_type('fulltext').each do | ft | 
+    target = ft.view_data
+%>
+<li> <%= link_to target[:display_text], {:controller=>'link_router', :id=>ft.id}, 'target'=>"_blank" %>
+
+<% unless target[:coverage].blank? %>
+<br />
+<%= target[:coverage] %>
+<% end
+%>
+<% unless target[:notes].blank? %>
+<br />
+<%= target[:notes] %>
+<% end
+%>
+</li>
+<% 
+end
+
+if fulltxt.empty? 
+%>
+<li><p class="notAvailable">Not Available </p></li>
+<%
+end 
+%>
+</ul>
+<%= render(:partial => "background_progress", :locals => { :svc_type => ServiceTypeValue[:fulltext] } ) %>

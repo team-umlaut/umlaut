@@ -1,8 +1,6 @@
 require 'cgi'
 class LinkRouterController < ApplicationController
   def index
-    #require 'ruby-debug'
-    #debugger
     svc_type = ServiceType.find(params[:id])    
     redirect_to ServiceList.get(svc_type.service_response.service_id).response_url(svc_type.service_response)
     clickthrough = Clickthrough.new
