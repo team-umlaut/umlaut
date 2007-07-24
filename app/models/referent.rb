@@ -78,21 +78,21 @@ class Referent < ActiveRecord::Base
     # Multiple identifiers are possible! 
     rft.identifiers.each do |id_string|
       id = ReferentValue.find_or_create_by_referent_id_and_key_name_and_value(self.id,'identifier',id_string)
-      id.normalized_value = id_string unless id.normalized_value
-      id.save
+      id.normalized_value = id_string if id.normalized_value.blank?
+      id.save!
     end
     if rft.format
       fmt = ReferentValue.find_or_create_by_referent_id_and_key_name_and_value(self.id,'format',rft.format)
-      fmt.normalized_value = rft.identifier unless fmt.normalized_value
-      fmt.save
+      fmt.normalized_value = rft.format.downcase if fmt.normalized_value.blank?
+      fmt.save!
     end    
     
     rft.metadata.each_key { | key |
       next unless rft.metadata[key]
       rft_key = ReferentValue.find_or_create_by_referent_id_and_key_name_and_value(self.id,key,rft.metadata[key])
-      rft_key.normalized_value = rft.metadata[key].downcase if rft_key.normalized_value = ""
+      rft_key.normalized_value = rft.metadata[key].downcase if rft_key.normalized_value.blank?
       rft_key.metadata = true
-      rft_key.save
+      rft_key.save!
     }
   end
 

@@ -19,10 +19,10 @@ module OpenURL
 
     # Should really be called "add identifier", since we can have more
     # than one. But for legacy, it's "set_identifier". 
-    def set_identifier(val)
-      @identifiers.push(val)
+    def add_identifier(val)
+      @identifiers.push( self.class.normalize_id(val) )
     end
-    #alias :set_identifier :add_identifier
+    alias :set_identifier :add_identifier
     
     # We can actually have more than one, but certain code calls this
     # method as if there's only one. We return the first. 
@@ -192,6 +192,19 @@ module OpenURL
       return co_elem
     end  
 
+    # Switch old 0.1 style ids to new 1.0 style ids.
+    # Eg, turn << doi:[x] >>    into     << info:doi/[x] >>
+    def self.normalize_id(value)
+        # info, urn, and http are all good new style 1.0 ids.
+        # we assume anything else is not. Is this a valid assumption?
+        unless ( (value.slice(0,5) == 'info:') || 
+          (value.slice(0,4) == 'urn:') || 
+          (value.slice(0,5) == 'http:') )
+          value = value.sub(/^([a-z,A-Z]+)\:/, 'info:\1/')
+        end
+
+        return value
+    end
     
   end
 

@@ -23,7 +23,8 @@ class Sfx < Service
     # Key is sfx service_type, value is umlaut servicetype string.
     # These are the SFX service types we will translate to umlaut
     @services_of_interest = {'getFullTxt'          => 'fulltext',
-                             'getDocumentDelivery' => 'document_delivery'}
+    'getDocumentDelivery' => 'document_delivery'}                            
+                             #'getDOI'              => 'highlighted_link' }
 
     # Special targets. Key is SFX target_name.
     # Value is umlaut service type.
@@ -39,14 +40,15 @@ class Sfx < Service
   # Standard method, used by auto background updater. See Service docs. 
   def service_types_generated
     service_strings = []
-    service_strings << @services_of_interest.values()
-    service_strings << @extra_targets_of_interest.values()
-    service_strings.unique!
+    service_strings.concat( @services_of_interest.values() )
+    service_strings.concat( @extra_targets_of_interest.values() )
+    service_strings.uniq!
 
     return service_strings.collect { |s| ServiceTypeValue[s] }
   end
   
   def handle(request)
+    
     client = self.initialize_client(request)
     begin
       response = self.do_request(client)
@@ -61,7 +63,7 @@ class Sfx < Service
   def initialize_client(request)
     transport = OpenURL::Transport.new(@base_url)
     context_object = request.referent.to_context_object
-    context_object.referrer.set_identifier(request.referrer.identifier)if request.referrer
+    context_object.referrer.add_identifier(request.referrer.identifier) if request.referrer
     transport.add_context_object(context_object)
     transport.extra_args["sfx.response_type"]="multi_obj_xml"
     @get_coverage = false
@@ -70,7 +72,9 @@ class Sfx < Service
       transport.extra_args["sfx.show_availability"]="1"
       @get_coverage = true
     end
-    if context_object.referent.identifier and context_object.referent.identifier.match(/^info:doi\//)
+    # Workaround to SFX bug, not sure if this is really still neccesary
+    # I think it's not, but leave it in anyway just in case. 
+    if (context_object.referent.identifiers.find {|i| i =~ /^info:doi\// })
       transport.extra_args['sfx.doi_url']='http://dx.doi.org'
     end
     return transport
@@ -88,7 +92,7 @@ class Sfx < Service
     #journal_index_on = AppConfig.param("use_umlaut_journal_index", true)
     # Bug in appconfig
     journal_index_on = AppConfig["use_umlaut_journal_index"]
-    journal_index_on = true if journal_index_on.nil?
+    journal_index_on = false if journal_index_on.nil?
     
     doc = Hpricot(resolver_response)     
     # parse perl_data from response
@@ -167,7 +171,7 @@ class Sfx < Service
 
     # Each target delivered by SFX
     (doc/"/ctx_obj_set/ctx_obj/ctx_obj_targets/target").each_with_index do|target, target_index|  
-
+      #debugger
       value_text = {}
 
       # First check @extra_targets_of_interest
@@ -287,7 +291,9 @@ class Sfx < Service
 
   protected
   def enhance_referent(request, perl_data)
-    
+    # This should probably be rewritten to take ALL rft.* data from SFX,
+    # not just named fields. Sometimes SFX enhances from Pubmed or DOI
+    # etc., and we want to grab all that arbitrary stuff. 
     metadata = request.referent.metadata
     
     if request.referent.format == 'journal'
@@ -324,6 +330,11 @@ class Sfx < Service
     unless metadata['volume']
       enhance_referent_value(request, 'volume', (perl_data/"//hash/item[@key='rft.volume']"))
     end
+
+    unless metadata['spage']
+      enhance_referent_value(request, 'spage', (perl_data/"//hash/item[@key='rft.spage']"))
+    end
+
                     
   end
 
