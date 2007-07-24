@@ -35,11 +35,9 @@ namespace :umlautdb do
     service_type_values = YAML.load_file( File::join(fixed_data_dir, 'service_type_values.yml') )
     
     service_type_values.each_pair do |name, hash|
-      #require 'ruby-debug'
-      #debugger
       existing = ServiceTypeValue.find(:first, :conditions=>["id = ?", hash['id'] ])
       if (existing)
-        puts "ServiceTypeValue #{value['name']} NOT inserted, as id #{value['id']} already exists in db."
+        puts "ServiceTypeValue #{hash['name']} NOT inserted, as id #{hash['id']} already exists in db."
       else
         # Add the YAML label to the hash, for initialization of our AR without
         # needing to repeat ourselves. 
