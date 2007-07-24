@@ -1,15 +1,20 @@
 # config parameters in services.yml
-# name: display name
-# base_url: 
+# display name: User displayable name for this service
+# base_url: SFX base url. 
 # click_passthrough: When set to true, Umlaut will send all SFX clicks 
 #     through SFX, for SFX to capture statistics. This is currently done
-#     using a backdoor into the SFX sfxresolve.cgi script. Defaults to false, or the 
-#     app_config.default_sfx_click_passthrough value.
-# coverage_api_url: http url to the script Jonathan Rochkind wrote to interrogate
-#     the SFX db to get 'coverage' information. Since SFX API does not currently provide
-#     this info, this is 'extra' third-party API to do so.
-# extra_targets_of_interest: sfx target_names of targets you want to make sure to include
-#     in umlaut. A hash with target_name as key, and umlaut response type as value. 
+#     using a backdoor into the SFX sfxresolve.cgi script. Defaults to false,
+#     or the app_config.default_sfx_click_passthrough config if set
+# coverage_api_url: http url to the script Jonathan Rochkind wrote to
+#     interrogate the SFX db to get 'coverage' information. Since SFX API does
+#     not currently provide this info, this is 'extra' third-party API to do so.
+# services_of_interest: Optional. over-ride the built in list of what types of 
+#     SFX services we want to grab, and what the corresponding umlaut types are.
+#     hash, with SFX service type name as key, and Umlaut ServiceTypeValue
+#     name as value. 
+# extra_targets_of_interest: sfx target_names of targets you want to make
+#     sure to include in umlaut. A hash with target_name as key, and umlaut
+#     ResponseTypeValue name as value.
 
 class Sfx < Service
   require 'uri'
@@ -23,8 +28,8 @@ class Sfx < Service
     # Key is sfx service_type, value is umlaut servicetype string.
     # These are the SFX service types we will translate to umlaut
     @services_of_interest = {'getFullTxt'          => 'fulltext',
-    'getDocumentDelivery' => 'document_delivery'}                            
-                             #'getDOI'              => 'highlighted_link' }
+                             'getDocumentDelivery' => 'document_delivery',                         
+                             'getDOI'              => 'highlighted_link' }
 
     # Special targets. Key is SFX target_name.
     # Value is umlaut service type.
@@ -171,7 +176,6 @@ class Sfx < Service
 
     # Each target delivered by SFX
     (doc/"/ctx_obj_set/ctx_obj/ctx_obj_targets/target").each_with_index do|target, target_index|  
-      #debugger
       value_text = {}
 
       # First check @extra_targets_of_interest

@@ -25,11 +25,9 @@ end
 	  <!--close resourceInfo-->
   </div>  
 <div class="availability">
-<!-- full text in progress: <%= service_type_in_progress?("fulltext") %> -->
 <div id="fulltext">
   <%= render(:partial => "fulltext") %>
 </div>
-<!-- full text in progress: <%= service_type_in_progress?("fulltext") %> -->
 
   <p>&nbsp;</p>
 
@@ -109,11 +107,14 @@ end %>
   <%= render :partial=>"menu" %>
   <%= render :partial=>"highlighted_links_start" %>
   
-  <!-- service errors -->         
-       <div id="service_errors" class="small_right_box">
+  <!-- service errors -->
+       <div id="service_errors">
+       
          <% 
          failed_dispatches = failed_service_dispatches()
          unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
+         <div id="service_errors_content" class="small_right_box" ">
+
 
        <script type="text/javascript">
         function toggle_visible(el) {
@@ -137,13 +138,14 @@ end %>
                 <ul>
                    <li> <%= exception_info[:class_name] %> </li>
                    <li> <%= exception_info[:message] %> </li>
-                   <li> id: <%= dispatch.id %>  </li>                    
+                   <li> dispatched service id: <%= dispatch.id %>  </li>                    
                 </ul>
                 </div>
             </li>
           <% end %>
         </ul>
        <span class="clear"></span>
+       </div>
        <% end %> 
        </div>
        

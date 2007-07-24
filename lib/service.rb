@@ -35,7 +35,8 @@ class Service
     # Some things required for all services
     required_params << "priority"
     # Custom things for this particular sub-class
-    required_params.concat( @@required_params_for_subclass[self.class.name] )
+    
+    required_params.concat( @@required_params_for_subclass[self.class.name] ) if @@required_params_for_subclass[self.class.name]
     required_params.each do |param|
       begin
           value = self.instance_variable_get('@' + param.to_s)

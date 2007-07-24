@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 10) do
+ActiveRecord::Schema.define(:version => 11) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -164,13 +164,13 @@ ActiveRecord::Schema.define(:version => 10) do
   add_index "requests", ["created_at"], :name => "req_created_at"
 
   create_table "service_responses", :force => true do |t|
-    t.column "service_id",       :string, :limit => 25, :default => "", :null => false
-    t.column "response_key",     :string,               :default => ""
+    t.column "service_id",       :string, :limit => 25,   :default => "", :null => false
+    t.column "response_key",     :string,                 :default => ""
     t.column "value_string",     :string
     t.column "value_alt_string", :string
     t.column "value_text",       :text
     t.column "display_text",     :string
-    t.column "url",              :string
+    t.column "url",              :string, :limit => 1024
     t.column "notes",            :text
     t.column "service_data",     :text
   end

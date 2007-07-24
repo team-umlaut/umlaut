@@ -113,4 +113,15 @@ module ResolveHelper
     end
     return 'showWebResults();'
   end
+
+  # size can be 'small', 'medium', or 'large.
+  # returns a ServiceResponse  object, or nil. 
+  def cover_image_response(size=nil)
+    size = "medium" unless size
+    cover_images = get_service_type('cover_image')
+    cover_images.each do |st|
+      return st if st.service_response[:size] == size 
+    end
+    return nil
+  end
 end

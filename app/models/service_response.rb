@@ -46,6 +46,14 @@ At the point the user clicks on a ServiceResponse, Umlaut will attempt to find a
  :collection_str
  :location_str
 
+ Cover images:
+ :display_text set to desired alt text
+ :url    src url to img
+ :size  => 'small', 'medium', or 'large. Also set in :key
+
+ Anything from amazon:
+ :asin
+
 =end
 class ServiceResponse < ActiveRecord::Base
   @@built_in_fields = [:display_text, :url, :notes]
@@ -59,6 +67,10 @@ class ServiceResponse < ActiveRecord::Base
   
   def service
     return ServiceList.get( self.service_id )
+  end
+
+  def init_service_data(hash)
+    hash.each {|key, value| self[key] = value} if hash
   end
 
   # Allows you to access ServiceResponse like a hash, either for the basic
@@ -75,7 +87,7 @@ class ServiceResponse < ActiveRecord::Base
 
   def []=(key, value)
     if(@@built_in_fields.include?(key))
-      self.send(key+'=', value)
+      self.send(key.to_s+'=', value)
     else
       service_data[key] = value
     end

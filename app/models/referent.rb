@@ -192,6 +192,11 @@ class Referent < ActiveRecord::Base
         end
       end      
     end
+    # add publisher for books
+    if (self.metadata['genre'] == 'book')
+      citation[:pub] = self.metadata['pub'] unless self.metadata['pub'].blank?
+    end
+    
     ['issn','isbn','volume','issue','date'].each do | key |
       citation[key.to_sym] = self.metadata[key]
     end

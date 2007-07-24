@@ -43,7 +43,22 @@ cover_image:
 highlighted_link:
   id: 14
   display_name: See Also Link
+  
+# Not sure what this is used for
+description:
+  id: 100
+  display_name: Description
+  
+# Not sure if this is used for anything yet, but some services generate
+subject:
+  id: 101
+  display_name: Subject
+  
+# Not used yet by views
+similar_item:
+  id: 102
+  display_name: Similar Item
 
   
-# If you want to add your own custom ones, make them start with ids at 1000,
+# If you want to add your own custom ones, make them start with ids at 100,000,
 # to leave plenty of space for future standard umlaut use. 

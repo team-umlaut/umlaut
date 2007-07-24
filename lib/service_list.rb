@@ -8,6 +8,9 @@ class ServiceList
     if (@@services[name].nil?)
       raise NameError.new("No such service named #{name} has been loaded. Check config/services.yml", name)
     end
+    if (@@services[name]["type"].nil?)
+      raise "Service #{name} does not a type defined, and needs one. Check the config/services.yml file."
+    end
     
     require 'service_adaptors/'+@@services[name]["type"].underscore
     

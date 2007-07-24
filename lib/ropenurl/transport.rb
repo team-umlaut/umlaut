@@ -24,6 +24,7 @@ module OpenURL
   	end
   	
   	def transport_inline(idx=0)
+      
 			require 'open-uri'
       extras = ""
       @extra_args.each_key {|key|

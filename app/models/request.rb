@@ -115,7 +115,7 @@ class Request < ActiveRecord::Base
         svc_resp.url = response_data[:url]
         svc_resp.notes = response_data[:notes]
         svc_resp.display_text = response_data[:display_text]
-        svc_resp.service_data = response_data[:service_data]
+        svc_resp.init_service_data(response_data[:service_data])
         
         svc_resp.service_id = response_data[:service].id
         svc_resp.response_key = response_data[:key]
