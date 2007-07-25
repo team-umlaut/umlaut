@@ -3,7 +3,10 @@
 # If no other services are running that might need to be
 # updated, stop the darn auto-checker! The author checker watches
 # a js boolean variable 'background_update_check'.
-svc_types =  @divs.collect {|d| d[:service_type_value]}
+svc_types =  ( @divs.collect { |d| d[:service_type_value] } ).compact
+# but also use the service_type_values plural key
+svc_types = svc_types.concat( @divs.collect{ |d| d[:service_type_values] } ).flatten.compact
+
 keep_updater_going = false
 svc_types.each do |type|
   keep_updater_going ||= service_type_in_progress?(type)
@@ -12,7 +15,8 @@ end
 # reset the background_update_check variable
 page << "background_update_check = #{keep_updater_going.to_s};"
 
-# Now update our content. 
+# Now update our content -- we don't try to figure out which divs have
+# new content, we just update them all. Too hard to figure it out. 
 @divs.each do |div|
   div_id = div[:div_id]
   next if div_id.nil?  

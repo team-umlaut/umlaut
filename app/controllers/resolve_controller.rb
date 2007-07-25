@@ -19,10 +19,10 @@ class ResolveController < ApplicationController
   # Sorry that this is in a class variable for now, maybe we can come up
   # with a better way to encapsulate this info.
   @@background_divs = [ { :div_id => "fulltext", :partial => "fulltext", :service_type_value => "fulltext"},
-                        { :div_id => "holding", :partial => "holding", :service_type_value => "holding"} ]
+                        { :div_id => "holding", :partial => "holding", :service_type_values => ["holding","holding_search"]} ]
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
-  def init_processing
+  def init_processing    
     # First see if this HTTP request told us to use an already existing Umlaut request
     # Sorry that this is an illegal OpenURL
     begin 

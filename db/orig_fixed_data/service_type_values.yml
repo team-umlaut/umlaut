@@ -44,6 +44,12 @@ highlighted_link:
   id: 14
   display_name: See Also Link
   
+# Link to search holdings, generally with a count given, ie "5 possible matches". 
+holding_search:
+  id: 15
+  display_name: Copy in Library
+  display_name_plural: Copies in Library
+  
 # Not sure what this is used for
 description:
   id: 100

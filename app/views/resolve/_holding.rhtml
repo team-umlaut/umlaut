@@ -47,13 +47,18 @@ holdings = get_service_type('holding').each do |p|
 
 <% 
 if holdings.empty?
-    unless title_search = search_opac_for_title(@user_request)
+   searches = get_service_type('holding_search')
+    searches.each do | result_st |
+      response = result_st.view_data %>
+      <li> <%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %> </li>
+<% 
+   end
+end
+if (holdings.blank? && searches.blank? && ! service_types_in_progress?(['holding', 'holding_search']))
 %>
-<p class="notAvailable">Not Available </p>
+<li class="notAvailable">Not Available </li>
 <%
-else %>
-<li><p><%= title_search -%></p></li>
-<% end end %>
+end %>
 </ul>
 <% if session[:coins] %>
   <p>&nbsp;</p>
@@ -73,7 +78,9 @@ else %>
     </ul></p>
 <%   end
 %>
-
-<%= render(:partial => "background_progress", :locals => { :svc_type => ServiceTypeValue[:holding] } ) %>
-
+<% if service_types_in_progress?(['holding', 'holding_search']) %>
+<ul>
+<li><%= render(:partial => "background_progress", :locals => { :svc_types => [ServiceTypeValue[:holding],ServiceTypeValue[:holding_search]], :current_set_empty => holdings.empty? } ) %></li>
+</ul>
+<% end %>
 

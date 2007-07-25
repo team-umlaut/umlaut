@@ -83,8 +83,6 @@ class Amazon < Service
 
     # Meta-data enhance
     item_attributes = aws.at("/itemlookupresponse/items/item/itemattributes")
-    require 'ruby-debug'
-    debugger
     
     request.referent.enhance_referent('format', 'book', false) unless request.referent.format == 'book'
     unless request.referent.metadata['btitle']

@@ -20,11 +20,15 @@ fulltxt = get_service_type('fulltext').each do | ft |
 <% 
 end
 
-if fulltxt.empty? 
+if (fulltxt.empty? && ! service_type_in_progress?('fulltext'))
 %>
 <li><p class="notAvailable">Not Available </p></li>
 <%
 end 
+if service_type_in_progress?('fulltext')
 %>
+  <li><%= render(:partial => "background_progress", :locals => { :svc_type => ServiceTypeValue[:fulltext],:current_set_empty => fulltxt.empty? } ) %></li>
+
+<% end %>
 </ul>
-<%= render(:partial => "background_progress", :locals => { :svc_type => ServiceTypeValue[:fulltext] } ) %>
+

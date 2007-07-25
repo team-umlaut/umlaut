@@ -164,7 +164,9 @@ class Request < ActiveRecord::Base
       DispatchedService::FailedTemporary, DispatchedService::FailedFatal])
   end
 
-  # Returns array of Services in progress or queued. 
+  # Returns array of Services in progress or queued. Intentionally
+  # uses cached in memory association, so it wont' be a trip to the
+  # db every time you call this. 
   def services_in_progress
     
     # Intentionally using the in-memory array instead of going to db.
@@ -178,15 +180,24 @@ class Request < ActiveRecord::Base
     svcs = dispatches.collect { |ds| ds.service }
     return svcs
   end
-  #pass in ServiceTypeValue or string name of same.   
+  # convenience method to call service_types_in_progress with one element. 
   def service_type_in_progress?(svc_type)
-    svc_type = ServiceTypeValue[svc_type] if svc_type.kind_of?(String)
-    
-    services_in_progress.each do |s| 
-      return true if s.service_types_generated.include?(svc_type)
+    return service_types_in_progress?( [svc_type] )
+  end
+  
+  #pass in array of ServiceTypeValue or string name of same. Returns
+  # true if ANY of them are in progress. 
+  def service_types_in_progress?(type_array)
+          #svc_type = ServiceTypeValue[svc_type] if svc_type.kind_of?(String)
+    # convert strings to ServiceTypeValues
+    type_array = type_array.collect {|s|  s.kind_of?(ServiceTypeValue)? s : ServiceTypeValue[s] }
+    self.services_in_progress.each do |s|
+      # array intersection
+      return true unless (s.service_types_generated & type_array).empty? 
     end
     return false;
   end
+  
   def any_services_in_progress?
     return services_in_progress.length > 0
   end
