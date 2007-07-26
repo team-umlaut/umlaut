@@ -28,8 +28,11 @@ class Sfx < Service
     # Key is sfx service_type, value is umlaut servicetype string.
     # These are the SFX service types we will translate to umlaut
     @services_of_interest = {'getFullTxt'          => 'fulltext',
+                             'getSelectedFullTxt'  => 'fulltext',
                              'getDocumentDelivery' => 'document_delivery',                         
-                             'getDOI'              => 'highlighted_link' }
+                             'getDOI'              => 'highlighted_link',
+                             'getAbstract'         => 'abstract',
+                             'getTOC'              => 'table_of_contents'}
 
     # Special targets. Key is SFX target_name.
     # Value is umlaut service type.
@@ -337,6 +340,11 @@ class Sfx < Service
 
     unless metadata['spage']
       enhance_referent_value(request, 'spage', (perl_data/"//hash/item[@key='rft.spage']"))
+    end
+
+
+    unless metadata['date']
+      enhance_referent_value(request, 'date', (perl_data/"//hash/item[@key='rft.date']"))
     end
 
                     

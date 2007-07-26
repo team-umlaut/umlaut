@@ -1,0 +1,28 @@
+<% 
+#   Include this partial to put the background updater device on your page.
+#
+#   Started out using periodically_call_remote here, but we need to capture
+#   the Prototype PeriodicalExecter function in a js veriable, which
+#   the  built in generator won't do. So we're doing it by hand
+#   based on the output of periodically_call_remote. It's not that
+#   complicated or anything.
+%>
+
+<% # only include if we have any background services. We could check to make
+   # sure we only have background services we care about, but it's more work--
+   # the updater will only run ONCE at most wrongly, then the
+   # background_update action will stop it. 
+   if ( any_services_in_progress? )
+%>
+<script type="text/javascript">
+//<![CDATA[
+  umlaut_background_executer =  new PeriodicalExecuter(function() { new Ajax.Request('/resolve/background_update?umlaut.request_id=<%= @user_request.id %>', {asynchronous:true, evalScripts:true});  }, 4)
+//]]>
+</script>  
+<%
+# The above was based on source from this call: 
+#periodically_call_remote :url => {:action => "background_update", :"umlaut.request_id" => @user_request.id }, 
+#    :condition => 'background_update_check',
+#    :frequency => 4
+%> 
+<% end %>

@@ -1,13 +1,6 @@
-<script type="text/javascript">
-//<![CDATA[
-background_update_check = true;
-//]]>
-</script> 
-<%= 
-periodically_call_remote :url => {:action => "background_update", :"umlaut.request_id" => @user_request.id }, 
-    :condition => 'background_update_check',
-    :frequency => 4          
-%> 
+
+         
+<%= render :partial=>'background_updater' %>
          
 <div id="bothColumns"> <!-- actual wrapper for both columns -->
 <div id="twoColumns"> <!-- called twoColumns, but it's really just the left column -->
@@ -32,7 +25,7 @@ end
   <p>&nbsp;</p>
 
 <div id="holding">
-  <%= render(:partial => "holding") %>
+  <%= render(:partial => ResolveController.partial_for_block[:holding] ) %>
 </div>
 <!-- holding in progress: <%= service_type_in_progress?('holding') %> -->
 <% if display_ill?

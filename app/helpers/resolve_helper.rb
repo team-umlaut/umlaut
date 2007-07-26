@@ -37,7 +37,7 @@ module ResolveHelper
 
   # True if dispatch table has statuses queued or in progress. 
   def any_services_in_progress?
-    @user_request.any_service_in_progress?
+    @user_request.any_services_in_progress?
   end
   
   def app_name
@@ -110,8 +110,7 @@ module ResolveHelper
 
   # size can be 'small', 'medium', or 'large.
   # returns a ServiceResponse  object, or nil. 
-  def cover_image_response(size=nil)
-    size = "medium" unless size
+  def cover_image_response(size='medium')
     cover_images = get_service_type('cover_image')
     cover_images.each do |st|
       return st if st.service_response[:size] == size 

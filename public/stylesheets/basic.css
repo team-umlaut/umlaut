@@ -34,7 +34,7 @@ h3 {
 h4 {
 	font-size: 12px;
 	font-weight:bold;
-	margin-top:5px;
+	/* margin-top:5px; */
 
 }
 
@@ -228,6 +228,11 @@ h4 {
 .availability a:hover { color : #eeb211; text-decoration:underline; font-weight: bold;}
 .availability a:focus { color : #eeb211; text-decoration:underline; font-weight: bold;}
 .availability a:active { color : #0066cc; font-weight: bold;}
+
+.section_content_indent {
+  margin-left: 30px;
+}
+
 
 .closestResults {
 	font-size: 11px;
