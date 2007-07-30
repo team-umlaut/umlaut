@@ -15,11 +15,29 @@ class ResolveController < ApplicationController
   require 'open_url'
   require 'collection'
 
+  # names of partials for differnet blocks on index page
+  @@partial_for_block = {}
+  @@partial_for_block[:holding] = AppConfig.param("partial_for_holding", "holding")
+  def self.partial_for_block ; @@partial_for_block ; end
+  
   # Divs to be updated by the background updater. See background_update.rjs
   # Sorry that this is in a class variable for now, maybe we can come up
   # with a better way to encapsulate this info.
-  @@background_divs = [ { :div_id => "fulltext", :partial => "fulltext", :service_type_value => "fulltext"},
-                        { :div_id => "holding", :partial => "holding", :service_type_values => ["holding","holding_search"]} ]
+  @@background_updater = {:divs  => 
+                         [{ :div_id => "fulltext", 
+                            :partial => "fulltext",
+                            :service_type_value => "fulltext"
+                          },
+                          { :div_id => "holding", 
+                            :partial => @@partial_for_block[:holding],
+                            :service_type_values => ["holding","holding_search"]
+                          }],
+                          :error_div =>
+                          { :div_id => 'service_errors',
+                            :partial => 'service_errors'}
+                        }
+
+
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing    
@@ -71,8 +89,11 @@ class ResolveController < ApplicationController
   def background_update
     # Might be a better way to store/pass this info.
     # Divs that may possibly have new content. 
-    @divs = @@background_divs || []
-    # Now fall through to background_update.rjs
+    divs = @@background_updater[:divs] || []
+    error_div = @@background_updater[:error_div]
+
+    # This method call render for us
+    self.background_update_js(divs, error_div)     
   end
 
   # Display a non-javascript background service status page--or
@@ -203,6 +224,50 @@ class ResolveController < ApplicationController
   end
   
   protected
+
+  # Helper method used here in controller for outputting js to
+  # do the background service update. 
+  def background_update_js(div_list, error_div_info=nil)
+    render :update do |page|      
+        # Calculate whether there are still outstanding responses _before_
+        # we actually output them, to try and avoid race condition.
+        # If no other services are running that might need to be
+        # updated, stop the darn auto-checker! The author checker watches
+        # a js boolean variable 'background_update_check'.
+        svc_types =  ( div_list.collect { |d| d[:service_type_value] } ).compact
+        # but also use the service_type_values plural key
+        svc_types = svc_types.concat( div_list.collect{ |d| d[:service_type_values] } ).flatten.compact
+        
+        keep_updater_going = false
+        svc_types.each do |type|
+          keep_updater_going ||= @user_request.service_type_in_progress?(type)
+          break if keep_updater_going # good enough, we need the updater to keep going
+        end
+    
+        # Stop the Prototype PeriodicalExecuter object if neccesary. 
+        if (! keep_updater_going )
+          page << "umlaut_background_executer.stop();"
+        end
+          
+        # Now update our content -- we don't try to figure out which divs have
+        # new content, we just update them all. Too hard to figure it out. 
+        div_list.each do |div|
+          div_id = div[:div_id]
+          next if div_id.nil?
+          # default to partial with same name as div_id
+          partial = div[:partial] || div_id 
+            
+          page.replace_html div_id, :partial => partial
+        end
+
+        # Now update the error section if neccesary
+        if ( ! error_div_info.nil? &&
+             @user_request.failed_service_dispatches.length > 0 )
+             page.replace_html(error_div_info[:div_id],
+                               :partial => error_div_info[:partial])             
+        end
+    end
+  end
   
   def service_dispatch()
     # Foreground services

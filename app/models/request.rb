@@ -4,7 +4,7 @@ class Request < ActiveRecord::Base
   # added to the db comes first. Less confusing to have a consistent order.
   # Also lets installation be sure services run first will have their
   # responses show up first. 
-  has_many :service_types, :order=>'id ASC'
+  has_many :service_types, :order=>'service_types.id ASC'
   belongs_to :referent
   belongs_to :referrer
 

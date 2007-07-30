@@ -4,10 +4,13 @@ class YahooSearch < Service
   
   required_config_params :url, :api_key
   attr_reader :url, :api_key
+
+  def service_types_generated
+    return [ ServiceTypeValue[:web_link] ]
+  end
   
   def handle(request)
-    raise "YahooSearch: Url or API key are nil. They must be filled out in config for YahooSearch service. The API key should be an API key from Yahoo: https://developer.yahoo.com/wsregapp/index.php" if self.url.nil? or self.api_key.nil?
-
+    
     catch (:no_op) do
       query = self.build_query(request.referent)
       links = self.do_query(query)
