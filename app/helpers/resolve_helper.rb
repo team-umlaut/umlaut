@@ -9,7 +9,12 @@ module ResolveHelper
 
   # This one does make a db transaction, to get most up to date list. 
   def get_service_type(svc_type)
-    return @user_request.service_types.find(:all, :conditions=>["service_type_value_id = ?", ServiceTypeValue[svc_type].id ] )
+    # Eager load the actual responses from service types for efficiency,
+    # because we will certainly need them. 
+    return @user_request.service_types.find(:all,
+      :conditions => 
+        ["service_type_value_id = ?", ServiceTypeValue[svc_type].id ],
+      :include => [:service_response]   )
     
     #responses = []
     #@user_request.service_types.find(:all, :conditions=>["service_type_value_id = ?", ServiceTypeValue[svc_type].id ] ).each do | response |
