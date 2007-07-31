@@ -1,0 +1,39 @@
+<script type="text/javascript">
+  function toggle_visible(el) {
+   if (el.style.visibility == 'hidden' ) {
+    el.style.visibility='visible'; 
+    el.style.height='auto';
+   }
+   else {
+    el.style.visibility='hidden'; 
+    el.style.height=0;
+   }
+  }
+</script>
+
+
+<% 
+         failed_dispatches = failed_service_dispatches()
+         unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
+         <div id="service_errors_content" class="small_right_box" ">
+
+
+               <span class="error_icon">[!]</span><span class="smallText">Warning! Due to error, some sources could not be included:</span>
+        <ul>
+          <% failed_dispatches.each do | dispatch | %>
+            <li class="smallText"> <a onclick="el = document.getElementById('error_info<%= dispatch.id %>'); toggle_visible(el);"><strong><%= dispatch.service.display_name %> </strong></a>
+              <% exception_info = dispatch.exception_info %>
+                <div id="error_info<%= dispatch.id %>" style="visibility: hidden; height:0">
+                technical error information
+                <ul>
+                   <li> <%= exception_info[:class_name] %> </li>
+                   <li> <%= exception_info[:message] %> </li>
+                   <li> dispatched service id: <%= dispatch.id %>  </li>                    
+                </ul>
+                </div>
+            </li>
+          <% end %>
+        </ul>
+       <span class="clear"></span>
+       </div>
+       <% end %>
