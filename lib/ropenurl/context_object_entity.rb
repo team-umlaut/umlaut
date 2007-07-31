@@ -38,6 +38,9 @@ module OpenURL
     def set_metadata(key, val)
       @metadata[key] = val
     end
+    def get_metadata(key)
+      return @metadata[key]
+    end
     
     def set_format(format)
       @format = format
@@ -276,6 +279,7 @@ module OpenURL
   end
 
   class CustomEntity < ContextObjectEntity
+    attr_accessor :abbr, :label
     def initialize(abbr=nil, label=nil)
       super()
       unless abbr
@@ -287,7 +291,8 @@ module OpenURL
         @label = @abbr
       else
         @abbr = label
-      end    
+      end
+
     end
   end
   

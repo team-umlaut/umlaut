@@ -126,7 +126,11 @@ module OpenURL
       cus = CustomEntity.new(abbr, label)
       @custom.push(cus)
       return @custom.index(cus)
-    end  
+    end
+
+    def custom_entity(abbr)
+      return @custom.find { |c| c.abbr == abbr }
+    end
       
     def set_administration_key(key, val)
       @admin[key]["value"] = val

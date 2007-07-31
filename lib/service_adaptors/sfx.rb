@@ -19,7 +19,6 @@
 class Sfx < Service
   require 'uri'
   require 'open_url'
-  #require 'ruby-debug'
 
   required_config_params :base_url
   
@@ -54,6 +53,10 @@ class Sfx < Service
 
     return service_strings.collect { |s| ServiceTypeValue[s] }
   end
+
+  def base_url
+    return @base_url
+  end
   
   def handle(request)
     
@@ -72,8 +75,10 @@ class Sfx < Service
     transport = OpenURL::Transport.new(@base_url)
     context_object = request.referent.to_context_object
     context_object.referrer.add_identifier(request.referrer.identifier) if request.referrer
+    
     transport.add_context_object(context_object)
     transport.extra_args["sfx.response_type"]="multi_obj_xml"
+    
     @get_coverage = false
     if (context_object.referent.metadata["issue"].blank? && context_object.referent.metadata["volume"].blank? && context_object.referent.metadata["date"].blank?)    
       transport.extra_args["sfx.ignore_date_threshold"]="1"
@@ -148,33 +153,38 @@ class Sfx < Service
     # configured, and if we have the right data to do so. We load em all in bulk in
     # one request, rather than a request per service. 
     loaded_coverage_strings = nil
-    if ( @coverage_api_url && object_id  && (sfx_target_service_ids.length > 0)  )      
-      require 'net/http'
-      require 'uri'
-      require 'hpricot'
-
-      loaded_coverage_strings = {}
-
-      coverage_url = URI.parse(@coverage_api_url)
-      coverage_url.query = "rft.object_id=#{object_id}&target_service_id=#{sfx_target_service_ids.join(',')}"
-      
-      response = Net::HTTP.get_response( coverage_url )
-      unless (response.kind_of? Net::HTTPSuccess)
-        response.error!
+    if ( @get_coverage && @coverage_api_url && object_id  && (sfx_target_service_ids.length > 0)  )
+      begin
+        require 'net/http'
+        require 'uri'
+        require 'hpricot'
+  
+        loaded_coverage_strings = {}
+  
+        coverage_url = URI.parse(@coverage_api_url)
+        coverage_url.query = "rft.object_id=#{object_id}&target_service_id=#{sfx_target_service_ids.join(',')}"
+        
+        response = Net::HTTP.get_response( coverage_url )
+        unless (response.kind_of? Net::HTTPSuccess)
+          response.error!
+        end
+        
+        cov_doc = Hpricot( response.body )
+  
+        error = cov_doc.at('/sfxcoverage/exception')
+        if ( error )
+          request.logger.error("Error in SFX coverage API result. #{coverage_url.to_s} ; #{error.to_s}")
+          raise "Error in coverage API fetch"
+        end
+  
+        cov_doc.search('/sfxcoverage/targets/target').each do |target|
+          service_id = target.at('target_service_id').inner_html
+          coverage_str = target.at('availability_string').inner_html
+          loaded_coverage_strings[service_id] = coverage_str
+        end                              
+      rescue Exception
+          sfx_target_service_ids.each { |id| loaded_coverage_strings[id] = "Error in fetching coverage information." }
       end
-      
-      cov_doc = Hpricot( response.body )
-
-      error = cov_doc.at('/sfxcoverage/exception')
-      if ( error )
-        request.logger.error("Error in SFX coverage API result. #{coverage_url.to_s} ; #{error.to_s}")
-      end
-
-      cov_doc.search('/sfxcoverage/targets/target').each do |target|
-        service_id = target.at('target_service_id').inner_html
-        coverage_str = target.at('availability_string').inner_html
-        loaded_coverage_strings[service_id] = coverage_str
-      end                        
     end
 
     # Each target delivered by SFX
@@ -247,20 +257,6 @@ class Sfx < Service
     end   
   end
   
-  #def to_fulltext(response)
-
-  #  return response
-    
-    #value_text = YAML.load(response.value_text)
-    #hash = {:display_text=>response.response_key, :notes=>value_text[:notes],:coverage=>value_text[:coverage],:source=>value_text[:source]}
-    #1+1
-    #hash = response
-    #return hash 
-  #end
-  
-  #def response_to_view_data(response)
-  #  return response
-  #end
   
   def sfx_click_passthrough
     # From config, or if not that, from app default, or if not that, default
@@ -296,64 +292,79 @@ class Sfx < Service
   end
 
 
+  # Class method to parse a perl_data block as XML in String
+  # into a ContextObject. Argument is _string_ containing
+  # XML!
+  def self.parse_perl_data(perl_data)
+    doc = Hpricot(perl_data)
+
+    co = OpenURL::ContextObject.new
+    co.referent.set_format('journal') # default
+    
+    doc.search('hash/item').each do |item|
+      key = item['key']
+      prefix, stripped = key.split('.')
+      value = item.inner_html
+      
+      # Darn multi-value SFX hackery. Just take the first one,
+      # our context object can't store more than one. 
+      if (prefix == '@rft')
+        array_items = item.search("array/item")
+        array_i = array_items[0] unless array_items.blank?
+        
+        prefix = 'rft' if array_i
+        value = array_i.inner_html if array_i  
+      end
+
+      # object_type? Fix that to be the right way.
+      if (prefix=='rft') && (key=='object_type')
+        co.referent.set_format( value.downcase )
+        next
+      end
+      
+      if (prefix == 'rft' && value)
+          co.referent.set_metadata(stripped, item.inner_html)
+      end
+
+      if (prefix=='@rft_id')
+          identifiers = item.search('array/item')
+          identifiers.each do |id|
+            co.referent.add_identifier(id.inner_html)
+          end
+      end
+      if (prefix=='@rfr_id')
+          identifiers = item.search('array/item')
+          identifiers.each do |id|
+            co.referrer.add_identifier(id.inner_html)
+          end
+      end
+    end
+
+    return co
+  end
+
   protected
   def enhance_referent(request, perl_data)
-    # This should probably be rewritten to take ALL rft.* data from SFX,
-    # not just named fields. Sometimes SFX enhances from Pubmed or DOI
-    # etc., and we want to grab all that arbitrary stuff. 
     metadata = request.referent.metadata
-    
+
+    sfx_co = Sfx.parse_perl_data(perl_data.to_s)
+    sfx_metadata = sfx_co.referent.metadata
+
+    # If we already had metadata for journal title and the SFX one
+    # differs, we want to over-write it. This is good for ambiguous
+    # incoming OpenURLs, among other things.    
     if request.referent.format == 'journal'
-        # If we already had metadata for journal title and the SFX one
-        # differs, we want to over-write it. This is good for ambiguous
-        # incoming OpenURLs, among other things.
-        enhance_referent_value(request, "jtitle", (perl_data/"//hash/item[@key='rft.jtitle']"))                
+        request.referent.enhance_referent("jtitle", sfx_metadata['jtitle'])
     end
 
-    if (request.referent.format == 'book' && ! metadata['btitle'])      
-        enhance_referent_value(request, 'btitle', (perl_data/"//hash/item[@key='rft.btitle']"))
+    # The rest, we don't over-write
+    sfx_metadata.each do |key, value|      
+      if (metadata[key].blank?)
+        request.referent.enhance_referent(key, value)
+      end
     end
-
-    unless metadata['issn']
-      enhance_referent_value(request, 'issn', (perl_data/"//hash/item[@key='rft.issn']"))
-    end
-    
-    unless metadata['eissn']
-      enhance_referent_value(request, 'eissn', (perl_data/"//hash/item[@key='rft.eissn']"))
-    end
-
-    unless metadata['isbn']
-      enhance_referent_value(request, 'isbn', (perl_data/"//hash/item[@key='rft.isbn']"))
-    end
-
-    unless metadata['genre']
-      enhance_referent_value(request, 'genre', (perl_data/"//hash/item[@key='rft.genre']"))
-    end
-    
-    unless metadata['issue']
-      enhance_referent_value(request, 'issue', (perl_data/"//hash/item[@key='rft.issue']"))
-    end
-
-    unless metadata['volume']
-      enhance_referent_value(request, 'volume', (perl_data/"//hash/item[@key='rft.volume']"))
-    end
-
-    unless metadata['spage']
-      enhance_referent_value(request, 'spage', (perl_data/"//hash/item[@key='rft.spage']"))
-    end
-
-
-    unless metadata['date']
-      enhance_referent_value(request, 'date', (perl_data/"//hash/item[@key='rft.date']"))
-    end
-
-                    
+                        
   end
 
-  # First arg is key for referent_value, second arg is an hpricot
-  # element which we'll call .inner_html on to get the value.
-  def enhance_referent_value(request, key, value_element)
-    request.referent.enhance_referent(key, value_element.inner_html) if value_element
-  end
   
 end

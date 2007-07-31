@@ -30,7 +30,8 @@ module OpenURL
       @extra_args.each_key {|key|
         extras += "&"+key+"="+@extra_args[key]
       }
-			open( @host+"?"+self.transport_metadata_get("info:ofi/fmt:kev:mtx:ctx")+extras+"&"+@context_objects[idx].kev ) do |r|
+
+			open(   @host+"?"+self.transport_metadata_get("info:ofi/fmt:kev:mtx:ctx")+extras+"&"+@context_objects[idx].kev ) do |r|
 				@response = r.read
 			end 		
   	end

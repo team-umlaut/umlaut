@@ -1,6 +1,26 @@
+# The search controller handles searches fo manually entered citations,
+# or possibly ambiguous citations generally. It also provides an A-Z list.
+#
+# As source of this data, it can either use an Umlaut local journal index
+# (supplemented by the SFX API for date-sensitive querries),
+# or it can instead talk directly to the SFX db (still supplemented
+# by the API).  Whether it uses the journal index depends on
+# the value of the app config parameter use_umlaut_journal_index.
+#
+# Otherwise, it'll try to talk to the SFX db directly using
+# a database config named 'sfx_db' defined in config/database.yml 
+#
+# In either case, for talking to SFX API, how does it know where to find the
+# SFX to talk to? You can either define it in app config param
+# 'search_sfx_base_url', or if not defined there, the code will try to find
+# by looking at default Institutions for SFX config info.  
 class SearchController < ApplicationController
-  layout "layouts/search_standard", :except => [ :opensearch, :opensearch_description ]
   require 'open_url'
+  
+  layout AppConfig.param("search_layout","search_basic"), :except => [ :opensearch, :opensearch_description ]
+
+  before_filter :normalize_params
+  
   def index
     self.journals
   	render :action=>'journals'    
@@ -9,22 +29,61 @@ class SearchController < ApplicationController
   def journals
   
   end
-  
-  def journal_search    
-    if params["sfx.title_search"] == 'exact' or params["rft.object_id"] or params["rft.issn"] or params[:rft_id_value]
-      self.init_context_object_and_resolve
-    else
-      if params['rft.date'] and params['rft.volume'] and params['rft.issue']
-        @search_results = self.find_via_remote_title_source
-      else
-        @search_results = self.find_via_local_title_source
-      end
-  
 
-      if @search_results.length == 1
-        redirect_to @search_results[0].to_hash.merge!(:controller=>'resolve')
+  # @search_results is an array of ContextObject objects.
+  # Or, redirect to resolve action for single hit.
+  # param umlaut.title_search_type (aka sfx.title_search) 
+  # can be 'begins', 'exact', or 'contains'. Other
+  # form params should be OpenURL, generally
+  def journal_search
+    
+    @batch_size = 10
+    @page = 1
+    @page = params[:'umlaut.page'].to_i if params[:'umlaut.page']
+    @start_result_num = (@page * @batch_size) - (@batch_size - 1)
+    
+    search_co = context_object_from_params
+        
+    # If we have an exact-type 'search', just switch to 'resolve' action
+    if (params["umlaut.title_search_type"] == 'exact' or params["rft.object_id"] or params["rft.issn"] or params[:rft_id_value])
+      redirect_to search_co.to_hash.merge!(:controller=>'resolve')
+    elsif ( @use_umlaut_journal_index )
+      # Not exact search, and use local index. .
+      @total_search_results = self.find_via_local_title_source()
+    else
+      # Talk to SFX via direct db.
+      @total_search_results = self.find_by_title_via_sfx_db()
+    end
+
+    @total_search_results = [] if @total_search_results.nil?
+    
+    
+    @hits = @total_search_results.length
+    # Take out just the slice that we want to display.
+    if @hits < (@page + @batch_size)
+      @end_result_num = @hits
+    else
+      @end_result_num = @start_result_num + @batch_size - 1 
+    end
+    @display_results = @total_search_results.slice(@start_result_num - 1, @batch_size) 
+
+    # Supplement them with our original context object, so date/vol/iss/etc
+    # info is not lost.
+    orig_metadata = search_co.referent.metadata
+    @display_results.each do | co |
+      orig_metadata.each do |k,v|        
+        # Don't overwrite, just supplement
+        co.referent.set_metadata(k, v) unless co.referent.get_metadata(k) || v.blank?
       end
-    end        
+    end
+
+    
+    if @display_results.length == 1
+      # If we narrowed down to one result, redirect to resolve action.        
+      redirect_to @display_results[0].to_hash.merge!(:controller=>'resolve')      
+    end
+
+
   end
 
   def journal_list
@@ -32,25 +91,73 @@ class SearchController < ApplicationController
     @journals = Journal.find_all_by_page(params[:id].downcase, :order=>'normalized_title')
 
   end  
-  
+
+  def context_object_from_params
+    params_c = params.clone  
+
+    # Take out the weird ones that aren't really part of the OpenURL
+    ignored_keys = [:journal, "__year", "__month", "__day", "action", "controller", "Generate_OpenURL2", "rft_id_type", "rft_id_value"]
+    ignored_keys.each { |k| params_c.delete(k) }
+    
+    # Enhance and normalize metadata a bit, before
+    # making a context object
+    jrnl = nil
+    # Normalize ISSN to have dash
+    if ( ! params['rft.issn'].blank? && params['rft.issn'][4,1] != '-')
+      params[rft.issn].insert(4,'-')
+    end
+
+    # Enhance with info from local journal index, if we can
+    if ( @use_umlaut_journal_index)
+      # Try a few different ways to find a journal object
+      jrnl = Journal.find_by_object_id(params_c['rft.object_id']) unless params_c['rft.object_id'].blank?
+      jrnl = Journal.find_by_issn(params_c['rft.issn']) unless jrnl || params_c['rft.issn'].blank?
+      jrnl = Journal.find(:first, :conditions=>['lower(title) = ?',params_c['rft.jtitle']]) unless (jrnl || params_c['rft.jtitle'].blank?)
+ 
+      if (jrnl && params_c['rft.issn'].blank?)
+        params_c['rft.issn'] = jrnl.issn
+      end
+      if (jrnl && params_c['rft.object_id'].blank? )
+        params_c['rft.object_id'] = jrnl[:object_id]
+      end
+      if (jrnl && params_c['rft.jtitle'].blank?)
+        params_c['rft.jtitle'] = jrnl.title
+      end
+    end
+    
+
+    ctx = OpenURL::ContextObject.new
+    ctx.import_hash( params_c )
+
+    # Not sure where ":rft_id_value" as opposed to 'rft_id' comes from, but
+    # it was in old code. We do it after CO creation to handle multiple
+    # identifiers
+    if (! params_c[:rft_id_value].blank?)
+      ctx.referent.add_identifier( params_c[:rft_id_value] )
+    end
+
+    return ctx
+  end
+
   def init_context_object_and_resolve
-    require RAILS_ROOT+'/vendor/open_url'
+    co = context_object_from_params
+
+    # Add our controller param to the context object, and redirect
+    redirect_to co.to_hash.merge!(:controller=>'resolve')
+  end
+
+  def init_context_object_and_resolve_old
     ctx = OpenURL::ContextObject.new  
     jrnl = nil
-    if params["rft.object_id"]
-      jrnl = Journal.find_by_object_id(params["rft.object_id"])
+    if (params["rft.object_id"] )
+      jrnl = Journal.find_by_object_id(params["rft.object_id"]) if @use_umlaut_journal_index
       ctx.referent.set_metadata('object_id', params["rft.object_id"])
     end
 
-    if params[:journal]   
-      if params[:journal][:title]
-        ctx.referent.set_metadata('jtitle', params[:journal][:title])
-      end
-    end
-    if params["rft.jtitle"] and params["rft.jtitle"] != ""
+    unless params["rft.jtitle"].blank? 
       ctx.referent.set_metadata('jtitle', params["rft.jtitle"])
     end
-    if params["rft.issn"] and params["rft.issn"] != ""
+    if (! params["rft.issn"].blank?)
       issn = params["rft.issn"]
      	unless issn[4,1] == "-"
      	  issn.insert(4, '-')
@@ -60,7 +167,7 @@ class SearchController < ApplicationController
       ctx.referent.set_metadata('issn', jrnl.issn)
     end
     if ctx.referent.metadata['issn'] or ctx.referent.metadata['jtitle']
-      unless jrnl
+      if (@use_umlaut_journal_index && ! jrnl)
         if ctx.referent.metadata['issn']
           jrnl = Journal.find_by_issn(ctx.referent.metadata['issn'])
           ctx.referent.set_metadata('object_id', jrnl[:object_id]) if jrnl
@@ -78,68 +185,123 @@ class SearchController < ApplicationController
     ctx.referent.set_metadata('volume', params['rft.volume']) if params['rft.volume']
     ctx.referent.set_metadata('volume', params['rft.issue']) if params['rft.issue']
 
-    if params[:rft_id_value] and params[:rft_id_value] != ""
-      id = params[:rft_id_value]
-      rft_id = case params[:rft_id_type]
-                when 'doi' then 'info:doi/'
-                else 'info:pmid/'
-                end
-      rft_id += id.sub(/^(doi:)|(info:doi\/)|(pmid:)|(info:pmid\/)/, '')
-      ctx.referent.set_identifier(rft_id)
-    end      
+    # Not sure where rft_id_value instead of rft_id would come from?
+    # Normalizing is taken care of inside referent code. 
+    ctx.referent.set_identifier(params[:rft_id_value]) unless params[:rft_id_value].blank?
+    ctx.referent.set_identifier(params[:rft_id]) unless params[:rft_id].blank?
+    
+    
     redirect_to ctx.to_hash.merge!(:controller=>'resolve')
   end
-  auto_complete_for :journal_title, :titles, :limit=>10
   
+
+  # Should return an array of hashes, with each has having :title and :object_id
+  # keys. Can come from local journal index or SFX or somewhere else.
+  # :object_id is the SFX rft.object_id, and can be blank. (I think it's SFX
+  # rft.object_id for local journal index too)
   def auto_complete_for_journal_title
-    @titles = Journal.find_by_contents("alternate_titles:*"+params[:journal][:title]+"*")
-    render :partial => 'journal_titles'  
+    if (@use_umlaut_journal_index)
+      @titles = Journal.find_by_contents("alternate_titles:*"+params['rft.jtitle']+"*").collect {|j| {:object_id => j[:object_id], :title=> j.title }   }
+    else
+      #lookup in SFX db directly!
+      #query = params[:journal][:title].upcase
+      query = params['rft.jtitle']
+      
+      
+      @titles = SfxDb::AzTitle.find(:all, :conditions => ['TITLE_NORMALIZED like ?', "%" + query + "%"]).collect {|to| {:object_id => to.OBJECT_ID, :title=>to.TITLE_DISPLAY}
+      }
+    end
+    
+    render :partial => 'journal_titles'
   end
 
-  # Talk directly to SFX mysql to find the hits. 
+  # Talk directly to SFX mysql to find the hits by journal Title.  
   # Works with SFX 3.0. Will probably break with SFX 4.0, naturally.
-  def find_via_direct_sfx_db
-    
-  end
+  # Returns an Array of ContextObjects. 
+  def find_by_title_via_sfx_db
+    # NORMALIZED TITLE column in SFX db appears to be upcase title
+    # Frustratingly, NORMALIZED_TITLE does not remove non-filing chars,
+    # so we need to do a fairly expensive search. 
   
-  def find_via_remote_title_source
-      inst = Institution.find_by_default_institution('true')
-      resolver = inst.link_resolvers[0]
-      require 'dispatch_services/link_resolver_clients/sfx_client'
-      search_results = []
+    search_type = params['umlaut.title_search_type'] || 'contains'
+    title_q = params['rft.jtitle']
+    
+    conditions = case search_type
+      when 'contains'
+        ['TITLE_NORMALIZED like ?', "%" + title_q.upcase + "%"]
+      when 'begins'
+       ['TITLE_NORMALIZED like ? OR mid(TITLE_NORMALIZED, TITLE_NON_FILING_CHAR) like ?', title_q.upcase + '%', title_q.upcase + '%']
+      else # exact
+        ['TITLE_NORMALIZED = ? OR mid(TITLE_NORMALIZED, TITLE_NON_FILING_CHAR) =  ?', title_q.upcase, title_q.upcase]
+    end
+    
+    object_ids = SfxDb::Title.find(:all, :conditions => conditions).collect { |title_obj| title_obj.OBJECT_ID}
+
+    # Now fetch objects with publication information
+    sfx_objects = SfxDb::Object.find( object_ids, :include => [:publishers, :main_titles, :primary_issns, :primary_isbns])
+
+    # Now we need to convert to ContextObjects.
+    context_objects = sfx_objects.collect do |sfx_obj|
       ctx = OpenURL::ContextObject.new
-      ctx.referent.set_metadata('jtitle', params[:journal][:title])
-      if params['rft.date']
-        ctx.referent.set_metadata('date', params['rft.date'])
+
+      # Put SFX object id in rft.object_id, that's what SFX does. 
+      ctx.referent.set_metadata('object_id', sfx_obj.id)
+
+      publisher_obj = sfx_obj.publishers.first
+      if ( publisher_obj )
+        ctx.referent.set_metadata('pub', publisher_obj.PUBLISHER_DISPLAY)
+        ctx.referent.set_metadata('place', publisher_obj.PLACE_OF_PUBLICATION_DISPLAY)
       end
-      if params['rft.volume']
-        ctx.referent.set_metadata('volume', params['rft.volume'])
+      
+      title_obj = sfx_obj.main_titles.first
+      title = title_obj ? title_obj.TITLE_DISPLAY : "Unknown Title"
+      ctx.referent.set_metadata('jtitle', title)
+
+      issn_obj = sfx_obj.primary_issns.first
+      ctx.referent.set_metadata('issn', issn_obj.ISSN_ID) if issn_obj
+
+      isbn_obj = sfx_obj.primary_isbns.first     
+      ctx.referent.set_metadata('isbn', isbn_obj.ISBN_ID) if isbn_obj
+      
+      ctx
+    end
+  end
+
+  # This guy actually works to talk to an SFX instance over API.
+  # But it's really slow. And SFX doesn't seem to take account
+  # of year/volume/issue when displaying multiple results anyway!!
+  # So it does nothing of value for us. 
+  def find_via_remote_title_source(context_object)
+      ctx = context_object
+      search_results = []
+
+      sfx_url = AppConfig.param("search_sfx_base_url")
+      unless (sfx_url)      
+        # try to guess it from our institutions
+        instutitions = Institution.find_all_by_default_institution(true)
+        instutitions.each { |i| i.services.each { |s| 
+           sfx_url = s.base_url if s.kind_of?(Sfx) }}      
       end
-      if params['rft.issue']
-        ctx.referent.set_metadata('volume', params['rft.issue'])
-      end      
-      transport = OpenURL::Transport.new(resolver.url, ctx)
+            
+      transport = OpenURL::Transport.new(sfx_url, ctx)
       transport.extra_args["sfx.title_search"] = params["sfx.title_search"]
       transport.extra_args["sfx.response_type"] = 'multi_obj_xml'
+
+      require 'ruby-debug'
+      debugger
+      
       transport.transport_inline
+      
       doc = REXML::Document.new transport.response
-      client = SfxClient.new(ctx, resolver)
+      
+      #client = SfxClient.new(ctx, resolver)
+      
       doc.elements.each('ctx_obj_set/ctx_obj') { | ctx_obj | 
         ctx_attr = ctx_obj.elements['ctx_obj_attributes']
-        extended_data = nil
         next unless ctx_attr and ctx_attr.has_text?
-        perl_data = REXML::Document.new ctx_attr.get_text.value
-        extended_data = client.parse_perl_data(perl_data)
-        next if extended_data[:metadata].empty?
-        co = OpenURL::ContextObject.new
-        fmt_node = REXML::XPath.first(perl_data, "/perldata/hash/item[@key='rft.object_type']")
-        if fmt_node
-          co.referent.set_format(fmt_node.get_text.value.downcase)
-        else 
-          co.referent.set_format('journal')        
-        end
-        client.enhance_context_object(co, extended_data[:metadata])  
-        search_results << co
+        
+        perl_data = ctx_attr.get_text.value
+        search_results << Sfx.parse_perl_data( perl_data )
       } 
       return search_results     
   end
@@ -148,14 +310,14 @@ class SearchController < ApplicationController
     offset = 0
     offset = ((params[:page].to_i * 10)-10) if params['page']
 
-    unless session[:search] == {:title_search=>params['sfx.title_search'], :title=>params[:journal][:title]}
-      session[:search] = {:title_search=>params['sfx.title_search'], :title=>params[:journal][:title]}
+    unless session[:search] == {:title_search=>params['sfx.title_search'], :title=>params['rft.jtitle']}
+      session[:search] = {:title_search=>params['sfx.title_search'], :title=>params['rft.jtitle']}
 
       titles = case params['sfx.title_search']    
         when 'begins'          
-          Journal.find(:all, :conditions=>['lower(title) LIKE ?', params[:journal][:title].downcase+"%"], :offset=>offset)
+          Journal.find(:all, :conditions=>['lower(title) LIKE ?', params['rft.jtitle'].downcase+"%"], :offset=>offset)
         else
-          qry = params[:journal][:title]
+          qry = params['rft.jtitle']
           qry = '"'+qry+'"' if qry.match(/\s/)        
           options = {:limit=>:all, :offset=>offset}
           Journal.find_by_contents('alternate_titles:'+qry, options)         
@@ -326,6 +488,42 @@ class SearchController < ApplicationController
   
   def opensearch_description
     @headers['Content-Type'] = 'application/opensearchdescription+xml' 
+  end
+
+  protected
+
+  # We store our params in our session so we can tell if we have the same
+  # query or not. 
+  #def store_format(params)
+    # Got to take out params that actually aren't about the query at all.
+  #  store_format = params.clone
+  #  store_format.delete("action")
+  #  store_format.delete("controller")
+  #  store_format.delete("page")
+    
+  #  return store_format
+  #end
+
+  def normalize_params
+    # sfx.title_search and umlaut.title_search_type are synonyms
+    params["sfx.title_search"] = params["umlaut.title_search_type"] if params["sfx.title_search"].blank?
+    params["umlaut.title_search_type"] = params["sfx.title_search"] if params["umlaut.title_search_type"].blank?
+    
+    # Likewise, params[:journal][:title] is legacy params['rft.jtitle']
+    unless (params[:journal].blank? || params[:journal][:title].blank? ||
+            ! params['rft.jtitle'].blank? )
+      params['rft.jtitle'] = params[:journal][:title]
+    end
+    if (params[:journal].blank? || params[:journal][:title].blank?)
+      params[:journal] ||= {}
+      params[:journal][:title] = params['rft.jtitle']
+    end
+
+    # Grab identifiers out of the way we've encoded em
+    if ( params['rft_id_value'])
+      id_type = params['rft_id_type'] || 'doi'
+      params['rft_id'] = "info:#{id_type}/#{params['rft_id_value']}"
+    end
   end
  
 end

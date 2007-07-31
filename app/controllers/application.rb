@@ -4,6 +4,13 @@
 class ApplicationController < ActionController::Base
   # Pick a unique cookie name to distinguish our session data from others'
   session :session_key => '_u2_session_id'
+  before_filter :app_before_filter
+
+  def app_before_filter
+    @use_umlaut_journal_index = AppConfig.param("use_umlaut_journal_index", true)
+
+   return true
+  end
 
      
 end

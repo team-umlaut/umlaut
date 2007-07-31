@@ -52,6 +52,19 @@ h4 {
 	display: block; 
   border: 1px solid #eeb211;
 }
+
+#searchWrapper {
+	width: 780px;
+	position: relative;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: auto;
+  margin-right: auto;
+	padding: .5em;
+	display: block; 
+  border: 1px solid #eeb211;
+}
+
 #headerStatusBar {
   border-bottom: 1px solid #eeb211;
   background-color: #FCF1D4;

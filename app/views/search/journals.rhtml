@@ -21,7 +21,8 @@ function clearOpenURL2() {
 
    document.OpenURL.issn.value = "";
    document.OpenURL.doi.value = "";
-
+   document.OpenURL.pmid.value = "";
+   document.OpenURL.rft_id_value.value = "";
 }
 
 function clearOpenURL() {
@@ -48,15 +49,16 @@ function setDate() {
         var month    = document.OpenURL.__month.options[selMonth].value;
         var day      = document.OpenURL.__day.options[selDay].value;
         var isodate  = "";
-        if (year != "****") {
+        if (year != "****" && year != "Year" && /^\d+$/.test(year)) {
                 isodate += year;
-                if (month != "***") {
+                if (month != "***" && month != "Month" && /^\d+$/.test(month)) {
                         isodate += "-" + month;
-                        if (day != "**") {
+                        if (day != "**" && day != "Day" && /^\d+$/.test(day)) {
                                 isodate += "-" + day;
                         }
                 }
         }
+
         document.OpenURL.date.value = isodate;
 }
 
@@ -66,7 +68,8 @@ function setDate() {
                                     <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'}, nil)  %>
   <div class="citationLinker">                                      
 
-                                          <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation">
+                                          <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
+                                          <!-- <input type=hidden name="rfr_id" value="info:sid/umlaut"> -->
 
                                         <table width="100%" border="0" cellspacing="0" cellpadding="5">
                                           <tr>
@@ -82,10 +85,13 @@ function setDate() {
                                           <tr>
 
                                             
-                                            <td width="89%">Journal Title: 
-<%= text_field_with_auto_complete :journal, :title, {:onchange=>'clearObjectId();'}, {:after_update_element=>'updateObjectId'}%>
+                                            <td width="89%">Journal Title:
+
+
+<%= text_field_with_auto_complete :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off'}, {:after_update_element=>'updateObjectId', :min_chars => 4}
+%>
                                                                                          
-                                              <select name="sfx.title_search" id="sfx_title_search">
+                                              <select name="umlaut.title_search_type" id="sfx_title_search">
                                                 <option value="contains">contains</option>
                                                 <option value="begins">begins
                                                 with</option>

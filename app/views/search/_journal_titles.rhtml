@@ -1,9 +1,14 @@
 <ul>
 <% 
 if @titles
-for title in @titles do -%>
-  <li class="journal_title" title='<%= title[:object_id]%>'><%= title.title %></li>
-<% end 
+max_display = 15
+i = 0
+for title in @titles do 
+  i += 1 
+  break if i > max_display -%>
+  <li class="journal_title" title='<%= title[:object_id]%>'><%= title[:title] %></li>
+<% 
+   end 
 end
 %>
 </ul>
