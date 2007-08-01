@@ -5,11 +5,8 @@ if params["sfx.title_search"] == "begins"
 else 
     @page_title += 'contain '
 end
-if params[:journal] and params[:journal][:title]
-    @page_title += params[:journal][:title]
-else 
-    @page_title += params['rft.jtitle']
-end
+ 
+@page_title += "'" + params['rft.jtitle'] + "'"
 
 start_result = @start_result_num
 end_result = @end_result_num
@@ -17,14 +14,31 @@ end_result = @end_result_num
 %>
 
 <div class="oneColumn">
-<h1>Your search for "<%= params[:journal][:title]%>" returned <%= @hits %>
+<h1>Your search for <%= @page_title.downcase %> returned <%= @hits %>
 result<% unless @hits == 1 %>s<%end%>
 </h1>
+
 <% unless @hits == 0%>
 <h3>Showing results <%= @start_result_num %> through <%= @end_result_num %></h3>
 <% end %>
 <% if params["sfx.title_search"] == "begins"%>
 <p><em><strong>Note:</strong> Alternate titles might have begun with your search terms</em></p>
+<% 
+args = {"sfx.title_search"=>params["sfx.title_search"]}
+unless @page == 1
+args[:'umlaut.page'] = @page-1
+%>
+<strong><span class='previous_page'><%= link_to 'Previous', args.merge({:action=>'journal_search'}).merge({"journal[title]"=>params[:journal][:title]}) -%></span></strong>
+<% end
+if @page != 1 and end_result != @hits %>
+ | 
+<% end
+if end_result != @hits 
+args[:'umlaut.page'] = @page+1
+%>
+<strong><span class='next_page'><%= link_to 'Next', args.merge({:action=>'journal_search'}).merge({"journal[title]"=>params[:journal][:title]}) -%></span></strong>
+<% end %>
+
 <p>&nbsp;</p>
 <% end %>
 
@@ -40,8 +54,7 @@ result<% unless @hits == 1 %>s<%end%>
 <div class='pagination'>
 <% 
 args = {"sfx.title_search"=>params["sfx.title_search"]}
-%>
-<% unless @page == 1
+unless @page == 1
 args[:'umlaut.page'] = @page-1
 %>
 <strong><span class='previous_page'><%= link_to 'Previous', args.merge({:action=>'journal_search'}).merge({"journal[title]"=>params[:journal][:title]}) -%></span></strong>

@@ -7,22 +7,21 @@
 <%= render :partial=>"a_to_z" %>
 <div class="journalList">
 
-<% cache do %>           <!- Here's the content we cache ->
+           <!-- Here's the content we cache -->
  
     <% for journal in @journals
-        args = {"rft.jtitle"=>journal.title, "rft.object_id"=>journal.object_id} 
+        args = {"rft.jtitle"=>journal[:title], "rft.object_id"=>journal[:object_id]} 
         if journal.issn
-          args["rft.issn"] = journal.issn
+          args["rft.issn"] = journal[:issn]
         end
     -%>
 
-      <%= link_to journal.title, args.merge(:action=>'journal_search') %>
+      <%= link_to args["rft.jtitle"], args.merge(:action=>'journal_search') %>
       <% unless journal.issn.blank? %>
-     <span class="smallText"> [ISSN: <%= journal.issn %>]</span><% end %> <br />
+     <span class="smallText"> [ISSN: <%= args["rft.issn"] %>]</span><% end %> <br />
  
     <% end -%>
 
-<% end %>
 <%= render :partial=>"a_to_z" %>
 <!--close journalList-->
 </div>

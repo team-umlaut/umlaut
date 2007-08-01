@@ -118,12 +118,9 @@ unless ref_meta['atitle'].nil?
 	style = 'smallText'
 end
 title_row = '<tr><td width="90"><div align="right" class="'+style+'"><strong>'+title_label+':</strong></td><td><span class="'+style+'">'
-unless ref_meta['atitle'].nil?
- title_row += link_to title, @co.to_hash.merge(:controller=>"resolve", :action=>'start')
-else 
-	title_row += title  
 
-end
+title_row += link_to title, @co.to_hash.merge(:controller=>"resolve", :action=>'start')
+
 title_row += '</span></td></tr>'
   unless @page_title
    @page_title = title
@@ -192,7 +189,7 @@ if pub.length > 0
 
       </table>
 
-</td><td width="10%" align='right'><%= link_to(image_tag('http://sfx.galib.uga.edu/sfx_git1/sfx.gif', :border=>0), @current_context_object.to_hash.merge(:controller=>"resolve"))%></td></tr></table>
+</td><td width="10%" align='right'><%= resolver_link(@current_context_object) %></td></tr></table>
 
 
 
