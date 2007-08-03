@@ -1,72 +1,60 @@
 <% 
-@page_title = 'Journal titles that '
-if params["sfx.title_search"] == "begins"
-    @page_title += 'begin with '
-else 
-    @page_title += 'contain '
-end
- 
-@page_title += "'" + params['rft.jtitle'] + "'"
+if (params["action"] == "journal_list")
+  @page_title = "Browse by Journal Title: #{params['id']}"
+else
+  @page_title = 'Journal titles that '
 
-start_result = @start_result_num
-end_result = @end_result_num
+  @page_title +=
+  (params["umlaut.title_search_type"] == "begins") ?
+  'begin with ' :
+  @page_title += 'contain '
+
+  @page_title += "'" + params['rft.jtitle'] + "'"
+end
 
 %>
 
 <div class="oneColumn">
-<h1>Your search for <%= @page_title.downcase %> returned <%= @hits %>
-result<% unless @hits == 1 %>s<%end%>
+<h1><%= @page_title %> 
 </h1>
 
-<% unless @hits == 0%>
-<h3>Showing results <%= @start_result_num %> through <%= @end_result_num %></h3>
-<% end %>
-<% if params["sfx.title_search"] == "begins"%>
-<p><em><strong>Note:</strong> Alternate titles might have begun with your search terms</em></p>
-<% 
-args = {"sfx.title_search"=>params["sfx.title_search"]}
-unless @page == 1
-args[:'umlaut.page'] = @page-1
-%>
-<strong><span class='previous_page'><%= link_to 'Previous', args.merge({:action=>'journal_search'}).merge({"journal[title]"=>params[:journal][:title]}) -%></span></strong>
-<% end
-if @page != 1 and end_result != @hits %>
- | 
-<% end
-if end_result != @hits 
-args[:'umlaut.page'] = @page+1
-%>
-<strong><span class='next_page'><%= link_to 'Next', args.merge({:action=>'journal_search'}).merge({"journal[title]"=>params[:journal][:title]}) -%></span></strong>
+<% if params["action"] == "journal_list" %> 
+  <%= render :partial=>"a_to_z" %>
+  <div class="line2"></div>
 <% end %>
 
-<p>&nbsp;</p>
+
+<% unless @hits == 0%>
+<h3>Showing results <%= @start_result_num %> through <%= @end_result_num %> of <%= @hits %></h3>
 <% end %>
+<% if params["sfx.title_search"] == "begins"%>
+  <p><em><strong>Note:</strong> Alternate titles might have begun with your search terms</em></p>
+
+  <p>&nbsp;</p>
+
+<% end %>
+
+<div class='pagination'>
+  <%= render :partial=>'pager' %>
+</div>
 
 
 <% @display_results.each do | co | 
 @current_context_object = co
 %>
-
-  <%= render :partial=>'citation' %>
+  <% partial_name = @citation_partial || 'citation' %>
+  <%= render :partial=>partial_name %>
  
   <div class='line'></div>
 <% end %>
+
 <div class='pagination'>
-<% 
-args = {"sfx.title_search"=>params["sfx.title_search"]}
-unless @page == 1
-args[:'umlaut.page'] = @page-1
-%>
-<strong><span class='previous_page'><%= link_to 'Previous', args.merge({:action=>'journal_search'}).merge({"journal[title]"=>params[:journal][:title]}) -%></span></strong>
-<% end
-if @page != 1 and end_result != @hits %>
- | 
-<% end
-if end_result != @hits 
-args[:'umlaut.page'] = @page+1
-%>
-<strong><span class='next_page'><%= link_to 'Next', args.merge({:action=>'journal_search'}).merge({"journal[title]"=>params[:journal][:title]}) -%></span></strong>
-<% end %>
+  <%= render :partial=>'pager' %>
 </div>
+
+<% if params["action"] == "journal_list" %> 
+  <div class="line2"></div>
+  <%= render :partial=>"a_to_z" %>
+<% end %>
  <!--close oneColumn-->
 </div>  

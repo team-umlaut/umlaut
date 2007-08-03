@@ -20,6 +20,7 @@ class SearchController < ApplicationController
   require 'open_url'
 
   @@search_batch_size = 20
+  @@az_batch_size = 20
   @@autocomplete_limit = 15
   
   layout AppConfig.param("search_layout","search_basic"), :except => [ :opensearch, :opensearch_description ]
@@ -32,22 +33,24 @@ class SearchController < ApplicationController
   end  
   
   def journals
-  
+    #fall through to view
   end
 
+  
   # @search_results is an array of ContextObject objects.
   # Or, redirect to resolve action for single hit.
   # param umlaut.title_search_type (aka sfx.title_search) 
   # can be 'begins', 'exact', or 'contains'. Other
   # form params should be OpenURL, generally
-  def journal_search
-    
+  def journal_search    
     @batch_size = @@search_batch_size
     @page = 1  # page starts at 1 
-    @page = params[:'umlaut.page'].to_i if params[:'umlaut.page']
+    @page = params['page'].to_i if params['page']
     @start_result_num = (@page * @batch_size) - (@batch_size - 1)
     
-    search_co = context_object_from_params
+    @search_context_object  = context_object_from_params
+    
+    search_co = @search_context_object
         
     if (params["umlaut.title_search_type"] == 'exact' ||
         params["rft.object_id"] ||
@@ -67,10 +70,9 @@ class SearchController < ApplicationController
 
         
     # Calculate end-result number for display
-    if @hits < (@page + @batch_size)
+    @end_result_num = @start_result_num + @batch_size - 1
+    if @end_result_num > @hits
       @end_result_num = @hits
-    else
-      @end_result_num = @start_result_num + @batch_size - 1 
     end
     
     # Supplement them with our original context object, so date/vol/iss/etc
@@ -82,18 +84,75 @@ class SearchController < ApplicationController
         co.referent.set_metadata(k, v) unless co.referent.get_metadata(k) || v.blank?
       end
     end
-
     
     if (@page == 1) && (@display_results.length == 1)
       # If we narrowed down to one result, redirect to resolve action.        
       redirect_to @display_results[0].to_hash.merge!(:controller=>'resolve')      
     end
 
-
   end
 
+  # This is actually the A-Z browse display
   def journal_list
-    @journals = Journal.find_all_by_page(params[:id].downcase, :order=>'normalized_title')
+
+    # Normalize request for 'Others'
+    if params[:id] =~ /^other/i then params[:id] = 'Others' end  
+  
+        
+    @batch_size = @@az_batch_size
+    @page = 1  # page starts at 1 
+    @page = params['page'].to_i if params['page']
+    (params['page'] = @page =  1) if @page == 0 # non-numeric will to_i to 0
+    @start_result_num = (@page * @batch_size) - (@batch_size - 1)
+
+    if ( @use_umlaut_journal_index)
+      @hits = Journal.count(:conditions=>["page = ?", params[:id].downcase])
+      
+      journals = Journal.find_all_by_page(params[:id].downcase, :order=>'normalized_title', :limit=>@batch_size, :offset=>@batch_size*(@page-1))
+      # convert to context objects for display
+      @display_results = journals.collect { |j| j.to_context_object }
+    else
+      # Talk to the SFX AZ index
+      
+      joins = " inner join AZ_LETTER_GROUP_VER3 as lg on AZ_TITLE_VER3.AZ_TITLE_VER3_ID = lg.AZ_TITLE_VER3_ID"
+      # Need a special condition for 0-9
+      if ( params[:id] == '0-9')
+        conditions = ["lg.AZ_LETTER_GROUP_VER3_NAME IN ('0','1','2','3','4','5','6','7','8','9')"]
+      else
+        conditions = ['lg.AZ_LETTER_GROUP_VER3_NAME = ?', params[:id].upcase]
+      end
+
+      @hits = SfxDb::AzTitle.count(:joins => joins,
+            :conditions => conditions)
+
+
+      # Sorry this find is so crazy, trying to manage to do it
+      # efficiently and get what we need in large SFX db. 
+      # For crazy nested include below, see:
+      # http://snippets.dzone.com/posts/show/2089
+      az_titles = SfxDb::AzTitle.find(:all, 
+        :joins => joins,
+        :conditions => conditions,
+        :limit => @batch_size,
+        :offset=>@batch_size*(@page -1),
+        :order=>'TITLE_SORT',
+        :include=>[{:object => [:publishers, :titles] }])
+        
+      # Convert to context objects
+      @display_results = az_titles.collect { | azt | azt.to_context_object }
+             
+      
+    end
+
+    # Calculate end-result number for display
+    @end_result_num = @start_result_num + @batch_size - 1
+    if @end_result_num > @hits
+      @end_result_num = @hits
+    end
+    
+    # Use our ordinary search displayer to display
+    # It'll notice the action and do just a bit of special stuff.
+    render (:template => "search/journal_search")
   end  
 
   
@@ -109,9 +168,7 @@ class SearchController < ApplicationController
       @titles = Journal.find_all_by_contents(:all, :conditions => ['contents = ?',"alternate_titles:*"+params['rft.jtitle']+"*"], :limit=>@@autocomplete_limit).collect {|j| {:object_id => j[:object_id], :title=> j.title }   }
     else
       #lookup in SFX db directly!
-      #query = params[:journal][:title].upcase
       query = params['rft.jtitle']
-      
       
       @titles = SfxDb::AzTitle.find(:all, 
       :conditions => ['TITLE_DISPLAY like ?', "%" + query + "%"],
@@ -268,6 +325,7 @@ class SearchController < ApplicationController
             ! params['rft.jtitle'].blank? )
       params['rft.jtitle'] = params[:journal][:title]
     end
+
     if (params[:journal].blank? || params[:journal][:title].blank?)
       params[:journal] ||= {}
       params[:journal][:title] = params['rft.jtitle']

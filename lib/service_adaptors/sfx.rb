@@ -352,9 +352,16 @@ class Sfx < Service
 
     # If we already had metadata for journal title and the SFX one
     # differs, we want to over-write it. This is good for ambiguous
-    # incoming OpenURLs, among other things.    
+    # incoming OpenURLs, among other things.
+    # Actually, SFX messes up titles of non-ascii-7 (ie, diacritics etc)
+    # in XML, so we don't really want to do that after all, sadly.
+    
+    #if request.referent.format == 'journal'
+    #    request.referent.enhance_referent("jtitle", sfx_metadata['jtitle'])
+    #end
+    # Let's do it with ISSN though
     if request.referent.format == 'journal'
-        request.referent.enhance_referent("jtitle", sfx_metadata['jtitle'])
+      request.referent.enhance_referent('issn', sfx_metadata['issn'])
     end
 
     # The rest, we don't over-write

@@ -345,14 +345,16 @@ ol.numberedListlg a {
 	
 /* A-Z NAVIGATION */
 .azNav {
-	text-align: left;
+	text-align: center;
 	}
 .azNav a {
-   	font-weight: bold;
-   	padding:2px 4px 2px 4px;
+  font-size: .8em;
+  font-weight: bold;
+  padding:.15em .3em .15em .3em;
 	border: 1px solid #bbb;
 	text-decoration: none;
 	color : #0066CC;
+  line-height: 1.7em;
 	}
 .azNav a:hover {
 	background-color: #eee;

@@ -1,11 +1,15 @@
-
+<%
+  group_list = ('A'..'Z').to_a
+  if (! @use_umlaut_journal_index )
+    group_list.push('0-9')
+    group_list.push('Other')
+  end
+%>
   
 
-  <p>&nbsp;</p>
   <p class="azNav">
-  <% ('A' .. 'Z').to_a.each { | letter |%>
+  <% group_list.each { | letter |%>
   <%= link_to letter, :action=>"journal_list", :id=>letter%>
   <%}%>
   </p>
-  <p>&nbsp;</p>
-  <div class="line2"></div>
+
