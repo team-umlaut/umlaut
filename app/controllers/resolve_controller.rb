@@ -8,14 +8,19 @@ class ResolveController < ApplicationController
   after_filter :save_request
   
   # Take layout from config, default to resolve_basic.rhtml layout. 
-  layout AppConfig.param("resolve_layout", "resolve_basic")
+  layout AppConfig.param("resolve_layout", "resolve_basic"), 
+         :except => [:banner_menu, :bannered_link_frameset]
   require 'json/lexer'
   require 'json/objects'
   require 'oai'
   require 'open_url'
   require 'collection'
 
-  # names of partials for differnet blocks on index page
+  # If a background service was started more than 30 seconds
+  # ago and isn't finished, we assume it died.
+  BACKGROUND_SERVICE_TIMEOUT = 20
+  
+  # set up names of partials for differnet blocks on index page
   @@partial_for_block = {}
   @@partial_for_block[:holding] = AppConfig.param("partial_for_holding", "holding")
   def self.partial_for_block ; @@partial_for_block ; end
@@ -41,25 +46,23 @@ class ResolveController < ApplicationController
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing    
-    # First see if this HTTP request told us to use an already existing Umlaut request
-    # Sorry that this is an illegal OpenURL
-    begin 
-      request_id = params['umlaut.request_id']
-      # Be sure to use session id too to guard against spoofing by guessing
-      # request ids from another session.
-      #require 'ruby-debug'
-      #debugger
-      @user_request = Request.find(:first, :conditions => ["session_id = ? and id = ?", session.session_id, request_id] ) unless request_id.nil? || @user_request
-    rescue  ActiveRecord::RecordNotFound
-      # Bad request id? Okay, pretend we never had a request_id at all. 
-      request_id = nil
-      @user_request = nil
-    end
 
-    # Only if we didn't load a request from umlaut.request_id...
     @user_request ||= Request.new_request(params, session )
     @collection = Collection.new(request.remote_ip, session)      
-    @user_request.save    
+    @user_request.save!
+
+    # Set 'timed out' background services to dead if neccesary. 
+    @user_request.dispatched_services.each do | ds |
+        if ( (ds.status == DispatchedService::InProgress ||
+              ds.status == DispatchedService::Queued ) &&
+              (Time.now - ds['updated_at']) > BACKGROUND_SERVICE_TIMEOUT)
+
+              ds.store_exception ( Exception.new("background service timed out; thread assumed dead.")) unless ds.exception_info
+              # Fail it temporary, it'll be run again. 
+              ds.status = DispatchedService::FailedTemporary
+              ds.save!
+        end
+    end    
   end
 
   def save_request
@@ -70,6 +73,23 @@ class ResolveController < ApplicationController
     #self.init_processing # handled by before_filter 
     self.service_dispatch()
     @user_request.save! # should be handled by after_filter?
+  end
+
+  # Show a link to something in a frameset with a mini menu in a banner. 
+  def bannered_link_frameset
+      # Normally we should already have loaded the request in the index method,
+      # and our before filter should have found the already loaded request
+      # for us. But just in case, we can load it here too if there was a
+      # real open url
+      if @user_request.dispatched_services.empty?
+        self.service_dispatch()
+        @user_request.save!
+      end
+  end
+
+  # The mini-menu itself. 
+  def banner_menu
+    
   end
 
   
@@ -270,6 +290,7 @@ class ResolveController < ApplicationController
   end
   
   def service_dispatch()
+  
     # Foreground services
     (0..9).each do | priority |
       next if @collection.service_level(priority).empty?
@@ -302,7 +323,6 @@ class ResolveController < ApplicationController
            service_list = t_collection.service_level(priority)
            next if service_list.empty?
            logger.info("background: Making service bundle for #{priority}")
-           #debugger
            bundle = ServiceBundle.new( service_list )
            bundle.debugging = true
            bundle.handle( t_request )
