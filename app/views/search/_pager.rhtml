@@ -1,0 +1,60 @@
+<% # much of this paging code adopted from will_paginate plugin for view
+
+
+  total_pages = (@hits / @batch_size)
+  total_pages += 1 unless (@hits % @batch_size == 0)
+
+  if total_pages > 1
+    
+    # Arguments for paging actions, just add 'page'
+    args= params.clone
+    # Need to take out that annoying legacy journal key, sorry.
+    args.delete('journal')
+    
+    inner_window ||= 1 #how many links are shown on each side of current page
+    outer_window ||= 1 #how many links are around the first and the last page
+    
+    min = @page - inner_window
+    max = @page + inner_window
+    
+    # adjust lower or upper limit if other is out of bounds
+    if max > total_pages
+      min -= max - total_pages
+    elsif min < 1 
+      max += 1 - min
+    end
+    
+    current   = min..max
+    beginning = 1..(1 + outer_window)
+    tail      = (total_pages - outer_window)..total_pages
+    visible   = [beginning, current, tail].map(&:to_a).flatten.sort.uniq
+    links, prev = [], 0
+    
+    visible.each do |n|
+      next if n < 1
+      break if n > total_pages
+    
+      unless n - prev > 1
+        prev = n
+        if ( n != @page )
+           links << ( link_to n, args.merge({'page' => n }) )
+        else
+           links << ( content_tag :span, n )
+        end
+      else
+        # ellipsis represents the gap between windows
+        prev = n - 1
+        links << '...'
+        redo
+      end
+    end
+    
+    # Next and previous buttons
+    links.unshift (link_to('Previous', args.merge({'page' => @page -1 }))) if @page > 1
+    links.push (link_to('Next', args.merge({'page' => @page + 1}))) if @page < total_pages
+%>
+<%= content_tag :div, links.join(' ') %>
+<%
+  end
+%>
+
