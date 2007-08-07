@@ -83,4 +83,35 @@ config.app_config.threaded_services = true
 # Partial view to use for displaying holdings in default resolve view
 #   config.app_config.partial_for_holding = 'holding_alternate'
 
+# link_with_frameset can be used to control whether (and when)
+# umlaut links to resources in a frameset page with an umlaut banner.
+# See also skip_resolve_menu below 
+# Possible values:
+#
+#  true      : always link with banner
+#  false     : never link with banner
+#  :standard : standard behavior -- link with banner only if the umlaut
+               menu was skipped for a direct link.
+#  Or, for most powerful flexibility, set to a lambda expression taking
+#  one argument. That argument will be a hash containing the key
+#  :service_type_join with a ServiceType value. lambda can examine
+#  that join (and it's Request), and return true or false to control
+#  whether that specific link should be presented with banner frameset. 
+#  eg., to just banner full text links: 
+#  config.app_config.link_with_frameset = 
+#    lambda {|args| return args[:service_type_join].service_type_value.name == 'fulltext' }
+
+
+# skip_resolve_menu can be used to control 'direct' linking, skipping
+# the resolve menu to deliver a full text link or other resource
+# directly to the user. See also link_with_frameset above. 
+# Possible values:
+# false  : [default] Never skip menu
+# {services => ['fulltext']} : list of services, if they're present
+#          skip the menu with the first response available. 
+# lambda expression: A lambda expression can be provided that
+#          should expect one argument, a hash with key :request
+#          and value the Umlaut Request object. Return nil to
+#          not skip menu, or a ServiceType join obj to skip
+#          menu to that response. 
 
