@@ -18,7 +18,13 @@ ActionController::Routing::Routes.draw do |map|
   # instead of a file named 'wsdl'
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
-  # Install the default route as the lowest priority.
+  # special for perma-links
   map.connect 'go/:id', :controller=>"store"
+  
+  # Special one for alpha list
+  map.connect "journal_list/:id/:page", :controller=>'search', :action=>'journal_list', :defaults=>{:page => 1, :id=> 'A'}
+  
+  # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id'
+
 end
