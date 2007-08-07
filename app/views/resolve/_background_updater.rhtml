@@ -16,7 +16,7 @@
 %>
 <script type="text/javascript">
 //<![CDATA[
-  umlaut_background_executer =  new PeriodicalExecuter(function() { new Ajax.Request('/resolve/background_update?umlaut.request_id=<%= @user_request.id %>', {asynchronous:true, evalScripts:true});  }, 4)
+  umlaut_background_executer =  new PeriodicalExecuter(function() { new Ajax.Request("<%= url_for({:controller => 'resolve', :action=> 'background_update', :'umlaut.request_id' => @user_request.id}) %>", {asynchronous:true, evalScripts:true});  }, 4)
 //]]>
 </script>  
 <%
