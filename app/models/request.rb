@@ -251,7 +251,6 @@ class Request < ActiveRecord::Base
         if exclude === key ; new_params.delete(key) ; end
       end
     end
-    debugger
     return new_params
   end
   
