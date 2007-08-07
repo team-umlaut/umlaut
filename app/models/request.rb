@@ -29,8 +29,14 @@ class Request < ActiveRecord::Base
     # params as this one, in the same session. In which case, reload.
     # Except we don't preserve certain Rails and app controller params--
     # only the ones that are actually the OpenURL, is the idea.
+
+
+    # We don't want to use the entire params. It includes things
+    # that are NOT part of the ContextObject, but are just part of
+    # rails or the app. Strip em out.
+    co_params = self.extract_co_params( params )
     
-    serialized_params = self.serialized_co_params( params )
+    serialized_params = self.serialized_co_params( co_params )
     
     req = Request.find(:first, :conditions => ["session_id = ? and params = ?", session.session_id, serialized_params ])
     
@@ -42,7 +48,7 @@ class Request < ActiveRecord::Base
 
     # Find or create a Referent
     context_object = OpenURL::ContextObject.new
-    context_object.import_hash(params)
+    context_object.import_hash( co_params )
     
     rft = Referent.find_or_create_by_context_object(context_object)
 
@@ -231,7 +237,23 @@ class Request < ActiveRecord::Base
     return ds
   end
 
+  # Extract context object params. Strips out params from incoming
+  # request that are not part of the context object, but instead
+  # part of Rails framework or app-specific controller params. 
+  def self.extract_co_params( params )
+  
+    # Strings or regexps
+    excluded_keys = ["action", "controller", "id", "page", /^umlaut\./, 'rft.action', 'rft.controller']
 
+    new_params = params.clone
+    new_params.keys.each do |key|
+      excluded_keys.each do |exclude|
+        if exclude === key ; new_params.delete(key) ; end
+      end
+    end
+    debugger
+    return new_params
+  end
   
   # Serialized context object params. 
   # We save our incoming params to disk, so later we can compare to see
@@ -239,7 +261,9 @@ class Request < ActiveRecord::Base
   # no good for later string comparison in the db, because hash key order
   # can be different. 2) Our hash includes some Rails (and umlaut) only
   # stuff that isn't really part of the context object, and we don't want
-  # to include. So this method takes care of both, and returns a string.
+  # to include.
+  # This method takes care of #1---pass in params that have already
+  # been cleaned with extract_co_params for #2. 
   def self.serialized_co_params(params)
 
     excluded_keys = ["action", "controller", "id", "page", "umlaut.request_id",  "rft.action", "rft.controller"]
