@@ -18,7 +18,7 @@
          <div id="service_errors_content" class="small_right_box" ">
 
 
-               <span class="error_icon">[!]</span><span class="smallText">Warning! Due to error, some sources could not be included:</span>
+               <span class="error_icon">(!)</span><span class="smallText">Warning! Due to error, some sources could not be included:</span>
         <ul>
           <% failed_dispatches.each do | dispatch | %>
             <li class="smallText"> <a onclick="el = document.getElementById('error_info<%= dispatch.id %>'); toggle_visible(el);"><strong><%= dispatch.service.display_name %> </strong></a>

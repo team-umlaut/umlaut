@@ -9,7 +9,7 @@ class Request < ActiveRecord::Base
   belongs_to :referrer
 
   def self.new_request(params, session )
-
+    
     # Sometimes umlaut puts in a 'umlaut.request_id' parameter.
     # first look by that, if we have it, for an existing request.  
     begin            
@@ -154,9 +154,7 @@ class Request < ActiveRecord::Base
   # original context object params. 
   # We serialize our params in weird ways. (See below). Use this to turn em
   # back into a params hash. Returns hash. 
-  def original_co_params(arguments = {})
-    
-    
+  def original_co_params(arguments = {})        
     new_hash = {}
     list = YAML.load( self.params )
     list.each do | mini_hash |
@@ -244,7 +242,7 @@ class Request < ActiveRecord::Base
   # to include. So this method takes care of both, and returns a string.
   def self.serialized_co_params(params)
 
-    excluded_keys = ["action", "controller", "umlaut.request_id"]
+    excluded_keys = ["action", "controller", "id", "page", "umlaut.request_id",  "rft.action", "rft.controller"]
         
     # Okay, we're going to turn it into a list of one-element hashes,
     # alphabetized by key. To attempt to make it so the same hash
@@ -253,7 +251,7 @@ class Request < ActiveRecord::Base
     params.keys.sort.each do |key|
       next if excluded_keys.include?(key)
 
-      list.push ( {key => params[key]})
+      list.push( {key => params[key]} )
     end
 
     return list.to_yaml

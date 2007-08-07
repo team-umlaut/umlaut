@@ -5,6 +5,7 @@
 
 class ResolveController < ApplicationController
   before_filter :init_processing
+  
   after_filter :save_request
   
   # Take layout from config, default to resolve_basic.rhtml layout. 
@@ -46,7 +47,6 @@ class ResolveController < ApplicationController
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing    
-
     @user_request ||= Request.new_request(params, session )
     @collection = Collection.new(request.remote_ip, session)      
     @user_request.save!
@@ -62,7 +62,25 @@ class ResolveController < ApplicationController
               ds.status = DispatchedService::FailedTemporary
               ds.save!
         end
-    end    
+    end
+    return @user_request
+  end
+
+  def setup_banner_link
+    # We keep the id of the ServiceType join object in param 'id' for
+    # banner frameset link type actions. Take it out and stick the object
+    # in a var if available.
+    
+    @service_type_join = @user_request.service_types.find_all_by_id(params[:id]).first if params[:id]
+
+    # default?
+    unless ( @service_type_join )
+      
+      @service_type_join = 
+        @user_request.service_types.find_by_service_type_value_id(
+      ServiceTypeValue[:fulltext].id )
+    end
+    
   end
 
   def save_request
@@ -73,10 +91,19 @@ class ResolveController < ApplicationController
     #self.init_processing # handled by before_filter 
     self.service_dispatch()
     @user_request.save! # should be handled by after_filter?
+
+
+    # link is a ServiceType object
+    link = should_skip_menu
+    if (! link.nil? )
+      redirect_to LinkRouterController::frameset_action_params( link ).merge('umlaut.skipped_menu' => 'true')
+    end
+    # Otherwise display our standard index.rhtml template.     
   end
 
   # Show a link to something in a frameset with a mini menu in a banner. 
   def bannered_link_frameset
+  
       # Normally we should already have loaded the request in the index method,
       # and our before filter should have found the already loaded request
       # for us. But just in case, we can load it here too if there was a
@@ -85,11 +112,12 @@ class ResolveController < ApplicationController
         self.service_dispatch()
         @user_request.save!
       end
+      self.setup_banner_link()
   end
 
   # The mini-menu itself. 
   def banner_menu
-    
+     self.setup_banner_link()
   end
 
   
@@ -245,6 +273,38 @@ class ResolveController < ApplicationController
   
   protected
 
+  # Based on app config and context, should we skip the resolve
+  # menu and deliver a 'direct' link? Returns nil if menu
+  # should be displayed, or the ServiceType join object
+  # that should be directly linked to. 
+  def should_skip_menu
+    # First, is it over-ridden in url?
+    if ( params['umlaut.skip_resolve_menu'] == 'false')
+      return nil
+    end
+    # Otherwise, load from app config
+    skip  = AppConfig.param('skip_resolve_menu', false) if skip.nil?
+
+    if (skip.kind_of?( FalseClass ))
+      # nope
+      return nil
+    elsif (skip.kind_of?(Hash) )
+      skip[:services].each do | service |
+        service = ServiceTypeValue[service] unless service.kind_of?(ServiceTypeValue)  
+
+        service_type_to_skip = 
+        @user_request.service_types.find(:all, 
+          :conditions => ["service_type_value_id = ?", service.id]).first
+        return service_type_to_skip if service_type_to_skip
+      end
+    elsif (skip.kind_of?(Proc ))
+      return skip.call( :request => @user_request )
+    end
+      
+    logger.error( "Unexpected value in app config 'skip_resolve_menu'; assuming false." )
+    return nil;    
+  end
+  
   # Helper method used here in controller for outputting js to
   # do the background service update. 
   def background_update_js(div_list, error_div_info=nil)

@@ -9,19 +9,12 @@ module ResolveHelper
 
   # This one does make a db transaction, to get most up to date list. 
   def get_service_type(svc_type)
-    # Eager load the actual responses from service types for efficiency,
-    # because we will certainly need them. 
+    
     return @user_request.service_types.find(:all,
       :conditions => 
         ["service_type_value_id = ?", ServiceTypeValue[svc_type].id ],
       :include => [:service_response]   )
-    
-    #responses = []
-    #@user_request.service_types.find(:all, :conditions=>["service_type_value_id = ?", ServiceTypeValue[svc_type].id ] ).each do | response |
-    #  responses << response
-    #end
-    
-    #return responses
+          
   end
 
   # Returns an array of DispatchedServices that are marked failed. 
@@ -49,45 +42,6 @@ module ResolveHelper
     return AppConfig.param("app_name", 'Find It')
   end
 
-  #def search_opac_for_title(request)
-    # Disable the whole thing for now
-  #  return false
-    
-  #  require 'sru'
-  #  require 'uri'
-
-  #  opac = ServiceList.get('Opac')
-
-    
-  #  if request.referent.metadata['jtitle']
-  #    title = request.referent.metadata['jtitle'].gsub(/[^A-z0-9\s]/, '')
-  #  elsif request.referent.metadata['btitle']
-  #    title = request.referent.metadata['btitle'].gsub(/[^A-z0-9\s]/, '')
-  #  elsif request.referent.metadata['title']
-  #    title = request.referent.metadata['title'].gsub(/[^A-z0-9\s]/, '')
-  #  else 
-  #    return false
-  #  end
-  #  search = SRU::Client.new(opac.sru_url)
-  #  results = search.search_retrieve('dc.title all "'+title+'"', #:recordSchema=>'mods', :startRecord=>1, :maximumRecords=>1)
-
-    
-  #  return false unless results.number_of_records > 0
-  #  suffix = case results.number_of_records
-  #           when 1 then ''
-  #           else 'es'
-  #           end
-  #  link = "<ul><li><a href='http://gil.gatech.edu/cgi-bin/Pwebrecon.cgi?SAB1="
-  #  link += URI.escape(title.gsub(/\s(and|or)\s/, ' '))
-  #  link += "&BOOL1=all+of+these&FLD1=Title+%28TKEY%29&CNT=25&HIST=1' target='_blank'>"
-  #  link += results.number_of_records.to_s
-  #  link += " possible match" + suffix
-
-    
-  #  link += " in "+opac.display_name+"</a></li></ul>"
-    
-  #  return link
-  # end
   
   def display_ill?
     return true if get_service_type('fulltext').empty? and get_service_type('holding').empty?

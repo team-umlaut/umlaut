@@ -1,0 +1,86 @@
+<% 
+=begin
+  jrochkind's alternative partial for displaying holdings. Displays more
+  information to deal with the more information we need to display from
+  our Horizon. In tabular format. Customized for JH's needs, but should
+  be usable by anyone. 
+=end
+%>
+
+<p><strong><%= ServiceTypeValue[:holding].display_name_pluralize.titleize %> </strong></p>
+
+<div class="section_content_indent">
+<% holdings = get_service_type('holding') %>
+
+<table>
+<%
+holdings.each do |p|
+  target = p.view_data
+%>
+  <tr><td style="border-top: 1px dotted; padding-right: 18px;"><h4><%= target[:collection_str] %></h4></td>
+      <td style="border-top: 1px dotted; padding-right: 18px;"><span style="white-space: nowrap;"><%= link_to (target[:call_number] || 'catalog'), {:controller=>"link_router", :id=>p.id}, "target"=>"_blank" %> </span></td>
+      
+      <% status_class = (target[:status] == "Not Charged" or target[:status] == "Available") ? 'available' : '' %> 
+      
+      <td style="border-top: 1px dotted; padding-right: 18px;"><span style="white-space: nowrap;"><%= target[:copy_str] %></span></td>
+      <td style="border-top: 1px dotted; padding-right: 18px;"><span class="<%= status_class %>"><%= target[:status]   %></span></td>
+  </tr>    
+
+  <% unless target[:notes].blank? %>
+  <tr>
+  <td colspan="4"><div class="section_content_indent"><%= target[:notes] %></div> </td>
+  </tr>
+  <% end %>
+  
+  <% unless target[:coverage_str].blank? %>
+  <tr>
+    <td colspan="4"><ul><% target[:coverage_str_array].each do |s| %>
+                     <li><%= s %></li>
+                     <% end %>
+                    </ul>
+    </td>
+  </tr>
+  <% end %>
+<%
+end %>
+</table>
+
+
+
+<% 
+if holdings.empty?
+   searches = get_service_type('holding_search')
+    searches.each do | result_st |
+      response = result_st.view_data %>
+      <p><%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %> </p>
+<% 
+   end
+end
+if (holdings.blank? && searches.blank? && ! service_types_in_progress?(['holding', 'holding_search']))
+%>
+<p class="notAvailable">Not Available </p>
+<%
+end %>
+
+<% if session[:coins] %>
+  <p>&nbsp;</p>
+
+  <p><strong>Check for holdings:</strong></p>
+<p><ul>
+<%    session[:coins].each { | coins |
+        unless coins[:text]
+          label = image_tag(coins[:icon], :border=>0)
+        else
+          label = coins[:text]
+        end
+    %>
+    <li><a href="<%= coins[:host]%>?<%= @user_request.referent.to_context_object.kev %>" target="_blank"><%= label %></a></li>
+    
+    <%}%>
+    </ul></p>
+<%   end
+%>
+<% if service_types_in_progress?(['holding', 'holding_search']) %>
+<p><%= render(:partial => "background_progress", :locals => { :svc_types => [ServiceTypeValue[:holding],ServiceTypeValue[:holding_search]], :current_set_empty => holdings.empty? } ) %></p>
+<% end %>
+</div>

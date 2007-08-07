@@ -231,6 +231,8 @@ class Referent < ActiveRecord::Base
   end
   
   def enhance_referent(key, value, metadata=true, private_data=false)
+    return if value.nil?
+    
     match = false
     unless metadata      
       match = self.referent_values.find(:all, :conditions=>['key_name = ? AND value = ?', key, value])

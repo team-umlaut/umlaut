@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<% context_object = @user_request.referent.to_context_object -%>
+<html>
+<html lang="EN">
+<head>
+<title>AppConfig.param('app_name', 'Find It') | <%= @user_request.referent.to_citation[:title] %></title>
+ <%= stylesheet_link_tag 'basic'
+ %> 
+</head>
+
+<body>
+<div class="banner_menu">  
+  <div class="banner_section" style="width: 140px;">
+    <%= resolver_link(nil, :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %><br/>
+    <span class="smallText"><%= resolver_link(nil, :text => 'See Full menu', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
+    <%= link_to "[x] Remove banner", {:controller=>'link_router', :id=>@service_type_join.id}, 'target'=>'_top', 'class'=>'smallText' %><br/>
+    <% help_responses = get_service_type('help')
+       unless help_responses.blank?
+    %>
+   
+  </div>
+
+  <div class="banner_section">
+  <div class="resourceInfo" style="width: 200px;">
+    <%= render :partial=>'compact_citation' %>
+  </div>
+  </div>
+  
+  <div class="banner_section" style="width:140px">
+      <span class="smallText">Displaying via <strong><%= @service_type_join.view_data[:display_text] if @service_type_join  %></strong></span>
+  </div>
+  
+  <% fulltxt = get_service_type('fulltext')
+     unless fulltxt.blank? %>
+  <div id="fulltext_banner" class="banner_section" >
+    <h3>Other <%= ServiceTypeValue[:fulltext].display_name_pluralize.downcase%>:</h3>
+    <ul class="smallText">
+    <%  
+
+      # We want to remove the selected one, this is 'other' choices. 
+      if ( @service_type_join )
+        fulltxt.delete( @service_type_join )        
+      end
+      
+      fulltxt.each do | ft | 
+      target = ft.view_data
+    %>
+        <li> 
+        <%= link_to target[:display_text],
+              LinkRouterController::frameset_action_params( ft ),
+              'target'=>"_top" %>
+        </li>
+    <% end %>
+    <ul>
+  </div>
+  <% end %>
+  
+  <div class="banner_section" style="float: left; width: 100px">
+    <span id="helpicon">?</span><span class="smallText">Problem? Need help?
+      <% help_responses.each do |help| %>
+           <%= link_to help.view_data[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %> 
+       <% end
+     end
+     %></span>
+   </div>
+  
+  
+</div>
+</body>
+</html>

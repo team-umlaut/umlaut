@@ -1,0 +1,32 @@
+<% # When you need a citation in a tiny amount of space, just the
+   # most important info, displayed compactly. 
+%>
+
+<% 
+cite = @user_request.referent.to_citation
+%>
+
+<span class="smallText"><%= cite[:title] %>
+
+<%
+if cite[:author]
+%>
+, <%= cite[:author] %>
+<% end %>
+
+<% if cite[:subtitle] %>
+. <%= cite[:subtitle] %>
+<% end %>
+
+<%
+pub = []
+pub << cite[:date] unless cite[:date].blank?	
+pub << 'Volume:&nbsp;'+cite[:volume] unless cite[:volume].blank?
+pub << 'Issue:&nbsp;'+cite[:issue] unless cite[:issue].blank?	
+pub << 'Page:&nbsp;'+cite[:page] unless cite[:page].blank?
+if pub.length > 0
+%>
+<br/><%= pub.join(' ')%>.
+ 
+<% end %>
+</span>
