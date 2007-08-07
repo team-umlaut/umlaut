@@ -360,7 +360,7 @@ class Sfx < Service
     #    request.referent.enhance_referent("jtitle", sfx_metadata['jtitle'])
     #end
     # Let's do it with ISSN though
-    if request.referent.format == 'journal'
+    if request.referent.format == 'journal' && ! sfx_metadata['issn'].blank?
       request.referent.enhance_referent('issn', sfx_metadata['issn'])
     end
 
