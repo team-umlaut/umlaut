@@ -162,6 +162,14 @@ h4 {
 	margin: 10px 0px 15px;}
 
 
+/* Some more styles */
+
+ /* For disabled inline text  */
+.grayedOut {
+  color: #999999;
+  text-decoration:  none;
+}
+  
   
 /* Below here, not sure which of these we use exactly at present in non-GATech specific stuff.  */  
   
@@ -198,10 +206,13 @@ h4 {
 /*  Specific application styles */
 
 #fulltext {
+}
+
+.highlighted_section {
   background-color: white;
   border: 1px solid #e9e9e9;
   margin: -4px;
-  padding: 4px;
+  padding: 4px;  
 }
 
 .notAvailable {
@@ -318,6 +329,8 @@ h4 {
 .banner_section {
   float: left; 
   height: 71px; 
+  overflow-y: auto;
+  overflow-x: hidden;
 /*  height: 100%; */
   margin: 4px; 
   padding: 4px; 
@@ -335,11 +348,21 @@ h4 {
   font-size: 18px;
 }
 
-#fulltext_banner {
+#banner_fulltext {
   overflow-y: auto; 
   /*height: 70px;*/  
   width: 280px; 
 	border: 1px solid #e9e9e9;
+  background-color: white;
+  margin: 2px;
+  margin-top: 4px;
+}
+
+#banner_citation {
+  overflow-y: auto; 
+  /*height: 70px;*/  
+  width: 200px;
+  border: 1px solid #e9e9e9;
   background-color: white;
   margin: 2px;
   margin-top: 4px;

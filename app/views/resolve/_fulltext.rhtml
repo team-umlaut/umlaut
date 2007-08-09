@@ -1,7 +1,12 @@
+<%
+   fulltxt = get_service_type('fulltext')
+%>
+
+<div id="fulltext" class="<%= unless fulltxt.blank? ; 'highlighted_section' ; end %>">
 <p><strong>Electronic version via:</strong></p>
 <ul>
 <%  
-fulltxt = get_service_type('fulltext').each do | ft | 
+fulltxt.each do | ft | 
     target = ft.view_data
 %>
 <li> <%= link_to target[:display_text], {:controller=>'link_router', :id=>ft.id}, 'target'=>"_blank" %>
@@ -31,3 +36,4 @@ if service_type_in_progress?('fulltext')
 
 <% end %>
 </ul>
+</div>

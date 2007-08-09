@@ -22,7 +22,6 @@ class Request < ActiveRecord::Base
       request_id = nil
       req = nil
     end
-
     return req if req # if we've got it, we're done
     
     # If not found yet, then look for an existing request that had the same
@@ -35,7 +34,6 @@ class Request < ActiveRecord::Base
     # that are NOT part of the ContextObject, but are just part of
     # rails or the app. Strip em out.
     co_params = self.extract_co_params( params )
-    
     serialized_params = self.serialized_co_params( co_params )
     
     req = Request.find(:first, :conditions => ["session_id = ? and params = ?", session.session_id, serialized_params ])
@@ -63,7 +61,6 @@ class Request < ActiveRecord::Base
     rft.requests << req
     (rfr.requests << req) if rfr
     req.save!
-    
     return req
   end
 
@@ -164,7 +161,8 @@ class Request < ActiveRecord::Base
     new_hash = {}
     list = YAML.load( self.params )
     list.each do | mini_hash |
-      new_hash.merge!(mini_hash)
+      
+      new_hash.merge!(mini_hash) 
     end
 
     # If requested we put in the request_id, even though it's not really
@@ -243,14 +241,26 @@ class Request < ActiveRecord::Base
   def self.extract_co_params( params )
   
     # Strings or regexps
-    excluded_keys = ["action", "controller", "id", "page", /^umlaut\./, 'rft.action', 'rft.controller']
+    # Oops, we can't exclude 'id' even though we often use it for something
+    # other than a context object, because it's also used for a legitimate
+    # OpenURL 0.1 context object. Oops. Hmm. Maybe we're better NOT
+    # to use 'id' in the Rails way. Hmm. 
+    excluded_keys = ["action", "controller", "page", /^umlaut\./, 'rft.action', 'rft.controller']
 
     new_params = params.clone
-    new_params.keys.each do |key|
+    new_params.keys.each do |key|              
       excluded_keys.each do |exclude|
         if exclude === key ; new_params.delete(key) ; end
-      end
+      end          
     end
+    # 'id' is a special one, cause it can be a OpenURL 0.1 key, or
+    # it can be just an application-level primary key. If it's only a
+    # number, we assume the latter--an openurl identifier will never be
+    # just a number. 
+    if new_params['id'] =~ /^\d+$/
+      new_params.delete('id')
+    end
+
     return new_params
   end
   
@@ -264,7 +274,6 @@ class Request < ActiveRecord::Base
   # This method takes care of #1---pass in params that have already
   # been cleaned with extract_co_params for #2. 
   def self.serialized_co_params(params)
-
     excluded_keys = ["action", "controller", "id", "page", "umlaut.request_id",  "rft.action", "rft.controller"]
         
     # Okay, we're going to turn it into a list of one-element hashes,
@@ -276,8 +285,13 @@ class Request < ActiveRecord::Base
 
       list.push( {key => params[key]} )
     end
-
-    return list.to_yaml
+    serialized = list.to_yaml
+    # If serialized is bigger than the column width available, we're in trouble.
+    if serialized.length > self.columns_hash['params'].limit
+      # We should do something other than raise, but I don't know what.   
+      raise "Serialized context object params will be truncated! Maximum size #{self.columns_hash['params'].limit}, actual size #{serialized.length}"
+    end
+    return serialized
   end
 
 end

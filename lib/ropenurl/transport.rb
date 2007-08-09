@@ -24,13 +24,11 @@ module OpenURL
   	end
   	
   	def transport_inline(idx=0)
-      
 			require 'open-uri'
       extras = ""
       @extra_args.each_key {|key|
         extras += "&"+key+"="+@extra_args[key]
       }
-
 			open(   @host+"?"+self.transport_metadata_get("info:ofi/fmt:kev:mtx:ctx")+extras+"&"+@context_objects[idx].kev ) do |r|
 				@response = r.read
 			end 		

@@ -119,7 +119,7 @@ unless ref_meta['atitle'].nil?
 end
 title_row = '<tr><td width="90" style="vertical-align: top;"><div align="right" class="'+style+'"><strong>'+title_label+':</strong></td><td><span class="'+style+'">'
 
-title_row += link_to title, @co.to_hash.merge(:controller=>"resolve", :action=>'start')
+title_row += link_to title, @co.to_hash.merge(:controller=>"resolve")
 
 title_row += '</span></td></tr>'
   unless @page_title

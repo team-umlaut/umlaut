@@ -13,42 +13,44 @@
   <div class="banner_section" style="width: 140px;">
     <%= resolver_link(nil, :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %><br/>
     <span class="smallText"><%= resolver_link(nil, :text => 'See Full menu', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
-    <%= link_to "[x] Remove banner", {:controller=>'link_router', :id=>@service_type_join.id}, 'target'=>'_top', 'class'=>'smallText' %><br/>
+    <%= link_to "[x] Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
     <% help_responses = get_service_type('help')
        unless help_responses.blank?
     %>
    
   </div>
 
-  <div class="banner_section">
-  <div class="resourceInfo" style="width: 200px;">
+  <div id="banner_citation" class="banner_section" style="width:200px">
     <%= render :partial=>'compact_citation' %>
-  </div>
   </div>
   
   <div class="banner_section" style="width:140px">
       <span class="smallText">Displaying via <strong><%= @service_type_join.view_data[:display_text] if @service_type_join  %></strong></span>
+      <% if @service_type_join.view_data[:coverage] %>
+          <span class="smallText">(<%= @service_type_join.view_data[:coverage] %>)</span>
+      <% end %>
   </div>
   
   <% fulltxt = get_service_type('fulltext')
-     unless fulltxt.blank? %>
-  <div id="fulltext_banner" class="banner_section" >
+     unless fulltxt.blank?
+  %>
+  <div id="banner_fulltext" class="banner_section" >
     <h3>Other <%= ServiceTypeValue[:fulltext].display_name_pluralize.downcase%>:</h3>
     <ul class="smallText">
-    <%  
-
-      # We want to remove the selected one, this is 'other' choices. 
-      if ( @service_type_join )
-        fulltxt.delete( @service_type_join )        
-      end
-      
+    <%        
       fulltxt.each do | ft | 
       target = ft.view_data
     %>
         <li> 
+        <%  # Currently displayed one should not be a link, but should
+            # be greyed-out instead.
+            if ( ft == @service_type_join ) %>
+            <a class="grayedOut"><%= target[:display_text] %></a>
+        <% else %>
         <%= link_to target[:display_text],
               LinkRouterController::frameset_action_params( ft ),
               'target'=>"_top" %>
+        <% end %>
         </li>
     <% end %>
     <ul>

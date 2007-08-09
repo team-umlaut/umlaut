@@ -32,7 +32,7 @@ class LinkRouterController < ApplicationController
     # Add our controller code and id references
     params.merge!( { :controller=>'resolve',
                      :action=>'bannered_link_frameset',
-                     :'umlaut.request_id' => u_request.id,
+                     :'umlaut.request_id' => u_request.id,                     
                      :id=>svc_type.id})
     return params
   end

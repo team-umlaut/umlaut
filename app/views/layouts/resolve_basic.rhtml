@@ -25,7 +25,8 @@
           shortcut += ':' + request.port.to_s if request.port != 80
           shortcut += url_for :controller=>"store", :id=>@user_request.referent.permalinks[0].id
         %>
-        <%= link_to shortcut, :controller=>"store", :id=>@user_request.referent.permalinks[0].id
+        <%= link_to shortcut, :controller=>"store", :id=>@user_request.referent.permalinks[0].id,
+        :'umlaut.skip_resolve_menu' => 'false'
         %>
       </div>
    </div>

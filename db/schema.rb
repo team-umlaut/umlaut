@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 11) do
+ActiveRecord::Schema.define(:version => 12) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -156,7 +156,7 @@ ActiveRecord::Schema.define(:version => 11) do
     t.column "referent_id", :integer,                  :default => 0,  :null => false
     t.column "referrer_id", :integer
     t.column "created_at",  :datetime,                                 :null => false
-    t.column "params",      :string,   :limit => 1024
+    t.column "params",      :string,   :limit => 2048
   end
 
   add_index "requests", ["referent_id", "referrer_id"], :name => "context_object_idx"

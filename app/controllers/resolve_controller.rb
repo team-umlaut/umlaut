@@ -57,7 +57,7 @@ class ResolveController < ApplicationController
               ds.status == DispatchedService::Queued ) &&
               (Time.now - ds['updated_at']) > BACKGROUND_SERVICE_TIMEOUT)
 
-              ds.store_exception ( Exception.new("background service timed out; thread assumed dead.")) unless ds.exception_info
+              ds.store_exception( Exception.new("background service timed out; thread assumed dead.")) unless ds.exception_info
               # Fail it temporary, it'll be run again. 
               ds.status = DispatchedService::FailedTemporary
               ds.save!
@@ -98,7 +98,6 @@ class ResolveController < ApplicationController
     if (! link.nil? )
       redirect_to LinkRouterController::frameset_action_params( link ).merge('umlaut.skipped_menu' => 'true')
     end
-    # Otherwise display our standard index.rhtml template.     
   end
 
   # Show a link to something in a frameset with a mini menu in a banner. 
@@ -224,10 +223,9 @@ class ResolveController < ApplicationController
   	self.index
   end
     
-  def start
-  	self.index
-  	render :action=>'index'
-  end
+  #def start
+  #	self.index
+  #end
   
   def help
   	service_dispatcher = self.init_processing  
@@ -278,6 +276,7 @@ class ResolveController < ApplicationController
   # should be displayed, or the ServiceType join object
   # that should be directly linked to. 
   def should_skip_menu
+  
     # First, is it over-ridden in url?
     if ( params['umlaut.skip_resolve_menu'] == 'false')
       return nil

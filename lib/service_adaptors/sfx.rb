@@ -110,7 +110,10 @@ class Sfx < Service
     doc = Hpricot(resolver_response)     
     # parse perl_data from response
     related_items = []
-    attr_xml = CGI.unescapeHTML((doc/"/ctx_obj_set/ctx_obj/ctx_obj_attributes").inner_html)
+    # For god's sake, if there is more than one context object in our multi
+    # response, just take the perl data from the FIRST one. Otherwise we end up
+    # with a mess in enhanced metadata! 
+    attr_xml = CGI.unescapeHTML((doc/"/ctx_obj_set/ctx_obj/ctx_obj_attributes")[0].inner_html)
     perl_data = Hpricot(attr_xml)
     (perl_data/"//hash/item[@key='@sfx.related_object_ids']").each { | rel | 
       (rel/'/array/item').each { | item | 
@@ -349,6 +352,14 @@ class Sfx < Service
 
     sfx_co = Sfx.parse_perl_data(perl_data.to_s)
     sfx_metadata = sfx_co.referent.metadata
+    # For reasons not understood by me, including the rft.object_id, which
+    # should be SFX's internal object ID, in a later request, messes things up.
+    # So eliminate it.
+    sfx_metadata.delete('object_id')
+    # some of these others are funky too, since it's an array
+    sfx_metadata.delete('stitle')
+    sfx_metadata.delete('auinit')
+    sfx_metadata.delete('aulast')
 
     # If we already had metadata for journal title and the SFX one
     # differs, we want to over-write it. This is good for ambiguous
@@ -364,7 +375,7 @@ class Sfx < Service
       request.referent.enhance_referent('issn', sfx_metadata['issn'])
     end
 
-    # The rest, we don't over-write
+    # The rest,  we write only if blank, we don't over-write
     sfx_metadata.each do |key, value|      
       if (metadata[key].blank?)
         request.referent.enhance_referent(key, value)
