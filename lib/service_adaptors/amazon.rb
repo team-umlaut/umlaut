@@ -10,12 +10,14 @@ class Amazon < Service
   end
   
   def handle(request)
-    return request.dispatched(self, true) if request.referent.metadata["isbn"].blank?
+    isbn = request.referent.metadata['isbn']
+    
+    return request.dispatched(self, true) if isbn.blank?
 
     begin
     
     # get the Amazon query
-      query = "Service=AWSECommerceService&SubscriptionId=#{@api_key}&Operation=ItemLookup&ResponseGroup=Large,Subjects&ItemId="+request.referent.metadata["isbn"].gsub(/[^0-9X]/,'')           
+      query = "Service=AWSECommerceService&SubscriptionId=#{@api_key}&Operation=ItemLookup&ResponseGroup=Large,Subjects&ItemId="+isbn.gsub(/[^0-9X]/,'')           
       uri = URI.parse(self.url+'?'+query)
       links = []
       # send the request
@@ -42,7 +44,18 @@ class Amazon < Service
     
     # if we get an error from Amazon, return now. 
     err = (aws/"/ItemLookupResponse/Items/Request/Errors/Error")
-    raise Exception.new("Error from Amazon web service: " + err.to_s) if ! err.blank?
+
+
+    unless (err.blank?)
+      if (err.at('code').inner_html == 'AWS.InvalidParameterValue')
+        # Indicates an ISBN that Amazon doesn't know about, or that
+        # was mal-formed. We can't tell the difference, so either
+        # way let's silently ignore. 
+        return
+      else
+        raise Exception.new("Error from Amazon web service: " + err.to_s)
+      end
+    end
     
     asin = (aws/"/ItemLookupResponse/Items/Item/ASIN").inner_html
     # collect cover art urls

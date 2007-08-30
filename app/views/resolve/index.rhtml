@@ -18,9 +18,10 @@ end
 	  <!--close resourceInfo-->
   </div>  
 <div class="availability">
-
+  
+  <div id="fulltext_wrapper">
   <%= render(:partial => "fulltext") %>
-
+  </div>
   <p>&nbsp;</p>
 
 <div id="holding">
@@ -93,6 +94,4 @@ end %>
 <!-- close bothColumns --> </div> 
 
 
-<!-- END SERVICE IN PROGRESS:<br>
-fulltext: <%= service_type_in_progress?('fulltext') %> <br>
-holding: <%= service_type_in_progress?('holding') %> <br> -->
+<!-- END SERVICE IN PROGRESS: -->

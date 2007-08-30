@@ -6,16 +6,18 @@
 cite = @user_request.referent.to_citation
 %>
 
-<span class="smallText"><%= cite[:title] %>
-
 <%
 if cite[:author]
-%>
-, <%= cite[:author] %>
+%><span class="smallText"><%= cite[:author].chomp -%>.</span>
 <% end %>
 
-<% if cite[:subtitle] %>
-. <%= cite[:subtitle] %>
+<span class="smallText"><%= truncate(cite[:title],70,'...') %>
+
+
+
+<%
+if cite[:subtitle] %>
+. <%= content_tag( ((@user_request.referent.format =~ /article|journal|issue|report/i) ? 'i' : 'span'), cite[:subtitle]) %>
 <% end %>
 
 <%
@@ -26,7 +28,7 @@ pub << 'Issue:&nbsp;'+cite[:issue] unless cite[:issue].blank?
 pub << 'Page:&nbsp;'+cite[:page] unless cite[:page].blank?
 if pub.length > 0
 %>
-<br/><%= pub.join(' ')%>.
+<%= pub.join(' ')%>.
  
 <% end %>
 </span>

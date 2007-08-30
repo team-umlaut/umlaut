@@ -12,11 +12,16 @@ class ServiceList
       raise "Service #{name} does not a type defined, and needs one. Check the config/services.yml file."
     end
     
-    require 'service_adaptors/'+@@services[name]["type"].underscore
+    require_dependency 'service_adaptors/'+@@services[name]["type"].underscore
     
     className = @@services[name]["type"]
     classConst = Kernel.const_get(className)
     
     return classConst.new(@@services[name].merge({"id"=>name}))
   end
+
+  def self.require_service_class(service_name)
+    require_dependency 'service_adaptors/'+service_name.underscore
+  end
+
 end

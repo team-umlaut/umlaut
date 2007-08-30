@@ -1,4 +1,5 @@
-class Request < ActiveRecord::Base
+class Request < ActiveRecord::Base  
+
   has_many :dispatched_services
   # Order service_type joins (ie, service_responses) by id, so the first
   # added to the db comes first. Less confusing to have a consistent order.
@@ -8,7 +9,7 @@ class Request < ActiveRecord::Base
   belongs_to :referent
   belongs_to :referrer
 
-  def self.new_request(params, session )
+  def self.new_request(params, session, a_rails_request )
     
     # Sometimes umlaut puts in a 'umlaut.request_id' parameter.
     # first look by that, if we have it, for an existing request.  
@@ -22,45 +23,46 @@ class Request < ActiveRecord::Base
       request_id = nil
       req = nil
     end
-    return req if req # if we've got it, we're done
     
-    # If not found yet, then look for an existing request that had the same
-    # params as this one, in the same session. In which case, reload.
-    # Except we don't preserve certain Rails and app controller params--
-    # only the ones that are actually the OpenURL, is the idea.
+    unless (req)
+      # If not found yet, then look for an existing request that had the same
+      # params as this one, in the same session. In which case, reload.
+      # Except we don't preserve certain Rails and app controller params--
+      # only the ones that are actually the OpenURL, is the idea.
+  
+      # We don't want to use the entire params. It includes things
+      # that are NOT part of the ContextObject, but are just part of
+      # rails or the app. Strip em out.
+      co_params = self.extract_co_params( params )
+      serialized_params = self.serialized_co_params( co_params )
+      
+      req = Request.find(:first, :conditions => ["session_id = ? and params = ?", session.session_id, serialized_params ])
 
-
-    # We don't want to use the entire params. It includes things
-    # that are NOT part of the ContextObject, but are just part of
-    # rails or the app. Strip em out.
-    co_params = self.extract_co_params( params )
-    serialized_params = self.serialized_co_params( co_params )
+      unless (req)
+        # Nope, okay, we don't have a complete Request, but let's try finding
+        # an already existing referent and/or referrer to use, if possible, or
+        # else create new ones. 
     
-    req = Request.find(:first, :conditions => ["session_id = ? and params = ?", session.session_id, serialized_params ])
+        # Find or create a Referent
+        context_object = OpenURL::ContextObject.new
+        context_object.import_hash( co_params )
+        
+        rft = Referent.find_or_create_by_context_object(context_object)
     
-    return req if req # Again, if we've got it, we're done. 
-
-    # Nope, okay, we don't have a complete Request, but let's try finding
-    # an already existing referent and/or referrer to use, if possible, or
-    # else create new ones. 
-
-    # Find or create a Referent
-    context_object = OpenURL::ContextObject.new
-    context_object.import_hash( co_params )
+        # Find or create a referrer, if we have a referrer in our OpenURL
+        rfr = nil
+        rfr = Referrer.find_or_create_by_identifier(context_object.referrer.identifier) unless context_object.referrer.empty?
     
-    rft = Referent.find_or_create_by_context_object(context_object)
+        # Create the Request
+        req = Request.new
+        req.session_id = session.session_id
+        req.params = serialized_params
+        rft.requests << req
+        (rfr.requests << req) if rfr
+        req.save!
+      end
+    end
 
-    # Find or create a referrer, if we have a referrer in our OpenURL
-    rfr = nil
-    rfr = Referrer.find_or_create_by_identifier(context_object.referrer.identifier) unless context_object.referrer.empty?
-
-    # Create the Request
-    req = Request.new
-    req.session_id = session.session_id
-    req.params = serialized_params
-    rft.requests << req
-    (rfr.requests << req) if rfr
-    req.save!
     return req
   end
 

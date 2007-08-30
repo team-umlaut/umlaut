@@ -10,7 +10,7 @@
 
 <body>
 <div class="banner_menu">  
-  <div class="banner_section" style="width: 140px;">
+  <div class="banner_section" style="width: 120px;">
     <%= resolver_link(nil, :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %><br/>
     <span class="smallText"><%= resolver_link(nil, :text => 'See Full menu', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
     <%= link_to "[x] Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
@@ -24,18 +24,12 @@
     <%= render :partial=>'compact_citation' %>
   </div>
   
-  <div class="banner_section" style="width:140px">
-      <span class="smallText">Displaying via <strong><%= @service_type_join.view_data[:display_text] if @service_type_join  %></strong></span>
-      <% if @service_type_join.view_data[:coverage] %>
-          <span class="smallText">(<%= @service_type_join.view_data[:coverage] %>)</span>
-      <% end %>
-  </div>
   
   <% fulltxt = get_service_type('fulltext')
      unless fulltxt.blank?
   %>
   <div id="banner_fulltext" class="banner_section" >
-    <h3>Other <%= ServiceTypeValue[:fulltext].display_name_pluralize.downcase%>:</h3>
+    <h3><%= ServiceTypeValue[:fulltext].display_name_pluralize.capitalize%>:</h3>
     <ul class="smallText">
     <%        
       fulltxt.each do | ft | 

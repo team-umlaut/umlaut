@@ -15,7 +15,6 @@
 # extra_targets_of_interest: sfx target_names of targets you want to make
 #     sure to include in umlaut. A hash with target_name as key, and umlaut
 #     ResponseTypeValue name as value.
-
 class Sfx < Service
   require 'uri'
   require 'open_url'
@@ -74,6 +73,7 @@ class Sfx < Service
   def initialize_client(request)
     transport = OpenURL::Transport.new(@base_url)
     context_object = request.referent.to_context_object
+    
     context_object.referrer.add_identifier(request.referrer.identifier) if request.referrer
     
     transport.add_context_object(context_object)
@@ -385,4 +385,5 @@ class Sfx < Service
   end
 
   
-end
+  end
+  

@@ -328,7 +328,7 @@ h4 {
 
 .banner_section {
   float: left; 
-  height: 71px; 
+  height: 70px; 
   overflow-y: auto;
   overflow-x: hidden;
 /*  height: 100%; */
@@ -351,7 +351,7 @@ h4 {
 #banner_fulltext {
   overflow-y: auto; 
   /*height: 70px;*/  
-  width: 280px; 
+  width: 240px; 
 	border: 1px solid #e9e9e9;
   background-color: white;
   margin: 2px;

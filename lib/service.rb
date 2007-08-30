@@ -16,12 +16,21 @@
 #  Should define #service_types_generated returning an array of
 #  ServiceTypeValues.  This is neccesary for the Service to be
 #  run as a background service, and have the auto background updater
-#  work. 
+#  work.
+#
+#  The vast majority of services are 'content_generate' services, however
+#  there are other hooks that a service can be. Well, right now, one
+#  other, 'link_out_filter'. The services 'function' config property
+#  sets the function/hook of the service. Default is 'content_generate'.
+#
+#  A content_generate service defines handle(request)
+#
+#  A link_out_filter service defines filter_url(request, url). If service
+#  returns a new url from filter_url, that's the url the user will be directed
+#  to. If service returns original url or nil, original url will still be used. 
 
 class Service
-  require 'ruby-debug' 
-
-  attr_reader :priority, :id, :url
+  attr_reader :priority, :id, :url, :function
   @@required_params_for_subclass = {} # initialize class var
   
   def initialize(config)
@@ -84,7 +93,6 @@ class Service
   def response_to_view_data(service_response)
       # That's it, pretty simple.
       return service_response
-      #return { :display_text => service_response.response_key }
   end
 
   # Sub-class can call class method like:
@@ -92,8 +100,6 @@ class Service
   # in class definition body. List of config parmas that
   # are required, exception will be thrown if not present. 
   def self.required_config_params(*params)
-    
-    
     params.each do |p|
       # Key on name of specific sub-class. Since this is a class
       # method, that should be self.name

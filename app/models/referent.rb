@@ -159,18 +159,19 @@ class Referent < ActiveRecord::Base
     citation = {}
     if self.metadata['atitle']
       citation[:title] = self.metadata['atitle']
-      citation[:title_label], citation[:subtitle_label] = case self.metadata['genre']
-        when /article|journal|issue/ then ['Article Title', 'Journal Title']
-		when /bookitem|book/ then ['Chapter/Part Title', 'Book Title']
-		when /proceeding|conference/ then ['Proceeding Title', 'Conference Name']
-		when 'report' then ['Report Title','Report']    
-		when nil
-		  if self.format == 'book'
-		    ['Chapter/Part Title', 'Title']
-		  elsif self.format == 'journal'
- 		    ['Article Title', 'Title']
- 		  end
-      end
+      citation[:title_label], citation[:subtitle_label] = 
+        case self.metadata['genre']
+          when /article|journal|issue/ then ['Article Title', 'Journal Title']
+          when /bookitem|book/ then ['Chapter/Part Title', 'Book Title']
+		      when /proceeding|conference/ then ['Proceeding Title', 'Conference Name']
+		      when 'report' then ['Report Title','Report']    
+		      when nil
+		        if self.format == 'book'
+              ['Chapter/Part Title', 'Title']
+            elsif self.format == 'journal'
+              ['Article Title', 'Title']
+            end
+        end
       ['title','btitle','jtitle'].each do | t_type |
         if self.metadata[t_type]
           citation[:subtitle] = self.metadata[t_type]

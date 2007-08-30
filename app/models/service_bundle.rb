@@ -12,10 +12,17 @@ class ServiceBundle
   end
 
   def handle(request)
+    
     return if (@services.nil? || @services.empty?)
     threads = []
-    @services.each do | service |      
+    @services.each do | service |
         RAILS_DEFAULT_LOGGER.info("Starting service #{service.id}")
+
+        # Double check it's not already been run by somebody else, for
+        # instance if this is a browser re-load. Skip it before
+        # we even create a thread for it. 
+        next unless request.can_dispatch?(service)
+        
         threads << Thread.new(request.id, service.clone) do | t_request_id, t_service |
         begin
           # Reload the request, to make sure we have our own copy, not
@@ -24,9 +31,6 @@ class ServiceBundle
           # referent.referent_values that I can find. 
           t_request = Request.find( t_request_id , :include => [:referent, :referrer, :service_types, :dispatched_services])
 
-          # Double check it's not already been run by somebody else.
-          a = t_request.can_dispatch?(t_service)
-          1+1
           if ( t_request.can_dispatch?(t_service) )
             # Mark this service as in progress in the dispatch table.
             t_request.dispatched( t_service, DispatchedService::InProgress )

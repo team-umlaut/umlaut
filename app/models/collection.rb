@@ -1,7 +1,6 @@
-# A collection is a hash that contains all of the resources
-# that should be a available to a given user. institutions
-# attribute stores all the institutions belonging to user,
-# from which services can be found. 
+# Collection object calculates and manages Institutions and Services
+# belonging to a particular user/request. It stores it's data in
+# session in a weird way. 
 class Collection
   
   attr_accessor :institutions
@@ -11,62 +10,118 @@ class Collection
   # and services.
   def initialize(ip, session)
     @institutions= []
-    @services = {} 
-    #(0..9).each do | priority |
-    #  @services[priority] = []
-    #end
+    @services = {}
+    # fill out 0..9 and a..z
+    @link_out_filters = {}
+    # fill out 0..9
     
-    @services['background'] = []
     if session[:refresh_collection] == true
       session[:collection] = nil
       session[:refresh_collection] = false
-    end      
-    self.gather_institutions(ip, session)
-    self.gather_services
+    end
+
+    # Data has been created and stored in session already, load it from
+    # there. Code can set session[:refresh_collection] = true to force
+    # re-calc on next Collection creation. 
+    if (session[:collection] && session[:services] && session[:institutions])
+      self.load_from_session(session)
+      # We still currently need to re-calculate services every time
+      # anyway
+      #self.gather_services
+    else
+      # No data stored in session, so calculate it, and save it.
+      self.calculate_collection_data(ip, session)
+      self.save_to_session(session)
+    end
+    
+  end
+
+
+
+  # Right now we only save institutions, not services. Hmm. 
+  def save_to_session(session)
+    
+    # Create and blank out our data structure
+    session[:collection] = {:institutions=>[], 
+                            :services => {},
+                            :service_class_names => []}
+
+    # Save institution IDs. We'll refetch em from db later. 
+    @institutions.each do | inst |
+      session[:collection][:institutions] << inst.id
+    end
+
+    # Save our whole array of services to session, where they'll be
+    # automagically serialized. Services aren't kept in db right now,
+    # so can't just store ids. But we're going to take care of serialization
+    # instead of letting framework do it, to let us figure out how to
+    # deal with 'require' easier. 
+    # Have to save names of all Service classes used, so we can make
+    # sure to load them on the way out.
+    session[:collection][:service_class_names] = 
+      @services.values.flatten.collect {|s| s.class.name }.uniq
+    session[:collection][:services] = @services.to_yaml
+    
+    
+  end
+
+  # Right now we only store institutions in session. We rebuild services
+  # on every request. Need to fix that. 
+  def load_from_session(session)    
+    @institutions = []
+
+    data = session[:collection]
+    return unless data
+
+    # Load institutions from IDs. If the ID no longer exists in the db,
+    # we'll just silently ignore it, which is fine. 
+    inst_ids = data[:institutions]
+    @institutions = Institution.find(:all, :conditions => ['id in (?)', inst_ids.join(',') ])
+
+    # Services were manually marshalled whole in session as yaml.
+    # First we need to make sure and 'require' all the service classes.
+    if (data[:service_class_names] && data[:services])
+      data[:service_class_names].each do |class_name|
+        ServiceList.require_service_class( class_name )
+      end
+      # And now we can actually load them all. 
+      @services = YAML.load(data[:services])
+    end
   end
   
-  def gather_institutions(ip, session)
+  def calculate_collection_data(ip, session)        
+    # Add default institutions
+    Institution.find_all_by_default_institution(true).each do | dflt |
+      @institutions << dflt
+    end
     
-    # If we've gone through this process already, an abridged
-    # version should be in the user's session.  If the user's
-    # Collection needs to be rebuilt, set the ':refresh_collection'
-    # key to true
-    unless session[:collection] 
-      Institution.find_all_by_default_institution(true).each do | dflt |
-        @institutions << dflt
-      end
-      # Users always get the home institutions
-      #@institutions << default_institution
-      # Just set the collection id to the session
-      session[:collection] = {:institutions=>[], :services => {}}
-      (0..9).each do | priority |
-        session[:collection][:services][priority] = []
-      end
-      @institutions.each do | inst |
-        session[:collection][:institutions] << inst.id
-      end
-      
-      # Get any institutions that the user has associated with themself
-      self.get_user_institutions(session)
-      
-      # Check if they are eligible for other services
-      # based on their physical location
-      #self.get_institutions_for_ip(ip, session)
-    else 
-      # Build collection object from session
-      session[:collection][:institutions].each do  | inst |
-        begin
-          @institutions << Institution.find(inst)
-        rescue ActiveRecord::RecordNotFound
-          # Institution in session isn't in db anymore? Okay, just ignore it. 
-        end
+    # Get any institutions that the user has associated with themself
+    self.get_user_institutions(session)
+
+    # Check if they are eligible for other services/institutions
+    # based on their physical location. Commented out till we fix it. 
+    #self.get_institutions_for_ip(ip, session)      
+
+    # We've added institutions, now add all the services belonging to those institutions.
+    self.gather_services()
+     
+  end
+
+  # Add services belonging to institutions
+  def gather_services
+    @institutions.each do | inst |
+      next if inst.services.nil?  
+    
+      inst.services.each do | svc |
+        service_level(svc.priority) << svc
       end
     end
   end
   
   def get_user_institutions(session)
     #can only do it if we have a user
-	return unless session[:user]  
+    return unless session[:user]  
+    
     user = User.find_by_id(session[:user][:id])
     user.institutions.each do | uinst |
       @institutions << uinst unless @institutions.index(uinst) 
@@ -93,7 +148,7 @@ class Collection
            # We checked for it, it's good
            sfx = Sfx.new({"id"=>"#{inst.oclc_inst_symbol}_#{inst.institution_id}_SFX", "priority"=>2, "display_name"=>inst.name, "base_url"=>inst.resolver.base_url})
            service_level(2) << sfx unless service_level(2).index(sfx)
-           session[:collection][:services][2] << sfx.to_yaml
+           
       elsif (! inst.resolver.base_url.nil?)
         # Okay, no SFX, but we can still do coins! 
         self.enable_session_coins(inst.resolver.base_url, inst.resolver.link_icon, inst.name, session)
@@ -131,16 +186,6 @@ class Collection
     return matched
   end
   
-  # Checks a service pointing to the resolver is
-  # already in the collection object
-  #def in_collection?(resolver_host)
-  #  @institutions.each do | inst |
-  #    inst.services.each do | svc |
-  #      return true if svc.url == resolver_host
-  #    end
-  #  end
-  #  return false
-  #end
   
   def check_supported_resolver(resolver)
     # This method is supposed to test a suspected foreign SFX instance
@@ -171,28 +216,7 @@ class Collection
     session[:coins] << {:host=>host, :icon=>icon, :text=>text}    
   end  
   
-  #def check_oclc_symbol(nuc)
-  #  @institutions.each do | inst |
-  #    return true if inst.oclc_symbol == nuc
-  #  end
-  #  return false  
-  #end
-  
-  def gather_services
-    # Global institution should be marked as a default, we don't need
-    # special treatment for it. 
-    #InstitutionList.get('global')["services"].each do | svc |   
-    #  s = ServiceList.get(svc)
-    #  @services[s.priority] << s
-    #end
-    @institutions.each do | inst |
-      next if inst.services.nil?  
-    
-      inst.services.each do | svc |
-        service_level(svc.priority) << svc
-      end
-    end
-  end
+
 
   # Returns all services at the given level. 0-9 for foreground,
   # a-z for background. 
