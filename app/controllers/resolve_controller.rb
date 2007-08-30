@@ -30,7 +30,7 @@ class ResolveController < ApplicationController
   # Sorry that this is in a class variable for now, maybe we can come up
   # with a better way to encapsulate this info.
   @@background_updater = {:divs  => 
-                         [{ :div_id => "fulltext", 
+                         [{ :div_id => "fulltext_wrapper", 
                             :partial => "fulltext",
                             :service_type_value => "fulltext"
                           },
@@ -47,7 +47,7 @@ class ResolveController < ApplicationController
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing    
-    @user_request ||= Request.new_request(params, session )
+    @user_request ||= Request.new_request(params, session, request )
     @collection = Collection.new(request.remote_ip, session)      
     @user_request.save!
 
@@ -236,7 +236,8 @@ class ResolveController < ApplicationController
   def rescue_action_in_public(exception)
     render :template => "error/resolve_error", :layout=>'search_standard' 
   end  
-  
+
+  # Obsolete, I think. 
   def do_background_services
     if @params['background_id']
     	service_dispatcher = self.init_processing
@@ -349,15 +350,16 @@ class ResolveController < ApplicationController
   end
   
   def service_dispatch()
-  
     # Foreground services
     (0..9).each do | priority |
+      
       next if @collection.service_level(priority).empty?
- 
+
+      
       if AppConfig[:threaded_services]
         bundle = ServiceBundle.new(@collection.service_level(priority))
         bundle.handle(@user_request)            
-      else          
+      else
         @collection.service_level(priority).each do | svc |
           svc.handle(@user_request) unless @user_request.dispatched?(svc)
         end
