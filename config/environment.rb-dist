@@ -115,3 +115,10 @@ config.app_config.threaded_services = true
 #          not skip menu, or a ServiceType join obj to skip
 #          menu to that response. 
 
+# Minimum height and width of browser window. We have little control over
+# what size a content provider generates a window for a link resolver. Often
+# it's too small for umlaut. So we resize in js, if these config params
+# are given. 
+# config.app_config.minimum_window_width = 800
+# config.app_config.minimum_window_height = 500
+
