@@ -22,17 +22,28 @@ module OpenURL
   	def remove_context_object(idx)
   		@context_objects.delete_at(idx)
   	end
-  	
-  	def transport_inline(idx=0)
+
+    def transport_inline(idx=0)
+      require 'open-uri'
+
+      url = self.transport_inline_url(idx)
+
+      open( url ) do |r|
+				@response = r.read
+			end 		
+    end
+
+        # awfully useful to have in a seperate method for debugging
+  	def transport_inline_url(idx=0)
 			require 'open-uri'
       extras = ""
       @extra_args.each_key {|key|
         extras += "&"+key+"="+@extra_args[key]
       }
-			open(   @host+"?"+self.transport_metadata_get("info:ofi/fmt:kev:mtx:ctx")+extras+"&"+@context_objects[idx].kev ) do |r|
-				@response = r.read
-			end 		
+
+      return @host+"?"+self.transport_metadata_get("info:ofi/fmt:kev:mtx:ctx")+extras+"&"+@context_objects[idx].kev
   	end
+    
   	def transport_by_ref(fmt, ref, method="GET")
   		md = self.transport_metadata_get(fmt)
   		if method == "GET"
