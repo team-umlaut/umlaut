@@ -59,6 +59,11 @@ class Request < ActiveRecord::Base
         req.params = serialized_params
         rft.requests << req
         (rfr.requests << req) if rfr
+
+        # Save client ip
+        req.client_ip_addr = params['req.ip'] || a_rails_request.remote_ip()
+        req.client_ip_is_simulated = true if req.client_ip_addr != a_rails_request.remote_ip()
+        
         req.save!
       end
     end
@@ -205,9 +210,9 @@ class Request < ActiveRecord::Base
   #pass in array of ServiceTypeValue or string name of same. Returns
   # true if ANY of them are in progress. 
   def service_types_in_progress?(type_array)
-          #svc_type = ServiceTypeValue[svc_type] if svc_type.kind_of?(String)
     # convert strings to ServiceTypeValues
     type_array = type_array.collect {|s|  s.kind_of?(ServiceTypeValue)? s : ServiceTypeValue[s] }
+    
     self.services_in_progress.each do |s|
       # array intersection
       return true unless (s.service_types_generated & type_array).empty? 
@@ -219,7 +224,17 @@ class Request < ActiveRecord::Base
     return services_in_progress.length > 0
   end
 
+  def to_context_object    
+    #Mostly just the referent
+    context_object = self.referent.to_context_object
 
+    #But a few more things
+    context_object.referrer.add_identifier(self.referrer.identifier) if self.referrer
+
+    context_object.requestor.set_metadata('ip', self.client_ip_addr) if self.client_ip_addr
+
+    return context_object
+  end
   
   protected
 

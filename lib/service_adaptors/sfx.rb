@@ -72,9 +72,10 @@ class Sfx < Service
   
   def initialize_client(request)
     transport = OpenURL::Transport.new(@base_url)
-    context_object = request.referent.to_context_object
-    
-    context_object.referrer.add_identifier(request.referrer.identifier) if request.referrer
+    #context_object = request.referent.to_context_object
+    #context_object.referrer.add_identifier(request.referrer.identifier) if request.referrer
+
+    context_object = request.to_context_object
     
     transport.add_context_object(context_object)
     transport.extra_args["sfx.response_type"]="multi_obj_xml"
