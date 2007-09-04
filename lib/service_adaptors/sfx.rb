@@ -4,7 +4,14 @@
 # click_passthrough: When set to true, Umlaut will send all SFX clicks 
 #     through SFX, for SFX to capture statistics. This is currently done
 #     using a backdoor into the SFX sfxresolve.cgi script. Defaults to false,
-#     or the app_config.default_sfx_click_passthrough config if set
+#     or the app_config.default_sfx_click_passthrough config if set. Note that
+#     after SFX requests have been removed in the nightly job, the
+#     click passthrough will cause an error! Set sfx_requests_expire_crontab
+#     with the crontab pattern you use for requests to expire, and we won't
+#     try to click passthrough with expired requests.
+# sfx_requests_expire_crontab:  Crontab pattern that the SFX admin is using
+#     to expire SFX requests. Used to refrain from click passthrough with
+#     expired requests, since that is destined to fail. 
 # coverage_api_url: http url to the script Jonathan Rochkind wrote to
 #     interrogate the SFX db to get 'coverage' information. Since SFX API does
 #     not currently provide this info, this is 'extra' third-party API to do so.
@@ -230,9 +237,10 @@ class Sfx < Service
         else
           value_string = (target/"/target_service_id").inner_html          
         end
-                
+
         value_text[:url] = CGI.unescapeHTML((target/"/target_url").inner_html)
         value_text[:notes] = CGI.unescapeHTML((target/"/note").inner_html)
+        value_text[:authentication] = CGI.unescapeHTML((target/"/authentication").inner_html)
         value_text[:source] = source
         value_text[:coverage] = coverage if coverage
 
@@ -268,11 +276,36 @@ class Sfx < Service
     return @click_passthrough || AppConfig.default_sfx_click_passthrough || false;
   end
 
+  # Using the value of sfx_request_expire_crontab, determine if the
+  # umlaut service response is so old that we can't use it for
+  # sfx click passthrough anymore. 
+  def expired_sfx_request(response)
+    require 'CronTab'
+
+    crontab_str = @sfx_requests_expire_crontab
+
+    return false unless crontab_str # no param, no determination possible
+    
+    crontab = CronTab.new( crontab_str )
+
+    time_of_response = response.created_at
+
+    return false unless time_of_response # no recorded time, not possible either
+
+    expire_time = crontab.nexttime( time_of_response )
+
+    # Give an extra five minutes of time, in case the expire
+    # process takes up to five minutes to finish. 
+    return( Time.now > (expire_time + 5.minutes) )    
+  end
+
   # Handles click passthrough to SFX, if configured so. 
   def response_url(response)              
-    if ( ! self.sfx_click_passthrough )
+    if ( ! self.sfx_click_passthrough || expired_sfx_request(response) )
+      RAILS_DEFAULT_LOGGER.error("SFX click passthrough not executed, due to calculation of expired SFX request. ServiceResponse id: #{response.id}")
       return CGI.unescapeHTML(response[:url])
     else
+      
       # Okay, wacky abuse of SFX undocumented back-ends to pass the click
       # through SFX, so statistics are captured by SFX. 
       
