@@ -20,7 +20,7 @@ class ServiceBundle
 
         # Double check it's not already been run by somebody else, for
         # instance if this is a browser re-load. Skip it before
-        # we even create a thread for it. 
+        # we even create a thread for it.
         next unless request.can_dispatch?(service)
         
         threads << Thread.new(request.id, service.clone) do | t_request_id, t_service |

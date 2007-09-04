@@ -19,8 +19,11 @@ fulltxt.each do | ft |
 <% unless target[:notes].blank? %>
 <br />
 <%= target[:notes] %>
-<% end
-%>
+<% end %>
+<% unless target[:authentication].blank? %>
+<br />
+<strong>Authentication:</strong> <%= target[:authentication] %>
+<% end %>
 </li>
 <% 
 end

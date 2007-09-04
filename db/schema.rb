@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 12) do
+ActiveRecord::Schema.define(:version => 14) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(:version => 12) do
     t.column "updated_at",     :datetime,                  :null => false
     t.column "exception_info", :text
     t.column "status",         :string,   :default => "",  :null => false
+    t.column "created_at",     :datetime
   end
 
   add_index "dispatched_services", ["request_id", "service_id"], :name => "dptch_request_id"
@@ -152,11 +153,13 @@ ActiveRecord::Schema.define(:version => 12) do
   add_index "relevant_sites", ["hostname"], :name => "rel_hostname"
 
   create_table "requests", :force => true do |t|
-    t.column "session_id",  :string,   :limit => 100,  :default => "", :null => false
-    t.column "referent_id", :integer,                  :default => 0,  :null => false
-    t.column "referrer_id", :integer
-    t.column "created_at",  :datetime,                                 :null => false
-    t.column "params",      :string,   :limit => 2048
+    t.column "session_id",             :string,   :limit => 100,  :default => "", :null => false
+    t.column "referent_id",            :integer,                  :default => 0,  :null => false
+    t.column "referrer_id",            :integer
+    t.column "created_at",             :datetime,                                 :null => false
+    t.column "params",                 :string,   :limit => 2048
+    t.column "client_ip_addr",         :string
+    t.column "client_ip_is_simulated", :boolean
   end
 
   add_index "requests", ["referent_id", "referrer_id"], :name => "context_object_idx"
@@ -164,15 +167,16 @@ ActiveRecord::Schema.define(:version => 12) do
   add_index "requests", ["created_at"], :name => "req_created_at"
 
   create_table "service_responses", :force => true do |t|
-    t.column "service_id",       :string, :limit => 25,   :default => "", :null => false
-    t.column "response_key",     :string,                 :default => ""
+    t.column "service_id",       :string,   :limit => 25,   :default => "", :null => false
+    t.column "response_key",     :string,                   :default => ""
     t.column "value_string",     :string
     t.column "value_alt_string", :string
     t.column "value_text",       :text
     t.column "display_text",     :string
-    t.column "url",              :string, :limit => 1024
+    t.column "url",              :string,   :limit => 1024
     t.column "notes",            :text
     t.column "service_data",     :text
+    t.column "created_at",       :datetime
   end
 
   add_index "service_responses", ["service_id", "response_key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"

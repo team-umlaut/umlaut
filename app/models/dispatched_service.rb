@@ -48,4 +48,8 @@ class DispatchedService < ActiveRecord::Base
       
       write_attribute(:exception_info, e_hash)
   end
+
+  def completed
+    return (self.status != InProgress) && (self.status != Queued)
+  end
 end

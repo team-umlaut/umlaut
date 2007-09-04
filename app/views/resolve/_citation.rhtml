@@ -71,6 +71,8 @@ if pub.length > 0
   img_st = cover_image_response('medium')
   if img_st 
       img = img_st.view_data %>
-</td><td align='right'><%= tag('img', {'src'=>img[:url],'alt'=>img[:display_text]})%></td></tr></table>
+</td><td align='right'><%= tag('img', {'src'=>img[:url],
+'class'=>'cover_image',
+'alt'=>img[:display_text]})%></td></tr></table>
 <% end 
 %>

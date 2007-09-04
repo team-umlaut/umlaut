@@ -22,8 +22,8 @@ class Collection
 
     # Data has been created and stored in session already, load it from
     # there. Code can set session[:refresh_collection] = true to force
-    # re-calc on next Collection creation. 
-    if (session[:collection] && session[:services] && session[:institutions])
+    # re-calc on next Collection creation.
+    if (session[:collection] && session[:collection][:services] && session[:collection][:institutions])
       self.load_from_session(session)
       # We still currently need to re-calculate services every time
       # anyway
@@ -58,11 +58,13 @@ class Collection
     # deal with 'require' easier. 
     # Have to save names of all Service classes used, so we can make
     # sure to load them on the way out.
-    session[:collection][:service_class_names] = 
-      @services.values.flatten.collect {|s| s.class.name }.uniq
+    class_names = @services.values.flatten.collect {|s| s.class.name }
+    class_names.concat( @link_out_filters.values.flatten.collect {|s| s.class.name } )
+    class_names.uniq!    
+    session[:collection][:service_class_names] = class_names 
+    
     session[:collection][:services] = @services.to_yaml
-    
-    
+    session[:collection][:link_out_filters] = @link_out_filters.to_yaml
   end
 
   # Right now we only store institutions in session. We rebuild services
@@ -86,6 +88,7 @@ class Collection
       end
       # And now we can actually load them all. 
       @services = YAML.load(data[:services])
+      @link_out_filters = YAML.load( data[:link_out_filters])
     end
   end
   
@@ -113,9 +116,19 @@ class Collection
       next if inst.services.nil?  
     
       inst.services.each do | svc |
-        service_level(svc.priority) << svc
-      end
+        task = svc.task || Service::StandardTask
+        
+        case task
+        when Service::LinkOutFilterTask
+          link_out_service_level(svc.priority) << svc
+        else # standard
+          service_level(svc.priority) << svc
+        end
+      end      
     end
+
+        
+    
   end
   
   def get_user_institutions(session)
@@ -223,5 +236,9 @@ class Collection
   def service_level(level)    
     # lazy init to empty array if neccesary
     return (@services[level] ||= [])
+  end
+
+  def link_out_service_level(level)
+    return (@link_out_filters[level] ||= [])
   end
 end

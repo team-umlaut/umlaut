@@ -224,7 +224,7 @@ class Request < ActiveRecord::Base
     return services_in_progress.length > 0
   end
 
-  def to_context_object    
+  def to_context_object
     #Mostly just the referent
     context_object = self.referent.to_context_object
 
