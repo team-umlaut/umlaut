@@ -308,17 +308,44 @@ h4 {
 
 /* tiny menu in banner */
 
-#top_frame {
+/*#top_frame {
   height: 70px;
+}*/
+body.banner {
+  height: 100%;
+  background-color: #FFFDEA;
+}
+.banner_menu {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  _height: 88%; /* IE6 only */
+  background-color: #FFFDEA; 
+  font-size: 10px;
 }
 
-.banner_menu {
-  float: left;
-  height: 100%;
-  width: 100%;
-  background-color: #FFFDEA;
+.banner_menu_inner_container {
   position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
 }
+
+.banner_section {
+  float: left; 
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%; 
+  font-size:10px;
+  margin-left: 4px;
+  padding-left: 4px;
+  padding-right: 2px;
+}
+
 
 .banner_menu h3 {
   font-size:10px; 
@@ -326,46 +353,36 @@ h4 {
   margin-bottom: 2px;
 }
 
-.banner_section {
-  float: left; 
-  height: 70px; 
-  overflow-y: auto;
-  overflow-x: hidden;
-/*  height: 100%; */
-  margin: 4px; 
-  padding: 4px; 
-}
 
-.banner_section .resource_info {
-  padding: 0;
-}
 
 .banner_section li {
-  padding-bottom: 4px;
+  padding-bottom: 3px;
 }
 
 .banner_section #helpicon {
   font-size: 18px;
 }
 
-#banner_fulltext {
-  overflow-y: auto; 
-  /*height: 70px;*/  
-  width: 240px; 
-	border: 1px solid #e9e9e9;
-  background-color: white;
-  margin: 2px;
-  margin-top: 4px;
+#banner_controls {
+  width: 120px;
 }
 
 #banner_citation {
-  overflow-y: auto; 
-  /*height: 70px;*/  
   width: 200px;
+  overflow-y: auto; 
   border: 1px solid #e9e9e9;
   background-color: white;
-  margin: 2px;
-  margin-top: 4px;
+}
+
+#banner_fulltext {
+  width: 260px; 
+  overflow-y: auto;   
+	border: 1px solid #e9e9e9;
+  background-color: white;
+}
+
+#banner_help {
+  width: 100px;
 }
 
 .smGrayBox {

@@ -3,27 +3,36 @@
 <html>
 <html lang="EN">
 <head>
-<title>AppConfig.param('app_name', 'Find It') | <%= @user_request.referent.to_citation[:title] %></title>
+<title><%= AppConfig.param('app_name', 'Find It') %> | <%= @user_request.referent.to_citation[:title] %></title>
  <%= stylesheet_link_tag 'basic'
  %> 
+ <%= render(:partial => 'shared/ensure_window_size') %>
 </head>
 
-<body>
-<div class="banner_menu">  
-  <div class="banner_section" style="width: 120px;">
+<body class="banner">
+<div class="banner_menu">
+  <div class="banner_menu_inner_container">
+  <div id="banner_controls" class="banner_section">
     <%= resolver_link(nil, :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %><br/>
     <span class="smallText"><%= resolver_link(nil, :text => 'See Full menu', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
     <%= link_to "[x] Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
+    
+  <% displayed_data = @service_type_join.view_data %>
+  <% unless displayed_data[:authentication].blank? %>
+        <strong>Authentication:</strong> <%= displayed_data[:authentication] %>
+  <% end %>
+    
     <% help_responses = get_service_type('help')
        unless help_responses.blank?
     %>
    
   </div>
 
-  <div id="banner_citation" class="banner_section" style="width:200px">
+  <div id="banner_citation" class="banner_section">
     <%= render :partial=>'compact_citation' %>
   </div>
   
+
   
   <% fulltxt = get_service_type('fulltext')
      unless fulltxt.blank?
@@ -51,7 +60,7 @@
   </div>
   <% end %>
   
-  <div class="banner_section" style="float: left; width: 100px">
+  <div id="banner_help" class="banner_section">
     <span id="helpicon">?</span><span class="smallText">Problem? Need help?
       <% help_responses.each do |help| %>
            <%= link_to help.view_data[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %> 
@@ -60,7 +69,7 @@
      %></span>
    </div>
   
-  
+</div>
 </div>
 </body>
 </html>

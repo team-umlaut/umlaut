@@ -2,17 +2,16 @@
  <%= stylesheet_link_tag 'basic'
  %> 
  
- <%= render(:partial => 'shared/ensure_window_size') %>
 </head>
 
 
 <frameset rows="87,*">
   <frame id ="top_frame" src="<%= url_for(  @user_request.original_co_params.merge( {:action => 'banner_menu' , :'umlaut.request_id' => @user_request.id, :id => (@service_type_join.id if @service_type_join)}) )%>" scrolling=no marginwidth=0 marginheight=0>
   
-  <frame name="link_content" src="<%= url_for( :controller => 'link_router', :id => @service_type_join.id, :'umlaut.link_with_frameset' => 'false' )  %>">
+  <frame name="link_content" src="<%= url_for( :controller => 'link_router', :id => (@service_type_join.id if @service_type_join), :'umlaut.link_with_frameset' => 'false' )  %>">
 
 
-  <noframes>Your browser does not support frames. We use frames to display your resource.  Go direct to resource. </noframes>
+  <noframes>Your browser does not support frames. We use frames to display your resource.</noframes>
 
 
 
