@@ -18,25 +18,34 @@
 #  run as a background service, and have the auto background updater
 #  work.
 #
-#  The vast majority of services are 'content_generate' services, however
-#  there are other hooks that a service can be. Well, right now, one
-#  other, 'link_out_filter'. The services 'function' config property
-#  sets the function/hook of the service. Default is 'content_generate'.
+#  The vast majority of services are 'standard' services, however
+#  there are other 'tasks' that a service can be. Well, right now, one
+#  other, 'link_out_filter'. The services 'task' config property
+#  sets the task/function/hook of the service. Default is 'standard'.
 #
-#  A content_generate service defines handle(request)
+#  A standard service defines handle(request)
 #
 #  A link_out_filter service defines filter_url(request, url). If service
 #  returns a new url from filter_url, that's the url the user will be directed
 #  to. If service returns original url or nil, original url will still be used. 
 
 class Service
-  attr_reader :priority, :id, :url, :function
+  attr_reader :priority, :id, :url, :task
   @@required_params_for_subclass = {} # initialize class var
+
+  # Some constants for 'function' values
+  StandardTask = 'standard'
+  LinkOutFilterTask = 'link_out_filter'
+
   
   def initialize(config)
+    
     config.each do | key, val |
       self.instance_variable_set(('@'+key).to_sym, val)
     end
+
+    # task defaults to standard
+    @task ||= StandardTask
 
     # check required params, and throw if neccesary
 
