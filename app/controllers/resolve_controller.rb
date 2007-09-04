@@ -19,7 +19,7 @@ class ResolveController < ApplicationController
 
   # If a background service was started more than 30 seconds
   # ago and isn't finished, we assume it died.
-  BACKGROUND_SERVICE_TIMEOUT = 20
+  BACKGROUND_SERVICE_TIMEOUT = 30
   
   # set up names of partials for differnet blocks on index page
   @@partial_for_block = {}
@@ -55,7 +55,7 @@ class ResolveController < ApplicationController
     @user_request.dispatched_services.each do | ds |
         if ( (ds.status == DispatchedService::InProgress ||
               ds.status == DispatchedService::Queued ) &&
-              (Time.now - ds['updated_at']) > BACKGROUND_SERVICE_TIMEOUT)
+              (Time.now - ds.updated_at) > BACKGROUND_SERVICE_TIMEOUT)
 
               ds.store_exception( Exception.new("background service timed out; thread assumed dead.")) unless ds.exception_info
               # Fail it temporary, it'll be run again. 
@@ -63,14 +63,65 @@ class ResolveController < ApplicationController
               ds.save!
         end
     end
+    
     return @user_request
+  end
+
+  # Expire expired service_responses if neccesary.
+  # See app config params 'response_expire_interval' and
+  # 'response_expire_crontab_format'. 
+    
+  def expire_old_responses
+    require 'CronTab'
+    
+    #expire_interval = 10.seconds
+    expire_interval = AppConfig.param('response_expire_interval')
+    crontab_format = AppConfig.param('response_expire_crontab_format')
+
+    unless (expire_interval || crontab_format)      
+      # Not needed, nothing to expire
+      return nil
+    end
+    
+    responses_expired = 0
+    @user_request.dispatched_services.each do |ds|
+
+      now = Time.now
+      
+      expired_interval = expire_interval && 
+        (now - ds.created_at > expire_interval)
+      expired_crontab = crontab_format && 
+        (now > CronTab.new(crontab_format).nexttime(ds.created_at))
+      
+      # Only expire completed ones, don't expire in-progress ones! 
+      if (ds.completed && ( expired_interval || expired_crontab ))
+          
+          # Need to expire. Delete all the service responses, and
+          # the DispatchedService record, and service will be automatically
+          # run again. 
+          
+          serv_id = ds.service.id
+          expired_responses = @user_request.service_types.each do |st|
+            
+            if st.service_response.service.id == serv_id
+              @user_request.service_types.delete(st)
+              responses_expired += 1
+              st.service_response.destroy
+              st.destroy
+            end
+          end
+          @user_request.dispatched_services.delete(ds)
+          ds.destroy
+      end
+    end
+    puts "Total responses expired: #{responses_expired}"
+    debugger
   end
 
   def setup_banner_link
     # We keep the id of the ServiceType join object in param 'id' for
     # banner frameset link type actions. Take it out and stick the object
     # in a var if available.
-    
     @service_type_join = @user_request.service_types.find_all_by_id(params[:id]).first if params[:id]
 
     # default?
@@ -79,6 +130,10 @@ class ResolveController < ApplicationController
       @service_type_join = 
         @user_request.service_types.find_by_service_type_value_id(
       ServiceTypeValue[:fulltext].id )
+    end
+
+    unless @service_type_join 
+       raise "No service_type_join found!"
     end
     
   end
@@ -106,11 +161,13 @@ class ResolveController < ApplicationController
       # Normally we should already have loaded the request in the index method,
       # and our before filter should have found the already loaded request
       # for us. But just in case, we can load it here too if there was a
-      # real open url
-      if @user_request.dispatched_services.empty?
-        self.service_dispatch()
-        @user_request.save!
-      end
+      # real open url. This might happen on re-loads (after a long time or
+      # cookie expire!) or in other weird cases.
+      # If it's not neccesary, no services will be dispatched,
+      # service_dispatch catches that. 
+      self.service_dispatch()
+      @user_request.save!
+      
       self.setup_banner_link()
   end
 
@@ -350,6 +407,10 @@ class ResolveController < ApplicationController
   end
   
   def service_dispatch()
+    
+    expire_old_responses();
+    
+    
     # Foreground services
     (0..9).each do | priority |
       

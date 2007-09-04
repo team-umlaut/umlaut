@@ -7,6 +7,8 @@ class LinkRouterController < ApplicationController
   # See environment.rb-dist for instructions on setting
   # app parameter. .
   def index
+    @collection = Collection.new(request.remote_ip, session)      
+    
     svc_type = ServiceType.find(params[:id])    
 
     clickthrough = Clickthrough.new
@@ -17,7 +19,13 @@ class LinkRouterController < ApplicationController
     if ( link_with_frameset?(svc_type) )
       redirect_to( self.class.frameset_action_params(svc_type) )
     else
-      redirect_to ServiceList.get(svc_type.service_response.service_id).response_url(svc_type.service_response)
+      url = ServiceList.get(svc_type.service_response.service_id).response_url(svc_type.service_response)
+
+      # Call link_out_filters, if neccesary.
+      
+      #new_url = @collection.link_out_service_level(5)[0].link_out_filter(url)
+
+      redirect_to url
     end
   end
     
