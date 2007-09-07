@@ -33,23 +33,27 @@ class Worldcat < Service
     end
 
     # We do a pre-emptive lookup to worldcat to try and see if worldcat
-    # has a hit or not, before adding the link. 
-		worldcat_uri = URI.parse(@base_url+isxn_key+'/'+isxn_value+"&loc=#{@search_zip_code}")
+    # has a hit or not, before adding the link.
+    uri_str = @base_url+isxn_key+'/'+isxn_value+"&loc=#{@search_zip_code}"
+    if isxn_key == 'issn'
+      uri_str += '+dt:ser' # avoid getting worldcat article records! Blah. 
+    end
+		worldcat_uri = URI.parse(uri_str)
 		http = Net::HTTP.new worldcat_uri.host
-		http.open_timeout = 5
-		http.read_timeout = 5
+		http.open_timeout = 3
+		http.read_timeout = 2
 
     
 		begin 
 			wc_response = http.get(worldcat_uri.path)
 		rescue  Timeout::Error
-			return request.dispatched(self, DispatchedService.FailedTemporary)
+			return request.dispatched(self, DispatchedService::FailedTemporary)
 		end
 
     # Bad response code?
 		unless wc_response.code == "200"
       # Could be temporary, could be fatal. Let's say temporary. 
-			return request.dispatched(self, DispatchedService.FailedTemporary)
+			return request.dispatched(self, DispatchedService::FailedTemporary)
 		end
 
     # Sadly, worldcat returns a 200 even if there are no matches.
