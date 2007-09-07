@@ -333,6 +333,19 @@ class Sfx < Service
   # into a ContextObject. Argument is _string_ containing
   # XML!
   def self.parse_perl_data(perl_data)
+    # Okay, the perl_data string comes from SFX as corrupt
+    # double-encoded char encoding. Near as I can tell, SFX
+    # took valid UTF-8, and decided it was really Latin1 (kind of guessing
+    # Latin1), and then encoded it into UTF-8---resulting in binary content
+    # that's just a mess. This double encoding isn't too surprising
+    # what with the wacky way that SFX delivers this 'perl_data' to us.
+    #
+    # But if we're right about the wrong Latin1 assumption, we can fix
+    # it to valid UTF-8, convert from UTF-8 'to' Latin-1, and then just
+    # assume our output is actually UTF-8 after all. (You don't want
+    # to know how long it took me to figure this out).
+    perl_data = Iconv.iconv('Latin1', 'UTF-8', perl_data)[0]
+    
     doc = Hpricot(perl_data)
 
     co = OpenURL::ContextObject.new
@@ -381,6 +394,8 @@ class Sfx < Service
   end
 
   protected
+  # There are weird encoding issues in metadata from SFX. 
+  # I THINK I've fixed them in #parse_perl_data
   def enhance_referent(request, perl_data)
     metadata = request.referent.metadata
 
@@ -410,7 +425,7 @@ class Sfx < Service
     end
 
     # The rest,  we write only if blank, we don't over-write
-    sfx_metadata.each do |key, value|      
+    sfx_metadata.each do |key, value|
       if (metadata[key].blank?)
         request.referent.enhance_referent(key, value)
       end
