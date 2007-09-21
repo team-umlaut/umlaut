@@ -25,4 +25,55 @@ module ApplicationHelper
     
     link_to(link_content, link_params, :target=>params[:target])
   end
+
+  # formats dates sent in an OpenURL into a more human-friendly
+  # format. Input Dates look like '20000304'. Can be just year, or just
+  # year/month, or all. Not sure what this format
+  # is officially called. Not sure if they can have dashes sometimes? 
+  def date_format(date_string)
+    date_string =~ /(\d\d\d\d)\-?(\d\d)?\-?(\d\d)?/
+
+    begin
+      year, month, day_of_month = $1, $2, $3
+  
+      if ( month )
+        date = Date.civil(year.to_i, month.to_i, day_of_month.to_i)
+        formatted_month = date.strftime('%b')
+      end
+      
+      output = year
+      output += ' ' + formatted_month if formatted_month
+      output += ' ' + day_of_month if day_of_month
+  
+      return output
+    rescue
+      return date_string
+    end
+  end
+
+  # Takes a hash, converts it to a query string (without leading
+  # ?, supply that yourself. Oddly, this does not already seem to be
+  # built in. 
+  def hash_to_querystring(hash, seperator='&')
+    list = []
+    hash.each do |key, value|
+      value = (value.blank?) ? '' : CGI.escape(value)
+      key = CGI.escape(key)
+    
+      list << key + '=' + value
+    end
+    return list.join(seperator)
+  end
+
+  # Absolute URL for permalink for given request.
+  # Have to supply rails request and umlaut request.
+  def permalink_url(rails_request, umlaut_request)
+    
+    shortcut = rails_request.protocol
+    shortcut += rails_request.host_with_port
+    shortcut += url_for :controller=>"store", :id=>umlaut_request.referent.permalinks[0].id
+    
+    return shortcut
+  end
+  
 end
