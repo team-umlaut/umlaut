@@ -51,7 +51,7 @@ class YahooSearch < Service
     http_response = http.send_request('POST', yahoo_uri.path + '?' + query)
     begin
       json = JSON::Lexer.new(http_response.body).nextvalue
-      return if json.nil?
+      return nil if json.nil? || json["ResultSet"].nil?
       
       return [] if json["ResultSet"]["totalResultsReturned"] == 0
 

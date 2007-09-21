@@ -88,7 +88,10 @@ class Sfx < Service
     transport.extra_args["sfx.response_type"]="multi_obj_xml"
     
     @get_coverage = false
-    if (context_object.referent.metadata["issue"].blank? && context_object.referent.metadata["volume"].blank? && context_object.referent.metadata["date"].blank?)    
+
+
+    if ( request.title_level_citation? )
+      # No article-level metadata, do some special stuff. 
       transport.extra_args["sfx.ignore_date_threshold"]="1"
       transport.extra_args["sfx.show_availability"]="1"
       @get_coverage = true
@@ -160,9 +163,9 @@ class Sfx < Service
       end
     end
 
-    # Load coverage/availability string from Rochkind's 'extra' SFX coverage API, if
-    # configured, and if we have the right data to do so. We load em all in bulk in
-    # one request, rather than a request per service. 
+    # Load coverage/availability string from Rochkind's 'extra' SFX coverage
+    # API, if configured, and if we have the right data to do so. We load em
+    # all in bulk in one request, rather than a request per service. 
     loaded_coverage_strings = nil
     if ( @get_coverage && @coverage_api_url && object_id  && (sfx_target_service_ids.length > 0)  )
       begin
@@ -188,12 +191,13 @@ class Sfx < Service
           raise "Error in coverage API fetch"
         end
   
-        cov_doc.search('/sfxcoverage/targets/target').each do |target|
+        cov_doc.search('/sfxcoverage/targets/target').each do |target|                        
+          next if target.empty? # it never should be, but sometimes is. 
           service_id = target.at('target_service_id').inner_html
           coverage_str = target.at('availability_string').inner_html
           loaded_coverage_strings[service_id] = coverage_str
         end                              
-      rescue Exception
+      rescue Exception => e
           sfx_target_service_ids.each { |id| loaded_coverage_strings[id] = "Error in fetching coverage information." }
       end
     end
@@ -223,7 +227,7 @@ class Sfx < Service
         target_service_id = (target/"target_service_id").inner_html
         
         coverage = nil
-        if (sfx_service_type == "getFullTxt" && @get_coverage )
+        if ( @get_coverage )
           if ( loaded_coverage_strings ) # used the external extra SFX api
             coverage = loaded_coverage_strings[target_service_id]           
           elsif (journal_index_on && journal)  # Umlaut journal index
@@ -248,6 +252,7 @@ class Sfx < Service
         value_text[:sfx_target_index] = target_index + 1 # sfx is 1 indexed
         value_text[:sfx_request_id] = (perl_data/"//hash/item[@key='sfx.request_id']").first.inner_html
         value_text[:sfx_target_service_id] = target_service_id
+        value_text[:sfx_target_name] = sfx_target_name
         # At url-generation time, the request isn't available to us anymore,
         # so we better store this citation info here now, since we need it
         # for sfx click passthrough
@@ -344,7 +349,7 @@ class Sfx < Service
     # it to valid UTF-8, convert from UTF-8 'to' Latin-1, and then just
     # assume our output is actually UTF-8 after all. (You don't want
     # to know how long it took me to figure this out).
-    perl_data = Iconv.iconv('Latin1', 'UTF-8', perl_data)[0]
+    perl_data = Iconv.new('Latin1', 'UTF-8').iconv(perl_data)
     
     doc = Hpricot(perl_data)
 

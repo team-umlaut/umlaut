@@ -1,20 +1,20 @@
 class Ezproxy < Service
+  required_config_params :proxy_server, :proxy_password, :proxy_url_path
+  
   require 'rexml/document'
   require 'uri'
   require 'net/http'
   require 'cgi'  
-
-  def initialize(conf)
-    super
-    @proxy_server = conf['host']
-    @proxy_password = conf['password']
-    @proxy_url_path = conf['path']
-  end
   
   def handle(request)
     
   end
-  def proxy_url(urls)
+
+  def link_out_filter(url)
+    return proxy_urls( [url] )[0]
+  end
+  
+  def proxy_urls(urls)
     url_doc = REXML::Document.new
     doc_root = url_doc.add_element "proxy_url_request", {"password"=>@proxy_password}
     urls_elem = doc_root.add_element "urls"

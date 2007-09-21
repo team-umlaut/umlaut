@@ -4,7 +4,7 @@ class Amazon < Service
   attr_reader :url
 
   def service_types_generated
-    return [ ServiceTypeValue['cover_image'], ServiceTypeValue['description'],
+    return [ ServiceTypeValue['cover_image'], ServiceTypeValue['abstract'],
              ServiceTypeValue['highlighted_link'], ServiceTypeValue['subject'],
              ServiceTypeValue['similar_item'] ]
   end
@@ -65,14 +65,15 @@ class Amazon < Service
         # :value_string=>asin,
       end
     end               
+
+    item_url = (aws.at("/ItemLookupResponse/Items/Item/DetailPageURL"))
     
     # get description
     if desc = (aws.at("/ItemLookupResponse/Items/Item/EditorialReviews/EditorialReview/Content"))
-      request.add_service_response({:service=>self, :key=>'description', :value_string=>asin, :value_text=>desc.inner_html},['description'])
+      request.add_service_response({:service=>self, :display_text => "Description from Amazon.com", :url => item_url.inner_html, :key=>'abstract', :value_string=>asin, :service_data => {:content=>desc.inner_html}},['abstract'])
     end
     
     # we want to highlight Amazon to link to 'search in this book', etc.
-    item_url = (aws.at("/ItemLookupResponse/Items/Item/DetailPageURL"))
     if item_url
       service_data = { :url => item_url.inner_html, :asin=>asin,
                        :display_text => "View at Amazon.com"}
