@@ -7,13 +7,17 @@ module ResolveHelper
      end
   end
 
+  # Returns Array of ServiceType objects associated with current @user_request
+  # (the Umlaut Request object), matching svc_type type. svc_type should be
+  # a string name of ServiceTypeValue
+  # delegates work to Request.get_service_type. 
   # This one does make a db transaction, to get most up to date list. 
   def get_service_type(svc_type)
-    
-    return @user_request.service_types.find(:all,
-      :conditions => 
-        ["service_type_value_id = ?", ServiceTypeValue[svc_type].id ],
-      :include => [:service_response]   )
+    return @user_request.get_service_type(svc_type)
+    #return @user_request.service_types.find(:all,
+    #  :conditions => 
+    #    ["service_type_value_id = ?", ServiceTypeValue[svc_type].id ],
+    #  :include => [:service_response]   )
           
   end
 
@@ -44,13 +48,21 @@ module ResolveHelper
 
   
   def display_ill?
-    return true if get_service_type('fulltext').empty? and get_service_type('holding').empty?
-    return false unless @user_request.referent.format == 'journal'
-    if @user_request.referent.metadata['atitle'] and @user_request.referent.metadata['atitle'] != ''
-      return false
-    else
-      return true
-    end
+    # Local implementor can provide custom logic in environment. See
+    # same environment file.
+    custom_logic = AppConfig.param('resolve_display_ill')
+
+    return true unless custom_logic
+
+    return custom_logic.call(@user_request)
+    
+    #return true if get_service_type('fulltext').empty? and get_service_type('holding').empty?
+    #return false unless @user_request.referent.format == 'journal'
+    #if @user_request.referent.metadata['atitle'] and @user_request.referent.metadata['atitle'] != ''
+    #  return false
+    #else
+    #  return true
+    #end
   end
   
   def display_closest_web_results?  
@@ -76,4 +88,34 @@ module ResolveHelper
     end
     return nil
   end
+
+  # pass in a ServiceType object, usually for fulltext.
+  # Returns a string URL that will take the user directly to
+  # that resource. Actually through an umlaut redirect, but eventually. 
+  def direct_url_for(service_type)
+    url_for( :controller => 'link_router', :'id' => service_type.id , :'umlaut.link_with_frameset' => 'false' )      
+  end
+
+  # Used by banner menu pages. 
+  # pass in a service_type object, get a link (<a>) to display it in a frameset
+  # page. Takes account of known_frame_escapers to send them to a new non-framed
+  # window.
+  def frameset_link_to(service_type)
+    if ( known_frame_escaper?(service_type))
+      link_to(service_type.view_data[:display_text],
+              direct_url_for(service_type),
+              'target'=>'_blank')
+    else    
+      link_to(service_type.view_data[:display_text],
+              LinkRouterController::frameset_action_params( service_type ),
+              'target'=> '_top')
+    end
+  end
+
+  # Returns true if the current request is title-level only--if it has
+  # no vol/iss/page number etc info.
+  def title_level_request?  
+    return @user_request.title_level_citation?
+  end
+    
 end
