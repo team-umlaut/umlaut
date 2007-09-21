@@ -1,0 +1,43 @@
+<!-- Some code to re-size our window to config defined minimum height/width
+     We have little control over what size a content provider generates a
+     window for a link resolver. Often it's too small. So we resize in
+     js. -->
+
+<script language="javascript">
+min_width = <%= AppConfig.param('minimum_window_width', 0)%>;
+min_height = <%= AppConfig.param('minimum_window_height', 0)%>;
+// Default to something huge, so if we fail in getting dimensions,
+// we won't resize. 
+orig_width = 100000; 
+orig_height = 100000;
+if (self.innerHeight) 
+// all except Explorer
+{
+	orig_width = top.innerWidth;
+	orig_height = top.innerHeight;
+}
+else if (document.documentElement && document.documentElement.clientHeight)
+// Explorer 6 Strict Mode
+{
+	orig_width = top.document.documentElement.clientWidth;
+	orig_height = top.document.documentElement.clientHeight;
+}
+else if (document.body)
+// other Explorers
+{
+	orig_width = top.document.body.clientWidth;
+	orig_height = top.document.body.clientHeight;
+}
+
+
+width_diff = min_width - orig_width;
+height_diff = min_height - orig_height;
+
+if (width_diff < 0) { width_diff = 0 }
+if (height_diff < 0) { height_diff = 0 }
+
+if (width_diff >0 || height_diff > 0) {
+  top.window.resizeBy(width_diff, height_diff)
+}
+</script>
+
