@@ -50,7 +50,14 @@ holding_search:
   display_name: Copy in Library
   display_name_plural: Copies in Library
   
-# Not sure what this is used for
+# This is meant for 'fulltext' from such sources as the OPAC/ILS, where
+# it will always be a title-level link, and dates of coverage usually
+# aren't checked. 
+fulltext_title_level:
+  id: 16
+  display_name: Electronic Version
+  
+# Not sure what this is used for. Think it's a typo for abstract. 
 description:
   id: 100
   display_name: Description
@@ -66,5 +73,5 @@ similar_item:
   display_name: Similar Item
 
   
-# If you want to add your own custom ones, make them start with ids at 100,000,
-# to leave plenty of space for future standard umlaut use. 
+# If you want to add your own custom ones, make them start with ids at 100000,
+# to leave plenty of space for future standard umlaut ones. 
