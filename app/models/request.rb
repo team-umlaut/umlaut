@@ -135,6 +135,7 @@ class Request < ActiveRecord::Base
       #unless svc_resp
         svc_resp = ServiceResponse.new
 
+        
         svc_resp.url = response_data[:url]
         svc_resp.notes = response_data[:notes]
         svc_resp.display_text = response_data[:display_text]
@@ -171,7 +172,6 @@ class Request < ActiveRecord::Base
       
       new_hash.merge!(mini_hash) 
     end
-
     # If requested we put in the request_id, even though it's not really
     # a context object element.
     new_hash['umlaut.request_id'] = self.id if arguments[:add_request_id]
@@ -235,6 +235,37 @@ class Request < ActiveRecord::Base
 
     return context_object
   end
+
+  # Is the citation represetned by this request a title-level only
+  # citation, with no more specific article info? Or no, does it
+  # include article or vol/iss info?
+  def title_level_citation?
+    data = referent.metadata
+
+    # atitle can't generlaly get us article-level, but it can with
+    # lexis nexis, so we'll consider it article-level. Since it is!
+    return ( data['atitle'].blank? &&
+             data['volume'].blank? &&
+             data['issue'].blank? &&
+             data['spage'].blank? &&
+             data['date'].blank? &&
+        # pmid or doi is considered article-level, because SFX can
+        # respond to those. Other identifiers may be useless. 
+        (! referent.identifiers.find {|i| i =~ /^info\:(doi|pmid)/})
+        )
+  end
+
+  # pass in string name of a service type value, get back list of
+  # ServiceType objects with that value belonging to this request. 
+  # This one does make a db transaction, to get most up to date list. 
+  def get_service_type(svc_type)
+    return self.service_types.find(:all,
+                              :conditions =>
+                                 ["service_type_value_id = ?",
+                                 ServiceTypeValue[svc_type].id ],
+                              :include => [:service_response]   
+                              )
+  end
   
   protected
 
@@ -291,16 +322,23 @@ class Request < ActiveRecord::Base
   # This method takes care of #1---pass in params that have already
   # been cleaned with extract_co_params for #2. 
   def self.serialized_co_params(params)
-    excluded_keys = ["action", "controller", "id", "page", "umlaut.request_id",  "rft.action", "rft.controller"]
+    excluded_keys = ["action", "controller", "page", /^umlaut\./,  "rft.action", "rft.controller"]
+
+    # 'id' is a weird one because it IS an OpenURL 0.1 param, but the
+    # same key is often used for an internal Rails/Umlaut arg. So we
+    # save it, sometimes saving 'bad' keys. We really ought not to use
+    # it as a URL param in Umlaut. 
         
     # Okay, we're going to turn it into a list of one-element hashes,
     # alphabetized by key. To attempt to make it so the same hash
     # always turns into the exact same yaml string. Hopefully it'll work.
     list = []
     params.keys.sort.each do |key|
-      next if excluded_keys.include?(key)
-
-      list.push( {key => params[key]} )
+      #debugger
+      excluded = false
+      excluded_keys.each {|exclude_key| excluded = true if exclude_key === key }
+          
+      list.push( {key => params[key]} ) unless excluded
     end
     serialized = list.to_yaml
     # If serialized is bigger than the column width available, we're in trouble.

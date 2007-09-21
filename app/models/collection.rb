@@ -92,7 +92,8 @@ class Collection
     end
   end
   
-  def calculate_collection_data(ip, session)        
+  def calculate_collection_data(ip, session)
+  
     # Add default institutions
     Institution.find_all_by_default_institution(true).each do | dflt |
       @institutions << dflt
@@ -107,7 +108,6 @@ class Collection
 
     # We've added institutions, now add all the services belonging to those institutions.
     self.gather_services()
-     
   end
 
   # Add services belonging to institutions

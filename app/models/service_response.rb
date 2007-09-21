@@ -54,6 +54,11 @@ At the point the user clicks on a ServiceResponse, Umlaut will attempt to find a
  Anything from amazon:
  :asin
 
+ Abstracts/Tocs:
+   Can be a link to, or actual content. Either way, should be set
+   up to link to source of content if possible. Basic set, plus:
+   :content           actual content, if available. 
+
 =end
 class ServiceResponse < ActiveRecord::Base
   @@built_in_fields = [:display_text, :url, :notes]
