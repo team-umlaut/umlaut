@@ -37,11 +37,14 @@ class LinkRouterController < ApplicationController
 
     # Start with a nice context object
     params = u_request.original_co_params
+    
     # Add our controller code and id references
+    # We use 'umlaut.id' instead of just 'id' as a param to avoid
+    # overwriting an OpenURL 0.1 'id' param! 
     params.merge!( { :controller=>'resolve',
                      :action=>'bannered_link_frameset',
                      :'umlaut.request_id' => u_request.id,                     
-                     :id=>svc_type.id})
+                     :'umlaut.id'=>svc_type.id})
     return params
   end
 

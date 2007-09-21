@@ -6,8 +6,20 @@ class ApplicationController < ActionController::Base
   session :session_key => '_u2_session_id'
   before_filter :app_before_filter
 
-  def app_before_filter
+  def app_before_filter    
     @use_umlaut_journal_index = AppConfig.param("use_umlaut_journal_index", true)
+
+    # We have an apache redir workaround to fix EBSCO illegal URLs.
+    # But it ends up turning all "&" to "&amp;" as seperators in 
+    # query portion of url. 
+    # which makes rails add all these weird request params named 'amp' or 
+    # 'amp;[something]'. Along with, strangely, the 'correct' params too.
+    # So we strip the weird ones out. 
+    if ( request.query_string =~ /\&amp\;/)
+      params.keys.each do |param|
+        params.delete( param ) if param == 'amp' || param =~ /^amp\;/
+      end
+    end
 
    return true
   end

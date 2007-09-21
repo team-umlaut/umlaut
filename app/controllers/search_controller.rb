@@ -68,7 +68,6 @@ class SearchController < ApplicationController
       self.find_by_title_via_sfx_db()
     end
 
-        
     # Calculate end-result number for display
     @end_result_num = @start_result_num + @batch_size - 1
     if @end_result_num > @hits
@@ -77,13 +76,13 @@ class SearchController < ApplicationController
     
     # Supplement them with our original context object, so date/vol/iss/etc
     # info is not lost.
-    orig_metadata = search_co.referent.metadata
-    @display_results.each do | co |
-      orig_metadata.each do |k,v|        
+    #orig_metadata = search_co.referent.metadata
+    #@display_results.each do | co |
+    #  orig_metadata.each do |k,v|        
         # Don't overwrite, just supplement
-        co.referent.set_metadata(k, v) unless co.referent.get_metadata(k) || v.blank?
-      end
-    end
+    #    co.referent.set_metadata(k, v) unless co.referent.get_metadata(k) || v.blank?
+    #  end
+    #end
     
     if (@page == 1) && (@display_results.length == 1)
       # If we narrowed down to one result, redirect to resolve action.        
@@ -350,7 +349,7 @@ class SearchController < ApplicationController
     jrnl = nil
     # Normalize ISSN to have dash
     if ( ! params['rft.issn'].blank? && params['rft.issn'][4,1] != '-')
-      params[rft.issn].insert(4,'-')
+      params['rft.issn'].insert(4,'-')
     end
 
     # Enhance with info from local journal index, if we can
@@ -460,6 +459,8 @@ class SearchController < ApplicationController
     # Now we need to convert to ContextObjects.
     context_objects = sfx_objects.collect do |sfx_obj|
       ctx = OpenURL::ContextObject.new
+      # Start out with everything in the search, to preserve date/vol info
+      ctx.import_context_object( @search_context_object )
 
       # Put SFX object id in rft.object_id, that's what SFX does. 
       ctx.referent.set_metadata('object_id', sfx_obj.id)
@@ -489,7 +490,8 @@ class SearchController < ApplicationController
   # This guy actually works to talk to an SFX instance over API.
   # But it's really slow. And SFX doesn't seem to take account
   # of year/volume/issue when displaying multiple results anyway!!
-  # So it does nothing of value for us. 
+  # So it does nothing of value for us--this code may not be working
+  # right now. 
   def find_via_remote_title_source(context_object)
       ctx = context_object
       search_results = []
@@ -564,6 +566,9 @@ class SearchController < ApplicationController
     if session[:search_results].length > 0
       Journal.find(session[:search_results][start_idx..end_idx]).each {| journal |
         co = OpenURL::ContextObject.new
+        # import the search criteria, so we can pass em on
+        co.import_context_object( @search_context_object )
+        
         co.referent.set_metadata('jtitle', journal.title)
         unless journal.issn.blank?
           co.referent.set_metadata('issn', journal.issn)

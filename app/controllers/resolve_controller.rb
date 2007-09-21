@@ -37,7 +37,12 @@ class ResolveController < ApplicationController
                           { :div_id => "holding", 
                             :partial => @@partial_for_block[:holding],
                             :service_type_values => ["holding","holding_search"]
-                          }],
+                          },
+                          {:div_id => "highlighted_links",
+                           :partial => "highlighted_links_start",
+                           :service_type_value => "highlighted_link"},
+                           
+                           ],
                           :error_div =>
                           { :div_id => 'service_errors',
                             :partial => 'service_errors'}
@@ -46,7 +51,9 @@ class ResolveController < ApplicationController
 
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
-  def init_processing    
+  def init_processing
+
+    
     @user_request ||= Request.new_request(params, session, request )
     @collection = Collection.new(request.remote_ip, session)      
     @user_request.save!
@@ -74,7 +81,6 @@ class ResolveController < ApplicationController
   def expire_old_responses
     require 'CronTab'
     
-    #expire_interval = 10.seconds
     expire_interval = AppConfig.param('response_expire_interval')
     crontab_format = AppConfig.param('response_expire_crontab_format')
 
@@ -114,23 +120,25 @@ class ResolveController < ApplicationController
           ds.destroy
       end
     end
-    puts "Total responses expired: #{responses_expired}"
-    debugger
   end
 
   def setup_banner_link
-    # We keep the id of the ServiceType join object in param 'id' for
+    # We keep the id of the ServiceType join object in param 'umlaut.id' for
     # banner frameset link type actions. Take it out and stick the object
-    # in a var if available.
-    @service_type_join = @user_request.service_types.find_all_by_id(params[:id]).first if params[:id]
-
-    # default?
+    # in a var if available.    
+    joinID = params[:'umlaut.id']
+    
+    @service_type_join = @user_request.service_types.find_all_by_id(joinID).first if joinID
+    
+    # default?    
     unless ( @service_type_join )
-      
+       
       @service_type_join = 
         @user_request.service_types.find_by_service_type_value_id(
       ServiceTypeValue[:fulltext].id )
     end
+
+    
 
     unless @service_type_join 
        raise "No service_type_join found!"
@@ -145,16 +153,23 @@ class ResolveController < ApplicationController
   def index
     #self.init_processing # handled by before_filter 
     self.service_dispatch()
-    @user_request.save! # should be handled by after_filter?
+    @user_request.save! 
 
 
     # link is a ServiceType object
     link = should_skip_menu
     if (! link.nil? )
-      redirect_to LinkRouterController::frameset_action_params( link ).merge('umlaut.skipped_menu' => 'true')
+      hash = LinkRouterController::frameset_action_params( link ).merge('umlaut.skipped_menu' => 'true')
+      redirect_to hash
+    else
+      # Render configed view, if configed, or "index" view if not. 
+      view = AppConfig.param("resolve_view", "resolve/index")
+      render :template => view
     end
   end
 
+
+  
   # Show a link to something in a frameset with a mini menu in a banner. 
   def bannered_link_frameset
   
@@ -275,9 +290,10 @@ class ResolveController < ApplicationController
     service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection) + service_dispatcher.get_opacs(@collection))  	
    	self.do_processing(service_dispatcher)  	
   end
-  
+
+  # table of contents pull-out page
   def toc
-  	self.index
+
   end
     
   #def start
@@ -291,7 +307,7 @@ class ResolveController < ApplicationController
   end
 
   def rescue_action_in_public(exception)
-    render :template => "error/resolve_error", :layout=>'search_standard' 
+    render :template => "error/resolve_error"
   end  
 
   # Obsolete, I think. 
@@ -334,7 +350,6 @@ class ResolveController < ApplicationController
   # should be displayed, or the ServiceType join object
   # that should be directly linked to. 
   def should_skip_menu
-  
     # First, is it over-ridden in url?
     if ( params['umlaut.skip_resolve_menu'] == 'false')
       return nil
@@ -345,21 +360,57 @@ class ResolveController < ApplicationController
     if (skip.kind_of?( FalseClass ))
       # nope
       return nil
-    elsif (skip.kind_of?(Hash) )
-      skip[:services].each do | service |
+    end
+
+    return_value = nil
+    if (skip.kind_of?(Hash) )
+      skip[:service_types].each do | service |
         service = ServiceTypeValue[service] unless service.kind_of?(ServiceTypeValue)  
 
-        service_type_to_skip = 
+        candidates = 
         @user_request.service_types.find(:all, 
-          :conditions => ["service_type_value_id = ?", service.id]).first
-        return service_type_to_skip if service_type_to_skip
-      end
+          :conditions => ["service_type_value_id = ?", service.id])
+        # Make sure we don't redirect to any known frame escapers!
+        candidates.each do |st|
+          
+          unless known_frame_escaper?(st)
+            return_value = st
+            break;
+          end
+        end
+        end
     elsif (skip.kind_of?(Proc ))
-      return skip.call( :request => @user_request )
+      return_value = skip.call( :request => @user_request )
+    else
+      logger.error( "Unexpected value in app config 'skip_resolve_menu'; assuming false." )
     end
-      
-    logger.error( "Unexpected value in app config 'skip_resolve_menu'; assuming false." )
-    return nil;    
+    
+    return return_value;    
+  end
+
+  # Param is a ServiceType join object. Tries to identify when it's a 
+  # target which refuses to be put in a frameset, which we take into account
+  # when trying to put it a frameset for our frame menu!
+  # At the moment this is just hard-coded in for certain SFX targets only,
+  # that is works for SFX targets only. We should make this configurable
+  # with a lambda config.
+  helper_method :'known_frame_escaper?'
+  def known_frame_escaper?(service_type)
+    
+    response = service_type.service_response
+    
+    # We only work for SFX ones right now. 
+    unless response.service.kind_of?(Sfx)      
+      # Can't say it is, nope. 
+      return false;
+    end
+
+    sfx_target_name = response.service_data[:sfx_target_name]
+    
+    bad_target_regexps = [/^WILSON\_/]
+
+    # Does our target name match any of our regexps?
+    return bad_target_regexps.find_all {|re| re === sfx_target_name  }.length > 0    
   end
   
   # Helper method used here in controller for outputting js to
@@ -438,8 +489,10 @@ class ResolveController < ApplicationController
     # services. We are NOT going to wait for this thread to join,
     # we're going to let it keep doing it's thing in the background after
     # we return a response to the browser
+    messages = []
     backgroundThread = Thread.new(@collection, @user_request) do | t_collection,  t_request|
       begin
+        messages << "Starting bg services at #{Time.now}"        
         logger.info("Starting background services in Thread #{Thread.current.object_id}")
         ('a'..'z').each do | priority |
            service_list = t_collection.service_level(priority)
@@ -447,9 +500,12 @@ class ResolveController < ApplicationController
            logger.info("background: Making service bundle for #{priority}")
            bundle = ServiceBundle.new( service_list )
            bundle.debugging = true
+           messages << "Starting bundle for priority #{priority} at #{Time.now}"
            bundle.handle( t_request )
+           messages << "Done handling bundle for priority #{priority} at #{Time.now}"
            logger.info("background: Done handling for #{priority}")
         end
+        messages << "All bg services complete at #{Time.now}"
         logger.info("Background services complete")
      rescue Exception => e
         # We are divorced from any request at this point, not much
