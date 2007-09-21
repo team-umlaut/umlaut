@@ -16,7 +16,13 @@ module OpenURL
       @custom = []
       @admin = {"ctx_ver"=>{"label"=>"version", "value"=>"Z39.88-2004"}, "ctx_tim"=>{"label"=>"timestamp", "value"=>DateTime.now().to_s}, "ctx_id"=>{"label"=>"identifier", "value"=>""}, "ctx_enc"=>{"label"=>"encoding", "value"=>"info:ofi/enc:UTF-8"}}    
     end
-    
+
+    def deep_copy
+      cloned = ContextObject.new
+      cloned.import_context_object( self )
+      return cloned
+    end
+      
     def xml
       require "rexml/document"
       doc = REXML::Document.new()
