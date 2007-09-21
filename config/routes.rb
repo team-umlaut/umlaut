@@ -25,6 +25,12 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "journal_list/:id/:page", :controller=>'search', :action=>'journal_list', :defaults=>{:page => 1, :id=> 'A'}
   
   # Install the default route as the lowest priority.
-  map.connect ':controller/:action/:id'
+  # Sometimes id is an OpenURL 0.1 identifier, and sticking it in the
+  # path can not only mess up the OpenURL, but can confuse Rails when
+  # the identifier itself includes a /. So we only put it in path
+  # if the id is all numbers, and everyone is happy. 
+  map.connect ':controller/:action/:id', :requirements => {:id => /\d*/}
+  map.connect ':controller/:action' # id will end up in ?id=whatever
+  
 
 end
