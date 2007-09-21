@@ -14,8 +14,8 @@
   <div class="banner_menu_inner_container">
   <div id="banner_controls" class="banner_section">
     <%= resolver_link(nil, :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %><br/>
-    <span class="smallText"><%= resolver_link(nil, :text => 'See Full menu', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
-    <%= link_to "[x] Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
+    <span class="smallText"> <%= resolver_link(nil, :text => 'More in full menu', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
+    <%= link_to "#{ image_tag("frame_remove.gif", :border=>0, :align=>'bottom') } Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
     
   <% displayed_data = @service_type_join.view_data %>
   <% unless displayed_data[:authentication].blank? %>
@@ -35,24 +35,46 @@
 
   
   <% fulltxt = get_service_type('fulltext')
-     unless fulltxt.blank?
+     title_level_fulltxt = get_service_type('fulltext_title_level')
+     unless fulltxt.blank? && title_level_fulltxt.blank?
   %>
   <div id="banner_fulltext" class="banner_section" >
-    <h3><%= ServiceTypeValue[:fulltext].display_name_pluralize.capitalize%>:</h3>
-    <ul class="smallText">
+    <% if fulltxt.length + title_level_fulltxt.length > 1 %>
+      <h3>Other <%= ServiceTypeValue[:fulltext].display_name_pluralize.downcase%>:</h3>
+    <% end %>
+    <ul class="smallText fulltextlink">
     <%        
       fulltxt.each do | ft | 
       target = ft.view_data
     %>
-        <li> 
+        <li class="fulltextlink <%= 'frameescaping' if known_frame_escaper?(ft) %>"> 
         <%  # Currently displayed one should not be a link, but should
             # be greyed-out instead.
             if ( ft == @service_type_join ) %>
             <a class="grayedOut"><%= target[:display_text] %></a>
         <% else %>
-        <%= link_to target[:display_text],
-              LinkRouterController::frameset_action_params( ft ),
-              'target'=>"_top" %>
+          <%= frameset_link_to(ft) %>        
+        <% end %>
+        </li>
+    <% end
+       unless title_level_request? || title_level_fulltxt.empty?
+          genre = @user_request.referent.metadata['genre']
+          genre = "Journal" if genre.downcase == 'article'
+    %>
+      </ul>
+      <h3><%= genre.titlecase %>-level Page Only:</h3>
+      <ul class="smallText fulltextlink">
+    <% 
+       end
+       title_level_fulltxt.each do |ft| 
+       target = ft.view_data %>
+        <li class="fulltextlink <%= 'frameescaping' if known_frame_escaper?(ft) %>"> 
+        <%  # Currently displayed one should not be a link, but should
+            # be greyed-out instead.
+            if ( ft == @service_type_join ) %>
+            <a class="grayedOut"><%= target[:display_text] %></a>
+        <% else %>
+          <%= frameset_link_to(ft) %>        
         <% end %>
         </li>
     <% end %>

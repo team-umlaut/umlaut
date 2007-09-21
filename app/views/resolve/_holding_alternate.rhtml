@@ -7,7 +7,7 @@
 =end
 %>
 
-<p><strong><%= ServiceTypeValue[:holding].display_name_pluralize.titleize %> </strong></p>
+<h3><%= ServiceTypeValue[:holding].display_name_pluralize.titleize %> </h3>
 
 <div class="section_content_indent">
 <% holdings = get_service_type('holding') %>
@@ -34,10 +34,35 @@ holdings.each do |p|
   
   <% unless target[:coverage_str].blank? %>
   <tr>
-    <td colspan="4"><ul><% target[:coverage_str_array].each do |s| %>
-                     <li><%= s %></li>
-                     <% end %>
-                    </ul>
+    <td colspan="4">
+          <ul>          
+          <% 
+          # Only show first 5, with a 'more' link to make others visible if neccesary. 
+          hidden_div_id = "copies_#{p.id}"
+          target[:coverage_str_array].each_index do |index|
+              break if (index >= 5 && 
+                        params['umlaut.holding_expand_all'] != 'true')
+              s = target[:coverage_str_array][index]%>
+               <li><%= s %></li>
+          <% end %>
+          <% if target[:coverage_str_array].length > 5 && params['umlaut.holding_expand_all'] != 'true' %>
+            <li> <%= link_to_function("More...",
+                     "Element.toggle('#{hidden_div_id}'); Element.update(this, 'Show/Hide...')",
+                     :href => url_for( params.merge({ :'umlaut.holding_expand_all' => 'true'}))) %>
+            </li>            
+          <% end %>
+          </ul>
+         
+          <% # okay, the rest in a hidden div, if more than 5 
+             if target[:coverage_str_array].length > 5 && params['umlaut.holding_expand_all'] != 'true' %>
+          <div id=<%= hidden_div_id %> style="display:none; ">
+          <ul>          
+            <% 5.upto( target[:coverage_str_array].length + 1) do |index| %>
+                  <li><%= target[:coverage_str_array][index] %></li>
+            <% end   %>
+          </ul>
+          </div>
+          <% end %>
     </td>
   </tr>
   <% end %>

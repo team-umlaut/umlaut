@@ -5,8 +5,8 @@
 <%end%>
 
 
-
+<% if @user_request %>
 <div id="unapi-container">
 <abbr class="unapi-id" title="<%= CGI.escape(@user_request.referent.to_context_object.kev) %>"></abbr>
 </div>
-
+<% end %>

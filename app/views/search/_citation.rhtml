@@ -78,16 +78,16 @@ end
  if ref_meta.has_key?("jtitle")  or ref_meta.has_key?("title") or ref_meta.has_key?("btitle")
     @co = OpenURL::ContextObject.new
     @co.import_context_object(@current_context_object)
-    @co.referent.metadata["atitle"] = nil
-    @co.referent.metadata["volume"] = nil
-    @co.referent.metadata["spage"] = nil
-    @co.referent.metadata["epage"] = nil
-    @co.referent.metadata["issue"] = nil
-    @co.referent.metadata["date"] = nil
-    @co.referent.metadata["aulast"] = nil
-    @co.referent.metadata["au"] = nil
-    @co.referent.metadata["auinit"] = nil
-    @co.referent.metadata["auinit1"] = nil
+    #@co.referent.metadata["atitle"] = nil
+    #@co.referent.metadata["volume"] = nil
+    #@co.referent.metadata["spage"] = nil
+    #@co.referent.metadata["epage"] = nil
+    #@co.referent.metadata["issue"] = nil
+    #@co.referent.metadata["date"] = nil
+    #@co.referent.metadata["aulast"] = nil
+    #@co.referent.metadata["au"] = nil
+    #@co.referent.metadata["auinit"] = nil
+    #@co.referent.metadata["auinit1"] = nil
     # @co.referent.set_identifier(nil) 
     if @co.referent.metadata.has_key?("title")
       title = @co.referent.metadata["title"]
@@ -151,7 +151,7 @@ if ref_meta.has_key?("isbn") %>
 end
 pub = []
 if ref_meta.has_key?("date")
-	pub << ref_meta["date"].to_s
+	pub << date_format(ref_meta["date"].to_s)
 end
 if ref_meta.has_key?("volume") 
 	pub << 'Volume:&nbsp;&nbsp;'+ref_meta["volume"].to_s
@@ -166,13 +166,7 @@ end
 if ref_meta.has_key?("epage")
 	pub << '-  '+ref_meta["epage"].to_s
 end
-if pub.length > 0
 %>
- <tr> <td><div align="right" class="smallTextb">Published:</div></td>
-  <td><span class="smallText"><%= pub.join('&nbsp;&nbsp;')%>
-</span></td>
-        </tr>
-<% end %>
 
 <%
  unless ref_meta['pub'].blank? &&

@@ -5,13 +5,21 @@
 </head>
 
 
-<frameset rows="87,*">
-  <frame id ="top_frame" src="<%= url_for(  @user_request.original_co_params.merge( {:action => 'banner_menu' , :'umlaut.request_id' => @user_request.id, :id => (@service_type_join.id if @service_type_join)}) )%>" scrolling=no marginwidth=0 marginheight=0>
+<frameset rows="92,*">
+  <frame id ="top_frame" src="<%= url_for(  @user_request.original_co_params.merge( {:action => 'banner_menu' , :'umlaut.request_id' => @user_request.id, :'umlaut.id' => (@service_type_join.id if @service_type_join)}) )%>" scrolling=no marginwidth=0 marginheight=0>
   
-  <frame name="link_content" src="<%= url_for( :controller => 'link_router', :id => (@service_type_join.id if @service_type_join), :'umlaut.link_with_frameset' => 'false' )  %>">
+  
+  
+  <frame name="link_content" src="<%= direct_url_for( @service_type_join )  %>">
 
 
-  <noframes>Your browser does not support frames. We use frames to display your resource.</noframes>
+  <noframes>Your browser does not support frames. Would you like to:
+   <ul>
+     <li> <%= link_to("View FindIt menu for this resource", {:action => 'index', :'umlaut.request_id' => @user_request.id}) %> </li>
+     <li> <%= link_to("Go directly to full text from #{@service_type_join.view_data[:display_text]}", direct_url_for( @service_type_join )</li>
+   </ul>
+   </noframes>
+     
 
 
 

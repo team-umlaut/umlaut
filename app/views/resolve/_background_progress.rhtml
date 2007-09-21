@@ -1,5 +1,5 @@
-<%   # Note this is called background_progress, but also degrades nicely to
-     # non-javascript. Or at least it soon will. 
+<%   # Partial to display spinner for background services in progress. 
+     # Also degrades fairly nicely to non-javascript. 
      #
      # Pass in local variables as arguments (:locals param to render method):
      #
@@ -22,10 +22,12 @@
      # for JAWS (which is neither full js nor non js, but some js--right
      # now I think they'll just get the non-js version, but we can do better.)
    
-  svc_type = ServiceTypeValue[:svc_type] unless svc_type.nil? || svc_type.kind_of?(ServiceTypeValue)
   svc_types = [] if svc_types.nil?
-  svc_types.push(svc_type).uniq! unless svc_type.nil?
+  svc_types.push(svc_type).uniq! if defined?(svc_type) && ! svc_type.nil?
+  # convert any Strings to ServiceTypeValues. 
+  svc_types = svc_types.collect { |t| t.kind_of?(ServiceTypeValue) ? t : ServiceTypeValue[t] }
   
+    
   div_id = "progress_#{svc_types[0].name}" unless div_id
   current_set_empty = false if current_set_empty.nil?
 %>

@@ -10,7 +10,9 @@
     <td><div class="line"></div><h2>Please try one of the following options:</h2>
      <ol class="numberedListlg">
           <li>Sometimes it helps to just try again: <%= link_to "Try again", :action=>'index' -%></li>
-          <li>If that doesn't work: <%= link_to "Ask Us! for help", "http://www.library.gatech.edu/research_help/ask.html"%></li>
+          <% if help_url = AppConfig('help_url') %>
+          <li>If that doesn't work: <%= link_to "Contact us for help", "http://www.library.gatech.edu/research_help/ask.html"%></li>
+          <% end %>
         </ol>
     </td>
   </tr>

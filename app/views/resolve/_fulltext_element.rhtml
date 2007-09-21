@@ -1,0 +1,23 @@
+<% # Can actually be probably used for other service types than full text.
+   # But anyway, displays a typical full text element in typical markup.
+   # pass in a ServiceType object for the response as :object 
+   
+   view_data = fulltext_element.view_data
+%>
+
+<li class="fulltextlink"> <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>fulltext_element.id}, 'target'=>"_blank" %>
+
+<% unless view_data[:coverage].blank? %>
+<br />
+<%= view_data[:coverage] %>
+<% end
+%>
+<% unless view_data[:notes].blank? %>
+<br />
+<%= view_data[:notes] %>
+<% end %>
+<% unless view_data[:authentication].blank? %>
+<br />
+<strong>Authentication:</strong> <%= view_data[:authentication] %>
+<% end %>
+</li>

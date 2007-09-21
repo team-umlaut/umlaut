@@ -55,7 +55,7 @@ end %>
 
 <%
 pub = []
-pub << cite[:date] unless cite[:date].blank?	
+pub << date_format(cite[:date]) unless cite[:date].blank?	
 pub << 'Volume:&nbsp;&nbsp;'+cite[:volume] unless cite[:volume].blank?
 pub << 'Issue:&nbsp;&nbsp;'+cite[:issue] unless cite[:issue].blank?	
 pub << 'Page:&nbsp;&nbsp;'+cite[:page] unless cite[:page].blank?

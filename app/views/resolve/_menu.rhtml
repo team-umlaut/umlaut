@@ -1,4 +1,4 @@
-<div class="seeAlso" id='umlaut_menu'>
+<div class="seeAlso sidebar_section" id='umlaut_menu'>
 <%= @user_request.referent.to_context_object.coins %>
   <ul class="news">
   <%
@@ -8,7 +8,7 @@
   
 <%end
 [{:action=>'toc', :service_type=>'table_of_contents', :label=>'Table of Contents'},
-{:action=>'abstract', :service_type=>'abstract', :label=>'Description'},
+{:action=>'abstract', :service_type=>'abstract', :label=>'Abstract or Description'},
 {:action=>'web_search', :service_type=>'web_link', :label=>'Web Search Results'}].each do | menu |
     unless controller.action_name == menu[:action]
         if get_service_type(menu[:service_type]).length > 0
@@ -17,7 +17,7 @@
             li_display = 'none'
         end %>
   <p><li id='umlaut-<%= menu[:service_type].gsub(/\s/,'_')-%>' style="display:<%=li_display%>">
-  <%= link_to menu[:label], :action=>menu[:action], :id=>@user_request.id %></li></p>
+  <%= link_to menu[:label], :action=>menu[:action], :'umlaut.request_id'=>@user_request.id %></li></p>
   <% end 
   end
   unless controller.action_name == "more_like_this"

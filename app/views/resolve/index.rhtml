@@ -27,22 +27,17 @@ end
 <div id="holding">
   <%= render(:partial => ResolveController.partial_for_block[:holding] ) %>
 </div>
-<!-- holding in progress: <%= service_type_in_progress?('holding') %> -->
-<% if display_ill?
+
+<% docdels = get_service_type('document_delivery')
+   if (display_ill?) && (! docdels.empty?)
 %>
   <p>&nbsp;</p>
-  <p><strong>Request a copy via:</strong></p>
+  <h3>Request a copy via:</h3>
   <ul>
-<% get_service_type('document_delivery').each do | doc_del_type |
+<% docdels.each do | doc_del_type |
   
     valueHash = doc_del_type.view_data_from_service_type
-
-    if @user_request.referent.format == 'journal'
-        #valueHash[:url].sub!(/genre=[^\&]*/, 'genre=article')
-    end
-    
-
-    %>
+%>
 	<li><%= link_to valueHash[:display_text], {:controller=>'link_router', :id=>doc_del_type.id}, 'target'=>'_blank'%>
 	</li>
 <% end %>
@@ -78,14 +73,15 @@ end %>
 <!--close twoColumns--></div>
   
 <div id="rightColumn">
-  <%= render :partial=>"help" %>
   <%= render :partial=>"menu" %>
+  <div id="highlighted_links">
   <%= render :partial=>"highlighted_links_start" %>
+  </div>
   
   <!-- service errors -->
-       <div id="service_errors">
-          <%= render :partial => 'service_errors' %>          
-       </div>
+  <div id="service_errors">
+       <%= render :partial => 'service_errors' %>          
+   </div>
        
   
 </div>

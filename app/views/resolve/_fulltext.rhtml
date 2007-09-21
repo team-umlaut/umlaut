@@ -1,41 +1,53 @@
 <%
    fulltxt = get_service_type('fulltext')
+   title_level_fulltxt = get_service_type('fulltext_title_level')
 %>
 
-<div id="fulltext" class="<%= unless fulltxt.blank? ; 'highlighted_section' ; end %>">
-<p><strong>Electronic version via:</strong></p>
-<ul>
-<%  
-fulltxt.each do | ft | 
-    target = ft.view_data
-%>
-<li> <%= link_to target[:display_text], {:controller=>'link_router', :id=>ft.id}, 'target'=>"_blank" %>
+<div id="fulltext" class="main_column_section <%= unless fulltxt.blank? && title_level_fulltxt.blank?; 'highlighted_section' ; end %>">
+<h3><%= ServiceTypeValue[:fulltext].display_name %> via:</h3>
+<ul class="fulltextlink">
 
-<% unless target[:coverage].blank? %>
-<br />
-<%= target[:coverage] %>
-<% end
+<%= render(:partial => "fulltext_element",
+           :collection => fulltxt );
 %>
-<% unless target[:notes].blank? %>
-<br />
-<%= target[:notes] %>
-<% end %>
-<% unless target[:authentication].blank? %>
-<br />
-<strong>Authentication:</strong> <%= target[:authentication] %>
-<% end %>
-</li>
+
 <% 
-end
+   # special warning header if we have an article or issue level
+   # link. 
+   unless title_level_request? || title_level_fulltxt.empty?
+   genre = @user_request.referent.metadata['genre']
+   genre = "Journal" if genre.downcase == 'article' 
+%>
+</ul>
+<% unless fulltxt.empty? %> <hr /> <% end %>
+<h4><%= genre.titlecase %>-level Page Only</h4>
+<p><span class="notice">Can not link directly to citation. Dates or extent of coverage may be unknown.</span></p>
+<ul class="fulltextlink">
+<% end %>
 
-if (fulltxt.empty? && ! service_type_in_progress?('fulltext'))
+
+<%=
+render(:partial => "fulltext_element",
+       :collection => title_level_fulltxt)
+%>
+
+
+<%
+if (fulltxt.empty? && title_level_fulltxt.empty? &&
+    ! service_type_in_progress?('fulltext') &&
+    ! service_type_in_progress?('fulltext_title_level'))
 %>
 <li><p class="notAvailable">Not Available </p></li>
 <%
 end 
-if service_type_in_progress?('fulltext')
+if (service_type_in_progress?('fulltext') ||
+    service_type_in_progress?('fulltext_title_level'))
 %>
-  <li><%= render(:partial => "background_progress", :locals => { :svc_type => ServiceTypeValue[:fulltext],:current_set_empty => fulltxt.empty? } ) %></li>
+  <li><%= render(:partial => "background_progress", 
+                 :locals => { :svc_types => [ServiceTypeValue[:fulltext],
+                              ServiceTypeValue[:fulltext_title_level]],
+                              :current_set_empty => fulltxt.empty? && title_level_fulltxt.empty?
+                             } ) %></li>
 
 <% end %>
 </ul>

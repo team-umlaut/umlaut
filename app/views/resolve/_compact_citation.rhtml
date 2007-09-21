@@ -11,21 +11,20 @@ if cite[:author]
 %><span class="smallText"><%= cite[:author].chomp -%>.</span>
 <% end %>
 
-<span class="smallText"><%= truncate(cite[:title],70,'...') %>
+<span class="smallText">"<%= truncate(cite[:title],70,'...') %>"
 
 
 
 <%
 if cite[:subtitle] %>
-. <%= content_tag( ((@user_request.referent.format =~ /article|journal|issue|report/i) ? 'i' : 'span'), cite[:subtitle]) %>
+ <%= content_tag( ((@user_request.referent.format =~ /article|journal|issue|report/i) ? 'i' : 'span'), cite[:subtitle]) %>
 <% end %>
-
 <%
 pub = []
-pub << cite[:date] unless cite[:date].blank?	
-pub << 'Volume:&nbsp;'+cite[:volume] unless cite[:volume].blank?
-pub << 'Issue:&nbsp;'+cite[:issue] unless cite[:issue].blank?	
-pub << 'Page:&nbsp;'+cite[:page] unless cite[:page].blank?
+pub << '.' << date_format(cite[:date]) unless cite[:date].blank?	
+pub << '. Volume:&nbsp;'+cite[:volume] unless cite[:volume].blank?
+pub << '. Issue:&nbsp;'+cite[:issue] unless cite[:issue].blank?	
+pub << '. Page:&nbsp;'+cite[:page] unless cite[:page].blank?
 if pub.length > 0
 %>
 <%= pub.join(' ')%>.

@@ -4,27 +4,17 @@
 <%= 
 render :partial=>'resolve/citation' 
 %>      
-
+<ul>
 <%
+get_service_type('table_of_contents').each do |st| 
+   #view_data = st.view_data
 
-@dispatch_response.table_of_contents.each { |toc|
-
-  if toc.kind_of? OpenURL::ContextObject
-	  @current_context_object = OpenURL::ContextObject.new
-	  @current_context_object.import_context_object(toc)
-	  
-%>      
-<%= render :partial=>'resolve/citation' %>
-<%
-
-	else 
-	%>
-	<div><%= toc %></div>
-	<%
-	end
-
-}
 %>
-
+<%=   render :partial => "fulltext_element", :object=> st %>
+<%   
+end
+%>
+</ul>
 </div>
-  <%= render :partial=>"resolve/right_column" %>
+  <%= #render :partial=>"resolve/right_column"
+  %>
