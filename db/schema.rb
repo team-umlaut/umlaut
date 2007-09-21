@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 14) do
+ActiveRecord::Schema.define(:version => 15) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -202,6 +202,12 @@ ActiveRecord::Schema.define(:version => 14) do
   end
 
   add_index "sessions", ["sessid"], :name => "sess_sessid_idx"
+
+  create_table "sfx_urls", :force => true do |t|
+    t.column "url", :string
+  end
+
+  add_index "sfx_urls", ["url"], :name => "index_sfx_urls_on_url"
 
   create_table "title_sources", :force => true do |t|
     t.column "name",     :string, :limit => 50, :default => "", :null => false
