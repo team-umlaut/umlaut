@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<html lang="EN">
+<head>
+<title>Umlaut Find It | <%= @page_title %></title>
+ <%= stylesheet_link_tag 'basic' %> 
+
+
+<%= render(:partial => "layout_helpers/resolve_head_content" ) %>
+
+</head>
+
+<%= render(:partial => "layout_helpers/resolve_body_open" ) %>
+
+<style type="text/css">
+  #help {
+    width: 187px;
+    font-size: 10px;
+    float: right;
+    margin: 0;
+  }
+  .centered_block {
+    width: 768px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding:6px;
+    display: block; 
+    border: 1px solid #eeb211;
+    background-color: #FFFDEA;
+  }
+  #header {
+    margin-top: 10px;
+    font-size: 10px;
+    margin-bottom: -11px;
+  }
+  #footer {
+    margin-bottom: 10px;
+    font-size: 10px;
+    margin-top: -11px;
+  }
+</style>
+
+<div id="header" class="centered_block">
+  <%= image_tag('/local/header.gif', :style=>"float: left;") 
+  %>
+  <%= render :partial=>"help" %>
+  <div style="clear: both;"></div>
+</div>
+  
+  
+<div id="menuWrapper">
+
+   <div id="headerStatusBar">
+    <div align="right"  class="largeText">URL: 
+        <% url = permalink_url(request, @user_request) %>
+        <%= link_to url, url %>
+      </div>
+   </div>
+
+    <%= @content_for_layout %>
+    
+    <div id="footer" class="footer"></div>
+</div>
+
+<div class="centered_block" id="footer">
+  FindIt service provided by <%= link_to 'Johns Hopkins Libraries', 'http://webapps.jhu.edu/jhuniverse/libraries/' %> | Powered by Umlaut, using services from <%= link_to 'SFX', 'http://www.exlibrisgroup.com/sfx.htm' %>, <%= link_to 'CrossRef', 'http://www.crossref.org' %>, <%= link_to 'Amazon', 'http://www.amazon.com' %>, <%= link_to 'OCLC Worldcat', 'http://www.worldcat.org' %>, and others.  <%= link_to '[S]', 'http://sfx.library.jhu.edu:8000/jhu_sfx?' + (hash_to_querystring(@user_request.original_co_params) if @user_request) %>
+</div>
+
+</body>
+
+</html>
