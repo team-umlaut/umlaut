@@ -1,4 +1,4 @@
-# Services are defined from the config/Services.yml file.
+# Services are defined from the config/umlaut_config/services.yml file.
 # hey should have the following properties
 # id : unique internal string for the service, unique in yml file
 # display_name : user displayable string
@@ -63,7 +63,7 @@ class Service
           # handle both cases.
           raise NameError if value.nil?          
       rescue NameError
-      raise ArgumentError.new("Missing Service configuration parameter. Service type #{self.class} (id: #{self.id}) requires a config parameter named '#{param}'. Check your config/services.yml file.")
+      raise ArgumentError.new("Missing Service configuration parameter. Service type #{self.class} (id: #{self.id}) requires a config parameter named '#{param}'. Check your config/umlaut_config/services.yml file.")
       end      
     end    
   end

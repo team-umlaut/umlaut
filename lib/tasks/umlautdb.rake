@@ -56,10 +56,10 @@ namespace :umlaut do
     desc "Loads in all initial fixed data for an umlaut installation."
     task :load_initial_data => [:load_sites, :load_service_type_values] 
   
-    desc "Syncs db to match config/institutions.yml. Will create institutions as neccesary, but will never delete any institutions from db. "
+    desc "Syncs db to match config/umlaut_config/institutions.yml. Will create institutions as neccesary, but will never delete any institutions from db. "
     
     task :sync_institutions => :environment do
-        institutions = YAML.load_file(RAILS_ROOT+"/config/institutions.yml")
+        institutions = YAML.load_file(RAILS_ROOT+"/config/umlaut_config/institutions.yml")
   
         institutions.each_pair do |name, yaml_record|
           inst = Institution.find(:first, :conditions => "name = '#{name}'")

@@ -5,13 +5,13 @@ class ServiceList
   # Creates a new copy of a Service object, intialized with values
   # from services.yaml, matching definition given by input param 'name'
   def self.get(name)
-    @@services = YAML.load_file(RAILS_ROOT+"/config/services.yml") unless @@services
+    @@services = YAML.load_file(RAILS_ROOT+"/config/umlaut_config/services.yml") unless @@services
 
     if (@@services[name].nil?)
-      raise NameError.new("No such service named #{name} has been loaded. Check config/services.yml", name)
+      raise NameError.new("No such service named #{name} has been loaded. Check config/umlaut_config/services.yml", name)
     end
     if (@@services[name]["type"].nil?)
-      raise "Service #{name} does not a type defined, and needs one. Check the config/services.yml file."
+      raise "Service #{name} does not a type defined, and needs one. Check the config/umlaut_config/services.yml file."
     end
     
     require_dependency 'service_adaptors/'+@@services[name]["type"].underscore
