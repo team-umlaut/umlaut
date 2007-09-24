@@ -1,0 +1,148 @@
+         
+<%= render :partial=>'background_updater' %>
+         
+<div id="bothColumns"> <!-- actual wrapper for both columns -->
+  <div id="twoColumns"> <!-- called twoColumns, but it's really just the left column -->
+
+  <% 
+  if genre = @user_request.referent.metadata['genre']
+    type = genre.capitalize+'s'
+  else
+    type = 'Resources'
+  end
+  %>
+  <h1>Finding <%=type%></h1>
+  <div class="resourceInfo">
+    <%= render :partial=>'citation' %>
+  </div>  
+  
+  <div class="availability">
+  
+    <div id="fulltext_wrapper">
+      <%= render(:partial => "fulltext") %>
+    </div>
+
+    <% docdels = get_service_type('document_delivery')
+       if (display_ill?) && (! docdels.empty?)  %>
+          <div class="main_column_section">
+          <h3>Request a copy from Inter-Library Loan</h3>
+          <ul>
+          <% docdels.each do | doc_del_type |
+  
+                valueHash = doc_del_type.view_data_from_service_type%>
+              <li><%= link_to 'for ' + valueHash[:display_text], {:controller=>'link_router', :id=>doc_del_type.id}, 'target'=>'_blank'%>
+              </li>
+        <% end %>
+        </ul>
+        </div>
+    <% end %>
+  
+  
+    <div id="holding" class="main_column_section">
+      <%= render(:partial => ResolveController.partial_for_block[:holding] ) %>
+    </div>
+
+    <% # abstract/toc is admittedly a little bit cheesy right now, it shouldn't
+       # neccesary be in this part of the page, and should maybe use
+       # fancier ajaxy tab stuff, but we had to get it done. Doesn't deal
+       # with background services quite yet. 
+    %>
+
+      <% toc_list = get_service_type('table_of_contents')
+         ab_list = get_service_type('abstract')
+      %>
+      <% if toc_list.length + ab_list.length > 0 %>
+      <div id="abstract_and_toc" class="main_column_section">
+      <h3> Abstract and Table of Contents </h3>
+
+      <% unless toc_list.empty? 
+      %>
+      <div id="tables_of_contents" style="margin-bottom: 8px;">
+        <%= render(:partial=>'tables_of_contents') %>
+      </div>
+      <% end 
+      %>
+      <% unless ab_list.empty? %>
+      <div id="abstracts">
+          <%= render(:partial=>'abstracts') %>
+      </div>
+      <% end %>
+    </div>
+    <% end %>    
+  <!--close availability-->
+  </div>
+
+<%
+relevant_links = get_service_type('relevant_link')
+unless relevant_links.empty? %>
+  <div class="line"></div>
+  <div class="closestResults">
+  <div id="show_closest_web_results">
+  <p><strong>Closest Web Results:</strong>  [<%= link_to_function "hide", "activelyHideWebResults()"%>]</p>
+  <ul>
+  <% relevant_link.each do |web|
+     target = web.service.to_web_link
+  %>
+    <li><%= link_to target[:title], {:controller=>'link_router', :id=>web.id}, 'target'=>"_blank"%>
+    <br />
+    <%= target[:description] %>
+  <% end %>
+  </ul>
+  
+</li>
+</div><!-- close show_closest_web_results -->
+  <div id="hidden_closest_web_results">
+  <p>[<%= link_to_function "Show closest web results", "activelyShowWebResults()"%>]</p>
+  </div>
+  
+</div> 
+<% end %>
+
+
+
+
+<!--close twoColumns--></div>
+  
+<div id="rightColumn">
+
+<div class="sidebar_section"
+  
+  
+<%
+#{:action=>'web_search', :service_type=>'web_link', :label=>'Web Search Results'}
+[{:action=>'toc', :service_type=>'table_of_contents', :label=>'Table of Contents'},
+{:action=>'abstract', :service_type=>'abstract', :label=>'Abstract or Description'}].each do | menu |
+    unless controller.action_name == menu[:action]
+        if get_service_type(menu[:service_type]).length > 0
+            li_display= 'block'
+        else
+            li_display = 'none'
+        end %>
+  <!-- <p class="tightbullets" id='umlaut-<%=  menu[:service_type].gsub(/\s/,'_')-%>' style="display:<%=li_display%>"> -->
+  <% link_to menu[:label], :action=>menu[:action], :'umlaut.request_id'=>@user_request.id %></p>
+  <% end 
+  end
+  %>
+</div>
+
+
+
+
+  
+  <div id="highlighted_links">
+  <%= render :partial=>"highlighted_links_start" %>
+  </div>
+  
+  <!-- service errors -->
+  <div id="service_errors">
+       <%= render :partial => 'service_errors' %>          
+   </div>
+       
+  
+</div>
+  
+
+<!-- close bothColumns --> </div> 
+
+
+<!-- END SERVICE IN PROGRESS: -->
