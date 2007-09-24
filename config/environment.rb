@@ -10,7 +10,14 @@ RAILS_GEM_VERSION = '1.2.1' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+require 'plugins/app_config/lib/configuration'
+
+ActiveRecord::Base.allow_concurrency = true
+
 Rails::Initializer.run do |config|
+
+  $KCODE = 'UTF8'
+
   # Settings in config/environments/* take precedence over those specified here
   
   # Skip frameworks you're not going to use (only works if using vendor/rails)
@@ -42,6 +49,43 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
   
   # See Rails::Configuration for more options
+
+  
+  # For ruby-debug
+  SCRIPT_LINES__ = {} if ENV['RAILS_ENV'] == 'development'
+  
+  # Umlaut Configuration below. 
+  
+  # Multi-thread action of foreground services.
+  # Reccommend you leave set to true, unless debugging. 
+  config.app_config.threaded_services = true
+
+
+  config.app_config.app_name = 'Find It'
+    config.app_config.link_img_url = 'http://sfx.library.jhu.edu:8000/sfxmenu/sfxit/jhu_sfx.gif'
+    config.app_config.main_sfx_base_url = 'http://sfx.library.jhu.edu:8000/jhu_sfx?'
+  
+    config.app_config.use_umlaut_journal_index = false
+  
+    config.app_config.resolve_layout = "local/jhu_resolve"
+    config.app_config.search_layout = 'local/jhu_search'
+  
+    config.app_config.partial_for_holding = 'holding_alternate'
+  
+    config.app_config.skip_resolve_menu = {:service_types => ['fulltext']}
+    config.app_config.link_with_frameset = :standard
+    
+    config.app_config.minimum_window_width = 820
+    config.app_config.minimum_window_height = 350
+
+    config.app_config.resolve_display_ill = lambda {|uml_request| return true}
+
+    config.app_config.resolve_view = "alternate/resolve_alternate"
+
+  
+  # Load local config file
+  local_env_path = "#{RAILS_ROOT}/local/config/environment.rb"
+  load local_env_path if File.exists?( local_env_path )
 end
 
 # Add new inflection rules using the following format 
@@ -57,4 +101,4 @@ end
 # Mime::Type.register "text/richtext", :rtf
 # Mime::Type.register "application/x-mobile", :mobile
 
-# Include your application configuration below
+

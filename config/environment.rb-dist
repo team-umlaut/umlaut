@@ -83,6 +83,12 @@ config.app_config.threaded_services = true
 # Partial view to use for displaying holdings in default resolve view
 #   config.app_config.partial_for_holding = 'holding_alternate'
 
+# Use a whole new view for resolve view
+#   config.app_config.resolve_view = "alternate/alt_holdings"
+#   config.app_config.resolve_view = "local/my_custom_holdings"
+
+
+
 # link_with_frameset can be used to control whether (and when)
 # umlaut links to resources in a frameset page with an umlaut banner.
 # See also skip_resolve_menu below 
@@ -108,8 +114,13 @@ config.app_config.threaded_services = true
 # Possible values:
 # false  : [default] Never skip menu
 #   A hash with one or more keys....
-# {services => ['fulltext']} : list of service type values, if they're present
-#          skip the menu with the first response available.
+# {:service_types => ['fulltext']} : list of service type values, if 
+#          they're present skip the menu with the first response available.
+# {:excluded_services => ['JH_HIP'] : list of service IDs, exclude responses
+#          from these services for direct linking. (Not yet implemented)
+# {:excluded_urls => [/regexp/, 'string'] : list of regexps or strings,
+#          exclude URLs that match this string from being skipped to. (Not yet implemented)
+# {:lambda => lambda {|p, l| return something}} : Not yet implemented. 
 
 # lambda expression: A lambda expression can be provided that
 #          should expect one argument, a hash with key :request
@@ -133,4 +144,16 @@ config.app_config.threaded_services = true
 # Or, sometimes it's convenient to synchronize this with some other
 # process that runs on crontab. Say, expire at midnight every night:
 # config.app_config.response_expire_crontab_format = "00 00 * * *"
+
+
+# Custom logic as to whether the ILL (doc_del) section of the resolve
+# menu should be shown. This sample logic is, I think, copied from rsinger's
+# original, not sure what motivates it. 
+# config.app_config.resolve_display_ill = lambda do |umlaut_request|
+#     return true if (umlaut_request.get_service_type('fulltext').empty? &&
+#                     umlaut_request.get_service_type('holding').empty?) ||
+#                     ( @umlaut_request.referent.format != 'journal' ) ||
+#                     ( ! @umlaut.request.referent.metadata['atitle'].empty? )
+#     return false
+#  end                      
 
