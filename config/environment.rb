@@ -67,10 +67,10 @@ Rails::Initializer.run do |config|
   
     config.app_config.use_umlaut_journal_index = false
   
-    config.app_config.resolve_layout = "local/jhu_resolve"
-    config.app_config.search_layout = 'local/jhu_search'
+    config.app_config.resolve_layout = "distribution/jhu_resolve"
+    config.app_config.search_layout = 'distribution/jhu_search'
   
-    config.app_config.partial_for_holding = 'holding_alternate'
+    config.app_config.partial_for_holding = 'alternate/holding_alternate'
   
     config.app_config.skip_resolve_menu = {:service_types => ['fulltext']}
     config.app_config.link_with_frameset = :standard
@@ -84,8 +84,8 @@ Rails::Initializer.run do |config|
 
   
   # Load local config file
-  local_env_path = "#{RAILS_ROOT}/local/config/environment.rb"
-  load local_env_path if File.exists?( local_env_path )
+  #local_env_path = "#{RAILS_ROOT}/local/config/environment.rb"
+  #load local_env_path if File.exists?( local_env_path )
 end
 
 # Add new inflection rules using the following format 
