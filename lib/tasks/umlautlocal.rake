@@ -6,14 +6,12 @@ namespace :umlaut_lcl do
                 'app/views/local' =>  'views_local',
                 'config/umlaut_config' => 'umlaut_config'}
   # Key is path to find template, value is path to copy to. 
-  Local_files = { 'config/umlaut_distribution/services.yml-dist' =>
+  Local_Files = { 'config/umlaut_distribution/services.yml-dist' =>
                   'config/umlaut_config/services.yml',       
                   'config/umlaut_distribution/institutions.yml-dist' =>
                   'config/umlaut_config/institutions.yml',
                   'config/umlaut_distribution/database.yml-dist' =>
-                  'config/umlaut_distribution/database.yml'}
-
-  UMLAUT_SVN_LOCAL ='https://svn.mse.jhu.edu/repos/public/trunk/scratch/rochkind/umlaut_local3'
+                  'config/umlaut_config/database.yml'}
 
   desc "Create directories for local umlaut config files"
   task :create_local_files => :environment do
@@ -37,14 +35,16 @@ namespace :umlaut_lcl do
 
   desc "Add local config to local SVN for the first time."
   task :import_to_svn => :environment do
-     unless ( system("svn list #{UMLAUT_SVN_LOCAL} 1>/dev/null 2>/dev/null"))
-       puts "Creating svn dir #{UMLAUT_SVN_LOCAL}"
-       system("svn mkdir #{UMLAUT_SVN_LOCAL} -m 'added by umlaut rake task for local umlaut config.'")
+     svn_root = local_svn_root()
+  
+     unless ( system("svn list #{svn_root} 1>/dev/null 2>/dev/null"))
+       puts "Creating svn dir #{svn_root}"
+       system("svn mkdir #{svn_root} -m 'added by umlaut rake task for local umlaut config.'")
      end     
      
      Local_Dirs.each do |local_path, svn_path|
         full_local_path = RAILS_ROOT + '/' + local_path
-        full_svn_path = UMLAUT_SVN_LOCAL + '/' + svn_path
+        full_svn_path = svn_root + '/' + svn_path
 
         unless ( system("svn list #{full_svn_path} 1>/dev/null 2>/dev/null"))
           puts "Adding #{full_local_path} to local svn."          
@@ -60,14 +60,14 @@ namespace :umlaut_lcl do
         end
         
      end
-     puts "Local files added to your local svn. We leave the committing to you."
   end
 
   desc "Check out local config from your local svn to umlaut installation."
   task :checkout => :environment do
+    svn_root = local_svn_root()
     Local_Dirs.each do |local_path, svn_path|
         full_local_path = RAILS_ROOT + '/' + local_path
-        full_svn_path = UMLAUT_SVN_LOCAL + '/' + svn_path
+        full_svn_path = svn_root + '/' + svn_path
 
         puts "svn checkout #{full_svn_path} #{full_local_path}"
         system("svn checkout #{full_svn_path} #{full_local_path}")
@@ -90,9 +90,17 @@ namespace :umlaut_lcl do
         full_local_path = RAILS_ROOT + '/' + local_path
 
         puts "svn commit #{full_local_path}"
-        system("svn commit #{full_local_path}")
+        system("svn commit #{full_local_path} -m 'committed by umlaut rake task' ")
     end
   end
 
-  
+  def local_svn_root
+    local_svn_root = UMLAUT_SVN_LOCAL if defined?(UMLAUT_SVN_LOCAL)
+    local_svn_root = ENV['UMLAUT_SVN_LOCAL'] unless local_svn_root
+    unless local_svn_root
+      puts "Enter local svn root path: "
+      local_svn_root = $stdin.gets.chomp
+    end
+    
+  end
 end
