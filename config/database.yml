@@ -8,8 +8,8 @@
 
   
 <%= 
-    # Load database config from the umlaut_config/database.yml local 
-    # database config file, so it doesn't need to be in umlaut svn
+  # Load database config from the umlaut_config/database.yml local 
+  # database config file, so it doesn't need to be in umlaut svn
   local_file_path = RAILS_ROOT + "/config/umlaut_config/database.yml"
   lines = []    
   if ( File.exist?( local_file_path ))  
