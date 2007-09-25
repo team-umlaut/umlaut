@@ -5,19 +5,34 @@ namespace :umlaut_lcl do
                 'app/views/layouts/local' => 'layouts_local',
                 'app/views/local' =>  'views_local',
                 'config/umlaut_config' => 'umlaut_config'}
+  # Key is path to find template, value is path to copy to. 
+  Local_files = { 'config/umlaut_distribution/services.yml-dist' =>
+                  'config/umlaut_config/services.yml',       
+                  'config/umlaut_distribution/institutions.yml-dist' =>
+                  'config/umlaut_config/institutions.yml',
+                  'config/umlaut_distribution/database.yml-dist' =>
+                  'config/umlaut_distribution/database.yml'}
 
   UMLAUT_SVN_LOCAL ='https://svn.mse.jhu.edu/repos/public/trunk/scratch/rochkind/umlaut_local3'
 
   desc "Create directories for local umlaut config files"
   task :create_local_files => :environment do
-    Local_Dirs.each do |local_path, svn_path|
-      
+    Local_Dirs.each do |local_path, svn_path|      
       full_path = RAILS_ROOT + '/' + local_path
       unless File.exist?(full_path)
         puts "Creating local config directory at #{full_path}"
         FileUtils.mkdir( full_path )
       end    
-    end      
+    end
+
+    Local_Files.each do |source, dest|
+      source_path = RAILS_ROOT + '/' + source
+      dest_path = RAILS_ROOT + '/' + dest
+
+      unless File.exist?(dest_path)
+        File.copy( source_path, dest_path)
+      end
+    end
   end
 
   desc "Add local config to local SVN for the first time."
