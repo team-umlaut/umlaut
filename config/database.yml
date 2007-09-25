@@ -1,52 +1,16 @@
-# MySQL (default setup).  Versions 4.1 and 5.0 are recommended.
+# Do not put local implementation configuration here. Instead, put it in
+# config/umlaut_config/database.yml
 #
-# Install the MySQL driver:
-#   gem install mysql
-# On MacOS X:
-#   gem install mysql -- --include=/usr/local/lib
-# On Windows:
-#   gem install mysql
-#       Choose the win32 build.
-#       Install MySQL and put its /bin directory on your path.
+# Consult sample file in config/umlaut_distribution/database.yml-dist
 #
-# And be sure to use new-style password hashing:
-#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
-development:
-  adapter: mysql 
-  database: umlaut_dev 
-  username: umlaut_app
-  password: uu21
-  socket: /var/lib/mysql/mysql.sock
+# Try to remember to pay attention to char encoding, set encoding: utf8
+# for mysql. 
 
-#development:
-#  adapter: sqlite3 
-#  database: db/resolver-dev.db3 
-#  username: 
-#  password:
-#  socket: 
-
-# Warning: The database defined as 'test' will be erased and
-# re-generated from your development database when you run 'rake'.
-# Do not set this db to the same as development or production.
-test:
-  adapter: mysql
-  database: umlaut_test
-  username: umlaut_app
-  password: uu21
-  socket: /var/lib/mysql/mysql.sock
-
-production:
-  adapter: mysql 
-  database: umlaut_dev 
-  username: umlaut_app
-  password: uu21
-  socket: /var/lib/mysql/mysql.sock
   
-sfx_db:
-  adapter: mysql
-  host: izar.mse.jhu.edu
-  port: 3309
-  database: sfxlcl3
-  username: externalapp
-  password: e19j
-  encoding: utf8
+<%= 
+    # Load database config from the umlaut_config/database.yml local 
+    # database config file, so it doesn't need to be in umlaut svn     
+  lines = []  
+  IO.foreach(RAILS_ROOT + "/config/umlaut_config/database.yml") {|l| lines << l}
+  lines.join
+%>
