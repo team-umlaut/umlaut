@@ -59,5 +59,27 @@ namespace :umlaut_lcl do
     end
   end
 
+  desc "Update all local config stuff"
+  task :update => :environment do
+     Local_Dirs.each do |local_path, svn_path|
+        full_local_path = RAILS_ROOT + '/' + local_path
+        full_svn_path = UMLAUT_SVN_LOCAL + '/' + svn_path
+
+        puts "svn update #{full_svn_path} #{full_local_path}"
+        system("svn upate #{full_svn_path} #{full_local_path}")
+    end
+  end
+
+  desc "Commit all local config stuff"
+  task :commit => :environment do
+     Local_Dirs.each do |local_path, svn_path|
+        full_local_path = RAILS_ROOT + '/' + local_path
+        full_svn_path = UMLAUT_SVN_LOCAL + '/' + svn_path
+
+        puts "svn update #{full_svn_path} #{full_local_path}"
+        system("svn upate #{full_svn_path} #{full_local_path}")
+    end
+  end
+
   
 end
