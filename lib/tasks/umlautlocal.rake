@@ -66,7 +66,7 @@ namespace :umlaut_lcl do
         full_svn_path = UMLAUT_SVN_LOCAL + '/' + svn_path
 
         puts "svn update #{full_svn_path} #{full_local_path}"
-        system("svn upate #{full_svn_path} #{full_local_path}")
+        system("svn update #{full_svn_path} #{full_local_path}")
     end
   end
 
@@ -76,8 +76,8 @@ namespace :umlaut_lcl do
         full_local_path = RAILS_ROOT + '/' + local_path
         full_svn_path = UMLAUT_SVN_LOCAL + '/' + svn_path
 
-        puts "svn update #{full_svn_path} #{full_local_path}"
-        system("svn upate #{full_svn_path} #{full_local_path}")
+        puts "svn commit #{full_svn_path} #{full_local_path}"
+        system("svn commit #{full_svn_path} #{full_local_path}")
     end
   end
 
