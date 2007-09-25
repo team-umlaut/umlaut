@@ -6,6 +6,29 @@
 # Try to remember to pay attention to char encoding, set encoding: utf8
 # for mysql. 
 
+# Have to have these dummy ones here to avoid confusing rails. 
+
+development:
+  adapter: mysql 
+  database:  
+  username: 
+  password: 
+  
+test:
+  adapter: mysql
+  database: 
+  username: 
+  password: 
+
+production:
+  adapter: mysql 
+  database:  
+  username: 
+  password: 
+  
+
+
+
   
 <%= 
   # Load database config from the umlaut_config/database.yml local 
