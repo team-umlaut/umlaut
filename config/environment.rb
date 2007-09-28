@@ -88,7 +88,7 @@ Rails::Initializer.run do |config|
   local_env_path = "#{RAILS_ROOT}/config/umlaut_config/environment.rb"
   if File.exists?( local_env_path )
     load local_env_path 
-    umlaut_config( config )
+    umlaut_configuration( config )
   end
 end
 

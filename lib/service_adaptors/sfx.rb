@@ -429,10 +429,13 @@ class Sfx < Service
       request.referent.enhance_referent('issn', sfx_metadata['issn'])
     end
 
+
     # The rest,  we write only if blank, we don't over-write
     sfx_metadata.each do |key, value|
       if (metadata[key].blank?)
-        request.referent.enhance_referent(key, value)
+        
+        # watch out for SFX's weird array values. 
+          request.referent.enhance_referent(key, value)
       end
     end
                         
