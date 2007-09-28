@@ -12,6 +12,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 require 'plugins/app_config/lib/configuration'
 
+# Neccesary because we use threading for Umlaut
 ActiveRecord::Base.allow_concurrency = true
 
 Rails::Initializer.run do |config|
@@ -62,31 +63,35 @@ Rails::Initializer.run do |config|
 
 
   config.app_config.app_name = 'Find It'
-    config.app_config.link_img_url = 'http://sfx.library.jhu.edu:8000/sfxmenu/sfxit/jhu_sfx.gif'
-    config.app_config.main_sfx_base_url = 'http://sfx.library.jhu.edu:8000/jhu_sfx?'
+  #config.app_config.link_img_url = 'http://sfx.library.jhu.edu:8000/sfxmenu/sfxit/jhu_sfx.gif'
+  #config.app_config.main_sfx_base_url = 'http://sfx.library.jhu.edu:8000/jhu_sfx?'
   
-    config.app_config.use_umlaut_journal_index = false
+  #config.app_config.use_umlaut_journal_index = false
   
-    config.app_config.resolve_layout = "distribution/jhu_resolve"
-    config.app_config.search_layout = 'distribution/jhu_search'
+  #config.app_config.resolve_layout = "distribution/jhu_resolve"
+  #config.app_config.search_layout = 'distribution/jhu_search'
   
-    config.app_config.partial_for_holding = 'alternate/holding_alternate'
+  #config.app_config.partial_for_holding = 'alternate/holding_alternate'
   
-    config.app_config.skip_resolve_menu = {:service_types => ['fulltext']}
-    config.app_config.link_with_frameset = :standard
+  #config.app_config.skip_resolve_menu = {:service_types => ['fulltext']}
+  config.app_config.link_with_frameset = :standard
     
-    config.app_config.minimum_window_width = 820
-    config.app_config.minimum_window_height = 350
+  #config.app_config.minimum_window_width = 820
+  #config.app_config.minimum_window_height = 350
 
-    config.app_config.resolve_display_ill = lambda {|uml_request| return true}
+  #config.app_config.resolve_display_ill = lambda {|uml_request| return true}
 
-    config.app_config.resolve_view = "alternate/resolve_alternate"
+  #config.app_config.resolve_view = "alternate/resolve_alternate"
 
   
-  # Load local config file
-  #local_env_path = "#{RAILS_ROOT}/local/config/environment.rb"
-  #load local_env_path if File.exists?( local_env_path )
+  # Call local config file
+  local_env_path = "#{RAILS_ROOT}/config/umlaut_config/environment.rb"
+  if File.exists?( local_env_path )
+    load local_env_path 
+    umlaut_config( config )
+  end
 end
+
 
 # Add new inflection rules using the following format 
 # (all these examples are active by default):

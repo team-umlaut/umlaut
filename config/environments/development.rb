@@ -4,7 +4,9 @@
 # every request.  This slows down response time but is perfect for development
 # since you don't have to restart the webserver when you make code changes.
 #config.cache_classes = false
-# Messed up our threaded code, I'm afraid. 
+
+# For umlaut, this messed up our threaded code, I'm afraid, so we have to turn
+# off. 
 config.cache_classes = true
 
 
