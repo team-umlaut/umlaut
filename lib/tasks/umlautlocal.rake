@@ -17,7 +17,7 @@ namespace :umlaut_lcl do
 
 
   desc "Create directories for local umlaut config files"
-  task :create_local_files => :environment do
+  task :generate => :environment do
     Local_Dirs.each do |local_path, svn_path|      
       full_path = RAILS_ROOT + '/' + local_path
       unless File.exist?(full_path)
@@ -77,7 +77,7 @@ namespace :umlaut_lcl do
     end
   end
 
-  desc "Update all local config stuff"
+  desc "Svn update all local config"
   task :update => :environment do
      Local_Dirs.each do |local_path, svn_path|
         full_local_path = RAILS_ROOT + '/' + local_path
@@ -87,13 +87,23 @@ namespace :umlaut_lcl do
     end
   end
 
-  desc "Commit all local config stuff"
+  desc "Svn commit all local config"
   task :commit => :environment do
      Local_Dirs.each do |local_path, svn_path|
         full_local_path = RAILS_ROOT + '/' + local_path
 
         puts "svn commit #{full_local_path}"
         system("svn commit #{full_local_path} -m 'committed by umlaut rake task' ")
+    end
+  end
+  
+  desc "Svn status on all local config"
+  task :status => :environment do
+       Local_Dirs.each do |local_path, svn_path|
+        full_local_path = RAILS_ROOT + '/' + local_path
+
+        puts "svn status #{full_local_path}"
+        system("svn status #{full_local_path}")
     end
   end
 
