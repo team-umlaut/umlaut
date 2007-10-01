@@ -11,7 +11,12 @@ class SfxUrl < ActiveRecord::Base
   # Checking entire URL won't work. 
   # Lots of things in SFX could create false negatives. 
   def self.sfx_controls_url?(url)
-    uri = URI.parse(url)
+    begin
+      uri = URI.parse(url)
+    rescue
+      # Bad uri in catalog? Fine, we don't know SFX controls it. 
+      return false;
+    end
     host = uri.host
 
     # If URI was malformed, just punt and say no.
