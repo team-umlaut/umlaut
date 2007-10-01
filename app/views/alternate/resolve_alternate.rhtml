@@ -53,20 +53,21 @@
       %>
       <% if toc_list.length + ab_list.length > 0 %>
       <div id="abstract_and_toc" class="main_column_section">
-      <h3> Abstract and Table of Contents </h3>
-
+      <h3>Abstract and Table of Contents </h3>
+      <ul>
       <% unless toc_list.empty? 
       %>
-      <div id="tables_of_contents" style="margin-bottom: 8px;">
+      <li><div id="tables_of_contents" style="margin-bottom: 8px;">
         <%= render(:partial=>'tables_of_contents') %>
-      </div>
+      </div></li>
       <% end 
       %>
       <% unless ab_list.empty? %>
-      <div id="abstracts">
+      <li><div id="abstracts">
           <%= render(:partial=>'abstracts') %>
-      </div>
+      </div></li>
       <% end %>
+      </ul>
     </div>
     <% end %>    
   <!--close availability-->

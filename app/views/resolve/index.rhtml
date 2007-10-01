@@ -24,26 +24,27 @@ end
   </div>
   <p>&nbsp;</p>
 
-<div id="holding">
-  <%= render(:partial => ResolveController.partial_for_block[:holding] ) %>
-</div>
+  <div id="holding">
+    <%= render(:partial => ResolveController.partial_for_block[:holding] ) %>
+  </div>
 
-<% docdels = get_service_type('document_delivery')
-   if (display_ill?) && (! docdels.empty?)
-%>
-  <p>&nbsp;</p>
-  <h3>Request a copy via:</h3>
-  <ul>
-<% docdels.each do | doc_del_type |
-  
-    valueHash = doc_del_type.view_data_from_service_type
-%>
-	<li><%= link_to valueHash[:display_text], {:controller=>'link_router', :id=>doc_del_type.id}, 'target'=>'_blank'%>
-	</li>
-<% end %>
-  </ul>
-<% end %>
-  <!--close availability--></div>
+  <% docdels = get_service_type('document_delivery')
+     if (display_ill?) && (! docdels.empty?)
+  %>
+    <p>&nbsp;</p>
+    <h3>Request a copy via:</h3>
+    <ul>
+  <% docdels.each do | doc_del_type |
+    
+      valueHash = doc_del_type.view_data_from_service_type
+  %>
+    <li><%= link_to valueHash[:display_text], {:controller=>'link_router', :id=>doc_del_type.id}, 'target'=>'_blank'%>
+    </li>
+  <% end %>
+    </ul>
+  <% end %>
+  <!--close availability-->
+</div>
 
 <%
 relevant_links = get_service_type('relevant_link')

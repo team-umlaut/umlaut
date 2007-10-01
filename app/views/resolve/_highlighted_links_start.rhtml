@@ -1,7 +1,7 @@
 <% highlighted_links = get_service_type('highlighted_link')
    if (! highlighted_links.blank? || service_type_in_progress?('highlighted_link')) %>
 <div class="smGrayBox">
-<h4>See also:</h4>
+<h3>See also:</h3>
 <% highlighted_links.each do |hl_st| 
     target = hl_st.view_data
 %>

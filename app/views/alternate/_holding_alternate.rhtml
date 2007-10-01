@@ -6,6 +6,15 @@
   be usable by anyone. 
 =end
 %>
+<style type="text/css">
+.holding_heading_row {
+  border-top: 1px solid #E9E9E9; 
+  padding-right: 18px;
+}
+tr:first-child > td.holding_heading_row {
+  border-top: none;
+}
+</style>
 
 <h3><%= ServiceTypeValue[:holding].display_name_pluralize.titleize %> </h3>
 
@@ -17,13 +26,13 @@
 holdings.each do |p|
   target = p.view_data
 %>
-  <tr><td style="border-top: 1px solid #E9E9E9; padding-right: 18px;"><h4><%= target[:collection_str] %></h4></td>
-      <td style="border-top: 1px solid #E9E9E9; padding-right: 18px;"><span style="white-space: nowrap;"><%= link_to (target[:call_number] || 'catalog'), {:controller=>"link_router", :id=>p.id}, "target"=>"_blank" %> </span></td>
+  <tr><td class="holding_heading_row"><h4><%= target[:collection_str] %></h4></td>
+      <td class="holding_heading_row"><span style="white-space: nowrap;"><%= link_to (target[:call_number] || 'catalog'), {:controller=>"link_router", :id=>p.id}, "target"=>"_blank" %> </span></td>
       
       <% status_class = (target[:status] == "Not Charged" or target[:status] == "Available") ? 'available' : '' %> 
       
-      <td style="border-top: 1px solid #E9E9E9; padding-right: 18px;"><span style="white-space: nowrap;"><%= target[:copy_str] %></span></td>
-      <td style="border-top: 1px solid #E9E9E9; padding-right: 18px;"><span class="<%= status_class %>"><%= target[:status]   %></span></td>
+      <td class="holding_heading_row"><span style="white-space: nowrap;"><%= target[:copy_str] %></span></td>
+      <td class="holding_heading_row"><span class="<%= status_class %>"><%= target[:status]   %></span></td>
   </tr>    
 
   <% unless target[:notes].blank? %>
