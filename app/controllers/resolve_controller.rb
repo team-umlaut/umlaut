@@ -407,7 +407,7 @@ class ResolveController < ApplicationController
 
     sfx_target_name = response.service_data[:sfx_target_name]
     
-    bad_target_regexps = [/^WILSON\_/]
+    bad_target_regexps = [/^WILSON\_/, 'SAGE_COMPLETE']
 
     # Does our target name match any of our regexps?
     return bad_target_regexps.find_all {|re| re === sfx_target_name  }.length > 0    
