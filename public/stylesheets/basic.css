@@ -341,6 +341,11 @@ ul.fulltextlink li.fulltextlink {
   background: url(../images/famfamfam/page_text.gif) no-repeat 0px 0px;
   padding: 0px 18px 8px 22px;
 }
+
+#banner_fulltext li.fulltextlink {
+  padding-bottom: 4px;
+}
+
 #banner_fulltext li.frameescaping {
     background: url(../images/famfamfam/page_up.gif) no-repeat 0px 0px;
   /* Special icon override */
