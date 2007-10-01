@@ -355,20 +355,25 @@ class Sfx < Service
 
     co = OpenURL::ContextObject.new
     co.referent.set_format('journal') # default
-    
     doc.search('hash/item').each do |item|
       key = item['key']
       prefix, stripped = key.split('.')
       value = item.inner_html
+
+      # The auinit1 value is COMPLETELY messed up for reasons I do not know.
+      # Double encoded in bizarre ways.
+      next if key == '@rft.auinit1'
       
-      # Darn multi-value SFX hackery. Just take the first one,
-      # our context object can't store more than one. 
+      # Darn multi-value SFX hackery, indicated with keys beginning
+      # with '@'. Just take the first one,
+      # our context object can't store more than one. Then regularize the
+      # key name. 
       if (prefix == '@rft')
         array_items = item.search("array/item")
         array_i = array_items[0] unless array_items.blank?
         
-        prefix = 'rft' if array_i
-        value = array_i.inner_html if array_i  
+        prefix = prefix.slice(1, prefix.length)
+        value = array_i ? array_i.inner_html : nil   
       end
 
       # object_type? Fix that to be the right way.
@@ -378,7 +383,7 @@ class Sfx < Service
       end
       
       if (prefix == 'rft' && value)
-          co.referent.set_metadata(stripped, item.inner_html)
+          co.referent.set_metadata(stripped, value)
       end
 
       if (prefix=='@rft_id')
@@ -394,7 +399,6 @@ class Sfx < Service
           end
       end
     end
-
     return co
   end
 
