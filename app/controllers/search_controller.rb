@@ -27,8 +27,7 @@ class SearchController < ApplicationController
 
   before_filter :normalize_params
   
-  def index
-    self.journals
+  def index    
   	render :action=>'journals'    
   end  
   
@@ -151,7 +150,7 @@ class SearchController < ApplicationController
     
     # Use our ordinary search displayer to display
     # It'll notice the action and do just a bit of special stuff.
-    render (:template => "search/journal_search")
+    render(:template => "search/journal_search")
   end  
 
   
