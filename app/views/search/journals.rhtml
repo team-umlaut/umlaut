@@ -90,7 +90,7 @@ function setDate() {
                                             <td width="89%">Journal Title:
 
 
-<%= text_field_with_auto_complete :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off'}, {:after_update_element=>'updateObjectId', :min_chars => 4}
+<%= text_field_with_auto_complete :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off', :size=>'40'}, {:after_update_element=>'updateObjectId', :min_chars => 4}
 %>
                                                                                          
                                               <select name="umlaut.title_search_type" id="sfx_title_search">
