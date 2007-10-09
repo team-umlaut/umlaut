@@ -1,4 +1,8 @@
 # Global services
+
+# If you have your SFX set up to get Metadata from crossref with a DOI,
+# then the SFX service will do that. If that's all this service does,
+# this one is not neccesary. 
 Crossref:
   name: Crossref
   type: Crossref
@@ -7,7 +11,9 @@ Crossref:
   password: 
   priority: 1
   status: active
-  
+
+# The SFX service should always enhance with a pmid, the pubmed service
+# probably isn't neccesary. 
 Pubmed:
   name: Pubmed
   type: Pubmed

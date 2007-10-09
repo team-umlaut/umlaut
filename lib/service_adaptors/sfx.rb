@@ -83,9 +83,9 @@ class Sfx < Service
     #context_object.referrer.add_identifier(request.referrer.identifier) if request.referrer
 
     context_object = request.to_context_object
-    
     transport.add_context_object(context_object)
     transport.extra_args["sfx.response_type"]="multi_obj_xml"
+  
     
     @get_coverage = false
 
@@ -101,6 +101,7 @@ class Sfx < Service
     if (context_object.referent.identifiers.find {|i| i =~ /^info:doi\// })
       transport.extra_args['sfx.doi_url']='http://dx.doi.org'
     end
+    
     return transport
   end
   
@@ -119,161 +120,227 @@ class Sfx < Service
     journal_index_on = false if journal_index_on.nil?
     
     doc = Hpricot(resolver_response)     
-    # parse perl_data from response
-    related_items = []
-    # For god's sake, if there is more than one context object in our multi
-    # response, just take the perl data from the FIRST one. Otherwise we end up
-    # with a mess in enhanced metadata! 
-    attr_xml = CGI.unescapeHTML((doc/"/ctx_obj_set/ctx_obj/ctx_obj_attributes")[0].inner_html)
-    perl_data = Hpricot(attr_xml)
-    (perl_data/"//hash/item[@key='@sfx.related_object_ids']").each { | rel | 
-      (rel/'/array/item').each { | item | 
-        related_items << item.inner_html
-      } 
-    }
 
-    object_id_node = perl_data.at("//hash/item[@key='rft.object_id']")
-    object_id = nil
-    if object_id_node
-      object_id = object_id_node.inner_html
-    end
+
+    # There can be several context objects in the response.
+    # We need to keep track of which data comes from which, for
+    # SFX click-through generating et alia
+    sfx_objs = doc.search('/ctx_obj_set/ctx_obj')
+
+    # We need to keep track of which ones we find full text in,
+    # for metadata enhancing. We'll do that here:
+    fulltext_seen_in_index = {}
     
-    sfx_target_service_ids = doc.search('//target/target_service_id').collect {|e| e.inner_html}
     
-    enhance_referent(request, perl_data)
-    # generate new metadata object, since we have enhanced our metadata
-    metadata = request.referent.metadata
+    0.upto(sfx_objs.length - 1 ) do |sfx_obj_index|
+    
+      sfx_obj = sfx_objs[sfx_obj_index]
 
-    request_id = nil
-    request_id_node = (perl_data/"//hash/item[@key='sfx.request_id']") 
-    if request_id_node
-      request_id = request_id_node.inner_html
-    end    
+      # Get out the "perl_data" section, with our actual OpenURL style
+      # context object information. Weird double-escaping, sorry.
 
-    if ( journal_index_on )
-      if object_id
-        journal = Journal.find_by_object_id(object_id)
-      elsif metadata['issn']
-        journal = Journal.find_by_issn_or_eissn(metadata['issn'], metadata['eissn'])
-      end  
-      if journal
-        journal.categories.each do | category |
-          request.add_service_response({:service=>self,:key=>'SFX',:value_string=>category.category,:value_text=>category.subcategory},['subject'])
-        end
-      end
-    end
+      ctx_obj_atts = 
+         CGI.unescapeHTML( sfx_obj.at('/ctx_obj_attributes').inner_html)
+      perl_data = Hpricot( ctx_obj_atts )
 
-    # Load coverage/availability string from Rochkind's 'extra' SFX coverage
-    # API, if configured, and if we have the right data to do so. We load em
-    # all in bulk in one request, rather than a request per service. 
-    loaded_coverage_strings = nil
-    if ( @get_coverage && @coverage_api_url && object_id  && (sfx_target_service_ids.length > 0)  )
-      begin
-        require 'net/http'
-        require 'uri'
-        require 'hpricot'
-  
-        loaded_coverage_strings = {}
-  
-        coverage_url = URI.parse(@coverage_api_url)
-        coverage_url.query = "rft.object_id=#{object_id}&target_service_id=#{sfx_target_service_ids.join(',')}"
-        
-        response = Net::HTTP.get_response( coverage_url )
-        unless (response.kind_of? Net::HTTPSuccess)
-          response.error!
-        end
-        
-        cov_doc = Hpricot( response.body )
-  
-        error = cov_doc.at('/sfxcoverage/exception')
-        if ( error )
-          request.logger.error("Error in SFX coverage API result. #{coverage_url.to_s} ; #{error.to_s}")
-          raise "Error in coverage API fetch"
-        end
-  
-        cov_doc.search('/sfxcoverage/targets/target').each do |target|                        
-          next if target.empty? # it never should be, but sometimes is. 
-          service_id = target.at('target_service_id').inner_html
-          coverage_str = target.at('availability_string').inner_html
-          loaded_coverage_strings[service_id] = coverage_str
-        end                              
-      rescue Exception => e
-          sfx_target_service_ids.each { |id| loaded_coverage_strings[id] = "Error in fetching coverage information." }
-      end
-    end
+      # Pull out related items
+      # not currently used for anything. 
+      #related_items = []
+      #(perl_data/"//hash/item[@key='@sfx.related_object_ids']").each { | rel | 
+      #  (rel/'/array/item').each { | item | 
+      #    related_items << item.inner_html
+      #  } 
+      #}
 
-    # Each target delivered by SFX
-    (doc/"/ctx_obj_set/ctx_obj/ctx_obj_targets/target").each_with_index do|target, target_index|  
-      value_text = {}
-
-      # First check @extra_targets_of_interest
-      sfx_target_name = target.at('target_name').inner_html
-      umlaut_service = @extra_targets_of_interest[sfx_target_name]
-
-      # If not found, look for it in services_of_interest
-      unless ( umlaut_service )
-        sfx_service_type = target.at("/service_type").inner_html
-        umlaut_service = @services_of_interest[sfx_service_type]
-      end
       
-      if ( umlaut_service ) # Okay, it's in services or targets of interest
+      # get SFX objectID
+      object_id_node =
+        perl_data.at("/perldata/hash/item[@key='rft.object_id']")
+      object_id = object_id_node ? object_id_node.inner_html : nil
 
-        if (target/"/displayer")
-          source = "SFX/"+(target/"/displayer").inner_html
-        else
-          source = "SFX"+URI.parse(self.url).path
-        end
+      # Get SFX requestID
+       request_id_node = 
+         perl_data.at("/perldata/hash/item[@key='sfx.request_id']")
+       request_id = request_id_node ? request_id_node.inner_html : nil
+      
+      # Get targets service ids
+      sfx_target_service_ids =
+        sfx_obj.search('/ctx_obj_targets/target/target_service_id').collect {|e| e.inner_html}
 
-        target_service_id = (target/"target_service_id").inner_html
-        
-        coverage = nil
-        if ( @get_coverage )
-          if ( loaded_coverage_strings ) # used the external extra SFX api
-            coverage = loaded_coverage_strings[target_service_id]           
-          elsif (journal_index_on && journal)  # Umlaut journal index
-            cvg = journal.coverages.find(:first, :conditions=>['provider = ?', (target/"/target_public_name").inner_html])
-            coverage = cvg.coverage if cvg
+      # If journal index is on, load categories. Not sure this works or does
+      # anything at present.
+      metadata = request.referent.metadata
+      if ( journal_index_on )
+        if object_id
+          journal = Journal.find_by_object_id(object_id)
+        elsif metadata['issn']
+          journal = Journal.find_by_issn_or_eissn(metadata['issn'], metadata['eissn'])
+        end  
+        if journal
+          journal.categories.each do | category |
+            request.add_service_response({:service=>self,:key=>'SFX',:value_string=>category.category,:value_text=>category.subcategory},['subject'])
           end
         end
+      end
 
-        if ( sfx_service_type == 'getDocumentDelivery' )
-          value_string = request_id
-        else
-          value_string = (target/"/target_service_id").inner_html          
+
+      # Load coverage/availability string from Rochkind's 'extra' SFX coverage
+      # API, if configured, and if we have the right data to do so.
+      loaded_coverage_strings = nil
+      if ( @get_coverage && @coverage_api_url && object_id  && (sfx_target_service_ids.length > 0)  )
+          loaded_coverage_strings = load_coverage_strings(object_id, sfx_target_service_ids)
+      end
+
+      # For each target delivered by SFX
+      sfx_obj.search("/ctx_obj_targets/target").each_with_index do|target, target_index|  
+        value_text = {}
+  
+        # First check @extra_targets_of_interest
+        sfx_target_name = target.at('target_name').inner_html
+        umlaut_service = @extra_targets_of_interest[sfx_target_name]
+  
+        # If not found, look for it in services_of_interest
+        unless ( umlaut_service )
+          sfx_service_type = target.at("/service_type").inner_html
+          umlaut_service = @services_of_interest[sfx_service_type]
         end
 
-        value_text[:url] = CGI.unescapeHTML((target/"/target_url").inner_html)
-        value_text[:notes] = CGI.unescapeHTML((target/"/note").inner_html)
-        value_text[:authentication] = CGI.unescapeHTML((target/"/authentication").inner_html)
-        value_text[:source] = source
-        value_text[:coverage] = coverage if coverage
-
-        # Sfx metadata we want
-        value_text[:sfx_target_index] = target_index + 1 # sfx is 1 indexed
-        value_text[:sfx_request_id] = (perl_data/"//hash/item[@key='sfx.request_id']").first.inner_html
-        value_text[:sfx_target_service_id] = target_service_id
-        value_text[:sfx_target_name] = sfx_target_name
-        # At url-generation time, the request isn't available to us anymore,
-        # so we better store this citation info here now, since we need it
-        # for sfx click passthrough
-        value_text[:citation_year] = metadata['date'] 
-        value_text[:citation_volume] = metadata['volume'];
-        value_text[:citation_issue] = metadata['issue']
-        value_text[:citation_spage] = metadata['spage']
-
-        display_text = (target/"/target_public_name").inner_html
-
-        #        :value_text=>value_text.to_yaml,
-
-        initHash = {:service=>self,
-        #:value_text=>value_text.to_yaml,
-        :service_data=>value_text, :display_text=>display_text,
-        :notes=>value_text[:notes]}
-        request.add_service_response(initHash , [umlaut_service])
-      end
-    end   
-  end
+        # If we have multiple context objs, skip the ill and ask-a-librarian
+        # links for all but the first, to avoid dups. This is a bit messy,
+        # but this whole multiple hits thing is messy.
+        if ( sfx_obj_index > 0 &&
+             ( umlaut_service == 'document_delivery' || 
+               umlaut_service == 'help'))
+            next
+        end
+        if ( umlaut_service == 'fulltext')
+          fulltext_seen_in_index[sfx_obj_index] = true
+        end
+        
+        if ( umlaut_service ) # Okay, it's in services or targets of interest
   
+          if (target/"/displayer")
+            source = "SFX/"+(target/"/displayer").inner_html
+          else
+            source = "SFX"+URI.parse(self.url).path
+          end
+  
+          target_service_id = (target/"target_service_id").inner_html
+          
+          coverage = nil
+          if ( @get_coverage )
+            if ( loaded_coverage_strings ) # used the external extra SFX api
+              coverage = loaded_coverage_strings[target_service_id]           
+            elsif (journal_index_on && journal)  # Umlaut journal index
+              cvg = journal.coverages.find(:first, :conditions=>['provider = ?', (target/"/target_public_name").inner_html])
+              coverage = cvg.coverage if cvg
+            end
+          end
+  
+          if ( sfx_service_type == 'getDocumentDelivery' )
+            value_string = request_id
+          else
+            value_string = (target/"/target_service_id").inner_html          
+          end
+  
+          value_text[:url] = CGI.unescapeHTML((target/"/target_url").inner_html)
+          value_text[:notes] = CGI.unescapeHTML((target/"/note").inner_html)
+          value_text[:authentication] = CGI.unescapeHTML((target/"/authentication").inner_html)
+          value_text[:source] = source
+          value_text[:coverage] = coverage if coverage
+  
+          # Sfx metadata we want
+          value_text[:sfx_obj_index] = sfx_obj_index + 1 # sfx is 1 indexed
+          value_text[:sfx_target_index] = target_index + 1 
+          value_text[:sfx_request_id] = (perl_data/"//hash/item[@key='sfx.request_id']").first.inner_html
+          value_text[:sfx_target_service_id] = target_service_id
+          value_text[:sfx_target_name] = sfx_target_name
+          # At url-generation time, the request isn't available to us anymore,
+          # so we better store this citation info here now, since we need it
+          # for sfx click passthrough
+          
+          # Oops, need to take this from SFX delivered metadata.
+          
+          value_text[:citation_year] = metadata['date'] 
+          value_text[:citation_volume] = metadata['volume'];
+          value_text[:citation_issue] = metadata['issue']
+          value_text[:citation_spage] = metadata['spage']
+  
+          display_text = (target/"/target_public_name").inner_html
+    
+          initHash = {:service=>self,
+          #:value_text=>value_text.to_yaml,
+          :service_data=>value_text, :display_text=>display_text,
+          :notes=>value_text[:notes]}
+                    
+          request.add_service_response(initHash , [umlaut_service])
+        end
+      end
+    end
+    
+
+    # In case of multiple SFX hits, enhance metadata only from the
+    # one that actually had fulltext. If more than one did, forget it.
+    ctx_obj_atts = nil
+    if ( fulltext_seen_in_index.keys.length == 0)
+      # No fulltext, just take the first
+     ctx_obj_atts = 
+         CGI.unescapeHTML( sfx_objs[0].at('/ctx_obj_attributes').inner_html)
+    elsif (fulltext_seen_in_index.keys.length == 1)
+      i = fulltext_seen_in_index.keys[0]
+      ctx_obj_atts = 
+         CGI.unescapeHTML( sfx_objs[i].at('/ctx_obj_attributes').inner_html)
+    end
+    if ( ctx_obj_atts )
+      perl_data = Hpricot( ctx_obj_atts )
+      enhance_referent( request, perl_data )
+    end
+ 
+  end
+
+  # Given an array of sfx target service ids, loads human-readable
+  # coverage strings from Rochkind's 'extra' SFX coverage API.
+  # Returns a hash, keyed on target service id,
+  # value coverage string. 
+  def load_coverage_strings(object_id, sfx_target_service_ids)
+    require 'net/http'
+    require 'uri'
+    require 'hpricot'
+
+    begin 
+      loaded_coverage_strings = {}
+
+      # We load em all in bulk in one request, rather than a
+      # request per service.      
+      coverage_url = URI.parse(@coverage_api_url)
+      coverage_url.query = "rft.object_id=#{object_id}&target_service_id=#{sfx_target_service_ids.join(',')}"
+            
+      response = Net::HTTP.get_response( coverage_url )
+      unless (response.kind_of? Net::HTTPSuccess)
+        response.error!
+      end
+            
+      cov_doc = Hpricot( response.body )
+    
+      error = cov_doc.at('/sfxcoverage/exception')
+      if ( error )
+        request.logger.error("Error in SFX coverage API result. #{coverage_url.to_s} ; #{error.to_s}")
+        raise "Error in coverage API fetch"
+      end
+    
+      cov_doc.search('/sfxcoverage/targets/target').each do |target|                        
+        next if target.empty? # it never should be, but sometimes is. 
+        service_id = target.at('target_service_id').inner_html
+        coverage_str = target.at('availability_string').inner_html
+        loaded_coverage_strings[service_id] = coverage_str
+       end                              
+       
+    rescue Exception => e
+      sfx_target_service_ids.each { |id| loaded_coverage_strings[id] = "Error in fetching coverage information." }
+    end
+    
+    return loaded_coverage_strings
+  end
   
   def sfx_click_passthrough
     # From config, or if not that, from app default, or if not that, default
@@ -315,10 +382,11 @@ class Sfx < Service
       # through SFX, so statistics are captured by SFX. 
       
       sfx_resolver_cgi_url =  @base_url + "/cgi/core/sfxresolver.cgi"      
-      # Not sure if fixing tmp_ctx_obj_id to 1 is safe, but it seems to work,
-      # and I don't know what the value is or how else to know it. 
+
+      
       dataString = "?tmp_ctx_svc_id=#{response[:sfx_target_index]}"
-      dataString += "&tmp_ctx_obj_id=1&service_id=#{response[:sfx_target_service_id]}"
+      dataString += "&tmp_ctx_obj_id=#{response[:sfx_obj_index]}"
+      dataString += "&service_id=#{response[:sfx_target_service_id]}"
       dataString += "&request_id=#{response[:sfx_request_id]}"
       dataString += "&rft.year="
       dataString += response[:citation_year].to_s if response[:citation_year]
@@ -351,7 +419,7 @@ class Sfx < Service
     # to know how long it took me to figure this out).
     perl_data = Iconv.new('Latin1', 'UTF-8').iconv(perl_data)
     
-    doc = Hpricot(perl_data)
+    doc = Hpricot.XML(perl_data)
 
     co = OpenURL::ContextObject.new
     co.referent.set_format('journal') # default
@@ -362,7 +430,7 @@ class Sfx < Service
 
       # The auinit1 value is COMPLETELY messed up for reasons I do not know.
       # Double encoded in bizarre ways.
-      next if key == '@rft.auinit1'
+      next if key == '@rft.auinit1' || key == '@rft.auinit'
       
       # Darn multi-value SFX hackery, indicated with keys beginning
       # with '@'. Just take the first one,
@@ -409,26 +477,17 @@ class Sfx < Service
     metadata = request.referent.metadata
 
     sfx_co = Sfx.parse_perl_data(perl_data.to_s)
+    
     sfx_metadata = sfx_co.referent.metadata
-    # For reasons not understood by me, including the rft.object_id, which
-    # should be SFX's internal object ID, in a later request, messes things up.
-    # So eliminate it.
-    sfx_metadata.delete('object_id')
-    # some of these others are funky too, since it's an array
-    sfx_metadata.delete('stitle')
-    sfx_metadata.delete('auinit')
-    sfx_metadata.delete('aulast')
-
+    
     # If we already had metadata for journal title and the SFX one
     # differs, we want to over-write it. This is good for ambiguous
     # incoming OpenURLs, among other things.
-    # Actually, SFX messes up titles of non-ascii-7 (ie, diacritics etc)
-    # in XML, so we don't really want to do that after all, sadly.
     
-    #if request.referent.format == 'journal'
-    #    request.referent.enhance_referent("jtitle", sfx_metadata['jtitle'])
-    #end
-    # Let's do it with ISSN though
+    if request.referent.format == 'journal'
+        request.referent.enhance_referent("jtitle", sfx_metadata['jtitle'])
+    end
+    # And ISSN
     if request.referent.format == 'journal' && ! sfx_metadata['issn'].blank?
       request.referent.enhance_referent('issn', sfx_metadata['issn'])
     end

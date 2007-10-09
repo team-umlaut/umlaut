@@ -111,7 +111,7 @@ namespace :umlaut_lcl do
     local_svn_root = UMLAUT_SVN_LOCAL if defined?(UMLAUT_SVN_LOCAL)
     local_svn_root = ENV['UMLAUT_SVN_LOCAL'] unless local_svn_root
     unless local_svn_root
-      puts "Enter local svn root path: "
+      print "Enter local svn root path: "
       local_svn_root = $stdin.gets.chomp
     end
     

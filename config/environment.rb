@@ -54,8 +54,19 @@ Rails::Initializer.run do |config|
   
   # For ruby-debug
   SCRIPT_LINES__ = {} if ENV['RAILS_ENV'] == 'development'
-  
-  # Umlaut Configuration below. 
+
+  # Umlaut expects sesson store in active record. You can override
+  # this in umlaut_config/environment.rb if you like, but some
+  # automatic session management might not work. 
+  config.action_controller.session_store = :active_record_store 
+
+
+  # Umlaut Configuration below.
+
+  # When nightly_maintenance will expire sessions. Default to
+  # 1 day. Over-ride in umlaut_config/environment.rb if desired, but
+  # probably no reason to. 
+  config.app_config.session_expire_seconds = 1.day
   
   # Multi-thread action of foreground services.
   # Reccommend you leave set to true, unless debugging. 

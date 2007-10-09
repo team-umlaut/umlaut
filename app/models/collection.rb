@@ -11,15 +11,25 @@ class Collection
   def initialize(ip, session)
     @institutions= []
     @services = {}
-    # fill out 0..9 and a..z
     @link_out_filters = {}
     # fill out 0..9
+
+    # If IP address has changed, then refresh the collection
+    # (IP can change in a session if you take your laptop to a different
+    #  wireless net; if you turn on VPN; if you've specified a new
+    #  ip in the req.ip context object; various other reasons. )
+    if ( session[:collection] && 
+         session[:collection][:client_ip_addr] != ip)
+         session[:refresh_collection] = true
+    end
+
     
     if session[:refresh_collection] == true
       session[:collection] = nil
       session[:refresh_collection] = false
     end
 
+    
     # Data has been created and stored in session already, load it from
     # there. Code can set session[:refresh_collection] = true to force
     # re-calc on next Collection creation.
@@ -31,7 +41,7 @@ class Collection
     else
       # No data stored in session, so calculate it, and save it.
       self.calculate_collection_data(ip, session)
-      self.save_to_session(session)
+      self.save_to_session(ip, session)
     end
     
   end
@@ -39,12 +49,16 @@ class Collection
 
 
   # Right now we only save institutions, not services. Hmm. 
-  def save_to_session(session)
+  def save_to_session(ip, session)
     
     # Create and blank out our data structure
     session[:collection] = {:institutions=>[], 
                             :services => {},
-                            :service_class_names => []}
+                            :service_class_names => [],
+                            :client_ip_addr => nil }
+
+   # Save client ip, so we can make sure to uncache if it changes
+   session[:collection][:client_ip_addr] = ip
 
     # Save institution IDs. We'll refetch em from db later. 
     @institutions.each do | inst |

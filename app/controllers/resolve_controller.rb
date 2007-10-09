@@ -55,7 +55,9 @@ class ResolveController < ApplicationController
 
     
     @user_request ||= Request.new_request(params, session, request )
-    @collection = Collection.new(request.remote_ip, session)      
+    # Ip may be simulated with req.ip in context object, or may be
+    # actual, request figured it out for us. 
+    @collection = Collection.new(@user_request.client_ip_addr, session)      
     @user_request.save!
 
     # Set 'timed out' background services to dead if neccesary. 
@@ -396,6 +398,9 @@ class ResolveController < ApplicationController
   # with a lambda config.
   helper_method :'known_frame_escaper?'
   def known_frame_escaper?(service_type)
+
+    bad_target_regexps = [/^WILSON\_/, 'SAGE_COMPLETE']
+    bad_url_regexps = [/http\:\/\/www.bmj.com/, /http\:\/\/bmj.bmjjournals.com/] 
     
     response = service_type.service_response
     
@@ -404,13 +409,16 @@ class ResolveController < ApplicationController
       # Can't say it is, nope. 
       return false;
     end
-
-    sfx_target_name = response.service_data[:sfx_target_name]
     
-    bad_target_regexps = [/^WILSON\_/, 'SAGE_COMPLETE']
-
+    sfx_target_name = response.service_data[:sfx_target_name]
+    url = response.url
+    
     # Does our target name match any of our regexps?
-    return bad_target_regexps.find_all {|re| re === sfx_target_name  }.length > 0    
+    bad_target =  bad_target_regexps.find_all {|re| re === sfx_target_name  }.length > 0
+    
+    return bad_target if bad_target
+    # Now check url if neccesary
+    return bad_url_regexps.find_all {|re| re === url  }.length > 0    
   end
   
   # Helper method used here in controller for outputting js to

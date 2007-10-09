@@ -106,9 +106,14 @@ unless relevant_links.empty? %>
   
 <div id="rightColumn">
 
-<div class="sidebar_section"
-  
-  
+<div class="sidebar_section, smGrayBox">
+<%= render :partial=>"help" 
+%>
+</div>
+
+
+
+<div class="sidebar_section">    
 <%
 #{:action=>'web_search', :service_type=>'web_link', :label=>'Web Search Results'}
 [{:action=>'toc', :service_type=>'table_of_contents', :label=>'Table of Contents'},
@@ -125,7 +130,6 @@ unless relevant_links.empty? %>
   end
   %>
 </div>
-
 
 
 
