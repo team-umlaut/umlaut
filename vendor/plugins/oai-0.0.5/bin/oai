@@ -1,0 +1,68 @@
+#!/usr/bin/env ruby -rubygems
+#
+#  Created by William Groppe on 2006-11-05.
+#  Copyright (c) 2006. All rights reserved.
+
+require 'optparse'
+
+DIRECTORY_LAYOUT = "%Y/%m".freeze
+
+require 'oai/harvester'
+
+include OAI::Harvester
+
+conf = OAI::Harvester::Config.load
+
+startup = :interactive
+
+rexml = false
+
+opts = OptionParser.new do |opts|
+  opts.banner = "Usage: oai ..."
+  opts.define_head "#{File.basename($0)}, a OAI harvester shell."
+  opts.separator ""
+  opts.separator "Options:"
+  
+  opts.on("-D", "--daemon", "Non-interactive mode, to be called via scheduler") { startup = :daemon }
+  opts.on("-R", "--rexml", "Use rexml even if libxml is available") { rexml = true }
+  opts.on("-?", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+  
+  # Another typical switch to print the version.
+  opts.on_tail("-v", "--version", "Show version") do
+      class << Gem; attr_accessor :loaded_specs; end
+      puts Gem.loaded_specs['oai'].version
+      exit
+  end
+end
+
+begin
+  opts.parse! ARGV
+rescue
+  puts opts
+  exit
+end
+
+unless rexml
+  begin # Try to load libxml to speed up harvesting
+    require 'xml/libxml'
+  rescue LoadError
+  end
+end
+
+case startup
+when :interactive
+  shell = Shell.new(conf)
+  shell.start
+when :daemon
+  if conf.storage
+    harvest = Harvest.new(conf)
+    harvest.start(harvestable_sites(conf))
+  else
+    puts "Missing or corrupt configuration file, cannot continue."
+    exit(-1)
+  end
+end
+  

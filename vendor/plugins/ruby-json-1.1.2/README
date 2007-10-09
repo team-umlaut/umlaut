@@ -1,0 +1,18 @@
+
+JSON for Ruby is a serializer and deserializer library for JSON for Ruby
+programming language.  The JavaScript Object Notation (JSON) is a lightweight
+data interchange format that is presented as an alternative to XML for
+that application.  For more information on JSON, visit the JSON website at
+http://www.crockford.com/JSON/index.html.
+
+To install the library, run as root the script install.rb.
+
+Read the RDoc documentation in ./doc for more information on the API, and
+look at the unit tests in ./test for more information on how to use the
+library.
+
+Thanks to Adam Kramer for some serious changes for the better.
+
+2006/02/08 Incorporates changes by Tim Myrtle 
+
+$Id: README,v 1.3 2006/02/08 20:02:22 tmyrtle Exp $
