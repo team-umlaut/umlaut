@@ -260,11 +260,13 @@ class Sfx < Service
           # for sfx click passthrough
           
           # Oops, need to take this from SFX delivered metadata.
+          sfx_co = Sfx.parse_perl_data(perl_data.to_s)
+          sfx_metadata = sfx_co.to_hash 
           
-          value_text[:citation_year] = metadata['date'] 
-          value_text[:citation_volume] = metadata['volume'];
-          value_text[:citation_issue] = metadata['issue']
-          value_text[:citation_spage] = metadata['spage']
+          value_text[:citation_year] = sfx_metadata['rft.year'] 
+          value_text[:citation_volume] = sfx_metadata['rft.volume'];
+          value_text[:citation_issue] = sfx_metadata['rft.issue']
+          value_text[:citation_spage] = sfx_metadata['rft.spage']
   
           display_text = (target/"/target_public_name").inner_html
     
