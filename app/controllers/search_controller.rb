@@ -167,11 +167,18 @@ class SearchController < ApplicationController
     else
       #lookup in SFX db directly!
       query = params['rft.jtitle']
-      
-      @titles = SfxDb::AzTitle.find(:all, 
+
+
+      # Use V2 list instead.
+      @titles = SfxDb::AzTitleV2.find(:all, 
       :conditions => ['TITLE_DISPLAY like ?', "%" + query + "%"],
       :limit => @@autocomplete_limit).collect {|to| {:object_id => to.OBJECT_ID, :title=>to.TITLE_DISPLAY}
       }
+      
+      #@titles = SfxDb::AzTitle.find(:all, 
+      #:conditions => ['TITLE_DISPLAY like ?', "%" + query + "%"],
+      #:limit => @@autocomplete_limit).collect {|to| {:object_id => to.OBJECT_ID, :title=>to.TITLE_DISPLAY}
+      #}
     end
     
     render :partial => 'journal_titles'
@@ -390,56 +397,17 @@ class SearchController < ApplicationController
     redirect_to co.to_hash.merge!(:controller=>'resolve')
   end
 
-   # Talk directly to SFX mysql to find the hits by journal Title.  
+  # Talk directly to SFX mysql to find the hits by journal Title.
+  # Uses A-Z list "version 3".  
   # Works with SFX 3.0. Will probably break with SFX 4.0, naturally.
   # Returns an Array of ContextObjects. 
-  def find_by_title_via_sfx_db
-    
-    # We're going to search in AZ-Title list. Yes, this means
-    # we're just searching among those titles that SFX knows
-    # we have full text for. But there are just too many results
-    # otherwise. This is faster, and less overwhelming for the user.
-    # The version 3 A-Z list does include a table
-    # for alternate titles, and we use that. 
+  def find_by_title_via_sfx_db    
       
     search_type = params['umlaut.title_search_type'] || 'contains'
     title_q = params['rft.jtitle']
 
-    # MySQL 'like' is case-insensitive, fortunately, don't need to worry
-    # about that. But to deal with non-filing chars, need to search against
-    # TITLE_DISPLAY and TITLE_SORT for begins with. We're going to join
-    # to AZ_TITLE_SEARCH_VER3 for alternate titles too. 
-    conditions = case search_type
-      when 'contains'
-        ['TITLE_DISPLAY like ? OR ts.TITLE_SEARCH like ?', "%" + title_q.upcase + "%", "%" + title_q.upcase + "%"]
-      when 'begins'
-       ['TITLE_DISPLAY like ? OR TITLE_SORT like ? OR ts.TITLE_SEARCH like ?', title_q + '%', title_q + '%', title_q + "%"]
-      else # exact
-        ['TITLE_DISPLAY = ? OR TITLE_SORT =  ? OR ts.TITLE_SEARCH = ?', title_q, title_q, title_q]
-    end
-
-    # First get object_ids we're interested in, then
-    # we'll bulk fetch with all their data. 
-    # Tricky-ass query for efficiency and power, sorry.
-    joins = "as ti left outer join AZ_TITLE_SEARCH_VER3 as ts on ti.AZ_TITLE_VER3_ID = ts.AZ_TITLE_VER3_ID"
-
-    
-    # Actually, _first_ we'll do a total count.
-    @hits = SfxDb::AzTitle.count(:OBJECT_ID, 
-    :distinct=>true,
-    :conditions=>conditions,
-    :joins=>joins,
-    :order=>'TITLE_SORT ASC')
-
-    # Now fetch just the display batch
-    object_ids = SfxDb::AzTitle.find(:all, :select=>"distinct (OBJECT_ID)",
-    :conditions => conditions, 
-    :joins => joins,
-    :limit => @batch_size,
-    :offset => @batch_size * (@page - 1),
-    :order=>'TITLE_SORT ASC').collect { |title_obj| title_obj.OBJECT_ID}
-
-      
+    object_ids, @hits = object_ids_local_sfx_db(title_q, search_type, @batch_size, @page)
+              
     # Now fetch objects with publication information
     sfx_objects = SfxDb::Object.find( object_ids,
     :include => [:publishers, :main_titles, :primary_issns, :primary_isbns])
@@ -486,6 +454,89 @@ class SearchController < ApplicationController
     @display_results = context_objects 
   end
 
+  # Object Ids from SFX A-Z list.
+  # input title query, search_type
+  # Returns an array [ batch_obj_id_array, count ].
+  # Uses either v2 AZ list or V2 azlist.   
+  def object_ids_local_sfx_db(title_q, search_type, batch_size, page)
+
+    # SFX A-Z "version 3" tables are being flakey. Let's use v2 instead.    
+ 
+    return object_ids_az_v2(title_q, search_type, batch_size, page)
+  end
+
+  # Uses the Ex Libris "version 2" AZ list via direct SFX connection.  
+  def object_ids_az_v2(title_q, search_type, batch_size, page)
+    conditions = case search_type
+      when 'contains'
+        ['TITLE_DISPLAY like ? OR TITLE_NORMALIZED like ?', "%" + title_q.upcase + "%", "%" + title_q.upcase + "%"]
+      when 'begins'
+       ['TITLE_DISPLAY like ? OR TITLE_NORMALIZED like ?', title_q + '%', title_q + '%']
+      else # exact
+        ['TITLE_DISPLAY = ? OR TITLE_NORMALIZED =  ?', title_q, title_q]
+    end
+
+    # Get total count
+    total_hits = SfxDb::AzTitleV2.count(:OBJECT_ID, 
+    :distinct=>true,
+    :conditions=>conditions)
+
+    # Now fetch object_ids for just the display batch
+    object_ids = SfxDb::AzTitleV2.find(:all, :select=>"distinct (OBJECT_ID)",
+    :conditions => conditions, 
+    :limit => batch_size,
+    :offset => batch_size * (page - 1),
+    :order=>'AZ_TITLE_ORDER ASC').collect { |title_obj| title_obj.OBJECT_ID}
+
+    return object_ids, total_hits
+  end
+
+  
+  # Object Ids from SFX A-Z list 'version 3'. The A-Z v3 title list
+  # is cranky, so we have a v2 version too. 
+  # input title query, search_type
+  # Returns an array [ batch_obj_id_array, count ]. 
+  def object_ids_az_v3(title_q, search_type, batch_size, page)
+    # MySQL 'like' is case-insensitive, fortunately, don't need to worry
+    # about that. But to deal with non-filing chars, need to search against
+    # TITLE_DISPLAY and TITLE_SORT for begins with. We're going to join
+    # to AZ_TITLE_SEARCH_VER3 for alternate titles too. 
+    conditions = case search_type
+      when 'contains'
+        ['TITLE_DISPLAY like ? OR ts.TITLE_SEARCH like ?', "%" + title_q.upcase + "%", "%" + title_q.upcase + "%"]
+      when 'begins'
+       ['TITLE_DISPLAY like ? OR TITLE_SORT like ? OR ts.TITLE_SEARCH like ?', title_q + '%', title_q + '%', title_q + "%"]
+      else # exact
+        ['TITLE_DISPLAY = ? OR TITLE_SORT =  ? OR ts.TITLE_SEARCH = ?', title_q, title_q, title_q]
+    end
+
+    # First get object_ids we're interested in, then
+    # we'll bulk fetch with all their data. 
+    # Tricky-ass query for efficiency and power, sorry.
+    joins = "as ti left outer join AZ_TITLE_SEARCH_VER3 as ts on ti.AZ_TITLE_VER3_ID = ts.AZ_TITLE_VER3_ID"
+
+    
+    # Actually, _first_ we'll do a total count.
+    total_hits = SfxDb::AzTitle.count(:OBJECT_ID, 
+    :distinct=>true,
+    :conditions=>conditions,
+    :joins=>joins,
+    :order=>'TITLE_SORT ASC')
+
+    # Now fetch object_ids for just the display batch
+    object_ids = SfxDb::AzTitle.find(:all, :select=>"distinct (OBJECT_ID)",
+    :conditions => conditions, 
+    :joins => joins,
+    :limit => batch_size,
+    :offset => batch_size * (page - 1),
+    :order=>'TITLE_SORT ASC').collect { |title_obj| title_obj.OBJECT_ID}
+
+
+    return [ object_ids, total_hits]
+  end
+
+ 
+
   # This guy actually works to talk to an SFX instance over API.
   # But it's really slow. And SFX doesn't seem to take account
   # of year/volume/issue when displaying multiple results anyway!!
@@ -524,6 +575,7 @@ class SearchController < ApplicationController
       return search_results     
   end
 
+ 
   # This isn't working right now. It needs to be fixed up quite a bit.
   # Should use the instance variables defined in journal_search,
   # and do a 'count' search, putting results in @hits, putting
