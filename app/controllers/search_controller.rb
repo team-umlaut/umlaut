@@ -459,10 +459,17 @@ class SearchController < ApplicationController
   # Returns an array [ batch_obj_id_array, count ].
   # Uses either v2 AZ list or V2 azlist.   
   def object_ids_local_sfx_db(title_q, search_type, batch_size, page)
-
-    # SFX A-Z "version 3" tables are being flakey. Let's use v2 instead.    
- 
-    return object_ids_az_v2(title_q, search_type, batch_size, page)
+    ids = nil
+  
+    begin
+      ids = object_ids_az_v3(title_q, search_type, batch_size, page)
+    rescue
+      # the v3 A-Z list has an annoying habit of being unavailable
+      # for 2-3 hours a day, plus it goes down all the time. So if it
+      # doesn't work, resort to v2. 
+      ids = object_ids_az_v2(title_q, search_type, batch_size, page)      
+    end
+    return ids
   end
 
   # Uses the Ex Libris "version 2" AZ list via direct SFX connection.  
