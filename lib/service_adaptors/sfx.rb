@@ -88,8 +88,11 @@ class Sfx < Service
   
     
     @get_coverage = false
-
-    if ( request.referrer.identifier ==         
+    
+    debugger
+    
+    if ( request.referrer &&
+         request.referrer.identifier ==
          "info:sid/umlaut.code4lib.org:citation_lookup")
          # show availability info
          @get_coverage = true
