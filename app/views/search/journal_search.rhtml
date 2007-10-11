@@ -2,12 +2,13 @@
 if (params["action"] == "journal_list")
   @page_title = "Browse by Journal Title: #{params['id']}"
 else
+
+  debugger
   @page_title = 'Journal titles that '
 
   @page_title +=
   (params["umlaut.title_search_type"] == "begins") ?
-  'begin with ' :
-  @page_title += 'contain '
+  'begin with ' : 'contain '
 
   @page_title += "'" + params['rft.jtitle'] + "'"
 end
