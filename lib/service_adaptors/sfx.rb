@@ -89,8 +89,17 @@ class Sfx < Service
     
     @get_coverage = false
 
+    if ( request.referrer.identifier ==         
+         "info:sid/umlaut.code4lib.org:citation_lookup")
+         # show availability info
+         @get_coverage = true
+    end
 
-    if ( request.title_level_citation? )
+    metadata = request.referent.metadata    
+    if ( metadata['date'].blank? &&
+         metadata['year'].blank? &&
+         (! request.referent.identifiers.find {|i| i =~ /^info\:(doi|pmid)/})
+        )
       # No article-level metadata, do some special stuff. 
       transport.extra_args["sfx.ignore_date_threshold"]="1"
       transport.extra_args["sfx.show_availability"]="1"

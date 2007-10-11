@@ -11,8 +11,8 @@
     # Need to take out that annoying legacy journal key, sorry.
     args.delete('journal')
     
-    inner_window ||= 1 #how many links are shown on each side of current page
-    outer_window ||= 1 #how many links are around the first and the last page
+    inner_window ||= 2 #how many links are shown on each side of current page
+    outer_window ||= 2 #how many links are around the first and the last page
     
     min = @page - inner_window
     max = @page + inner_window

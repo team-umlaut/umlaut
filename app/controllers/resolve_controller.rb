@@ -399,8 +399,13 @@ class ResolveController < ApplicationController
   helper_method :'known_frame_escaper?'
   def known_frame_escaper?(service_type)
 
+    
     bad_target_regexps = [/^WILSON\_/, 'SAGE_COMPLETE']
-    bad_url_regexps = [/http\:\/\/www.bmj.com/, /http\:\/\/bmj.bmjjournals.com/] 
+    # note that these will sometimes be proxied urls!
+    # So we don't left-anchor the regexp. 
+    bad_url_regexps = [/http\:\/\/www.bmj.com/,
+                       /http\:\/\/bmj.bmjjournals.com/, 
+                       /http\:\/\/www.sciencemag.org/]
     
     response = service_type.service_response
     
@@ -412,6 +417,7 @@ class ResolveController < ApplicationController
     
     sfx_target_name = response.service_data[:sfx_target_name]
     url = response.url
+
     
     # Does our target name match any of our regexps?
     bad_target =  bad_target_regexps.find_all {|re| re === sfx_target_name  }.length > 0
