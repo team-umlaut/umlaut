@@ -87,9 +87,7 @@ class Sfx < Service
     transport.extra_args["sfx.response_type"]="multi_obj_xml"
   
     
-    @get_coverage = false
-    
-    debugger
+    @get_coverage = false    
     
     if ( request.referrer &&
          request.referrer.identifier ==

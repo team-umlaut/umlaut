@@ -36,6 +36,7 @@ function clearObjectId() {
 <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'}, nil)  %>
   <input type="hidden" id="rft_title" name="rft.title">
   <input type="hidden" id="rft_object_id" name="rft.object_id">
+  <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
   Journal title: <%= text_field_with_auto_complete :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off', :size=>'40', :value=>params['rft.jtitle']}, {:after_update_element=>'updateObjectId', :min_chars => 4}
   %> 
   <select name="umlaut.title_search_type" id="sfx_title_search">
