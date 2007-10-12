@@ -278,7 +278,8 @@ Autocompleter.Base.prototype = {
       }
 
       this.stopIndicator();
-      this.index = 0;
+      //this.index = 0;
+      this.index = -1;
       
       if(this.entryCount==1 && this.options.autoSelect) {
         this.selectEntry();
