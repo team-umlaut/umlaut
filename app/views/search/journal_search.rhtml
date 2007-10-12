@@ -2,8 +2,6 @@
 if (params["action"] == "journal_list")
   @page_title = "Browse by Journal Title: #{params['id']}"
 else
-
-  debugger
   @page_title = 'Journal titles that '
 
   @page_title +=
@@ -19,8 +17,9 @@ end
 <h1><%= @page_title %>
 </h1>
 
-<!-- put in a little mini search form, title only -->
-<script type="text/javascript" language="Javascript1.1">
+<script type="text/javascript" language="JavaScript1.1">
+<!--
+
 function updateObjectId(elem, val) {
     document.getElementById('rft_object_id').value = val.attributes['title'].value;
     document.getElementById('rft_title').value = elem.value
@@ -32,25 +31,35 @@ function clearObjectId() {
         document.getElementById('rft_title').value = '';
     }
 }
-</script>
-<div class="citationLinker" style="margin-bottom: 8px;">
-<%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'}, nil)  %>
-  <input type="hidden" id="rft_title" name="rft.title">
-  <input type="hidden" id="rft_object_id" name="rft.object_id">
-  <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
-  Journal title: <%= text_field_with_auto_complete :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off', :size=>'40', :value=>params['rft.jtitle']}, {:after_update_element=>'updateObjectId', :min_chars => 4}
-  %> 
-  <select name="umlaut.title_search_type" id="sfx_title_search">
-    <option value="contains">contains</option>
-    <option value="begins">begins with</option>
-    <option value="exact">exact match</option>      
-  </select>
-  
-  <input type="submit" name="Generate_OpenURL2" value="Search">
-  <%= link_to('More search options', :controller => 'search') %>
-</form>
-</div>
 
+// -->
+</script>
+<div class="citationLinker" style="margin-bottom: 8px">                                                                        
+  <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'}, nil)  %>
+      <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
+      <!-- <input type=hidden name="rfr_id" value="info:sid/umlaut"> -->
+
+      <input type="hidden" id="rft_title" name="rft.title">
+      <input type="hidden" id="rft_object_id" name="rft.object_id">
+      <input type="hidden" id="date" name="rft.date">
+          
+      Journal Title:
+      <%= text_field_with_auto_complete :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off', :size=>'40', :value=>params['rft.jtitle']}, {:after_update_element=>'updateObjectId', :min_chars => 4}
+      %>
+                                                                             
+      <select name="umlaut.title_search_type" id="sfx_title_search">
+          <option value="contains">contains</option>
+          <option value="begins">begins
+          with</option>
+          <option value="exact">exact match</option>
+      </select>
+      
+      <input type=hidden name="rft.issn">
+      <input type="submit" name="Generate_OpenURL2" value="Search">
+      <%= link_to('More search options', :controller=>'search') %>
+  </form>
+</div>
+                                      
 <% if params["action"] == "journal_list" %> 
   <%= render :partial=>"a_to_z" %>
   <div class="line2"></div>
@@ -60,11 +69,8 @@ function clearObjectId() {
 <% unless @hits == 0%>
 <h3>Showing results <%= @start_result_num %> through <%= @end_result_num %> of <%= @hits %></h3>
 <% end %>
-<% if params["sfx.title_search"] == "begins"%>
-  <p><em><strong>Note:</strong> Alternate titles might have begun with your search terms</em></p>
-
-  <p>&nbsp;</p>
-
+<% if params["rft.jtitle"] %>
+  <div class="note"><em><strong>Note:</strong> Alternate titles might have matched your search terms</em></div>
 <% end %>
 
 <div class='pagination'>
