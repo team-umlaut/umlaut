@@ -226,7 +226,7 @@ class ResolveController < ApplicationController
       # Re-construct the original request url
       params_hash = @user_request.original_co_params(:add_request_id => true)
             
-      redirect_to(params_hash.merge({:controller=>"resolve", :action=>'index'}))
+      redirect_to(params_hash.merge({:controller=>"resolve", :action=>'index', :'umlaut.skip_resolve_menu' => params['umlaut.skip_resolve_menu']}))
     else
       # If we fall through, we'll show the background_status view, a non-js
       # meta-refresh update on progress of background services.
