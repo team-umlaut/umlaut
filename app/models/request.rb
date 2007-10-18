@@ -14,15 +14,18 @@ class Request < ActiveRecord::Base
     # Sometimes umlaut puts in a 'umlaut.request_id' parameter.
     # first look by that, if we have it, for an existing request.  
     begin
-            
       request_id = params['umlaut.request_id']
-      # Be sure to use session id too to guard against spoofing by guessing
-      # request ids from another session. If IP has changed, don't re-use the
-      # request!
+
+      # We're trying to identify an already existing response that matches
+      # this request, in this session.  We don't actually check the
+      # session_id in the cache lookup though, so background processing
+      # will hook up with the right request even if user has no cookies. 
+      # But if IP has changed, don't re-use the request, becuase ip change
+      # may result in different responses.
       client_ip = params['req.ip'] || a_rails_request.remote_ip()
-      req = Request.find(:first, :conditions => ["session_id = ? and id = ? and client_ip_addr = ?", session.session_id, request_id, client_ip] ) unless request_id.nil? || @user_request      
+      req = Request.find(:first, :conditions => ["id = ? and client_ip_addr = ?", request_id, client_ip] ) unless request_id.nil? || @user_request      
     rescue  ActiveRecord::RecordNotFound
-      # Bad request id? Okay, pretend we never had a request_id at all. 
+      # No match?  Just pretend we never had a request_id in url at all.  
       request_id = nil
       req = nil
     end
