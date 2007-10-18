@@ -352,6 +352,8 @@ class ResolveController < ApplicationController
   # should be displayed, or the ServiceType join object
   # that should be directly linked to. 
   def should_skip_menu
+    # For usabilty test, do NOT skip if coming from A-Z list/journal lookup.
+
     # First, is it over-ridden in url?
     if ( params['umlaut.skip_resolve_menu'] == 'false')
       return nil
@@ -405,7 +407,9 @@ class ResolveController < ApplicationController
     # So we don't left-anchor the regexp. 
     bad_url_regexps = [/http\:\/\/www.bmj.com/,
                        /http\:\/\/bmj.bmjjournals.com/, 
-                       /http\:\/\/www.sciencemag.org/]
+                       /http\:\/\/www.sciencemag.org/,
+                       /http\:\/\/([^.]+\.)\.ahajournals\.org/,
+                       /http\:\/\/www\.circresaha\.org/]
     
     response = service_type.service_response
     
@@ -417,7 +421,6 @@ class ResolveController < ApplicationController
     
     sfx_target_name = response.service_data[:sfx_target_name]
     url = response.url
-
     
     # Does our target name match any of our regexps?
     bad_target =  bad_target_regexps.find_all {|re| re === sfx_target_name  }.length > 0
