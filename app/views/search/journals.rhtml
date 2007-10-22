@@ -20,6 +20,7 @@ function clearOpenURL2() {
    document.OpenURL.date.value = "";
    document.OpenURL.volume.value = "";
    document.OpenURL.issue.value = "";
+   document.OpenURL.spage.value = "";
 
    document.OpenURL.issn.value = "";
    document.OpenURL.doi.value = "";
@@ -178,8 +179,10 @@ function setDate() {
           </select>
 
           &nbsp;&nbsp;&nbsp;Volume:
-          <input type=text name="rft.volume" size="5" maxlength="5" value="">&nbsp;&nbsp;&nbsp;Issue:
-          <input type=text name="rft.issue" size="5" value="">  
+          <input type=text name="rft.volume" size="5" maxlength="5" value="" id='volume'>&nbsp;&nbsp;&nbsp;Issue:
+          <input type=text name="rft.issue" size="5" value="" id="issue">
+          &nbsp;&nbsp;&nbsp;Start page:
+          <input type=text name="rft.spage" size="5" value="" id='spage'>
 </td>
       
       </tr>
