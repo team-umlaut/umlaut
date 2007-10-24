@@ -23,6 +23,10 @@ module OpenURL
       @identifiers.push( self.class.normalize_id(val) )
     end
     alias :set_identifier :add_identifier
+
+    def delete_identifier(val)
+      @identifiers.delete( val )  
+    end
     
     # We can actually have more than one, but certain code calls this
     # method as if there's only one. We return the first. 
@@ -40,6 +44,9 @@ module OpenURL
     end
     def get_metadata(key)
       return @metadata[key]
+    end
+    def delete_metadata(key)
+      @metadata.delete(key)
     end
     
     def set_format(format)

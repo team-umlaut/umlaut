@@ -11,26 +11,9 @@
   <p>&nbsp;</p>
 
 
-
-                                        <script type="text/javascript" language="JavaScript1.1">
+<script type="text/javascript" language="JavaScript1.1">
 <!--
-function clearOpenURL2() {
-   document.OpenURL.atitle.value = "";
-   document.OpenURL.title.value = "";
-   document.OpenURL.date.value = "";
-   document.OpenURL.volume.value = "";
-   document.OpenURL.issue.value = "";
-   document.OpenURL.spage.value = "";
 
-   document.OpenURL.issn.value = "";
-   document.OpenURL.doi.value = "";
-   document.OpenURL.pmid.value = "";
-   document.OpenURL.rft_id_value.value = "";
-}
-
-function clearOpenURL() {
-   document.forms[0].reset();
-}
 
 function updateObjectId(elem, val) {
     document.getElementById('rft_object_id').value = val.attributes['title'].value;
@@ -66,47 +49,45 @@ function setDate() {
 }
 
 // -->
-                                      </script>
+</script>
                                   
-                                    <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'}, nil)  %>
+  <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'}, nil)  %>
   <div class="citationLinker">                                      
 
-                                          <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
-                                          <!-- <input type=hidden name="rfr_id" value="info:sid/umlaut"> -->
+      <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
+      <!-- <input type=hidden name="rfr_id" value="info:sid/umlaut"> -->
 
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="5">
-                                          <tr>
-                                            <td colspan="3" valign="bottom"><strong>Enter
-                                                the journal title or the ISSN.
-                                                If you have both the journal
-                                                title
-                                        &amp; ISSN, use the ISSN.</strong></td>
-                                          <input type="hidden" id="rft_title" name="rft.title">
-                                            <input type="hidden" id="rft_object_id" name="rft.object_id">
-                                            <input type="hidden" id="date" name="rft.date">
-                                          </tr>
-                                          <tr>
+      <table width="100%" border="0" cellspacing="0" cellpadding="5">
+        <tr>
+          <td colspan="3" valign="bottom"><strong>Enter
+              the journal title or the ISSN.
+              If you have both the journal
+              title
+      &amp; ISSN, use the ISSN.</strong></td>
+        <input type="hidden" id="rft_title" name="rft.title">
+          <input type="hidden" id="rft_object_id" name="rft.object_id">
+          <input type="hidden" id="date" name="rft.date">
+        </tr>
+        <tr>
 
                                             
-                                            <td width="89%">Journal Title:
+          <td width="89%">Journal Title:
 
-
-<%= text_field_with_auto_complete :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off', :size=>'40'}, {:after_update_element=>'updateObjectId', :min_chars => 4}
-%>
+            <%= text_field_with_auto_complete :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off', :size=>'40'}, {:after_update_element=>'updateObjectId', :min_chars => 4}
+            %>
                                                                                          
-                                              <select name="umlaut.title_search_type" id="sfx_title_search">
-                                                <option value="contains">contains</option>
-                                                <option value="begins">begins
-                                                with</option>
-                                                <option value="exact">exact match</option>
-
-                                              </select>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;ISSN:
-                                            <input type=text name="rft.issn" size="10" maxlength="9"></td>
-                                          </tr>
+            <select name="umlaut.title_search_type" id="sfx_title_search">
+              <option value="contains">contains</option>
+              <option value="begins">begins
+              with</option>
+              <option value="exact">exact match</option>
+            </select>
+            &nbsp;&nbsp;&nbsp;&nbsp;ISSN:
+            <input type=text name="rft.issn" size="10" maxlength="9"></td>
+        </tr>
                                           
-                                        </table>
-                                        	  <!--close citationLinker-->
+    </table>
+<!--close citationLinker-->
   </div><p>&nbsp;</p>
   <p class="exlargeText">&nbsp;</p>
   <p class="exlargeText">Searching for a specific article?</p>

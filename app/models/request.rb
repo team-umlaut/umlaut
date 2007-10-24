@@ -340,7 +340,6 @@ class Request < ActiveRecord::Base
     # always turns into the exact same yaml string. Hopefully it'll work.
     list = []
     params.keys.sort.each do |key|
-      #debugger
       excluded = false
       excluded_keys.each {|exclude_key| excluded = true if exclude_key === key }
           

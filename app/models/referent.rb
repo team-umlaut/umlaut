@@ -6,6 +6,7 @@ class Referent < ActiveRecord::Base
   
   # When provided an OpenURL::ContextObject, it will return a Referent object (if one exists)
   def self.find_by_context_object(co)
+    
     rft = co.referent
 
     # First try to find by id. There could be several. 
@@ -44,16 +45,21 @@ class Referent < ActiveRecord::Base
   # (creating one if doesn't already exist)  
   def self.find_or_create_by_context_object(co)
 
+    # Okay, we need to do some pre-processing on weird context objects
+    # sent by, for example, firstSearch.
+    self.clean_up_context_object(co)
     
     if rft = Referent.find_by_context_object(co) 
       return rft 
     end
     rft = Referent.new
     rft.save
+    
     rft.set_values_from_context_object(co)
     permalink = Permalink.new
     permalink.referent = rft
     permalink.save
+    
     val = ReferentValue.new
     val.key_name = 'identifier'
     val.value = permalink.tag_uri
@@ -70,6 +76,31 @@ class Referent < ActiveRecord::Base
     rft.save
     return rft          
   end
+
+  # Okay, we need to do some pre-processing on weird context objects
+  # sent by, for example, firstSearch. Remove invalid identifiers.
+  # Mutator: Modifies ContextObject arg passed in. 
+  def self.clean_up_context_object(co)
+    # First, remove any empty DOIs!
+    # That's not a valid identifier! 
+    empty_dois = co.referent.identifiers.find_all { |i| i == "info:doi/"}
+    empty_dois.each { |e| co.referent.delete_identifier( e )}
+    # Now look for ISSN identifiers that are on article_level. FirstSearch
+    # gives us ISSN identifiers incorrectly on article level cites. 
+    issn_ids = co.referent.identifiers.find_all { |i| i =~ /^urn:ISSN/}
+    issn_ids.each do |issn_id|
+      # Long as we're at it, add an rft.issn if one's not there.
+      issn_data = issn_id.slice( (9..issn_id.length)) # actual ISSN without identifier prefix
+      co.referent.set_metadata(issn, issn_data) if co.referent.get_metadata('issn').blank? && ! issn_data.blank?
+
+      # And remove it as an identifier unless we know this is journal-level
+      # cite.
+      unless ( co.referent.get_metadata('genre') == 'journal' )
+        co.referent.delete_identifier( issn_id )
+      end      
+    end    
+  end
+
   
   # Populate the referent_values table with a ropenurl contextobject object
   def set_values_from_context_object(co)

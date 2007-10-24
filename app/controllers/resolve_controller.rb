@@ -52,8 +52,7 @@ class ResolveController < ApplicationController
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
-
-    
+        
     @user_request ||= Request.new_request(params, session, request )
     # Ip may be simulated with req.ip in context object, or may be
     # actual, request figured it out for us. 
@@ -409,7 +408,8 @@ class ResolveController < ApplicationController
                        /http\:\/\/bmj.bmjjournals.com/, 
                        /http\:\/\/www.sciencemag.org/,
                        /http\:\/\/([^.]+\.)\.ahajournals\.org/,
-                       /http\:\/\/www\.circresaha\.org/]
+                       /http\:\/\/www\.circresaha\.org/,
+                       /http\:\/\/www.businessweek\.com/]
     
     response = service_type.service_response
     
