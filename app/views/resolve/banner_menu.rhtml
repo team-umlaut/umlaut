@@ -14,7 +14,7 @@
   <div class="banner_menu_inner_container">
   <div id="banner_controls" class="banner_section">
     <%= resolver_link(nil, :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %><br/>
-    <span style="font-weight: bold; font-size: 15px;"><%= resolver_link(nil, :text => 'More options in full menu', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
+    <span style="font-weight: bold; font-size: 15px;"><%= resolver_link(nil, :text => 'See more options', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
     <%= link_to "#{ image_tag("frame_remove.gif", :border=>0, :align=>'bottom') } Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
     
   <% displayed_data = @service_type_join.view_data %>
@@ -83,6 +83,7 @@
   <% end %>
   
   <div id="banner_help" class="banner_section">
+  <%= link_to "#{ image_tag("frame_remove.gif", :border=>0, :align=>'bottom') } Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
     <span id="helpicon">?</span><span class="smallText">Problem? Need help?
       <% help_responses.each do |help| %>
            <%= link_to help.view_data[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %> 
