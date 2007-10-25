@@ -14,7 +14,7 @@
   <div class="banner_menu_inner_container">
   <div id="banner_controls" class="banner_section">
     <%= resolver_link(nil, :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %><br/>
-    <span class="smallText"> <%= resolver_link(nil, :text => 'More in full menu', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
+    <span style="font-weight: bold; font-size: 15px;"><%= resolver_link(nil, :text => 'More in full menu', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
     <%= link_to "#{ image_tag("frame_remove.gif", :border=>0, :align=>'bottom') } Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
     
   <% displayed_data = @service_type_join.view_data %>
