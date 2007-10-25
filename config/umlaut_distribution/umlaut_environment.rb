@@ -74,7 +74,7 @@ def umlaut_configuration(config)
   #  true      : always link with banner
   #  false     : never link with banner
   #  :standard : standard behavior -- link with banner only if the umlaut
-                 menu was skipped for a direct link.
+  #               menu was skipped for a direct link.
   #  Or, for most powerful flexibility, set to a lambda expression taking
   #  one argument. That argument will be a hash containing the key
   #  :service_type_join with a ServiceType value. lambda can examine
@@ -83,7 +83,7 @@ def umlaut_configuration(config)
   #  eg., to just banner full text links: 
   #  config.app_config.link_with_frameset = 
   #    lambda {|args| return args[:service_type_join].service_type_value.name == 'fulltext' }
-  config.link_with_frameset = :standard
+  config.app_config.link_with_frameset = :standard
 
   # skip_resolve_menu can be used to control 'direct' linking, skipping
   # the resolve menu to deliver a full text link or other resource
