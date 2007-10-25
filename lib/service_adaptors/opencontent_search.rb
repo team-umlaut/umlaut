@@ -71,13 +71,6 @@ class OpencontentSearch < Service
     creator = metadata['aulast'] unless metadata['aulast'].blank?
     creator = metadata['au'] if creator.blank?
 
-    # Some random weird normalizing discovered by example of what works
-    # with OAISter.
-    # In general, changing punctuation to spaces seems helpful for eliminating
-    # false negatives. 
-    # \342\200\231 is curly apostrophe
-    title.gsub!("342\200\231", " ")
-    title.gsub!(/\?|\'/, " ")
 
     # For books, strip off subtitle after and including a ':'. Subtitle
     # is sometimes indexed, sometimes not, sometimes with colon, sometimes
@@ -86,6 +79,23 @@ class OpencontentSearch < Service
       colon_index = title.index(':')
       title = title.slice( (0..colon_index-1)  ) if colon_index
     end
+    
+    # Some random weird normalizing discovered by example of what works
+    # with OAISter.
+    # In general, changing punctuation to spaces seems helpful for eliminating
+    # false negatives. Not only "weird" punctuation like curly-quotes seems
+    # to result in false negative, but even normal punctuation can. If it's
+    # not a letter or number, let's get rid of it. This could cause
+    # problems with non-ascii-Latin, we might be getting rid of that, but I
+    # can't figure out a better way. Really we want to get rid of any
+    # punctuation in any script, but keep all letters in any script--don't know
+    # how to do that! We could try listing specific English punctuation to
+    # get rid of, but then it comes to curly quotes and weird things it
+    # gets tricky. 
+    # \342\200\231 is curly apostrophe
+    title.gsub!(/[^a-zA-Z0-9]/, " ")
+
+
     
     # Create the SRU query
     query = 'dc.title = "'+title+'" '
@@ -101,6 +111,7 @@ class OpencontentSearch < Service
     dbs.each do |db|
       client = SRU::Client.new(self.url+db)
       results = client.search_retrieve(query, :maximumRecords=>10)
+      debugger
       results.each do |raw_dc_xml|
         # Get <dc:identifier> out, that's the URL.
         xml = Hpricot.XML( raw_dc_xml.to_s )
