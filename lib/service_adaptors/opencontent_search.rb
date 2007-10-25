@@ -85,16 +85,11 @@ class OpencontentSearch < Service
     # In general, changing punctuation to spaces seems helpful for eliminating
     # false negatives. Not only "weird" punctuation like curly-quotes seems
     # to result in false negative, but even normal punctuation can. If it's
-    # not a letter or number, let's get rid of it. This could cause
-    # problems with non-ascii-Latin, we might be getting rid of that, but I
-    # can't figure out a better way. Really we want to get rid of any
-    # punctuation in any script, but keep all letters in any script--don't know
-    # how to do that! We could try listing specific English punctuation to
-    # get rid of, but then it comes to curly quotes and weird things it
-    # gets tricky. 
+    # not a letter or number, let's get rid of it. This method may or may
+    # not be entirely unicode safe, but initial experiments were satisfactory.
     # \342\200\231 is curly apostrophe
-    title.gsub!(/[^a-zA-Z0-9]/, " ")
-
+    #title.gsub!(/[^a-zA-Z0-9]/, " ")
+    title = title.chars.gsub(/[^\w\s]/, ' ').to_s
 
     
     # Create the SRU query
@@ -111,7 +106,6 @@ class OpencontentSearch < Service
     dbs.each do |db|
       client = SRU::Client.new(self.url+db)
       results = client.search_retrieve(query, :maximumRecords=>10)
-      debugger
       results.each do |raw_dc_xml|
         # Get <dc:identifier> out, that's the URL.
         xml = Hpricot.XML( raw_dc_xml.to_s )
