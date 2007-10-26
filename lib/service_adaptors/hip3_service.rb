@@ -44,6 +44,7 @@ class Hip3Service < Service
       # For the text to display, let's try taking just the domain from the
       # url
       display_name = nil
+
       begin
         u_obj = URI::parse( url )
         display_name = u_obj.host
@@ -55,8 +56,9 @@ class Hip3Service < Service
       value_text = Hash.new
       # get all those $z subfields and put em in notes.      
       value_text[:url] = url
-      value_text[:notes] = 
-      field.subfields.collect {|f| f.value if f.code == 'z'}.compact!.join(' ')
+
+      value_text[:notes] =
+      field.subfields.collect {|f| f.value if f.code == 'z'}.compact.join(' ')
       # Add the response
       request.add_service_response({:service=>self, :display_text=>display_name, :url=>url, :notes=>value_text[:notes], :service_data=>value_text}, [@map_856_to_service])
     end
