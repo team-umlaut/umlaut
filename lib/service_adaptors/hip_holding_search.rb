@@ -16,20 +16,24 @@ class HipHoldingSearch < Service
 
   def handle(request)
     # Only do anything if we have no holdings results from someone else.
-    holdings = request.service_types.find(:all, :conditions=>["service_type_value_id = ?", "holding_search"])
+    holdings = request.service_types.find(:all, :conditions=>["service_type_value_id = ?", "holding"])
     
     if (holdings.length > 0)
       return request.dispatched(self, true)
     end
+
+    ref_metadata = request.referent.metadata
     
     bib_searcher = Hip3::BibSearcher.new(@base_path)
 
-    hip_index = :title
+    search_hash = {}
     
-    title = request.referent.metadata['jtitle']
-    hip_index = :serial_title if title # use journal title index for jtitle
-    title = request.referent.metadata['btitle'] if title.blank?
-    title = request.referent.metadata['title'] if title.blank?
+    hip_title_index = Hip3::BibSearcher::TITLE_KW_INDEX
+    
+    title = ref_metadata['jtitle']
+    hip_title_index = Hip3::BibSearcher::SERIAL_TITLE_KW_INDEX if title # use journal title index for jtitle
+    title = ref_metadata['btitle'] if title.blank?
+    title = ref_metadata['title'] if title.blank?
     
     # No title? We can do nothing at present.
     if ( title.blank? ) ; return request.dispatched(self, true) ; end;
@@ -39,9 +43,18 @@ class HipHoldingSearch < Service
     # remove some obvious stop words, cause HIP is going to choke on em
     title.gsub!(/\bthe\b|\band\b|\bor\b/i,'')
 
+    search_hash[hip_title_index] = title.split
+
+    # If it's a non-journal thing, add the author if we have an aulast.
+    # Full author name is too tricky, too likely to false negative.
+
+    unless request.referent.format == "journal"
+      # prefer aulast
+      search_hash[ Hip3::BibSearcher::AUTHOR_KW_INDEX ] = [ref_metadata['aulast']] if ref_metadata['aulast'] 
+    end
     
     
-    bib_searcher.set_keywords(title.split , :index => hip_index  )
+    bib_searcher.search_hash = search_hash 
     unless bib_searcher.insufficient_query
       count = bib_searcher.count
       if (count > 0)

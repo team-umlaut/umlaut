@@ -22,11 +22,12 @@ module Hip3
 	# the actual search response, but it could, and pre-load the bib object.	
 	class BibSearcher
     ISSN_KW_INDEX = '.IS'
-    ISBN_KW_INDEX = '.IB' # No, I have no idea why.
+    ISBN_KW_INDEX = '.IB' 
 
     GEN_KW_INDEX = '.GW'
     TITLE_KW_INDEX = '.TW'
     SERIAL_TITLE_KW_INDEX = '.ST'
+    AUTHOR_KW_INDEX = '.AW'
     
 		attr_accessor :httpSession 
 		attr_accessor :hip_base_url_str, :hip_base_url
@@ -80,6 +81,14 @@ module Hip3
       @isbn = arg_isbn
     end
 
+    # Yet another way to specify search criteria.
+    # Hash, where the key is the name of a HIP keyword Index (use
+    # constants in this class if possible), and the value is an array of
+    # keywords. Everything is "anded" together. 
+    def search_hash=(hash)
+      @search_hash = hash
+    end
+    
     def keywords=(arg_kw)
       set_keywords(arg_kw)
     end
@@ -101,7 +110,9 @@ module Hip3
         @keyword_index = GEN_KW_INDEX
       end
     end
-	
+
+    # Returns the URL starting from / that specifies the search criteria to
+    # HIP. 
 		def searchPath(args = {})
       args[:xml] = true if args[:xml].nil?
       
@@ -112,6 +123,15 @@ module Hip3
       criteria << "&index=#{ISBN_KW_INDEX}&term=#{self.isbn}" unless isbn.nil?
       criteria << keyword_url_args
       path << criteria.join("&oper=or")
+
+      unless ( @search_hash.blank?)
+        manual_criteria = []
+        @search_hash.each_pair do |index, kws|
+          manual_criteria << kws.collect {|kw| "&index=#{index}&term=#{CGI.escape(kw)}"}
+        end
+        path << "&" << manual_criteria.join("&oper=and")
+      end
+
       
       path << "&x=0&y=0&aspect=power"
       path << "&GetXML=1" if args[:xml]
@@ -119,10 +139,10 @@ module Hip3
       return path
 
 		end
-
+    
     def keyword_url_args
       args =
-      self.keywords.collect { |k| "&index=#{@keyword_index}&term=#{k}" }
+      self.keywords.collect { |k| "&index=#{@keyword_index}&term=#{CGI.escape(k)}" }
 
       return args.join("&oper=and") || ""            
     end
@@ -185,7 +205,7 @@ module Hip3
 
     def insufficient_query
       # Have to have some search criteria to search
-      return (self.issn.nil? && self.isbn.nil? && self.keywords.blank?)
+      return (self.issn.nil? && self.isbn.nil? && self.keywords.blank? && @search_hash.blank?)
     end
 
     def search_url
