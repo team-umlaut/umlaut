@@ -37,6 +37,8 @@ class Hip3Service < Service
       # Don't add the URL if it matches our SFXUrl finder, because
       # that means we think this is an SFX controlled URL.
       next if SfxUrl.sfx_controls_url?(url)
+      # No u field? Forget it.
+      next if url.nil?
       
       urls_seen.push(url)
       

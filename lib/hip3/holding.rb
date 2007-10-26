@@ -30,9 +30,10 @@ module Hip3
 		def dummy?
 			#Mostly trying to rule out the weird internet holdings
 			#that tell us nothing--url is already in the bib.
-      return (
-					( collection_str == "Internet" || collection_str == "Welch Online Journals" || collection_str == "Welch Online Journal" ||
-					collection_str == "Gibson-Electronic Journals & Indexes" ) 
+      return ( collection_str == "Internet" || 
+               collection_str == "Welch Online Journals" || 
+               collection_str == "Welch Online Journal" ||
+               collection_str == "Gibson-Electronic Journals & Indexes" ) 
 				
 			#return ((  (call_no == "World Wide Web" || call_no.blank?) &&
 			#		( collection_str == "Internet" || collection_str == "Welch Online Journals" || collection_str == "Welch Online Journal")) ||
