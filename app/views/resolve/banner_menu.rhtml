@@ -83,7 +83,6 @@
   <% end %>
   
   <div id="banner_help" class="banner_section">
-  <%= link_to "#{ image_tag("frame_remove.gif", :border=>0, :align=>'bottom') } Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
     <span id="helpicon">?</span><span class="smallText">Problem? Need help?
       <% help_responses.each do |help| %>
            <%= link_to help.view_data[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %> 
