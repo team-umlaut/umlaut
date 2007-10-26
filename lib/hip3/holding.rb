@@ -29,10 +29,14 @@ module Hip3
 		# our 'business rules' for that are, so this is a messy guess. 
 		def dummy?
 			#Mostly trying to rule out the weird internet holdings
-			#that tell us nothing--url is already in the bib. 
-			return ((  (call_no == "World Wide Web" || call_no.blank?) &&
-					( collection_str == "Internet" || collection_str == "Welch Online Journals" || collection_str == "Welch Online Journal")) ||
-					(collection_str == "Gibson-Electronic Journals & Indexes" && call_no="Online journal")) 
+			#that tell us nothing--url is already in the bib.
+      return (
+					( collection_str == "Internet" || collection_str == "Welch Online Journals" || collection_str == "Welch Online Journal" ||
+					collection_str == "Gibson-Electronic Journals & Indexes" ) 
+				
+			#return ((  (call_no == "World Wide Web" || call_no.blank?) &&
+			#		( collection_str == "Internet" || collection_str == "Welch Online Journals" || collection_str == "Welch Online Journal")) ||
+			#		(collection_str == "Gibson-Electronic Journals & Indexes" && call_no="Online journal")) 
 				
 		end
 	end
