@@ -10,7 +10,7 @@ class OpencontentSearch < Service
   require 'sru'
   attr_reader :url
 
-  @@db_display_name = {"oaister" => "OAISter", "gutenberg" => "Project Gutenberg", "oca-all" => "Open Content Alliance"}
+  @@db_display_name = {"oaister" => "OAIster", "gutenberg" => "Project Gutenberg", "oca-all" => "Open Content Alliance"}
   
   def service_types_generated
     return [ ServiceTypeValue[:fulltext], ServiceTypeValue[:web_link] ]
@@ -106,6 +106,7 @@ class OpencontentSearch < Service
     dbs.each do |db|
       client = SRU::Client.new(self.url+db)
       results = client.search_retrieve(query, :maximumRecords=>10)
+
       results.each do |raw_dc_xml|
         # Get <dc:identifier> out, that's the URL.
         xml = Hpricot.XML( raw_dc_xml.to_s )
