@@ -30,20 +30,20 @@ module ApplicationHelper
   # format. Input Dates look like '20000304'. Can be just year, or just
   # year/month, or all. Not sure what this format
   # is officially called. Not sure if they can have dashes sometimes? 
-  def date_format(date_string)
+  def date_format(date_string)      
     date_string =~ /(\d\d\d\d)\-?(\d\d)?\-?(\d\d)?/
 
     begin
       year, month, day_of_month = $1, $2, $3
   
-      if ( month )
-        date = Date.civil(year.to_i, month.to_i, day_of_month.to_i)
+      if ( month )                
+        date = Date.civil(year.to_i, month.to_i)
         formatted_month = date.strftime('%b')
       end
       
       output = year
       output += ' ' + formatted_month if formatted_month
-      output += ' ' + day_of_month if day_of_month
+      output += ' ' + day_of_month if day_of_month && day_of_month.to_i != 0
   
       return output
     rescue
