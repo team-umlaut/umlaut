@@ -37,7 +37,7 @@ class CreateManyTables < ActiveRecord::Migration
 	  create_table "dispatched_services", :force => true do |t|
 	  t.column "request_id", :integer, :default => 0, :null => false
 	  t.column "service_id", :integer, :default => 0, :null => false
-	  t.column "successful", :boolean, :default => 0, :null => false
+	  t.column "successful", :boolean, :default => false, :null => false
 	  t.column "updated_at", :datetime, :null => false
 	  end
 	  
@@ -45,7 +45,7 @@ class CreateManyTables < ActiveRecord::Migration
 	  
 	  create_table "institutions", :force => true do |t|
 	  t.column "name", :string, :default => "", :null => false
-	  t.column "default_institution", :boolean, :default => 0, :null => false
+	  t.column "default_institution", :boolean, :default => false, :null => false
 	  t.column "worldcat_registry_id", :string, :limit => 25
 	  t.column "configuration", :text
 	  end
@@ -105,8 +105,8 @@ class CreateManyTables < ActiveRecord::Migration
 	  t.column "key_name", :string, :limit => 50, :default => "", :null => false
 	  t.column "value", :text, :default => ""
 	  t.column "normalized_value", :string
-	  t.column "metadata", :boolean, :default => 0, :null => false
-	  t.column "private_data", :boolean, :default => 0, :null => false
+	  t.column "metadata", :boolean, :default => false, :null => false
+	  t.column "private_data", :boolean, :default => false, :null => false
 	  end
 	  
 	  add_index "referent_values", ["referent_id", "key_name", "normalized_value"], :name => "rft_val_referent_idx"
@@ -189,7 +189,7 @@ class CreateManyTables < ActiveRecord::Migration
 	  
 	  create_table "permalinks", :force => true do |t|
 	  t.column "referent_id", :integer, :default => 0, :null => false
-	  t.column "created_on", :date, :default => '0000-00-00', :null => false
+	  t.column "created_on", :date, :null => false
 	  end
 	  
 	  add_index "permalinks", ["referent_id"], :name => "plink_referent_idx"
