@@ -200,9 +200,9 @@ class Referent < ActiveRecord::Base
 		        if self.format == 'book'
               ['Chapter/Part Title', 'Title']
             elsif self.format == 'journal'
-              ['Article Title', 'Title']
-            else
-              ['Title', 'Subtitle']
+              ['Article Title', 'Journal Title']
+            else # default fall through, use much what SFX uses. 
+              ['Title', 'Source']
             end
         end
       ['title','btitle','jtitle'].each do | t_type |
