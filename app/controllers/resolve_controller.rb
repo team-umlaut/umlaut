@@ -402,7 +402,11 @@ class ResolveController < ApplicationController
 
     # HIGHWIRE_PRESS_FREE is a collection of different hosts,
     # but MANY of them seem to be frame-escapers, so we black list them all!
-    bad_target_regexps = [/^WILSON\_/, 'SAGE_COMPLETE', 'HIGHWIRE_PRESS_FREE', /^OXFORD_UNIVERSITY_PRESS/]
+    # Seems to be true of HIGHWIRE_PRESS stuff in general in fact, they're
+    # all blacklisted. 
+    bad_target_regexps = [/^WILSON\_/, 
+        'SAGE_COMPLETE', /^HIGHWIRE_PRESS/,
+        /^OXFORD_UNIVERSITY_PRESS/]
     # note that these will sometimes be proxied urls!
     # So we don't left-anchor the regexp. 
     bad_url_regexps = [/http\:\/\/www.bmj.com/,
