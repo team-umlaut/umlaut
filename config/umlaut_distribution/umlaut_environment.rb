@@ -97,7 +97,7 @@ def umlaut_configuration(config)
   #          from these services for direct linking. (Not yet implemented)
   # {:excluded_urls => [/regexp/, 'string'] : list of regexps or strings,
   #          exclude URLs that match this string from being skipped to. (Not yet implemented)
-  # {:lambda => lambda {|p, l| return something}} : Not yet implemented. 
+  # {:lambda => lambda {|args| return something}} : Not yet implemented. 
   
   # lambda expression: A lambda expression can be provided that
   #          should expect one argument, a hash with key :request
@@ -106,7 +106,7 @@ def umlaut_configuration(config)
   #          menu to that response.
 
   # A pretty typical direct-linking setup:
-  # config.skip_resolve_menu = {:service_types => ['fulltext'}
+  # config.skip_resolve_menu = {:service_types => ['fulltext']}
 
   # Minimum height and width of browser window. We have little control over
   # what size a content provider generates a window for a link resolver. Often
@@ -130,7 +130,9 @@ def umlaut_configuration(config)
 
   # Custom logic as to whether the ILL (doc_del) section of the resolve
   # menu should be shown. This sample logic is, I think, copied from rsinger's
-  # original, not sure what motivates it. 
+  # original, not sure what motivates it. Used by default resolve view,
+  # if you write a custom resolve view it would be nice to respect this
+  # too. 
   # config.app_config.resolve_display_ill = lambda do |umlaut_request|
   #     return true if (umlaut_request.get_service_type('fulltext').empty? &&
   #                     umlaut_request.get_service_type('holding').empty?) ||
