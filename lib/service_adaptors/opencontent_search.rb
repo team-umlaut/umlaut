@@ -23,7 +23,7 @@ class OpencontentSearch < Service
     super(config)
   end
   
-  def handle(request)
+  def handle(request)    
     databases = identify_databases(request)
     query = self.define_query(request.referent)
 
@@ -43,7 +43,9 @@ class OpencontentSearch < Service
     elsif request.referent.metadata['genre'] == 'proceeding'
       databases = ["oaister", "oca-all"]
     elsif request.referent.format == "book"
-      databases = ["oca-all", "gutenberg"]    
+      # Some things classed 'book' may exist in a dissertation version
+      # in oaister. Worth checking. 
+      databases = ["oca-all", "gutenberg", "oaister"]    
     end
     return databases
   end
