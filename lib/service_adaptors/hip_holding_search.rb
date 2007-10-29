@@ -41,10 +41,14 @@ class HipHoldingSearch < Service
     # remove non-alphanumeric
     title.gsub!(/[^\w\s]/, ' ')
     # remove some obvious stop words, cause HIP is going to choke on em
-    title.gsub!(/\bthe\b|\band\b|\bor\b/i,'')
+    title.gsub!(/\bthe\b|\band\b|\bor\b|\bof\b|\ba\b/i,'')
 
-    search_hash[hip_title_index] = title.split
-
+    title_kws = title.split
+    # limit to 12 keywords
+    title_kws = title_kws.slice( (0..11) ) if title_kws.length > 12
+    
+    search_hash[hip_title_index] = title_kws
+    
     # If it's a non-journal thing, add the author if we have an aulast.
     # Full author name is too tricky, too likely to false negative.
 
@@ -56,6 +60,7 @@ class HipHoldingSearch < Service
     
     bib_searcher.search_hash = search_hash 
     unless bib_searcher.insufficient_query
+          
       count = bib_searcher.count
       if (count > 0)
         service_data = {}
