@@ -14,7 +14,7 @@ class HipHoldingSearch < Service
     return [ServiceTypeValue['holding_search']]    
   end
 
-  def handle(request)
+  def handle(request)  
     # Only do anything if we have no holdings results from someone else.
     holdings = request.service_types.find(:all, :conditions=>["service_type_value_id = ?", "holding"])
     
@@ -39,7 +39,7 @@ class HipHoldingSearch < Service
     if ( title.blank? ) ; return request.dispatched(self, true) ; end;
     
     # remove non-alphanumeric
-    title.gsub!(/[^A-z0-9\s]/, '')
+    title.gsub!(/[^\w\s]/, ' ')
     # remove some obvious stop words, cause HIP is going to choke on em
     title.gsub!(/\bthe\b|\band\b|\bor\b/i,'')
 

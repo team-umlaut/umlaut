@@ -89,11 +89,14 @@ namespace :umlaut_lcl do
 
   desc "Svn commit all local config"
   task :commit => :environment do
+     message = ENV["m"]
+     message = 'commited by umlaut_lcl:commit rake task' unless message
+  
      Local_Dirs.each do |local_path, svn_path|
         full_local_path = RAILS_ROOT + '/' + local_path
 
-        puts "svn commit #{full_local_path}"
-        system("svn commit #{full_local_path} -m 'committed by umlaut rake task' ")
+        puts "svn commit #{full_local_path} -m '#{message}'"
+        system("svn commit #{full_local_path} -m '#{message}' ")
     end
   end
   
