@@ -47,7 +47,10 @@ module Hip3
 			serialElement.elements.to_a('runlist/run').each do |run|
 				label = run.elements['runlabel'].text
 				run.elements.to_a('data/rundata').each do |rundata|
-					self.runs.push( {:label => label, :statement => rundata.elements['text'].text } )
+          run = {:label => label, :statement => rundata.elements['text'].text}
+          run[:note] = rundata.elements['note'].text if rundata.elements['note']
+				  
+          self.runs.push( run )
 				end
 			end
 		end	
@@ -63,6 +66,7 @@ module Hip3
         s = ''
         (s << r[:label] << ": ") if (! r[:label].blank?) && r[:label] != "Main run"
         s << r[:statement]
+        s << '-- ' << r[:note] if r[:note]
         s
       end
 		end

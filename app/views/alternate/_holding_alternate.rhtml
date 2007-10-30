@@ -55,7 +55,8 @@ holdings.each do |p|
               break if (index >= 3 && 
                         params['umlaut.holding_expand_all'] != 'true')
               s = target[:coverage_str_array][index]%>
-               <li><%= s %></li>
+               <li><%= s %>                              
+               </li>
           <% end %>
           <% if target[:coverage_str_array].length > 5 && params['umlaut.holding_expand_all'] != 'true' %>
             <li> <%= link_to_function("More...",
