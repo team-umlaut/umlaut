@@ -1,0 +1,8 @@
+== TODO list
+- Handle groups which number of digit is > 1
+- Add all known ranges for all groups
+- Proof read comments
+- Add samples to comments
+- Make sure that library follows Ruby rules (layout, naming ...)
+- Add more tests (there are never enough, I'm told)
+
