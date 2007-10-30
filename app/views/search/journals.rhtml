@@ -1,10 +1,5 @@
   <div class="oneColumn">
   <h1>Journals</h1>
-  <p class="smallText">WARNING: Systematic downloading of data is prohibited.
-    <% if policy_url = AppConfig.param('usage_policy_url') %>
-    Please see <a href="#" class="smallTextlink" onClick="window.open('<%= policy_url %>','image','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,height=380,width=650');">Policy
-                                for Use of Online Info</a>.</p>
-    <% end %>
     
 <%= render :partial=>"a_to_z" %>
   <p class="exlargeText">Searching for a specific journal?</p>
