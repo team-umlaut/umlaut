@@ -10,14 +10,29 @@ class Amazon < Service
   end
   
   def handle(request)
+    debugger
+    
     isbn = request.referent.metadata['isbn']
+    # We're assuming the ISBN is the ASIN Amazon ID. Not neccesarily valid
+    # assumption, but works enough of the time and there's no easy
+    # alternative.
+    # Clean up the isbn, and convert 13 to 10 if neccesary. 
+    require 'isbn/tools'
+
+    # remove hyphens and such
+    isbn = isbn.gsub(/[^0-9X]/,'')
+    if ( ISBN_Tools.is_valid_isbn13?( isbn ) )
+      # got to try converting to 10. An ISBN-13 is never an ASIN. 
+      isbn = ISBN_Tools.isbn13_to_isbn10(isbn)   
+    end      
     
     return request.dispatched(self, true) if isbn.blank?
 
     begin
     
-    # get the Amazon query
-      query = "Service=AWSECommerceService&SubscriptionId=#{@api_key}&Operation=ItemLookup&ResponseGroup=Large,Subjects&ItemId="+isbn.gsub(/[^0-9X]/,'')           
+      # get the Amazon query
+      
+      query = "Service=AWSECommerceService&SubscriptionId=#{@api_key}&Operation=ItemLookup&ResponseGroup=Large,Subjects&ItemId="+isbn
       uri = URI.parse(self.url+'?'+query)
       links = []
       # send the request
