@@ -30,7 +30,7 @@ holdings.each do |p|
   target = p.view_data
 %>
   <tr><td class="holding_heading_row"><h4><%= target[:collection_str] %></h4></td>
-      <td class="holding_heading_row"><span style="white-space: nowrap;"><%= link_to (target[:call_number] || 'catalog'), {:controller=>"link_router", :id=>p.id}, "target"=>"_blank" %> </span></td>
+      <td class="holding_heading_row"><span style="white-space: nowrap;"><%= link_to (target[:call_number] || 'full info'), {:controller=>"link_router", :id=>p.id}, "target"=>"_blank" %> </span></td>
       
       <% status_class = (target[:status] == "Not Charged" or target[:status] == "Available") ? 'available' : '' %> 
       
