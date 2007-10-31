@@ -17,7 +17,10 @@ class Amazon < Service
     # Clean up the isbn, and convert 13 to 10 if neccesary. 
     require 'isbn/tools'
 
+    return request.dispatched(self, true) if isbn.blank?
     # remove hyphens and such
+
+    
     isbn = isbn.gsub(/[^0-9X]/,'')
     if ( ISBN_Tools.is_valid_isbn13?( isbn ) )
       # got to try converting to 10. An ISBN-13 is never an ASIN. 
