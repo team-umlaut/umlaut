@@ -6,6 +6,7 @@ unless get_service_type('cover_image').empty? %>
 <tr><td><table width="100%" cellpadding="3" cellspacing="0">
 <% end 
 cite = @user_request.referent.to_citation
+rft_metadata = @user_request.referent.metadata
 %>
 
     <tr>
@@ -13,6 +14,17 @@ cite = @user_request.referent.to_citation
       
       <td class="largeText"><%= cite[:title] %></td>
    </tr>
+<% # Try to warn if this could be a typo. If we have an rft.object_id, then
+   # SFX recognized it as an actually existing journal. If not, then it
+   # might be a typo. If it came from a manually entered citation, warn them.
+ 
+   if (rft_metadata['object_id'].blank? && user_entered_citation?(@user_request) )
+%>   
+  <tr><td class="largeTextb notice"><div align="right">(!) Warning:</div></td><td class="largeText notice"><%= AppConfig.param('app_name') %> does not know about a <%= (@user_request.referent.format).downcase %> with this name. Please check your entry.</td></tr>
+
+<%   end %>
+  
+   
 <%
 @page_title = cite[:title]
 if cite[:author]  

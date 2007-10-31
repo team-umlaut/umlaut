@@ -36,8 +36,10 @@ class SearchController < ApplicationController
   end
 
   
-  # @search_results is an array of ContextObject objects.
+  # @search_results is left as an array of ContextObject objects.
   # Or, redirect to resolve action for single hit.
+  # O hit also redirects to resolve action, as per SFX behavior--this
+  # gives a catalog lookup and an ILL form for 0-hit. 
   # param umlaut.title_search_type (aka sfx.title_search) 
   # can be 'begins', 'exact', or 'contains'. Other
   # form params should be OpenURL, generally
@@ -84,8 +86,12 @@ class SearchController < ApplicationController
     #end
     
     if (@page == 1) && (@display_results.length == 1)
-      # If we narrowed down to one result, redirect to resolve action.        
-      redirect_to @display_results[0].to_hash.merge!(:controller=>'resolve')      
+      # If we narrowed down to one result redirect
+      # to resolve action.
+      redirect_to @display_results[0].to_hash.merge!(:controller=>'resolve')
+    elsif (@display_results.length == 0)
+      # 0 hits, do it too.
+      redirect_to @search_context_object.to_hash.merge!(:controller=>'resolve')
     end
 
   end
