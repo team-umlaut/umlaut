@@ -9,9 +9,7 @@ class Amazon < Service
              ServiceTypeValue['similar_item'] ]
   end
   
-  def handle(request)
-    debugger
-    
+  def handle(request)    
     isbn = request.referent.metadata['isbn']
     # We're assuming the ISBN is the ASIN Amazon ID. Not neccesarily valid
     # assumption, but works enough of the time and there's no easy
