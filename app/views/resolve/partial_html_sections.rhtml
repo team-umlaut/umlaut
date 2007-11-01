@@ -1,0 +1,34 @@
+<partial_html_sections>
+
+<% if any_services_in_progress? %>
+  <in_progress>
+    <refresh_url_path><%= REXML::Text.new( url_for(params.merge( :'umlaut.request_id' => @user_request.id ) )).to_s %></refresh_url_path>
+    <requested_wait_seconds>4</requested_wait_seconds>
+    <services_in_progress>
+      <% @user_request.services_in_progress.collect { |s| s.service_types_generated}.flatten.uniq.each do |type| %> 
+          <service name="<%= type.name %>" />  
+      <% end %>
+    </services_in_progress>
+  </in_progress>
+<% end %>
+
+<% @partial_html_sections.each do |section| %>
+  <html_section id="<%= section[:div_id] %>">
+    <included_services>
+       <% section[:service_type_values].each do |type_name| %>
+         <service name="<%= type_name %>" />
+       <% end %>
+    </included_services>
+    <service_load_complete value="<%= section[:complete?]  %>" />
+    <html_content>
+      <%= 
+          html = render(:partial => section[:partial])
+          # xml-escape our html, so we can safely embed it in our xml
+          # even if it's not valid xhtml, and in one XML 'string'. 
+          # We abuse REXML for it's XML-escaping powers. 
+          REXML::Text.new( html ).to_s 
+       %>
+    </html_content>
+  </html_section>
+<% end %>
+</partial_html_sections>

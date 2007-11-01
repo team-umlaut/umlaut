@@ -32,7 +32,7 @@ class ResolveController < ApplicationController
   @@background_updater = {:divs  => 
                          [{ :div_id => "fulltext_wrapper", 
                             :partial => "fulltext",
-                            :service_type_value => "fulltext"
+                            :service_type_values => ["fulltext"]
                           },
                           { :div_id => "holding", 
                             :partial => @@partial_for_block[:holding],
@@ -40,14 +40,16 @@ class ResolveController < ApplicationController
                           },
                           {:div_id => "highlighted_links",
                            :partial => "highlighted_links_start",
-                           :service_type_value => "highlighted_link"},
+                           :service_type_values => ["highlighted_link"]},
                            
                            ],
                           :error_div =>
                           { :div_id => 'service_errors',
                             :partial => 'service_errors'}
                         }
-
+   #re-use some of that for partial html sections too.
+   # see partial_html_sections action. 
+   @@partial_html_sections = @@background_updater[:divs]
 
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
@@ -234,6 +236,35 @@ class ResolveController < ApplicationController
       @meta_refresh_self = 5  
     end
   end
+
+  # This action is for external callers. An external caller _could_ get
+  # data as xml or json or whatever. But Umlaut already knows how to render
+  # it. What if the external caller wants the rendered content, but in
+  # discrete letter packets, a packet of HTML for each ServiceTypeValue?
+  # This does that, and also let's the caller know if background
+  # services are still running and should be refreshed, and gives
+  # the caller a URL to refresh from if neccesary.   
+  
+  def partial_html_sections
+    
+    @partial_html_sections = @@partial_html_sections
+    # calculate in progress for each section
+    @partial_html_sections.each do |section|
+         type_names = []
+         type_names << section[:service_type_value] if section[:service_type_value]
+         type_names.concat( section[:service_type_values] ) if section[:service_type_values]
+       
+         complete =  type_names.find { |n| @user_request.service_type_in_progress?(n) }.nil?
+
+         section[:complete?] = complete
+     end
+
+    # Run the request.
+    self.service_dispatch()
+    @user_request.save!
+
+    render(:content_type => "application/xml", :layout => false)
+  end
   
   def xml
 		self.index
@@ -256,56 +287,59 @@ class ResolveController < ApplicationController
     service_dispatcher.add_social_bookmarkers  	    
   	self.do_processing(service_dispatcher)  	 	
   end
-  
-  def web_search
-  	service_dispatcher = self.init_processing
-    service_dispatcher.add_identifier_lookups(@context_object)
-    service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection) + service_dispatcher.get_opacs(@collection))  	
-    service_dispatcher.add_search_engines    
-  	self.do_processing(service_dispatcher)  	     
-  end
-  
-  def more_like_this
-  	service_dispatcher = self.init_processing
-    service_dispatcher.add_identifier_lookups(@context_object)
-    service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection) + service_dispatcher.get_opacs(@collection))
-    service_dispatcher.add_search_engines
-    service_dispatcher.add_social_bookmarkers  	
-  	self.do_processing(service_dispatcher)  	
-  	puts @dispatch_response.dispatched_services.inspect
-    @dispatch_response.dispatched_services.each { | svc |
-      if svc.respond_to?('get_similar_items') and !@dispatch_response.similar_items.keys.index(svc.identifier.to_sym)
-        svc.get_similar_items(@dispatch_response)
-      end
-    }
 
-  	unless @params[:view]
-  	 @params[:view] = @dispatch_response.similar_items.keys.first.to_s
+  # Obsolete, we don't do this like this anymore. 
+  #def web_search
+  #	service_dispatcher = self.init_processing
+  #  service_dispatcher.add_identifier_lookups(@context_object)
+  #  service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection) + service_dispatcher.get_opacs(@collection))  	
+  #  service_dispatcher.add_search_engines    
+  #	self.do_processing(service_dispatcher)  	     
+  #end
+
+  # Obsolete, more_like_this not currently happening. 
+  #def more_like_this
+  #	service_dispatcher = self.init_processing
+  #  service_dispatcher.add_identifier_lookups(@context_object)
+  #  service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection) + service_dispatcher.get_opacs(@collection))
+  #  service_dispatcher.add_search_engines
+  #  service_dispatcher.add_social_bookmarkers  	
+  #	self.do_processing(service_dispatcher)  	
+  #	puts @dispatch_response.dispatched_services.inspect
+  #  @dispatch_response.dispatched_services.each { | svc |
+  #    if svc.respond_to?('get_similar_items') and !@dispatch_response.similar_items.keys.index(svc.identifier.to_sym)
+  #      svc.get_similar_items(@dispatch_response)
+  #    end
+  #  }
+
+  #	unless @params[:view]
+  #	 @params[:view] = @dispatch_response.similar_items.keys.first.to_s
   	 
-  	end
-  	puts @dispatch_response.similar_items.keys.inspect
-  end
-  def related_titles
-  	service_dispatcher = self.init_processing
-    service_dispatcher.add_identifier_lookups(@context_object)
-    service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection) + service_dispatcher.get_opacs(@collection))  	
-   	self.do_processing(service_dispatcher)  	
-  end
+  #	end
+  #	puts @dispatch_response.similar_items.keys.inspect
+  #end
+
+  # Obsolete, related titles functionality not currently happening. 
+  #def related_titles
+  #	service_dispatcher = self.init_processing
+  #  service_dispatcher.add_identifier_lookups(@context_object)
+  #  service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection) + service_dispatcher.get_opacs(@collection))  	
+  # 	self.do_processing(service_dispatcher)  	
+  #end
 
   # table of contents pull-out page
   def toc
 
   end
     
-  #def start
-  #	self.index
+
+
+  # Obsolete, I think. 
+  #def help
+  #	service_dispatcher = self.init_processing  
+  #  service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection))  	
+  # 	self.do_processing(service_dispatcher)     
   #end
-  
-  def help
-  	service_dispatcher = self.init_processing  
-    service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection))  	
-   	self.do_processing(service_dispatcher)     
-  end
 
   def rescue_action_in_public(exception)
     render :template => "error/resolve_error"
@@ -479,11 +513,10 @@ class ResolveController < ApplicationController
         end
     end
   end
-  
+
   def service_dispatch()
     
     expire_old_responses();
-    
     
     # Foreground services
     (0..9).each do | priority |
