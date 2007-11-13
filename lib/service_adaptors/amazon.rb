@@ -86,7 +86,11 @@ class Amazon < Service
     
     # get description
     if desc = (aws.at("/ItemLookupResponse/Items/Item/EditorialReviews/EditorialReview/Content"))
-      request.add_service_response({:service=>self, :display_text => "Description from Amazon.com", :url => item_url.inner_html, :key=>'abstract', :value_string=>asin, :service_data => {:content=>desc.inner_html}},['abstract'])
+
+      # For some reason we need to un-escape the desc. Don't entirely get it.
+      desc_text = CGI.unescapeHTML( desc.inner_text )
+      
+      request.add_service_response({:service=>self, :display_text => "Description from Amazon.com", :url => item_url.inner_html, :key=>'abstract', :value_string=>asin, :service_data => {:content=>desc_text }},['abstract'])
     end
     
     # we want to highlight Amazon to link to 'search in this book', etc.
