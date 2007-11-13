@@ -100,22 +100,29 @@ module ResolveHelper
   # pass in a service_type object, get a link (<a>) to display it in a frameset
   # page. Takes account of known_frame_escapers to send them to a new non-framed
   # window.
-  def frameset_link_to(service_type)
+  def frameset_link_to(service_type, url_params={})
     if ( known_frame_escaper?(service_type))
       link_to(service_type.view_data[:display_text],
               direct_url_for(service_type),
               'target'=>'_blank')
     else    
       link_to(service_type.view_data[:display_text],
-              LinkRouterController::frameset_action_params( service_type ),
+              LinkRouterController::frameset_action_params( service_type ).merge( url_params ) ,
               'target'=> '_top')
     end
   end
-
+  
   # Returns true if the current request is title-level only--if it has
   # no vol/iss/page number etc info.
   def title_level_request?  
     return @user_request.title_level_citation?
   end
+
+    # Did this come from citation linker style entry?
+  # We check the referrer. 
+  def user_entered_citation?(uml_request)
+     id = uml_request.referrer.identifier
+     return id == 'info:sid/sfxit.com:citation' || id == 'info:sid/umlaut.code4lib.org:citation'
+  end  
     
 end
