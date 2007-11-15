@@ -6,32 +6,33 @@
 <title><%= AppConfig.param('app_name', 'Find It') %> | <%= @user_request.referent.to_citation[:title] %></title>
  <%= stylesheet_link_tag 'basic'
  %> 
- <%= render(:partial => 'shared/ensure_window_size') %>
+ <% render(:partial => 'shared/ensure_window_size') %>
+ <%= render(:partial => "layout_helpers/resolve_head_content" ) %>
+
 </head>
 
 <body class="banner">
-<div class="banner_menu">
+<div id="banner_menu" class="banner_menu">
   <div class="banner_menu_inner_container">
+  
+  
   <div id="banner_controls" class="banner_section">
     <%= resolver_link(nil, :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %><br/>
     <span style="font-weight: bold; font-size: 15px;"><%= resolver_link(nil, :text => 'See more options', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
+    
     <%= link_to "#{ image_tag("frame_remove.gif", :border=>0, :align=>'bottom') } Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
     
-  <% displayed_data = @service_type_join.view_data %>
-  <% unless displayed_data[:authentication].blank? %>
-        <strong>Authentication:</strong> <%= displayed_data[:authentication] %>
-  <% end %>
-    
-    <% help_responses = get_service_type('help')
-       unless help_responses.blank?
-    %>
+    <% displayed_data = @service_type_join.view_data %>
+    <% unless displayed_data[:authentication].blank? %>
+          <strong>Authentication:</strong> <%= displayed_data[:authentication] %>
+    <% end %>
+      
+
    
   </div>
 
-  <div id="banner_citation" class="banner_section">
-    <%= render :partial=>'compact_citation' %>
-  </div>
-  
+
+
 
   
   <% fulltxt = get_service_type('fulltext')
@@ -53,7 +54,7 @@
             if ( ft == @service_type_join ) %>
             <a class="grayedOut"><%= target[:display_text] %></a>
         <% else %>
-          <%= frameset_link_to(ft) %>        
+          <%= frameset_link_to(ft, :'umlaut.banner_effects'=>'false') %>        
         <% end %>
         </li>
     <% end
@@ -82,16 +83,20 @@
   </div>
   <% end %>
   
-  <div id="banner_help" class="banner_section">
-    <span id="helpicon">?</span><span class="smallText">Problem? Need help?
-      <% help_responses.each do |help| %>
-           <%= link_to help.view_data[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %> 
-       <% end
-     end
-     %></span>
-   </div>
-  
+   
+    <div id="banner_citation" class="banner_section">
+    <%= render :partial=>'compact_citation' %>
+  </div>
+   
+   
 </div>
 </div>
+
+  <script>
+    <%= visual_effect(:grow, 'banner_controls') %>
+    <%= visual_effect(:grow, 'banner_fulltext') %>
+    <%= visual_effect(:grow, 'banner_citation') %>
+    <%= visual_effect(:highlight, 'banner_menu', :startcolor=>"'#CC3333'") %>
+  </script>
 </body>
 </html>

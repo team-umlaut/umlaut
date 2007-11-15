@@ -12,7 +12,7 @@
   </table>
   </div>
   
-  <%= link_to ("View Current Results",  @user_request.original_co_params( :add_request_id => true  ).merge!({ :action => 'index' , :'umlaut.skip_resolve_menu' => params['umlaut.skip_resolve_menu'] }))   %>
+  <%= link_to ("View Current Results",  @user_request.original_co_params( :add_request_id => true  ).merge!({ :action => 'index' , :'umlaut.skip_resolve_menu' => false }))   %>
 </div>
 
                 

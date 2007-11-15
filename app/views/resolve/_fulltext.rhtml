@@ -4,7 +4,7 @@
 %>
 
 <div id="fulltext" class="main_column_section <%= unless fulltxt.blank? && title_level_fulltxt.blank?; 'highlighted_section' ; end %>">
-<h3><%= ServiceTypeValue[:fulltext].display_name %> via:</h3>
+<h3 id="fulltext_heading"><%= ServiceTypeValue[:fulltext].display_name %> via:</h3>
 <ul class="fulltextlink">
 
 <%= render(:partial => "fulltext_element",

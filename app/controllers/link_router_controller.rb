@@ -23,7 +23,7 @@ class LinkRouterController < ApplicationController
 
       # Call link_out_filters, if neccesary.
       
-      #new_url = @collection.link_out_service_level(5)[0].link_out_filter(url)
+      #filtered_url = @collection.link_out_service_level(5)[0].link_out_filter(url)
 
       redirect_to url
     end

@@ -1,7 +1,27 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  # Over-ride to allow default forcing of urls with hostnames.
+  # This is neccesary for our partial_html_sections service
+  # to work properly. Just set @generate_url_with_host = true
+  # in your controller, and urls will be generated with hostnames
+  # for the remainder of that action. 
+  def url_for(options={}, *parameters_for_method_reference)          
+    options[:only_path] = false if @generate_urls_with_host && options[:only_path].nil?
+    super(options, parameters_for_method_reference)          
+  end
 
+  # over-ride image_path to generate complete urls with hostname and everything
+  # if @generate_url_with_host is set. This makes image_tag generate
+  # src with full url with host. See #url_for
+  def image_path(source)
+    path = super(source)
+    if @generate_urls_with_host    
+      path = request.protocol() + request.host_with_port() + path
+    end
+    return path
+  end
+  
   # pass in an OpenURL::ContextObject, outputs a link.
   def resolver_link(context_object, params={})
     #,'http://sfx.galib.uga.edu/sfx_git1/sfx.gif'

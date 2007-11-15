@@ -6,6 +6,11 @@ class ApplicationController < ActionController::Base
   session :session_key => '_u2_session_id'
   before_filter :app_before_filter
 
+  # This is SUPPOSED to default to 'false'. For our partial html snippet thing. 
+  #def default_url_options(some_param)
+  #  { :only_path => false }
+  #end
+  
   def app_before_filter    
     @use_umlaut_journal_index = AppConfig.param("use_umlaut_journal_index", true)
 

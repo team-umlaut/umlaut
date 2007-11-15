@@ -10,7 +10,7 @@ class ResolveController < ApplicationController
   
   # Take layout from config, default to resolve_basic.rhtml layout. 
   layout AppConfig.param("resolve_layout", "resolve_basic"), 
-         :except => [:banner_menu, :bannered_link_frameset]
+         :except => [:banner_menu, :bannered_link_frameset, :partial_html_sections]
   require 'json/lexer'
   require 'json/objects'
   require 'oai'
@@ -246,6 +246,13 @@ class ResolveController < ApplicationController
   # the caller a URL to refresh from if neccesary.   
   
   def partial_html_sections
+    # Tell our application_helper#url_for to generate urls with hostname
+    @generate_urls_with_host = true
+
+    # Force background status to be the spinner--default js way of putting
+    # spinner in does not generally work through ajax techniques.
+    @force_bg_progress_spinner = true
+
     
     @partial_html_sections = @@partial_html_sections
     # calculate in progress for each section
@@ -259,11 +266,36 @@ class ResolveController < ApplicationController
          section[:complete?] = complete
      end
 
-    # Run the request.
+    # Run the request if neccesary. 
     self.service_dispatch()
     @user_request.save!
+    
+    # Format?
+    format = (params["umlaut.response_format"]) || "xml"
+    
+   if ( format == "xml" )      
+      # The partial_html_sections.rhtml returns xml
+      render(:content_type => "application/xml", :layout => false)
+   elsif ( format == 'json' || format == "jsonp")
+      
+      # get the xml in a string
+      xml_str = render_to_string(:layout=>false)
+      # convert to hash
+      data_as_hash = Hash.create_from_xml( xml_str )
+      # And conver to json. Ta-da!
+      json_str = data_as_hash.to_json
 
-    render(:content_type => "application/xml", :layout => false)
+      # Handle jsonp.
+      if ( format == "jsonp")
+        procname = params["umlaut.jsonp"] || "onPartialHtmlSectionsLoaded"
+        
+        json_str = procname + "( " + json_str + " );"
+      end
+      
+      render(:text => json_str, :content_type=> "text/plain", :layout=>false )
+    else
+      raise ArgumentError.new("format requested (#{format}) not understood by action")
+    end
   end
   
   def xml

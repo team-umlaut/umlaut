@@ -1,20 +1,40 @@
+# Required parameters:
+#   proxy_server
+#   proxy_password (the ProxyURLPassword  parameter in ezproxy.cfg; must be set
+#                   to turn on proxy url api feature ).
+#   optional param:
+#   proxy_url_path: defaults to /proxy_url, the default ezproxy path to call api
+#
+#   This service is a link_out_filter service, it must be setup in your
+#   services.yml with "task: link_out_filter ". 
+
 class Ezproxy < Service
-  required_config_params :proxy_server, :proxy_password, :proxy_url_path
+  required_config_params :proxy_server, :proxy_password
   
   require 'rexml/document'
   require 'uri'
   require 'net/http'
   require 'cgi'  
-  
-  def handle(request)
-    
+
+  def initialize(config)
+    super(config)
+    @proxy_url_path ||= "/proxy_url"
   end
 
-  def link_out_filter(url)
-    return proxy_urls( [url] )[0]
+  # This is meant to be called as task:link_out_filter, it doesn't have an
+  # implementation for handle, it implements link_out_filter() instead. 
+  def handle(request)
+     raise "Not implemented."
+  end
+
+  def link_out_filter(orig_url)
+    new_url =  proxy_urls( [orig_url] )[0]
+    
+    return new_url || orig_url
   end
   
   def proxy_urls(urls)
+    debugger
     url_doc = REXML::Document.new
     doc_root = url_doc.add_element "proxy_url_request", {"password"=>@proxy_password}
     urls_elem = doc_root.add_element "urls"

@@ -33,15 +33,26 @@
 %>
 
 <% # only display if there are more! 
-     if service_types_in_progress?(svc_types) %>
-<div id="<%= div_id %>">
-  <%= current_set_empty ? "" : "More " %><%= svc_types[0].display_name_pluralize %> may be available. 
-  <%= link_to "Load #{current_set_empty ? "" : "complete "}#{svc_types[0].display_name_pluralize}", {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %>  
-</div>
-<script type="text/javascript">
-<%= update_page do |page|
-     page.replace_html div_id, "#{image_tag('spinner.gif')} Searching for #{current_set_empty ? "" : "more "}#{svc_types[0].display_name_pluralize}"
-end
-%>
-</script>
+ if service_types_in_progress?(svc_types) %>
+  <div id="<%= div_id %>">
+    <% unless @force_bg_progress_spinner %>
+      <%= current_set_empty ? "" : "More " %><%= svc_types[0].display_name_pluralize %> may be available. 
+      <%= link_to "Load #{current_set_empty ? "" : "complete "}#{svc_types[0].display_name_pluralize}", {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %> 
+    <% end %>
+    <% if @force_bg_progress_spinner %>
+      <%= 
+      image_tag('spinner.gif') %>
+      Searching for <%= current_set_empty ? "" : "more " + svc_types[0].display_name_pluralize %>
+    <% end %>
+  </div>
+
+  <% unless @force_bg_progress_spinner == false # Not just nil, but false 
+  %>
+    <script type="text/javascript">
+    <%= update_page do |page|
+         page.replace_html div_id, "#{image_tag('spinner.gif')} Searching for #{current_set_empty ? "" : "more "}#{svc_types[0].display_name_pluralize}"
+    end
+    %>
+    </script>
+  <% end %>
 <% end %>

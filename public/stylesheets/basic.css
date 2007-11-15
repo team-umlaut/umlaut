@@ -401,8 +401,8 @@ body.banner {
 }
 .banner_menu {
   position: absolute;
-  top: 5px;
-  bottom: 5px;
+  top: 8px;
+  bottom: 8px;
   left: 0;
   right: 0;
   width: 100%;
@@ -425,7 +425,7 @@ body.banner {
   overflow-x: hidden;
   height: 100%; 
   font-size:10px;
-  margin-left: 4px;
+  margin-left: 6px;
   padding-left: 4px;
   padding-right: 2px;
 }
@@ -438,8 +438,6 @@ body.banner {
   margin-top: 1px;
 }
 
-
-
 .banner_section li {
   padding-bottom: 3px;
 }
@@ -450,6 +448,7 @@ body.banner {
 
 #banner_controls {
   width: 120px;
+  margin-left: 18px;
 }
 
 #banner_citation {
@@ -457,6 +456,8 @@ body.banner {
   overflow-y: auto; 
   border: 1px solid #e9e9e9;
   background-color: white;
+  margin-right: 6px;
+  margin-left: 72px;
 }
 
 #banner_fulltext {
@@ -464,6 +465,7 @@ body.banner {
   overflow-y: auto;   
 	border: 1px solid #e9e9e9;
   background-color: white;
+  margin-left: 72px;
 }
 
 #banner_help {
