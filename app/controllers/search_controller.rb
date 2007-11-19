@@ -143,7 +143,11 @@ class SearchController < ApplicationController
         :include=>[{:object => [:publishers, :titles] }])
         
       # Convert to context objects
-      @display_results = az_titles.collect { | azt | azt.to_context_object }
+      @display_results = az_titles.collect do | azt | 
+        co = azt.to_context_object
+        co.referrer.add_identifier('info:sid/umlaut.code4lib.org:azlist')
+        co
+      end
              
       
     end

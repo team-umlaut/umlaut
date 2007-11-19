@@ -437,6 +437,12 @@ class ResolveController < ApplicationController
 
     return_value = nil
     if (skip.kind_of?(Hash) )
+      # excluded rfr_ids?
+      exclude_rfr_ids = skip[:excluded_rfr_ids]
+      rfr_id = @user_request.referrer && @user_request.referrer.identifier 
+      return nil if exclude_rfr_ids != nil && exclude_rfr_ids.find {|i| i == rfr_id}
+
+      # Services to skip for?
       skip[:service_types].each do | service |
         service = ServiceTypeValue[service] unless service.kind_of?(ServiceTypeValue)  
 

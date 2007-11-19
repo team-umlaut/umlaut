@@ -97,6 +97,7 @@ def umlaut_configuration(config)
   #          from these services for direct linking. (Not yet implemented)
   # {:excluded_urls => [/regexp/, 'string'] : list of regexps or strings,
   #          exclude URLs that match this string from being skipped to. (Not yet implemented)
+  # {:excluded_rfr_ids => ["info:sid/sfxit.com:citation", '"info:sid/umlaut.code4lib.org:citation"'] }
   # {:lambda => lambda {|args| return something}} : Not yet implemented. 
   
   # lambda expression: A lambda expression can be provided that
