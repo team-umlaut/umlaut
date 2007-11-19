@@ -54,8 +54,11 @@ class ResolveController < ApplicationController
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
-        
+
+    
     @user_request ||= Request.new_request(params, session, request )
+
+    
     # Ip may be simulated with req.ip in context object, or may be
     # actual, request figured it out for us. 
     @collection = Collection.new(@user_request.client_ip_addr, session)      
@@ -246,6 +249,7 @@ class ResolveController < ApplicationController
   # the caller a URL to refresh from if neccesary.   
   
   def partial_html_sections
+      
     # Tell our application_helper#url_for to generate urls with hostname
     @generate_urls_with_host = true
 
@@ -281,7 +285,7 @@ class ResolveController < ApplicationController
       # get the xml in a string
       xml_str = render_to_string(:layout=>false)
       # convert to hash
-      data_as_hash = Hash.create_from_xml( xml_str )
+      data_as_hash = Hash.from_xml( xml_str )
       # And conver to json. Ta-da!
       json_str = data_as_hash.to_json
 
@@ -291,8 +295,8 @@ class ResolveController < ApplicationController
         
         json_str = procname + "( " + json_str + " );"
       end
-      
-      render(:text => json_str, :content_type=> "text/plain", :layout=>false )
+
+      render(:text => json_str, :content_type=> "text/x-json",:layout=>false )
     else
       raise ArgumentError.new("format requested (#{format}) not understood by action")
     end

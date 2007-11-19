@@ -10,7 +10,6 @@ class Request < ActiveRecord::Base
   belongs_to :referrer
 
   def self.new_request(params, session, a_rails_request )
-    
     # Sometimes umlaut puts in a 'umlaut.request_id' parameter.
     # first look by that, if we have it, for an existing request.  
     begin

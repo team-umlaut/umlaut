@@ -396,8 +396,8 @@ ul.smallText li.fulltextlink {
   height: 70px;
 }*/
 body.banner {
-  height: 100%;
-  background-color: #FFFDEA;
+  height: 400px;
+  background-color: #E6D19A;
 }
 .banner_menu {
   position: absolute;
@@ -407,7 +407,6 @@ body.banner {
   right: 0;
   width: 100%;
   _height: 88%; /* IE6 only */
-  background-color: #FFFDEA; 
   font-size: 10px;
 }
 
@@ -448,7 +447,6 @@ body.banner {
 
 #banner_controls {
   width: 140px;
-  margin-left: 18px;
 }
 
 #banner_citation {
@@ -456,16 +454,14 @@ body.banner {
   overflow-y: auto; 
   border: 1px solid #e9e9e9;
   background-color: white;
-  margin-right: 6px;
-  margin-left: 72px;
+  margin-left: 30px;
 }
 
 #banner_fulltext {
-  width: 280px; 
+  width: 260px; 
   overflow-y: auto;   
 	border: 1px solid #e9e9e9;
   background-color: white;
-  margin-left: 72px;
 }
 
 #banner_help {

@@ -11,7 +11,7 @@
 
 </head>
 
-<body class="banner">
+<body class="banner" id="banner_body">
 <div id="banner_menu" class="banner_menu">
   <div class="banner_menu_inner_container">
   
@@ -87,16 +87,27 @@
     <div id="banner_citation" class="banner_section">
     <%= render :partial=>'compact_citation' %>
   </div>
+  
+ <% help_responses = get_service_type('help') 
+    unless help_responses.blank?  %>
+    
+    <div id="banner_help" class="banner_section">
+    <span id="helpicon">?</span><span class="smallText">Problem? Need help?
+      <% help_responses.each do |help| %>
+           <%= link_to help.view_data[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %>
+       <% end %>
+    </span>
+   </div>
+ <% end %>
+
    
    
 </div>
 </div>
 
   <script>
-    <%= visual_effect(:grow, 'banner_controls') %>
-    <%= visual_effect(:grow, 'banner_fulltext') %>
-    <%= visual_effect(:grow, 'banner_citation') %>
-    <%= visual_effect(:highlight, 'banner_menu', :startcolor=>"'#CC3333'") %>
+    <%= visual_effect(:highlight, 'banner_body', :startcolor=>"'#CC3333'", :endcolor=>"'#E6D19A'", :queue=>'start') %>
+    <%= visual_effect(:highlight, 'banner_body', :startcolor=>"'#CC3333'", :endcolor=>"'#E6D19A'", :queue=>'end') %>
   </script>
 </body>
 </html>
