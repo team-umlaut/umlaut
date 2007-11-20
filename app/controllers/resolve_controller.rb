@@ -365,7 +365,6 @@ class ResolveController < ApplicationController
 
   # table of contents pull-out page
   def toc
-
   end
     
 
@@ -377,8 +376,10 @@ class ResolveController < ApplicationController
   # 	self.do_processing(service_dispatcher)     
   #end
 
+
+  
   def rescue_action_in_public(exception)
-    render :template => "error/resolve_error"
+    render :template => "error/resolve_error"    
   end  
 
   # Obsolete, I think. 

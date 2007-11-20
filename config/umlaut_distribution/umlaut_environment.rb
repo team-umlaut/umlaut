@@ -59,6 +59,10 @@ def umlaut_configuration(config)
   # places, like error recovery screen. Set if possible.
   # config.app_config.main_sfx_base_url = 'http://sfx.library.jhu.edu:8000/jhu_sfx?'
 
+  # In really bad errors when we have nothing else to do, a help/reference
+  # email for the user?
+  #config.app_config.help_url = "http://mylibrary.edu/help"
+  
   # Partial view to use for displaying holdings in default resolve view
   #   config.app_config.partial_for_holding = 'alternate/holding_alternate'
 
