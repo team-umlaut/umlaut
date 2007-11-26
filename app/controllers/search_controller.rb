@@ -96,11 +96,9 @@ class SearchController < ApplicationController
 
   end
 
-  # This is actually the A-Z browse display
+
   def journal_list
 
-    # Normalize request for 'Others'
-    if params[:id] =~ /^other/i then params[:id] = 'Others' end  
   
         
     @batch_size = @@az_batch_size
@@ -331,6 +329,9 @@ class SearchController < ApplicationController
   protected
 
   def normalize_params
+
+    # citation search params  
+  
     # sfx.title_search and umlaut.title_search_type are synonyms
     params["sfx.title_search"] = params["umlaut.title_search_type"] if params["sfx.title_search"].blank?
     params["umlaut.title_search_type"] = params["sfx.title_search"] if params["umlaut.title_search_type"].blank?
@@ -351,6 +352,32 @@ class SearchController < ApplicationController
       id_type = params['rft_id_type'] || 'doi'
       params['rft_id'] = "info:#{id_type}/#{params['rft_id_value']}"
     end
+
+    # SFX v2 A-Z list url format---convert to Umlaut
+    if params[:letter_group]
+      params[:id] = case params[:letter_group].to_i        
+        when 1 then '0-9'
+        # 2-27 mean A-Z, convert via ASCII value arithmetic.  
+        when 2..27 then ((params[:letter_group].to_i) +63 ).chr
+        when 28 then 'Others'
+      end
+      params.delete(:letter_group) if params[:id]
+    end
+
+    # SFX v3 A-Z list url format--convert to Umlaut
+    if params[:param_letter_group_value]
+      params[:id] = case params[:param_letter_group_value]
+        when /^0/ then '0-9'
+        when 'Others' then 'Other'
+        else params[:param_letter_group_value]
+      end          
+    end
+
+    # Normalize request for 'Others'
+    if params[:id] =~ /^other/i 
+       params[:id] = 'Others'
+    end
+
   end
 
   def context_object_from_params

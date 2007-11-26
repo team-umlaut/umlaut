@@ -23,6 +23,20 @@ ActionController::Routing::Routes.draw do |map|
   
   # Special one for alpha list
   map.connect "journal_list/:id/:page", :controller=>'search', :action=>'journal_list', :defaults=>{:page => 1, :id=> 'A'}
+
+
+  # Catch redirected from SFX A-Z and citation linker urls
+  # v2 A-Z links redirected to umlaut, point to journal_list
+  # code in journal_list filter picks out SFX URL vars for
+  # letter. 
+  map.connect '/resolve/azlist/default', :controller=>'search', :action=>'journal_list', :page=>1, :id=>'A'
+
+  # SFX v3 A-Z list url format
+  map.connect 'resolve/az', :controller=>'search', :action=>'journal_list', :page=>1, :id=>'A'
+  
+  # citation linker redirected to umlaut should point to journal search
+  map.connect '/resolve/cgi/core/citation-linker.cgi', :controller=>'search'
+
   
   # Install the default route as the lowest priority.
   # Sometimes id is an OpenURL 0.1 identifier, and sticking it in the
