@@ -118,11 +118,13 @@ module ResolveHelper
     return @user_request.title_level_citation?
   end
 
-    # Did this come from citation linker style entry?
+  # Did this come from citation linker style entry?
   # We check the referrer. 
   def user_entered_citation?(uml_request)
-     id = uml_request.referrer.identifier
-     return id == 'info:sid/sfxit.com:citation' || id == 'info:sid/umlaut.code4lib.org:citation'
+    return false unless uml_request && uml_request.referrer
+    
+    id = uml_request.referrer.identifier
+    return id == 'info:sid/sfxit.com:citation' || id == 'info:sid/umlaut.code4lib.org:citation'
   end  
     
 end
