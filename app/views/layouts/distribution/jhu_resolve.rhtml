@@ -58,7 +58,7 @@
 </div>
 
 <div class="centered_block" id="footer">
-  FindIt service provided by <%= link_to 'Johns Hopkins Libraries', 'http://webapps.jhu.edu/jhuniverse/libraries/' %> | Powered by Umlaut, using services from <%= link_to 'SFX', 'http://www.exlibrisgroup.com/sfx.htm' %>, <%= link_to 'CrossRef', 'http://www.crossref.org' %>, <%= link_to 'Amazon', 'http://www.amazon.com' %>, <%= link_to 'OCLC Worldcat', 'http://www.worldcat.org' %>, and others.  <%= link_to '[S]', 'http://sfx.library.jhu.edu:8000/jhu_sfx?' + (hash_to_querystring(@user_request.original_co_params) if @user_request), :target=>'_blank' %>
+  FindIt service provided by <%= link_to 'Johns Hopkins Libraries', 'http://webapps.jhu.edu/jhuniverse/libraries/' %> | Powered by Umlaut, using services from <%= link_to 'SFX', 'http://www.exlibrisgroup.com/sfx.htm' %>, <%= link_to 'CrossRef', 'http://www.crossref.org' %>, <%= link_to 'Amazon', 'http://www.amazon.com' %>, <%= link_to 'OCLC Worldcat', 'http://www.worldcat.org' %>, <%= link_to 'ISBNdb', 'http://isbndb.com' %>and others.  <%= link_to '[S]', 'http://sfx.library.jhu.edu:8000/jhu_sfx?' + (hash_to_querystring(@user_request.original_co_params) if @user_request), :target=>'_blank' %>
 </div>
 
 </body>

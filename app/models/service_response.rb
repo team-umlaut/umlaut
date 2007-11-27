@@ -29,7 +29,7 @@ At the point the user clicks on a ServiceResponse, Umlaut will attempt to find a
  Absolute minimum: 
  :display_text
 
- Basic set (used by fulltext)
+ Basic set (used by fulltext and often others)
  :display_text
  :notes          [newlines converted to <br>]
  :coverage

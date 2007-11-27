@@ -5,8 +5,11 @@
 <% highlighted_links.each do |hl_st| 
     target = hl_st.view_data
 %>
-<p class="tightbullets"><%= link_to target[:display_text], {:controller=>'link_router', :id=>hl_st.id}, :target=>'_blank' %>
-</p>
+<div class="tightbullets"><%= link_to target[:display_text], {:controller=>'link_router', :id=>hl_st.id}, :target=>'_blank' %>
+<% if target[:notes] %>
+  <div class="small_indent"><%= target[:notes] %> </div>
+<% end %>
+</div>
 <%end%>
 <% if service_type_in_progress?('highlighted_link') %>
 <div class="tightbullets"><%= render(:partial => "background_progress", :locals => { :svc_type => ServiceTypeValue[:highlighted_link],:current_set_empty => highlighted_links.empty? } ) %></div>
