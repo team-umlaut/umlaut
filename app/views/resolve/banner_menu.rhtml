@@ -85,8 +85,9 @@
   
    
     <div id="banner_citation" class="banner_section">
-    <%= render :partial=>'compact_citation' %>
-  </div>
+      <h3>You are looking for:</h3>
+      <%= render :partial=>'compact_citation' %>
+    </div>
   
  <% help_responses = get_service_type('help') 
     unless help_responses.blank?  %>
