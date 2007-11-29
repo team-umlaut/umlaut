@@ -119,15 +119,15 @@ module Hip3
 			path = self.hip_base_url.path() + '?' 			"menu=search&aspect=power&npp=30&ipp=20&spp=20&profile=general&ri=2&source=%7E%21horizon"
 
       criteria = Array.new
-      criteria << "&index=#{ISSN_KW_INDEX}&term=#{self.issn}" unless issn.nil? 
-      criteria << "&index=#{ISBN_KW_INDEX}&term=#{self.isbn}" unless isbn.nil?
+      criteria << "&index=#{ISSN_KW_INDEX}&term=#{URI.escape(self.issn)}" unless issn.nil? 
+      criteria << "&index=#{ISBN_KW_INDEX}&term=#{URI.escape(self.isbn)}" unless isbn.nil?
       criteria << keyword_url_args
       path << criteria.join("&oper=or")
 
       unless ( @search_hash.blank?)
         manual_criteria = []
         @search_hash.each_pair do |index, kws|
-          manual_criteria << kws.collect {|kw| "&index=#{index}&term=#{CGI.escape(kw)}"}
+          manual_criteria << kws.collect {|kw| "&index=#{index}&term=#{URI.escape(kw)}"}
         end
         path << "&" << manual_criteria.join("&oper=and")
       end
@@ -174,7 +174,6 @@ module Hip3
 		# Returns an array of bib objects. 
 		def search
       return [] if insufficient_query
-      
 			httpResp = httpSession.get(searchPath(), nil )
 		
 			reDoc = REXML::Document.new( httpResp.body )

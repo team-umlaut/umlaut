@@ -16,6 +16,8 @@ class Worldcat < Service
   end
   
   def handle(request)
+    #sleep(10)
+    
     ref_metadata = request.referent.metadata
             
     isxn_key = nil
@@ -35,8 +37,9 @@ class Worldcat < Service
 
     # We do a pre-emptive lookup to worldcat to try and see if worldcat
     # has a hit or not, before adding the link.
+    isxn_key = URI.escape( isxn_key )
     uri_str = @base_url+isxn_key+'/'+isxn_value
-    uri_str +=  "&loc=#{@search_zip_code}" if @search_zip_code
+    uri_str +=  "&loc=#{URI.escape(@search_zip_code.to_s)}" if @search_zip_code
     
     worldcat_uri = URI.parse(uri_str)
 		http = Net::HTTP.new worldcat_uri.host

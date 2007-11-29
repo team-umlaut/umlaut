@@ -21,7 +21,7 @@ class IsbnDb < Service
 
   def initialize(config)
     @timeout = 7
-    @display_text = "Compare Online Prices from ISBNdb.com"
+    @display_text = "Compare online prices from ISBNdb.com"
     super(config)
   end
 
