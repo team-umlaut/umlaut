@@ -32,7 +32,9 @@ class SearchController < ApplicationController
   end  
   
   def journals
-    #fall through to view
+    #fall through to view    
+    @submit_hash = params["umlaut.display_coins"] ? {:controller=>'resolve', :action=>'display_coins'} : {:controller=>'search', :action=>'journal_search'} 
+    
   end
 
   def books

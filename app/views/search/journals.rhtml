@@ -46,7 +46,7 @@ function setDate() {
 // -->
 </script>
                                   
-  <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'}, nil)  %>
+  <%= form_tag(@submit_hash, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'}, nil)  %>
   <div class="citationLinker">                                      
 
       <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
