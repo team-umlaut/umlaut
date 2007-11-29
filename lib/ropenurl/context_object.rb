@@ -304,6 +304,8 @@ module OpenURL
       ref = {}
       openurl_keys = ["url_ver", "url_tim", "url_ctx_fmt"]
       hash.each { |key, val|
+        next if val.blank?
+        
         if openurl_keys.include?(key)
         elsif @admin.has_key?(key)
           self.set_administration_key(key, val)
