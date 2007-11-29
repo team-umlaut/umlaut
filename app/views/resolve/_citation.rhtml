@@ -18,7 +18,7 @@ rft_metadata = @user_request.referent.metadata
    # SFX recognized it as an actually existing journal. If not, then it
    # might be a typo. If it came from a manually entered citation, warn them.
  
-   if (rft_metadata['object_id'].blank? && user_entered_citation?(@user_request) )
+   if display_not_found_warning?(@user_request)
 %>   
   <tr><td class="largeTextb notice"><div align="right">(!) Warning:</div></td><td class="largeText notice"><%= AppConfig.param('app_name') %> does not know about a <%= (@user_request.referent.format).downcase %> with this name. Please check your entry.</td></tr>
 

@@ -125,6 +125,13 @@ module ResolveHelper
     
     id = uml_request.referrer.identifier
     return id == 'info:sid/sfxit.com:citation' || id == 'info:sid/umlaut.code4lib.org:citation'
-  end  
+  end
+
+  def display_not_found_warning?(uml_request)
+    metadata = uml_request.referent.metadata
+    
+  
+    return (metadata['genre'] != 'book' && metadata['object_id'].blank? && user_entered_citation?(@user_request) ) ? true : false
+  end
     
 end

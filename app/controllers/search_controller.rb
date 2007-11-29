@@ -35,6 +35,10 @@ class SearchController < ApplicationController
     #fall through to view
   end
 
+  def books
+     @submit_action = params["umlaut.display_coins"] ? "display_coins" : "index"
+  end
+
   
   # @search_results is left as an array of ContextObject objects.
   # Or, redirect to resolve action for single hit.

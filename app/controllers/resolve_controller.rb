@@ -54,7 +54,7 @@ class ResolveController < ApplicationController
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
-
+    
     
     @user_request ||= Request.new_request(params, session, request )
 
@@ -174,7 +174,12 @@ class ResolveController < ApplicationController
     end
   end
 
+  # Useful for developers, generate a coins. Start from
+  # search/journals?umlaut.display_coins=true
+  # or search/books?umlaut.display_coins=true
+  def display_coins
 
+  end
   
   # Show a link to something in a frameset with a mini menu in a banner. 
   def bannered_link_frameset

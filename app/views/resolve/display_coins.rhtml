@@ -1,0 +1,12 @@
+<% coins_str = @user_request.referent.to_context_object.coins %>
+
+<div style="overflow-x:scroll; margin-top: 20px; margin-bottom: 20px; padding: 5px;">
+<table border="1" cellpadding="5">
+<tr><td>COinS:</td>
+<td><%= coins_str %></td>
+</tr>
+
+<tr><td>escaped:</td>
+<td style="white-space:nowrap;"><%= h(coins_str) %></td>
+</tr>
+</table>
