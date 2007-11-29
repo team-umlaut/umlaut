@@ -1,0 +1,103 @@
+  <div class="oneColumn">
+  <h1>Books</h1>
+
+<%= form_tag({:controller=>'resolve', :action=>'index'}, {:method=>'get'}) %>
+  <div class="citationLinker">                                      
+
+<input type=hidden name="url_ver" value="Z39.88-2004">
+<input type=hidden name="url_ctx_fmt" value="info:ofi/fmt:kev:mtx:ctx">
+<input type=hidden name="ctx_ver" value="Z39.88-2004">
+<input type=hidden name="rfr_id" value="info:sid/umlaut.code4lib.org:citation">
+<input type=hidden name="rft_val_fmt" value="info:ofi/fmt:kev:mtx:book">
+<input type=hidden name="rft.genre" value="book">
+
+<table>
+                                </tr>
+                                    <td align="right" >book title</td>
+
+                                    <td><input
+                                            type=text
+                                            name="rft.btitle"
+                                            size="33"
+                                            value=""></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" >year</td>
+                                    <td>
+                                        <input type=text name="rft.date" size="10" value="">
+                                                                            </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="right" >volume</td>
+                                    <td>
+                                        <input
+                                            type=text
+                                            name="rft.volume"
+                                            size="5"
+                                            maxlength="5"
+                                            value="">
+                                        part <input
+                                                type=text
+                                                name="rft.part"
+                                                size="5"
+                                                value="">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" >isbn</td>
+                                    <td>
+                                        <input
+                                            type=text
+                                            name="rft.isbn"
+                                            size="17"
+                                            maxlength="17"
+                                            value="">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="right" >author</td>
+                                    <td>
+                                        <table border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td >last name</td>
+                                                <td >first name</td>
+
+                                                <td >initials</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input
+                                                        type=text
+                                                        name="rft.aulast"
+                                                        size="12"
+                                                        value=""></td>
+                                                <td><input
+                                                        type=text
+                                                        name="rft.aufirst"
+                                                        size="10"
+                                                        value=""></td>
+                                                <td><input
+                                                        type=text
+                                                        name="rft.auinit"
+                                                        size="4"
+                                                        value=""></td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="80%" align="right">
+                                      &nbsp;               
+                                    </td>
+                                    <td colspan="20%" align="right">
+                                        <input type="submit"  value="search"></td>
+                                    </td>
+
+                                </tr>
+                            </table>
+</div>                        
+</form>
+</div>
