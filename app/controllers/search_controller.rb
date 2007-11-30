@@ -27,15 +27,17 @@ class SearchController < ApplicationController
 
   before_filter :normalize_params
   
-  def index    
-  	render :action=>'journals'    
+  def index
+    # Oddly, render doesn't call the action method.
+    journals()
+  	render :action=>'journals'
   end  
   
   def journals
-    #fall through to view    
-    @submit_hash = params["umlaut.display_coins"] ? {:controller=>'resolve', :action=>'display_coins'} : {:controller=>'search', :action=>'journal_search'} 
-    
+    #fall through to view
+    @submit_hash = params["umlaut.display_coins"] ? {:controller=>'resolve', :action=>'display_coins'} : {:controller=>'search', :action=>'journal_search'}
   end
+
 
   def books
      @submit_action = params["umlaut.display_coins"] ? "display_coins" : "index"
