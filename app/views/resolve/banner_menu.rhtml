@@ -93,10 +93,12 @@
     unless help_responses.blank?  %>
     
     <div id="banner_help" class="banner_section">
-    <span id="helpicon">?</span><span class="smallText">Problem? Need help?
+    <span id="helpicon">?</span><span class="smallText">Problem?<br>Need help?
+      <ul>
       <% help_responses.each do |help| %>
-           <%= link_to help.view_data[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %>
+           <li><%= link_to help.view_data[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %></li>
        <% end %>
+       </ul>
     </span>
    </div>
  <% end %>
