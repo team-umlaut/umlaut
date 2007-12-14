@@ -14,8 +14,6 @@ class ResolveController < ApplicationController
   require 'json/lexer'
   require 'json/objects'
   require 'oai'
-  require 'open_url'
-  require 'collection'
 
   # If a background service was started more than 30 seconds
   # ago and isn't finished, we assume it died.
@@ -54,7 +52,6 @@ class ResolveController < ApplicationController
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
-    
     
     @user_request ||= Request.new_request(params, session, request )
 

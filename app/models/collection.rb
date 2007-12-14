@@ -4,7 +4,6 @@
 class Collection
   
   attr_accessor :institutions
-  require 'open_url'
   
   # Build a new Collection object and gather appropriate institutions
   # and services.

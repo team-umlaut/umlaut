@@ -12,6 +12,10 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 require 'plugins/app_config/lib/configuration'
 
+# require openurl library. in vendor/plugins
+#require 'open_url'
+
+
 # Neccesary because we use threading for Umlaut
 ActiveRecord::Base.allow_concurrency = true
 
@@ -93,7 +97,7 @@ Rails::Initializer.run do |config|
   #config.app_config.resolve_display_ill = lambda {|uml_request| return true}
 
   #config.app_config.resolve_view = "alternate/resolve_alternate"
-
+  
   
   # Call local config file
   local_env_path = "#{RAILS_ROOT}/config/umlaut_config/environment.rb"

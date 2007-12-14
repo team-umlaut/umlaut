@@ -1,5 +1,5 @@
 class Crossref < Service
-  require 'open_url'
+  #require 'open_url'
   attr_reader :url, :username, :password
   def handle(request)
     return request.dispatched(self, true) unless id = self.can_resolve?(request)

@@ -2,6 +2,9 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  require 'openurl'
+
+  
   # Pick a unique cookie name to distinguish our session data from others'
   session :session_key => '_u2_session_id'
   before_filter :app_before_filter

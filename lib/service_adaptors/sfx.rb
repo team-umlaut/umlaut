@@ -24,7 +24,7 @@
 #     ResponseTypeValue name as value.
 class Sfx < Service
   require 'uri'
-  require 'open_url'
+  #require 'open_url'
 
   required_config_params :base_url
   

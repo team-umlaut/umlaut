@@ -9,7 +9,7 @@ module SfxDb
                :foreign_key => 'OBJECT_ID'
 
     def to_context_object
-      require 'open_url'
+      #require 'open_url'
       co = OpenURL::ContextObject.new
       co.referent.set_metadata('jtitle', self.TITLE_DISPLAY)
       co.referent.set_metadata('object_id', self.OBJECT_ID)

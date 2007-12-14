@@ -17,7 +17,7 @@
 # 'search_sfx_base_url', or if not defined there, the code will try to find
 # by looking at default Institutions for SFX config info.  
 class SearchController < ApplicationController
-  require 'open_url'
+  #require 'open_url'
 
   @@search_batch_size = 20
   @@az_batch_size = 20

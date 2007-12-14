@@ -48,10 +48,10 @@ class Request < ActiveRecord::Base
         # an already existing referent and/or referrer to use, if possible, or
         # else create new ones. 
     
-        # Find or create a Referent
-        context_object = OpenURL::ContextObject.new
-        context_object.import_hash( co_params )
-        
+        # Create a context object from our http params
+        context_object = OpenURL::ContextObject.new_from_form_vars( co_params )
+
+        # Find or create a Referent        
         rft = Referent.find_or_create_by_context_object(context_object)
     
         # Find or create a referrer, if we have a referrer in our OpenURL
@@ -338,11 +338,8 @@ class Request < ActiveRecord::Base
     # alphabetized by key. To attempt to make it so the same hash
     # always turns into the exact same yaml string. Hopefully it'll work.
     list = []
-    params.keys.sort.each do |key|
-      excluded = false
-      excluded_keys.each {|exclude_key| excluded = true if exclude_key === key }
-          
-      list.push( {key => params[key]} ) unless excluded
+    params.keys.sort.each do |key|          
+      list.push( {key => params[key]} ) unless excluded_keys.include?( key )
     end
     serialized = list.to_yaml
     # If serialized is bigger than the column width available, we're in trouble.
