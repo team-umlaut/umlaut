@@ -85,16 +85,7 @@ module ApplicationHelper
     return list.join(seperator)
   end
 
-  # Absolute URL for permalink for given request.
-  # Have to supply rails request and umlaut request.
-  def permalink_url(rails_request, umlaut_request)
-    
-    shortcut = rails_request.protocol
-    shortcut += rails_request.host_with_port
-    shortcut += url_for :controller=>"store", :id=>umlaut_request.referent.permalinks[0].id
-    
-    return shortcut
-  end
+  # See permalink_url in application_controller
 
   
   

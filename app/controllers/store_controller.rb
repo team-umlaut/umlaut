@@ -2,6 +2,7 @@ class StoreController < ApplicationController
   #require 'open_url'
   require 'openurl'
   def index
+    
     perm = Permalink.find(params[:id])
     co = OpenURL::ContextObject.new
     co.import_context_object(perm.referent.to_context_object)

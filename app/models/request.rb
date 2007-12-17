@@ -10,6 +10,13 @@ class Request < ActiveRecord::Base
   belongs_to :referrer
 
   def self.new_request(params, session, a_rails_request )
+    # We don't want to use the entire params. It includes things
+    # that are NOT part of the ContextObject, but are just part of
+    # rails or the app. Strip em out.
+    co_params = self.extract_co_params( params )
+    # Create a context object from our http params
+    context_object = OpenURL::ContextObject.new_from_form_vars( co_params )
+    
     # Sometimes umlaut puts in a 'umlaut.request_id' parameter.
     # first look by that, if we have it, for an existing request.  
     begin
@@ -35,22 +42,15 @@ class Request < ActiveRecord::Base
       # Except we don't preserve certain Rails and app controller params--
       # only the ones that are actually the OpenURL, is the idea.
   
-      # We don't want to use the entire params. It includes things
-      # that are NOT part of the ContextObject, but are just part of
-      # rails or the app. Strip em out.
-      co_params = self.extract_co_params( params )
       serialized_params = self.serialized_co_params( co_params )
       
-      req = Request.find(:first, :conditions => ["session_id = ? and params = ?", session.session_id, serialized_params ])
+      req = Request.find(:first, :conditions => ["session_id = ? and params = ?", session.session_id, serialized_params ]) unless serialized_params.blank?
 
       unless (req)
         # Nope, okay, we don't have a complete Request, but let's try finding
         # an already existing referent and/or referrer to use, if possible, or
         # else create new ones. 
     
-        # Create a context object from our http params
-        context_object = OpenURL::ContextObject.new_from_form_vars( co_params )
-
         # Find or create a Referent        
         rft = Referent.find_or_create_by_context_object(context_object)
     

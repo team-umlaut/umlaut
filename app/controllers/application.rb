@@ -32,6 +32,19 @@ class ApplicationController < ActionController::Base
    return true
   end
 
+  # helper method we need available in controllers too
+  # Absolute URL for permalink for given request.
+  # Have to supply rails request and umlaut request.
+  protected
+  helper_method :permalink_url
+  def permalink_url(rails_request, umlaut_request)
+    
+    return url_for(:controller=>"store",    
+        :id=>umlaut_request.referent.permalinks[0].id,
+        :only_path => false )
+        
+  end
+
      
 end
 
