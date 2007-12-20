@@ -16,7 +16,6 @@ class Referent < ActiveRecord::Base
       end
     end
     
-    
     shortcuts = {:atitle=>"", :title=>"", :issn=>"", :isbn=>"", :volume=>"", :year=>""}    
     shortcuts[:atitle] = rft.metadata['atitle'].downcase[0..254] if rft.metadata['atitle']
     if rft.metadata['jtitle']
@@ -53,12 +52,12 @@ class Referent < ActiveRecord::Base
       return rft 
     end
     rft = Referent.new
-    rft.save
+    rft.save!
     
     rft.set_values_from_context_object(co)
     permalink = Permalink.new
     permalink.referent = rft
-    permalink.save
+    permalink.save!
     
     val = ReferentValue.new
     val.key_name = 'identifier'
@@ -73,7 +72,7 @@ class Referent < ActiveRecord::Base
       rft.volume = val.normalized_value if val.key_name == 'volume' and val.metadata?
       rft.year = val.normalized_value if val.key_name == 'date' and val.metadata?
     end
-    rft.save
+    rft.save!
     return rft          
   end
 
