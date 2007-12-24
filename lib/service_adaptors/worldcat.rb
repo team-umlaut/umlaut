@@ -35,6 +35,13 @@ class Worldcat < Service
       return request.dispatched(self, true)
     end
 
+    # Do some cleanup of the isbn/isxn. Sometimes spaces or other
+    # weird chars get in there, why not strip out everything that
+    # isn't a number?
+    isxn_value.sub!( /[^\d]/, '')
+    # and URL escape just to be safe, although really shouldn't be neccesary
+    isxn_value = URI.escape( isxn_value )
+    
     # We do a pre-emptive lookup to worldcat to try and see if worldcat
     # has a hit or not, before adding the link.
     isxn_key = URI.escape( isxn_key )
