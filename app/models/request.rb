@@ -1,4 +1,11 @@
-class Request < ActiveRecord::Base  
+# An ActiveRecord which represents a parsed OpenURL resolve service request,
+# and other persistent state related to Umlaut's handling of that OpenURL 
+# request) should not be confused with the Rails ActionController::Request 
+# class (which represents the complete details of the current 'raw' HTTP
+# request, and is not stored persistently in the db).
+#
+# Constituent openurl data is stored in Referent and Referrer. 
+class Request < ActiveRecord::Base
 
   has_many :dispatched_services
   # Order service_type joins (ie, service_responses) by id, so the first
@@ -9,6 +16,8 @@ class Request < ActiveRecord::Base
   belongs_to :referent
   belongs_to :referrer
 
+  # Either creates a new Request, or recovers an already created Request from
+  # the db--in either case return a Request matching the OpenURL.
   def self.new_request(params, session, a_rails_request )
     # We don't want to use the entire params. It includes things
     # that are NOT part of the ContextObject, but are just part of

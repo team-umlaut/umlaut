@@ -1,3 +1,23 @@
+#Services are grouped together in Institutions. An Institution represents some 
+#particular class of user. It could be a particular location or affiliation, but 
+#it really could be any other class of user too.
+#
+#Institutions are defined in $umlaut/config/umlaut_config/institutions.yml 
+#(sample in config/umlaut_distribution/institutions.yml-dist ).  An Institution 
+#definition is basically a unique identifier and a list of services attached to 
+#that institution.
+#
+#Hypothetically, there will be many ways for a given incoming request to get 
+#associated with an Institution: by IP range, by user preference, by attribute 
+#from an enterprise directory associated with a  user account, etc. An incoming 
+#user can be associated with one or more institutions.
+#
+#However, at present, pretty much the only way for a user to be associated with 
+#an Institution is if it's a default Institution! So the only Institutions are 
+#default Institutions at present (there can be more than one default 
+#institution). This architecture has room for expansion.
+
+# Institution params here are mirrored in the db. 
 # After making changes to your institutions.yml file, run:
 # rake institutions:sync_to_db
 # to update database to match. 
@@ -13,17 +33,17 @@ global:
     - Amazon
     - Google
     - Yahoo
-    - YahooMyWeb
-    - Connotea
+#    - YahooMyWeb
+#    - Connotea
 
 # Define institution specific services here    
-Georgia_Tech:
-  default_institution: true
-  display_name: Georgia Tech
-  postal_code: 30332
-  oclc_symbol: GAT
-  services:
-    - Opac
-    - Opac2
-    - GT_SFX
-    - GT_EZProxy
+#Local_Library:
+#  default_institution: true
+#  display_name: My Library
+#  postal_code: 30332
+#  oclc_symbol: GAT
+#  services:
+#    - Opac
+#    - Opac2
+#    - GT_SFX
+#    - GT_EZProxy

@@ -1,3 +1,31 @@
+#The actions taken in response to a request (to 'resolve' it and provide 
+#information to the client or user) are taken in umlaut by Services. A Service 
+#is defined in your local configuration in 
+#$umlaut/config/umlaut_config/services.yml.  A sample services.yml file is 
+#included in $umlaut/config/umlaut_distribution/services.yml-dist.  
+#
+#Each service defined in services.yml has at minimum three properties: An unique 
+#identifier for that service, a priority level, and a "type".  
+#
+#The "type" is the name of an 'adaptor' class implementing the logic for this 
+#service. Service adaptor classes are stored in $umlaut/lib/service_adaptors.  
+#(We will extend this in the future to allow locally defined service_adaptors, 
+#perhaps in $umlaut/lib/service_adaptors/local ). So there's a service_adaptor 
+#for Amazon, for worldcat, etc.  Most importantly, there's one for SFX---SFX 
+#connectivity is achieved through defining a service that uses a 'type' that 
+#talks to an SFX server , just like other services. (At least for 'resolve' 
+#actions; 'search' actions are a bit different). 
+#
+#Priority defines what order the services will be run in. 1-9 are foreground 
+#services ordinarily executed before a response is returned to the user.  a-z 
+#are background services run after a response is returned to the user. Two 
+#services sharing the same priority will be run concurrently (but see the 
+#config.app_config.threaded_services config param). 
+#
+#Services defined in services.yml may have other service-specific parameters 
+#too, for instance commonly a password or api_key giving you access to the 
+#foreign web service. 
+
 # Global services
 
 # If you have your SFX set up to get Metadata from crossref with a DOI,
