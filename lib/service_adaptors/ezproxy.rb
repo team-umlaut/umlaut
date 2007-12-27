@@ -18,7 +18,11 @@ class Ezproxy < Service
 
   def initialize(config)
     super(config)
+
+    @proxy_login_path ||= "/login"
+    
     @proxy_url_path ||= "/proxy_url"
+    @proxy_url_path = "/" + @proxy_url_path unless @proxy_url_path[0,1] = '/'
   end
 
   # This is meant to be called as task:link_out_filter, it doesn't have an
@@ -27,14 +31,22 @@ class Ezproxy < Service
      raise "Not implemented."
   end
 
+  # Hook method called by Umlaut. 
+  # Returns a proxied url if it should be proxied, or nil if the url
+  # can not or does not need to be proxied. 
   def link_out_filter(orig_url)
-    new_url =  proxy_urls( [orig_url] )[0]
+    # If it's already proxied, leave it alone.
+    return nil if already_proxied(orig_url)
     
-    return new_url || orig_url
+    new_url =  proxy_urls( [orig_url] ).values[0]
+    
+    return new_url
   end
-  
+
+  # Pass in an array of URLs. Will determine if they are proxyable by EZProxy.
+  # Returns a hash, where the key is the original URL, and the value is the
+  # proxied url---or nil if could not be proxied. 
   def proxy_urls(urls)
-    debugger
     url_doc = REXML::Document.new
     doc_root = url_doc.add_element "proxy_url_request", {"password"=>@proxy_password}
     urls_elem = doc_root.add_element "urls"
@@ -42,47 +54,44 @@ class Ezproxy < Service
       url_elem = urls_elem.add_element "url"
       url_elem.text = link
     }
-    proxy_links = []  
     begin
-      resp = Net::HTTP.post_form URI.parse(@proxy_server+@proxy_url_path), {"xml"=>url_doc.to_s}    
+      resp = Net::HTTP.post_form(URI.parse('http://' + @proxy_server+@proxy_url_path), {"xml"=>url_doc.to_s})    
       proxy_doc = REXML::Document.new resp.body
     rescue Timeout::Error
       RAILS_DEFAULT_LOGGER.error "Timed out connecting to EZProxy"
       return proxy_links
+    rescue Exception => e
+      RAILS_DEFAULT_LOGGER.error "EZProxy error, NOT proxying URL + #{e}"
     end
-
   
+    return_hash = {}
     REXML::XPath.each(proxy_doc, "/proxy_url_response/proxy_urls/url") { | u |
+
+      orig_url = u.get_text.value
+      return_hash[orig_url] = nil
+    
       if u.attributes["proxy"] == "true"
-        p_url = u.attributes["scheme"]+"://"+u.attributes["hostname"]+":"+u.attributes["port"]+u.attributes["login_path"]
+        proxied_url = u.attributes["scheme"]+"://"+u.attributes["hostname"]+":"+u.attributes["port"]+u.attributes["login_path"]
         if u.attributes["encode"] == "true"
-          p_url += CGI::escape(u.get_text.value)
+          proxied_url += CGI::escape(u.get_text.value)
         else
-          p_url += u.get_text.value
+          proxied_url += u.get_text.value
         end
-        proxy_links << [u.get_text.value, p_url]
+
+        return_hash[orig_url] = proxied_url
+                
       end
     }    
-    return proxy_links
+    return return_hash
   end
-  
-  def proxy_links(links)
-    if links.empty?
-      return
-    end
-    urls = []
-    links.each { | ln |
-      urls << ln[:url]
-    }
-    proxied_urls = self.proxy_url(urls)
-    proxied_links = []
-    proxied_urls.each { | u, prx |
-      if urls.index(u)
-        links[urls.index(u)][:url] = prx      
-        proxied_links << links[urls.index(u)]
-      end
-    }
-    return proxied_links
+
+  # pass in url as a string. Return true if the
+  # url is already pointing to the proxy server
+  # configured. 
+  def already_proxied(url)
+    uri_obj = URI.parse(url)
+
+    return uri_obj.host == @proxy_server && uri_obj.path == @proxy_login_path
   end
 
 end

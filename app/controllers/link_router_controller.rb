@@ -22,9 +22,14 @@ class LinkRouterController < ApplicationController
       url = ServiceList.get(svc_type.service_response.service_id).response_url(svc_type.service_response)
 
       # Call link_out_filters, if neccesary.
-      
-      #filtered_url = @collection.link_out_service_level(5)[0].link_out_filter(url)
-
+      # These are services listed as  task: link_out_filter  in services.yml
+      (1..9).each do |priority|
+        @collection.link_out_service_level( priority ).each do |filter|
+          filtered_url = filter.link_out_filter(url)
+          url = filtered_url if filtered_url
+        end
+      end
+            
       redirect_to url
     end
   end
@@ -48,7 +53,10 @@ class LinkRouterController < ApplicationController
     return params
   end
 
-  protected 
+  protected
+  # Should a link be displayed inside our banner frameset?
+  # Depends on config settings, url params, and 
+  # whether the resolve menu was skipped or not. 
   def link_with_frameset?(svc_type)
     # Over-ridden in url?
     if ( params['umlaut.link_with_frameset'] == 'false' )
