@@ -1,6 +1,9 @@
+# All clicks on a ServiceResponse are actually sent through this controller,
+# which redirects to actual destination. That allows statistic logging,
+# as well as special behavior (like EZProxy redirection, or showing in a
+# bannered frameset). 
 require 'cgi'
 class LinkRouterController < ApplicationController
-
   # Will be redirected to a bannered frameset link based on the value
   # of app config "link_with_frameset".  URL parameter
   # "umlaut.link_with_frameset=false" can suppress that.

@@ -338,16 +338,17 @@ class ResolveController < ApplicationController
   	render_text umlaut_doc.write
 		@context_object_handler.store(@dispatch_response)  	
   end  
-  
-  def description
-  	service_dispatcher = self.init_processing 
-    service_dispatcher.add_identifier_lookups(@context_object)
-    service_dispatcher.add_identifier_lookups(@context_object)    
-    service_dispatcher << AmazonService.new
-    service_dispatcher << ServiceBundle.new(service_dispatcher.get_opacs(@collection))  	
-    service_dispatcher.add_social_bookmarkers  	    
-  	self.do_processing(service_dispatcher)  	 	
-  end
+
+  # Obsolete, don't use this for abstracts anymore. 
+  #def description
+  #	service_dispatcher = self.init_processing 
+  #  service_dispatcher.add_identifier_lookups(@context_object)
+  #  service_dispatcher.add_identifier_lookups(@context_object)    
+  #  service_dispatcher << AmazonService.new
+  #  service_dispatcher << ServiceBundle.new(service_dispatcher.get_opacs(@collection))  	
+  #  service_dispatcher.add_social_bookmarkers  	    
+  #	self.do_processing(service_dispatcher)  	 	
+  #end
 
   # Obsolete, we don't do this like this anymore. 
   #def web_search

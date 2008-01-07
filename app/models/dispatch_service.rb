@@ -1,3 +1,4 @@
+# jrochkind believes this is legacy unused code. 
 # all the dispatch services in app/models/dispatch_services inherit from this
 class DispatchService
 	def cleanse_url(url)

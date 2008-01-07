@@ -41,7 +41,7 @@ end
 
 <%= atitle_label %>:</div></td> <td class="largeText">
 
-<%= ref_meta["atitle"] %>
+<%= h(ref_meta["atitle"]) %>
 
 <% unless ref_meta["atitle"] == @context_object.referent.metadata["atitle"]%>
 	<%= link_to image_tag('http://sfx.galib.uga.edu/sfx_git1/sfx.gif', :border=>0), @current_context_object.to_hash.merge(:controller=>"resolve")%>
@@ -152,20 +152,20 @@ if ref_meta.has_key?("isbn") %>
 end
 pub = []
 if ref_meta.has_key?("date")
-	pub << date_format(ref_meta["date"].to_s)
+	pub << (date_format(ref_meta["date"].to_s)
 end
 if ref_meta.has_key?("volume") 
-	pub << 'Volume:&nbsp;&nbsp;'+ref_meta["volume"].to_s
+	pub << 'Volume:&nbsp;&nbsp;'+h(ref_meta["volume"].to_s)
 end
 if ref_meta.has_key?("issue")
-	pub << 'Issue:&nbsp;&nbsp;'+ref_meta["issue"].to_s
+	pub << 'Issue:&nbsp;&nbsp;'+h(ref_meta["issue"].to_s)
 end
 
 if ref_meta.has_key?("spage") 
-	pub << 'Page:&nbsp;&nbsp;'+ref_meta["spage"].to_s
+	pub << 'Page:&nbsp;&nbsp;'+h(ref_meta["spage"].to_s)
 end
 if ref_meta.has_key?("epage")
-	pub << '-  '+ref_meta["epage"].to_s
+	pub << '-  '+h(ref_meta["epage"].to_s)
 end
 %>
 

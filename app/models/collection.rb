@@ -1,6 +1,6 @@
 # Collection object calculates and manages Institutions and Services
 # belonging to a particular user/request. It stores it's data in
-# session in a weird way. 
+# session, rather than in the db. 
 class Collection
   
   attr_accessor :institutions
@@ -47,7 +47,7 @@ class Collection
 
 
 
-  # Right now we only save institutions, not services. Hmm. 
+
   def save_to_session(ip, session)
     
     # Create and blank out our data structure
@@ -80,8 +80,6 @@ class Collection
     session[:collection][:link_out_filters] = @link_out_filters.to_yaml
   end
 
-  # Right now we only store institutions in session. We rebuild services
-  # on every request. Need to fix that. 
   def load_from_session(session)    
     @institutions = []
 
@@ -156,6 +154,9 @@ class Collection
   
   # Queries the OCLC Resolver Registry for any services
   # associated with user's IP Address.
+  # Not currently working. Do not use until fixed and tested.
+  # Not even sure what this is supposed to do, since an Institution
+  # doesn't neccesarily exist for the registry entry. Create one?
   def get_institutions_for_ip(ip, session)
     require 'resolver_registry'
 
