@@ -90,11 +90,11 @@ end
     #@co.referent.metadata["auinit"] = nil
     #@co.referent.metadata["auinit1"] = nil
     # @co.referent.set_identifier(nil) 
-    if @co.referent.metadata.has_key?("title")
+    if ! @co.referent.metadata["title"].blank?
       title = @co.referent.metadata["title"]
-    elsif @co.referent.metadata.has_key?("btitle")
+    elsif ! @co.referent.metadata["btitle"].blank?
       title = @co.referent.metadata["btitle"]
-    else @co.referent.metadata.has_key?("jtitle")
+    elsif ! @co.referent.metadata["jtitle"].blank?
       title = @co.referent.metadata["jtitle"]
     end
 		if title_label.nil?
