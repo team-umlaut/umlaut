@@ -48,8 +48,8 @@ function clearObjectId() {
       %>
                                                                              
       <select name="umlaut.title_search_type" id="sfx_title_search">
-          <option value="contains">contains</option>
-          <option value="begins">begins
+          <option value="contains" <%= "SELECTED" if params["umlaut.title_search_type"] == "contains" %>>contains</option>
+          <option value="begins" <%= "SELECTED" if params["umlaut.title_search_type"] == "begins" %> >begins
           with</option>
           <option value="exact">exact match</option>
       </select>
