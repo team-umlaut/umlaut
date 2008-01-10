@@ -67,6 +67,7 @@ class Sfx < Service
   def handle(request)
     
     client = self.initialize_client(request)
+    
     begin
       response = self.do_request(client)
       self.parse_response(response, request)
@@ -85,11 +86,10 @@ class Sfx < Service
     context_object = request.to_context_object
     transport.add_context_object(context_object)
     transport.extra_args["sfx.response_type"]="multi_obj_xml"
-  
-    
+      
     @get_coverage = false    
     
-    if ( request.referrer &&
+    if ( request.referrer && 
          request.referrer.identifier ==
          "info:sid/umlaut.code4lib.org:citation_lookup")
          # show availability info
@@ -192,8 +192,7 @@ class Sfx < Service
           end
         end
       end
-
-
+      
       # Load coverage/availability string from Rochkind's 'extra' SFX coverage
       # API, if configured, and if we have the right data to do so.
       loaded_coverage_strings = nil
@@ -303,6 +302,7 @@ class Sfx < Service
       ctx_obj_atts = 
          CGI.unescapeHTML( sfx_objs[i].at('/ctx_obj_attributes').inner_html)
     end
+    
     if ( ctx_obj_atts )
       perl_data = Hpricot( ctx_obj_atts )
       enhance_referent( request, perl_data )
@@ -326,7 +326,8 @@ class Sfx < Service
       # request per service.      
       coverage_url = URI.parse(@coverage_api_url)
       coverage_url.query = "rft.object_id=#{object_id}&target_service_id=#{sfx_target_service_ids.join(',')}"
-            
+
+    
       response = Net::HTTP.get_response( coverage_url )
       unless (response.kind_of? Net::HTTPSuccess)
         response.error!
@@ -435,7 +436,8 @@ class Sfx < Service
 
     co = OpenURL::ContextObject.new
     co.referent.set_format('journal') # default
-    doc.search('hash/item').each do |item|
+    
+    doc.search('/perldata/hash/item').each do |item|
       key = item['key']
       prefix, stripped = key.split('.')
       value = item.inner_html
