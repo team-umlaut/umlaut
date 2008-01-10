@@ -79,21 +79,27 @@ namespace :umlaut do
 
       desc "Loads sfx_urls from SFX installation. SFX mysql login needs to be set in config."
       task :load_sfx_urls => :environment do
-        puts "Loading SFXUrls via direct access to SFX db."
-        urls = SfxDb::SfxDbBase.fetch_sfx_urls
-        # We only want the hostnames
-        hosts = urls.collect do |u|
-          begin
-          uri = URI.parse(u)
-          uri.host
-          rescue Exception
+
+        if SfxDb.connection_configured?
+      
+          puts "Loading SFXUrls via direct access to SFX db."
+          urls = SfxDb::SfxDbBase.fetch_sfx_urls
+          # We only want the hostnames
+          hosts = urls.collect do |u|
+            begin
+            uri = URI.parse(u)
+            uri.host
+            rescue Exception
+            end
           end
-        end
-    
-        SfxUrl.transaction do
-          SfxUrl.delete_all
-    
-          hosts.each {|h| SfxUrl.new({:url => h}).create }      
+      
+          SfxUrl.transaction do
+            SfxUrl.delete_all
+      
+            hosts.each {|h| SfxUrl.new({:url => h}).create }      
+          end
+        else
+          puts "Skipping load of SFXURLs via direct access to SFX db. No direct access is configured. Configure in config/umlaut_config/database.yml"
         end
       end
 
