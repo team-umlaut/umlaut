@@ -438,13 +438,21 @@ class Sfx < Service
     co.referent.set_format('journal') # default
     
     doc.search('/perldata/hash/item').each do |item|
-      key = item['key']
-      prefix, stripped = key.split('.')
+      key = item['key'].to_s
       value = item.inner_html
 
+      # Some normalization. SFX uses rft.year, which is not actually
+      # legal. Stick it in rft.date instead.
+      key = "rft.date" if key == "rft.year"
+
+      prefix, stripped = key.split('.')
+            
       # The auinit1 value is COMPLETELY messed up for reasons I do not know.
       # Double encoded in bizarre ways.
       next if key == '@rft.auinit1' || key == '@rft.auinit'
+
+
+
       
       # Darn multi-value SFX hackery, indicated with keys beginning
       # with '@'. Just take the first one,
