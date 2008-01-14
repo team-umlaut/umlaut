@@ -67,7 +67,6 @@ class Sfx < Service
   def handle(request)
     
     client = self.initialize_client(request)
-    
     begin
       response = self.do_request(client)
       self.parse_response(response, request)
@@ -399,6 +398,15 @@ class Sfx < Service
       
       dataString = "?tmp_ctx_svc_id=#{response[:sfx_target_index]}"
       dataString += "&tmp_ctx_obj_id=#{response[:sfx_obj_index]}"
+
+      # Don't understand what this is, but it sometimes needs to be 1?
+      # Hopefully it won't mess anything up when it's not neccesary.
+      # Really have no idea when it would need to be something other
+      # than 1.
+      # Nope, sad to say it does mess up cases where it is not neccesary.
+      # Grr. 
+      #dataString += "&tmp_parent_ctx_obj_id=1"
+      
       dataString += "&service_id=#{response[:sfx_target_service_id]}"
       dataString += "&request_id=#{response[:sfx_request_id]}"
       dataString += "&rft.year="
