@@ -618,20 +618,20 @@ class ResolveController < ApplicationController
     backgroundThread = Thread.new(@collection, @user_request) do | t_collection,  t_request|
       begin
         messages << "Starting bg services at #{Time.now}"        
-        logger.debug("Starting background services in Thread #{Thread.current.object_id}")
+        #logger.debug("Starting background services in Thread #{Thread.current.object_id}")
         ('a'..'z').each do | priority |
            service_list = t_collection.service_level(priority)
            next if service_list.empty?
-           logger.debug("background: Making service bundle for #{priority}")
+           #logger.debug("background: Making service bundle for #{priority}")
            bundle = ServiceBundle.new( service_list )
            bundle.debugging = true
            messages << "Starting bundle for priority #{priority} at #{Time.now}"
            bundle.handle( t_request )
            messages << "Done handling bundle for priority #{priority} at #{Time.now}"
-           logger.debug("background: Done handling for #{priority}")
+           #logger.debug("background: Done handling for #{priority}")
         end
         messages << "All bg services complete at #{Time.now}"
-        logger.debug("Background services complete")
+        #logger.debug("Background services complete")
      rescue Exception => e
         # We are divorced from any request at this point, not much
         # we can do except log it. Actually, we'll also store it in the
