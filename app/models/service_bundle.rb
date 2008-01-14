@@ -16,7 +16,7 @@ class ServiceBundle
     return if (@services.nil? || @services.empty?)
     threads = []
     @services.each do | service |
-        RAILS_DEFAULT_LOGGER.info("Starting service #{service.id}")
+        #RAILS_DEFAULT_LOGGER.debug("Starting service #{service.id}")
 
         # Double check it's not already been run by somebody else, for
         # instance if this is a browser re-load. Skip it before
