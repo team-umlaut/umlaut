@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 17) do
+ActiveRecord::Schema.define(:version => 18) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -127,6 +127,7 @@ ActiveRecord::Schema.define(:version => 17) do
   end
 
   add_index "referent_values", ["referent_id", "key_name", "normalized_value"], :name => "rft_val_referent_idx"
+  add_index "referent_values", ["key_name"], :name => "index_referent_values_on_key_name"
 
   create_table "referents", :force => true do |t|
     t.column "atitle", :string
@@ -138,6 +139,11 @@ ActiveRecord::Schema.define(:version => 17) do
   end
 
   add_index "referents", ["atitle", "title", "issn", "isbn", "year", "volume"], :name => "rft_shortcut_idx"
+  add_index "referents", ["title"], :name => "index_referents_on_title"
+  add_index "referents", ["issn", "year", "volume"], :name => "by_issn"
+  add_index "referents", ["isbn"], :name => "index_referents_on_isbn"
+  add_index "referents", ["year", "volume"], :name => "by_year"
+  add_index "referents", ["volume"], :name => "index_referents_on_volume"
 
   create_table "referrers", :force => true do |t|
     t.column "identifier", :string, :default => "", :null => false
@@ -165,6 +171,8 @@ ActiveRecord::Schema.define(:version => 17) do
   add_index "requests", ["referent_id", "referrer_id"], :name => "context_object_idx"
   add_index "requests", ["session_id"], :name => "req_sess_idx"
   add_index "requests", ["created_at"], :name => "req_created_at"
+  add_index "requests", ["client_ip_addr"], :name => "index_requests_on_client_ip_addr"
+  add_index "requests", ["params"], :name => "index_requests_on_params"
 
   create_table "service_responses", :force => true do |t|
     t.column "service_id",       :string,   :limit => 25,   :default => "", :null => false
@@ -195,7 +203,6 @@ ActiveRecord::Schema.define(:version => 17) do
 
   add_index "service_types", ["request_id", "service_response_id"], :name => "svc_type_idx"
   add_index "service_types", ["service_type_value_id"], :name => "index_service_types_on_service_type_value_id"
-  add_index "service_types", ["request_id"], :name => "index_service_types_on_request_id"
   add_index "service_types", ["service_response_id"], :name => "index_service_types_on_service_response_id"
 
   create_table "sessions", :force => true do |t|
