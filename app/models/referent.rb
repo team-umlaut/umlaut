@@ -49,8 +49,16 @@ class Referent < ActiveRecord::Base
     self.clean_up_context_object(co)
     
     if rft = Referent.find_by_context_object(co) 
-      return rft 
-    end
+      return rft
+    else
+      rft = Referent.create_by_context_object(co)
+      return rft
+    end    
+  end
+
+  def self.create_by_context_object(co)
+    self.clean_up_context_object(co)
+    
     rft = Referent.new
     rft.save!
     
