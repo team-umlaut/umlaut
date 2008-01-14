@@ -2,11 +2,17 @@
 #   proxy_server
 #   proxy_password (the ProxyURLPassword  parameter in ezproxy.cfg; must be set
 #                   to turn on proxy url api feature ).
-#   optional param:
+#   optional params:
 #   proxy_url_path: defaults to /proxy_url, the default ezproxy path to call api
+#   exclude_hosts: array of hosts to exclude from proxying _even if_ found in
+#                  ezproxy config. Each entry can be a string, in which
+#                  case it must match host portion of url exactly. Or it can 
+#                  be a regexp, which will be tested against entire url.
+#                  (supply a string inside // markers. eg '/regexp/' ).
 #
 #   This service is a link_out_filter service, it must be setup in your
-#   services.yml with "task: link_out_filter ". 
+#   services.yml with "task: link_out_filter ".
+
 
 class Ezproxy < Service
   required_config_params :proxy_server, :proxy_password
@@ -23,6 +29,8 @@ class Ezproxy < Service
     
     @proxy_url_path ||= "/proxy_url"
     @proxy_url_path = "/" + @proxy_url_path unless @proxy_url_path[0,1] = '/'
+
+    @exclude ||= []
   end
 
   # This is meant to be called as task:link_out_filter, it doesn't have an
@@ -37,12 +45,34 @@ class Ezproxy < Service
   def link_out_filter(orig_url)
     # If it's already proxied, leave it alone.
     return nil if already_proxied(orig_url)
+
+    return nil if excluded?(orig_url)
     
     new_url =  proxy_urls( [orig_url] ).values[0]
     
     return new_url
   end
 
+
+  # see @exclude config parameter. 
+  def excluded?(url)    
+    return false if @exclude.blank?
+    
+    @exclude.each do |entry|
+      if entry[0,1] == '/' && entry[entry.length -1 ,1 ] == '/'
+        # regexp. Match against entire url. 
+        re = Regexp.new( entry )
+        return true if re =~ url
+      else
+        # ordinary string. Just match against host.
+        host = URI.parse(url).host
+        return true if host == entry
+      end      
+    end
+    # looped through them all, no match?
+    return false
+  end
+  
   # Pass in an array of URLs. Will determine if they are proxyable by EZProxy.
   # Returns a hash, where the key is the original URL, and the value is the
   # proxied url---or nil if could not be proxied. 
