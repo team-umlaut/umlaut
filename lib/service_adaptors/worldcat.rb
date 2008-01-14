@@ -63,7 +63,7 @@ class Worldcat < Service
     # Bad response code?
 		unless wc_response.code == "200"
       # Could be temporary, could be fatal. Let's say temporary. 
-			return request.dispatched(self, DispatchedService::FailedTemporary)
+			return request.dispatched(self, DispatchedService::FailedTemporary, Exception.new("oclc returned error http status code: #{wc_response.code}"))
 		end
 
     # Sadly, worldcat returns a 200 even if there are no matches.
