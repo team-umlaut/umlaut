@@ -43,6 +43,9 @@ class Ezproxy < Service
   # Returns a proxied url if it should be proxied, or nil if the url
   # can not or does not need to be proxied. 
   def link_out_filter(orig_url)
+    # bad uri? Forget it.
+    return nil unless valid_url?( orig_url )
+    
     # If it's already proxied, leave it alone.
     return nil if already_proxied(orig_url)
 
@@ -53,6 +56,16 @@ class Ezproxy < Service
     return new_url
   end
 
+  def valid_url?(url)
+
+    begin
+      URI.parse( url )
+      return true
+    rescue URI::InvalidURIError => e
+      RAILS_DEFAULT_LOGGER.error("Bad uri sent to ezproxy service. Can not parse. url: #{url}")
+      return false
+    end
+  end
 
   # see @exclude config parameter. 
   def excluded?(url)    
