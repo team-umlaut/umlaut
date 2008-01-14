@@ -22,6 +22,8 @@
 # extra_targets_of_interest: sfx target_names of targets you want to make
 #     sure to include in umlaut. A hash with target_name as key, and umlaut
 #     ResponseTypeValue name as value.
+# timeout: in seconds, for both open/read timeout value for SFX connection.
+#          Defaults to 5. 
 class Sfx < Service
   require 'uri'
   #require 'open_url'
@@ -46,6 +48,8 @@ class Sfx < Service
     # here will take precedence and be used even if these targets DO match
     # services_of_interest. Generally loaded from yml config in super.    
     @extra_targets_of_interest = {}
+
+    @sfx_timeout = 5
                                   
     super(config)                              
   end
@@ -78,7 +82,7 @@ class Sfx < Service
   end
   
   def initialize_client(request)
-    transport = OpenURL::Transport.new(@base_url)
+    transport = OpenURL::Transport.new(@base_url, nil, :open_timeout => @sfx_timeout, :read_timeout => @sfx_timeout)
     #context_object = request.referent.to_context_object
     #context_object.referrer.add_identifier(request.referrer.identifier) if request.referrer
 
@@ -271,7 +275,7 @@ class Sfx < Service
           sfx_co = Sfx.parse_perl_data(perl_data.to_s)
           sfx_metadata = sfx_co.to_hash 
           
-          value_text[:citation_year] = sfx_metadata['rft.year'] 
+          value_text[:citation_year] = sfx_metadata['rft.date'].to_s[0,4] if sfx_metadata['rft.date'] 
           value_text[:citation_volume] = sfx_metadata['rft.volume'];
           value_text[:citation_issue] = sfx_metadata['rft.issue']
           value_text[:citation_spage] = sfx_metadata['rft.spage']
@@ -384,7 +388,8 @@ class Sfx < Service
   end
 
   # Handles click passthrough to SFX, if configured so. 
-  def response_url(response)              
+  def response_url(response)
+    
     if ( ! self.sfx_click_passthrough || expired_sfx_request(response) )
       RAILS_DEFAULT_LOGGER.error("SFX click passthrough not executed, due to calculation of expired SFX request. ServiceResponse id: #{response.id}")
       return CGI.unescapeHTML(response[:url])
@@ -417,7 +422,7 @@ class Sfx < Service
       dataString += response[:citation_issue].to_s if response[:citation_issue]
       dataString += "&rft.spage="
       dataString += response[:citation_spage].to_s if response[:citation_issue]
-
+      
       return sfx_resolver_cgi_url + dataString       
     end
   end
