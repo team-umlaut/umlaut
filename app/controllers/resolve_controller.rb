@@ -506,10 +506,16 @@ class ResolveController < ApplicationController
     # HIGHWIRE_PRESS_FREE is a collection of different hosts,
     # but MANY of them seem to be frame-escapers, so we black list them all!
     # Seems to be true of HIGHWIRE_PRESS stuff in general in fact, they're
-    # all blacklisted. 
+    # all blacklisted.
+    #
+    # Springer (METAPRESS and SPRINGER_LINK) has a weird system requiring
+    # cookies to get to a full text link. The cookies don't like the frameset
+    #, so it ends up not working in frameset on some computers. 
     bad_target_regexps = [/^WILSON\_/, 
         'SAGE_COMPLETE', /^HIGHWIRE_PRESS/,
-        /^OXFORD_UNIVERSITY_PRESS/]
+        /^OXFORD_UNIVERSITY_PRESS/],
+        /^METAPRESS/,
+        /^SPRINGER_LINK/
     # note that these will sometimes be proxied urls!
     # So we don't left-anchor the regexp. 
     bad_url_regexps = [/http\:\/\/www.bmj.com/,
