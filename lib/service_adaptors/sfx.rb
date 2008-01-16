@@ -22,7 +22,7 @@
 # extra_targets_of_interest: sfx target_names of targets you want to make
 #     sure to include in umlaut. A hash with target_name as key, and umlaut
 #     ResponseTypeValue name as value.
-# timeout: in seconds, for both open/read timeout value for SFX connection.
+# sfx_timeout: in seconds, for both open/read timeout value for SFX connection.
 #          Defaults to 5. 
 class Sfx < Service
   require 'uri'
