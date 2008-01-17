@@ -30,7 +30,6 @@ class SfxBackchannelRecord < Service
   # We always return nil because we aren't interested in modifying the url,
   # just using the callback to record the click with SFX. 
   def link_out_filter(orig_url, service_type, other_args = {})
-    debugger
     # Only work on responses that came from SFX.
     unless (service_type.service_response.service.class.to_s == "Sfx")
        return nil
