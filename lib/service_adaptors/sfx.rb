@@ -428,13 +428,13 @@ class Sfx < Service
     dataString += "&service_id=#{response[:sfx_target_service_id]}"
     dataString += "&request_id=#{response[:sfx_request_id]}"
     dataString += "&rft.year="
-    dataString += response[:citation_year].to_s if response[:citation_year]
+    dataString += URI.escape(response[:citation_year].to_s) if response[:citation_year]
     dataString += "&rft.volume="
-    dataString += response[:citation_volume].to_s if response[:citation_volume]
+    dataString += URI.escape(response[:citation_volume].to_s) if response[:citation_volume]
     dataString += "&rft.issue="
-    dataString += response[:citation_issue].to_s if response[:citation_issue]
+    dataString += URI.escape(response[:citation_issue].to_s) if response[:citation_issue]
     dataString += "&rft.spage="
-    dataString += response[:citation_spage].to_s if response[:citation_issue]
+    dataString += URI.escape(response[:citation_spage]).to_s if response[:citation_issue]
     
       return sfx_resolver_cgi_url + dataString       
   end
