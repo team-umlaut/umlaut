@@ -47,8 +47,14 @@ class Worldcat < Service
     isxn_key = URI.escape( isxn_key )
     uri_str = @base_url+isxn_key+'/'+isxn_value
     uri_str +=  "&loc=#{URI.escape(@search_zip_code.to_s)}" if @search_zip_code
-    
-    worldcat_uri = URI.parse(uri_str)
+
+    begin
+      worldcat_uri = URI.parse(uri_str)
+    rescue Exception => e
+      RAILS_DEFAULT_LOGGER.error("Bad worldcat uri string constructed?")
+      RAILS_DEFAULT_LOGGER.error(e)
+      return request.dispatched(self, DispatchedService::FailedFatal)
+    end
 		http = Net::HTTP.new worldcat_uri.host
 		http.open_timeout = 7
 		http.read_timeout = 7
