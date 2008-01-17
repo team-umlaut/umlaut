@@ -42,7 +42,7 @@ class Ezproxy < Service
   # Hook method called by Umlaut. 
   # Returns a proxied url if it should be proxied, or nil if the url
   # can not or does not need to be proxied. 
-  def link_out_filter(orig_url)
+  def link_out_filter(orig_url, service_type, other_args = {})
     # bad uri? Forget it.
     return nil unless valid_url?( orig_url )
     

@@ -262,6 +262,7 @@ class Sfx < Service
           value_text[:coverage] = coverage if coverage
   
           # Sfx metadata we want
+          value_text[:sfx_base_url] = @base_url
           value_text[:sfx_obj_index] = sfx_obj_index + 1 # sfx is 1 indexed
           value_text[:sfx_target_index] = target_index + 1 
           value_text[:sfx_request_id] = (perl_data/"//hash/item[@key='sfx.request_id']").first.inner_html
@@ -391,42 +392,52 @@ class Sfx < Service
   def response_url(response)
     
     if ( ! self.sfx_click_passthrough || expired_sfx_request(response) )
-      RAILS_DEFAULT_LOGGER.error("SFX click passthrough not executed, due to calculation of expired SFX request. ServiceResponse id: #{response.id}")
+      if ( expired_sfx_request( response ))
+        RAILS_DEFAULT_LOGGER.error("SFX click passthrough not executed, due to calculation of expired SFX request. ServiceResponse id: #{response.id}")
+      end
       return CGI.unescapeHTML(response[:url])
     else
       
       # Okay, wacky abuse of SFX undocumented back-ends to pass the click
       # through SFX, so statistics are captured by SFX. 
-      
-      sfx_resolver_cgi_url =  @base_url + "/cgi/core/sfxresolver.cgi"      
-
-      
-      dataString = "?tmp_ctx_svc_id=#{response[:sfx_target_index]}"
-      dataString += "&tmp_ctx_obj_id=#{response[:sfx_obj_index]}"
-
-      # Don't understand what this is, but it sometimes needs to be 1?
-      # Hopefully it won't mess anything up when it's not neccesary.
-      # Really have no idea when it would need to be something other
-      # than 1.
-      # Nope, sad to say it does mess up cases where it is not neccesary.
-      # Grr. 
-      #dataString += "&tmp_parent_ctx_obj_id=1"
-      
-      dataString += "&service_id=#{response[:sfx_target_service_id]}"
-      dataString += "&request_id=#{response[:sfx_request_id]}"
-      dataString += "&rft.year="
-      dataString += response[:citation_year].to_s if response[:citation_year]
-      dataString += "&rft.volume="
-      dataString += response[:citation_volume].to_s if response[:citation_volume]
-      dataString += "&rft.issue="
-      dataString += response[:citation_issue].to_s if response[:citation_issue]
-      dataString += "&rft.spage="
-      dataString += response[:citation_spage].to_s if response[:citation_issue]
-      
-      return sfx_resolver_cgi_url + dataString       
+      return self.pass_through_url(response)      
     end
   end
 
+  # Try to provide a weird reverse-engineered url to take the user THROUGH
+  # sfx to their destination, so sfx will capture for statistics.
+  # This relies on certain information from the orignal sfx response
+  # being stored in the Response object at that point. 
+  def self.pass_through_url(response)
+    base_url = response[:sfx_base_url]    
+    
+    sfx_resolver_cgi_url =  base_url + "/cgi/core/sfxresolver.cgi"      
+
+    
+    dataString = "?tmp_ctx_svc_id=#{response[:sfx_target_index]}"
+    dataString += "&tmp_ctx_obj_id=#{response[:sfx_obj_index]}"
+
+    # Don't understand what this is, but it sometimes needs to be 1?
+    # Hopefully it won't mess anything up when it's not neccesary.
+    # Really have no idea when it would need to be something other
+    # than 1.
+    # Nope, sad to say it does mess up cases where it is not neccesary.
+    # Grr. 
+    #dataString += "&tmp_parent_ctx_obj_id=1"
+    
+    dataString += "&service_id=#{response[:sfx_target_service_id]}"
+    dataString += "&request_id=#{response[:sfx_request_id]}"
+    dataString += "&rft.year="
+    dataString += response[:citation_year].to_s if response[:citation_year]
+    dataString += "&rft.volume="
+    dataString += response[:citation_volume].to_s if response[:citation_volume]
+    dataString += "&rft.issue="
+    dataString += response[:citation_issue].to_s if response[:citation_issue]
+    dataString += "&rft.spage="
+    dataString += response[:citation_spage].to_s if response[:citation_issue]
+    
+      return sfx_resolver_cgi_url + dataString       
+  end
 
   # Class method to parse a perl_data block as XML in String
   # into a ContextObject. Argument is _string_ containing

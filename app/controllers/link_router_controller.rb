@@ -23,12 +23,12 @@ class LinkRouterController < ApplicationController
       redirect_to( self.class.frameset_action_params(svc_type) )
     else
       url = ServiceList.get(svc_type.service_response.service_id).response_url(svc_type.service_response)
-
+      
       # Call link_out_filters, if neccesary.
       # These are services listed as  task: link_out_filter  in services.yml
       (1..9).each do |priority|
         @collection.link_out_service_level( priority ).each do |filter|
-          filtered_url = filter.link_out_filter(url)
+          filtered_url = filter.link_out_filter(url, svc_type)
           url = filtered_url if filtered_url
         end
       end

@@ -66,9 +66,7 @@ class Collection
 
     # Save our whole array of services to session, where they'll be
     # automagically serialized. Services aren't kept in db right now,
-    # so can't just store ids. But we're going to take care of serialization
-    # instead of letting framework do it, to let us figure out how to
-    # deal with 'require' easier. 
+    # so can't just store ids. 
     # Have to save names of all Service classes used, so we can make
     # sure to load them on the way out.
     class_names = @services.values.flatten.collect {|s| s.class.name }
@@ -80,6 +78,8 @@ class Collection
     session[:collection][:link_out_filters] = @link_out_filters.to_yaml
   end
 
+   
+  
   def load_from_session(session)    
     @institutions = []
 

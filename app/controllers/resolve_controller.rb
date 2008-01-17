@@ -155,6 +155,7 @@ class ResolveController < ApplicationController
   end
  		
   def index
+  
     #self.init_processing # handled by before_filter 
     self.service_dispatch()
     @user_request.save! 
