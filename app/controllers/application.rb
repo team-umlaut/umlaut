@@ -38,6 +38,13 @@ class ApplicationController < ActionController::Base
   protected
   helper_method :permalink_url
   def permalink_url(rails_request, umlaut_request)
+    # if we don't have everything, we can't make a permalink. 
+    unless (umlaut_request && umlaut_request.referent &&
+            umlaut_request.referent.permalinks &&
+            umlaut_request.referent.permalinks[0] )
+
+            return nil
+    end
     
     return url_for(:controller=>"store",    
         :id=>umlaut_request.referent.permalinks[0].id,
