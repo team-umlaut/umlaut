@@ -22,9 +22,11 @@ class Hip3Service < Service
   def handle(request)
     bib_searcher = Hip3::BibSearcher.new(@base_path)
 
-    
-    bib_searcher.issn = request.referent.metadata['issn']
-    bib_searcher.isbn = request.referent.metadata['isbn']
+    issn = request.referent.metadata['issn']
+    isbn = request.referent.metadata['isbn']
+    # don't send mal-formed issn
+    bib_searcher.issn = issn if issn =~ /\d{7}(\d|X)/ 
+    bib_searcher.isbn = isbn 
     
     bib_array = bib_searcher.search
 
