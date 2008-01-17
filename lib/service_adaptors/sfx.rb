@@ -296,7 +296,7 @@ class Sfx < Service
     # In case of multiple SFX hits, enhance metadata only from the
     # one that actually had fulltext. If more than one did, forget it.
     ctx_obj_atts = nil
-    if ( fulltext_seen_in_index.keys.length == 0)
+    if ( sfx_objs.length > 0 && fulltext_seen_in_index.keys.length == 0)
       # No fulltext, just take the first
      ctx_obj_atts = 
          CGI.unescapeHTML( sfx_objs[0].at('/ctx_obj_attributes').inner_html)
