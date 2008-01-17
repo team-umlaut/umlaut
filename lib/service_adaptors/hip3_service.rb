@@ -21,8 +21,6 @@ class Hip3Service < Service
   
   def handle(request)
     bib_searcher = Hip3::BibSearcher.new(@base_path)
-
-    debugger
     
     issn = request.referent.metadata['issn']
     isbn = request.referent.metadata['isbn']
