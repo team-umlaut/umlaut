@@ -166,9 +166,8 @@ module Hip3
       end
 
       # Multiple, get the count
-
-      return reDoc.elements['searchresponse/yoursearch/hits'].get_text.to_s.to_i
-      
+      hits = reDoc.elements['searchresponse/yoursearch/hits']
+      return hits ? hits.get_text.to_s.to_i : 0       
     end
     
 		# Returns an array of bib objects. 
