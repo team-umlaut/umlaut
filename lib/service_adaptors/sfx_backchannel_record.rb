@@ -48,8 +48,6 @@ class SfxBackchannelRecord < Service
       
       parsed_uri = URI.parse(direct_sfx_url )
       sfx_response = Net::HTTP.get_response( parsed_uri  )
-
-      raise Exception.new("Foo")
       
       #raise if not 200 OK response
       unless ( sfx_response.kind_of?(Net::HTTPSuccess) ||
