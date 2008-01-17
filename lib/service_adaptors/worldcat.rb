@@ -1,7 +1,9 @@
 # Warning, worldcat can be awfully slow to respond. 
 # optional search_zip_code param.
 # Optional base_url param, but I don't know why you'd want to change it.
-# display_text 
+# display_text
+require 'uri'
+require 'net/http'
 class Worldcat < Service
   
   def initialize(config)
