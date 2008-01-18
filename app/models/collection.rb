@@ -10,7 +10,7 @@ class Collection
   def initialize(ip, session)
     @institutions= []
     @services = {}
-    @link_out_filters = {}
+    @link_out_filters = {}    
     # fill out 0..9
 
     # If IP address has changed, then refresh the collection
@@ -20,14 +20,19 @@ class Collection
     if ( session[:collection] && 
          session[:collection][:client_ip_addr] != ip)
          session[:refresh_collection] = true
-    end
-
+    end   
     
     if session[:refresh_collection] == true
       session[:collection] = nil
       session[:refresh_collection] = false
     end
 
+    # Has the services.yml been changed since we loaded? If so better
+    # load again.
+    if (session[:collection] &&
+        ServiceList.stale_services?(session[:collection][:created_time]))
+        session[:collection] = nil
+    end
     
     # Data has been created and stored in session already, load it from
     # there. Code can set session[:refresh_collection] = true to force
@@ -56,6 +61,7 @@ class Collection
                             :service_class_names => [],
                             :client_ip_addr => nil }
 
+   session[:collection][:created_time] = Time.now
    # Save client ip, so we can make sure to uncache if it changes
    session[:collection][:client_ip_addr] = ip
 
@@ -102,7 +108,8 @@ class Collection
       @link_out_filters = YAML.load( data[:link_out_filters])
     end
   end
-  
+
+    
   def calculate_collection_data(ip, session)
   
     # Add default institutions
