@@ -51,8 +51,10 @@ class HipHoldingSearch < Service
     
     # If it's a non-journal thing, add the author if we have an aulast.
     # Full author name is too tricky, too likely to false negative.
-
-    unless request.referent.format == "journal"
+    # But wait--if it's a book _part_, don't include the author name, since
+    # it _might_ just be the author of the part, not of the book. 
+    unless (request.referent.format == "journal" ||
+              ( request.referent.format == "book" &&  ! ref_metadata['atitle'].blank?))
       # prefer aulast
       search_hash[ Hip3::BibSearcher::AUTHOR_KW_INDEX ] = [ref_metadata['aulast']] if ref_metadata['aulast'] 
     end
