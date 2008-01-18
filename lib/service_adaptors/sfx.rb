@@ -75,9 +75,9 @@ class Sfx < Service
       response = self.do_request(client)
       self.parse_response(response, request)
       return request.dispatched(self, true)
-    rescue Errno::ETIMEDOUT
-      # Request to SFX timed out. Record this as unsuccesful in the dispatch table. 
-      return request.dispatched(self, false)
+    rescue Errno::ETIMEDOUT, Timeout::Error
+      # Request to SFX timed out. Record this as unsuccessful in the dispatch table. Temporary.
+      return request.dispatched(self, DispatchedService::FailedTemporary)
     end
   end
   
@@ -119,7 +119,7 @@ class Sfx < Service
   end
   
   def do_request(client)
-    client.transport_inline
+    client.transport_inline    
     return client.response
   end
   
