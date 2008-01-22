@@ -537,7 +537,9 @@ class ResolveController < ApplicationController
                        /http\:\/\/([^.]+\.)\.ahajournals\.org/,
                        /http\:\/\/www\.circresaha\.org/,
                        /http\:\/\/www.businessweek\.com/,
-                       /endocrinology-journals\.org/]
+                       /endocrinology-journals\.org/,
+                       # Weird hard to reproduce cookie issue
+                       /www\.ipap\.jp/]
     
     response = service_type.service_response
     
