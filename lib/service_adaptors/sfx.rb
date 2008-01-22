@@ -454,8 +454,15 @@ class Sfx < Service
     # it to valid UTF-8, convert from UTF-8 'to' Latin-1, and then just
     # assume our output is actually UTF-8 after all. (You don't want
     # to know how long it took me to figure this out).
-    perl_data = Iconv.new('Latin1', 'UTF-8').iconv(perl_data)
-    
+    begin
+      perl_data = Iconv.new('Latin1', 'UTF-8').iconv(perl_data)
+    rescue Iconv::IllegalSequence => e
+      # Hmm, for some reason we can't convert to UTF-8. Dammit. Okay, leave
+      # it alone. We'll get weird encoding, oh well.
+      RAILS_DEFAULT_LOGGER.error("Error: Could not convert SFX perl_data data from Latin1 to UTF-8: #{e}")
+      RAILS_DEFAULT_LOGGER.error( e.backtrace.join("\n") )
+    end
+      
     doc = Hpricot.XML(perl_data)
 
     co = OpenURL::ContextObject.new
