@@ -538,6 +538,7 @@ class ResolveController < ApplicationController
                        /http\:\/\/www\.circresaha\.org/,
                        /http\:\/\/www.businessweek\.com/,
                        /endocrinology-journals\.org/,
+                       /imf\.org/,
                        # Weird hard to reproduce cookie issue
                        /www\.ipap\.jp/]
     
