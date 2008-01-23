@@ -133,5 +133,6 @@ module ResolveHelper
   
     return (metadata['genre'] != 'book' && metadata['object_id'].blank? && user_entered_citation?(@user_request) ) ? true : false
   end
+
     
 end
