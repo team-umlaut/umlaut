@@ -261,7 +261,6 @@ class Request < ActiveRecord::Base
     return ( data['atitle'].blank? &&
              data['volume'].blank? &&
              data['issue'].blank? &&
-             data['spage'].blank? &&
              data['date'].blank? &&
         # pmid or doi is considered article-level, because SFX can
         # respond to those. Other identifiers may be useless. 
