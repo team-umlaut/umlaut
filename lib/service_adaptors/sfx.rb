@@ -1,3 +1,8 @@
+# NOTE: In your SFX Admin, under Menu Configuration / API, you should enable ALL
+# 'extra' API information for full umlaut functionality.
+# With the exception of "Include openURL parameter", can't figure out how
+# that's useful. 
+#
 # config parameters in services.yml
 # display name: User displayable name for this service
 # base_url: SFX base url. 
@@ -12,9 +17,6 @@
 # sfx_requests_expire_crontab:  Crontab pattern that the SFX admin is using
 #     to expire SFX requests. Used to refrain from click passthrough with
 #     expired requests, since that is destined to fail. 
-# coverage_api_url: http url to the script Jonathan Rochkind wrote to
-#     interrogate the SFX db to get 'coverage' information. Since SFX API does
-#     not currently provide this info, this is 'extra' third-party API to do so.
 # services_of_interest: Optional. over-ride the built in list of what types of 
 #     SFX services we want to grab, and what the corresponding umlaut types are.
 #     hash, with SFX service type name as key, and Umlaut ServiceTypeValue
@@ -195,14 +197,7 @@ class Sfx < Service
           end
         end
       end
-      
-      # Load coverage/availability string from Rochkind's 'extra' SFX coverage
-      # API, if configured, and if we have the right data to do so.
-      loaded_coverage_strings = nil
-      if ( @get_coverage && @coverage_api_url && object_id  && (sfx_target_service_ids.length > 0)  )
-          loaded_coverage_strings = load_coverage_strings(object_id, sfx_target_service_ids)
-      end
-
+            
       # For each target delivered by SFX
       sfx_obj.search("/ctx_obj_targets/target").each_with_index do|target, target_index|  
         value_text = {}
@@ -241,11 +236,16 @@ class Sfx < Service
           
           coverage = nil
           if ( @get_coverage )
-            if ( loaded_coverage_strings ) # used the external extra SFX api
-              coverage = loaded_coverage_strings[target_service_id]           
-            elsif (journal_index_on && journal)  # Umlaut journal index
-              cvg = journal.coverages.find(:first, :conditions=>['provider = ?', (target/"/target_public_name").inner_html])
-              coverage = cvg.coverage if cvg
+            # Make sure you turn on "Include availability info in text format"
+            # in the SFX Admin API configuration. 
+            threshold = target.at('/coverage/coverage_text/threshold_text/coverage_statement')
+            threshold_str = threshold ? threshold.inner_html.to_s : nil
+            
+            embargo = target.at('/coverage/coverage_text/embargo_text/coverage_statement')
+            embargo_str = embargo ? embargo.inner_html.to_s : nil
+
+            if ( threshold_str || embargo_str )
+              coverage = threshold_str.to_s + '. ' + embargo_str.to_s
             end
           end
   
@@ -314,51 +314,7 @@ class Sfx < Service
  
   end
 
-  # Given an array of sfx target service ids, loads human-readable
-  # coverage strings from Rochkind's 'extra' SFX coverage API.
-  # Returns a hash, keyed on target service id,
-  # value coverage string. 
-  def load_coverage_strings(object_id, sfx_target_service_ids)
-    require 'net/http'
-    require 'uri'
-    require 'hpricot'
-
-    begin 
-      loaded_coverage_strings = {}
-
-      # We load em all in bulk in one request, rather than a
-      # request per service.      
-      coverage_url = URI.parse(@coverage_api_url)
-      coverage_url.query = "rft.object_id=#{object_id}&target_service_id=#{sfx_target_service_ids.join(',')}"
-
-    
-      response = Net::HTTP.get_response( coverage_url )
-      unless (response.kind_of? Net::HTTPSuccess)
-        response.error!
-      end
-            
-      cov_doc = Hpricot( response.body )
-    
-      error = cov_doc.at('/sfxcoverage/exception')
-      if ( error )
-        request.logger.error("Error in SFX coverage API result. #{coverage_url.to_s} ; #{error.to_s}")
-        raise "Error in coverage API fetch"
-      end
-    
-      cov_doc.search('/sfxcoverage/targets/target').each do |target|                        
-        next if target.empty? # it never should be, but sometimes is. 
-        service_id = target.at('target_service_id').inner_html
-        coverage_str = target.at('availability_string').inner_html
-        loaded_coverage_strings[service_id] = coverage_str
-       end                              
-       
-    rescue Exception => e
-      sfx_target_service_ids.each { |id| loaded_coverage_strings[id] = "Error in fetching coverage information." }
-    end
-    
-    return loaded_coverage_strings
-  end
-  
+   
   def sfx_click_passthrough
     # From config, or if not that, from app default, or if not that, default
     # to false. 
