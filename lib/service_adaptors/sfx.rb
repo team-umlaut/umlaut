@@ -77,9 +77,9 @@ class Sfx < Service
       response = self.do_request(client)
       self.parse_response(response, request)
       return request.dispatched(self, true)
-    rescue Errno::ETIMEDOUT, Timeout::Error
+    rescue Errno::ETIMEDOUT, Timeout::Error => e
       # Request to SFX timed out. Record this as unsuccessful in the dispatch table. Temporary.
-      return request.dispatched(self, DispatchedService::FailedTemporary)
+      return request.dispatched(self, DispatchedService::FailedTemporary, e)
     end
   end
   
