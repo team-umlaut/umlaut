@@ -8,16 +8,15 @@
 <li class="fulltextlink"> <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>fulltext_element.id}, 'target'=>"_blank" %>
 
 <% unless view_data[:coverage].blank? %>
-<br />
+<div class="response_coverage_statement">
 <%= view_data[:coverage] %>
+</div>
 <% end
 %>
 <% unless view_data[:notes].blank? %>
-<br />
-<%= view_data[:notes] %>
+<div class="response_notes"><%= view_data[:notes] %></div>
 <% end %>
 <% unless view_data[:authentication].blank? %>
-<br />
-<strong>Authentication:</strong> <%= view_data[:authentication] %>
+<div class="response_authentication_instructions"><strong>Authentication:</strong> <%= view_data[:authentication] %></div>
 <% end %>
 </li>

@@ -349,6 +349,11 @@ ul.fulltextlink li.fulltextlink {
     background: url(../images/famfamfam/page_up.gif) no-repeat 0px 0px;
   /* Special icon override */
 }
+
+.response_coverage_statement {
+  margin-bottom: 4px;
+}
+
 ul.smallText li.fulltextlink {
   padding-top: 2px;
 }
