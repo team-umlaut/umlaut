@@ -88,10 +88,12 @@ class Referent < ActiveRecord::Base
   # sent by, for example, firstSearch. Remove invalid identifiers.
   # Mutator: Modifies ContextObject arg passed in. 
   def self.clean_up_context_object(co)
-    # First, remove any empty DOIs!
-    # That's not a valid identifier! 
-    empty_dois = co.referent.identifiers.find_all { |i| i == "info:doi/"}
-    empty_dois.each { |e| co.referent.delete_identifier( e )}
+    # First, remove any empty DOIs! or other empty identifiers?
+    # LOTS of sources send awful empty identifiers. 
+    # That's not a valid identifier!
+    debugger
+    empty_ids = co.referent.identifiers.find_all { |i| i =~ Regexp.new('^[^:]+:[^/]*/?$')}
+    empty_ids.each { |e| co.referent.delete_identifier( e )}
     # Now look for ISSN identifiers that are on article_level. FirstSearch
     # gives us ISSN identifiers incorrectly on article level cites. 
     issn_ids = co.referent.identifiers.find_all { |i| i =~ /^urn:ISSN/}
