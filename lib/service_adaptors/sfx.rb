@@ -248,6 +248,13 @@ class Sfx < Service
               coverage = threshold_str.to_s + '. ' + embargo_str.to_s
             end
           end
+
+
+          related_note = ""
+          # If this is from a related object, add that on as a note too.
+          if (related_node = target.at('/related_service_info'))
+            related_note = "This version provided from related title: <i>" + CGI.unescapeHTML( related_node.at('/related_object_title').inner_html ) + "</i>.\n"
+          end
   
           if ( sfx_service_type == 'getDocumentDelivery' )
             value_string = request_id
@@ -256,7 +263,7 @@ class Sfx < Service
           end
   
           value_text[:url] = CGI.unescapeHTML((target/"/target_url").inner_html)
-          value_text[:notes] = CGI.unescapeHTML((target/"/note").inner_html)
+          value_text[:notes] = related_note.to_s + CGI.unescapeHTML((target/"/note").inner_html)
           value_text[:authentication] = CGI.unescapeHTML((target/"/authentication").inner_html)
           value_text[:source] = source
           value_text[:coverage] = coverage if coverage
