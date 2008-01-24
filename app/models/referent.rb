@@ -43,7 +43,6 @@ class Referent < ActiveRecord::Base
   # When provided an OpenURL::ContextObject, it will return a Referent object
   # (creating one if doesn't already exist)  
   def self.find_or_create_by_context_object(co)
-
     # Okay, we need to do some pre-processing on weird context objects
     # sent by, for example, firstSearch.
     self.clean_up_context_object(co)
@@ -53,7 +52,7 @@ class Referent < ActiveRecord::Base
     else
       rft = Referent.create_by_context_object(co)
       return rft
-    end    
+    end
   end
 
   def self.create_by_context_object(co)
@@ -91,7 +90,6 @@ class Referent < ActiveRecord::Base
     # First, remove any empty DOIs! or other empty identifiers?
     # LOTS of sources send awful empty identifiers. 
     # That's not a valid identifier!
-    debugger
     empty_ids = co.referent.identifiers.find_all { |i| i =~ Regexp.new('^[^:]+:[^/]*/?$')}
     empty_ids.each { |e| co.referent.delete_identifier( e )}
     # Now look for ISSN identifiers that are on article_level. FirstSearch
