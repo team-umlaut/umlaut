@@ -487,9 +487,9 @@ class ResolveController < ApplicationController
         end
       end
 
-      # But wait, make sure it's included in :services if prsent.
+      # But wait, make sure it's included in :services if present.
       if (return_value && skip[:services] )
-        return_value = nil if skip[:services].include?( return_value.response.service.id )
+        return_value = nil unless skip[:services].include?( return_value.service_response.service.id )
       end
     elsif (skip.kind_of?(Proc ))
       return_value = skip.call( :request => @user_request )
