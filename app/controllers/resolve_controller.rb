@@ -485,12 +485,18 @@ class ResolveController < ApplicationController
             break;
           end
         end
-        end
+      end
+
+      # But wait, make sure it's included in :services if prsent.
+      if (return_value && skip[:services] )
+        return_value = nil if skip[:services].include?( return_value.response.service.id )
+      end
     elsif (skip.kind_of?(Proc ))
       return_value = skip.call( :request => @user_request )
     else
       logger.error( "Unexpected value in app config 'skip_resolve_menu'; assuming false." )
     end
+
     
     return return_value;    
   end

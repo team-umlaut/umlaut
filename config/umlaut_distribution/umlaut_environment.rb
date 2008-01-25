@@ -97,6 +97,9 @@ def umlaut_configuration(config)
   #   A hash with one or more keys....
   # {:service_types => ['fulltext']} : list of service type values, if 
   #          they're present skip the menu with the first response available.
+  # {:services => ['sfx_my_university'] : list of services; only use responses
+  #          from listed service for skipping, if present. Service IDs as
+  #          identified in services.yml
   # {:excluded_services => ['JH_HIP'] : list of service IDs, exclude responses
   #          from these services for direct linking. (Not yet implemented)
   # {:excluded_urls => [/regexp/, 'string'] : list of regexps or strings,
