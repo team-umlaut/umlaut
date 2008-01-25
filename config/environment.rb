@@ -79,8 +79,9 @@ Rails::Initializer.run do |config|
   # Reccommend you leave set to true, unless debugging. 
   config.app_config.threaded_services = true
 
-
+  #default
   config.app_config.app_name = 'Find It'
+  
   #config.app_config.link_img_url = 'http://sfx.library.jhu.edu:8000/sfxmenu/sfxit/jhu_sfx.gif'
   #config.app_config.main_sfx_base_url = 'http://sfx.library.jhu.edu:8000/jhu_sfx?'
   
@@ -100,6 +101,13 @@ Rails::Initializer.run do |config|
   #config.app_config.resolve_display_ill = lambda {|uml_request| return true}
 
   #config.app_config.resolve_view = "alternate/resolve_alternate"
+
+  # rfr_ids used for umlaut generated pages.
+  config.app_config.rfr_ids ||= Hash.new
+  config.app_config.rfr_ids[:opensearch] = "info:sid/umlaut.code4lib.org:opensearch"
+  config.app_config.rfr_ids[:citation] = "info:sid/umlaut.code4lib.org:citation"
+  config.app_config.rfr_ids[:azlist] = 'info:sid/umlaut.code4lib.org:azlist'
+  
   
   
   # Call local config file
@@ -108,6 +116,10 @@ Rails::Initializer.run do |config|
     load local_env_path 
     umlaut_configuration( config )
   end
+
+  # Some more defaults based on what they may have already set
+  config.app_config.opensearch_short_name = "Find Journals with #{config.app_config.app_name}"
+  config.app_config.opensearch_description = "Search #{config.app_config.app_name} for journal names containing your term."
 end
 
 

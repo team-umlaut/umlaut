@@ -124,7 +124,7 @@ module ResolveHelper
     return false unless uml_request && uml_request.referrer
     
     id = uml_request.referrer.identifier
-    return id == 'info:sid/sfxit.com:citation' || id == 'info:sid/umlaut.code4lib.org:citation'
+    return id == 'info:sid/sfxit.com:citation' || id == AppConfig.param('rfr_ids')[:citation] || id == AppConfig.param('rfr_ids')[:opensearch]
   end
 
   def display_not_found_warning?(uml_request)

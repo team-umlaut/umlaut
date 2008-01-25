@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!--
+Ready2Search(http://ready.to/search/en/) search setting of OpenSearch
+
+setting URL: http://ready.to/search/en/?sna=Gibson+Ejournal+Finder&prf=http%3A%2F%2Ffindit.library.jhu.edu%2Fsearch%2Fjournal_search%3Frft.jtitle%3D&des=Search+Gibson+Ejournal+Finder+By+Journal+Name&img=R0lGODdhEAAQAKUAAHoYIaR4fIRtcIlATWYAM5kzZmYzZplmmczMmebUnNvIk8WwfaCLXHdnRbKbaLafa7ukb7egbKuWZcCpc9G6h8m4mKaWgLyli5lmM7mWe5kAAGYAAJkzM2YzM5lmZsyZmZmZmQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAEAAQAAAGjsBI5CF8KCqegIIobEYclAAHsAEAKs5iYmDNJBIBAKIYgXim3/SlonBuAYI0QAPgDJbPDKDzDSsSHlYCExEKXF9xaV9WFIVoil8VCQUAjQpTF5CZb40PCVZ3Ch4DXxQcBAtDDgJWVgdfhmJFDyCwilwEjU2GpAmiVgqETEJvrXwOWUULFMsIFA7DyU5E0UEAOw==&in=utf&ou=ono&mod=pn
+
+-->
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+     <ShortName><%= AppConfig.param("opensearch_short_name") %></ShortName>
+     <Description><%= AppConfig.param("opensearch_description") %></Description>
+     <Image width="16" height="16">data:image/x-icon;base64,R0lGODdhEAAQAKUAAHoYIaR4fIRtcIlATWYAM5kzZmYzZplmmczMmebUnNvIk8WwfaCLXHdnRbKbaLafa7ukb7egbKuWZcCpc9G6h8m4mKaWgLyli5lmM7mWe5kAAGYAAJkzM2YzM5lmZsyZmZmZmQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAEAAQAAAGjsBI5CF8KCqegIIobEYclAAHsAEAKs5iYmDNJBIBAKIYgXim3/SlonBuAYI0QAPgDJbPDKDzDSsSHlYCExEKXF9xaV9WFIVoil8VCQUAjQpTF5CZb40PCVZ3Ch4DXxQcBAtDDgJWVgdfhmJFDyCwilwEjU2GpAmiVgqETEJvrXwOWUULFMsIFA7DyU5E0UEAOw==</Image>
+     <InputEncoding>UTF-8</InputEncoding>
+     <Url type="text/html"
+     template="<%= url_for(:controller => "search", :action => "journal_search", :rfr_id => AppConfig.param("rfr_ids")[:opensearch], :'umlaut.title_search_type' => 'contains', :only_path => false ) + '&amp;rft.jtitle={searchTerms}' %>" />
+</OpenSearchDescription>
