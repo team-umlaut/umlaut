@@ -51,7 +51,7 @@ class OpencontentSearch < Service
     end
 
     # filter only the ones we allow
-    databases = databases.find_all { |s| @allowed_databases.include?(s) }
+    databases = databases.find_all { |s| @allowed_databases.include?(s) } if databases
     
     return databases
   end
