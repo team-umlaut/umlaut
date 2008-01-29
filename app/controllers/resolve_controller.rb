@@ -510,43 +510,9 @@ class ResolveController < ApplicationController
   helper_method :'known_frame_escaper?'
   def known_frame_escaper?(service_type)
 
-
-    # these should really be stored in an external config, possibly yaml.
- 
-    bad_target_regexps = [/^WILSON\_/, 
-        'SAGE_COMPLETE',
-      # HIGHWIRE_PRESS_FREE is a collection of different hosts,
-      # but MANY of them seem to be frame-escapers, so we black list them all!
-      # Seems to be true of HIGHWIRE_PRESS stuff in general in fact, they're
-      # all blacklisted.
-        /^HIGHWIRE_PRESS/,
-        /^OXFORD_UNIVERSITY_PRESS/,
-      # Springer (METAPRESS and SPRINGER_LINK) has a weird system requiring
-      # cookies to get to a full text link. The cookies don't like the frameset
-      #, so it ends up not working in frameset on some computers, somewhat hard 
-      # to reproduce.
-        /^METAPRESS/,
-        /^SPRINGER_LINK/,
-      # Cookie/frameset issue. Reproducible on IE7, not on Firefox. 
-        /^WILEY_INTERSCIENCE/,
-      # Mysterious problem in frameset but not direct link, in IE only.
-      # Assume cookie problem. Could be wrong, very very low reproducibilty.
-       'LAWRENCE_ERLBAUM_ASSOCIATES_LEA_ONLINE'
-      ]
-
+    bad_target_regexps = AppConfig.param('frameset_problem_targets')[:sfx_targets]
         
-    # note that these will sometimes be proxied urls!
-    # So we don't left-anchor the regexp. 
-    bad_url_regexps = [/http\:\/\/www.bmj.com/,
-                       /http\:\/\/bmj.bmjjournals.com/, 
-                       /http\:\/\/www.sciencemag.org/,
-                       /http\:\/\/([^.]+\.)\.ahajournals\.org/,
-                       /http\:\/\/www\.circresaha\.org/,
-                       /http\:\/\/www.businessweek\.com/,
-                       /endocrinology-journals\.org/,
-                       /imf\.org/,
-                       # Weird hard to reproduce cookie issue
-                       /www\.ipap\.jp/]
+    bad_url_regexps = AppConfig.param('frameset_problem_targets')[:urls]
     
     response = service_type.service_response
     
