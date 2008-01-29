@@ -20,6 +20,8 @@ class OpencontentSearch < Service
     # Default base URL for openContent SRU search. Override in config param if
     # desired. 
     @url = 'http://opencontent.indexdata.com/'
+    #@allowed_databases = ['oaister', 'oca-all', 'gutenberg']
+    @allowed_databases = ['oca-all', 'gutenberg']
     super(config)
   end
   
@@ -47,6 +49,10 @@ class OpencontentSearch < Service
       # in oaister. Worth checking. 
       databases = ["oca-all", "gutenberg", "oaister"]    
     end
+
+    # filter only the ones we allow
+    databases = databases.find_all { |s| @allowed_databases.include?(s) }
+    
     return databases
   end
 
