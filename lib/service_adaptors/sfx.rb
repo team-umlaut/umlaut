@@ -241,7 +241,7 @@ class Sfx < Service
             threshold = target.at('/coverage/coverage_text/threshold_text/coverage_statement')
             threshold_str = threshold ? threshold.inner_html.to_s : nil
             
-            embargo = target.at('/coverage/coverage_text/embargo_text/coverage_statement')
+            embargo = target.at('/coverage/coverage_text/embargo_text/embargo_statement')
             embargo_str = embargo ? embargo.inner_html.to_s : nil
 
             if ( threshold_str || embargo_str )
