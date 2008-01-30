@@ -50,8 +50,10 @@ class OpencontentSearch < Service
       databases = ["oca-all", "gutenberg", "oaister"]    
     end
 
-    # filter only the ones we allow
-    databases = databases.find_all { |s| @allowed_databases.include?(s) } if databases
+    # filter out on only the ones we allow
+    unless( databases.nil? )
+      databases = databases.find_all { |s| @allowed_databases.include?(s) }
+    end
     
     return databases
   end
