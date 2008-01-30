@@ -424,7 +424,8 @@ class Sfx < Service
       # Hmm, for some reason we can't convert to UTF-8. Dammit. Okay, leave
       # it alone. We'll get weird encoding, oh well.
       RAILS_DEFAULT_LOGGER.error("Error: Could not convert SFX perl_data data from Latin1 to UTF-8: #{e}")
-      RAILS_DEFAULT_LOGGER.error( e.backtrace.join("\n") )
+      # Don't need the whole backtrace. 
+      RAILS_DEFAULT_LOGGER.error( e.backtrace[0..3].join("\n") )
     end
       
     doc = Hpricot.XML(perl_data)
