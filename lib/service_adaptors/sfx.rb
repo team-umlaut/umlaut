@@ -405,6 +405,7 @@ class Sfx < Service
   # Class method to parse a perl_data block as XML in String
   # into a ContextObject. Argument is _string_ containing
   # XML!
+  require 'htmlentities'
   def self.parse_perl_data(perl_data)
     # Okay, the perl_data string comes from SFX as corrupt
     # double-encoded char encoding. Near as I can tell, SFX
@@ -430,10 +431,15 @@ class Sfx < Service
 
     co = OpenURL::ContextObject.new
     co.referent.set_format('journal') # default
+
+    html_ent_coder = HTMLEntities.new 
     
     doc.search('/perldata/hash/item').each do |item|
       key = item['key'].to_s
       value = item.inner_html
+      # But this still has HTML entities in it sometimes. Now we've
+      # got to decode THAT.
+      value = html_ent_coder.decode(value)
 
       # Some normalization. SFX uses rft.year, which is not actually
       # legal. Stick it in rft.date instead.
