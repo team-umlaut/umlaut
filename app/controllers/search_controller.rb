@@ -69,6 +69,12 @@ class SearchController < ApplicationController
       redirect_to search_co.to_hash.merge!(:controller=>'resolve')
       # don't do anything else.
       return
+    elsif (params['rft.jtitle'].blank?)
+      #Bad, error condition. If we don't have any of that other stuff above,
+      # we need a title!  Send them back to entry page with an error message.
+      flash[:error] = "You must enter a journal title or other identifying information."
+      redirect_to :controller=>:search, :action=>:index
+      return
     elsif ( @use_umlaut_journal_index )
       # Not exact search, and use local index. .
       self.find_via_local_title_source()
@@ -355,11 +361,26 @@ class SearchController < ApplicationController
       params[:journal][:title] = params['rft.jtitle']
     end
 
+    
     # Grab identifiers out of the way we've encoded em
-    if ( params['rft_id_value'])
-      id_type = params['rft_id_type'] || 'doi'
-      params['rft_id'] = "info:#{id_type}/#{params['rft_id_value']}"
-    end
+    # Accept legacy SFX-style encodings too
+    if ( ! params['rft_id_value'].blank? ||
+        ! params['pmid_value'].blank? || 
+        ! params['doi_value'].blank?  )
+
+      if (! params['rft_id_value'].blank?)
+        id_type = params['rft_id_type'] || 'doi'
+        id_value = params['rft_id_value']
+      elsif (! params['pmid_value'].blank?)
+        id_type = params['pmid_id'] || 'pmid'
+        id_value = params['pmid_value']
+      else # sfx-style doi
+        id_type = params['doi_id'] || 'doi'
+        id_value = params['doi_value']
+      end
+              
+      params['rft_id'] = "info:#{id_type}/#{id_value}"
+  end
 
     # SFX v2 A-Z list url format---convert to Umlaut
     if params[:letter_group]
@@ -399,7 +420,7 @@ class SearchController < ApplicationController
     # making a context object
     jrnl = nil
     # Normalize ISSN to have dash
-    if ( ! params['rft.issn'].blank? && params['rft.issn'][4,1] != '-')
+    if ( ! params['rft.issn'].blank? && params['rft.issn'][4,1] != '-' && params['rft.issn'].length >= 4)
       params['rft.issn'].insert(4,'-')
     end
 

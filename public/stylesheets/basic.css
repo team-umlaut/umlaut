@@ -273,6 +273,8 @@ hr {
 	padding: 2px;
 	border: 1px solid #ebb211;
 	background-color: #eee;
+  margin-bottom: 12px;
+  margin-top: 12px;
 }	
 .citationLinker a:link { 
    /*text-decoration:underline;*/

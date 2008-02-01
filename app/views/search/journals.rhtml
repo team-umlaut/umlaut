@@ -2,9 +2,12 @@
   <h1>Journals</h1>
     
 <%= render :partial=>"a_to_z" %>
-  <p class="exlargeText">Searching for a specific journal?</p>
-  <p>&nbsp;</p>
 
+  <% if flash[:error] %>
+    <div id="error" class="citationLinker notice"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
+  <% end %>
+
+  <h2>Searching for a specific journal?</h2>
 
 <script type="text/javascript" language="JavaScript1.1">
 <!--
@@ -58,7 +61,7 @@ function setDate() {
               the journal title or the ISSN.
               If you have both the journal
               title
-      &amp; ISSN, use the ISSN.</strong></td>
+      and ISSN, use the ISSN.</strong></td>
         <input type="hidden" id="rft_title" name="rft.title">
           <input type="hidden" id="rft_object_id" name="rft.object_id">
           <input type="hidden" id="date" name="rft.date">
@@ -83,11 +86,9 @@ function setDate() {
                                           
     </table>
 <!--close citationLinker-->
-  </div><p>&nbsp;</p>
-  <p class="exlargeText">&nbsp;</p>
-  <p class="exlargeText">Searching for a specific article?</p>
+  </div>
+  <h2>Searching for a specific article?</h2>
 
-  <p>&nbsp;</p>
   <div class="citationLinker">
     <table width="100%" border="0" cellspacing="0" cellpadding="5">
       <tr>
