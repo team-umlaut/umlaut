@@ -10,9 +10,19 @@ class LinkRouterController < ApplicationController
   # See environment.rb-dist for instructions on setting
   # app parameter. .
   def index
+
     @collection = Collection.new(request.remote_ip, session)      
-    
-    svc_type = ServiceType.find(params[:id])    
+
+    # Capture mysterious exception for better error reporting. 
+    begin
+      svc_type = ServiceType.find(params[:id])
+    rescue ActiveRecord::RecordNotFound => exception
+      logger.error("\nLinkRouter/index not found exception! #{Time.now}: #{exception}\nReferrer: #{request.referer}\n\n")
+      puts("LinkRouter/index not found exception! #{Time.now}: #{exception}\nReferrer: #{request.referer}\n\n")
+      # Just re-raise as usual, we have no useful way to recover, but
+      # maybe this logging will help us debug.
+      raise exception
+    end
 
     clickthrough = Clickthrough.new
     clickthrough.request_id = svc_type.request_id
@@ -55,7 +65,7 @@ class LinkRouterController < ApplicationController
                      :'umlaut.id'=>svc_type.id})
     return params
   end
-
+  
   protected
   # Should a link be displayed inside our banner frameset?
   # Depends on config settings, url params, and 
@@ -88,4 +98,9 @@ class LinkRouterController < ApplicationController
         return false
       end    
   end
+
+  def rescue_action_in_public(exception)
+      # search error works. 
+      render :template => "error/search_error", :layout=>AppConfig.param("search_layout","search_basic")
+  end   
 end
