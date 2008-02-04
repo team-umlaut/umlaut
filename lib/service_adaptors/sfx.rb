@@ -424,9 +424,8 @@ class Sfx < Service
     begin
       #perl_data = Iconv.new('Latin1', 'UTF-8').iconv(perl_data)
     rescue Iconv::IllegalSequence => e
-      # Hmm, for some reason we can't convert to UTF-8. Dammit. Okay, leave
-      # it alone. We'll get weird encoding, oh well.
-      RAILS_DEFAULT_LOGGER.error("Error: Could not convert SFX perl_data data from Latin1 to UTF-8: #{e}")
+      # Hmm, for some reason we can't undo our double encoding. 
+      RAILS_DEFAULT_LOGGER.error("Error: Could not convert SFX perl_data data to sane char encoding: #{e}")
       # Don't need the whole backtrace. 
       RAILS_DEFAULT_LOGGER.error( e.backtrace[0..3].join("\n") )
     end
