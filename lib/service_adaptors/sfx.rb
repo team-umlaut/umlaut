@@ -157,7 +157,9 @@ class Sfx < Service
       ctx_obj_atts = 
          CGI.unescapeHTML( sfx_obj.at('/ctx_obj_attributes').inner_html)
       perl_data = Hpricot( ctx_obj_atts )
-
+      # parse it into an OpenURL, we might need it like that. 
+      sfx_co = Sfx.parse_perl_data(perl_data.to_s)
+      sfx_metadata = sfx_co.to_hash 
       # Pull out related items
       # not currently used for anything. 
       #related_items = []
@@ -280,8 +282,6 @@ class Sfx < Service
           # for sfx click passthrough
           
           # Oops, need to take this from SFX delivered metadata.
-          sfx_co = Sfx.parse_perl_data(perl_data.to_s)
-          sfx_metadata = sfx_co.to_hash 
           
           value_text[:citation_year] = sfx_metadata['rft.date'].to_s[0,4] if sfx_metadata['rft.date'] 
           value_text[:citation_volume] = sfx_metadata['rft.volume'];
@@ -418,8 +418,11 @@ class Sfx < Service
     # it to valid UTF-8, convert from UTF-8 'to' Latin-1, and then just
     # assume our output is actually UTF-8 after all. (You don't want
     # to know how long it took me to figure this out).
+    #
+    # Oops, looks like this started being actually in ordinary non-corrupted
+    # UTF-8. no longer neccesary. I think. 4 Feb 08 jrochkind.  
     begin
-      perl_data = Iconv.new('Latin1', 'UTF-8').iconv(perl_data)
+      #perl_data = Iconv.new('Latin1', 'UTF-8').iconv(perl_data)
     rescue Iconv::IllegalSequence => e
       # Hmm, for some reason we can't convert to UTF-8. Dammit. Okay, leave
       # it alone. We'll get weird encoding, oh well.
