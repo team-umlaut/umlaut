@@ -405,7 +405,7 @@ class ResolveController < ApplicationController
 
   
   def rescue_action_in_public(exception)
-    render(:template => "error/resolve_error", :layout => AppConfig.param("resolve_layout", "resolve_basic")) 
+    render(:template => "error/resolve_error", :status => 500, :layout => AppConfig.param("resolve_layout", "resolve_basic")) 
   end  
 
   # Obsolete, I think. 

@@ -17,9 +17,10 @@ class LinkRouterController < ApplicationController
     begin
       svc_type = ServiceType.find(params[:id])
     rescue ActiveRecord::RecordNotFound => exception
+      # Usually this happens when it's a spider trying an old link. "go" links
+      # don't stay good forever! Bad spider, ignoring our robots.txt. 
+      
       logger.error("LinkRouter/index not found exception! (2) #{Time.now}: #{exception}\nReferrer: #{request.referer}\nUser-Agent:#{request.user_agent}\nClient IP:#{request.remote_addr}\n\n")
-      # Just re-raise as usual, we have no useful way to recover, but
-      # maybe this logging will help us debug.
       raise exception
     end
 
@@ -98,8 +99,5 @@ class LinkRouterController < ApplicationController
       end    
   end
 
-  def rescue_action_in_public(exception)
-      # search error works. 
-      render :template => "error/search_error", :layout=>AppConfig.param("search_layout","search_basic")
-  end   
+   
 end

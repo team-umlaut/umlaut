@@ -206,14 +206,7 @@ class SearchController < ApplicationController
     render :partial => 'journal_titles'
   end
 
- 
-  def rescue_action_in_public(exception)
-    if @action_name == 'journal_list'
-      render :template => "error/journal_list_error" 
-    else
-      render :template => "error/search_error"
-    end
-  end   
+  
   
   def opensearch
     require 'opensearch_feed'

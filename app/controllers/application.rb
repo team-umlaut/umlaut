@@ -13,8 +13,16 @@ class ApplicationController < ActionController::Base
   #def default_url_options(some_param)
   #  { :only_path => false }
   #end
+
+
+  # Default error page. Individual controllers can over-ride. 
+  def rescue_action_in_public(exception)
+      # search error works. 
+      render :template => "error/search_error", :status=>500, :layout=>AppConfig.param("search_layout","search_basic")
+  end
   
-  def app_before_filter    
+  def app_before_filter
+    
     @use_umlaut_journal_index = AppConfig.param("use_umlaut_journal_index", true)
 
     # We have an apache redir workaround to fix EBSCO illegal URLs.
