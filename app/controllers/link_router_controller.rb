@@ -17,8 +17,7 @@ class LinkRouterController < ApplicationController
     begin
       svc_type = ServiceType.find(params[:id])
     rescue ActiveRecord::RecordNotFound => exception
-      logger.error("\nLinkRouter/index not found exception! #{Time.now}: #{exception}\nReferrer: #{request.referer}\n\n")
-      puts("LinkRouter/index not found exception! (2) #{Time.now}: #{exception}\nReferrer: #{request.referer}\nUser-Agent:#{request.user_agent}\nClient IP:#{request.remote_addr}\n\n")
+      logger.error("LinkRouter/index not found exception! (2) #{Time.now}: #{exception}\nReferrer: #{request.referer}\nUser-Agent:#{request.user_agent}\nClient IP:#{request.remote_addr}\n\n")
       # Just re-raise as usual, we have no useful way to recover, but
       # maybe this logging will help us debug.
       raise exception
