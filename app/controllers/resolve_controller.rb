@@ -52,7 +52,6 @@ class ResolveController < ApplicationController
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
-
     
     @user_request ||= Request.new_request(params, session, request )
 
@@ -145,7 +144,7 @@ class ResolveController < ApplicationController
     
 
     unless @service_type_join 
-       raise "No service_type_join found!"
+       raise "No service_type_join found!. params[umlaut.id] == #{params[:'umlaut.id']}"
     end
     
   end
