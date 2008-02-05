@@ -45,6 +45,5 @@ ActionController::Routing::Routes.draw do |map|
   # if the id is all numbers, and everyone is happy. 
   map.connect ':controller/:action/:id', :requirements => {:id => /\d*/}
   map.connect ':controller/:action' # id will end up in ?id=whatever
-  
 
 end

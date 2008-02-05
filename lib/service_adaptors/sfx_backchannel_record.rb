@@ -56,7 +56,7 @@ class SfxBackchannelRecord < Service
              sfx_response.value
       end                
     rescue Exception => e
-      RAILS_DEFAULT_LOGGER.error("Error: Could not record sfx backchannel click for service_type id #{service_type.id} ; sfx backchannel url attempted: #{direct_sfx_url} ; problem: #{e}")
+      RAILS_DEFAULT_LOGGER.error("Could not record sfx backchannel click for service_type id #{service_type.id} ; sfx backchannel url attempted: #{direct_sfx_url} ; problem: #{e}")
       RAILS_DEFAULT_LOGGER.error( e.backtrace.join("\n"))
     end
   end

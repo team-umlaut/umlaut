@@ -18,10 +18,13 @@ class LinkRouterController < ApplicationController
       svc_type = ServiceType.find(params[:id])
     rescue ActiveRecord::RecordNotFound => exception
       # Usually this happens when it's a spider trying an old link. "go" links
-      # don't stay good forever! Bad spider, ignoring our robots.txt. 
+      # don't stay good forever! Bad spider, ignoring our robots.txt.
       
-      logger.error("LinkRouter/index not found exception! (2) #{Time.now}: #{exception}\nReferrer: #{request.referer}\nUser-Agent:#{request.user_agent}\nClient IP:#{request.remote_addr}\n\n")
-      raise exception
+      logger.warn("LinkRouter/index not found exception!: #{exception}\nReferrer: #{request.referer}\nUser-Agent:#{request.user_agent}\nClient IP:#{request.remote_addr}\n\n")
+
+      # Give em a generic 404. One is saved in public as part of standard Rails.
+      render :file=>File.join(RAILS_ROOT,"public/404.html"), :layout=>false, :status=>404
+      return            
     end
 
     clickthrough = Clickthrough.new

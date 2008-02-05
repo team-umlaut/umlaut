@@ -6,7 +6,9 @@
 # config parameters in services.yml
 # display name: User displayable name for this service
 # base_url: SFX base url. 
-# click_passthrough: When set to true, Umlaut will send all SFX clicks 
+# click_passthrough: DEPRECATED. Caused problems. Use the SFXBackchannelRecord
+#     link filter service instead. 
+#     When set to true, Umlaut will send all SFX clicks
 #     through SFX, for SFX to capture statistics. This is currently done
 #     using a backdoor into the SFX sfxresolve.cgi script. Defaults to false,
 #     or the app_config.default_sfx_click_passthrough config if set. Note that
@@ -356,7 +358,7 @@ class Sfx < Service
     
     if ( ! self.sfx_click_passthrough || expired_sfx_request(response) )
       if ( expired_sfx_request( response ))
-        RAILS_DEFAULT_LOGGER.error("SFX click passthrough not executed, due to calculation of expired SFX request. ServiceResponse id: #{response.id}")
+        RAILS_DEFAULT_LOGGER.warn("SFX click passthrough not executed, due to calculation of expired SFX request. ServiceResponse id: #{response.id}")
       end
       return CGI.unescapeHTML(response[:url])
     else
