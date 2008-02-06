@@ -10,8 +10,10 @@ class ServiceType < ActiveRecord::Base
   # Special relationship to our acts_as_enumerated ServiceTypeValue
   has_enumerated :service_type_value
 
-  # convenience method to skip accross relationships to this method, since
-  # if often must be done.
+  # convenience method to skip accross relationships to
+  # Service#view_data_from_service_type, since
+  # if often must be done. Returns a hash or hash-like object with
+  # properties for the service response. 
   def view_data
     service_response.service.view_data_from_service_type( self )
   end

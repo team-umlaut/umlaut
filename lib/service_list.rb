@@ -2,8 +2,10 @@ class ServiceList
   private_class_method :new
   @@services = nil
 
-  # Creates a new copy of a Service object, intialized with values
+  # Returns a copy of a Service object, intialized with values
   # from services.yaml, matching definition given by input param 'name'
+  # Does NOT create a new copy with every call; instead lazy-loads once and
+  # caches. 
   def self.get(name)
     @@services = YAML.load_file(RAILS_ROOT+"/config/umlaut_config/services.yml") unless @@services
 

@@ -8,9 +8,14 @@
 #
 # Load the standard Umlaut set of ServiceTypeValues into your db by running
 # rake umlautdb:load_initial_data
-# You can add your own localized ServiceTypeValues into the db too (please start
-# at id 1000), or change the display_name of standard umlaut ones. Do not
-# change the name attribute of standard umlaut ones, or umlaut code will break!
+# This will load in data stored in db/orig_fixed_data/service_type_values.yml.
+#
+# We should create a mechanism for locally-defined types that doesn't
+# require modifying this SVN-controlled file. 
+# Locally defined ServiceTypeValues should start at
+# at id 1000. The display_name of standard umlaut ServiceTypeValues might also
+# be changed.ones. Do not change the name attribute of standard umlaut
+# ServiceTypeValues, or umlaut code will break!
 class ServiceTypeValue < ActiveRecord::Base
   acts_as_enumerated :on_lookup_failure => :enforce_strict
 

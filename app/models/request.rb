@@ -85,9 +85,17 @@ class Request < ActiveRecord::Base
     return req
   end
 
-  # Status can be true, false, or one of the DispatchedService status codes.
-  # If row already exists in the db, that row will be re-used, over-written
-  # with new status value.
+  # Method that registers the dispatch status of a given service participating
+  # in this request.
+  # 
+  # Status can be true (shorthand for DispatchedService::Success), false
+  # (shorthand for DispatchedService::TemporaryError), or one of the other
+  # DispatchedService status codes.
+  # If a DispatchedService row already exists in the db, that row will be
+  # re-used, over-written with new status value.
+  #
+  # Exception can optionally be provided, generally with failed statuses,
+  # to be stored for debugging purposes.  
   def dispatched(service, status, exception=nil)
     
     ds = self.find_dispatch_object( service )
@@ -136,9 +144,16 @@ class Request < ActiveRecord::Base
   end
   
 
+  # Create a ServiceResponse and it's associated ServiceType(s) object,
+  # attached to this request.
+  # First arg is a hash of key/values. Keys MUST include :service, with the
+  # value being the actual Service object, not just the ID.
+  # Other keys are as conventional for the service. 
+  # 
   # second arg is an array of ServiceTypeValue objects, or
   # an array of 'names' of ServiceTypeValue objects. Ie,
-  # ServiceTypeValue[:fulltext], or "fulltext" both work. 
+  # ServiceTypeValue[:fulltext], or "fulltext" both work. A ServiceResponse
+  # can be registered as being of more than one type, is why this is an array.
   def add_service_response(response_data,service_type=[])
     unless response_data.empty?
       #svc_resp = nil
