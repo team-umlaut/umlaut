@@ -9,9 +9,8 @@
 <% help_responses = get_service_type('help')
      unless (help_responses.blank?) %>
      <div id="help">
-        <table class="nopadding"><tr class="nopadding">
-        <td class="nopadding"><span id="helpicon">?</span></td>
-        <td class="nopadding"><span class="smallText">Question? Problem? Contact:</span>
+<span id="helpicon">?</span>
+        <span class="smallText">Question? Problem? Contact:</span>
         <ul style="text-align: right">
         <% help_responses.each do |help|
               value_hash = help.view_data %>
@@ -22,8 +21,7 @@
               <% end %>
               </li>    
         <% end %>
-        </ul></td>
-     </tr></table>
+        </ul>
      </div>
   <% end %>
   
