@@ -14,6 +14,11 @@ ActionController::Routing::Routes.draw do |map|
   # map.connect '', :controller => "welcome"
   map.connect '', :controller => "search", :action=>"index"
 
+  # Some things certain web browsers ask for that we don't
+  # have. Give them a 404, suppress error in our logs.
+  map.connect "/_vti_bin/owssvr.dll", :controller=>"application", :action=>"error_404"
+  map.connect "/MSOffice/cltreq.asp", :controller=>"application", :action=>"error_404"
+  
   # Allow downloading Web Service WSDL as a file with an extension
   # instead of a file named 'wsdl'
   map.connect ':controller/service.wsdl', :action => 'wsdl'

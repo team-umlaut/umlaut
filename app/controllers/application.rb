@@ -40,6 +40,12 @@ class ApplicationController < ActionController::Base
    return true
   end
 
+  # Just returns a generic 404 page. Other people can redirect here if desired.
+  # Uses generic 404 page already stored in public/404.html as rails convention.    
+  def error_404    
+    render :file=>File.join(RAILS_ROOT,"public/404.html"), :layout=>false, :status=>404
+  end
+  
   # helper method we need available in controllers too
   # Absolute URL for permalink for given request.
   # Have to supply rails request and umlaut request.
