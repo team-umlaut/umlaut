@@ -11,25 +11,25 @@ class Referent < ActiveRecord::Base
 
     # First try to find by id. There could be several. 
     rft.identifiers.each do | ident |
-      if rft_val = ReferentValue.find_by_key_name_and_normalized_value('identifier', ident.downcase)
+      if rft_val = ReferentValue.find_by_key_name_and_normalized_value('identifier', ReferentValue.normalize(ident))
         return rft_val.referent 
       end
     end
     
     shortcuts = {:atitle=>"", :title=>"", :issn=>"", :isbn=>"", :volume=>"", :year=>""}    
-    shortcuts[:atitle] = rft.metadata['atitle'].downcase[0..254] if rft.metadata['atitle']
+    shortcuts[:atitle] = ReferentValue.normalize(rft.metadata['atitle'])[0..254] if rft.metadata['atitle']
     if rft.metadata['jtitle']
-      shortcuts[:title] = rft.metadata['jtitle'].downcase[0..254]
+      shortcuts[:title] = ReferentValue.normalize(rft.metadata['jtitle'])[0..254]
     elsif rft.metadata['btitle']
-      shortcuts[:title] = rft.metadata['btitle'].downcase[0..254]
+      shortcuts[:title] = ReferentValue.normalize(rft.metadata['btitle'])[0..254]
     elsif rft.metadata['title']
-      shortcuts[:title] = rft.metadata['title'].downcase[0..254]      
+      shortcuts[:title] = ReferentValue.noramlize(rft.metadata['title'])[0..254]      
     end
     
-    shortcuts[:issn] = rft.metadata['issn'].downcase if rft.metadata['issn']
-    shortcuts[:isbn] = rft.metadata['isbn'].downcase if rft.metadata['isbn']    
-    shortcuts[:volume] = rft.metadata['volume'].downcase if rft.metadata['volume']
-    shortcuts[:year] = rft.metadata['date'].downcase if rft.metadata['date']
+    shortcuts[:issn] = ReferentValue.normalize(rft.metadata['issn']) if rft.metadata['issn']
+    shortcuts[:isbn] = ReferentValue.normalize(rft.metadata['isbn']) if rft.metadata['isbn']    
+    shortcuts[:volume] = ReferentValue.normalize(rft.metadata['volume']) if rft.metadata['volume']
+    shortcuts[:year] = ReferentValue.normalize(rft.metadata['date']) if rft.metadata['date']
     
     return nil unless rft = Referent.find_by_atitle_and_title_and_issn_and_isbn_and_volume_and_year(shortcuts[:atitle],
       shortcuts[:title], shortcuts[:issn], shortcuts[:isbn], shortcuts[:volume], shortcuts[:year])
@@ -110,7 +110,7 @@ class Referent < ActiveRecord::Base
 
   
   # Populate the referent_values table with a ropenurl contextobject object
-  def set_values_from_context_object(co)
+  def set_values_from_context_object(co)    
     rft = co.referent
 
     # Multiple identifiers are possible! 
@@ -121,18 +121,21 @@ class Referent < ActiveRecord::Base
     end
     if rft.format
       fmt = ReferentValue.find_or_create_by_referent_id_and_key_name_and_value(self.id,'format',rft.format)
-      fmt.normalized_value = rft.format.downcase if fmt.normalized_value.blank?
+      fmt.normalized_value = ReferentValue.normalize(rft.format) if fmt.normalized_value.blank?
       fmt.save!
     end    
     
     rft.metadata.each_key { | key |
       next unless rft.metadata[key]
       rft_key = ReferentValue.find_or_create_by_referent_id_and_key_name_and_value(self.id,key,rft.metadata[key])
-      rft_key.normalized_value = rft.metadata[key].downcase if rft_key.normalized_value.blank?
+      rft_key.normalized_value =    
+        ReferentValue.normalize(rft.metadata[key]) if rft_key.normalized_value.blank?
       rft_key.metadata = true
       rft_key.save!
     }
   end
+
+
 
   # Creates a hash of values from referrent_values, to assemble what was
   # spread accross differnet db rows into one easy-lookup hash, for
@@ -176,6 +179,7 @@ class Referent < ActiveRecord::Base
     }    
   end
 
+  
   # Creates an OpenURL::ContextObject assembling all the data in this
   # referrent. 
   def to_context_object
@@ -288,17 +292,17 @@ class Referent < ActiveRecord::Base
       end      
     end    
     unless match
-      val = self.referent_values.create(:key_name => key, :value => value, :normalized_value => value.downcase, :metadata => metadata, :private_data => private_data)
+      val = self.referent_values.create(:key_name => key, :value => value, :normalized_value => ReferentValue.normalize(value), :metadata => metadata, :private_data => private_data)
       val.save
     end 
     if key.match((/(^[ajb]?title$)|(^is[sb]n$)|(^volume$)|(^date$)/))
       case key
-        when 'date' then self.year = value.downcase
-        when 'volume' then self.volume = value.downcase
-        when 'issn' then self.issn = value.downcase
-        when 'isbn' then self.isbn = value.downcase
-        when 'atitle' then self.atitle = value.downcase
-        else self.title = value.downcase 
+        when 'date' then self.year = ReferentValue.normalize(value)
+        when 'volume' then self.volume = ReferentValue.normalize(value)
+        when 'issn' then self.issn = ReferentValue.normalize(value)
+        when 'isbn' then self.isbn = ReferentValue.normalize(value)
+        when 'atitle' then self.atitle = ReferentValue.normalize(value)
+        else self.title = ReferentValue.normalize(value)
       end
       self.save
     end
