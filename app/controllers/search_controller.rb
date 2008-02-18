@@ -184,13 +184,13 @@ class SearchController < ApplicationController
   # :object_id is the SFX rft.object_id, and can be blank. (I think it's SFX
   # rft.object_id for local journal index too)
   def auto_complete_for_journal_title
+   # Don't search on blank query.
+   query = params['rft.jtitle']
+   unless ( query.blank? )
     if (@use_umlaut_journal_index)
-      @titles = Journal.find_all_by_contents(:all, :conditions => ['contents = ?',"alternate_titles:*"+params['rft.jtitle']+"*"], :limit=>@@autocomplete_limit).collect {|j| {:object_id => j[:object_id], :title=> j.title }   }
-    else
-      #lookup in SFX db directly!
-      query = params['rft.jtitle']
-
-
+      @titles = Journal.find_all_by_contents(:all, :conditions => ['contents = ?',"alternate_titles:*"+query+"*"], :limit=>@@autocomplete_limit).collect {|j| {:object_id => j[:object_id], :title=> j.title }   }
+    else      
+  
       # Use V2 list instead.
       @titles = SfxDb::AzTitleV2.find(:all, 
       :conditions => ['TITLE_DISPLAY like ?', "%" + query + "%"],
@@ -202,8 +202,8 @@ class SearchController < ApplicationController
       #:limit => @@autocomplete_limit).collect {|to| {:object_id => to.OBJECT_ID, :title=>to.TITLE_DISPLAY}
       #}
     end
-    
-    render :partial => 'journal_titles'
+   end
+   render :partial => 'journal_titles'
   end
 
   

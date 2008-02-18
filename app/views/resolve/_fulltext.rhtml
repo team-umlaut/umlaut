@@ -16,7 +16,7 @@
    # link. 
    unless title_level_request? || title_level_fulltxt.empty?
    genre = @user_request.referent.metadata['genre']
-   genre = "Journal" if genre.downcase == 'article' 
+   genre = "Journal" if genre && genre.downcase == 'article' 
 %>
 </ul>
 <% unless fulltxt.empty? %> <hr /> <% end %>
