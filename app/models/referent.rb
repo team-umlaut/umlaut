@@ -23,7 +23,7 @@ class Referent < ActiveRecord::Base
     elsif rft.metadata['btitle']
       shortcuts[:title] = ReferentValue.normalize(rft.metadata['btitle'])[0..254]
     elsif rft.metadata['title']
-      shortcuts[:title] = ReferentValue.noramlize(rft.metadata['title'])[0..254]      
+      shortcuts[:title] = ReferentValue.normalize(rft.metadata['title'])[0..254]      
     end
     
     shortcuts[:issn] = ReferentValue.normalize(rft.metadata['issn']) if rft.metadata['issn']
