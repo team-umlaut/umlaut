@@ -10,15 +10,11 @@ module ResolveHelper
   # Returns Array of ServiceType objects associated with current @user_request
   # (the Umlaut Request object), matching svc_type type. svc_type should be
   # a string name of ServiceTypeValue
-  # delegates work to Request.get_service_type. 
-  # This one does make a db transaction, to get most up to date list. 
+  # delegates work to Request#get_service_type for the current request. 
+  # This one does make a db transaction, to get most up to date list.
+  # Should return empty array, never nil. 
   def get_service_type(svc_type)
-    return @user_request.get_service_type(svc_type)
-    #return @user_request.service_types.find(:all,
-    #  :conditions => 
-    #    ["service_type_value_id = ?", ServiceTypeValue[svc_type].id ],
-    #  :include => [:service_response]   )
-          
+    return @user_request.get_service_type(svc_type)          
   end
 
   # Returns an array of DispatchedServices that are marked failed. 
