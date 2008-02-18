@@ -285,7 +285,8 @@ class Request < ActiveRecord::Base
 
   # pass in string name of a service type value, get back list of
   # ServiceType objects with that value belonging to this request. 
-  # This one does make a db transaction, to get most up to date list. 
+  # This one does make a db transaction, to get most up to date list.
+  # Should return empty array, never nil. 
   def get_service_type(svc_type)
     return self.service_types.find(:all,
                               :conditions =>
