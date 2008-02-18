@@ -76,6 +76,8 @@ class Ezproxy < Service
         # regexp. Match against entire url. 
         re = Regexp.new( entry )
         return true if re =~ url
+      elsif (entry.kind_of? Regexp)
+        return true if entry =~ url
       else
         # ordinary string. Just match against host.
         host = URI.parse(url).host
