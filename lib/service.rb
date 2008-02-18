@@ -110,11 +110,12 @@ class Service
   end
 
 
-  # Pass this method a ServiceType object, it will return a hash of parsed
+  # Pass this method a ServiceType object, it will return a hash-like object of 
   # display values, for the view. Implementation is usually in sub-class, by
   # means of a set of methods "to_[service type name]" implemented in sub-class
   #. parseResponse will find those. Subclasses will not generally override
-  # view_data_from_service_type. 
+  # view_data_from_service_type, although they can for complete custom
+  # handling. Make sure to return a Hash or hash-like (duck-typed) object.
   def view_data_from_service_type(service_type_obj)
   
     service_type_code = service_type_obj.service_type_value.name
@@ -157,6 +158,7 @@ class Service
  # Default implementation here just returns response['url']. You can
  # over-ride in a sub-class to provide custom implementation of on-demand
  # url generation.
+ # Should return a String url.
  def response_url(response)
    url = response[:url]
    raise "No url provided by service response" if url.nil? || url.empty?
