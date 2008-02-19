@@ -18,7 +18,7 @@ module SfxDb
       co.referent.set_metadata('object_id', self.OBJECT_ID)
 
       # Add publisher stuff, if possible.
-      pub = self.object.publishers.first
+      pub = self.object ? self.object.publishers.first : nil
       if ( pub )
         co.referent.set_metadata('pub', pub.PUBLISHER_DISPLAY )
         co.referent.set_metadata('place', pub.PLACE_OF_PUBLICATION_DISPLAY)
