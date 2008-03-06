@@ -157,7 +157,6 @@ class Referent < ActiveRecord::Base
   # Method returns true iff the keys in common to both metadata packages
   # have equal (==) values. 
   def metadata_intersects?(arg)
-    debugger
     
     # if it's empty, good enough. 
     return true unless arg
