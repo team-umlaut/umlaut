@@ -4,44 +4,60 @@ class Referent < ActiveRecord::Base
   has_many :referent_values
   has_many :permalinks
   
-  # When provided an OpenURL::ContextObject, it will return a Referent object (if one exists)
+  # When provided an OpenURL::ContextObject, it will return a Referent object
+  # (if one exists). At least that's the intent. This turns out to be a really
+  # tricky task, identifying when two citations that may not match exactly
+  # are the same citation. So this doesn't really work well--we err
+  # on the side of missing existing matches, better than finding
+  # a false match. So there are seldom matches found. A particular
+  # problem is that when the Referent is enhanced by a service,
+  # it will no longer match _itself_ as it came in! Oh well. 
   def self.find_by_context_object(co)
     
     rft = co.referent
 
     # First try to find by id. There could be several. 
     rft.identifiers.each do | ident |
-      if rft_val = ReferentValue.find_by_key_name_and_normalized_value('identifier', ReferentValue.normalize(ident))
-        return rft_val.referent 
-      end
+      rft_val = ReferentValue.find_by_key_name_and_normalized_value('identifier', ReferentValue.normalize(ident))
+
+      if rft_val and rft_val.referent.metadata_intersects?( rft )
+        return rft_val.referent
+      end      
+    end
+
+    # Else try to find by special indexed shortcut values. Create hash
+    # of shortcuts. 
+
+    # Preload values as empty, even if they aren't found in our
+    # incoming referent--we want to find a match with them empty too, then! 
+    shortcuts = {:atitle=>"", :title=>"", :issn=>"", :isbn=>"", :volume=>"", :year=>""}
+    
+    # Special handling of title
+    incoming_title = rft.metadata['jtitle'] || rft.metadata['btitle'] || rft.metadata['title']  
+    shortcuts[:title] = ReferentValue.normalize(incoming_title)[0..254] if incoming_title
+    # Special handling of date/year, since we use year instead of date for
+    # stored shortcut. 
+    # I don't know why.
+    shortcuts[:year] = rft.metadata['date'] if rft.metadata['date']
+
+    # Other four. 
+    [:atitle, :issn, :isbn, :volume].each do |att|
+      shortcuts[att] = ReferentValue.normalize( rft.metadata[att.to_s])[0..254] if rft.metadata[ att.to_s ]
+    end
+
+    found_rft = Referent.find(:first, :conditions => shortcuts)
+    if ( found_rft && found_rft.metadata_intersects?( rft ) )
+      return found_rft
     end
     
-    shortcuts = {:atitle=>"", :title=>"", :issn=>"", :isbn=>"", :volume=>"", :year=>""}    
-    shortcuts[:atitle] = ReferentValue.normalize(rft.metadata['atitle'])[0..254] if rft.metadata['atitle']
-    if rft.metadata['jtitle']
-      shortcuts[:title] = ReferentValue.normalize(rft.metadata['jtitle'])[0..254]
-    elsif rft.metadata['btitle']
-      shortcuts[:title] = ReferentValue.normalize(rft.metadata['btitle'])[0..254]
-    elsif rft.metadata['title']
-      shortcuts[:title] = ReferentValue.normalize(rft.metadata['title'])[0..254]      
-    end
-    
-    shortcuts[:issn] = ReferentValue.normalize(rft.metadata['issn']) if rft.metadata['issn']
-    shortcuts[:isbn] = ReferentValue.normalize(rft.metadata['isbn']) if rft.metadata['isbn']    
-    shortcuts[:volume] = ReferentValue.normalize(rft.metadata['volume']) if rft.metadata['volume']
-    shortcuts[:year] = ReferentValue.normalize(rft.metadata['date']) if rft.metadata['date']
-    
-    return nil unless rft = Referent.find_by_atitle_and_title_and_issn_and_isbn_and_volume_and_year(shortcuts[:atitle],
-      shortcuts[:title], shortcuts[:issn], shortcuts[:isbn], shortcuts[:volume], shortcuts[:year])
-    if ReferentMatch.match?(co.referent, rft.to_context_object.referent)
-      return rft
-    else
-      return nil
-    end
+    # found nothing?
+    return nil
   end
 
   # When provided an OpenURL::ContextObject, it will return a Referent object
-  # (creating one if doesn't already exist)  
+  # (creating one if doesn't already exist)  . At least that's the idea.
+  # But see caveats at #find_by_context_object . Most of the time
+  # this ends up creating a new Referent. 
   def self.find_or_create_by_context_object(co)
     # Okay, we need to do some pre-processing on weird context objects
     # sent by, for example, firstSearch.
@@ -135,7 +151,27 @@ class Referent < ActiveRecord::Base
     }
   end
 
+  # pass in a Referent, or a ropenurl ContextObjectEntity that has a metadata
+  # method. Or really anything with a #metadata method returning openurl-style
+  # keys and values.
+  # Method returns true iff the keys in common to both metadata packages
+  # have equal (==) values. 
+  def metadata_intersects?(arg)
+    debugger
+    
+    # if it's empty, good enough. 
+    return true unless arg
+    
+    intersect_keys = self.metadata.keys & arg.metadata.keys
+    # Take out keys who's values are blank. If one is blank but not
+    # both, we can still consider that a match. 
+    intersect_keys.delete_if{ |k| self.metadata[k].blank? || arg.metadata[k].blank? }
+    
+    self_subset = self.metadata.reject{ |k, v| ! intersect_keys.include?(k) }
+    arg_subset = arg.metadata.reject{ |k, v| ! intersect_keys.include?(k) }
 
+    return self_subset == arg_subset    
+  end
 
   # Creates a hash of values from referrent_values, to assemble what was
   # spread accross differnet db rows into one easy-lookup hash, for
