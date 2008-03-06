@@ -9,11 +9,14 @@
 # do it like this is sometimes the 'pass through' url doesn't work! Better
 # to just lose the statistic than to mess up the user.
 # 
-
+# We also do it all in a background thread, to avoid slowing down the user
+# with this step if SFX is being slow. 
 require 'uri'
 require 'net/http'
+require 'spawn'
 
 class SfxBackchannelRecord < Service
+   include Spawn
 
    def initialize(config)
      super(config)
@@ -40,24 +43,28 @@ class SfxBackchannelRecord < Service
     return nil
   end
 
-  def make_backchannel_request(service_type)    
-    begin
-      direct_sfx_url = Sfx.pass_through_url(service_type.service_response)
-      # now we call that url through a back channel just to record it
-      # with SFX.
-      
-      parsed_uri = URI.parse(direct_sfx_url )
-      sfx_response = Net::HTTP.get_response( parsed_uri  )
-      
-      #raise if not 200 OK response
-      unless ( sfx_response.kind_of?(Net::HTTPSuccess) ||
-               sfx_response.kind_of?(Net::HTTPRedirection) )
-             # raise
-             sfx_response.value
-      end                
-    rescue Exception => e
-      RAILS_DEFAULT_LOGGER.error("Could not record sfx backchannel click for service_type id #{service_type.id} ; sfx backchannel url attempted: #{direct_sfx_url} ; problem: #{e}")
-      RAILS_DEFAULT_LOGGER.error( e.backtrace.join("\n"))
+  # Does everything in a background thread to avoid slowing down the user. 
+  def make_backchannel_request(service_type)
+
+    spawn(:method => :thread) do
+      begin
+        direct_sfx_url = Sfx.pass_through_url(service_type.service_response)
+        # now we call that url through a back channel just to record it
+        # with SFX.
+        
+        parsed_uri = URI.parse(direct_sfx_url )
+        sfx_response = Net::HTTP.get_response( parsed_uri  )
+        
+        #raise if not 200 OK response
+        unless ( sfx_response.kind_of?(Net::HTTPSuccess) ||
+                 sfx_response.kind_of?(Net::HTTPRedirection) )
+               # raise
+               sfx_response.value
+        end                
+      rescue Exception => e
+        RAILS_DEFAULT_LOGGER.error("Could not record sfx backchannel click for service_type id #{service_type.id} ; sfx backchannel url attempted: #{direct_sfx_url} ; problem: #{e}")
+        RAILS_DEFAULT_LOGGER.error( e.backtrace.join("\n"))
+      end
     end
   end
 end
