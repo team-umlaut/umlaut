@@ -399,7 +399,7 @@ class Sfx < Service
     dataString += "&rft.issue="
     dataString += URI.escape(response[:citation_issue].to_s) if response[:citation_issue]
     dataString += "&rft.spage="
-    dataString += URI.escape(response[:citation_spage]).to_s if response[:citation_issue]
+    dataString += URI.escape(response[:citation_spage]).to_s if response[:citation_spage]
     
       return sfx_resolver_cgi_url + dataString       
   end
