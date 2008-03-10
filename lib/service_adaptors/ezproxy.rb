@@ -57,7 +57,6 @@ class Ezproxy < Service
   end
 
   def valid_url?(url)
-
     begin
       URI.parse( url )
       return true
@@ -72,7 +71,7 @@ class Ezproxy < Service
     return false if @exclude.blank?
     
     @exclude.each do |entry|
-      if ((entry[0,1] == '/') && (entry[entry.length -1 ,1 ] == '/'))
+      if ((entry[0,1] == '/') && (entry[entry.length()-1 ,1 ] == '/'))
         # regexp. Match against entire url. 
         re = Regexp.new( entry )
         return true if re =~ url
