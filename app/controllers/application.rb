@@ -17,8 +17,22 @@ class ApplicationController < ActionController::Base
 
   # Default error page. Individual controllers can over-ride. 
   def rescue_action_in_public(exception)
-      # search error works. 
-      render :template => "error/search_error", :status=>500, :layout=>AppConfig.param("search_layout","search_basic")
+    status = 500
+    @page_title = "Error!"
+    # Weird way to specify class names. See.
+    #http://dev.rubyonrails.org/ticket/6863
+    if ( exception.kind_of?(::ActionController::RoutingError) ||
+         exception.kind_of?(::ActionController::UnknownAction) ||
+         exception.kind_of?(::ActionController::UnknownController))
+         # UnknownController
+         # url that didn't match. It's a 404 error. 
+        status = 404
+        @page_title = "Not Found!"
+        @not_found_error = true
+    end
+ 
+    # search error works. 
+    render :template => "error/search_error", :status=>status, :layout=>AppConfig.param("search_layout","search_basic")
   end
   
   def app_before_filter

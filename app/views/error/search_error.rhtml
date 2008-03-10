@@ -1,19 +1,35 @@
 <div class="oneColumn">
-<% @page_title = "Error!"%>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
   <tr>
     <td width="70"><img src="http://www.library.gatech.edu/pix/error.gif" width="59" height="58" align="left"></td>
-    <td><div class="formError">Sorry, there was an error processing your request</div></td>
+    <td><div class="formError">Sorry, there was an error processing your request.
+    <% if @not_found_error %> 
+      <br />URL not found.
+    <% end %>
+    </div></td>
   </tr>
   <tr>
     <td width="70">&nbsp;</td>
     <td><div class="line"></div><h2>Please try one of the following options:</h2>
      <ol class="numberedListlg">
-          <li>Sometimes it helps to just try again: <%= link_to "Try again", :action=>'index' -%></li>
-          <% if help_url = AppConfig.param('help_url') %>
-          <li>If that doesn't work: <%= link_to "Contact us for help", help_url%></li>
+          <% if @not_found_error 
+            %>
+            <li>If you entered this URL yourself, please check your URL for errors. </li>
           <% end %>
-        </ol>
+     
+          <% if params[:controller] # Unless this is really a 404 and we had no controller. %>
+            <li>Sometimes it helps to just try again: <%= link_to "Try again", params 
+            -%></li>
+          <% end %>
+          <% 
+          if help_url = AppConfig.param('help_url') 
+          %>
+            <li>If that doesn't work: <%= 
+            link_to "Contact us for help", help_url
+            %></li>
+          <% end 
+          %>
+      </ol>
     </td>
   </tr>
 </table>

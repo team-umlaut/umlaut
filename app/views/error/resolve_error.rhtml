@@ -1,5 +1,4 @@
 <div class="oneColumn">
-<% @page_title = "Error!"%>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
   <tr>
     <td width="70"><%= image_tag "error.gif", :align=>'left' %> </td>
@@ -9,6 +8,9 @@
     <td width="70">&nbsp;</td>
     <td><div class="line"></div><h2>Please try one of the following options:</h2>
      <ol class="numberedListlg">
+          <% if @not_found_error %>
+     
+     
           <li>Sometimes it helps to just try again: <%= link_to "Try again", {:action=>'index'}.merge(params) -%></li>
           
           <% if AppConfig.param('main_sfx_base_url') %>

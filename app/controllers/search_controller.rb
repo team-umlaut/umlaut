@@ -336,7 +336,6 @@ class SearchController < ApplicationController
   protected
 
   def normalize_params
-
     # citation search params  
   
     # sfx.title_search and umlaut.title_search_type are synonyms
@@ -349,7 +348,8 @@ class SearchController < ApplicationController
       params['rft.jtitle'] = params[:journal][:title]
     end
 
-    if (params[:journal].blank? || params[:journal][:title].blank?)
+    if ( (params[:journal].blank? || params[:journal][:title].blank?) &&
+          params['rft.jtitle'] )
       params[:journal] ||= {}
       params[:journal][:title] = params['rft.jtitle']
     end
