@@ -20,7 +20,7 @@
 %>
 </ul>
 <% unless fulltxt.empty? %> <hr /> <% end %>
-<h4><%= genre.titlecase %>-level Page Only</h4>
+<h4><%= genre ? genre.titlecase : "Title" %>-level Page Only</h4>
 <p><span class="notice">Can not link directly to citation. Dates or extent of coverage may be unknown.</span></p>
 <ul class="fulltextlink">
 <% end %>
