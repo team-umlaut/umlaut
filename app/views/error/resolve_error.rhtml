@@ -9,17 +9,15 @@
     <td><div class="line"></div><h2>Please try one of the following options:</h2>
      <ol class="numberedListlg">
           <% if @not_found_error %>
-     
-     
-          <li>Sometimes it helps to just try again: <%= link_to "Try again", {:action=>'index'}.merge(params) -%></li>
-          
-          <% if AppConfig.param('main_sfx_base_url') %>
-          <li>If that doesn't work: <%= 
-          link_to "Try your request against SFX", AppConfig.param('main_sfx_base_url')+'?'+(request.env["QUERY_STRING"] || '') +'&sfx.ignore_date_threshold=1' -%> </li>
+            <li>Sometimes it helps to just try again: <%= link_to "Try again", {:action=>'index'}.merge(params) -%></li>
+            
+            <% if AppConfig.param('main_sfx_base_url') %>
+            <li>If that doesn't work: <%= 
+            link_to("Try your request against SFX", AppConfig.param('main_sfx_base_url')+'?'+(request.env["QUERY_STRING"] || '') +'&sfx.ignore_date_threshold=1') -%> </li>
           <% end %>
           
           <% if help_url = AppConfig.param('help_url') %>
-          <li>If you're really stuck: <%= link_to "Contact us for help", help_url %></li>
+            <li>If you're really stuck: <%= link_to("Contact us for help", help_url)%></li>
           <% end %>
         </ol>
     </td>
