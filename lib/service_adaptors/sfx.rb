@@ -138,6 +138,12 @@ class Sfx < Service
     
     doc = Hpricot(resolver_response)     
 
+    # Catch an SFX error message (in HTML) that's not an XML
+    # document at all.
+    unless doc.at('/ctx_obj_set')
+      RAILS_DEFAULT_LOGGER.error("sfx.rb: SFX did not return expected response. SFX response: #{resolver_response}")
+      raise "SFX did not return expected response."
+    end
 
     # There can be several context objects in the response.
     # We need to keep track of which data comes from which, for
