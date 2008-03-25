@@ -42,7 +42,7 @@
     <% if @force_bg_progress_spinner %>
       <%= 
       image_tag('spinner.gif') %>
-      Searching for <%= current_set_empty ? "" : "more " + svc_types[0].display_name_pluralize %>
+      Searching for <%= (current_set_empty ? "" : "more ") + svc_types[0].display_name_pluralize %>
     <% end %>
   </div>
 
