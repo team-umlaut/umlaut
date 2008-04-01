@@ -65,7 +65,7 @@ class Request < ActiveRecord::Base
     
         # Find or create a referrer, if we have a referrer in our OpenURL
         rfr = nil
-        rfr = Referrer.find_or_create_by_identifier(context_object.referrer.identifier) unless context_object.referrer.empty?
+        rfr = Referrer.find_or_create_by_identifier(context_object.referrer.identifier) unless context_object.referrer.empty? || context_object.referrer.identifier.empty?
     
         # Create the Request
         req = Request.new
