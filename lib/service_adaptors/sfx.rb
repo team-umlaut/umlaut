@@ -247,15 +247,19 @@ class Sfx < Service
           coverage = nil
           if ( @get_coverage )
             # Make sure you turn on "Include availability info in text format"
-            # in the SFX Admin API configuration. 
-            threshold = target.at('/coverage/coverage_text/threshold_text/coverage_statement')
-            threshold_str = threshold ? threshold.inner_html.to_s : nil
-            
-            embargo = target.at('/coverage/coverage_text/embargo_text/embargo_statement')
-            embargo_str = embargo ? embargo.inner_html.to_s : nil
+            # in the SFX Admin API configuration.             
+            thresholds_str = ""
+            target.search('/coverage/coverage_text/threshold_text/coverage_statement').each do | threshold |
+              thresholds_str += threshold.inner_html.to_s + ".\n";              
+            end
 
-            if ( threshold_str || embargo_str )
-              coverage = threshold_str.to_s + '. ' + embargo_str.to_s
+            embargoes_str = "";
+            target.search('/coverage/coverage_text/embargo_text/embargo_statement').each do |embargo |
+              embargoes_str += embargo.inner_html.to_s + ".\n";
+            end
+            
+            unless ( thresholds_str.blank? && embargoes_str.blank? )
+              coverage = thresholds_str + embargoes_str
             end
           end
 
@@ -295,7 +299,7 @@ class Sfx < Service
           value_text[:citation_volume] = sfx_metadata['rft.volume'];
           value_text[:citation_issue] = sfx_metadata['rft.issue']
           value_text[:citation_spage] = sfx_metadata['rft.spage']
-  
+          
           display_text = (target/"/target_public_name").inner_html
     
           initHash = {:service=>self,
