@@ -20,7 +20,8 @@ class Referent < ActiveRecord::Base
     rft.identifiers.each do | ident |
       rft_val = ReferentValue.find_by_key_name_and_normalized_value('identifier', ReferentValue.normalize(ident))
 
-      if rft_val and rft_val.referent.metadata_intersects?( rft )
+      # Not sure why there'd ever be an rft_val with a blank referent, but there was. 
+      if (rft_val && rft_val.referent && rft_val.referent.metadata_intersects?( rft ))
         return rft_val.referent
       end      
     end
