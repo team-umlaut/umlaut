@@ -13,7 +13,6 @@ class ResolveController < ApplicationController
          :except => [:banner_menu, :bannered_link_frameset, :partial_html_sections]
   require 'json/lexer'
   require 'json/objects'
-  require 'oai'
 
   # If a background service was started more than 30 seconds
   # ago and isn't finished, we assume it died.
