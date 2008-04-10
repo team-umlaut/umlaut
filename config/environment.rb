@@ -13,15 +13,17 @@ RAILS_GEM_VERSION = '1.2.1' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-require 'plugins/app_config/lib/configuration'
-
-# require openurl library. in vendor/plugins
-#require 'open_url'
+# We are using an old-school json library, including it in plugins.
+# It uses non-conventional path, so we need to manually include it.
+# We really ought to update/test this to use a modern ruby json gem instead.
+$LOAD_PATH.unshift "#{RAILS_ROOT}/vendor/plugins/ruby-json-1.1.2"
 
 
 # Neccesary because we use threading for Umlaut
 ActiveRecord::Base.allow_concurrency = true
 
+
+require 'plugins/app_config/lib/configuration'
 Rails::Initializer.run do |config|
 
   $KCODE = 'UTF8'
@@ -196,4 +198,5 @@ end
 # Mime::Type.register "text/richtext", :rtf
 # Mime::Type.register "application/x-mobile", :mobile
 
-
+puts "LOAD PATH: \n"
+$LOAD_PATH.each {|p| puts "element: #{p}\n"}
