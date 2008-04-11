@@ -77,7 +77,12 @@ module ApplicationHelper
   def hash_to_querystring(hash, seperator='&')
     list = []
     hash.each do |key, value|
-      value = (value.blank?) ? '' : CGI.escape(value)
+      if (value.kind_of?(Array))
+        # value is never supposed to be an array, but sometimes it is
+        # Because we aren't really dealing with openurls right. oh well.
+        value = value.first
+      end
+      value = (value.blank?) ? '' : CGI.escape(value.to_s)
       key = CGI.escape(key)
     
       list << key + '=' + value
