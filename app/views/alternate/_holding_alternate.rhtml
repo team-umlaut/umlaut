@@ -49,10 +49,10 @@ holdings.each do |p|
     <td colspan="4">
           <ul>          
           <% 
-          # Only show first 4, with a 'more' link to make others visible if neccesary. 
+          # Only show first 4, with a 'more' link to make others visible if neccesary. 5 if that's all there are. 
           hidden_div_id = "copies_#{p.id}"
           target[:coverage_str_array].each_index do |index|
-              break if (index >= 3 && 
+              break if (index >= 4 && 
                         params['umlaut.holding_expand_all'] != 'true')
               s = target[:coverage_str_array][index]%>
                <li><%= s %>                              
