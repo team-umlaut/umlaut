@@ -80,12 +80,16 @@ module ApplicationHelper
       if (value.kind_of?(Array))
         # value is never supposed to be an array, but sometimes it is
         # Because we aren't really dealing with openurls right. oh well.
-        value = value.first
+        values = value
+      else
+        values = Array.new.push(value)
       end
-      value = (value.blank?) ? '' : CGI.escape(value.to_s)
-      key = CGI.escape(key)
-    
-      list << key + '=' + value
+      values.each do |value|        
+        value = (value.blank?) ? '' : CGI.escape(value.to_s)
+        key = CGI.escape(key)
+      
+        list << key + '=' + value
+      end
     end
     return list.join(seperator)
   end
