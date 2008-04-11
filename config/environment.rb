@@ -6,9 +6,10 @@
 # are part of the app itself. 
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-# Do not freeze to a particular Gem, but umlaut is tested/developed with
-# 1.2.1 . I think. 
-RAILS_GEM_VERSION = '1.2.1' unless defined? RAILS_GEM_VERSION
+# Umlaut was originally developed/tested with 1.2.1, but we've succesfully
+# moved to 1.2.6. 
+# 1.2.6  
+RAILS_GEM_VERSION = '1.2.6' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -18,13 +19,24 @@ require File.join(File.dirname(__FILE__), 'boot')
 # We really ought to update/test this to use a modern ruby json gem instead.
 $LOAD_PATH.unshift "#{RAILS_ROOT}/vendor/plugins/ruby-json-1.1.2"
 
-
-# Neccesary because we use threading for Umlaut
-ActiveRecord::Base.allow_concurrency = true
-
-
 require 'plugins/app_config/lib/configuration'
+
 Rails::Initializer.run do |config|
+
+  # Turning on ActiveRecord concurrency is neccesary because we use threading
+  # for Umlaut
+  # In >1.2.1, this needs to be in an after_config block.
+  # See http://toolmantim.com/article/2006/12/27/environments_and_the_rails_initialisation_process  
+  config.after_initialize do
+    # And to keep db password from showing up in log, we need to trick the logger. Weird, sorry.
+
+    orig_logger = ActiveRecord::Base.logger 
+    ActiveRecord::Base.logger = nil
+
+    ActiveRecord::Base.allow_concurrency = true
+
+    ActiveRecord::Base.logger = orig_logger
+  end
 
   $KCODE = 'UTF8'
 
@@ -198,5 +210,4 @@ end
 # Mime::Type.register "text/richtext", :rtf
 # Mime::Type.register "application/x-mobile", :mobile
 
-puts "LOAD PATH: \n"
-$LOAD_PATH.each {|p| puts "element: #{p}\n"}
+
