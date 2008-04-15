@@ -86,8 +86,10 @@ Rails::Initializer.run do |config|
 
   # When nightly_maintenance will expire sessions. Default to
   # 1 day. Over-ride in umlaut_config/environment.rb if desired, but
-  # probably no reason to. 
-  config.app_config.session_expire_seconds = 1.day
+  # probably no reason to.
+  # Can't use active support in environment.rb anymore. grr.
+  #config.app_config.session_expire_seconds = 1.day
+  config.app_config.session_expire_seconds = 1 * 60 * 60 * 24
   
   # Multi-thread action of foreground services.
   # Reccommend you leave set to true, unless debugging. 
