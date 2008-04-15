@@ -71,8 +71,12 @@ class Request < ActiveRecord::Base
         req = Request.new
         req.session_id = session.session_id
         req.params = serialized_params
-        rft.requests << req
-        (rfr.requests << req) if rfr
+        # Don't do this! It is a performance problem.
+        # rft.requests << req
+        # (rfr.requests << req) if rfr
+        # Instead, say it like this:
+        req.referent = rft
+        req.referrer = rfr
 
         # Save client ip
         req.client_ip_addr = params['req.ip'] || a_rails_request.remote_ip()
