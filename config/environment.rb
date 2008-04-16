@@ -9,7 +9,7 @@
 # Umlaut was originally developed/tested with 1.2.1, but we've succesfully
 # moved to 1.2.6. 
 # 1.2.6  
-RAILS_GEM_VERSION = '1.2.6' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '1.2.1' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
