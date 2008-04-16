@@ -161,6 +161,33 @@ namespace :umlaut do
         orphaned_dispatch.each {|d| d.destroy }
         puts "  Deleted #{orphaned_dispatch.length} DispatchedServices."
 
+
+        # Turns out we need to get rid of old referents and referentvalues
+        # too. There are just too many. This will make old permalinks no
+        # longer work until we fix that. Let's delete referents and
+        # referent values older than 90 days for now.
+        # Tricky because we didn't have created_at in referent or 
+        # referent_value.
+        Referent.transaction do 
+          referent_expire = 20.days.ago
+          puts "Deleting Referents older than 20 days."
+
+          #Referent.delete_all(["created_at < ? OR created_at is NULL", referent_expire])
+          # No created_at in old Referents. Doh! Need to use subquery in
+          # delete. Sorry if that's not db-independent. This sucks beavis. 
+          
+          Referent.connection.execute("DELETE referents FROM referents, requests WHERE referents.id = requests.referent_id AND requests.created_at < '#{referent_expire.to_formatted_s(:db)}'")
+          
+       
+
+          
+          # Now delete orphaned ReferentValue. Inner join on a delete
+          # might not work in all databases, but it works on MySQL. Sorry can't
+          # figure out a good db-independent Rails way to take care of this
+          # purging.
+          puts "Deleting orphaned ReferentValues."
+          ReferentValue.connection.execute("DELETE FROM referent_values WHERE referent_values.referent_id is NULL OR NOT EXISTS (SELECT * FROM referents WHERE referents.id =  referent_values.referent_id)")          
+        end        
       end
     
 end
