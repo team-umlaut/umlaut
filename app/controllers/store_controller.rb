@@ -5,6 +5,17 @@ class StoreController < ApplicationController
     
     perm = Permalink.find(params[:id])
     co = OpenURL::ContextObject.new
+
+
+    unless ( perm.referent )
+      # This permalink has been purged, sorry. we need to make this work better.
+      RAILS_DEFAULT_LOGGER.error("Permalink request with missing referent. Returning 404. Permalink id: #{perm.id}")
+      # For now, give em a generic 404. One is saved in public as part of standard Rails.
+      
+      render :file=>File.join(RAILS_ROOT,"public/404.html"), :layout=>false, :status=>404
+      return
+    end
+    
     co.import_context_object(perm.referent.to_context_object)
     
     # We intentionally do not preserve original referrer sid
