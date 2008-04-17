@@ -12,8 +12,8 @@ class Request < ActiveRecord::Base
   # added to the db comes first. Less confusing to have a consistent order.
   # Also lets installation be sure services run first will have their
   # responses show up first. 
-  has_many :service_types, :order=>'service_types.id ASC'
-  belongs_to :referent
+  has_many :service_types, :order=>'service_types.id ASC', :include=>:service_response
+  belongs_to :referent, :include => :referent_values
   belongs_to :referrer
 
   # Either creates a new Request, or recovers an already created Request from
@@ -25,25 +25,24 @@ class Request < ActiveRecord::Base
     co_params = self.extract_co_params( params )
     # Create a context object from our http params
     context_object = OpenURL::ContextObject.new_from_form_vars( co_params )
+
+
     
     # Sometimes umlaut puts in a 'umlaut.request_id' parameter.
     # first look by that, if we have it, for an existing request.  
-    begin
       request_id = params['umlaut.request_id']
 
-      # We're trying to identify an already existing response that matches
-      # this request, in this session.  We don't actually check the
-      # session_id in the cache lookup though, so background processing
-      # will hook up with the right request even if user has no cookies. 
-      # But if IP has changed, don't re-use the request, becuase ip change
-      # may result in different responses.
-      client_ip = params['req.ip'] || a_rails_request.remote_ip()
-      req = Request.find(:first, :conditions => ["id = ? and client_ip_addr = ?", request_id, client_ip] ) unless request_id.nil? || @user_request      
-    rescue  ActiveRecord::RecordNotFound
-      # No match?  Just pretend we never had a request_id in url at all.  
-      request_id = nil
-      req = nil
-    end
+    # We're trying to identify an already existing response that matches
+    # this request, in this session.  We don't actually check the
+    # session_id in the cache lookup though, so background processing
+    # will hook up with the right request even if user has no cookies. 
+    # But if IP has changed, don't re-use the request, becuase ip change
+    # may result in different responses.
+    client_ip = params['req.ip'] || a_rails_request.remote_ip()
+    req = Request.find(:first, :conditions => ["id = ? and client_ip_addr = ?", request_id, client_ip] ) unless request_id.nil? || @user_request
+    # No match?  Just pretend we never had a request_id in url at all.  
+    request_id = nil if req == nil
+    
     
     unless (req)
       # If not found yet, then look for an existing request that had the same
@@ -52,8 +51,9 @@ class Request < ActiveRecord::Base
       # only the ones that are actually the OpenURL, is the idea.
   
       serialized_params = self.serialized_co_params( co_params )
-      
-      req = Request.find(:first, :conditions => ["session_id = ? and params = ?", session.session_id, serialized_params ]) unless serialized_params.blank?
+
+      # to do and client_ip_addr = 
+      req = Request.find(:first, :conditions => ["session_id = ? and params = ? and client_ip_addr = ?", session.session_id, serialized_params, client_ip ] ) unless serialized_params.blank?
 
       unless (req)
         # Nope, okay, we don't have a complete Request, but let's try finding
@@ -288,16 +288,26 @@ class Request < ActiveRecord::Base
   end
 
   # pass in string name of a service type value, get back list of
-  # ServiceType objects with that value belonging to this request. 
-  # This one does make a db transaction, to get most up to date list.
+  # ServiceType objects with that value belonging to this request.
+  # :refresh=>true will force a trip to the db to get latest values.
+  # otherwise, association is used. 
+  # This one does make a db call, to get most up to date list.
   # Should return empty array, never nil. 
-  def get_service_type(svc_type)
-    return self.service_types.find(:all,
-                              :conditions =>
-                                 ["service_type_value_id = ?",
-                                 ServiceTypeValue[svc_type].id ],
-                              :include => [:service_response]   
-                              )
+  def get_service_type(svc_type, options = {})
+
+    if ( options[:refresh])
+      return self.service_types.find(:all,
+                                :conditions =>
+                                   ["service_type_value_id = ?",
+                                   ServiceTypeValue[svc_type].id ],
+                                :include => [:service_response]   
+                                )
+    else
+      # find on an assoc will go to db, unless we convert it to a plain
+      # old array first.
+      return self.service_types.to_a.find_all { |st|  
+       st.service_type_value == ServiceTypeValue[svc_type] }      
+    end
   end
   
   protected

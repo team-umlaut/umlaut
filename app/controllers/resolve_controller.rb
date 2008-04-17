@@ -4,8 +4,7 @@
 # umlaut request (that presumably was an OpenURL). 
 
 class ResolveController < ApplicationController
-  before_filter :init_processing
-  
+  before_filter :init_processing  
   after_filter :save_request
   
   # Take layout from config, default to resolve_basic.rhtml layout. 
@@ -47,13 +46,12 @@ class ResolveController < ApplicationController
    #re-use some of that for partial html sections too.
    # see partial_html_sections action. 
    @@partial_html_sections = @@background_updater[:divs]
-
+   
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
     
     @user_request ||= Request.new_request(params, session, request )
-
     
     # Ip may be simulated with req.ip in context object, or may be
     # actual, request figured it out for us. 
@@ -66,7 +64,7 @@ class ResolveController < ApplicationController
               ds.status == DispatchedService::Queued ) &&
               (Time.now - ds.updated_at) > BACKGROUND_SERVICE_TIMEOUT)
 
-              ds.store_exception( Exception.new("background service timed out; thread assumed dead.")) unless ds.exception_info
+              ds.store_exception( Exception.new("background service timed out (took longer than #{BACKGROUND_SERVICE_TIMEOUT} to run); thread assumed dead.")) unless ds.exception_info
               # Fail it temporary, it'll be run again. 
               ds.status = DispatchedService::FailedTemporary
               ds.save!
@@ -153,15 +151,13 @@ class ResolveController < ApplicationController
   end
  		
   def index
-  
-    #self.init_processing # handled by before_filter 
-    self.service_dispatch()
-    @user_request.save! 
 
+    self.service_dispatch()
 
     # link is a ServiceType object
-    link = should_skip_menu
-    if (! link.nil? )
+    #link = should_skip_menu
+    link = nil
+    if ( ! link.nil? )
       hash = LinkRouterController::frameset_action_params( link ).merge('umlaut.skipped_menu' => 'true')
       redirect_to hash
     else

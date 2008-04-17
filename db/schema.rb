@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 18) do
+ActiveRecord::Schema.define(:version => 20) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -118,24 +118,26 @@ ActiveRecord::Schema.define(:version => 18) do
   add_index "permalinks", ["referent_id"], :name => "plink_referent_idx"
 
   create_table "referent_values", :force => true do |t|
-    t.column "referent_id",      :integer,               :default => 0,     :null => false
-    t.column "key_name",         :string,  :limit => 50, :default => "",    :null => false
+    t.column "referent_id",      :integer,                :default => 0,     :null => false
+    t.column "key_name",         :string,   :limit => 50, :default => "",    :null => false
     t.column "value",            :text
     t.column "normalized_value", :string
-    t.column "metadata",         :boolean,               :default => false, :null => false
-    t.column "private_data",     :boolean,               :default => false, :null => false
+    t.column "metadata",         :boolean,                :default => false, :null => false
+    t.column "private_data",     :boolean,                :default => false, :null => false
+    t.column "created_at",       :datetime
   end
 
   add_index "referent_values", ["referent_id", "key_name", "normalized_value"], :name => "rft_val_referent_idx"
-  add_index "referent_values", ["key_name"], :name => "index_referent_values_on_key_name"
+  add_index "referent_values", ["key_name", "normalized_value"], :name => "by_name_and_normal_val"
 
   create_table "referents", :force => true do |t|
-    t.column "atitle", :string
-    t.column "title",  :string
-    t.column "issn",   :string, :limit => 10
-    t.column "isbn",   :string, :limit => 13
-    t.column "year",   :string, :limit => 4
-    t.column "volume", :string, :limit => 10
+    t.column "atitle",     :string
+    t.column "title",      :string
+    t.column "issn",       :string,   :limit => 10
+    t.column "isbn",       :string,   :limit => 13
+    t.column "year",       :string,   :limit => 4
+    t.column "volume",     :string,   :limit => 10
+    t.column "created_at", :datetime
   end
 
   add_index "referents", ["atitle", "title", "issn", "isbn", "year", "volume"], :name => "rft_shortcut_idx"

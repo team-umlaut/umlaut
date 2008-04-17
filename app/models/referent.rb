@@ -16,16 +16,18 @@ class Referent < ActiveRecord::Base
     
     rft = co.referent
 
-    # First try to find by id. There could be several. 
+    # First try to find by id. There could be several.
+    
     rft.identifiers.each do | ident |
-      rft_val = ReferentValue.find_by_key_name_and_normalized_value('identifier', ReferentValue.normalize(ident))
-
+      rft_val = ReferentValue.find(:first,
+                        :conditions=> { :key_name => 'identifier', :normalized_value => ident} )
+          
       # Not sure why there'd ever be an rft_val with a blank referent, but there was. 
-      if (rft_val && rft_val.referent && rft_val.referent.metadata_intersects?( rft ))
+      if (rft_val && rft_val.referent && rft_val.referent.metadata_intersects?( rft ))            
         return rft_val.referent
       end      
     end
-
+        
     # Else try to find by special indexed shortcut values. Create hash
     # of shortcuts. 
 
@@ -35,7 +37,7 @@ class Referent < ActiveRecord::Base
     
     # Special handling of title
     incoming_title = rft.metadata['jtitle'] || rft.metadata['btitle'] || rft.metadata['title']  
-    shortcuts[:title] = ReferentValue.normalize(incoming_title)[0..254] if incoming_title
+    shortcuts[:title] = ReferentValue.normalize(incoming_title) if incoming_title
     # Special handling of date/year, since we use year instead of date for
     # stored shortcut. 
     # I don't know why.
@@ -43,7 +45,7 @@ class Referent < ActiveRecord::Base
 
     # Other four. 
     [:atitle, :issn, :isbn, :volume].each do |att|
-      shortcuts[att] = ReferentValue.normalize( rft.metadata[att.to_s])[0..254] if rft.metadata[ att.to_s ]
+      shortcuts[att] = ReferentValue.normalize( rft.metadata[att.to_s]) if rft.metadata[ att.to_s ]
     end
 
     found_rft = Referent.find(:first, :conditions => shortcuts)
@@ -73,30 +75,38 @@ class Referent < ActiveRecord::Base
   end
 
   def self.create_by_context_object(co)
-    self.clean_up_context_object(co)
     
+    self.clean_up_context_object(co)    
     rft = Referent.new
-    rft.save!
+
+    # Wrap everything in a transaction for better efficiency, at least
+    # with MySQL, I think. 
     
-    rft.set_values_from_context_object(co)
-    permalink = Permalink.new
-    permalink.referent = rft
-    permalink.save!
-    
-    val = ReferentValue.new
-    val.key_name = 'identifier'
-    val.value = permalink.tag_uri
-    val.normalized_value = permalink.tag_uri
-    rft.referent_values << val
-    rft.referent_values.each do | val |
-      rft.atitle = val.normalized_value if val.key_name == 'atitle' and val.metadata?
-      rft.title = val.normalized_value if val.key_name.match(/^[bj]?title$/) and val.metadata? 
-      rft.issn = val.normalized_value if val.key_name == 'issn' and val.metadata?
-      rft.isbn = val.normalized_value if val.key_name == 'isbn' and val.metadata?      
-      rft.volume = val.normalized_value if val.key_name == 'volume' and val.metadata?
-      rft.year = val.normalized_value if val.key_name == 'date' and val.metadata?
+    Referent.transaction do
+      
+      rft.set_values_from_context_object(co)
+      
+      permalink = Permalink.new
+      permalink.referent = rft
+      permalink.save!
+          
+      val = ReferentValue.new
+      val.key_name = 'identifier'
+      val.value = permalink.tag_uri
+      val.normalized_value = permalink.tag_uri
+      rft.referent_values << val
+  
+      # Add shortcuts.    
+      rft.referent_values.each do | val |
+        rft.atitle = val.normalized_value if val.key_name == 'atitle' and val.metadata?
+        rft.title = val.normalized_value if val.key_name.match(/^[bj]?title$/) and val.metadata? 
+        rft.issn = val.normalized_value if val.key_name == 'issn' and val.metadata?
+        rft.isbn = val.normalized_value if val.key_name == 'isbn' and val.metadata?      
+        rft.volume = val.normalized_value if val.key_name == 'volume' and val.metadata?
+        rft.year = val.normalized_value if val.key_name == 'date' and val.metadata?
+      end
+      rft.save!
     end
-    rft.save!
     return rft          
   end
 
@@ -125,31 +135,51 @@ class Referent < ActiveRecord::Base
     end    
   end
 
+
+  # Find or create a ReferentValue object hanging off this
+  # Referent, with given key name and value. key_name can
+  # be 'identifier', 'format', or any metadata key.
+  def ensure_value!(key_name, value)
+     normalized_value = ReferentValue.normalize(value)
+     
+     rv = ReferentValue.find(:first, 
+                       :conditions => { :referent_id => self.id,
+                                        :key_name => key_name,
+                                        :normalized_value => normalized_value })
+      unless (rv)
+        rv = ReferentValue.new
+        rv.referent = self
+        
+        rv.key_name = key_name
+        rv.value = value
+        rv.normalized_value = normalized_value
+
+        unless (key_name == "identifier" || key_name == "format")
+          rv.metadata = true
+        end
+
+        rv.save!
+      end
+      return rv
+  end
   
   # Populate the referent_values table with a ropenurl contextobject object
   def set_values_from_context_object(co)    
     rft = co.referent
 
+  
     # Multiple identifiers are possible! 
     rft.identifiers.each do |id_string|
-      id = ReferentValue.find_or_create_by_referent_id_and_key_name_and_value(self.id,'identifier',id_string)
-      id.normalized_value = id_string if id.normalized_value.blank?
-      id.save!
+      ensure_value!('identifier', id_string)            
     end
     if rft.format
-      fmt = ReferentValue.find_or_create_by_referent_id_and_key_name_and_value(self.id,'format',rft.format)
-      fmt.normalized_value = ReferentValue.normalize(rft.format) if fmt.normalized_value.blank?
-      fmt.save!
-    end    
-    
-    rft.metadata.each_key { | key |
-      next unless rft.metadata[key]
-      rft_key = ReferentValue.find_or_create_by_referent_id_and_key_name_and_value(self.id,key,rft.metadata[key])
-      rft_key.normalized_value =    
-        ReferentValue.normalize(rft.metadata[key]) if rft_key.normalized_value.blank?
-      rft_key.metadata = true
-      rft_key.save!
-    }
+      ensure_value!('format', rft.format)
+    end
+                      
+    rft.metadata.each { | key, value |
+      next unless value
+      ensure_value!( key, value)      
+    }    
   end
 
   # pass in a Referent, or a ropenurl ContextObjectEntity that has a metadata
@@ -235,10 +265,15 @@ class Referent < ActiveRecord::Base
   # Creates a hash for use in View code to display a citation
   def to_citation
     citation = {}
-    if self.metadata['atitle']
-      citation[:title] = self.metadata['atitle']
+    # call self.metadata once and use the array for efficiency, don't
+    # keep calling it. profiling shows it DOES make a difference. 
+    my_metadata = self.metadata
+    
+    
+    if my_metadata['atitle']
+      citation[:title] = my_metadata['atitle']
       citation[:title_label], citation[:subtitle_label] = 
-        case self.metadata['genre']
+        case my_metadata['genre']
           when /article|journal|issue/ then ['Article Title', 'Journal Title']
           when /bookitem|book/ then ['Chapter/Part Title', 'Book Title']
 		      when /proceeding|conference/ then ['Proceeding Title', 'Conference Name']
@@ -253,13 +288,13 @@ class Referent < ActiveRecord::Base
             end
         end
       ['title','btitle','jtitle'].each do | t_type |
-        if self.metadata[t_type]
-          citation[:subtitle] = self.metadata[t_type]
+        if my_metadata[t_type]
+          citation[:subtitle] = my_metadata[t_type]
           break
         end
       end
     else      
-      citation[:title_label] = case self.metadata["genre"]
+      citation[:title_label] = case my_metadata["genre"]
   		when /article|journal|issue/ then 'Journal Title'
   		when /bookitem|book/ then 'Book Title'
   		when /proceeding|conference/ then 'Conference Name'
@@ -267,42 +302,42 @@ class Referent < ActiveRecord::Base
   		when nil then 'Title'
       end
       ['title','btitle','jtitle'].each do | t_type |
-        if self.metadata[t_type]
-          citation[:title] = self.metadata[t_type]
+        if my_metadata[t_type]
+          citation[:title] = my_metadata[t_type]
           break
         end
       end      
     end
     # add publisher for books
-    if (self.metadata['genre'] == 'book')
-      citation[:pub] = self.metadata['pub'] unless self.metadata['pub'].blank?
+    if (my_metadata['genre'] == 'book')
+      citation[:pub] = my_metadata['pub'] unless my_metadata['pub'].blank?
     end
     
     ['issn','isbn','volume','issue','date'].each do | key |
-      citation[key.to_sym] = self.metadata[key]
+      citation[key.to_sym] = my_metadata[key]
     end
-    if self.metadata["au"]
-      citation[:author] = self.metadata["au"]
-    elsif self.metadata["aulast"]
-      citation[:author] = self.metadata["aulast"]
-      if self.metadata["aufirst"]
-   		citation[:author] += ',	'+self.metadata["aufirst"]
+    if my_metadata["au"]
+      citation[:author] = my_metadata["au"]
+    elsif my_metadata["aulast"]
+      citation[:author] = my_metadata["aulast"]
+      if my_metadata["aufirst"]
+   		citation[:author] += ',	'+my_metadata["aufirst"]
       else
-        if self.metadata["auinit"]
-          citation[:author] += ',	'+self.metadata["auinit"]
+        if my_metadata["auinit"]
+          citation[:author] += ',	'+my_metadata["auinit"]
         else
-		  if self.metadata["auinit1"]
-            citation[:author] += ',	'+self.metadata["auinit1"]
+		  if my_metadata["auinit1"]
+            citation[:author] += ',	'+my_metadata["auinit1"]
    		  end
-       	  if self.metadata["auinitm"]
-            citation[:author] += self.metadata["auinitm"]
+       	  if my_metadata["auinitm"]
+            citation[:author] += my_metadata["auinitm"]
    		  end
    	    end
    	  end
    	end 
-   	if self.metadata['spage']
-   	  citation[:page] = self.metadata['spage']
-   	  citation[:page] += ' - ' + self.metadata['epage'] if self.metadata['epage']
+   	if my_metadata['spage']
+   	  citation[:page] = my_metadata['spage']
+   	  citation[:page] += ' - ' + my_metadata['epage'] if my_metadata['epage']
    	end
    	citation[:identifiers] = []
    	self.identifiers.each do | id |
