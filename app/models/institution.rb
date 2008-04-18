@@ -99,7 +99,7 @@ class Institution < ActiveRecord::Base
     file_path = File.join( RAILS_ROOT, "config", "umlaut_config", "institutions.yml")
     file_time = File.new(file_path).ctime
 
-    if ( file_time > db_time)
+    if ( file_time.nil? || file_time > db_time)
       sync_institutions!
     end
   end
