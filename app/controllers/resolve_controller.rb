@@ -155,8 +155,7 @@ class ResolveController < ApplicationController
     self.service_dispatch()
 
     # link is a ServiceType object
-    #link = should_skip_menu
-    link = nil
+    link = should_skip_menu
     if ( ! link.nil? )
       hash = LinkRouterController::frameset_action_params( link ).merge('umlaut.skipped_menu' => 'true')
       redirect_to hash
