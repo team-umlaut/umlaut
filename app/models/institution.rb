@@ -69,4 +69,27 @@ class Institution < ActiveRecord::Base
       @services << ServiceList.get(svc)
     end
   end
+
+  @@inst_yml_ctime = nil
+  @@inst_yml_ctime_checked = nil
+  # pass in a time. Return: Has the services.yml been changed since then?
+  # It might take 60 seconds to notice the services.yml has been changed,
+  # because we do cache last change time for 60s.
+  # This is currently used by collection, so services stored in session
+  # will be refreshed when neccesary. It is NOT yet used by ServiceList
+  # itself to fresh it's cached services; doing that in a thread-safe
+  # way is tricky. Just restart the mongrels to refresh cached services.
+  def self.stale_services?(time)
+  
+    # Instead of examining the file ctime on _every_ request, we cache
+    # for a minute.
+    if ( @@inst_yml_ctime.nil? || @@inst_yml_ctime_checked < Time.now - 60 )
+      path = File.join( RAILS_ROOT, "config", "umlaut_config", "institutions.yml")
+      @@inst_yml_ctime = File.new(path).ctime
+      @@inst_yml_ctime_checked = Time.now
+    end    
+    
+    return time.nil? || @@inst_yml_ctime > time
+  end
+  
 end

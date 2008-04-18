@@ -27,10 +27,13 @@ class Collection
       session[:refresh_collection] = false
     end
 
-    # Has the services.yml been changed since we loaded? If so better
-    # load again.
+    # Has the services.yml or institutions.yml been changed since we loaded? 
+    # If so better load again.
     if (session[:collection] &&
-        ServiceList.stale_services?(session[:collection][:created_time]))
+        (ServiceList.stale_services?(session[:collection][:created_time]) ||
+         Institution.stale_services?(session[:collection][:created_time]))        
+        )
+        RAILS_DEFAULT_LOGGER.debug("Rebuilding stale collection for session session.id")
         session[:collection] = nil
     end
     

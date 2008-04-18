@@ -3,7 +3,9 @@
 # config/umlaut_config/environment.rb instead.
 
 # This file includes Umlaut defaults that are cross-installation, that
-# are part of the app itself. 
+# are part of the app itself.
+
+# You can over-ride anything here over in your local config. 
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 # Umlaut was originally developed/tested with 1.2.1, but we've succesfully

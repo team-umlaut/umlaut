@@ -333,108 +333,14 @@ class ResolveController < ApplicationController
 		@context_object_handler.store(@dispatch_response)  	
   end  
 
-  # Obsolete, don't use this for abstracts anymore. 
-  #def description
-  #	service_dispatcher = self.init_processing 
-  #  service_dispatcher.add_identifier_lookups(@context_object)
-  #  service_dispatcher.add_identifier_lookups(@context_object)    
-  #  service_dispatcher << AmazonService.new
-  #  service_dispatcher << ServiceBundle.new(service_dispatcher.get_opacs(@collection))  	
-  #  service_dispatcher.add_social_bookmarkers  	    
-  #	self.do_processing(service_dispatcher)  	 	
-  #end
-
-  # Obsolete, we don't do this like this anymore. 
-  #def web_search
-  #	service_dispatcher = self.init_processing
-  #  service_dispatcher.add_identifier_lookups(@context_object)
-  #  service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection) + service_dispatcher.get_opacs(@collection))  	
-  #  service_dispatcher.add_search_engines    
-  #	self.do_processing(service_dispatcher)  	     
-  #end
-
-  # Obsolete, more_like_this not currently happening. 
-  #def more_like_this
-  #	service_dispatcher = self.init_processing
-  #  service_dispatcher.add_identifier_lookups(@context_object)
-  #  service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection) + service_dispatcher.get_opacs(@collection))
-  #  service_dispatcher.add_search_engines
-  #  service_dispatcher.add_social_bookmarkers  	
-  #	self.do_processing(service_dispatcher)  	
-  #	puts @dispatch_response.dispatched_services.inspect
-  #  @dispatch_response.dispatched_services.each { | svc |
-  #    if svc.respond_to?('get_similar_items') and !@dispatch_response.similar_items.keys.index(svc.identifier.to_sym)
-  #      svc.get_similar_items(@dispatch_response)
-  #    end
-  #  }
-
-  #	unless @params[:view]
-  #	 @params[:view] = @dispatch_response.similar_items.keys.first.to_s
-  	 
-  #	end
-  #	puts @dispatch_response.similar_items.keys.inspect
-  #end
-
-  # Obsolete, related titles functionality not currently happening. 
-  #def related_titles
-  #	service_dispatcher = self.init_processing
-  #  service_dispatcher.add_identifier_lookups(@context_object)
-  #  service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection) + service_dispatcher.get_opacs(@collection))  	
-  # 	self.do_processing(service_dispatcher)  	
-  #end
-
-  # table of contents pull-out page
+  # table of contents pull-out page. Obsolete? 
   def toc
   end
     
-
-
-  # Obsolete, I think. 
-  #def help
-  #	service_dispatcher = self.init_processing  
-  #  service_dispatcher << ServiceBundle.new(service_dispatcher.get_link_resolvers(@collection))  	
-  # 	self.do_processing(service_dispatcher)     
-  #end
-
-
-  
   def rescue_action_in_public(exception)
     render(:template => "error/resolve_error", :status => 500, :layout => AppConfig.param("resolve_layout", "resolve_basic")) 
   end  
 
-  # Obsolete, I think. 
-  def do_background_services
-    if @params['background_id']
-    	service_dispatcher = self.init_processing
-    	background_service = BackgroundService.find_by_id(@params['background_id'])  
-    	services = Marshal.load background_service.services
-    	service_dispatcher << ServiceBundle.new(services)
-    	self.do_processing(service_dispatcher)
- 			@context_object_handler.store(@dispatch_response)			
- 			background_service.destroy
-      menu = []
-      unless @dispatch_response.similar_items.empty?
-        menu << 'umlaut-similar_items'
-      end
-      unless @dispatch_response.description.empty?
-        menu << 'umlaut-description' 
-      end
-      unless @dispatch_response.table_of_contents.empty?
-        menu << 'umlaut-table_of_contents'
-      end
-      unless @dispatch_response.external_links.empty?
-        menu << 'umlaut-external_links'
-      end    
-      render :text=>menu.join(",") 	
-  		history = History.find_or_create_by_session_id_and_request_id(session.session_id, @context_object_handler.id)
-  		history.cached_response = Marshal.dump @dispatch_response
-  
-  		history.save      	
-    else
-      render :nothing => true    	
-    end
-  end
-  
   protected
 
   # Based on app config and context, should we skip the resolve
@@ -573,21 +479,16 @@ class ResolveController < ApplicationController
   def service_dispatch()
     
     expire_old_responses();
+
+
     
     # Foreground services
     (0..9).each do | priority |
-      
+    
       next if @collection.service_level(priority).empty?
-
       
-      if AppConfig[:threaded_services]
-        bundle = ServiceBundle.new(@collection.service_level(priority))
-        bundle.handle(@user_request)            
-      else
-        @collection.service_level(priority).each do | svc |
-          svc.handle(@user_request) unless @user_request.dispatched?(svc)
-        end
-      end        
+      bundle = ServiceBundle.new(@collection.service_level(priority), priority)
+      bundle.handle(@user_request)            
     end
 
     # Background services. First register them all as queued, so status
@@ -601,24 +502,14 @@ class ResolveController < ApplicationController
     # services. We are NOT going to wait for this thread to join,
     # we're going to let it keep doing it's thing in the background after
     # we return a response to the browser
-    messages = []
     backgroundThread = Thread.new(@collection, @user_request) do | t_collection,  t_request|
       begin
-        messages << "Starting bg services at #{Time.now}"        
-        #logger.debug("Starting background services in Thread #{Thread.current.object_id}")
         ('a'..'z').each do | priority |
            service_list = t_collection.service_level(priority)
            next if service_list.empty?
-           #logger.debug("background: Making service bundle for #{priority}")
-           bundle = ServiceBundle.new( service_list )
-           bundle.debugging = true
-           messages << "Starting bundle for priority #{priority} at #{Time.now}"
-           bundle.handle( t_request )
-           messages << "Done handling bundle for priority #{priority} at #{Time.now}"
-           #logger.debug("background: Done handling for #{priority}")
-        end
-        messages << "All bg services complete at #{Time.now}"
-        #logger.debug("Background services complete")
+           bundle = ServiceBundle.new( service_list, priority )
+           bundle.handle( t_request )           
+        end        
      rescue Exception => e
         # We are divorced from any request at this point, not much
         # we can do except log it. Actually, we'll also store it in the
@@ -630,7 +521,7 @@ class ResolveController < ApplicationController
         logger.error("Background Service execution exception: #{e}")
         logger.error( e.backtrace.join("\n") )
      end
-    end    
+    end
   end  
 end
 
