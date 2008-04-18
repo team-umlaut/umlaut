@@ -38,6 +38,9 @@ Rails::Initializer.run do |config|
     ActiveRecord::Base.allow_concurrency = true
 
     ActiveRecord::Base.logger = orig_logger
+
+    # sync institutions.yml to db if needed by timestamp.
+    Institution.sync_institutions
   end
 
   $KCODE = 'UTF8'

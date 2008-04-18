@@ -91,5 +91,40 @@ class Institution < ActiveRecord::Base
     
     return time.nil? || @@inst_yml_ctime > time
   end
+
+  # Syncs Institution in db with umlaut_config/institutions.yml, only if
+  # the db is out of date with file modified timestamp. 
+  def self.sync_institutions
+    db_time = Institution.minimum(:updated_at)
+    file_path = File.join( RAILS_ROOT, "config", "umlaut_config", "institutions.yml")
+    file_time = File.new(file_path).ctime
+
+    if ( file_time > db_time)
+      sync_institutions!
+    end
+  end
+  
+  #Syncs db to match config/umlaut_config/institutions.yml. Will create
+  # institutions as neccesary, but will never delete any institutions from db.
+  # Will run whether or not it's neccesary. Run sync_institutions to check
+  # timestamp first.   
+  def self.sync_institutions!    
+      institutions = YAML.load_file(RAILS_ROOT+"/config/umlaut_config/institutions.yml")
+  
+      institutions.each_pair do |name, yaml_record|
+        inst = Institution.find(:first, :conditions => "name = '#{name}'")
+        inst ||= Institution.new do |i| 
+          i.name = name
+          RAILS_DEFAULT_LOGGER.info("Creating new institution for #{name}.")
+        end
+        
+        inst.default_institution = yaml_record["default_institution"] if yaml_record["default_institution"]
+  
+        inst.worldcat_registry_id = yaml_record["worldcat_registry_id"] if yaml_record["worldcat_registry_id"]
+      
+        inst.save!
+        RAILS_DEFAULT_LOGGER.info("Institution #{name} synced.")
+      end
+  end
   
 end

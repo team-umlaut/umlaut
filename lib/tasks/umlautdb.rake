@@ -1,3 +1,6 @@
+
+
+
 namespace :umlaut do
     desc "Perform nightly maintenance. Set up in cron."
     task :nightly_maintenance => [:load_sfx_urls, :expire_sessions, :expire_old_data]
@@ -59,22 +62,10 @@ namespace :umlaut do
     desc "Syncs db to match config/umlaut_config/institutions.yml. Will create institutions as neccesary, but will never delete any institutions from db. "
     
     task :sync_institutions => :environment do
-        institutions = YAML.load_file(RAILS_ROOT+"/config/umlaut_config/institutions.yml")
-  
-        institutions.each_pair do |name, yaml_record|
-          inst = Institution.find(:first, :conditions => "name = '#{name}'")
-          inst ||= Institution.new do |i| 
-            i.name = name
-            puts "Creating new institution for #{name}."
-          end
-        
-          inst.default_institution = yaml_record["default_institution"] if yaml_record["default_institution"]
-  
-          inst.worldcat_registry_id = yaml_record["worldcat_registry_id"] if yaml_record["worldcat_registry_id"]
-          
-          inst.save
-          puts "Institution #{name} synced."
-        end
+        # The method writes stuff to log, we don't want to write it to app
+        # log, send it to stdout instead. 
+        RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)        
+        Institution.sync_institutions!
     end
 
       desc "Loads sfx_urls from SFX installation. SFX mysql login needs to be set in config."
