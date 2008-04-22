@@ -1,11 +1,22 @@
 class Referent < ActiveRecord::Base
-  
+  # Shortcuts are really used as retrieval keys to 'shortcut' matching
+  # referent. They hold normalized value (use ReferentValue.normalize) or
+  # empty string. Never nil. 
+  @@shortcut_attributes = [:atitle, :title, :issn, :isbn, :volume, :year]
   has_many :requests
   has_many :referent_values
   has_many :permalinks
+
+  def before_validation_on_create
+    # shortcuts initialize to empty string, they should never be null.
+    @@shortcut_attributes.each do |key|
+      self[key] = "" if self[key].nil?
+    end
+  end
   
   # When provided an OpenURL::ContextObject, it will return a Referent object
-  # (if one exists). At least that's the intent. This turns out to be a really
+  # (if one exists). At least that's the intent. 
+  #This turns out to be a really
   # tricky task, identifying when two citations that may not match exactly
   # are the same citation. So this doesn't really work well--we err
   # on the side of missing existing matches, better than finding
@@ -30,7 +41,7 @@ class Referent < ActiveRecord::Base
         
     # Else try to find by special indexed shortcut values. Create hash
     # of shortcuts. 
-
+    
     # Preload values as empty, even if they aren't found in our
     # incoming referent--we want to find a match with them empty too, then! 
     shortcuts = {:atitle=>"", :title=>"", :issn=>"", :isbn=>"", :volume=>"", :year=>""}
@@ -74,7 +85,10 @@ class Referent < ActiveRecord::Base
     end
   end
 
-  def self.create_by_context_object(co)
+  # Does call save! on referent created.
+  # :permalink => false if you already have a permalink and don't
+  # need to create one. Caller should attach that permalink to this referent!
+  def self.create_by_context_object(co, options = {})
     
     self.clean_up_context_object(co)    
     rft = Referent.new
@@ -85,18 +99,12 @@ class Referent < ActiveRecord::Base
     Referent.transaction do
       
       rft.set_values_from_context_object(co)
-      
-      permalink = Permalink.new
-      permalink.referent = rft
-      permalink.save!
-          
-      val = ReferentValue.new
-      val.key_name = 'identifier'
-      val.value = permalink.tag_uri
-      val.normalized_value = permalink.tag_uri
-      rft.referent_values << val
+
+      unless ( options[:permalink] == false)
+        permalink = Permalink.new_with_referent!(rft)            
+      end
   
-      # Add shortcuts.    
+      # Add shortcuts.
       rft.referent_values.each do | val |
         rft.atitle = val.normalized_value if val.key_name == 'atitle' and val.metadata?
         rft.title = val.normalized_value if val.key_name.match(/^[bj]?title$/) and val.metadata? 
@@ -164,7 +172,8 @@ class Referent < ActiveRecord::Base
   end
   
   # Populate the referent_values table with a ropenurl contextobject object
-  def set_values_from_context_object(co)    
+  def set_values_from_context_object(co)
+    
     rft = co.referent
 
   
@@ -250,7 +259,14 @@ class Referent < ActiveRecord::Base
   # referrent. 
   def to_context_object
     co = OpenURL::ContextObject.new
+
+    # Got to initialize the referent entity properly for our format.
+    # OpenURL sucks, this is confusing, yes. 
+    fmt_uri = 'info:ofi/fmt:xml:xsd:' + self.format
+    co.referent = OpenURL::ContextObjectEntity.new_from_format( fmt_uri )
     rft = co.referent
+
+    # Now set all the values. 
     self.referent_values.each do | val |
       next if val.private_data?
       if val.metadata?

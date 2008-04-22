@@ -60,8 +60,15 @@ class Request < ActiveRecord::Base
         # an already existing referent and/or referrer to use, if possible, or
         # else create new ones. 
     
-        # Find or create a Referent        
-        rft = Referent.find_or_create_by_context_object(context_object)
+        # Find or create a Referent
+        rft = nil
+        if ( params['umlaut.referent_id'])
+           rft = Referent.find(:first, :conditions => {:id => params['umlaut.referent_id']})
+        end
+        # No id given, or no object found?
+        unless (rft )        
+          rft = Referent.find_or_create_by_context_object(context_object)
+        end
     
         # Find or create a referrer, if we have a referrer in our OpenURL
         rfr = nil

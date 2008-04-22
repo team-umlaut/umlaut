@@ -95,6 +95,11 @@ class Institution < ActiveRecord::Base
   # Syncs Institution in db with umlaut_config/institutions.yml, only if
   # the db is out of date with file modified timestamp. 
   def self.sync_institutions
+    unless (Institution.new.attributes.include?("updated_at"))
+      RAILS_DEFAULT_LOGGER.error("Can not check Institutions for up-to-date-ness. No updated_at column in Insitutions.")
+      return nil
+    end
+  
     db_time = Institution.minimum(:updated_at)
     file_path = File.join( RAILS_ROOT, "config", "umlaut_config", "institutions.yml")
     file_time = File.new(file_path).ctime
@@ -108,7 +113,8 @@ class Institution < ActiveRecord::Base
   # institutions as neccesary, but will never delete any institutions from db.
   # Will run whether or not it's neccesary. Run sync_institutions to check
   # timestamp first.   
-  def self.sync_institutions!    
+  def self.sync_institutions!
+    
       institutions = YAML.load_file(RAILS_ROOT+"/config/umlaut_config/institutions.yml")
   
       institutions.each_pair do |name, yaml_record|
