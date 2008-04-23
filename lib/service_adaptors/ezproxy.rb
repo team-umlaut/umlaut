@@ -111,7 +111,7 @@ class Ezproxy < Service
     return_hash = {}
     REXML::XPath.each(proxy_doc, "/proxy_url_response/proxy_urls/url") { | u |
       unless (u && u.get_text) # if u is empty... weird, but skip it.
-        RAILS_DEFAULT_LOGGER.error "EZProxy response seems to be missing some pieces.\n   EZProxy api request xml: #{url_doc.to_s}\n   EZProxy response: proxy_doc"
+        RAILS_DEFAULT_LOGGER.error "EZProxy response seems to be missing some pieces.\n   Urls requested: #{urls.join(',')}\n   EZProxy api request xml: #{url_doc.to_s}\n   EZProxy response: #{proxy_doc.to_s}"
       end
     
       orig_url = u.get_text.value

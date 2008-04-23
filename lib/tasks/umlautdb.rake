@@ -107,28 +107,37 @@ namespace :umlaut do
 
       desc "Cleanup of database for old data associated with expired sessions etc."
       task :expire_old_data => :environment do
+        # NOTE: After the new code has been running 20 days, we can
+        # fix up ALL this code to be simpler, after all referents in db have
+        # timestamps and all permalinks in the past 20 days have serialized
+        # context objects. 22 Apr 08. 
+      
         # There are requests, responses, and dispatched_service entries
         # hanging around for things that may be way old and no longer
         # need to hang around. How do we know if they're too old?
         # If they are no longer associated with any session, mainly.
 
-        # Except, we can not delete old Requests and their associated
-        # referent and referrer data, because they are used by the permalink
-        # service (and possibly by statistics too). 
         
-        # However, if a Request no longer has a live session, let's get rid
-        # of all its ServiceTypes.
+        # Current Umlaut never re-uses a request different between sessions, so
+        # if the session is dead, we can purge the Requests too. Permalink
+        # architecture has been fixed to not rely on requests or referents,
+        # permalinks (post new architecture) store their own context object.
 
-        # We do this with 'destroy', which is slow, because it fetches
-        # everything into the db first. But I think that's okay. This
-        # code assumes session store in ActiveRecord in a sessions table.
-        
+        # Sorry, doing all this in a db efficient way (one db query) requires
+        # some tricky SQL, which be MySQL specific. 
+
+        #puts "Deleting Requests with dead sessions"
+        # We don't do this yet. Worried about the mass delete of old data
+        # we never purged making our MySQL innodb data files grow horribly. 
+
         puts "Deleting ServiceTypes for dead Requests..."
-        orphaned_service_types = ServiceType.find(:all, :include => [:request], :conditions => "requests.session_id is null OR requests.session_id NOT IN (select session_id from sessions)")
-  
-        orphaned_service_types.each { |st| st.destroy }
-        puts "  Deleted #{orphaned_service_types.length} ServiceTypes."
-        
+        begin_time = Time.now
+        #orphaned_service_types = ServiceType.find(:all, :include => [:request], :conditions => "requests.session_id is null OR requests.session_id NOT IN (select session_id from sessions)")
+        work_clause =  " FROM (service_types LEFT OUTER JOIN requests ON service_types.request_id=requests.id) LEFT OUTER JOIN sessions ON requests.session_id = sessions.session_id WHERE requests.id IS NULL OR sessions.id IS NULL"
+        count = ServiceType.count_by_sql("SELECT count(*) " + work_clause )
+        ServiceType.connection.execute("DELETE service_types " + work_clause)
+        puts "  Deleted #{count} ServiceTypes in #{Time.now - begin_time}"
+                        
         # Now, let's get rid of any ServiceResponses that no longer have
         # ServiceTypes. 
         # Theoretically, a ServiceResponse can belong to more than one Request,
@@ -136,22 +145,30 @@ namespace :umlaut do
         # do that. 
         # Again with 'destroy' so all business rules for anything hanging off
         # ServiceResponse are triggered.
-        
-        puts "Deleting orphaned ServiceResponses..."
-        orphaned_responses = ServiceResponse.find(:all, 
-                    :include => [:service_types],
-                    :conditions => "service_types.id is null")
-        orphaned_responses.each { |r| r.destroy }
-        puts "  Deleted #{orphaned_responses.length} ServiceResponses."
 
+        puts "Deleting orphaned ServiceResponses...."
+        begin_time = Time.now
+        #orphaned_responses = ServiceResponse.find(:all, 
+        #            :include => [:service_types],
+        #            :conditions => "service_types.id is null")        
+        work_clause = " FROM service_responses WHERE NOT EXISTS (SELECT * FROM service_types WHERE service_types.service_response_id =  service_responses.id)"
+        count = ServiceResponse.count_by_sql("SELECT count(*) " + work_clause)
+        ServiceResponse.connection.execute("DELETE " + work_clause)  
+        puts "  Deleted #{count} ServiceResponses in #{Time.now - begin_time}"
+                
         # And get rid of DispatchedServices for 'dead' requests too. Don't
         # need em.
 
         puts "Deleting DispatchedServices for dead requests..."
-        orphaned_dispatch =  DispatchedService.find(:all, :include => [:request], :conditions => "requests.session_id is null OR requests.session_id NOT IN (select session_id from sessions)")
-        orphaned_dispatch.each {|d| d.destroy }
-        puts "  Deleted #{orphaned_dispatch.length} DispatchedServices."
+        begin_time = Time.now
+        #orphaned_dispatch =  DispatchedService.find(:all, :include => [:request], :conditions => "requests.session_id is null OR requests.session_id NOT IN (select session_id from sessions)")
 
+        # Sorry, may be MySQL only. 
+        work_clause = " FROM (dispatched_services LEFT OUTER JOIN requests ON dispatched_services.request_id = requests.id) LEFT OUTER JOIN sessions ON requests.session_id = sessions.id WHERE requests.id IS NULL OR sessions.id IS NULL"
+        count = DispatchedService.count_by_sql("SELECT count(*) " + work_clause)
+        DispatchedService.connection.execute("DELETE dispatched_services " + work_clause)
+        puts "  Deleted #{count} DispatchedServices in #{Time.now - begin_time}"
+        
 
         # Turns out we need to get rid of old referents and referentvalues
         # too. There are just too many. This will make old permalinks no
@@ -162,22 +179,20 @@ namespace :umlaut do
         Referent.transaction do 
           referent_expire = 20.days.ago
           puts "Deleting Referents older than 20 days."
-
-          #Referent.delete_all(["created_at < ? OR created_at is NULL", referent_expire])
-          # No created_at in old Referents. Doh! Need to use subquery in
-          # delete. Sorry if that's not db-independent. This sucks beavis. 
-          
-          Referent.connection.execute("DELETE referents FROM referents, requests WHERE referents.id = requests.referent_id AND requests.created_at < '#{referent_expire.to_formatted_s(:db)}'")
-          
-       
-
+          begin_time = Time.now
+          # May be MySQL dependent. 
+          Referent.connection.execute("DELETE referents FROM referents, requests WHERE referents.id = requests.referent_id AND requests.created_at < '#{referent_expire.to_formatted_s(:db)}'" )
+          puts "  Deleted Referents in #{Time.now - begin_time}"
           
           # Now delete orphaned ReferentValue. Inner join on a delete
           # might not work in all databases, but it works on MySQL. Sorry can't
           # figure out a good db-independent Rails way to take care of this
           # purging.
           puts "Deleting orphaned ReferentValues."
-          ReferentValue.connection.execute("DELETE FROM referent_values WHERE referent_values.referent_id is NULL OR NOT EXISTS (SELECT * FROM referents WHERE referents.id =  referent_values.referent_id)")          
+          begin_time = Time.now
+          work_clause = "FROM referent_values WHERE referent_values.referent_id is NULL OR NOT EXISTS (SELECT * FROM referents WHERE referents.id =  referent_values.referent_id)"
+          ReferentValue.connection.execute("DELETE " + work_clause )
+          puts "  Deleted #{count} ReferentValues in #{Time.now - begin_time}"
         end        
       end
     

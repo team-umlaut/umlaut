@@ -30,7 +30,7 @@ class Request < ActiveRecord::Base
     
     # Sometimes umlaut puts in a 'umlaut.request_id' parameter.
     # first look by that, if we have it, for an existing request.  
-      request_id = params['umlaut.request_id']
+    request_id = params['umlaut.request_id']
 
     # We're trying to identify an already existing response that matches
     # this request, in this session.  We don't actually check the
@@ -42,8 +42,8 @@ class Request < ActiveRecord::Base
     req = Request.find(:first, :conditions => ["id = ? and client_ip_addr = ?", request_id, client_ip] ) unless request_id.nil? || @user_request
     # No match?  Just pretend we never had a request_id in url at all.  
     request_id = nil if req == nil
-    
-    
+  
+  
     unless (req)
       # If not found yet, then look for an existing request that had the same
       # params as this one, in the same session. In which case, reload.
@@ -54,43 +54,17 @@ class Request < ActiveRecord::Base
 
       # to do and client_ip_addr = 
       req = Request.find(:first, :conditions => ["session_id = ? and params = ? and client_ip_addr = ?", session.session_id, serialized_params, client_ip ] ) unless serialized_params.blank?
+    end
 
-      unless (req)
-        # Nope, okay, we don't have a complete Request, but let's try finding
-        # an already existing referent and/or referrer to use, if possible, or
-        # else create new ones. 
-    
-        # Find or create a Referent
-        rft = nil
-        if ( params['umlaut.referent_id'])
-           rft = Referent.find(:first, :conditions => {:id => params['umlaut.referent_id']})
-        end
-        # No id given, or no object found?
-        unless (rft )        
-          rft = Referent.find_or_create_by_context_object(context_object)
-        end
-    
-        # Find or create a referrer, if we have a referrer in our OpenURL
-        rfr = nil
-        rfr = Referrer.find_or_create_by_identifier(context_object.referrer.identifier) unless context_object.referrer.empty? || context_object.referrer.identifier.empty?
-    
-        # Create the Request
-        req = Request.new
-        req.session_id = session.session_id
-        req.params = serialized_params
-        # Don't do this! It is a performance problem.
-        # rft.requests << req
-        # (rfr.requests << req) if rfr
-        # Instead, say it like this:
-        req.referent = rft
-        req.referrer = rfr
+    # Okay, if we found a req, it might NOT have a referent, it might
+    # have been purged. If so, create a new one.
+    if ( req && ! req.referent )
+      req.referent = Referent.find_or_create_by_context_object(context_object)
+    end
 
-        # Save client ip
-        req.client_ip_addr = params['req.ip'] || a_rails_request.remote_ip()
-        req.client_ip_is_simulated = true if req.client_ip_addr != a_rails_request.remote_ip()
-        
-        req.save!
-      end
+    unless (req)
+      # have to create one
+      req = self.create_new_request!( :params => params, :session => session, :rails_request => a_rails_request, :serialized_params => serialized_params, :context_object => context_object )
     end
 
     return req
@@ -318,6 +292,52 @@ class Request < ActiveRecord::Base
   end
   
   protected
+
+  # Called by self.new_request, if a new request _really_ needs to be created.
+  def self.create_new_request!( args )
+
+    # all of these are requierd
+    params = args[:params]
+    session = args[:session]
+    a_rails_request = args[:rails_request]
+    serialized_params = args[:serialized_params]
+    context_object = args[:context_object]
+
+    # We don't have a complete Request, but let's try finding
+    # an already existing referent and/or referrer to use, if possible, or
+    # else create new ones. 
+      
+    rft = nil
+    if ( params['umlaut.referent_id'])
+       rft = Referent.find(:first, :conditions => {:id => params['umlaut.referent_id']})
+    end
+    # No id given, or no object found? Create it. 
+    unless (rft )        
+      rft = Referent.find_or_create_by_context_object(context_object)
+    end
+
+    # Find or create a referrer, if we have a referrer in our OpenURL
+    rfr = nil
+    rfr = Referrer.find_or_create_by_identifier(context_object.referrer.identifier) unless context_object.referrer.empty? || context_object.referrer.identifier.empty?
+
+    # Create the Request
+    req = Request.new
+    req.session_id = session.session_id
+    req.params = serialized_params
+    # Don't do this! It is a performance problem.
+    # rft.requests << req
+    # (rfr.requests << req) if rfr
+    # Instead, say it like this:
+    req.referent = rft
+    req.referrer = rfr
+
+    # Save client ip
+    req.client_ip_addr = params['req.ip'] || a_rails_request.remote_ip()
+    req.client_ip_is_simulated = true if req.client_ip_addr != a_rails_request.remote_ip()
+    
+    req.save!
+    return req
+  end
 
   def find_dispatch_object(service)
     return self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
