@@ -59,6 +59,15 @@ class ApplicationController < ActionController::Base
   def error_404    
     render :file=>File.join(RAILS_ROOT,"public/404.html"), :layout=>false, :status=>404
   end
+
+  # Over-ride the log processing method to include referrer logging,useful
+  # for debugging.
+  def log_processing
+    super
+    if logger && logger.info?
+      logger.info("  HTTP Referer: #{request.referer[0..100]}")
+    end
+  end
   
   # helper method we need available in controllers too
   # Absolute URL for permalink for given request.
