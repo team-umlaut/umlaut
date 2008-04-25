@@ -312,7 +312,7 @@ class Request < ActiveRecord::Base
        rft = Referent.find(:first, :conditions => {:id => params['umlaut.referent_id']})
     end
     # No id given, or no object found? Create it. 
-    unless (rft )        
+    unless (rft )
       rft = Referent.find_or_create_by_context_object(context_object)
     end
 

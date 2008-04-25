@@ -58,8 +58,9 @@ class Referent < ActiveRecord::Base
     [:atitle, :issn, :isbn, :volume].each do |att|
       shortcuts[att] = ReferentValue.normalize( rft.metadata[att.to_s]) if rft.metadata[ att.to_s ]
     end
-
-    found_rft = Referent.find(:first, :conditions => shortcuts)
+    # Don't look up by shortcuts if they're ALL blank. That doesn't do us well.
+    found_rft = nil
+    found_rft = Referent.find(:first, :conditions => shortcuts) if  shortcuts.values.find {|v| ! v.empty?}
     if ( found_rft && found_rft.metadata_intersects?( rft ) )
       return found_rft
     end
@@ -265,7 +266,7 @@ class Referent < ActiveRecord::Base
     fmt_uri = 'info:ofi/fmt:xml:xsd:' + self.format
     co.referent = OpenURL::ContextObjectEntity.new_from_format( fmt_uri )
     rft = co.referent
-
+    
     # Now set all the values. 
     self.referent_values.each do | val |
       next if val.private_data?
