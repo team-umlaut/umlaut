@@ -44,13 +44,13 @@ class Ezproxy < Service
   # can not or does not need to be proxied. 
   def link_out_filter(orig_url, service_type, other_args = {})
     # bad uri? Forget it.
+    
     return nil unless valid_url?( orig_url )
     
     # If it's already proxied, leave it alone.
     return nil if already_proxied(orig_url)
 
     return nil if excluded?(orig_url)
-    
     new_url =  proxy_urls( [orig_url] ).values[0]
     
     return new_url
@@ -58,10 +58,11 @@ class Ezproxy < Service
 
   def valid_url?(url)
     begin
+      raise Exception.new("Empty url!") if url.blank?
       URI.parse( url )
       return true
-    rescue URI::InvalidURIError => e
-      RAILS_DEFAULT_LOGGER.error("Bad uri sent to ezproxy service. Can not parse. url: #{url}")
+    rescue Exception => e
+      RAILS_DEFAULT_LOGGER.error("Bad uri sent to ezproxy service. Can not parse. url: <#{url}>")
       return false
     end
   end
@@ -113,7 +114,6 @@ class Ezproxy < Service
       unless (u && u.get_text) # if u is empty... weird, but skip it.
         RAILS_DEFAULT_LOGGER.error "EZProxy response seems to be missing some pieces.\n   Urls requested: #{urls.join(',')}\n   EZProxy api request xml: #{url_doc.to_s}\n   EZProxy response: #{proxy_doc.to_s}"
       end
-    
       orig_url = u.get_text.value
       return_hash[orig_url] = nil
     
