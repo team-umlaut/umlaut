@@ -50,7 +50,6 @@ class ResolveController < ApplicationController
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
-    
     @user_request ||= Request.new_request(params, session, request )
     
     # Ip may be simulated with req.ip in context object, or may be
@@ -490,6 +489,10 @@ class ResolveController < ApplicationController
       bundle = ServiceBundle.new(@collection.service_level(priority), priority)
       bundle.handle(@user_request)            
     end
+    
+    # Got to reload cached referent values association, that the services
+    # may have changed in another thread. 
+    @user_request.referent.referent_values.reload
 
     # Background services. First register them all as queued, so status
     # checkers can see that.
