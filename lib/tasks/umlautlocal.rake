@@ -11,7 +11,7 @@ namespace :umlaut_lcl do
                   'config/umlaut_distribution/institutions.yml-dist' =>
                   'config/umlaut_config/institutions.yml',
                   'config/umlaut_distribution/database.yml-dist' =>
-                  'config/umlaut_distribution/database.yml',
+                  'config/umlaut_config/database.yml',
                   'config/umlaut_distribution/umlaut_environment.rb' =>
                   'config/umlaut_config/environment.rb'}
 
@@ -31,7 +31,7 @@ namespace :umlaut_lcl do
       dest_path = RAILS_ROOT + '/' + dest
 
       unless File.exist?(dest_path)
-        File.copy( source_path, dest_path)
+        FileUtils.copy( source_path, dest_path)
       end
     end
   end
