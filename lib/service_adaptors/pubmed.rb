@@ -1,3 +1,6 @@
+# FIXME This service is not working
+# For starters it needs the method service_types_generated()
+
 class Pubmed < Service
   # This model will query the Pubmed eutils service to enhance the request
   # metadata

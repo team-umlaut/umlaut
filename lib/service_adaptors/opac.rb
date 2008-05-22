@@ -1,3 +1,6 @@
+# FIXME This service is not working
+# For starters it needs the method service_types_generated()
+
 class Opac < Service
   attr_reader :record_attributes, :display_name
 

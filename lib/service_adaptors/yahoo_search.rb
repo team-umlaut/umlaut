@@ -1,3 +1,4 @@
+# FIXME This service may not be working
 class YahooSearch < Service
   require 'md5'
   require 'json/lexer'

@@ -1,3 +1,6 @@
+# FIXME This service is not working
+# For starters it needs the method service_types_generated()
+
 class Citeulike
   require 'uri'
   def make_interesting(link, context_object)  	

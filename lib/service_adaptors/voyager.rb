@@ -1,3 +1,4 @@
+# FIXME This service may not be working
 require 'service_adaptors/opac'
 class Voyager < Opac
   attr_reader :sru_url
