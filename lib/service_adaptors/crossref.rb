@@ -1,3 +1,6 @@
+# FIXME This service is not working.
+# For starters it needs the method service_types_generated()
+
 class Crossref < Service
   #require 'open_url'
   attr_reader :url, :username, :password
