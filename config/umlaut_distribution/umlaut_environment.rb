@@ -69,7 +69,8 @@ def umlaut_configuration(config)
   # Use a whole new view for resolve view, eg
   #   config.app_config.resolve_view = "alternate/alt_holdings"
   #   config.app_config.resolve_view = "local/my_custom_holdings"
-
+  config.app_config.resolve_view = "alternate/resolve_alternate"
+  
   # link_with_frameset can be used to control whether (and when)
   # umlaut links to resources in a frameset page with an umlaut banner.
   # See also skip_resolve_menu below 
