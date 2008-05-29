@@ -70,7 +70,7 @@ class OpencontentSearch < Service
     if rft.format == 'journal' && metadata['atitle']
       title = metadata['atitle']
     elsif rft.format == 'book'
-      title = metadata['btitle'] unless metadata['bititle'].blank?
+      title = metadata['btitle'] unless metadata['btitle'].blank?
       title = metadata['title'] if title.blank?
     end
 
