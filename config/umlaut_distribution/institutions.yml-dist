@@ -19,7 +19,7 @@
 
 # Institution params here are mirrored in the db. 
 # After making changes to your institutions.yml file, run:
-# rake institutions:sync_to_db
+# rake umlaut:sync_institutions
 # to update database to match. 
 
 # Global 'institution' reserved for services that
@@ -28,13 +28,15 @@ global:
   default_institution: true
   display_name: 
   services:
-    - Crossref
-    - Pubmed
-    - Amazon
-    - Google
-    - Yahoo
+    - UlrichsLink
+    - WorldCat
+    - InternetArchiveScraper
+#    - Pubmed
+#    - Amazon
+#    - Google
+#    - Yahoo
 #    - YahooMyWeb
-#    - Connotea
+#    - Crossref 
 
 # Define institution specific services here    
 #Local_Library:

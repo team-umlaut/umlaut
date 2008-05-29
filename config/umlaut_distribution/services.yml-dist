@@ -87,8 +87,30 @@ Connotea:
   url:
   priority: background
   status: disabled
-  
-CiteULike:
+
+UlrichsLink:
+  name: UlrichsLink
+  type: UlrichsLink
+  link_name: Periodical Information from Ulrich's Directory
+  priority: 3
+  status: active
+
+WorldCat:
+  name: WorldCat
+  type: Worldcat
+  display_text: View at OCLC Worldcat.org
+  priority: 3
+  status: active
+  search_zip_code: 60601
+
+InternetArchiveScraper:
+  name: InternetArchiveScraper
+  type: InternetArchiveScraper
+  display_text: Internet Archive
+  priority: c
+  status: active
+  url: http://www.archive.org/search.php?query=
+
 # Start institution specific services  
 Opac:
   name: GT Catalog
@@ -115,6 +137,32 @@ GT_SFX:
   base_url: http://sfx.galib.uga.edu/sfx_git1
   priority: 2
   status: active
+
+LIB_HIP:
+ name: Lib Libraries Catalog
+ display_name: Lib Libraries Catalog
+ type: Hip3Service
+ priority: c # After SFX, to get SFX metadata enhancement
+ base_path: 
+
+JH_HIP_search:
+ name: JH Libraries Catalog
+ display_name: JH Libraries Catalog
+ type: HipHoldingSearch
+ priority: d
+ base_path: http://catalog.library.jhu.edu/ipac20/ipac.jsp
+
+IsbnDb:
+ display_name: isbndb.com
+ type: IsbnDb
+ priority: c
+ access_key: [get from isbndb]
+
+SFX_backchannel_record:
+ display_name: SFX statistics
+ type: SfxBackchannelRecord
+ task: link_out_filter
+ priority: 6
 
 GT_EZProxy:
   name: EZProxy
