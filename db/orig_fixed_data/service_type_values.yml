@@ -72,6 +72,8 @@ similar_item:
   id: 102
   display_name: Similar Item
 
-  
+audio:
+  id: 200
+  display_name: Audio
 # If you want to add your own custom ones, make them start with ids at 100000,
 # to leave plenty of space for future standard umlaut ones. 
