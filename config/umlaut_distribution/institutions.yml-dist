@@ -30,7 +30,8 @@ global:
   services:
     - UlrichsLink
     - WorldCat
-    - InternetArchiveScraper
+    - InternetArchive
+#    - InternetArchiveScraper #deprecated
 #    - Pubmed
 #    - Amazon
 #    - Google

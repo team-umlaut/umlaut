@@ -103,6 +103,7 @@ WorldCat:
   status: active
   search_zip_code: 60601
 
+# deprecated. Use InternetArchive if it is working
 InternetArchiveScraper:
   name: InternetArchiveScraper
   type: InternetArchiveScraper
@@ -110,6 +111,22 @@ InternetArchiveScraper:
   priority: c
   status: active
   url: http://www.archive.org/search.php?query=
+
+InternetArchive:
+  name: InternetArchive
+  type: InternetArchive
+  display_text: Internet Archive
+  priority: c
+  status: active
+  #url: http://www.archive.org/advancedsearch.php? 
+  # default mediatypes are texts and audio. This is an array.
+  # Other possible values currently include: software, movies, education
+  #mediatypes: [texts, audio]
+  # default num_results from each media type to show. default is 3
+  #num_results: 3 
+  # If there are more results than num_results do you want to return a link
+  # to a search of IA showing total number found. Defaults to true.
+  #show_web_link: true
 
 # Start institution specific services  
 Opac:
