@@ -343,6 +343,11 @@ ul.fulltextlink li.fulltextlink {
   padding: 0px 18px 8px 22px;
 }
 
+ul.fulltextlink li.audiolink {
+  background: url(../images/famfamfam/page_sound.gif) no-repeat 0px 0px;
+  padding: 0px 18px 8px 22px;
+}
+
 #banner_fulltext li.fulltextlink {
   padding-bottom: 4px;
 }

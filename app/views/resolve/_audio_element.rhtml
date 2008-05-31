@@ -1,0 +1,22 @@
+<% # Can actually be probably used for other service types than full text.
+   # But anyway, displays a typical full text element in typical markup.
+   # pass in a ServiceType object for the response as :object 
+   
+   view_data = audio_element.view_data
+%>
+
+<li class="audiolink"> <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>audio_element.id}, 'target'=>"_blank" %>
+
+<% unless view_data[:coverage].blank? %>
+<div class="response_coverage_statement">
+<%= view_data[:coverage] %>
+</div>
+<% end
+%>
+<% unless view_data[:notes].blank? %>
+<div class="response_notes"><%= view_data[:notes] %></div>
+<% end %>
+<% unless view_data[:authentication].blank? %>
+<div class="response_authentication_instructions"><strong>Authentication:</strong> <%= view_data[:authentication] %></div>
+<% end %>
+</li>
