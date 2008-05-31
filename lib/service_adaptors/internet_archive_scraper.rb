@@ -7,6 +7,7 @@ class InternetArchiveScraper < Service
   require 'cgi'
   require 'hpricot'
   require 'open-uri'
+  include MetadataHelper
   
   attr_reader :url
   
@@ -71,42 +72,13 @@ class InternetArchiveScraper < Service
    
   # TODO strip off special characters like ?
   def define_title_query(rft)
-    title, creator = get_search_terms(rft)
-    return nil if title.nil?
-    query =  "title:(#{title})"
-    query << " AND creator:(#{creator})" if creator    
+    search_terms = get_search_terms(rft)
+    return nil if search_terms[:title].nil?
+    query =  "title:(#{search_terms[:title]})"
+    query << " AND creator:(#{search_terms[:creator]})" if search_terms[:creator]
     query
   end
   
-  def get_search_terms(rft)
-    # Just make one call to create metadata hash
-    metadata = rft.metadata
-    title = nil
-    if rft.format == 'journal' && metadata['atitle']
-      title = metadata['atitle']
-    elsif rft.format == 'book'
-      title = metadata['btitle'] unless metadata['btitle'].blank?
-      title = metadata['title'] if title.blank?
-    end
-
-    return nil if title.blank?
-
-    # Identify dc.creator query. Prefer aulast alone if available.
-    creator = nil
-    creator = metadata['aulast'] unless metadata['aulast'].blank?
-    creator = metadata['au'] if creator.blank?
-
-    # For books, strip off subtitle after and including a ':'. 
-    # Reduce false negatives by stripping it. 
-    if (rft.format == 'book')
-      colon_index = title.index(':')
-      title = title.slice( (0..colon_index-1)  ) if colon_index
-    end
-    
-    return title, creator
-  end
-   
-   
   def do_query(request, query)
     # TODO make the type configurable
     types = ['texts', 'audio'] 
