@@ -53,8 +53,6 @@ class InternetArchive < Service
       # using open() conveniently follows the redirect for us. Alas, it
       # doesn't give us access to the IA http status code response though.
       response = open(link).read
-
-      debugger
       
       doc = JSON.parse(response)
       results = doc['response']['docs']
