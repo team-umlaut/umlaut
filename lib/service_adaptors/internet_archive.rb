@@ -4,21 +4,23 @@
 # Also an optional link to a full search in the native interface can be 
 # presented to the user.
 
+
+
 class InternetArchive < Service
   require 'open-uri' #
   require 'cgi'
   require 'json' #we ask IA for json
   include MetadataHelper
   
-  # FIXME which params are required?
-  #required_config_params :display_text
-  attr_reader :url, :num_results, :mediatypes
+  # No parameters are required, we have working defaults for them all. 
+  
+  attr_reader :url, :num_results, :mediatypes  
   
   def service_types_generated
      return [ 
        ServiceTypeValue[:fulltext], 
        ServiceTypeValue[:audio],
-       ServiceTypeValue['highlighted_link'] ]
+       ServiceTypeValue[:'highlighted_link'] ]
   end
   
   def initialize(config)
@@ -32,6 +34,7 @@ class InternetArchive < Service
     @mediatypes = ["texts", "audio"]
     # Should the web link to further results be shown? default to true
     @show_web_link = true
+    @display_name = "Internet Archive"
     super(config)
   end
   
@@ -47,7 +50,12 @@ class InternetArchive < Service
     return nil if search_terms[:title].nil?
     @mediatypes.each do |type|
       link = @url + ia_params(search_terms, type)
+      # using open() conveniently follows the redirect for us. Alas, it
+      # doesn't give us access to the IA http status code response though.
       response = open(link).read
+
+      debugger
+      
       doc = JSON.parse(response)
       results = doc['response']['docs']
       #good_results = true unless results.empty?
@@ -55,15 +63,25 @@ class InternetArchive < Service
       # if we have more results than we want to show in the main view
       # we can ceate a link (highlighted_link) to the search in the sidebar 
       num_found = doc['response']['numFound']
-      if @show_web_link and not results.empty? and @num_results <= num_found
+      if @show_web_link and not results.empty? and @num_results < num_found
         do_web_link(request, search_terms, type, num_found) 
       end
       
       # add a service response for each result for this mediatype
       results.each do |result|
-        display_name = "#{@display_text} (#{type})" || "Internet Archive (#{type})"
+        
+        display_name = @display_name
+        if ( result["collection"] && @@collection_labels[result["collection"][0]])
+          display_name += ": " + @@collection_labels[result["collection"][0]]
+        elsif ( result["collection"])
+          display_name += ": " + result["collection"][0].titlecase
+        end
+
+        
         note = result['title']
         note << " by " << result['creator'].join(', ') if result['creator']
+        note << " (#{type})"
+
         service_type = [:fulltext]
         service_type = [:audio] if type == "audio"
         request.add_service_response(
@@ -120,3 +138,43 @@ end
 # 
 # Shows texts and audio, but only see also for audio
 # http://localhost:3000/resolve?&rft.title=Frankenstein&rft.aulast=Shelley&ctx_ver=Z39.88-2004&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook
+
+
+## collection labels
+
+@@collection_labels = {"animationandcartoons"  => "Animation & Cartoons",
+"artsandmusicvideos" =>"Arts & Music",
+"computersandtechvideos" =>"Computers & Technology",
+"culturalandacademicfilms" =>"Cultural & Academic Films",
+"ephemera" =>"Ephemeral Films",
+"moviesandfilms" =>"Movies",
+"newsandpublicaffairs" =>"News & Public Affairs",
+"foreignlanguagevideos" =>"Non-English Videos",
+"opensource_movies" =>"Open Source Movies",
+"prelinger" =>"Prelinger Archives",
+"sports" =>"Sports Videos",
+"gamevideos" =>"Video Games",
+"vlogs" =>"Vlogs",
+"youth_media" =>"Youth Media",
+"americana" => "American Libraries",
+"toronto" => "Canadian Libraries",
+"opensource" => "Open Source Books",
+"gutenberg" => "Project Gutenberg",
+"biodiversity" => "Biodiversity Heritage Library",
+"iacl" => "Children's Library",
+"additional_collections" => "Additional Collections",
+"audio_bookspoetry" =>"Audio Books & Poetry",
+"audio_tech" =>"Computers & Technology",
+"GratefulDead" =>"Grateful Dead",
+"etree" =>"Live Music Archive",
+"audio_music" =>"Music & Arts",
+"netlabels" =>"Netlabels",
+"audio_news" =>"News & Public Affairs",
+"audio_foreign" =>"Non-English Audio",
+"opensource_audio" =>"Open Source Audio",
+"audio_podcast" =>"Podcasts",
+"radioprograms" =>"Radio Programs",
+"audio_religion" =>"Spirituality & Religion",
+"librivoxaudio" => "LibriVox",
+"millionbooks" => "Million Book Project"
+}

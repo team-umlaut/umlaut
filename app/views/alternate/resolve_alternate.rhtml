@@ -21,6 +21,11 @@
     <div id="fulltext_wrapper">
       <%= render(:partial => "fulltext") %>
     </div>
+    
+    <div id="audio_wrapper">
+      <%= render(:partial => "audio") %>
+    </div>
+  
 
     <% docdels = get_service_type('document_delivery')
        if (display_ill?) && (! docdels.empty?)  %>

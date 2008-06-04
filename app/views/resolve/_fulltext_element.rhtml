@@ -2,10 +2,14 @@
    # But anyway, displays a typical full text element in typical markup.
    # pass in a ServiceType object for the response as :object 
    
+   #optional argument, :locals => {:li_class => 'whatever'}
+   li_class ||= "fulltextlink"
+   
+   # passed in in :object or :collection 
    view_data = fulltext_element.view_data
 %>
 
-<li class="fulltextlink"> <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>fulltext_element.id}, 'target'=>"_blank" %>
+<li class="<%= li_class %>"> <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>fulltext_element.id}, 'target'=>"_blank" %>
 
 <% unless view_data[:coverage].blank? %>
 <div class="response_coverage_statement">

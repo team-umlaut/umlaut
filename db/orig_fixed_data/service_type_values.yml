@@ -55,7 +55,7 @@ holding_search:
 # aren't checked. 
 fulltext_title_level:
   id: 16
-  display_name: Electronic Version
+  display_name: Electronic Text Version
   
 # Not sure what this is used for. Think it's a typo for abstract. 
 description:
@@ -74,6 +74,7 @@ similar_item:
 
 audio:
   id: 200
-  display_name: Audio
+  display_name: Digital Audio
+  
 # If you want to add your own custom ones, make them start with ids at 100000,
 # to leave plenty of space for future standard umlaut ones. 

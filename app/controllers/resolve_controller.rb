@@ -36,8 +36,12 @@ class ResolveController < ApplicationController
                           },
                           {:div_id => "highlighted_links",
                            :partial => "highlighted_links_start",
-                           :service_type_values => ["highlighted_link"]},
-                           
+                           :service_type_values => ["highlighted_link"]
+                          },
+                          { :div_id => "audio_wrapper",
+                            :partial => "audio",
+                            :service_type_values => ["audio"]
+                          }                           
                            ],
                           :error_div =>
                           { :div_id => 'service_errors',
