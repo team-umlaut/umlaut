@@ -105,7 +105,7 @@ class InternetArchive < Service
   end
  
   def do_web_link(request, search_terms, type, num_found)
-    display_text = "All #{num_found} results from the Internet Archive (#{type})"
+    display_text = "See #{num_found} possible #{type.singularize} files from the Internet Archive"
     url = create_web_link_url(search_terms, type)
     request.add_service_response( { 
         :service=>self,    
