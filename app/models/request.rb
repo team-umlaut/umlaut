@@ -22,6 +22,7 @@ class Request < ActiveRecord::Base
     # We don't want to use the entire params. It includes things
     # that are NOT part of the ContextObject, but are just part of
     # rails or the app. Strip em out.
+    
     co_params = self.extract_co_params( params )
     # Create a context object from our http params
     context_object = OpenURL::ContextObject.new_from_form_vars( co_params )
@@ -377,6 +378,15 @@ class Request < ActiveRecord::Base
     # just a number. 
     if new_params['id'] =~ /^\d+$/
       new_params.delete('id')
+    end
+
+    # Correct for some Metalib AWFULNESS.
+    # fix damn broken Metalib stuff. 'info:ofi/fmt:xml:xsd' is not
+    # a legal openrul namespace! Damn you Metalib, let's decide
+    # Metalib meant journal format. Metalib always assigns it to prefix
+    # "rft", we are assuming. This is a bad hack anyway.
+    if ( new_params["url_ctx_val"])
+      new_params["url_ctx_val"].gsub!(/xmlns:rft=\"info:ofi\/fmt:xml:xsd\"/, 'xmlns:rft="info:ofi/fmt:xml:xsd:journal"')
     end
 
     return new_params
