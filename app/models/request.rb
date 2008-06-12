@@ -363,10 +363,8 @@ class Request < ActiveRecord::Base
     # Oops, we can't exclude 'id' even though we often use it for something
     # other than a context object, because it's also used for a legitimate
     # OpenURL 0.1 context object. Oops. Hmm. Maybe we're better NOT
-    # to use 'id' in the Rails way. Hmm.
-    # Also please exclude url_ctx_val, its' a POST param not a GET param,
-    #and is way too big! 
-    excluded_keys = ["action", "controller", "page", /^umlaut\./, 'rft.action', 'rft.controller', "url_ctx_val"]
+    # to use 'id' in the Rails way. Hmm. 
+    excluded_keys = ["action", "controller", "page", /^umlaut\./, 'rft.action', 'rft.controller']
 
     new_params = params.clone
     new_params.keys.each do |key|              
