@@ -402,7 +402,10 @@ class Request < ActiveRecord::Base
   # This method takes care of #1---pass in params that have already
   # been cleaned with extract_co_params for #2. 
   def self.serialized_co_params(params)
-    excluded_keys = ["action", "controller", "page", /^umlaut\./,  "rft.action", "rft.controller"]
+    # Do NOT include url_ctx_val in the KEV serialization! It's way
+    # too big. It just doesn't work. 
+  
+    excluded_keys = ["action", "controller", "page", /^umlaut\./,  "rft.action", "rft.controller", "url_ctx_val"]
 
     # 'id' is a weird one because it IS an OpenURL 0.1 param, but the
     # same key is often used for an internal Rails/Umlaut arg. So we
