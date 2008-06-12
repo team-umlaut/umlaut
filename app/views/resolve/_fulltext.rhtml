@@ -1,6 +1,5 @@
 <%
    fulltxt = get_service_type('fulltext')
-   audio_version = get_service_type('audio')
    title_level_fulltxt = get_service_type('fulltext_title_level')
 %>
 
@@ -10,10 +9,6 @@
 
 <%= render(:partial => "fulltext_element",
            :collection => fulltxt );
-%>
-
-<%= render(:partial => "audio_element",
-           :collection => audio_version );
 %>
 
 <% 
