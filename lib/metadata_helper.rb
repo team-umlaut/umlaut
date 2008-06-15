@@ -3,6 +3,9 @@
 # what we need in a simpler interface. For services that have to conduct 
 # searches based on this metadata this 
 
+# FIXME see if we can replace much of this with Referent.to_citation.
+# The precedence of referent values chosen by to_citation may be in a 
+# different order than we need.
 module MetadataHelper
   
   # method that accepts a referent to return hash of common metadata elements 
@@ -46,7 +49,11 @@ module MetadataHelper
       # to result in false negative, but even normal punctuation can. If it's
       # not a letter or number, let's get rid of it. This method may or may
       # not be entirely unicode safe, but initial experiments were satisfactory.
-      title = title.chars.gsub(/[^\w\s]/, ' ').to_s
+      # Some punctuation we'll want to keep (e.g. Uncle Tom's Cabin)
+      title = title.chars.gsub(/[^\w\s']/, ' ').to_s
+      
+      # FIXME if the author's name is part of title, strip it out?
+      # See Andersen's Fairy Tales. Stripping off names gets more hits.
     end
 
 
@@ -61,6 +68,12 @@ module MetadataHelper
     creator = nil
     creator = metadata['aulast'] unless metadata['aulast'].blank?
     creator = metadata['au'] if creator.blank?
+    # FIXME if capital letters are next to each other should we insert a space?
+    #   Should we assume capitals next to each other are initials?
+    #   Maybe only if we use au? 
+    #   Logic like this makes refactoring to use Referent.to_citation less useful.
+    
+    # FIXME strip out commas from creator if we use au?
     return creator
   end
   
