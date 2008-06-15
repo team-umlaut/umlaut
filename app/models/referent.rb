@@ -293,16 +293,16 @@ class Referent < ActiveRecord::Base
         case my_metadata['genre']
           when /article|journal|issue/ then ['Article Title', 'Journal Title']
           when /bookitem|book/ then ['Chapter/Part Title', 'Book Title']
-		      when /proceeding|conference/ then ['Proceeding Title', 'Conference Name']
-		      when 'report' then ['Report Title','Report']    
-		      else
-		        if self.format == 'book'
-              ['Chapter/Part Title', 'Title']
-            elsif self.format == 'journal'
-              ['Article Title', 'Journal Title']
-            else # default fall through, use much what SFX uses. 
-              ['Title', 'Source']
-            end
+          when /proceeding|conference/ then ['Proceeding Title', 'Conference Name']
+	  when 'report' then ['Report Title','Report']    
+	else
+          if self.format == 'book'
+            ['Chapter/Part Title', 'Title']
+          elsif self.format == 'journal'
+            ['Article Title', 'Journal Title']
+          else # default fall through, use much what SFX uses. 
+            ['Title', 'Source']
+          end
         end
       ['title','btitle','jtitle'].each do | t_type |
         if my_metadata[t_type]
