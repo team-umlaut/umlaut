@@ -1,11 +1,10 @@
-# OpenURLs have some commonly agreed upon metadata elements. This module is 
+# Helper class to get keyword searchable terms from OpenURL author and title
+#
+# OpenURLs have some commonly agreed upon metadata elements. This module is
 # meant to help simplify things by sorting through the metadata and extracting
-# what we need in a simpler interface. For services that have to conduct 
-# searches based on this metadata this 
+# what we need in a simpler interface. These values are specifically constructed
+# from the citation to work well as keyword searches in other services.
 
-# FIXME see if we can replace much of this with Referent.to_citation.
-# The precedence of referent values chosen by to_citation may be in a 
-# different order than we need.
 module MetadataHelper
   
   # method that accepts a referent to return hash of common metadata elements 
@@ -39,6 +38,9 @@ module MetadataHelper
     if (true)
       colon_index = title.index(':')
       title = title.slice( (0..colon_index-1)  ) if colon_index
+
+      semicolon_index = title.index(';')
+      title = title.slice( (0..semicolon_index-1)  ) if semicolon_index
 
       # Strip anything after a '(' too. 
       paren_index = title.index("(");
