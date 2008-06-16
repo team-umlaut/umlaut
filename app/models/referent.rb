@@ -47,7 +47,9 @@ class Referent < ActiveRecord::Base
     shortcuts = {:atitle=>"", :title=>"", :issn=>"", :isbn=>"", :volume=>"", :year=>""}
     
     # Special handling of title
-    incoming_title = rft.metadata['jtitle'] || rft.metadata['btitle'] || rft.metadata['title']  
+    incoming_title = rft.metadata['jtitle'] || rft.metadata['btitle'] || rft.metadata['title']
+    # DC OpenURL is an array, not a single value. Grr. 
+    incoming_title = incoming_title[0] if incoming_title.kind_of?(Array)
     shortcuts[:title] = ReferentValue.normalize(incoming_title) if incoming_title
     # Special handling of date/year, since we use year instead of date for
     # stored shortcut. 
