@@ -13,7 +13,8 @@ namespace :umlaut_lcl do
                   'config/umlaut_distribution/database.yml-dist' =>
                   'config/umlaut_config/database.yml',
                   'config/umlaut_distribution/umlaut_environment.rb' =>
-                  'config/umlaut_config/environment.rb'}
+                  'config/umlaut_config/environment.rb',
+                  'config/umlaut_distribution/local_service_type_values.yml-dist' => 'config/umlaut_config/local_service_type_values.yml'}
 
 
   desc "Create directories for local umlaut config files"

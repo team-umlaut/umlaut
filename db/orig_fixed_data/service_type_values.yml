@@ -57,6 +57,10 @@ fulltext_title_level:
   id: 16
   display_name: Electronic Text Version
   
+audio:
+  id: 17
+  display_name: Digital Audio
+  
 # Not sure what this is used for. Think it's a typo for abstract. 
 description:
   id: 100
@@ -72,9 +76,7 @@ similar_item:
   id: 102
   display_name: Similar Item
 
-audio:
-  id: 200
-  display_name: Digital Audio
+
   
 # If you want to add your own custom ones, make them start with ids at 100000,
 # to leave plenty of space for future standard umlaut ones. 

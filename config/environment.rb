@@ -7,6 +7,19 @@
 
 # You can over-ride anything here over in your local config. 
 
+# Fix up Rails really annoying logging with our own monkey patching. 
+class Logger
+  def format_message(severity, timestamp, progname, msg)
+    time_fmtd = timestamp.strftime("%d %b %H:%M:%S")
+    preface = "[#{time_fmtd}] (pid:#{$$}) #{severity}: "
+    # stick our preface AFTER any initial newlines                            
+    msg =~ /^(\n+)[^\n]/
+    index = $1 ? $1.length : 0
+
+    return "#{msg.insert(index, preface )}\n"
+  end
+end
+
 # Specifies gem version of Rails to use when vendor/rails is not present
 # Umlaut was originally developed/tested with 1.2.1, but we've succesfully
 # moved to 1.2.6. 
@@ -42,10 +55,11 @@ Rails::Initializer.run do |config|
     # sync institutions.yml to db if needed by timestamp.
     begin
       Institution.sync_institutions
+      ServiceTypeValue.load_values
     rescue Exception => e
       # If we're just starting out and don't have a db yet, we can't run
       # this, oh well.
-      RAILS_DEFAULT_LOGGER.warn("Can't check institutions for syncing: #{e}")
+      RAILS_DEFAULT_LOGGER.warn("Couldn't check institutions and service_type_values for syncing: #{e}")
     end
   end
 
@@ -197,18 +211,7 @@ Rails::Initializer.run do |config|
   config.app_config.opensearch_description = "Search #{config.app_config.app_name} for journal names containing your term."
 end
 
-# Fix up Rails really annoying logging with our own monkey patching. 
-class Logger
-  def format_message(severity, timestamp, progname, msg)
-    time_fmtd = timestamp.strftime("%d %b %H:%M:%S")
-    preface = "[#{time_fmtd}] (pid:#{$$}) #{severity}: "
-    # stick our preface AFTER any initial newlines                            
-    msg =~ /^(\n+)[^\n]/
-    index = $1 ? $1.length : 0
 
-    return "#{msg.insert(index, preface )}\n"
-  end
-end
 
 # Add new inflection rules using the following format 
 # (all these examples are active by default):

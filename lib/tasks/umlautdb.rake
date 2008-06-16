@@ -30,30 +30,8 @@ namespace :umlaut do
     end
   
     desc "Loads in standard Rails service_type_values."
-    task :load_service_type_values => :environment do
-      require 'yaml'
-    
-      # Load in starting set of ServiceTypeValue.
-      puts "Loading service type values from db/orig_fixed_data/service_type_values.yml"
-      ServiceTypeValue.enumeration_model_updates_permitted = true
-      
-      fixed_data_dir = File.join(RAILS_ROOT, "db", "orig_fixed_data")
-      service_type_values = YAML.load_file( File::join(fixed_data_dir, 'service_type_values.yml') )
-      
-      service_type_values.each_pair do |name, hash|
-        existing = ServiceTypeValue.find(:first, :conditions=>["id = ?", hash['id'] ])
-        if (existing)
-          puts "ServiceTypeValue #{name} NOT inserted, as id #{hash['id']} already exists in db."
-        else
-          # Add the YAML label to the hash, for initialization of our AR without
-          # needing to repeat ourselves. 
-          hash[:name] = name
-          new_value = ServiceTypeValue.new( hash )
-          new_value.id = hash['id']
-          new_value.save!
-        end      
-      end
-      ServiceTypeValue.enumeration_model_updates_permitted = false    
+    task :load_service_type_values => :environment do            
+       ServiceTypeValue.sync_values!
     end
     
     desc "Loads in all initial fixed data for an umlaut installation."
