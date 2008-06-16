@@ -99,7 +99,6 @@ class InternetArchive < Service
         
         note = result['title']
         note << " by " << result['creator'].join(', ') if result['creator']
-        note << " (#{type})"
 
         service_type = SERVICE_TYPE_MAP[type]
         request.add_service_response(
