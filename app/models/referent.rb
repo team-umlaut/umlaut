@@ -296,7 +296,7 @@ class Referent < ActiveRecord::Base
           when /article|journal|issue/ then ['Article Title', 'Journal Title']
           when /bookitem|book/ then ['Chapter/Part Title', 'Book Title']
           when /proceeding|conference/ then ['Proceeding Title', 'Conference Name']
-	  when 'report' then ['Report Title','Report']    
+          when 'report' then ['Report Title','Report']    
 	else
           if self.format == 'book'
             ['Chapter/Part Title', 'Title']
@@ -314,11 +314,11 @@ class Referent < ActiveRecord::Base
       end
     else      
       citation[:title_label] = case my_metadata["genre"]
-  		when /article|journal|issue/ then 'Journal Title'
-  		when /bookitem|book/ then 'Book Title'
-  		when /proceeding|conference/ then 'Conference Name'
-  		when 'report' then 'Report Title'
-  		when nil then 'Title'
+        when /article|journal|issue/ then 'Journal Title'
+        when /bookitem|book/ then 'Book Title'
+        when /proceeding|conference/ then 'Conference Name'
+        when 'report' then 'Report Title'
+        else'Title'
       end
       ['title','btitle','jtitle'].each do | t_type |
         if my_metadata[t_type]
