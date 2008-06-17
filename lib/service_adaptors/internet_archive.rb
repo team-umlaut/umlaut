@@ -146,8 +146,8 @@ class InternetArchive < Service
   # does an OR search for all configured mediatypes
   def create_query_params(search_terms, type=nil)
     params = 'title:' << CGI.escape('"' << search_terms[:title] << '"')
-    if search_terms[:creator]   
-      params << '+AND+creator:' << CGI.escape('"' << search_terms[:creator] << '"') 
+    if search_terms[:creator]      
+      params << '+AND+creator:' << CGI.escape('(' << search_terms[:creator] << ')')       
     end
     mt = []
     params <<  '+AND+('
