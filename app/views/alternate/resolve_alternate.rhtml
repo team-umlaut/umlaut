@@ -4,14 +4,8 @@
 <div id="bothColumns"> <!-- actual wrapper for both columns -->
   <div id="twoColumns"> <!-- called twoColumns, but it's really just the left column -->
 
-  <% 
-  if genre = @user_request.referent.metadata['genre']
-    type = genre.capitalize+'s'
-  else
-    type = 'Resources'
-  end
-  %>
-  <h1>Finding <%=type%></h1>
+
+  <h1>Finding <%=@user_request.referent.type_of_thing.pluralize.titlecase %></h1>
   <div class="resourceInfo">
     <%= render :partial=>'citation' %>
   </div>  

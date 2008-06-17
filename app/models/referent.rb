@@ -364,6 +364,14 @@ class Referent < ActiveRecord::Base
    	end
    	return citation
   end
+
+  def type_of_thing
+    genre = self.metadata["genre"]
+    genre = nil if genre =~ /unknown/i
+    genre ||= "resource"
+
+    return genre
+  end
   
   def enhance_referent(key, value, metadata=true, private_data=false)
     return if value.nil?
