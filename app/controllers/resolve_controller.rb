@@ -289,6 +289,13 @@ class ResolveController < ApplicationController
        
          complete =  type_names.find { |n| @user_request.service_type_in_progress?(n) }.nil?
 
+         # Give us a complete count of results present
+         response_count = 0;
+         type_names.each do |type|
+           response_count += @user_request.get_service_type(type).length
+         end
+
+         section[:response_count] = response_count
          section[:complete?] = complete
      end
 

@@ -20,6 +20,7 @@
        <% end %>
     </included_services>
     <service_load_complete value="<%= section[:complete?]  %>" />
+    <response_count value="<%= section[:response_count] %>" />
     <html_content>
       <%= 
           html = render(:partial => section[:partial])
