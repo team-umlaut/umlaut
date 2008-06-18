@@ -58,7 +58,6 @@ class SearchController < ApplicationController
     @start_result_num = (@page * @batch_size) - (@batch_size - 1)
     
     @search_context_object  = context_object_from_params
-    
     search_co = @search_context_object
         
     if (params["umlaut.title_search_type"] == 'exact' ||
@@ -66,7 +65,8 @@ class SearchController < ApplicationController
         params["rft.issn"] ||
         params["rft_id"])
       # If we have an exact-type 'search', just switch to 'resolve' action
-      redirect_to search_co.to_hash.merge!(:controller=>'resolve')
+      redirect_to url_for_with_co( {:controller => 'resolve'}, search_co ) 
+      
       # don't do anything else.
       return
     elsif (params['rft.jtitle'].blank?)
@@ -102,10 +102,10 @@ class SearchController < ApplicationController
     if (@page == 1) && (@display_results.length == 1)
       # If we narrowed down to one result redirect
       # to resolve action.
-      redirect_to @display_results[0].to_hash.merge!(:controller=>'resolve')
+      redirect_to( url_for_with_co({:controller => 'resolve'}, @display_results[0]) )      
     elsif (@display_results.length == 0)
       # 0 hits, do it too.
-      redirect_to @search_context_object.to_hash.merge!(:controller=>'resolve')
+      redirect_to(  url_for_with_co({:controller => 'resolve'}, @search_context_object) )            
     end
 
   end
@@ -259,13 +259,13 @@ class SearchController < ApplicationController
       end
       co.referent.set_format('journal')
       co.referent.set_metadata('genre', 'journal')
-      co.referent.set_metadata('object_id', title.object_id)
+      co.referent.set_metadata('object_id', title.object_id.to_s)
       search_results << co    
       f = FeedTools::FeedItem.new
       
       f.title = co.referent.metadata['jtitle']
       f.title << " ("+issn+")" if issn
-      f.link= url_for co.to_hash.merge({:controller=>'resolve'})
+      f.link= url_for_with_co({:controller=>'resolve'}, co)
       f.id = f.link
       smry = []
       title.coverages.each do | cvr |
@@ -314,7 +314,7 @@ class SearchController < ApplicationController
       co.referent.set_format('journal')
       co.referent.set_metadata('issn', issn) unless issn.blank?
       co.referent.set_metadata('jtitle', result.title)
-      item[:link]= url_for(co.to_hash.merge({:controller=>'resolve'}))
+      item[:link]= url_for_with_co({:controller=>'resolve'}, co)
       item[:id] = item[:link]
       smry = []
       result.coverages.each do | cvr |
@@ -428,7 +428,7 @@ class SearchController < ApplicationController
         params_c['rft.issn'] = jrnl.issn
       end
       if (jrnl && params_c['rft.object_id'].blank? )
-        params_c['rft.object_id'] = jrnl[:object_id]
+        params_c['rft.object_id'] = jrnl[:object_id].to_s
       end
       if (jrnl && params_c['rft.jtitle'].blank?)
         params_c['rft.jtitle'] = jrnl.title
@@ -437,6 +437,9 @@ class SearchController < ApplicationController
     
 
     ctx = OpenURL::ContextObject.new
+    # Make sure it uses a journal type referent please, that's what we've
+    # got here.
+    ctx.referent = OpenURL::ContextObjectEntity.new_from_format( 'info:ofi/fmt:xml:xsd:journal' )
     ctx.import_hash( params_c )
 
     # Not sure where ":rft_id_value" as opposed to 'rft_id' comes from, but
@@ -453,7 +456,7 @@ class SearchController < ApplicationController
     co = context_object_from_params
 
     # Add our controller param to the context object, and redirect
-    redirect_to co.to_hash.merge!(:controller=>'resolve')
+    redirect_to url_for_with_co( {:controller=>'resolve'}, co)
   end
 
   # Talk directly to SFX mysql to find the hits by journal Title.
@@ -489,7 +492,7 @@ class SearchController < ApplicationController
       ctx.import_context_object( @search_context_object )
 
       # Put SFX object id in rft.object_id, that's what SFX does. 
-      ctx.referent.set_metadata('object_id', sfx_obj.id)
+      ctx.referent.set_metadata('object_id', sfx_obj.id.to_s)
 
       publisher_obj = sfx_obj.publishers.first
       if ( publisher_obj )
@@ -692,7 +695,7 @@ class SearchController < ApplicationController
         end
         co.referent.set_format('journal')
         co.referent.set_metadata('genre', 'journal')
-        co.referent.set_metadata('object_id', journal[:object_id])
+        co.referent.set_metadata('object_id', journal[:object_id].to_s)
         search_results << co
       }
     end
