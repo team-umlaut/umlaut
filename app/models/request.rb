@@ -19,6 +19,7 @@ class Request < ActiveRecord::Base
   # Either creates a new Request, or recovers an already created Request from
   # the db--in either case return a Request matching the OpenURL.
   def self.new_request(params, session, a_rails_request )
+  
     # We don't want to use the entire params. It includes things
     # that are NOT part of the ContextObject, but are just part of
     # rails or the app. Strip em out.
