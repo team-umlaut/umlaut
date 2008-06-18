@@ -69,6 +69,46 @@ class ApplicationController < ActionController::Base
       logger.info("  HTTP Referer: [none]") unless request && request.referer
     end
   end
+
+  # Pass in a ServiceType join object, we generate the
+  # url to the action to create a frameset banner of the link there.
+  # pass in some extra Rails params if you like.
+  helper_method :frameset_action_url
+  def frameset_action_url(svc_type, extra_params = {})
+    u_request = svc_type.request
+
+    # Start with a nice context object
+    original_co = u_request.to_context_object
+    
+    # Add our controller code and id references
+    # We use 'umlaut.id' instead of just 'id' as a param to avoid
+    # overwriting an OpenURL 0.1 'id' param! 
+    params=   { :controller=>'resolve',
+                :action=>'bannered_link_frameset',
+                :'umlaut.request_id' => u_request.id,                     
+                :'umlaut.id'=>svc_type.id}
+
+    params.merge!(extra_params)
+
+    return url_for_with_co(params, original_co)
+    
+  end
+  
+
+  # Pass in a hash of Rails params, plus a context object.
+  # Get back a url suitable for calling those params in your
+  # rails app, with the kev OpenURL context object tacked on
+  # the end. This is neccesary instead of the naive hash
+  # merge approach we were previously using, because
+  # of possibility of multiple openurl kev query params
+  # with same name.
+  helper_method :url_for_with_co  
+  def url_for_with_co(params, context_object)
+    url = url_for(params)
+    url += '&' + context_object.kev   
+
+    return url
+  end
   
   # helper method we need available in controllers too
   # Absolute URL for permalink for given request.
@@ -89,6 +129,7 @@ class ApplicationController < ActionController::Base
         :only_path => false )
         
   end
+
 
      
 end

@@ -32,7 +32,7 @@ class StoreController < ApplicationController
       render :file=>File.join(RAILS_ROOT,"public/404.html"), :layout=>false, :status=>404
       return
     end
-
+    
     # Whether it was an already existing one, or a newly created one
     # turn it back to a co so we can add a few more things. 
     co.import_context_object(referent.to_context_object)
@@ -52,7 +52,12 @@ class StoreController < ApplicationController
     # Plus let's tell it about the referent, to make sure we get a referent
     # match even though we've changed the rfr_id etc.
     new_params[:'umlaut.referent_id'] = referent.id
-    
-    redirect_to(co.to_hash.merge(new_params))
+
+    # Generate a Rails URL, then add on the KEV for our CO on the end
+    # You might think you can just merge these into a hash and use url_for,
+    # but Rails redirect_to/url_for isn't happy with multiple query params
+    # with same name.
+
+    redirect_to( url_for_with_co( new_params, co) )
   end
 end

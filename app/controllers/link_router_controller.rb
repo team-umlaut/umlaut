@@ -33,7 +33,7 @@ class LinkRouterController < ApplicationController
     clickthrough.save
 
     if ( link_with_frameset?(svc_type) )
-      redirect_to( self.class.frameset_action_params(svc_type) )
+      redirect_to( frameset_action_url(svc_type) )
     else
       url = ServiceList.get(svc_type.service_response.service_id).response_url(svc_type.service_response)
       
@@ -50,24 +50,6 @@ class LinkRouterController < ApplicationController
     end
   end
     
-  # Pass in a ServiceType join object, we generate the
-  # hash to pass to link_to or url_for to create a 
-  # frameset banner of the link there.
-  def self.frameset_action_params(svc_type)
-    u_request = svc_type.request
-
-    # Start with a nice context object
-    params = u_request.original_co_params
-    
-    # Add our controller code and id references
-    # We use 'umlaut.id' instead of just 'id' as a param to avoid
-    # overwriting an OpenURL 0.1 'id' param! 
-    params.merge!( { :controller=>'resolve',
-                     :action=>'bannered_link_frameset',
-                     :'umlaut.request_id' => u_request.id,                     
-                     :'umlaut.id'=>svc_type.id})
-    return params
-  end
   
   protected
   # Should a link be displayed inside our banner frameset?

@@ -160,8 +160,8 @@ class ResolveController < ApplicationController
     # link is a ServiceType object
     link = should_skip_menu
     if ( ! link.nil? )
-      hash = LinkRouterController::frameset_action_params( link ).merge('umlaut.skipped_menu' => 'true')
-      redirect_to hash
+      url = frameset_action_url( link, {'umlaut.skipped_menu' => 'true'})
+      redirect_to url
     else
       # Render configed view, if configed, or "index" view if not. 
       view = AppConfig.param("resolve_view", "resolve/index")
@@ -248,11 +248,19 @@ class ResolveController < ApplicationController
   def background_status
 
     unless ( @user_request.any_services_in_progress? )
-      # Just redirect to ordinary index, no need to show progress status. 
-      # Re-construct the original request url
-      params_hash = @user_request.original_co_params(:add_request_id => true)
-            
-      redirect_to(params_hash.merge({:controller=>"resolve", :action=>'index', :'umlaut.skip_resolve_menu' => params['umlaut.skip_resolve_menu']}))
+      
+      # Just redirect to ordinary index, no need to show progress status.
+      # Include request.id, but also context object kev. 
+      
+      params_hash = 
+         {:controller=>"resolve",
+          :action=>'index', 
+          :'umlaut.skip_resolve_menu' => params['umlaut.skip_resolve_menu'],
+          :'umlaut.request_id' => @user_request.id }
+      
+      url = url_for_with_co( params_hash, @user_request.to_context_object )
+      
+      redirect_to( url )
     else
       # If we fall through, we'll show the background_status view, a non-js
       # meta-refresh update on progress of background services.

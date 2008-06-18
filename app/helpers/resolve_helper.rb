@@ -102,9 +102,10 @@ module ResolveHelper
       link_to(service_type.view_data[:display_text],
               direct_url_for(service_type),
               'target'=>'_blank')
-    else    
+    else
+      url = frameset_action_url( service_type, url_params )
       link_to(service_type.view_data[:display_text],
-              LinkRouterController::frameset_action_params( service_type ).merge( url_params ) ,
+               url,
               'target'=> '_top')
     end
   end

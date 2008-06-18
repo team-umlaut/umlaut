@@ -28,6 +28,7 @@ module ApplicationHelper
     resolver_img_url = AppConfig.param('link_img_url');
     app_name = AppConfig.param('app_name', 'Find It')
 
+    # Content of the link. 
     if ( resolver_img_url && params[:text].blank? )
       link_content = image_tag(resolver_img_url, :border=>0, :alt=>app_name)
     elsif ! params[:text].blank?
@@ -36,14 +37,16 @@ module ApplicationHelper
       link_content = app_name
     end
 
+    # url of the link. 
     if ( params[:params])
-      link_params = params[:params]
+      link_to_arg = params[:params]
     else
-      link_params = context_object.to_hash.merge(:controller=>'resolve')
-      link_params.merge!( params[:extra_params]) unless params[:extra_params].blank?
-      end
+      link_params = {:controller=>'resolve'}
+      link_params.merge!( params[:extra_params] )
+      link_to_arg = url_for_with_co( link_params, context_object )      
+    end
     
-    link_to(link_content, link_params, :target=>params[:target])
+    link_to(link_content, link_to_arg , :target=>params[:target])
   end
 
   # formats dates sent in an OpenURL into a more human-friendly
