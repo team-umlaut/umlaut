@@ -130,6 +130,7 @@ class Referent < ActiveRecord::Base
     # That's not a valid identifier!
     empty_ids = co.referent.identifiers.find_all { |i| i =~ Regexp.new('^[^:]+:[^/]*/?$')}
     empty_ids.each { |e| co.referent.delete_identifier( e )}
+    
     # Now look for ISSN identifiers that are on article_level. FirstSearch
     # gives us ISSN identifiers incorrectly on article level cites. 
     issn_ids = co.referent.identifiers.find_all { |i| i =~ /^urn:ISSN/}
@@ -143,7 +144,20 @@ class Referent < ActiveRecord::Base
       unless ( co.referent.get_metadata('genre') == 'journal' )
         co.referent.delete_identifier( issn_id )
       end      
-    end    
+    end
+
+    # Clean up OCLC numbers from old bad formats that may have snuck in to an info url incorrectly.
+    oclcnum_ids = co.referent.identifiers.find_all { |i| i =~ /^info:oclcnum/}
+    oclcnum_ids.each do |oclcnum_id|
+      if (oclcnum_id =~ /^info:oclcnum\/(ocm0*|\(OCoLC\)|ocl70*)(.*)$/)
+        # Delete the original, take out just the actual oclcnum, not
+        # those old prefixes.
+        co.referent.delete_identifier( oclcnum_id )
+        co.referent.add_identifier("info:oclcnum/#{$2}")
+      end
+    end
+
+    
   end
 
 
