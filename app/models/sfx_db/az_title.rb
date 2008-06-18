@@ -14,8 +14,13 @@ module SfxDb
     def to_context_object
       #require 'openurl'
       co = OpenURL::ContextObject.new
+      # Make sure it uses a journal type referent please, that's what we've
+      # got here.
+      co.referent = OpenURL::ContextObjectEntity.new_from_format( 'info:ofi/fmt:xml:xsd:journal' )
+      
+      
       co.referent.set_metadata('jtitle', self.TITLE_DISPLAY)
-      co.referent.set_metadata('object_id', self.OBJECT_ID)
+      co.referent.set_metadata('object_id', self.OBJECT_ID.to_s)
 
       # Add publisher stuff, if possible.
       pub = self.object ? self.object.publishers.first : nil
