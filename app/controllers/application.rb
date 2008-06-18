@@ -105,7 +105,13 @@ class ApplicationController < ActionController::Base
   helper_method :url_for_with_co  
   def url_for_with_co(params, context_object)
     url = url_for(params)
-    url += '&' + context_object.kev   
+    if (url.include?('?'))
+      url += '&'
+    else
+      url += '?'
+    end
+              
+    url += context_object.kev   
 
     return url
   end
