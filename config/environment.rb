@@ -7,18 +7,7 @@
 
 # You can over-ride anything here over in your local config. 
 
-# Fix up Rails really annoying logging with our own monkey patching. 
-class Logger
-  def format_message(severity, timestamp, progname, msg)
-    time_fmtd = timestamp.strftime("%d %b %H:%M:%S")
-    preface = "[#{time_fmtd}] (pid:#{$$}) #{severity}: "
-    # stick our preface AFTER any initial newlines                            
-    msg =~ /^(\n+)[^\n]/
-    index = $1 ? $1.length : 0
 
-    return "#{msg.insert(index, preface )}\n"
-  end
-end
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 # Umlaut was originally developed/tested with 1.2.1, but we've succesfully
@@ -211,7 +200,19 @@ Rails::Initializer.run do |config|
   config.app_config.opensearch_description = "Search #{config.app_config.app_name} for journal names containing your term."
 end
 
+# Fix up Rails really annoying logging with our own monkey patching.
+# This needs to be at end of file, not beginning! 
+class Logger
+  def format_message(severity, timestamp, progname, msg)
+    time_fmtd = timestamp.strftime("%d %b %H:%M:%S")
+    preface = "[#{time_fmtd}] (pid:#{$$}) #{severity}: "
+    # stick our preface AFTER any initial newlines                            
+    msg =~ /^(\n+)[^\n]/
+    index = $1 ? $1.length : 0
 
+    return "#{msg.insert(index, preface )}\n"
+  end
+end
 
 # Add new inflection rules using the following format 
 # (all these examples are active by default):
