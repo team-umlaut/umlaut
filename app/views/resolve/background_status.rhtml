@@ -13,7 +13,7 @@
   </div>
   
   <%= 
-    link_to ("View Current Results", url_for_with_co( {:action => 'index', :'umlaut.skip_resolve_menu' => 'false'}, @user_request.to_context_object))
+    link_to ("View Current Results", url_for_with_co( {:action => 'index', :'umlaut.skip_resolve_menu' => 'false', 'umlaut.request_id' => @user_request.id}, @user_request.to_context_object))
    %>
 </div>
 

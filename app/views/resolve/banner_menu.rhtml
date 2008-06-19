@@ -17,8 +17,8 @@
   
   
   <div id="banner_controls" class="banner_section">
-    <%= resolver_link(nil, :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %><br/>
-    <span style="font-weight: bold; font-size: 15px;"><%= resolver_link(nil, :text => 'See more options', :target=>"_top", :params=>@user_request.original_co_params(:add_request_id => true).merge(:action => 'index', :'umlaut.skip_resolve_menu' => 'false')) %></span><br/>
+    <%= resolver_link(@user_request.to_context_object, {:target=>"_top", :extra_params => {:action => 'index', :'umlaut.skip_resolve_menu' => 'false', :'umlaut.request_id' => @user_request.id}}) %><br/>
+    <span style="font-weight: bold; font-size: 15px;"><%= resolver_link(@user_request.to_context_object, {:text => 'See more options', :target=>"_top", :extra_params => {:'umlaut.request_id' => @user_request.id, :action => 'index', :'umlaut.skip_resolve_menu' => 'false'}}) %></span><br/>
     
     <%= link_to "#{ image_tag("frame_remove.gif", :border=>0, :align=>'bottom') } Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
     
