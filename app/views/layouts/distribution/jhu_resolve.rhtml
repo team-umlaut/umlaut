@@ -61,9 +61,12 @@
   FindIt service provided by <%= link_to 'Johns Hopkins Libraries', 'http://webapps.jhu.edu/jhuniverse/libraries/' %> | Powered by <%= link_to 'Umlaut', 'http://umlaut.rubyforge.org/' %>, using services from <%= link_to 'SFX', 'http://www.exlibrisgroup.com/sfx.htm' %>, <%= link_to 'CrossRef', 'http://www.crossref.org' %>, <%= link_to 'Amazon', 'http://www.amazon.com' %>, <%= link_to 'OCLC Worldcat', 'http://www.worldcat.org' %>, <%= link_to 'ISBNdb', 'http://isbndb.com' %> and others.  
   <% if AppConfig.param('main_sfx_base_url') && @user_request && @user_request.original_co_params %>
     <%= 
-    hash = @user_request.original_co_params
-    hash["sfx.ignore_date_threshold"] = "1" if title_level_request?
-    link_to('[S]', AppConfig.param('main_sfx_base_url') + '?' + hash_to_querystring(hash), :target=>'_blank') %>
+    url = AppConfig.param('main_sfx_base_url');
+    url += '?'
+    url += @user_request.to_context_object.kev
+    url += "&sfx.ignore_date_threshold=1" if title_level_request?
+    
+    link_to('[S]', url, :target=>'_blank') %>
   <% end %>
 </div>
 
