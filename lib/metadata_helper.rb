@@ -29,6 +29,16 @@ module MetadataHelper
     elsif rft.format == 'book'
       title = metadata['btitle'] unless metadata['btitle'].blank?
       title = metadata['title'] if title.blank?
+      
+    # Well, if we don't know the format and we do have a title use that.  
+    # This might happen if we only have an ISBN to start and then enhance.
+    # So should services like Amazon also enhance with a format, should
+    # we simplify this method to not worry about format so much, or do we
+    # keep this as is?
+    elsif metadata['btitle']
+      title = metadata['btitle']
+    elsif metadata['title']
+      title = metadata['title']
     end
 
     return nil if title.blank?    
