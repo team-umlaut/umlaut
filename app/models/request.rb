@@ -19,45 +19,44 @@ class Request < ActiveRecord::Base
   # Either creates a new Request, or recovers an already created Request from
   # the db--in either case return a Request matching the OpenURL.
   def self.new_request(params, session, a_rails_request )
-  
-    # We don't want to use the entire params. It includes things
-    # that are NOT part of the ContextObject, but are just part of
-    # rails or the app. Strip em out.
+
+    # Pull out the http params that are for the context object,
+    # returning a CGI::parse style hash, customized for what
+    # ContextObject.new_from_form_vars wants. 
+    co_params = self.context_object_params( a_rails_request )
     
-    co_params = self.extract_co_params( params )
     # Create a context object from our http params
     context_object = OpenURL::ContextObject.new_from_form_vars( co_params )
-
-
     
     # Sometimes umlaut puts in a 'umlaut.request_id' parameter.
     # first look by that, if we have it, for an existing request.  
     request_id = params['umlaut.request_id']
 
     # We're trying to identify an already existing response that matches
-    # this request, in this session.  We don't actually check the
+    # this request, in this session.  We don't actually match the
     # session_id in the cache lookup though, so background processing
     # will hook up with the right request even if user has no cookies. 
     # But if IP has changed, don't re-use the request, becuase ip change
     # may result in different responses.
     client_ip = params['req.ip'] || a_rails_request.remote_ip()
-    req = Request.find(:first, :conditions => ["id = ? and client_ip_addr = ?", request_id, client_ip] ) unless request_id.nil? || @user_request
-    # No match?  Just pretend we never had a request_id in url at all.  
+    req = Request.find(:first, :conditions => ["id = ? and client_ip_addr = ?", request_id, client_ip] ) unless request_id.nil?
+    
+    # No match?  Just pretend we never had a request_id in url at all.
     request_id = nil if req == nil
-  
-  
+
+    # Serialized fingerprint of openurl http params, suitable for looking
+    # up in the db to see if we've seen it before. 
+    param_fingerprint = self.co_params_fingerprint( co_params )
+    
     unless (req)
       # If not found yet, then look for an existing request that had the same
-      # params as this one, in the same session. In which case, reload.
-      # Except we don't preserve certain Rails and app controller params--
-      # only the ones that are actually the OpenURL, is the idea.
-  
-      serialized_params = self.serialized_co_params( co_params )
+      # openurl params as this one, in the same session. In which case, reuse.
+      # Here we do require same session, since we don't have an explicit
+      # request_id given. 
 
-      # to do and client_ip_addr = 
-      req = Request.find(:first, :conditions => ["session_id = ? and params = ? and client_ip_addr = ?", session.session_id, serialized_params, client_ip ] ) unless serialized_params.blank?
+      req = Request.find(:first, :conditions => ["session_id = ? and contextobj_fingerprint = ? and client_ip_addr = ?", session.session_id, param_fingerprint, client_ip ] ) unless param_fingerprint.blank?
     end
-
+    
     # Okay, if we found a req, it might NOT have a referent, it might
     # have been purged. If so, create a new one.
     if ( req && ! req.referent )
@@ -65,11 +64,52 @@ class Request < ActiveRecord::Base
     end
 
     unless (req)
-      # have to create one
-      req = self.create_new_request!( :params => params, :session => session, :rails_request => a_rails_request, :serialized_params => serialized_params, :context_object => context_object )
+      # didn't find an existing one at all, just create one
+      req = self.create_new_request!( :params => params, :session => session, :rails_request => a_rails_request, :contextobj_fingerprint => param_fingerprint, :context_object => context_object )
     end
 
     return req
+  end
+
+  # input is a Rails request (representing http request)
+  # We pull out a hash of request params (get and post) that
+  # define a context object. We use CGI::parse instead of relying
+  # on Rails parsing because rails parsing ignores multiple params
+  # with same key value, which is legal in CGI.
+  #
+  # So in general values of this hash will be an array.
+  # ContextObject.new_from_form_vars is good with that. 
+  # Exception is url_ctx_fmt and url_ctx_val, which we'll
+  # convert to single values, because ContextObject wants it so. 
+  def self.context_object_params(a_rails_request)
+    require 'cgi'
+    
+    # GET params
+    co_params = CGI::parse( a_rails_request.query_string )    
+    # add in the POST params please
+    co_params.merge!(  CGI::parse(a_rails_request.raw_post)) if a_rails_request.raw_post
+    # default value nil please, that's what ropenurl wants
+    co_params.default = nil
+
+    # Exclude params that are for Rails or Umlaut, and don't belong to the
+    # context object. 
+    excluded_keys = ["action", "controller", "page", /^umlaut\./, 'rft.action', 'rft.controller']
+    co_params.keys.each do |key|
+      excluded_keys.each do |exclude|
+        co_params.delete(key) if exclude === key;
+      end
+    end
+    # 'id' is a special one, cause it can be a OpenURL 0.1 key, or
+    # it can be just an application-level primary key. If it's only a
+    # number, we assume the latter--an openurl identifier will never be
+    # just a number.
+    if co_params['id']
+      co_params['id'].each do |id|       
+        co_params['id'].delete(id) if id =~ /^\d+$/ 
+      end
+    end
+
+    return co_params
   end
 
   # Method that registers the dispatch status of a given service participating
@@ -178,22 +218,6 @@ class Request < ActiveRecord::Base
     end
   end
 
-  # original context object params. 
-  # We serialize our params in weird ways. (See below). Use this to turn em
-  # back into a params hash. Returns hash. 
-  def original_co_params(arguments = {})        
-    new_hash = {}
-    list = YAML.load( self.params )
-    list.each do | mini_hash |
-      
-      new_hash.merge!(mini_hash) 
-    end
-    # If requested we put in the request_id, even though it's not really
-    # a context object element.
-    new_hash['umlaut.request_id'] = self.id if arguments[:add_request_id]
-    
-    return new_hash
-  end
 
   # Methods to look at status of dispatched services
   def failed_service_dispatches
@@ -298,11 +322,11 @@ class Request < ActiveRecord::Base
   # Called by self.new_request, if a new request _really_ needs to be created.
   def self.create_new_request!( args )
 
-    # all of these are requierd
+    # all of these are required
     params = args[:params]
     session = args[:session]
     a_rails_request = args[:rails_request]
-    serialized_params = args[:serialized_params]
+    contextobj_fingerprint = args[:contextobj_fingerprint]
     context_object = args[:context_object]
 
     # We don't have a complete Request, but let's try finding
@@ -325,7 +349,7 @@ class Request < ActiveRecord::Base
     # Create the Request
     req = Request.new
     req.session_id = session.session_id
-    req.params = serialized_params
+    req.contextobj_fingerprint = contextobj_fingerprint
     # Don't do this! It is a performance problem.
     # rft.requests << req
     # (rfr.requests << req) if rfr
@@ -355,78 +379,45 @@ class Request < ActiveRecord::Base
     return ds
   end
 
-  # Extract context object params. Strips out params from incoming
-  # request that are not part of the context object, but instead
-  # part of Rails framework or app-specific controller params. 
-  def self.extract_co_params( params )
-  
-    # Strings or regexps
-    # Oops, we can't exclude 'id' even though we often use it for something
-    # other than a context object, because it's also used for a legitimate
-    # OpenURL 0.1 context object. Oops. Hmm. Maybe we're better NOT
-    # to use 'id' in the Rails way. Hmm. 
-    excluded_keys = ["action", "controller", "page", /^umlaut\./, 'rft.action', 'rft.controller']
-
-    new_params = params.clone
-    new_params.keys.each do |key|              
-      excluded_keys.each do |exclude|
-        if exclude === key ; new_params.delete(key) ; end
-      end          
+  # Input is a CGI::parse style of HTTP params (array values)
+  # output is a string "fingerprint" canonically representing the input
+  # params, which can be stored in the db, so that when another request
+  # comes in, we can easily see if this exact request was seen before.
+  #
+  # This method will exclude certain params that are not part of the context
+  # object, or which we do not want to consider for equality, and will
+  # then serialize in a canonical way such that two co's considered
+  # equivelent will have equivelent serialization. 
+  def self.co_params_fingerprint(params)
+    # Don't use ctx_time, consider two co's equal if they are equal but for ctx_tim. 
+    excluded_keys = ["action", "controller", "page", /^umlaut\./,  "rft.action", "rft.controller", "ctx_tim"]
+    # "url_ctx_val", "request_xml"
+    
+    # Hash.sort will do a first run through of canonicalization for us
+    # production an array of two-element arrays, sorted by first element (key)
+    params = params.sort
+    
+    # Now exclude excluded keys, and sort value array for further
+    # canonicalization
+    params.each do |pair|
+      # === works for regexp and string
+      if ( excluded_keys.find {|exc_key| exc_key === pair[0]}) 
+        params.delete( pair )
+      else
+        pair[1].sort! if pair[1].respond_to?("sort!")
+      end
     end
-    # 'id' is a special one, cause it can be a OpenURL 0.1 key, or
-    # it can be just an application-level primary key. If it's only a
-    # number, we assume the latter--an openurl identifier will never be
-    # just a number. 
-    if new_params['id'] =~ /^\d+$/
-      new_params.delete('id')
-    end
+    
+    # And YAML-ize for a serliazation
+    serialized = params.to_yaml
 
-    # Correct for some Metalib AWFULNESS.
-    # fix damn broken Metalib stuff. 'info:ofi/fmt:xml:xsd' is not
-    # a legal openrul namespace! Damn you Metalib, let's decide
-    # Metalib meant journal format. Metalib always assigns it to prefix
-    # "rft", we are assuming. This is a bad hack anyway.
-    if ( new_params["url_ctx_val"])
-      new_params["url_ctx_val"].gsub!(/xmlns:rft=\"info:ofi\/fmt:xml:xsd\"/, 'xmlns:rft="info:ofi/fmt:xml:xsd:journal"')
-    end
-
-    return new_params
+    
+    # And make an MD5 hash/digest. Why store the whole thing if all we need to
+    # do is look it up? hash/digest works well for this.
+    require 'digest/md5'
+    return Digest::MD5.hexdigest( serialized )    
   end
-  
-  # Serialized context object params. 
-  # We save our incoming params to disk, so later we can compare to see
-  # if we have the same request. Two problems: 1) Just serializing a hash is
-  # no good for later string comparison in the db, because hash key order
-  # can be different. 2) Our hash includes some Rails (and umlaut) only
-  # stuff that isn't really part of the context object, and we don't want
-  # to include.
-  # This method takes care of #1---pass in params that have already
-  # been cleaned with extract_co_params for #2. 
-  def self.serialized_co_params(params)
-    # Do NOT include url_ctx_val or request_xml in the KEV serialization! 
-    # They are way too big. It just doesn't work. 
-  
-    excluded_keys = ["action", "controller", "page", /^umlaut\./,  "rft.action", "rft.controller", "url_ctx_val", "request_xml"]
 
-    # 'id' is a weird one because it IS an OpenURL 0.1 param, but the
-    # same key is often used for an internal Rails/Umlaut arg. So we
-    # save it, sometimes saving 'bad' keys. We really ought not to use
-    # it as a URL param in Umlaut. 
-        
-    # Okay, we're going to turn it into a list of one-element hashes,
-    # alphabetized by key. To attempt to make it so the same hash
-    # always turns into the exact same yaml string. Hopefully it'll work.
-    list = []
-    params.keys.sort.each do |key|          
-      list.push( {key => params[key]} ) unless excluded_keys.include?( key )
-    end
-    serialized = list.to_yaml
-    # If serialized is bigger than the column width available, we're in trouble.
-    if serialized.length > self.columns_hash['params'].limit
-      # We should do something other than raise, but I don't know what.   
-      raise "Serialized context object params will be truncated! Maximum size #{self.columns_hash['params'].limit}, actual size #{serialized.length}"
-    end
-    return serialized
-  end
+  
 
 end
