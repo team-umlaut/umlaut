@@ -312,25 +312,28 @@ class Sfx < Service
       end
     end
     
-
-    # In case of multiple SFX hits, enhance metadata only from the
-    # one that actually had fulltext. If more than one did, forget it.
-    ctx_obj_atts = nil
-    if ( sfx_objs.length > 0 && fulltext_seen_in_index.keys.length == 0)
-      # No fulltext, just take the first
-     ctx_obj_atts = 
-         CGI.unescapeHTML( sfx_objs[0].at('/ctx_obj_attributes').inner_html)
-    elsif (fulltext_seen_in_index.keys.length == 1)
-      i = fulltext_seen_in_index.keys[0]
-      ctx_obj_atts = 
-         CGI.unescapeHTML( sfx_objs[i].at('/ctx_obj_attributes').inner_html)
+    # only enhance for journal type metadata. For book type
+    # metadata SFX will return something, but it may not be the manifestation
+    # we want. With journal titles, less of an issue. 
+    if ( request.referent.format == "journal")
+      # In case of multiple SFX hits, enhance metadata only from the
+      # one that actually had fulltext. If more than one did, forget it.    
+      ctx_obj_atts = nil
+      if ( sfx_objs.length > 0 && fulltext_seen_in_index.keys.length == 0)
+        # No fulltext, just take the first
+       ctx_obj_atts = 
+           CGI.unescapeHTML( sfx_objs[0].at('/ctx_obj_attributes').inner_html)
+      elsif (fulltext_seen_in_index.keys.length == 1)
+        i = fulltext_seen_in_index.keys[0]
+        ctx_obj_atts = 
+           CGI.unescapeHTML( sfx_objs[i].at('/ctx_obj_attributes').inner_html)
+      end
+      
+      if ( ctx_obj_atts )
+        perl_data = Hpricot( ctx_obj_atts )
+        enhance_referent( request, perl_data )
+      end
     end
-    
-    if ( ctx_obj_atts )
-      perl_data = Hpricot( ctx_obj_atts )
-      enhance_referent( request, perl_data )
-    end
- 
   end
 
    
