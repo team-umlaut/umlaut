@@ -128,6 +128,13 @@ InternetArchive:
   # to a search of IA showing total number found. Defaults to true.
   #show_web_link: true
 
+GoogleBookSearch:
+  name: GoogleBookSearch
+  type: GoogleBookSearch
+  display_text: Google Book Search
+  priority: 3
+  status: active
+
 # Start institution specific services  
 Opac:
   name: GT Catalog
