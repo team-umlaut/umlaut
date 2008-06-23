@@ -191,7 +191,7 @@ class GoogleBookSearch < Service
       else
         url = iv['info_url']
         # FIXME take out the bib_key when done testing
-        display_text = "More information on this book at #{@display_name}" ' << iv['bib_key']        
+        display_text = "More information on this book at #{@display_name}"  << iv['bib_key']        
       end
       request.add_service_response( { 
         :service=>self,    
