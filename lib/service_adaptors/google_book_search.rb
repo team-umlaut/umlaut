@@ -187,11 +187,11 @@ class GoogleBookSearch < Service
         url = iv['preview_url']
         # FIXME take out the bib_key when done testing
         # Not sure 'preview' is the best text. "Partial text" maybe like Google actually says? Why'd you go wtih "preview"? -JR 
-        display_text = 'Preview this book at Google Book Search ' << iv['bib_key']
+        display_text = "Preview this book at #{@display_name} " << iv['bib_key']
       else
         url = iv['info_url']
         # FIXME take out the bib_key when done testing
-        display_text = 'More information on this book at Google Book Search ' << iv['bib_key']        
+        display_text = "More information on this book at #{@display_name}" ' << iv['bib_key']        
       end
       request.add_service_response( { 
         :service=>self,    
