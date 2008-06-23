@@ -105,32 +105,31 @@ namespace :umlaut do
         # We don't do this yet. Worried about the mass delete of old data
         # we never purged making our MySQL innodb data files grow horribly. 
 
+        
         puts "Deleting ServiceTypes for dead Requests..."
         begin_time = Time.now
         work_clause =  " FROM (service_types LEFT OUTER JOIN requests ON service_types.request_id=requests.id) LEFT OUTER JOIN sessions ON requests.session_id = sessions.session_id WHERE requests.id IS NULL OR sessions.id IS NULL"
         count = ServiceType.count_by_sql("SELECT count(*) " + work_clause )
         ServiceType.connection.execute("DELETE service_types " + work_clause)
         puts "  Deleted #{count} ServiceTypes in #{Time.now - begin_time}"
-                        
+
+
+        
         # Now, let's get rid of any ServiceResponses that no longer have
         # ServiceTypes. 
         # Theoretically, a ServiceResponse can belong to more than one Request,
         # via different ServiceType joins. However, Umlaut doesn't currently
         # do that. 
-
         puts "Deleting orphaned ServiceResponses...."
         begin_time = Time.now
-        #orphaned_responses = ServiceResponse.find(:all, 
-        #            :include => [:service_types],
-        #            :conditions => "service_types.id is null")        
         work_clause = " FROM service_responses WHERE NOT EXISTS (SELECT * FROM service_types WHERE service_types.service_response_id =  service_responses.id)"
         count = ServiceResponse.count_by_sql("SELECT count(*) " + work_clause)
         ServiceResponse.connection.execute("DELETE " + work_clause)  
         puts "  Deleted #{count} ServiceResponses in #{Time.now - begin_time}"
-                
+
+        
         # And get rid of DispatchedServices for 'dead' requests too. Don't
         # need em.
-
         puts "Deleting DispatchedServices for dead Requests..."
         begin_time = Time.now
         # Sorry, may be MySQL only. 
@@ -141,11 +140,8 @@ namespace :umlaut do
         
 
         # Turns out we need to get rid of old referents and referentvalues
-        # too. There are just too many. This will make old permalinks no
-        # longer work until we fix that. Let's delete referents and
-        # referent values older than 90 days for now.
-        # Tricky because we didn't have created_at in referent or 
-        # referent_value.
+        # too. There are just too many. Permalinks have been updated to
+        # store their own info and not depend on Referent existing. 
         referent_expire = Time.now - AppConfig.param("referent_expire_seconds", 20.days)
         puts "Deleting Referents/ReferentValues older than 20 days or config.referent_expires_seconds."
         begin_time = Time.now
