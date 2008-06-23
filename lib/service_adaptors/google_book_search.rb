@@ -16,7 +16,7 @@
 # FIXME This version is only for light testing since it doesn't pass correct
 #  headers on. To pass the headers will necessitate a larger refactoring of the 
 #  Umlaut code. In do_query see a few canned responses to use instead of actually 
-#  querying GBS too much.
+#  querying GBS too much. (In testing, I think it's unlikely you're going to run into Google's traffic limits, I plan on not worrying about it until I see a problem -JR ). 
 class GoogleBookSearch < Service
   require 'open-uri'
   require 'zlib'
@@ -63,6 +63,7 @@ class GoogleBookSearch < Service
     create_fulltext_service_response(request, data)
     
     # add links for partials view and noview
+    # (FIXME: Should we add these only if we _don't_ have full text? -JR )
     do_web_links(request, data)
     
     thumbnail_url = find_thumbnail_url(data)
@@ -75,11 +76,16 @@ class GoogleBookSearch < Service
   # to increase the chances of good hit, we send all available bibkeys 
   # and later dedupe by id.
   def get_bibkeys(rft)
-    metadata = rft.metadata
+    isbn = get_identifier(:urn, "isbn", rft)
+    oclcnum = get_identifier(:info, "oclcnum", rft)
+    lccn = get_identifier(:info, "lccn", rft)
+
+    
     keys = []
-    keys << 'ISBN:' + metadata['isbn'] if metadata['isbn']
-    keys << 'OCLC:' + metadata['oclcnum'] if metadata['oclcnum']
-    keys << 'LCCN:' + metadata['lccn'] if metadata['lccn']      
+    keys << 'ISBN:' + isbn if isbn
+    keys << 'OCLC:' + oclcnum if oclcnum
+    keys << 'LCCN:' + lccn if lccn
+    
     return nil if keys.empty?
     keys = CGI.escape( keys.join(',') )
     return keys
@@ -89,7 +95,7 @@ class GoogleBookSearch < Service
     header = build_header()
     link = @url + bibkeys
     data = open(link, 'rb', header) 
-    Zlib::GzipReader.new(data).read
+    return Zlib::GzipReader.new(data).read
     
     # stupid way to 'test' but this is what we've got
     # instead of using GBS use a canned response taken from GBS
@@ -104,7 +110,7 @@ class GoogleBookSearch < Service
   
   # We try to build a good header
   # FIXME We probably ought to pass the rails_request down to here instead of
-  # using an instance variable, right?
+  # using an instance variable, right? (Actually, I think instance variable might be fine if you can figure out a good way to get it set! Except for worried about threading/concurrency issues. Hmm. Now I'm thinking we might not need the actual request at all, we might be able to fake enough of it with static config. -JR )
   def build_header()
     #env = @rails_request.env
     # FIXME temporary dummy env for testing until rails_request can be passed in
@@ -160,7 +166,7 @@ class GoogleBookSearch < Service
     return nil if full_views.empty?
     full_views.each do |fv|
       # FIXME do we need a note for this service? Probably not this one, though
-      # it helped in testing.
+      # it helped in testing. (Not unless you see some reason that you do. Could make it configurable, but I'd default to 'no', yeah. )
       note = fv['bib_key'].gsub(':', ': ') #get_search_title(request.referent)
       request.add_service_response(
         {:service=>self, 
@@ -180,6 +186,7 @@ class GoogleBookSearch < Service
       if iv['preview'] == 'partial'
         url = iv['preview_url']
         # FIXME take out the bib_key when done testing
+        # Not sure 'preview' is the best text. "Partial text" maybe like Google actually says? Why'd you go wtih "preview"? -JR 
         display_text = 'Preview this book at Google Book Search ' << iv['bib_key']
       else
         url = iv['info_url']
@@ -202,6 +209,7 @@ class GoogleBookSearch < Service
   #   compare urls?
   # FIXME could be just stoopid to keep bibkey as a string, but then again we
   #   might not need it at this stage so just discard it?
+  # ( Don't understand enough about what's going on here to comment, let's talk more.But I suspect you can just compare info_urls, yeah. -JR )
   def dedupe(data)
     ids = []
     saved = []
@@ -234,6 +242,7 @@ class GoogleBookSearch < Service
   # FIXME currently we run this service foreground so we can pick up cover 
   #   images. If we want this as a background service we need to make
   #   cover_image a background service.
+  #   ( We just need to fix the view AJAX updater to update the cover image div for cover image background services. This can be done. )
   def add_cover_image(request, url)
     # FIXME first we change the zoom level to get the largest size. We do like
     # in Amazon service and return three sizes of images. it seems only size 1 =

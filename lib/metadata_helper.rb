@@ -4,6 +4,8 @@
 # meant to help simplify things by sorting through the metadata and extracting
 # what we need in a simpler interface. These values are specifically constructed
 # from the citation to work well as keyword searches in other services.
+#
+# Also includes some helpful methods for getting identifiers out in a convenient to work with way, regardless of non-standard ways they may have been stored. 
 
 module MetadataHelper
   
@@ -87,6 +89,41 @@ module MetadataHelper
     
     # FIXME strip out commas from creator if we use au?
     return creator
+  end
+
+  # oclcnum, lccn, and isbn are both _supposed_ to be stored as identifiers
+  # with an info: uri. info:oclcnum/#, info:lccn/#. But SFX sometimes stores
+  # them in the referent metadata instead: rft.lccn, rft.oclcnum. .
+  #
+  # On the other hand, isbn and issn can legitimately be included in referent
+  # metadata or as a urn. 
+  #
+  # This method will find you an identifier accross multiple places.
+  #
+  # type:  :urn or :info
+  # subscheme: "lccn", "oclcnum", "isbn", "issn", or anything else that could be found in either a urn an info uri or a referent metadata.
+  # referent: an umlaut Referent object
+  #
+  # returns nil if no identifier found, otherwise the bare identifeir (not formatted into a urn/uri right now. Option should be maybe be added?) 
+  def get_identifier(type, sub_scheme, referent )
+    raise Exception.new("type must be :urn or :info") unless type == :urn or type == :info
+
+    prefix = case type
+               when :info : "info:#{sub_scheme}/"
+               when :urn : "urn:#{sub_scheme}:"
+             end
+    
+    bare_identifier = nil
+    if (referent.identifiers.find {|id| id =~ /^#{prefix}(.*)/})
+      # Pull it out of our regexp match
+      bare_identifier = $1
+    else
+      # try the referent metadata
+      bare_identifier = referent.metadata[sub_scheme]
+    end
+    
+    return bare_identifier
+    
   end
   
 end
