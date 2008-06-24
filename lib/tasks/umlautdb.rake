@@ -90,6 +90,11 @@ namespace :umlaut do
         # need to hang around. How do we know if they're too old?
         # If they are no longer associated with any session, mainly.
 
+        # Deleting things as aggressively as we're doing here doesn't leave
+        # us much for statistics, but we aren't currently gathering any
+        # statistics anyway. If statistics are needed, more exploration
+        # is needed of performance vs. leaving things around for statistics. 
+
         # For efficiency, we delete with direct DB calls, so don't count
         # on Rails business logic being triggered! Was just WAY too slow
         # otherwise. Also, sorry, doing all this in a db efficient way (one db
@@ -100,15 +105,18 @@ namespace :umlaut do
         # architecture has been fixed to not rely on requests or referents,
         # permalinks (post new architecture) store their own context object.
 
+        puts "Deleting Requests no longer associated with a session."
+        begin_time = Time.now
+        work_clause = " FROM requests LEFT OUTER JOIN sessions ON requests.session_id = sessions.session_id WHERE sessions.id is null "
+        count = ServiceType.count_by_sql("SELECT count(*) " + work_clause)
+        Request.connection.execute("DELETE requests " + work_clause)
+        puts "  Deleted #{count} Requests in #{Time.now - begin_time}"
 
-        #puts "Deleting Requests with dead sessions"
-        # We don't do this yet. Worried about the mass delete of old data
-        # we never purged making our MySQL innodb data files grow horribly. 
 
         
         puts "Deleting ServiceTypes for dead Requests..."
         begin_time = Time.now
-        work_clause =  " FROM (service_types LEFT OUTER JOIN requests ON service_types.request_id=requests.id) LEFT OUTER JOIN sessions ON requests.session_id = sessions.session_id WHERE requests.id IS NULL OR sessions.id IS NULL"
+        work_clause =  " FROM (service_types LEFT OUTER JOIN requests ON service_types.request_id=requests.id) WHERE requests.id IS NULL "
         count = ServiceType.count_by_sql("SELECT count(*) " + work_clause )
         ServiceType.connection.execute("DELETE service_types " + work_clause)
         puts "  Deleted #{count} ServiceTypes in #{Time.now - begin_time}"
@@ -133,7 +141,7 @@ namespace :umlaut do
         puts "Deleting DispatchedServices for dead Requests..."
         begin_time = Time.now
         # Sorry, may be MySQL only. 
-        work_clause = " FROM (dispatched_services LEFT OUTER JOIN requests ON dispatched_services.request_id = requests.id) LEFT OUTER JOIN sessions ON requests.session_id = sessions.id WHERE requests.id IS NULL OR sessions.id IS NULL"
+        work_clause = " FROM (dispatched_services LEFT OUTER JOIN requests ON dispatched_services.request_id = requests.id)  WHERE requests.id IS NULL  "
         count = DispatchedService.count_by_sql("SELECT count(*) " + work_clause)
         DispatchedService.connection.execute("DELETE dispatched_services " + work_clause)
         puts "  Deleted #{count} DispatchedServices in #{Time.now - begin_time}"
