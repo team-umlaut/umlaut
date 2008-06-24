@@ -30,10 +30,10 @@
     //Now do we need a reload?
     if ( jsonData.partial_html_sections.in_progress ) {
       refresh_path = jsonData.partial_html_sections.in_progress.refresh_url_path;
-    
+      
       refresh_seconds = jsonData.partial_html_sections.in_progress.requested_wait_seconds;
     
-      refresh_url = umlaut_base + refresh_path + "&amp;umlaut.response_format=jsonp&amp;umlaut.jsonp_callback=umlaut_partial_load_callback";
+      refresh_url = umlaut_base + refresh_path + "&umlaut.response_format=jsonp&umlaut.jsonp_callback=umlaut_partial_load_callback";
       
       window.setTimeout( "load_jsonp_url('" + refresh_url + "')", 4000 );
     }
