@@ -242,7 +242,7 @@ hr {
 .highlighted_section {
   background-color: white;
   border: 1px solid #e9e9e9;
-  margin: -4px;
+  margin: -1px;
   padding: 4px;  
 }
 
@@ -334,7 +334,7 @@ hr {
 }
 .availability a:active { color : #0066cc; font-weight: bold;}
 
-ul.fulltextlink {
+ul.fulltextlink, ul.audiolink {
   margin-left: 4px;
   margin-top: 4px;
 }
@@ -343,7 +343,7 @@ ul.fulltextlink li.fulltextlink {
   padding: 0px 18px 8px 22px;
 }
 
-ul.fulltextlink li.audiolink {
+ul.audiolink li.audiolink {
   background: url(../images/famfamfam/page_sound.gif) no-repeat 0px 0px;
   padding: 0px 18px 8px 22px;
 }
