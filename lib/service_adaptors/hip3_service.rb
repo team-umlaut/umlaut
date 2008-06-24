@@ -7,16 +7,21 @@ class Hip3Service < Service
   attr_reader :base_path
 
   def initialize(config)
+    # defaults
+    @map_856_to_service = 'fulltext_title_level'
+    
     super(config)
+
     # Trim question-mark from base_url, if given
-    @base_path.chop! if (@base_path.rindex('?') ==  @base_path.length)
-    @map_856_to_service = 'fulltext_title_level' unless @map_856_to_service
+    @base_path.chop! if (@base_path.rindex('?') ==  @base_path.length)     
   end
 
   # Standard method, used by background service updater. See Service docs. 
   def service_types_generated
     # We generate full text and holdings types, right now.
-    return [ ServiceTypeValue[:fulltext], ServiceTypeValue[:holding] ]
+    types = [ ServiceTypeValue[:fulltext], ServiceTypeValue[:holding], ServiceTypeValue[:table_of_contents] ]
+    
+    return types
   end
   
   def handle(request)
@@ -63,10 +68,13 @@ class Hip3Service < Service
 
       value_text[:notes] =
       field.subfields.collect {|f| f.value if f.code == 'z'}.compact.join(' ')
+
+      # Do we think this is a ToC link?
+      service_type_value = self.url_service_type( field ) 
+      
       # Add the response
-      request.add_service_response({:service=>self, :display_text=>display_name, :url=>url, :notes=>value_text[:notes], :service_data=>value_text}, [@map_856_to_service])
+      request.add_service_response({:service=>self, :display_text=>display_name, :url=>url, :notes=>value_text[:notes], :service_data=>value_text}, [service_type_value])
     end
-    
     
     #Okay, we actually want to make each _copy_ into a service response.
     #A bib may have multiple copies. We are merging bibs, and just worrying
@@ -106,6 +114,16 @@ class Hip3Service < Service
     return request.dispatched(self, true)
   end
 
+    def url_service_type( field )
+      # LC records here at hopkins have "Table of contents only" in the 856$3
+      # Think that's a convention from LC? 
+      if (field['3'] && field['3'].downcase == "table of contents only")
+        return "table_of_contents"
+      else
+        return @map_856_to_service
+      end      
+    end
+  
   #def to_holding(service_response)
     # The hash we put in value_text is suitable to return to the view already
   #  return YAML.load(service_response.value_text)
