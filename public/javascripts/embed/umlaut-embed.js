@@ -1,7 +1,12 @@
   //This script depends on jsr_class.js being imported by client too. 
+
+  
+  // Trim trailing slash from umlaut base url to normalize, if needed
+  umlaut_base.replace(/\/$/,'');
   
   // Loads a URL using the JSONscriptRequest to do a cross-domain AJAX. 
   function load_jsonp_url(url) {
+    
       bObj = new JSONscriptRequest( url );
       bObj.buildScriptTag();
       bObj.addScriptTag();
@@ -35,7 +40,7 @@
   }
 
   
-  request = umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=jsonp&amp;umlaut.jsonp=umlaut_partial_load_callback&amp;' + umlaut_openurl_kev_co;
+  request = umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=jsonp&umlaut.jsonp=umlaut_partial_load_callback&' + umlaut_openurl_kev_co;
   
   load_jsonp_url( request );
   
