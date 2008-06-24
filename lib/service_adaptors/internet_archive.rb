@@ -73,6 +73,7 @@ class InternetArchive < Service
     
     # using open() conveniently follows the redirect for us. Alas, it
     # doesn't give us access to the IA http status code response though.
+    
     response = open(link).read
     doc = JSON.parse(response)
     results = doc['response']['docs']
@@ -146,7 +147,7 @@ class InternetArchive < Service
   # does an OR search for all configured mediatypes
   def create_query_params(search_terms, type=nil)
     params = 'title:' << CGI.escape('"' << search_terms[:title] << '"')
-    if search_terms[:creator]      
+    if (! search_terms[:creator].blank?)      
       params << '+AND+creator:' << CGI.escape('(' << search_terms[:creator] << ')')       
     end
     mt = []

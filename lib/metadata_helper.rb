@@ -43,32 +43,29 @@ module MetadataHelper
       title = metadata['title']
     end
 
+
+    colon_index = title.index(':')
+    title = title.slice( (0..colon_index-1)  ) if colon_index
+
+    semicolon_index = title.index(';')
+    title = title.slice( (0..semicolon_index-1)  ) if semicolon_index
+
+    # Strip anything after a '(' too. 
+    paren_index = title.index("(");
+    title = title.slice( (0..paren_index-1)  ) if paren_index
+
+    # In general, changing punctuation to spaces seems helpful for eliminating
+    # false negatives. Not only "weird" punctuation like curly-quotes seems
+    # to result in false negative, but even normal punctuation can. If it's
+    # not a letter or number, let's get rid of it. This method may or may
+    # not be entirely unicode safe, but initial experiments were satisfactory.
+    # Some punctuation we'll want to keep (e.g. Uncle Tom's Cabin)
+    title = title.chars.gsub(/[^\w\s']/, ' ').to_s
+    
+    # FIXME if the author's name is part of title, strip it out?
+    # See Andersen's Fairy Tales. Stripping off names gets more hits.
+
     return nil if title.blank?    
-    # For books, strip off subtitle after and including a ':'. 
-    # Reduce false negatives by stripping it. 
-    #if (options[:super_normalize] == 'book')
-    if (true)
-      colon_index = title.index(':')
-      title = title.slice( (0..colon_index-1)  ) if colon_index
-
-      semicolon_index = title.index(';')
-      title = title.slice( (0..semicolon_index-1)  ) if semicolon_index
-
-      # Strip anything after a '(' too. 
-      paren_index = title.index("(");
-      title = title.slice( (0..paren_index-1)  ) if paren_index
-  
-      # In general, changing punctuation to spaces seems helpful for eliminating
-      # false negatives. Not only "weird" punctuation like curly-quotes seems
-      # to result in false negative, but even normal punctuation can. If it's
-      # not a letter or number, let's get rid of it. This method may or may
-      # not be entirely unicode safe, but initial experiments were satisfactory.
-      # Some punctuation we'll want to keep (e.g. Uncle Tom's Cabin)
-      title = title.chars.gsub(/[^\w\s']/, ' ').to_s
-      
-      # FIXME if the author's name is part of title, strip it out?
-      # See Andersen's Fairy Tales. Stripping off names gets more hits.
-    end
 
 
     return title
@@ -88,6 +85,9 @@ module MetadataHelper
     #   Logic like this makes refactoring to use Referent.to_citation less useful.
     
     # FIXME strip out commas from creator if we use au?
+
+    return nil if creator.blank?
+    
     return creator
   end
 
