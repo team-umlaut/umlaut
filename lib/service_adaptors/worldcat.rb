@@ -5,6 +5,7 @@
 require 'uri'
 require 'net/http'
 class Worldcat < Service
+  include MetadataHelper
   
   def initialize(config)
     # defaults
@@ -18,26 +19,29 @@ class Worldcat < Service
   end
   
   def handle(request)
-    #sleep(10)
+    isbn = get_identifier(:urn, "isbn", request.referent)
+    issn = get_identifier(:urn, "issn", request.referent)
+    oclcnum = get_identifier(:info, "oclcnum", request.referent)
     
-    ref_metadata = request.referent.metadata
             
     isxn_key = nil
     isxn_value = nil
-    if (! ref_metadata['issn'].blank?)
+    if (! oclcnum.blank?)
+      isxn_key = 'oclc'
+      isxn_value = oclcnum    
+    elsif (! issn.blank?)
       isxn_key = 'issn'
       #isxn_value = ref_metadata['issn'] + '+dt:ser'
       isxn_value = ref_metadata['issn']
-    elsif (! ref_metadata['isbn'].blank?)
+    elsif (! isbn.blank?)
       isxn_key = 'isbn'
       isxn_value = ref_metadata['isbn']
     else
-      # We have neither isbn nor issn, we can do nothing, but we
-      # can do it succesfully
+      # We have no useful identifiers
       return request.dispatched(self, true)
     end
 
-    # Do some cleanup of the isbn/isxn. Sometimes spaces or other
+    # Do some cleanup of the value. Sometimes spaces or other
     # weird chars get in there, why not strip out everything that
     # isn't a number?
     isxn_value.sub!( /[^\d]/, '')
@@ -50,6 +54,7 @@ class Worldcat < Service
     uri_str = @base_url+isxn_key+'/'+isxn_value
     uri_str +=  "&loc=#{URI.escape(@search_zip_code.to_s)}" if @search_zip_code
 
+    
     begin
       worldcat_uri = URI.parse(uri_str)
     rescue Exception => e
