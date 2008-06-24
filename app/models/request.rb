@@ -404,7 +404,7 @@ class Request < ActiveRecord::Base
       if ( excluded_keys.find {|exc_key| exc_key === pair[0]}) 
         params.delete( pair )
       else
-        pair[1].sort! if pair[1] && pair[1].respond_to?("sort!")
+        pair[1].sort! if (pair[1] && pair[1].respond_to?("sort!"))
       end
     end
     
