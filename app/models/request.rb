@@ -400,11 +400,16 @@ class Request < ActiveRecord::Base
     # Now exclude excluded keys, and sort value array for further
     # canonicalization
     params.each do |pair|
+      # CGI::parse().sort sometimes leaves us a value string with nils in it,
+      # annoyingly. Especially for malformed requests, which can happen.
+      # Remove them please.
+      pair[1].compact! if pair[1]
+      
       # === works for regexp and string
       if ( excluded_keys.find {|exc_key| exc_key === pair[0]}) 
         params.delete( pair )
       else
-        pair[1].sort! if (pair[1] && pair[1].respond_to?("sort!"))
+          pair[1].sort! if (pair[1] && pair[1].respond_to?("sort!"))
       end
     end
     
