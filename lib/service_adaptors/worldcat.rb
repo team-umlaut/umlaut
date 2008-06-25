@@ -32,10 +32,10 @@ class Worldcat < Service
     elsif (! issn.blank?)
       isxn_key = 'issn'
       #isxn_value = ref_metadata['issn'] + '+dt:ser'
-      isxn_value = ref_metadata['issn']
+      isxn_value = issn
     elsif (! isbn.blank?)
       isxn_key = 'isbn'
-      isxn_value = ref_metadata['isbn']
+      isxn_value = isbn
     else
       # We have no useful identifiers
       return request.dispatched(self, true)
