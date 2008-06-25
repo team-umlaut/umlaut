@@ -91,6 +91,11 @@ class Request < ActiveRecord::Base
     # default value nil please, that's what ropenurl wants
     co_params.default = nil
 
+    # CGI::parse annoyingly sometimes puts a nil key in there, for an empty
+    # query param (like a url that has two consecutive && in it). Let's get rid
+    # of it please, only confuses our code. 
+    co_params.delete(nil)
+
     # Exclude params that are for Rails or Umlaut, and don't belong to the
     # context object. 
     excluded_keys = ["action", "controller", "page", /^umlaut\./, 'rft.action', 'rft.controller']
