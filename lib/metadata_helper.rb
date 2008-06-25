@@ -43,6 +43,8 @@ module MetadataHelper
       title = metadata['title']
     end
 
+    # Sometimes you have no title at all
+    return nil if title.blank?
 
     colon_index = title.index(':')
     title = title.slice( (0..colon_index-1)  ) if colon_index
