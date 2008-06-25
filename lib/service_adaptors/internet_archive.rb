@@ -65,8 +65,8 @@ class InternetArchive < Service
   def do_query(request)
     # get the search terms for use in both fulltext search and highlighted_link
     search_terms = get_search_terms(request.referent)
-    # if there's no title we don't have enough to go on
-    return nil if search_terms[:title].nil?
+    # We need both title and author to continue
+    return nil if (search_terms[:title].blank? || search_terms[:creator].blank?)
     
     # create one link that searches all configured mediatypes
     link = @url + ia_params(search_terms)
