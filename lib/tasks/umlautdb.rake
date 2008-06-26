@@ -31,7 +31,7 @@ namespace :umlaut do
   
     desc "Loads in standard Rails service_type_values."
     task :load_service_type_values => :environment do            
-       ServiceTypeValue.sync_values!
+       ServiceTypeValue.load_values!
     end
     
     desc "Loads in all initial fixed data for an umlaut installation."
