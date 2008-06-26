@@ -67,6 +67,13 @@ class InternetArchive < Service
     search_terms = get_search_terms(request.referent)
     # We need both title and author to continue
     return nil if (search_terms[:title].blank? || search_terms[:creator].blank?)
+
+    # Return if this is an journal article link, an IA search can do nothing
+    # for us except waste CPU cycles for us and IA.
+    metadata = request.referent.metadata
+    return nil unless metadata["atitle"].blank? &&
+                      metadata["issue"].blank? &&
+                      metadata["volume"].blank?
     
     # create one link that searches all configured mediatypes
     link = @url + ia_params(search_terms)
@@ -146,9 +153,12 @@ class InternetArchive < Service
   # if given a type it will only search for one mediatype. otherwise it 
   # does an OR search for all configured mediatypes
   def create_query_params(search_terms, type=nil)
-    params = 'title:' << CGI.escape('"' << search_terms[:title] << '"')
+    # Downcase params to avoid weird misconfiguration in IA's SOLR
+    # installation, where it's interpreting uppercase words as
+    # commands even within quotes. 
+    params = 'title:' << CGI.escape('"' << search_terms[:title].downcase << '"')
     if (! search_terms[:creator].blank?)      
-      params << '+AND+creator:' << CGI.escape('(' << search_terms[:creator] << ')')       
+      params << '+AND+creator:' << CGI.escape('(' << search_terms[:creator].downcase << ')')       
     end
     mt = []
     params <<  '+AND+('
