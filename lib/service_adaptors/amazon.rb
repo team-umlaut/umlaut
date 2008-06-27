@@ -1,5 +1,11 @@
-require 'hpricot'
+#
+#   services.yml params include:
+#   api_key:    required
+#   load_cover_images:false    to suppress cover image loading. 
+#
 class Amazon < Service
+  require 'hpricot'
+  
   required_config_params :url, :api_key
   attr_reader :url
 
@@ -7,14 +13,19 @@ class Amazon < Service
     # defaults
     @display_name = "Amazon.com"
     @display_text = "Amazon's page"
+    @load_cover_images = true
     super(config)
   end
 
 
   def service_types_generated
-    return [ ServiceTypeValue['cover_image'], ServiceTypeValue['abstract'],
+    types = [ ServiceTypeValue['abstract'],
              ServiceTypeValue['highlighted_link'], ServiceTypeValue['subject'],
              ServiceTypeValue['similar_item'] ]
+
+    types.push( ServiceTypeValue['cover_image'] ) if @load_cover_images
+
+    return types
   end
   
   def handle(request)    
@@ -80,15 +91,18 @@ class Amazon < Service
         raise Exception.new("Error from Amazon web service: " + err.to_s)
       end
     end
-    
-    asin = (aws/"/ItemLookupResponse/Items/Item/ASIN").inner_html
-    # collect cover art urls
-    ["small","medium","large"].each do | size |
-      if (img = aws.at("/ItemLookupResponse/Items/Item/"+size.capitalize+"Image/URL"))
-        request.add_service_response({:service=>self, :display_text => 'Cover Image',:key=>size, :url => img.inner_html, :service_data => {:asin => asin, :size => size }},[ServiceTypeValue[:cover_image]])
-        # :value_string=>asin,
+
+
+    if ( @load_cover_images )
+      asin = (aws/"/ItemLookupResponse/Items/Item/ASIN").inner_html
+      # collect cover art urls
+      ["small","medium","large"].each do | size |
+        if (img = aws.at("/ItemLookupResponse/Items/Item/"+size.capitalize+"Image/URL"))
+          request.add_service_response({:service=>self, :display_text => 'Cover Image',:key=>size, :url => img.inner_html, :service_data => {:asin => asin, :size => size }},[ServiceTypeValue[:cover_image]])
+          # :value_string=>asin,
+        end
       end
-    end               
+    end
 
     item_url = (aws.at("/ItemLookupResponse/Items/Item/DetailPageURL"))
     
