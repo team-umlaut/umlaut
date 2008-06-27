@@ -1,0 +1,14 @@
+<%=
+  # Set parameter for size, small|medium|large if you like
+  size ||= "medium"
+
+  img_st = cover_image_response(size)
+  if img_st 
+      img = img_st.view_data
+      
+      tag('img', {'src'=>img[:url],
+      'class'=>'cover_image',
+      'alt'=>h(img[:display_text])})
+      
+ end %>
+      

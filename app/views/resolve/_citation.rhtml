@@ -1,10 +1,9 @@
 
 
     <table width="100%" cellpadding="3" cellspacing="0">
-<%
-unless get_service_type('cover_image').empty? %>
+
 <tr><td><table width="100%" cellpadding="3" cellspacing="0">
-<% end 
+<% 
 cite = @user_request.referent.to_citation
 #rft_metadata = @user_request.referent.metadata
 %>
@@ -79,12 +78,10 @@ if pub.length > 0
  </tr>
 <% end %>
       </table>
-<%
-  img_st = cover_image_response('medium')
-  if img_st 
-      img = img_st.view_data %>
-</td><td align='right'><%= tag('img', {'src'=>img[:url],
-'class'=>'cover_image',
-'alt'=>h(img[:display_text])})%></td></tr></table>
-<% end 
-%>
+
+</td><td align='right'><div id="cover_image">
+
+<%= render(:partial => "cover_image") %>
+
+</div></td></tr></table>
+
