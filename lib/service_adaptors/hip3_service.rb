@@ -2,6 +2,12 @@
 # Params include:
 # map_856_to_service :  Umlaut ServiceTypeValue to map 856 links to. Defaults
 #                     to fulltext_title_level
+# suppress_urls:      array of strings or regexps to NOT use from the catalog.
+#                     Used for urls that duplicate SFX targets but which aren't
+#                     caught by SfxUrl.sfx_controls_url. Regexps can be put
+#                     in the services.yml like this:    
+#                        !ruby/regexp '/sagepub.com$/'
+
 class Hip3Service < Service
   required_config_params :base_path, :display_name
   attr_reader :base_path
@@ -9,7 +15,7 @@ class Hip3Service < Service
   def initialize(config)
     # defaults
     @map_856_to_service = 'fulltext_title_level'
-    
+    @suppress_urls = []
     super(config)
 
     # Trim question-mark from base_url, if given
@@ -44,6 +50,10 @@ class Hip3Service < Service
       # Don't add the URL if it matches our SFXUrl finder, because
       # that means we think this is an SFX controlled URL.
       next if SfxUrl.sfx_controls_url?(url)
+      # We have our own list of URLs to suppress, array of strings
+      # or regexps.
+      next if @suppress_urls.find {|suppress| suppress === url}
+      
       # No u field? Forget it.
       next if url.nil?
       
@@ -68,6 +78,7 @@ class Hip3Service < Service
 
       value_text[:notes] =
       field.subfields.collect {|f| f.value if f.code == 'z'}.compact.join(' ')
+      value_text[:notes] += " Dates of coverage unknown."
 
       # Do we think this is a ToC link?
       service_type_value = self.url_service_type( field ) 
