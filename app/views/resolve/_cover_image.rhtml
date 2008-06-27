@@ -1,14 +1,28 @@
 <%=
-  # Set parameter for size, small|medium|large if you like
+    # Set parameter for size, small|medium|large if you like
   size ||= "medium"
+  fix_size ||= true
+
+  # small med and x-large correspond roughly to amazon sm, med and lg. 
+  # large corresponds roughly to google medium. 
+  dimensions = { "small" => { "height" => 75, "width" => 46 },
+                 "medium" => { "height" => 160, "width" => 99},
+                 "large" => { "height" => 206, "width" => 128 },
+                 "extra-large" => { "height" => 475, "width" => 294}}
+
+
 
   img_st = cover_image_response(size)
   if img_st 
-      img = img_st.view_data
+      img_data = img_st.view_data
       
-      tag('img', {'src'=>img[:url],
+      params = {'src'=>img_data[:url],
       'class'=>'cover_image',
-      'alt'=>h(img[:display_text])})
+      'alt'=>h(img_data[:display_text])}
+      
+      params.merge!( dimensions[size]) if fix_size
+      
+      tag('img', params )
       
  end %>
       
