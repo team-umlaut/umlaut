@@ -96,7 +96,6 @@ class GoogleBookSearch < Service
   def do_query(bibkeys)
     header = build_header()
     link = @url + bibkeys
-    debugger
     data = open(link, 'rb', header) 
     return Zlib::GzipReader.new(data).read
     
