@@ -92,9 +92,9 @@ class Amazon < Service
       end
     end
 
+    asin = (aws/"/ItemLookupResponse/Items/Item/ASIN").inner_html
 
     if ( @load_cover_images )
-      asin = (aws/"/ItemLookupResponse/Items/Item/ASIN").inner_html
       # collect cover art urls
       ["small","medium","large"].each do | size |
         if (img = aws.at("/ItemLookupResponse/Items/Item/"+size.capitalize+"Image/URL"))
