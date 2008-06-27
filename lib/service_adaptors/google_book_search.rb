@@ -38,6 +38,8 @@ class GoogleBookSearch < Service
     # we include a callback in the url because it is expected that there will be one.
     @url = 'http://books.google.com/books?jscmd=viewapi&callback=gbscallback&bibkeys='
     @display_name = 'Google Book Search'
+    # default number of full views to show
+    @num_full_views = 1
     super(config)
   end
   
@@ -60,11 +62,12 @@ class GoogleBookSearch < Service
     data = dedupe(data) if data.length > 1
     
     #return full views first
-    create_fulltext_service_response(request, data)
+    full_views_shown = create_fulltext_service_response(request, data)
     
-    # add links for partials view and noview
-    # (FIXME: Should we add these only if we _don't_ have full text? -JR )
-    do_web_links(request, data)
+    # only if no full view is shown, add links for partial view or noview
+    unless full_views_shown
+      do_web_links(request, data)
+    end
     
     thumbnail_url = find_thumbnail_url(data)
     if thumbnail_url
@@ -75,6 +78,7 @@ class GoogleBookSearch < Service
   # returns nil or escaped string of bibkeys
   # to increase the chances of good hit, we send all available bibkeys 
   # and later dedupe by id.
+  # FIXME Assumes we only have one of each kind of identifier.
   def get_bibkeys(rft)
     isbn = get_identifier(:urn, "isbn", rft)
     oclcnum = get_identifier(:info, "oclcnum", rft)
@@ -103,14 +107,23 @@ class GoogleBookSearch < Service
     #one_full_view = 'gbscallback({"ISBN:1582183392":{"bib_key":"ISBN:1582183392","info_url":"http://books.google.com/books?id=bFGPoGrAXbwC\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=bFGPoGrAXbwC\x26printsec=frontcover\x26sig=kYnPnuSmFdbm5rJfxNUN0_Qa3Zk\x26source=gbs_ViewAPI","thumbnail_url":"http://bks8.books.google.com/books?id=bFGPoGrAXbwC\x26pg=PP1\x26img=1\x26zoom=5\x26sig=bBu6nZ_q8k5uKZ43RrdBOElOCiA","preview":"full"}});'
     #one_partial_view = 'gbscallback({"ISBN:9780618680009":{"bib_key":"ISBN:9780618680009","info_url":"http://books.google.com/books?id=yq1xDpicghkC\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=yq1xDpicghkC\x26printsec=frontcover\x26sig=wuZrXklCy_Duenlw3Ea0MTgIhYQ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks8.books.google.com/books?id=yq1xDpicghkC\x26pg=PP1\x26img=1\x26zoom=5\x26sig=3sezA1j1-qzTTtI5E8PTdHJDkHw","preview":"partial"}});'
     #three_duplicate_no_view = 'gbscallback({"ISBN:0393044548":{"bib_key":"ISBN:0393044548","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks3.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=32ieZbDQYbQAeCNfW-vek8SfOxc","preview":"noview"},"OCLC:2985768":{"bib_key":"OCLC:2985768","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks4.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=Z98qalA95yde4XY6VO-1ZF0tKlE","preview":"noview"},"LCCN:76030648":{"bib_key":"LCCN:76030648","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks5.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=_qfxqS7dLZ7Oi48sFIBssQUbd4E","preview":"noview"}});'
+    #one_fake_full_fake_partial = 'gbscallback({"ISBN:0393044548":{"bib_key":"ISBN:0393044548","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks3.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=32ieZbDQYbQAeCNfW-vek8SfOxc","preview":"full"},"OCLC:2985768":{"bib_key":"OCLC:2985768","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks4.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=Z98qalA95yde4XY6VO-1ZF0tKlE","preview":"noview"},"LCCN:76030648":{"bib_key":"LCCN:76030648","info_url":"http://books.google.com/books?id=E4R9AQAACAAJx\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks5.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=_qfxqS7dLZ7Oi48sFIBssQUbd4E","preview":"partial"}});'
+    #two_fake_full = 'gbscallback({"ISBN:0393044548":{"bib_key":"ISBN:0393044548","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks3.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=32ieZbDQYbQAeCNfW-vek8SfOxc","preview":"full"},"OCLC:2985768":{"bib_key":"OCLC:2985768","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks4.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=Z98qalA95yde4XY6VO-1ZF0tKlE","preview":"noview"},"LCCN:76030648":{"bib_key":"LCCN:76030648","info_url":"http://books.google.com/books?id=E4R9AQAACAAJx\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks5.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=_qfxqS7dLZ7Oi48sFIBssQUbd4E","preview":"full"}});'
+    #one_fake_full_one_fake_noview = 'gbscallback({"ISBN:0393044548":{"bib_key":"ISBN:0393044548","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks3.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=32ieZbDQYbQAeCNfW-vek8SfOxc","preview":"full"},"OCLC:2985768":{"bib_key":"OCLC:2985768","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks4.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=Z98qalA95yde4XY6VO-1ZF0tKlE","preview":"noview"},"LCCN:76030648":{"bib_key":"LCCN:76030648","info_url":"http://books.google.com/books?id=E4R9AQAACAAJx\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks5.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=_qfxqS7dLZ7Oi48sFIBssQUbd4E","preview":"noview"}});'
+    #one_fake_partial_one_fake_noview = 'gbscallback({"ISBN:0393044548":{"bib_key":"ISBN:0393044548","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks3.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=32ieZbDQYbQAeCNfW-vek8SfOxc","preview":"partial"},"OCLC:2985768":{"bib_key":"OCLC:2985768","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks4.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=Z98qalA95yde4XY6VO-1ZF0tKlE","preview":"noview"},"LCCN:76030648":{"bib_key":"LCCN:76030648","info_url":"http://books.google.com/books?id=E4R9AQAACAAJx\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks5.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=_qfxqS7dLZ7Oi48sFIBssQUbd4E","preview":"noview"}});'
     #two_no_view_one_fake_partial = 'gbscallback({"ISBN:0393044548":{"bib_key":"ISBN:0393044548","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks3.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=32ieZbDQYbQAeCNfW-vek8SfOxc","preview":"noview"},"OCLC:2985768":{"bib_key":"OCLC:2985768","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks4.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=Z98qalA95yde4XY6VO-1ZF0tKlE","preview":"noview"},"LCCN:76030648":{"bib_key":"LCCN:76030648","info_url":"http://books.google.com/books?id=E4R9AQAACAAJx\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks5.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=_qfxqS7dLZ7Oi48sFIBssQUbd4E","preview":"partial"}});'
+    #two_full_one_fake_partial = 'gbscallback({"ISBN:0393044548":{"bib_key":"ISBN:0393044548","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks3.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=32ieZbDQYbQAeCNfW-vek8SfOxc","preview":"full"},"OCLC:2985768":{"bib_key":"OCLC:2985768","info_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks4.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=Z98qalA95yde4XY6VO-1ZF0tKlE","preview":"full"},"LCCN:76030648":{"bib_key":"LCCN:76030648","info_url":"http://books.google.com/books?id=E4R9AQAACAAJx\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=E4R9AQAACAAJ\x26source=gbs_ViewAPI","thumbnail_url":"http://bks5.books.google.com/books?id=E4R9AQAACAAJ\x26printsec=frontcover\x26img=1\x26zoom=5\x26sig=_qfxqS7dLZ7Oi48sFIBssQUbd4E","preview":"partial"}});'
     #one_partial_view = 'gbscallback({"ISBN:030905382X":{"bib_key":"ISBN:030905382X","info_url":"http://books.google.com/books?id=XiiYq5U1qEUC\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=XiiYq5U1qEUC\x26printsec=frontcover\x26sig=9-7ypznOwL_rECoKJLizCBpodds\x26source=gbs_ViewAPI","thumbnail_url":"http://bks7.books.google.com/books?id=XiiYq5U1qEUC\x26pg=PP1\x26img=1\x26zoom=5\x26sig=2XmDi4HEhbqply9YjIsuopFQLAk","preview":"partial"}});'
-    
+    #one_fake_noview = 'gbscallback({"ISBN:030905382X":{"bib_key":"ISBN:030905382X","info_url":"http://books.google.com/books?id=XiiYq5U1qEUC\x26source=gbs_ViewAPI","preview_url":"http://books.google.com/books?id=XiiYq5U1qEUC\x26printsec=frontcover\x26sig=9-7ypznOwL_rECoKJLizCBpodds\x26source=gbs_ViewAPI","thumbnail_url":"http://bks7.books.google.com/books?id=XiiYq5U1qEUC\x26pg=PP1\x26img=1\x26zoom=5\x26sig=2XmDi4HEhbqply9YjIsuopFQLAk","preview":"noview"}});'
   end
   
   # We try to build a good header
   # FIXME We probably ought to pass the rails_request down to here instead of
-  # using an instance variable, right? (Actually, I think instance variable might be fine if you can figure out a good way to get it set! Except for worried about threading/concurrency issues. Hmm. Now I'm thinking we might not need the actual request at all, we might be able to fake enough of it with static config. -JR )
+  # using an instance variable, right? 
+  # (Actually, I think instance variable might be fine if you can figure out a 
+  # good way to get it set! Except for worried about threading/concurrency 
+  # issues. Hmm. Now I'm thinking we might not need the actual request at all, 
+  # we might be able to fake enough of it with static config. -JR )
   def build_header()
     #env = @rails_request.env
     # FIXME temporary dummy env for testing until rails_request can be passed in
@@ -159,78 +172,87 @@ class GoogleBookSearch < Service
     return a
   end
     
+  # We only create a fulltext service response if we have a full view.
+  # We create only as many full views as are specified in config.
   def create_fulltext_service_response(request, data)
     display_name = @display_name
     
     full_views = data.select { |d| d['preview'] == 'full'  }
     return nil if full_views.empty?
+    count = 0
     full_views.each do |fv|
-      # FIXME do we need a note for this service? Probably not this one, though
-      # it helped in testing. (Not unless you see some reason that you do. Could make it configurable, but I'd default to 'no', yeah. )
-      note = fv['bib_key'].gsub(':', ': ') #get_search_title(request.referent)
+      #note = fv['bib_key'].gsub(':', ': ') #get_search_title(request.referent)
       request.add_service_response(
         {:service=>self, 
           :display_text=>display_name, 
-          :url=>fv['preview_url'], 
-          :notes=>note}, [ :fulltext ]) 
+          :url=>fv['preview_url']}, 
+          #:notes=>note}, 
+        [ :fulltext ]) 
+      count += 1
+      break if count == @num_full_views
     end   
+    return true
   end
   
   # create highlighted_link service response for partial and noview
+  # Only show one web link. prefer a partial view over a noview
   def do_web_links(request, data)    
-    # some noview items will have a snippet view, but we have no way to tell that
-    info_views = data.select{|d| d['preview'] == 'noview' or d['preview'] == 'partial' }    
+    # some noview items will have a snippet view, but we have no way to tell
+    info_views = data.select{|d| d['preview'] == 'partial' }    
+    
+    if info_views.blank?
+      info_views = data.select{|d| d['preview'] == 'noview'}
+    end
+    
+    # Shouldn't ever get to this point, but just in case
+    return nil if info_views.blank?
     
     url = ''
-    info_views.each do |iv|
-      if iv['preview'] == 'partial'
-        url = iv['preview_url']
-        # FIXME take out the bib_key when done testing
-        # Not sure 'preview' is the best text. "Partial text" maybe like Google actually says? Why'd you go wtih "preview"? -JR 
-        display_text = "Preview this book at #{@display_name} " << iv['bib_key']
-      else
-        url = iv['info_url']
-        # FIXME take out the bib_key when done testing
-        display_text = "More information on this book at #{@display_name}"  << iv['bib_key']        
-      end
-      request.add_service_response( { 
+    iv = info_views.first
+    if iv['preview'] == 'partial'
+      url = iv['preview_url']
+      # FIXME take out the bib_key when done testing. Not sure 'preview' is the
+      # best text. "Partial text" maybe like Google actually says? Why'd you go
+      # wtih "preview"? -JR
+      display_text = "Preview this book at #{@display_name} " << iv['bib_key']
+    else
+      url = iv['info_url']
+      # FIXME take out the bib_key when done testing
+      display_text = "More information on this book at #{@display_name}"  << iv['bib_key']        
+    end
+    request.add_service_response( { 
         :service=>self,    
         :url=>url,
         :display_text=>display_text}, 
-      [ServiceTypeValue[:highlighted_link]]    )
-    end
+      [ServiceTypeValue[:highlighted_link]]    )    
   end
   
   # We don't need to present a link for every bibkey if they are duplicates.
-  # Dedupe by id embedded in the url.
+  # We test duplicates by comparing info_urls. This ought to be safe since if
+  #   gbs returns a hit it ought to at least have an info_url.
   # Right now we keep bibkey a string and just stuff in the other bibkeys.
-  # FIXME this algorithm could probably be better/less complicated. Maybe the 
-  #   info_url will be the same if the id is the same so we could just 
-  #   compare urls?
   # FIXME could be just stoopid to keep bibkey as a string, but then again we
   #   might not need it at this stage so just discard it?
-  # ( Don't understand enough about what's going on here to comment, let's talk more.But I suspect you can just compare info_urls, yeah. -JR )
   def dedupe(data)
-    ids = []
+    kept_urls = []
     saved = []
     data.each do |d|
-      d['id'] = extract_id(d)
-      if ids.include? d['id']
-        # stuff the bibkey into the saved with the same id
-        matching_saved = saved.select { |s| s['id'] == d['id']  }[0]
+      if kept_urls.include? d['info_url']
+        # stuff the bibkey into a matching hit
+        matching_saved = saved.select { |s| s['info_url'] == d['info_url']  }[0]
         matching_saved['bib_key'] <<  ', ' << d['bib_key']
-      else # move into saved and record id
-        ids << d['id']
+      else # move into saved and record the info_url
+        kept_urls << d['info_url']
         saved << d
       end
     end
     return saved
   end
   
-  def extract_id(single_record)
-     m = (single_record['info_url']).scan(/id=(.*)&/)
-     m[0]
-  end
+#  def extract_id(single_record)
+#     m = (single_record['info_url']).scan(/id=(.*)&/)
+#     m[0]
+#  end
  
   # Not all responses have a thumbnail_url. We look for them and return the 1st.
   def find_thumbnail_url(data)
@@ -242,16 +264,17 @@ class GoogleBookSearch < Service
   # FIXME currently we run this service foreground so we can pick up cover 
   #   images. If we want this as a background service we need to make
   #   cover_image a background service.
-  #   ( We just need to fix the view AJAX updater to update the cover image div for cover image background services. This can be done. )
+  #   ( We just need to fix the view AJAX updater to update the cover image div 
+  #   for cover image background services. This can be done. )
   def add_cover_image(request, url)
-    # FIXME first we change the zoom level to get the largest size. We do like
-    # in Amazon service and return three sizes of images. it seems only size 1 =
-    # large and 5 = small work so medium and large are the same
+    # We do like in Amazon service and return three sizes of images. 
+    # it seems only size 1 = large and 5 = small work so medium and large 
+    # are the same
     [["small", '5'],["medium", '1'], ["large", '1']].each do | size, zoom_size |
       zoom_url = url.sub('zoom=5', "zoom=#{zoom_size}")
       
-      # if we're sent to a page other than the frontcover then insert front
-      # cover
+      # if we're sent to a page other than the frontcover then strip out the
+      # page number and insert front cover
       zoom_url.sub!(/&pg=.*?&/, '&printsec=frontcover&')
       
       request.add_service_response({
