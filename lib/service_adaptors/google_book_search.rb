@@ -44,8 +44,6 @@ class GoogleBookSearch < Service
   end
   
   def handle(request)
-  #def handle(request, options)
-    #@rails_request = options[:rails_request]
     get_viewability(request)
     return request.dispatched(self, true)
   end
@@ -98,6 +96,7 @@ class GoogleBookSearch < Service
   def do_query(bibkeys)
     header = build_header()
     link = @url + bibkeys
+    debugger
     data = open(link, 'rb', header) 
     return Zlib::GzipReader.new(data).read
     
@@ -210,20 +209,21 @@ class GoogleBookSearch < Service
     url = ''
     iv = info_views.first
     if iv['preview'] == 'partial'
-      url = iv['preview_url']
-      # FIXME take out the bib_key when done testing. Not sure 'preview' is the
-      # best text. "Partial text" maybe like Google actually says? Why'd you go
-      # wtih "preview"? -JR
-      display_text = "Preview this book at #{@display_name} " << iv['bib_key']
+      url = iv['preview_url']      
+      display_text = "Limited Preview"
+       # FIXME just for debugging
+       notes = iv['bib_key']
     else
       url = iv['info_url']
-      # FIXME take out the bib_key when done testing
-      display_text = "More information on this book at #{@display_name}"  << iv['bib_key']        
+      display_text = "Book Information"
+      # FIXME just for debugging
+      notes = iv['bib_key']      
     end
     request.add_service_response( { 
         :service=>self,    
         :url=>url,
-        :display_text=>display_text}, 
+        :display_text=>display_text,
+        :service_data => {:notes => notes}},
       [ServiceTypeValue[:highlighted_link]]    )    
   end
   

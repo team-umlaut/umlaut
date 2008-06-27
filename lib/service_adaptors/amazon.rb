@@ -3,6 +3,14 @@ class Amazon < Service
   required_config_params :url, :api_key
   attr_reader :url
 
+  def initialize(config)
+    # defaults
+    @display_name = "Amazon.com"
+    @display_text = "Amazon's page"
+    super(config)
+  end
+
+
   def service_types_generated
     return [ ServiceTypeValue['cover_image'], ServiceTypeValue['abstract'],
              ServiceTypeValue['highlighted_link'], ServiceTypeValue['subject'],
@@ -96,7 +104,7 @@ class Amazon < Service
     # we want to highlight Amazon to link to 'search in this book', etc.
     if item_url
       service_data = { :url => item_url.inner_html, :asin=>asin,
-                       :display_text => "View at Amazon.com"}
+                       :display_text => @display_text }
                        request.add_service_response({:service=>self, :service_data=>service_data}, [ServiceTypeValue['highlighted_link']])
 
       #request.add_service_response({:service=>self,:key=>'url',:value_string=>asin, :value_text=>item_url.inner_html},[ServiceTypeValue['highlighted_link']]) if item_url

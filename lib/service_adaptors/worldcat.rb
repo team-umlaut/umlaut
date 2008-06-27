@@ -10,7 +10,8 @@ class Worldcat < Service
   def initialize(config)
     # defaults
     @base_url = 'http://www.worldcat.org/'
-    @display_text = 'View at OCLC Worldcat.org'
+    @display_text = 'Find in other libraries'
+    @display_name = 'OCLC WorldCat.org'
     super(config)
   end
 

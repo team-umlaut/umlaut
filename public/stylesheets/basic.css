@@ -246,6 +246,11 @@ hr {
   padding: 4px;  
 }
 
+.see_also_source {
+  color: gray;
+  padding-left: 10px;
+}
+
 .notAvailable {
 	color: #FF0000;
 	font-style: italic;

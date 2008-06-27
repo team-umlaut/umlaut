@@ -52,6 +52,7 @@ Pubmed:
 Amazon:
   name: Amazon
   type: Amazon
+  display_name: Amazon.com
   url: http://webservices.amazon.com/onca/xml
   api_key: 
   priority: 3
@@ -91,14 +92,16 @@ Connotea:
 UlrichsLink:
   name: UlrichsLink
   type: UlrichsLink
-  link_name: Periodical Information from Ulrich's Directory
+  display_name: Ulrich's Directory
+  link_name: Periodical Information
   priority: 3
   status: active
 
 WorldCat:
   name: WorldCat
   type: Worldcat
-  display_text: View at OCLC Worldcat.org
+  display_name: OCLC WorldCat.org
+  display_text: Find in other libraries
   priority: 3
   status: active
   search_zip_code: 60601
@@ -107,6 +110,7 @@ WorldCat:
 InternetArchiveScraper:
   name: InternetArchiveScraper
   type: InternetArchiveScraper
+  display_name: the Internet Archive
   display_text: Internet Archive
   priority: c
   status: active
@@ -129,9 +133,8 @@ InternetArchive:
   #show_web_link: true
 
 GoogleBookSearch:
-  name: GoogleBookSearch
+  display_name: Google Book Search
   type: GoogleBookSearch
-  display_text: Google Book Search
   priority: 3
   status: active
 
@@ -177,7 +180,7 @@ JH_HIP_search:
  base_path: http://catalog.library.jhu.edu/ipac20/ipac.jsp
 
 IsbnDb:
- display_name: isbndb.com
+ display_name: ISBNdb.com
  type: IsbnDb
  priority: c
  access_key: [get from isbndb]

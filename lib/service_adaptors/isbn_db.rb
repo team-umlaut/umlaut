@@ -10,6 +10,8 @@
 #
 #  access_key:  Your API access key from isbnDB.
 #  display_text: (Optional) name of link.
+#  timeout:  (Optional) seconds to wait for response
+#  display_name: (Optional) what to call the service in display
 class IsbnDb < Service
   require 'hpricot'
   
@@ -21,7 +23,8 @@ class IsbnDb < Service
 
   def initialize(config)
     @timeout = 7
-    @display_text = "Compare online prices from ISBNdb.com"
+    @display_text = "Compare online prices"
+    @display_name = "ISBNdb.com"
     super(config)
   end
 

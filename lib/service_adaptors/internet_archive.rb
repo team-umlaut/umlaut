@@ -48,12 +48,12 @@ class InternetArchive < Service
     # the Solr home may change over time.
     @url = 'http://www.archive.org/advancedsearch.php?'
     # default number of results to return
-    @num_results = 3
+    @num_results = 1
     # default IA mediatypes to search
     @mediatypes = ["texts", "audio"]
     # Should the web link to further results be shown? default to true
     @show_web_link = true
-    @display_name = "Internet Archive"
+    @display_name = "the Internet Archive"
     super(config)
   end
   
@@ -135,7 +135,7 @@ class InternetArchive < Service
   # enough to capture all results for a mediatype. If there are more potential
   # results then num_found will not be accurate
   def do_web_link(request, search_terms, type, num_found)
-    display_text = "See #{num_found} possible #{type.singularize} files from the Internet Archive"
+    display_text = "#{num_found} digital #{type.singularize} files"
     url = create_web_link_url(search_terms, type)
     request.add_service_response( { 
         :service=>self,    
