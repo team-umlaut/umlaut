@@ -141,7 +141,7 @@ class Amazon < Service
     item_attributes = aws.at("/itemlookupresponse/items/item/itemattributes")
     
     request.referent.enhance_referent('format', 'book', false) unless request.referent.format == 'book'
-    unless request.referent.metadata['btitle']
+    unless (request.referent.metadata['btitle'] || request.referent.metadata['title'])
       if title = (item_attributes.at("/title"))
         request.referent.enhance_referent('btitle', title.inner_html)
       end
