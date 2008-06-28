@@ -211,6 +211,7 @@ class Request < ActiveRecord::Base
         
       #end
     end
+    #stypes = []
     unless service_type.empty?
       service_type.each do | st |
         #stype = ServiceType.find(:first, :conditions=>{:request_id => self.id, :service_response_id => svc_resp.id,:service_type => st})
@@ -218,9 +219,11 @@ class Request < ActiveRecord::Base
         #unless stype
           stype = ServiceType.new(:request => self, :service_response => svc_resp, :service_type_value => st)
           stype.save!
+          #stypes << stype
         #end
       end
     end
+    #return stypes
   end
 
 
