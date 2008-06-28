@@ -1,5 +1,171 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first:
+# Referent_value fixtures
+ 
+referent_value_1: 
+  normalized_value: info:oclcnum/33045872
+  key_name: identifier
+  metadata: false
   id: 1
-another:
+  value: info:oclcnum/33045872
+  referent_id: 1
+  created_at: 2008-06-28 16:15:27 -04:00
+  private_data: false
+ 
+referent_value_2: 
+  normalized_value: book
+  key_name: format
+  metadata: false
   id: 2
+  value: book
+  referent_id: 1
+  created_at: 2008-06-28 16:15:27 -04:00
+  private_data: false
+ 
+referent_value_3: 
+  normalized_value: "9780393964585"
+  key_name: isbn
+  metadata: true
+  id: 3
+  value: "9780393964585"
+  referent_id: 1
+  created_at: 2008-06-28 16:15:27 -04:00
+  private_data: false
+ 
+referent_value_4: 
+  normalized_value: new york
+  key_name: place
+  metadata: true
+  id: 4
+  value: New York
+  referent_id: 1
+  created_at: 2008-06-28 16:15:27 -04:00
+  private_data: false
+ 
+referent_value_5: 
+  normalized_value: ""
+  key_name: atitle
+  metadata: true
+  id: 5
+  value: ""
+  referent_id: 1
+  created_at: 2008-06-28 16:15:27 -04:00
+  private_data: false
+ 
+referent_value_6: 
+  normalized_value: ""
+  key_name: aucorp
+  metadata: true
+  id: 6
+  value: ""
+  referent_id: 1
+  created_at: 2008-06-28 16:15:27 -04:00
+  private_data: false
+ 
+referent_value_7: 
+  normalized_value: "1997"
+  key_name: date
+  metadata: true
+  id: 7
+  value: "1997"
+  referent_id: 1
+  created_at: 2008-06-28 16:15:27 -04:00
+  private_data: false
+ 
+referent_value_8: 
+  normalized_value: "frankenstein : the 1818 text, contexts, nineteenth-century responses, modern criticism"
+  key_name: btitle
+  metadata: true
+  id: 8
+  value: "Frankenstein : the 1818 text, contexts, nineteenth-century responses, modern criticism"
+  referent_id: 1
+  created_at: 2008-06-28 16:15:27 -04:00
+  private_data: false
+ 
+referent_value_9: 
+  normalized_value: ""
+  key_name: series
+  metadata: true
+  id: 9
+  value: ""
+  referent_id: 1
+  created_at: 2008-06-28 16:15:27 -04:00
+  private_data: false
+ 
+referent_value_10: 
+  normalized_value: w.w. norton
+  key_name: pub
+  metadata: true
+  id: 10
+  value: W.W. Norton
+  referent_id: 1
+  created_at: 2008-06-28 16:15:27 -04:00
+  private_data: false
+ 
+referent_value_11: 
+  normalized_value: book
+  key_name: genre
+  metadata: true
+  id: 11
+  value: book
+  referent_id: 1
+  created_at: 2008-06-28 16:15:27 -04:00
+  private_data: false
+ 
+referent_value_12: 
+  normalized_value: 1st ed.
+  key_name: edition
+  metadata: true
+  id: 12
+  value: 1st ed.
+  referent_id: 1
+  created_at: 2008-06-28 16:15:28 -04:00
+  private_data: false
+ 
+referent_value_13: 
+  normalized_value: wollstonecraft
+  key_name: auinitm
+  metadata: true
+  id: 13
+  value: Wollstonecraft
+  referent_id: 1
+  created_at: 2008-06-28 16:15:28 -04:00
+  private_data: false
+ 
+referent_value_14: 
+  normalized_value: ""
+  key_name: tpages
+  metadata: true
+  id: 14
+  value: ""
+  referent_id: 1
+  created_at: 2008-06-28 16:15:28 -04:00
+  private_data: false
+ 
+referent_value_15: 
+  normalized_value: mary
+  key_name: aufirst
+  metadata: true
+  id: 15
+  value: Mary
+  referent_id: 1
+  created_at: 2008-06-28 16:15:28 -04:00
+  private_data: false
+ 
+referent_value_16: 
+  normalized_value: shelley
+  key_name: aulast
+  metadata: true
+  id: 16
+  value: Shelley
+  referent_id: 1
+  created_at: 2008-06-28 16:15:28 -04:00
+  private_data: false
+ 
+referent_value_17: 
+  normalized_value: tag:gpc,2008-6-28:1
+  key_name: identifier
+  metadata: false
+  id: 17
+  value: tag:gpc,2008-6-28:1
+  referent_id: 1
+  created_at: 2008-06-28 16:15:28 -04:00
+  private_data: false

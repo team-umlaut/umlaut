@@ -138,6 +138,16 @@ GoogleBookSearch:
   priority: 3
   status: active
 
+# This is used to help create fixtures for testing
+# file is a required parameter. Set this to the full path of a file to append
+# rough fixture data to.
+RequestToFixture:
+  name: RequestToFixture
+  type: RequestToFixture
+  priority: 1
+  status: active
+  file: /full/path/to/file/new_fixtures.yml
+
 # Start institution specific services  
 Opac:
   name: GT Catalog
