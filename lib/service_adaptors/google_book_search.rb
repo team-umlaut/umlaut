@@ -25,7 +25,8 @@ class GoogleBookSearch < Service
   
   # required params
   
-  # attr_reader 
+  # attr_reader is important for tests
+  attr_reader :url, :display_name, :num_full_views 
   
   def service_types_generated
     return [ 
@@ -58,7 +59,6 @@ class GoogleBookSearch < Service
     data = parse_response(cleaned_response)
     
     data = dedupe(data) if data.length > 1
-    
     #return full views first
     full_views_shown = create_fulltext_service_response(request, data)
     
