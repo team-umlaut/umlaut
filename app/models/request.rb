@@ -15,6 +15,8 @@ class Request < ActiveRecord::Base
   has_many :service_types, :order=>'service_types.id ASC', :include=>:service_response
   belongs_to :referent, :include => :referent_values
   belongs_to :referrer
+  # holds a hash representing submitted http params
+  serialize :http_env
 
   # Either creates a new Request, or recovers an already created Request from
   # the db--in either case return a Request matching the OpenURL.
@@ -368,6 +370,9 @@ class Request < ActiveRecord::Base
     # Save client ip
     req.client_ip_addr = params['req.ip'] || a_rails_request.remote_ip()
     req.client_ip_is_simulated = true if req.client_ip_addr != a_rails_request.remote_ip()
+
+    # Save http headers
+    req.http_env = a_rails_request.env
     
     req.save!
     return req

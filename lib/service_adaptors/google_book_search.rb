@@ -52,7 +52,7 @@ class GoogleBookSearch < Service
   def get_viewability(request)
     bibkeys = get_bibkeys(request.referent)
     return nil if bibkeys.nil?
-    gbs_response = do_query(bibkeys)
+    gbs_response = do_query(bibkeys, request)
     return nil if gbs_response == 'gbscallback({});'
     
     cleaned_response = clean_response(gbs_response)
@@ -93,8 +93,8 @@ class GoogleBookSearch < Service
     return keys
   end
   
-  def do_query(bibkeys)
-    header = build_header()
+  def do_query(bibkeys, request)
+    header = build_headers(request)
     link = @url + bibkeys
     data = open(link, 'rb', header) 
     return Zlib::GzipReader.new(data).read
@@ -116,39 +116,40 @@ class GoogleBookSearch < Service
   end
   
   # We try to build a good header
-  # FIXME We probably ought to pass the rails_request down to here instead of
-  # using an instance variable, right? 
-  # (Actually, I think instance variable might be fine if you can figure out a 
-  # good way to get it set! Except for worried about threading/concurrency 
-  # issues. Hmm. Now I'm thinking we might not need the actual request at all, 
-  # we might be able to fake enough of it with static config. -JR )
-  def build_header()
-    #env = @rails_request.env
-    # FIXME temporary dummy env for testing until rails_request can be passed in
-    env = {
-      'HTTP_USER_AGENT'=>'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9) Gecko/2008061015 Firefox/3.0',
-      'HTTP_ACCEPT' =>'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      'HTTP_ACCEPT_LANGUAGE' =>'en-us,en;q=0.5',
-      'HTTP_ACCEPT_ENCODING'=>'gzip,deflate',
-      'HTTP_ACCEPT_CHARSET'=>'UTF-8,*',
-      # probably be best to leave off http_referer for now since it varies or is absent
-      #'HTTP_REFERER'=>'http://www.worldcat.org/oclc/222933&referer=brief_results', 
-      'REMOTE_ADDR'=>'127.0.0.1',
-      'HTTP_HOST'=>'localhost:3000'
-    }
+  # orig headers are the client's HTTP request headers, which we stored
+  # in the Request object.  We use them to make a good proxy request to
+  # google. 
+  def build_headers(request)
+
+    orig_env = request.http_env || {}
+
     header = {}
-    header["User-Agent"] = env['HTTP_USER_AGENT']
-    header['Accept'] = env['HTTP_ACCEPT']
-    header['Accept-Language'] = env['HTTP_ACCEPT_LANGUAGE']
-    header['Accept-Encoding'] = env['HTTP_ACCEPT_ENCODING']
-    header["Accept-Charset"] = env['HTTP_ACCEPT_CHARSET']
-    header["Referer"] = env['HTTP_REFERER'] if env['HTTP_REFERER']
-    # FIXME Are we certain these are the correct values for these headers?
-    header['X-Forwarded-For'] = env['REMOTE_ADDR']  #The IP address of the client.
-    header['X-Forwarded-Host'] = env['HTTP_HOST']  #The original host requested by the client in the Host HTTP request header.
-    header['X-Forwarded-Server'] = env['HTTP_HOST']  #The hostname of the proxy server
-    #    header[''] =
-    header
+
+    # Bunch of headers we proxy as-is from the original client request,
+    # supplying reasonable defaults. 
+    
+    header["User-Agent"] = orig_env['HTTP_USER_AGENT'] || 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9) Gecko/2008061015 Firefox/3.0'
+    header['Accept'] = orig_env['HTTP_ACCEPT'] || 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    header['Accept-Language'] = orig_env['HTTP_ACCEPT_LANGUAGE'] || 'en-us,en;q=0.5'
+    header['Accept-Encoding'] = orig_env['HTTP_ACCEPT_ENCODING'] || ''
+    header["Accept-Charset"] = orig_env['HTTP_ACCEPT_CHARSET'] || 'UTF-8,*'
+
+    # Set referrer to be, well, an Umlaut page, like the one we are
+    # currently generating would be best. That is, the resolve link. 
+    
+    header["Referer"] = "http://" + 
+      orig_env['HTTP_HOST'] +  orig_env['REQUEST_URI']
+
+    # Proxy X-Forwarded headers. 
+
+    # The original Client's ip, most important and honest. 
+    header['X-Forwarded-For'] = request.client_ip_addr
+    #Theoretically the original host requested by the client in the Host HTTP request header. We're disembling a bit. 
+    header['X-Forwarded-Host'] = 'books.google.com'
+    # The proxy server: That is, Umlaut, us. 
+    header['X-Forwarded-Server'] = orig_env['SERVER_NAME']  
+    
+    return header
   end
   
   # Since we have a callback as part of the response we need to remove it.

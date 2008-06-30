@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 25) do
+ActiveRecord::Schema.define(:version => 26) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -163,13 +163,14 @@ ActiveRecord::Schema.define(:version => 25) do
   add_index "relevant_sites", ["hostname"], :name => "rel_hostname"
 
   create_table "requests", :force => true do |t|
-    t.column "session_id",             :string,   :limit => 100, :default => "", :null => false
-    t.column "referent_id",            :integer,                 :default => 0,  :null => false
+    t.column "session_id",             :string,   :limit => 100,  :default => "", :null => false
+    t.column "referent_id",            :integer,                  :default => 0,  :null => false
     t.column "referrer_id",            :integer
-    t.column "created_at",             :datetime,                                :null => false
+    t.column "created_at",             :datetime,                                 :null => false
     t.column "client_ip_addr",         :string
     t.column "client_ip_is_simulated", :boolean
     t.column "contextobj_fingerprint", :string,   :limit => 32
+    t.column "http_env",               :string,   :limit => 2048
   end
 
   add_index "requests", ["referent_id", "referrer_id"], :name => "context_object_idx"
