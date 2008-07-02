@@ -142,8 +142,13 @@ class GoogleBookSearch < Service
 
     # Proxy X-Forwarded headers. 
 
-    # The original Client's ip, most important and honest. 
-    header['X-Forwarded-For'] = request.client_ip_addr
+    # The original Client's ip, most important and honest. Look for
+    # and add on to any existing x-forwarded-for, if neccesary, as per
+    # x-forwarded-for convention. 
+
+    header['X-Forwarded-For'] =  (orig_env['HTTP_X_FORWARDED_FOR']) ?
+       (orig_env['HTTP_X_FORWARDED_FOR'] + ', ' + request.client_ip_addr) :
+       request.client_ip_addr
     #Theoretically the original host requested by the client in the Host HTTP request header. We're disembling a bit. 
     header['X-Forwarded-Host'] = 'books.google.com'
     # The proxy server: That is, Umlaut, us. 
