@@ -31,7 +31,8 @@ global:
     - UlrichsLink
     - WorldCat
     - InternetArchive
-   #- GoogleBookSearch
+#    - GoogleBookSearch
+#    - MBooks
 #    - RequestToFixture
 #    - InternetArchiveScraper #deprecated
 #    - Pubmed

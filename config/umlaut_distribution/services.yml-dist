@@ -148,6 +148,12 @@ RequestToFixture:
   status: active
   file: /full/path/to/file/new_fixtures.yml
 
+MBooks:
+  name: MBooks
+  type: MBooks
+  priority: 3
+  status: active
+
 # Start institution specific services  
 Opac:
   name: GT Catalog
