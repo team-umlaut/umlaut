@@ -81,7 +81,6 @@ class MBooks < Service
     # because of the structure of the response we recurse through it to get
     # what we're after. OK, this is a bit of premature optimization since we
     # only have one response returned right now.
-    require 'pp'; pp resp
     resp['result'].each_value do |id_value|
       id_value.each do |hit|
         cleaned_response << hit['sdr'] unless hit['sdr'].nil?
