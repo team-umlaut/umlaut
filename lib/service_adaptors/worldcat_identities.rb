@@ -19,20 +19,6 @@
 #  we wanted to. If more of these are used they might warrant their own 
 #  service type and part of the page for better layout.
 
-
-# This is a way (probably not good) to force the service_adaptor to reload with 
-# each request.
-class ResolveController
-  def index
-    load RAILS_ROOT + "/lib/service_adaptors/worldcat_identities.rb"
-    load RAILS_ROOT + "/lib/service_adaptors/m_books.rb"
-    self.service_dispatch()
-      view = AppConfig.param("resolve_view", "resolve/index")
-      render :template => view
-  end    
-end
-
-
 class WorldcatIdentities < Service
   require 'open-uri' # SRU is too slow even though we use an SRU-like link
   require 'hpricot'
