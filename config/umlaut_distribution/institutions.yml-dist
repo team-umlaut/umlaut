@@ -33,6 +33,7 @@ global:
     - InternetArchive
 #    - GoogleBookSearch
 #    - MBooks
+#    - WorldCatIdentities
 #    - RequestToFixture
 #    - InternetArchiveScraper #deprecated
 #    - Pubmed

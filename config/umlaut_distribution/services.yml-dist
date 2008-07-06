@@ -151,8 +151,35 @@ RequestToFixture:
 MBooks:
   name: MBooks
   type: MBooks
-  priority: 3
+  priority: c
   status: active
+
+WorldCatIdentities:
+  name: WorldCatIdentities
+  type: WorldcatIdentities
+  priority: d
+  status: active
+  # the advice is to only activate a few of these to speed up the service
+  # always place them in an array on a single line or false to turn off all notes
+  #note_types: [work_count, holdings_count]
+  # All possible values for note_types: 
+  #   [work_count, publications_count, holdings_count, combined_counts 
+  #    roles, subject_headings, works, genres]
+  # Note_types can be turned off completely
+  #note_types: false
+  # to preserve space and speed things up you may specify the number of each
+  # note_type to show. Some authors like Mark Twain will fill the whole page 
+  # otherwise.
+  #num_of_roles = 3
+  #num_of_works = 1
+  # show a link to wikipedia?
+  #wikipedia_link: false
+  # show an openurl link to the most widely held work? default is true
+  #openurl_widely_held: false
+  # show a worldcat link to the most widely held work? default is false
+  #worldcat_most_widely_held: true
+  #if you want to use a different baseurl than umlaut set it here
+  #openurl_base: http://localhost:3000/resolve?
 
 # Start institution specific services  
 Opac:
