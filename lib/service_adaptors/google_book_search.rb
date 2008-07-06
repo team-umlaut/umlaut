@@ -49,7 +49,8 @@ class GoogleBookSearch < Service
     bibkeys = get_bibkeys(request.referent)
     return nil if bibkeys.nil?
     gbs_response = do_query(bibkeys, request)
-    return nil if gbs_response == 'gbscallback({});'
+    # sometimes we get a blank response back. why? dunno.
+    return nil if gbs_response.blank? or gbs_response == 'gbscallback({});'
     
     cleaned_response = clean_response(gbs_response)
     data = parse_response(cleaned_response)
@@ -93,7 +94,12 @@ class GoogleBookSearch < Service
     header = build_headers(request)
     link = @url + bibkeys
     data = open(link, 'rb', header) 
-    return Zlib::GzipReader.new(data).read
+    # for some reason sometimes gbs doesn't send gzipped data
+    begin
+      return Zlib::GzipReader.new(data).read
+    rescue
+      return data.read
+    end
   end
   
   # We try to build a good header
