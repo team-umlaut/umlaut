@@ -38,6 +38,7 @@ class MBooks < Service
     return nil if params.nil?
     mb_response = do_query(params)
     c_response = clean_response(mb_response)
+    return nil if c_response.nil?
     # FIXME once we can search for more than one identifier at a time we'll
     #   need to dedupe our resultset
     full_views_shown = create_fulltext_service_response(request, c_response)
@@ -82,6 +83,7 @@ class MBooks < Service
     # what we're after. OK, this is a bit of premature optimization since we
     # only have one response returned right now.
     resp['result'].each_value do |id_value|
+      return nil if id_value.nil?
       id_value.each do |hit|
         cleaned_response << hit['sdr'] unless hit['sdr'].nil?
       end
