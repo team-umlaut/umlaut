@@ -181,6 +181,12 @@ WorldCatIdentities:
   #if you want to use a different baseurl than umlaut set it here
   #openurl_base: http://localhost:3000/resolve?
 
+OpenLibrary:
+  name: OpenLibrary
+  type: OpenLibrary
+  priority: c
+  status: active
+
 # Start institution specific services  
 Opac:
   name: GT Catalog

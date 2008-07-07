@@ -25,6 +25,7 @@ class MBooks < Service
     @url = 'http://mirlyn.lib.umich.edu/cgi-bin/sdrsmd?'
     @display_name = 'MBooks'
     @num_full_views = 1
+    @note =  'Fulltext books from the University of Michigan'
     super(config)
   end
   
@@ -98,13 +99,12 @@ class MBooks < Service
     full_views = data.select{|d| d['rights'] == 'full'}
     return nil if full_views.empty?
     count = 0
-    note = @note || 'Fulltext books from the University of Michigan'
     full_views.each do |fv|
       request.add_service_response(
         {:service=>self, 
           :display_text=>display_name, 
           :url=>fv['mburl'], 
-          :notes=>note}, 
+          :notes=> @note}, 
         [ :fulltext ]) 
       count += 1
       break if count == @num_full_views
