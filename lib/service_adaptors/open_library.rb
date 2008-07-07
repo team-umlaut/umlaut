@@ -3,21 +3,6 @@
 # 
 #
 
-# FIXME remember to remove this!!!!!!!!!!!!
-# This is a way (probably not good) to force the service_adaptor to reload with 
-# each request.
-class ResolveController
-  def index
-    load RAILS_ROOT + "/lib/service_adaptors/worldcat_identities.rb"
-    load RAILS_ROOT + "/lib/service_adaptors/m_books.rb"
-    load RAILS_ROOT + "/lib/service_adaptors/open_library.rb"
-    self.service_dispatch()
-      view = AppConfig.param("resolve_view", "resolve/index")
-      render :template => view
-  end    
-end
-
-
 class OpenLibrary < Service
   require 'open-uri'
   require 'json'
@@ -152,9 +137,9 @@ class OpenLibrary < Service
       url = @fulltext_base_url + '/' +ed['ocaid']
       request.add_service_response(
         {:service=>self, 
-          :display_text=>title, 
+          :display_text=>@display_name, 
           :url=>url, 
-          :notes=>"note"}, 
+          :notes=>title}, 
         [ :fulltext ]) 
       
       count += 1
@@ -208,6 +193,7 @@ class OpenLibrary < Service
   
   def add_cover_image(request, editions)
     cover_image = find_coverimages(editions)
+    return nil if cover_image.blank?
     #FIXME need to add other sizes
     #FIXME correct @urls and use one of those
     url = "http://openlibrary.org" + cover_image
