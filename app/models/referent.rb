@@ -385,7 +385,7 @@ class Referent < ActiveRecord::Base
     genre = nil if genre =~ /^unknown$/i
     genre ||= "resource"
 
-    genre = "Book Section" if genre =~ /^bookitem$/i
+    genre = "book section" if genre =~ /^bookitem$/i
 
     return genre
   end
