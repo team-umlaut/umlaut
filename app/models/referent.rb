@@ -91,7 +91,7 @@ class Referent < ActiveRecord::Base
   # Does call save! on referent created.
   # :permalink => false if you already have a permalink and don't
   # need to create one. Caller should attach that permalink to this referent!
-  def self.create_by_context_object(co, options = {})
+  def self.create_by_context_object(co, options = {})    
     
     self.clean_up_context_object(co)    
     rft = Referent.new
@@ -384,6 +384,8 @@ class Referent < ActiveRecord::Base
     genre = self.metadata["genre"]
     genre = nil if genre =~ /unknown/i
     genre ||= "resource"
+
+    genre = "Book Section" if genre =! /bookitem/i
 
     return genre
   end
