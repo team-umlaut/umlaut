@@ -382,10 +382,10 @@ class Referent < ActiveRecord::Base
 
   def type_of_thing
     genre = self.metadata["genre"]
-    genre = nil if genre =~ /unknown/i
+    genre = nil if genre =~ /^unknown$/i
     genre ||= "resource"
 
-    genre = "Book Section" if genre =! /bookitem/i
+    genre = "Book Section" if genre =~ /^bookitem$/i
 
     return genre
   end
