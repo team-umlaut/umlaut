@@ -54,6 +54,7 @@ class WorldcatIdentities < Service
   
   def handle(request)
     index, query = define_query(request.referent)
+    
     unless query.blank?
       do_query(request, index, query)
     end
@@ -63,7 +64,7 @@ class WorldcatIdentities < Service
   def define_query(rft)
     oclcnum = get_identifier(:info, "oclcnum", rft)
     metadata = rft.metadata
-
+    
     # Do we have enough info to do a query with sufficient precision?
     # We are choosing better recall in exchange for lower precision. 
     # We'll search with oclcnum if we have it, but not require it, we'll search
@@ -98,10 +99,17 @@ class WorldcatIdentities < Service
       index = 'CorporateIdentities'
       name_part = 'Name'
       name = clean_name(metadata['aucorp'])
+    else
+      # oclcnum but no author information at all! Might still work...
+      index = "Identities"
     end
+
+    query_conditions = []
+    query_conditions << "local.#{name_part}+#{name_operator}+%22#{name}%22" if name    
+    query_conditions << "local.OCLCNumber+%3D+%22#{oclcnum}%22" unless oclcnum.blank?
+
+    query = query_conditions.join("+and+")
     
-    query = "local.#{name_part}+#{name_operator}+%22#{name}%22"
-    query += "+and+local.OCLCNumber+%3D+%22#{oclcnum}%22" unless oclcnum.blank?
     # Sort keys is important when we don't have an oclcnumber, and doesn't hurt
     # when we do. 
     query += "&sortKeys=holdingscount"
