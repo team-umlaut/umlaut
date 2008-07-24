@@ -146,7 +146,10 @@ class Amazon < Service
         request.referent.enhance_referent('btitle', title.inner_html)
       end
     end
-    unless (request.referent.metadata['au'] || request.referent.metadata["aulast"])
+    # Enhance with full author name string even if aulast is already
+    # present, becuase full string may be useful for worldcat identities
+    # and others. 
+    unless (request.referent.metadata['au'])
       if author = (item_attributes.at("/author"))
         request.referent.enhance_referent('au', author.inner_html)
       end
