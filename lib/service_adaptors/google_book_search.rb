@@ -203,19 +203,14 @@ class GoogleBookSearch < Service
     if iv['preview'] == 'partial'
       url = iv['preview_url']      
       display_text = "Limited Preview"
-       # FIXME just for debugging
-       notes = iv['bib_key']
     else
       url = iv['info_url']
       display_text = "Book Information"
-      # FIXME just for debugging
-      notes = iv['bib_key']      
     end
     request.add_service_response( { 
         :service=>self,    
         :url=>url,
-        :display_text=>display_text,
-        :service_data => {:notes => notes}},
+        :display_text=>display_text},
       [ServiceTypeValue[:highlighted_link]]    )    
   end
   
