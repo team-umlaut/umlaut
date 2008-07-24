@@ -153,6 +153,10 @@ MBooks:
   type: MBooks
   priority: c
   status: active
+# MBooks is expected to be a lower priority than Google Books, and
+# only be shown if no GBS fulltext exists. If you want to check MBooks
+# even if GBS fulltext does exist:
+#suppress_if_gbs_fulltext: false
 
   # WorldcatIdentities is best prioritized after metadata-enhancing
   # services like Amazon or your catalog, to get full advantage

@@ -1,5 +1,11 @@
 # Service that searches MBooks from the University of Michigan
-# Currently limited since it only searches by OCLCnum 
+# Currently limited since it only searches by OCLCnum
+#
+# Most MBooks will also be in Google Books (but not neccesarily vice versa).
+# However, U of M was more generous in deciding what books are public domain.
+# Therefore the main expected use case is to use with Google Books, with
+# MBooks being a lower priority, and suppress_if_gbs_fulltext set to true. 
+#
 # 
 # Two possibilities are available for sdr rights "full" or "searchonly".
 # The third possibility is that sdr will be null.
@@ -12,24 +18,38 @@ class MBooks < Service
   require 'json'
   include MetadataHelper
   
-  attr_reader :url, :display_name, :note
+  attr_reader :url, :display_name, :note, :suppress_if_gbs_fulltext
   
   # FIXME add search_inside later, which ought to be _very_ easy to do with MBooks
   def service_types_generated
-    return[ 
-      ServiceTypeValue[:fulltext],
-      ServiceTypeValue[:highlighted_link]  ]
+    types = [ ServiceTypeValue[:fulltext] ]
+    types << ServiceTypeValue[:highlighted_link] if @show_search_inside
+
+    return types
   end
   
   def initialize(config)
     @url = 'http://mirlyn.lib.umich.edu/cgi-bin/sdrsmd?'
-    @display_name = 'MBooks'
+    @display_name = 'University of Michigan MBooks'
     @num_full_views = 1
-    @note =  'Fulltext books from the University of Michigan'
+    @note =  '' #'Fulltext books from the University of Michigan'
+    @show_search_inside = false
+    @suppress_if_gbs_fulltext = true
     super(config)
   end
   
   def handle(request)
+    
+    
+    
+    if ( @suppress_if_gbs_fulltext &&
+         request.get_service_type("fulltext").find {|st|  st.service_response.service.class == GoogleBookSearch}   )
+         
+         RAILS_DEFAULT_LOGGER.debug("MBooks service: Aborting since GBS response already present")
+
+         return request.dispatched(self, true)
+    end
+    
     get_viewability(request)
     return request.dispatched(self, true)
   end
@@ -111,12 +131,13 @@ class MBooks < Service
     end   
     return true
   end
+
   
   # other than full view MBooks only provides searchonly
   # FIXME until search inside is integrated into trunk create a link for this
   def do_web_links(request, data)
     search_views = data.select{|d| d['rights'] == 'searchonly'}
-    return nil if search_views.blank?
+    return nil if search_views.blank? or not @show_search_inside
     
     search_view = search_views.first
     url = search_view['mburl']
