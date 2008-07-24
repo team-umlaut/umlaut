@@ -1,6 +1,9 @@
 # Service that uses available metadata to try to find an exact match to a 
-# WorldCat Identity. Currently only searches if there is an oclcnum and either
-# an aulast or aucorp
+# WorldCat Identity. 
+#
+# Requires sufficient author information and/or an oclcnumber to have enough
+# info to try and find a match. Best to run AFTER services that may enhance
+# metadata with this info (such as Amazon). 
 # 
 # See: http://outgoing.typepad.com/outgoing/2008/06/linking-to-worl.html
 # 
@@ -25,6 +28,7 @@ class WorldcatIdentities < Service
   include MetadataHelper
   
   attr_reader :url, :note_types, :display_name, :wikipedia_link, :openurl_base,
+    :require_identifier,
     # below starts the note_types which can be restrained
     :num_of_roles, :num_of_subject_headings, :num_of_works, :num_of_genres
   
@@ -36,6 +40,7 @@ class WorldcatIdentities < Service
     @url = 'http://worldcat.org/identities/search/'
     @note_types = ["combined_counts"]
     @display_name = "WorldCat Identities"
+    @require_identifier = false
     # any plural note_types can be restrained 
     @num_of_roles = 5
     @num_of_works = 1
@@ -43,8 +48,7 @@ class WorldcatIdentities < Service
     @wikipedia_link = true
     @openurl_widely_held = true
     @worldcat_widely_held = false
-    # FIXME This is definitely _wrong_ but where should we get the url from?
-    @openurl_base  = 'http://localhost:3000/resolve?'
+    @openurl_base  = '/resolve'
     super(config)
   end
   
@@ -56,23 +60,51 @@ class WorldcatIdentities < Service
     return request.dispatched(self, true)    
   end
   
-  def define_query(rft)    
+  def define_query(rft)
     oclcnum = get_identifier(:info, "oclcnum", rft)
     metadata = rft.metadata
-    # This only seems to work exactly if we have both oclcnum and aulast
-    return nil unless oclcnum and (metadata['aulast'] or metadata['aucorp'])
+
+    # Do we have enough info to do a query with sufficient precision?
+    # We are choosing better recall in exchange for lower precision. 
+    # We'll search with oclcnum if we have it, but not require it, we'll search
+    # fuzzily on various parts of the name if neccesary.
+    if ( oclcnum.blank? && ( metadata['aulast'].blank? || metadata['aufirst'].blank? ) && metadata['au'].blank? && metadata['aucorp'].blank?  ) or (oclcnum.blank? && @require_identifier) 
+      RAILS_DEFAULT_LOGGER.debug("Worldcat Identities Service Adaptor: Skipped: Insufficient metadata for lookup")      
+      return nil
+    end
+    
     
     # instead of searching across all indexes we target the one we want
-    if metadata['aulast'] and !metadata['aulast'].empty?
+    name_operator = "%3D"
+    if ((! metadata['aulast'].blank?) && oclcnum)
+      # Just last name is enough, we have an oclcnum.       
       index = 'PersonalIdentities'
       name_part = 'FamilyName'
       name = clean_name(metadata['aulast'])
+    elsif (! metadata['au'].blank? )
+      # Next choice, undivided author string
+      index = "PersonalIdentities"
+      name_part = 'Name'
+      name = clean_name(metadata['au'])
+      name_operator = "all"
+    elsif (not metadata['aulast'].blank? and not metadata['aufirst'].blank?)
+      # combine them.
+      index = "PersonalIdentities"
+      name_part = 'Name'
+      name = clean_name(metadata['aufirst'] + ' ' + metadata['aulast'])
+      name_operator = "all"
     elsif metadata['aucorp']
+      # corp name
       index = 'CorporateIdentities'
       name_part = 'Name'
       name = clean_name(metadata['aucorp'])
-    end 
-    query = "local.#{name_part}+%3D+%22#{name}%22+and+local.OCLCNumber+%3D+%22#{oclcnum}%22"
+    end
+    
+    query = "local.#{name_part}+#{name_operator}+%22#{name}%22"
+    query += "+and+local.OCLCNumber+%3D+%22#{oclcnum}%22" unless oclcnum.blank?
+    # Sort keys is important when we don't have an oclcnumber, and doesn't hurt
+    # when we do. 
+    query += "&sortKeys=holdingscount"
     return index, query 
   end
   
@@ -86,6 +118,7 @@ class WorldcatIdentities < Service
     # since we're only doing exact matching with last name and OCLCnum
     # we only request 1 record to hopefully speed things up.
     link = @url + index + '?query=' +query + "&maximumRecords=1"
+    
     result = open(link).read
     xml = Hpricot.XML(result)
     return nil if (xml/"numberOfRecords").inner_text == '0'
@@ -96,7 +129,7 @@ class WorldcatIdentities < Service
   end
   
   def create_link(request, xml)
-    display_name = extract_display_name(xml)
+    display_name = "About " + extract_display_name(xml)
     extracted_notes = extract_notes(xml) if @note_types
     url = extract_url(xml)
     create_service_response(request, display_name, url, extracted_notes )
@@ -219,8 +252,8 @@ class WorldcatIdentities < Service
     request.add_service_response( { 
         :service=>self,    
         :url=>link,
-        :display_text=> name.gsub('_',' ') << ' in Wikipedia',
-        :service_data => {:notes => ''}},
+        :display_text=> "About " + name.titlecase,
+        :service_data => {:notes => '', :source => 'Wikipedia' }},
       [ServiceTypeValue[:highlighted_link]]    )
   end
   
@@ -260,7 +293,7 @@ class WorldcatIdentities < Service
     cor.set_metadata('aufirst', metadata['aufirst']) if metadata['aufirst']
     cor.set_metadata('aucorp', metadata['aucorp']) if metadata['aucorp']
     cor.set_metadata('title', wh['title'])
-    link = @openurl_base + co.kev
+    link = @openurl_base + '?' + co.kev
     return link
   end
   

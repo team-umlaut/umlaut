@@ -154,6 +154,9 @@ MBooks:
   priority: c
   status: active
 
+  # WorldcatIdentities is best prioritized after metadata-enhancing
+  # services like Amazon or your catalog, to get full advantage
+  # of metadata. 
 WorldCatIdentities:
   name: WorldCatIdentities
   type: WorldcatIdentities
@@ -172,6 +175,11 @@ WorldCatIdentities:
   # otherwise.
   #num_of_roles = 3
   #num_of_works = 1
+  # Requests to Identities can include an OCLC bib number of the author.
+  # We seldom have that, but without that, precision goes way down. If you
+  # want to not make an Identities attempt without OCLC num (or other
+  # to-be-added identifier), set to true:
+  #require_identifier: true
   # show a link to wikipedia?
   #wikipedia_link: false
   # show an openurl link to the most widely held work? default is true
