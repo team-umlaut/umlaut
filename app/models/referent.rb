@@ -146,13 +146,13 @@ class Referent < ActiveRecord::Base
       end      
     end
 
-    # Clean up OCLC numbers from old bad formats that may have snuck in to an info url incorrectly.
+    # Clean up OCLC numbers from old bad formats that may have snuck in to an info url incorrectly. # also delete preceding 0's
     oclcnum_ids = co.referent.identifiers.find_all { |i| i =~ /^info:oclcnum/}
     oclcnum_ids.each do |oclcnum_id|
       # FIXME Does this regex need "ocn" as well?
-      if (oclcnum_id =~ /^info:oclcnum\/(ocm0*|\(OCoLC\)|ocl70*)(.*)$/)
+      if (oclcnum_id =~ /^info:oclcnum\/(ocm0*|\(OCoLC\)|ocl70*|0+)(.*)$/)
         # Delete the original, take out just the actual oclcnum, not
-        # those old prefixes.
+        # those old prefixes. or preceding 0s.
         co.referent.delete_identifier( oclcnum_id )
         co.referent.add_identifier("info:oclcnum/#{$2}")
       end
