@@ -29,7 +29,6 @@ class Request < ActiveRecord::Base
     
     # Create a context object from our http params
     context_object = OpenURL::ContextObject.new_from_form_vars( co_params )
-    
     # Sometimes umlaut puts in a 'umlaut.request_id' parameter.
     # first look by that, if we have it, for an existing request.  
     request_id = params['umlaut.request_id']
@@ -371,8 +370,10 @@ class Request < ActiveRecord::Base
     req.client_ip_addr = params['req.ip'] || a_rails_request.remote_ip()
     req.client_ip_is_simulated = true if req.client_ip_addr != a_rails_request.remote_ip()
 
-    # Save http headers
-    req.http_env = a_rails_request.env
+    # Save selected http headers, keep some out to avoid being too long to
+    # serialize. 
+    req.http_env = {}
+    a_rails_request.env.each {|k, v| req.http_env[k] = v if ((k.slice(0,5) == 'HTTP_' && k != 'HTTP_COOKIE') || k == 'REQUEST_URI' || k == 'SERVER_NAME') }
     
     req.save!
     return req
