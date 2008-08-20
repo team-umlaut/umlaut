@@ -57,18 +57,6 @@ Rails::Initializer.run do |config|
     # need to use AppConfig weird because of that. 
     AppConfig::Base.referent_filters = {/.*/, DissertationCatch.new  }
 
-    # Call local config file. In after initialize for convenience
-    # and ability to override defaults
-    local_env_path = "#{RAILS_ROOT}/config/umlaut_config/environment.rb"
-    if File.exists?( local_env_path )
-      load local_env_path 
-      umlaut_configuration( config )
-    end
-  
-    # Some more defaults based on what they may have already set
-    config.app_config.opensearch_short_name = "Find Journals with #{config.app_config.app_name}"
-    config.app_config.opensearch_description = "Search #{config.app_config.app_name} for journal names containing your term."
-    
   end
 
   $KCODE = 'UTF8'
@@ -211,6 +199,17 @@ Rails::Initializer.run do |config|
        /www\.ipap\.jp/
       ]
 
+  
+  # Call local config file
+  local_env_path = "#{RAILS_ROOT}/config/umlaut_config/environment.rb"
+  if File.exists?( local_env_path )
+    load local_env_path 
+    umlaut_configuration( config )
+  end
+
+  # Some more defaults based on what they may have already set
+  config.app_config.opensearch_short_name = "Find Journals with #{config.app_config.app_name}"
+  config.app_config.opensearch_description = "Search #{config.app_config.app_name} for journal names containing your term."
 end
 
 # Fix up Rails really annoying logging with our own monkey patching.
