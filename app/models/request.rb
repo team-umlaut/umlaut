@@ -61,7 +61,7 @@ class Request < ActiveRecord::Base
     # Okay, if we found a req, it might NOT have a referent, it might
     # have been purged. If so, create a new one.
     if ( req && ! req.referent )
-      req.referent = Referent.find_or_create_by_context_object(context_object)
+      req.referent = Referent.find_or_create_by_context_object(context_object, req.referrer)
     end
 
     unless (req)
@@ -346,14 +346,16 @@ class Request < ActiveRecord::Base
     if ( params['umlaut.referent_id'])
        rft = Referent.find(:first, :conditions => {:id => params['umlaut.referent_id']})
     end
-    # No id given, or no object found? Create it. 
-    unless (rft )
-      rft = Referent.find_or_create_by_context_object(context_object)
-    end
+
 
     # Find or create a referrer, if we have a referrer in our OpenURL
     rfr = nil
     rfr = Referrer.find_or_create_by_identifier(context_object.referrer.identifier) unless context_object.referrer.empty? || context_object.referrer.identifier.empty?
+
+    # No id given, or no object found? Create it. 
+    unless (rft )
+      rft = Referent.find_or_create_by_context_object(context_object, rfr)
+    end
 
     # Create the Request
     req = Request.new

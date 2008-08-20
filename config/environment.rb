@@ -33,7 +33,6 @@ Rails::Initializer.run do |config|
   # See http://toolmantim.com/article/2006/12/27/environments_and_the_rails_initialisation_process  
   config.after_initialize do
     # And to keep db password from showing up in log, we need to trick the logger. Weird, sorry.
-
     orig_logger = ActiveRecord::Base.logger 
     ActiveRecord::Base.logger = nil
 
@@ -50,6 +49,26 @@ Rails::Initializer.run do |config|
       # this, oh well.
       RAILS_DEFAULT_LOGGER.warn("Couldn't check institutions and service_type_values for syncing: #{e}")
     end
+
+    # Referent filters. Sort of like SFX source parsers.
+    # hash, key is regexp to match a sid, value is filter object
+    # (see lib/referent_filters )
+    # We are in after_initialize block to take advantage of reset load path.
+    # need to use AppConfig weird because of that. 
+    AppConfig::Base.referent_filters = {/.*/, DissertationCatch.new  }
+
+    # Call local config file. In after initialize for convenience
+    # and ability to override defaults
+    local_env_path = "#{RAILS_ROOT}/config/umlaut_config/environment.rb"
+    if File.exists?( local_env_path )
+      load local_env_path 
+      umlaut_configuration( config )
+    end
+  
+    # Some more defaults based on what they may have already set
+    config.app_config.opensearch_short_name = "Find Journals with #{config.app_config.app_name}"
+    config.app_config.opensearch_description = "Search #{config.app_config.app_name} for journal names containing your term."
+    
   end
 
   $KCODE = 'UTF8'
@@ -63,8 +82,10 @@ Rails::Initializer.run do |config|
   # config.plugins = %W( exception_notification ssl_requirement )
 
   # Add additional load paths for your own custom dirs
-  # config.load_paths += %W( #{RAILS_ROOT}/extras )
+  # Umlaut does. 
+  config.load_paths += %W( #{RAILS_ROOT}/lib/referent_filters )
 
+  
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
@@ -138,6 +159,9 @@ Rails::Initializer.run do |config|
   config.app_config.rfr_ids[:citation] = "info:sid/umlaut.code4lib.org:citation"
   config.app_config.rfr_ids[:azlist] = 'info:sid/umlaut.code4lib.org:azlist'
 
+
+
+  
   # SFX Targets and other urls that we know have a problem with
   # being put in a frameset, and exclude from direct linking
   # in frameset. Some escape the frameset with javascript,
@@ -187,17 +211,6 @@ Rails::Initializer.run do |config|
        /www\.ipap\.jp/
       ]
 
-  
-  # Call local config file
-  local_env_path = "#{RAILS_ROOT}/config/umlaut_config/environment.rb"
-  if File.exists?( local_env_path )
-    load local_env_path 
-    umlaut_configuration( config )
-  end
-
-  # Some more defaults based on what they may have already set
-  config.app_config.opensearch_short_name = "Find Journals with #{config.app_config.app_name}"
-  config.app_config.opensearch_description = "Search #{config.app_config.app_name} for journal names containing your term."
 end
 
 # Fix up Rails really annoying logging with our own monkey patching.

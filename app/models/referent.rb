@@ -74,8 +74,9 @@ class Referent < ActiveRecord::Base
   # When provided an OpenURL::ContextObject, it will return a Referent object
   # (creating one if doesn't already exist)  . At least that's the idea.
   # But see caveats at #find_by_context_object . Most of the time
-  # this ends up creating a new Referent. 
-  def self.find_or_create_by_context_object(co)
+  # this ends up creating a new Referent.
+  # pass in referrer for source-specific referent munging. 
+  def self.find_or_create_by_context_object(co, referrer)
     # Okay, we need to do some pre-processing on weird context objects
     # sent by, for example, firstSearch.
     self.clean_up_context_object(co)
@@ -83,7 +84,7 @@ class Referent < ActiveRecord::Base
     if rft = Referent.find_by_context_object(co) 
       return rft
     else
-      rft = Referent.create_by_context_object(co)
+      rft = Referent.create_by_context_object(co, referrer)
       return rft
     end
   end
@@ -91,7 +92,7 @@ class Referent < ActiveRecord::Base
   # Does call save! on referent created.
   # :permalink => false if you already have a permalink and don't
   # need to create one. Caller should attach that permalink to this referent!
-  def self.create_by_context_object(co, options = {})    
+  def self.create_by_context_object(co, referrer, options = {})    
     
     self.clean_up_context_object(co)    
     rft = Referent.new
@@ -117,12 +118,24 @@ class Referent < ActiveRecord::Base
         rft.year = val.normalized_value if val.key_name == 'date' and val.metadata?
       end
       rft.save!
+
+      # Apply referent filters
+      rfr_id = referrer ? referrer.identifier : ''
+      rfr_id = '' if rfr_id.nil?
+      AppConfig.param("referent_filters").each do |regexp, filter|
+        if (regexp =~ rfr_id)
+          filter.filter(rft) if filter.respond_to?(:filter)
+        end
+      end      
     end
     return rft          
   end
 
   # Okay, we need to do some pre-processing on weird context objects
   # sent by, for example, firstSearch. Remove invalid identifiers.
+  # Also will adjust context objects according to configured
+  # umlaut refernet filters (see config.app_config.referent_filters in
+  # environment.rb )
   # Mutator: Modifies ContextObject arg passed in. 
   def self.clean_up_context_object(co)
     # First, remove any empty DOIs! or other empty identifiers?
@@ -158,6 +171,8 @@ class Referent < ActiveRecord::Base
       end
     end
 
+
+    
     
   end
 
@@ -388,6 +403,12 @@ class Referent < ActiveRecord::Base
     genre = "book section" if genre =~ /^bookitem$/i
 
     return genre
+  end
+
+  def remove_value(key)
+    referent_values.find(:all, :conditions=> ['key_name =?', key]).each do |rv|
+      rv.destroy
+    end    
   end
   
   def enhance_referent(key, value, metadata=true, private_data=false)

@@ -39,7 +39,9 @@ class StoreController < ApplicationController
     
     # We intentionally do not preserve original referrer sid
     # in the permalink. But let's add our own, to avoid confusion
-    # over why the sid is missing in SFX statistics etc. 
+    # over why the sid is missing in SFX statistics etc.
+    # This actually potentially creates problems as we won't trigger
+    # the potentially appropriate custom SFX source parser. Hm. 
     co.referrer.add_identifier('info:sid/umlaut.code4lib.org:permalink')
 
     # Let's add any supplementary umlaut params passed to us
