@@ -105,7 +105,7 @@ class Referent < ActiveRecord::Base
       rft.set_values_from_context_object(co)
 
       unless ( options[:permalink] == false)
-        permalink = Permalink.new_with_referent!(rft)            
+        permalink = Permalink.new_with_values!(rft, referrer)            
       end
   
       # Add shortcuts.

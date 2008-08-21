@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 26) do
+ActiveRecord::Schema.define(:version => 27) do
 
   create_table "categories", :force => true do |t|
     t.column "category",    :string, :limit => 100, :default => "", :null => false
@@ -112,9 +112,10 @@ ActiveRecord::Schema.define(:version => 26) do
   add_index "keywords", ["term", "keyword_type"], :name => "kwd_term_idx"
 
   create_table "permalinks", :force => true do |t|
-    t.column "referent_id",            :integer, :default => 0
-    t.column "created_on",             :date,                   :null => false
+    t.column "referent_id",            :integer,                :default => 0
+    t.column "created_on",             :date,                                  :null => false
     t.column "context_obj_serialized", :text
+    t.column "orig_rfr_id",            :string,  :limit => 256
   end
 
   add_index "permalinks", ["referent_id"], :name => "plink_referent_idx"

@@ -5,12 +5,15 @@
 class Permalink < ActiveRecord::Base
   belongs_to :referent
 
-  # You should create Permalinks with this. Pass in a referent. Will save
-  # permalink to db, and create a ReferentValue for an identifier with
-  # tag-uri based on the permalink. 
-  def self.new_with_referent!(rft)
+  # You should create Permalinks with this. Pass in a referent and referrer
+  #. Will save  permalink to db, and create a ReferentValue for an identifier 
+  # with tag-uri based on the permalink. 
+  def self.new_with_values!(rft, rfr)
     permalink = Permalink.new
+    
     permalink.referent = rft
+
+    permalink.orig_rfr_id = rfr.identifier if rfr
     
     permalink.context_obj_serialized = permalink.referent.to_context_object.xml
 

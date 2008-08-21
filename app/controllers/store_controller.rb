@@ -37,12 +37,10 @@ class StoreController < ApplicationController
     # turn it back to a co so we can add a few more things. 
     co.import_context_object(referent.to_context_object)
     
-    # We intentionally do not preserve original referrer sid
-    # in the permalink. But let's add our own, to avoid confusion
-    # over why the sid is missing in SFX statistics etc.
-    # This actually potentially creates problems as we won't trigger
-    # the potentially appropriate custom SFX source parser. Hm. 
-    co.referrer.add_identifier('info:sid/umlaut.code4lib.org:permalink')
+    # We preserve original referrer. Even though this isn't entirely accurate
+    # this is neccesary to get SFX to handle it properly when we call to SFX,
+    # including handling source-specific private data, etc. 
+    co.referrer.add_identifier( perm.orig_rfr_id )
 
     # Let's add any supplementary umlaut params passed to us
     # Everything except the 'id' which we used for the Rails action. 

@@ -54,7 +54,8 @@ Rails::Initializer.run do |config|
     # hash, key is regexp to match a sid, value is filter object
     # (see lib/referent_filters )
     # We are in after_initialize block to take advantage of reset load path.
-    # need to use AppConfig weird because of that. 
+    # need to use AppConfig weird because of that.
+    # Makes it hard to override in local config, oh well for now. 
     AppConfig::Base.referent_filters = {/.*/, DissertationCatch.new  }
 
   end
