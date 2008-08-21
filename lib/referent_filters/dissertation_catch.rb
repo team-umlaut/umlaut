@@ -9,6 +9,9 @@ class DissertationCatch < ReferentFilter
   # it to a dissertation citation. 
   def filter(referent)
     issn = get_identifier(:urn, "issn", referent)
+
+    return unless issn
+    
     # normalize removing hyphen
     issn.gsub!('-', '')
     
