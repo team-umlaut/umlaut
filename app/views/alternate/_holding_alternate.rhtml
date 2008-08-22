@@ -30,12 +30,20 @@ holdings.each do |p|
   target = p.view_data
 %>
   <tr><td class="holding_heading_row"><h4><%= target[:collection_str] %></h4></td>
-      <td class="holding_heading_row"><span style="white-space: nowrap;"><%= link_to (target[:call_number] || 'full info'), {:controller=>"link_router", :id=>p.id}, "target"=>"_blank" %> </span></td>
+      <td class="holding_heading_row"><span style="white-space: nowrap;"><%= target[:call_number]%></span></td>
       
       <% status_class = (target[:status] == "Not Charged" or target[:status] == "Available") ? 'available' : '' %> 
       
-      <td class="holding_heading_row"><span style="white-space: nowrap;"><%= target[:copy_str] %></span></td>
       <td class="holding_heading_row"><span class="<%= status_class %>"><%= target[:status]   %></span></td>
+      
+      <td class="holding_heading_row"><%= link_to('more info', {:controller=>"link_router", :id=>p.id}, "target" => "_blank") %>
+      
+      <% if target[:request_url] %>
+        <br />       
+        <%= link_to( image_tag("request.gif", "border" => "0"),  target[:request_url], "target" => "_blank" ) %>      
+      <% end %>
+      
+      </td>
   </tr>    
 
   <% unless target[:notes].blank? %>
