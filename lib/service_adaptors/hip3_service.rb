@@ -92,7 +92,8 @@ class Hip3Service < Service
     #about the aggregated list of copies.
     holdings = bib_array.collect { |bib| bib.holdings }.flatten
     holdings.each do |holding|
-      
+
+    
       next if holding.dummy?
 
       url = holding.bib.http_url
@@ -108,6 +109,12 @@ class Hip3Service < Service
       service_data[:coverage_str_array] = holding.coverage_str_to_a 
       service_data[:notes] = holding.notes
       service_data[:url] = url
+      # If it's not a serial copy, we can add a direct request url.
+      unless ( holding.kind_of?(Hip3::SerialCopy))
+        service_data[:request_url] = self.base_path + "?profile=general&menu=request&aspect=none&bibkey=#{holding.bib.bibNum}&itemkey=#{holding.id}"
+
+
+      end
       
       display_text = ""
       #display_text << (holding.location_str + ' ')unless holding.location_str.nil?
