@@ -34,7 +34,7 @@
 
 <% # only display if there are more! 
  if service_types_in_progress?(svc_types) %>
-  <div id="<%= div_id %>">
+  <div id="<%= div_id %>" class="spinner" style="line-height: 1.5em;">
     <% unless @force_bg_progress_spinner %>
       <%= current_set_empty ? "" : "More " %><%= svc_types[0].display_name_pluralize %> may be available. 
       <%= link_to "Load #{current_set_empty ? "" : "complete "}#{svc_types[0].display_name_pluralize}", {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %> 
@@ -42,7 +42,7 @@
     <% if @force_bg_progress_spinner %>
       <%= 
       image_tag('spinner.gif') %>
-      Searching for <%= (current_set_empty ? "" : "more ") + svc_types[0].display_name_pluralize %>
+      <span id="foo">Searching for <%= (current_set_empty ? "" : "more ") + svc_types[0].display_name_pluralize %></span>
     <% end %>
   </div>
 
