@@ -56,8 +56,15 @@ Rails::Initializer.run do |config|
     # We are in after_initialize block to take advantage of reset load path.
     # need to use AppConfig weird because of that.
     # Makes it hard to override in local config, oh well for now. 
-    AppConfig::Base.referent_filters = {/.*/, DissertationCatch.new  }
+    AppConfig::Base.referent_filters = {/.*/ => DissertationCatch.new  }
 
+    # Call local after_initialize, if it exists      
+    local_env_path = "#{RAILS_ROOT}/config/umlaut_config/environment.rb"
+    if File.exists?( local_env_path )
+      def umlaut_after_initialize ; end
+      load local_env_path      
+      umlaut_after_initialize()
+    end
   end
 
   $KCODE = 'UTF8'

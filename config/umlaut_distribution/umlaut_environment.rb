@@ -152,4 +152,9 @@ def umlaut_configuration(config)
     
 end
 
+# Local init you want called in the after_initialize block. 
+def umlaut_after_initialize
+
+end
+
 
