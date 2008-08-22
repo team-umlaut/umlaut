@@ -33,14 +33,14 @@
       
       refresh_seconds = jsonData.partial_html_sections.in_progress.requested_wait_seconds;
     
-      refresh_url = umlaut_base + refresh_path + "&umlaut.response_format=jsonp&umlaut.jsonp_callback=umlaut_partial_load_callback";
+      refresh_url = umlaut_host + refresh_path + "&umlaut.response_format=jsonp&umlaut.jsonp_callback=umlaut_partial_load_callback";
       
       window.setTimeout( "load_jsonp_url('" + refresh_url + "')", 4000 );
     }
   }
 
   
-  request = umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=jsonp&umlaut.jsonp=umlaut_partial_load_callback&' + umlaut_openurl_kev_co;
+  request = umlaut_host + umlaut_base_path + '/resolve/partial_html_sections?umlaut.response_format=jsonp&umlaut.jsonp=umlaut_partial_load_callback&' + umlaut_openurl_kev_co;
   
   load_jsonp_url( request );
   

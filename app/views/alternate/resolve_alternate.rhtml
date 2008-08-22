@@ -1,4 +1,4 @@
-         
+
 <%= render :partial=>'background_updater' %>
          
 <div id="bothColumns"> <!-- actual wrapper for both columns -->
@@ -7,7 +7,22 @@
 
   <h1>Finding <%=@user_request.referent.type_of_thing.pluralize.titlecase %></h1>
   <div class="resourceInfo">
-    <%= render :partial=>'citation' %>
+    <table width="100%" cellpadding="3" cellspacing="0">
+      <tr>
+        <td>      
+          <%= render :partial=>'citation' %>          
+          <div id="search_inside_wrapper">
+            <%= render(:partial => "search_inside") %>
+          </div>
+        </td>
+        
+        <td align='right'>
+          <div id="cover_image">
+            <%= render(:partial => "cover_image") %>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>  
   
   <div class="availability">
@@ -20,6 +35,7 @@
       <%= render(:partial => "audio") %>
     </div>
   
+
 
     <% docdels = get_service_type('document_delivery')
        if (display_ill?) && (! docdels.empty?)  %>

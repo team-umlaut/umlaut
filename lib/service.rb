@@ -157,10 +157,12 @@ class Service
  # This method is called by Umlaut when user clicks on a service response. 
  # Default implementation here just returns response['url']. You can
  # over-ride in a sub-class to provide custom implementation of on-demand
- # url generation.
+ # url generation. Second argument is the http request params sent
+ # by the client, used for service types that take form submissions (eg
+ # search_inside). 
  # Should return a String url.
- def response_url(response)
-   url = response[:url]
+ def response_url(service_type, submitted_params )
+   url = service_type.service_response[:url]
    raise "No url provided by service response" if url.nil? || url.empty?
    return url
  end

@@ -49,14 +49,33 @@ Pubmed:
   priority: 1
   status: active
   
+# First wave of amazon in the foreground, see level c for more in bg. 
 Amazon:
-  name: Amazon
   type: Amazon
   display_name: Amazon.com
   url: http://webservices.amazon.com/onca/xml
-  api_key: 
+  api_key: [api key] 
   priority: 3
   status: active
+  service_types:
+    - abstract
+    - referent_enhance
+    - cover_image
+
+# Slow to lookup highlighted_link and search_inside availability,
+# so we do it in a bg wave.  
+Amazon_bg:
+  display_name: Amazon.com
+  type: Amazon
+  url: http://webservices.amazon.com/onca/xml
+  api_key: [api key]
+  priority: c
+  status: active
+  make_aws_call: false
+  service_types:
+    - highlighted_link
+    - search_inside
+
   
 Google:
   name: Google

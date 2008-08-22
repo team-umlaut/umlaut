@@ -41,7 +41,11 @@ class ResolveController < ApplicationController
                           { :div_id => "audio_wrapper",
                             :partial => "audio",
                             :service_type_values => ["audio"]
-                          }  ,
+                          },
+                          { :div_id => "search_inside_wrapper",
+                            :partial => "search_inside",
+                            :service_type_values => ["search_inside"]
+                          },
                           { :div_id => "cover_image",
                             :partial => "cover_image",
                             :service_type_values => ["cover_image"]

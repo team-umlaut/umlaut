@@ -353,7 +353,8 @@ class Opac < Service
   
   # Builds a URL either based on a URL in the value_string or builds a link to the 
   # OPAC using the direct_link_arg and the bib ID.
-  def response_url(response)
+  def response_url(service_type, http_params)
+    response service_type.service_response
     return CGI.unescapeHTML(response.value_string) if response.value_string.match(/^http(s)?:\/\//)
     return @url+'&'+@direct_link_arg+response.response_key          
   end

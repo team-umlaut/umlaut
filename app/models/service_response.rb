@@ -64,10 +64,14 @@ At the point the user clicks on a ServiceResponse, Umlaut will attempt to find a
    :content           actual content, if available. 
 
 =end
-class ServiceResponse < ActiveRecord::Base
+class ServiceResponse < ActiveRecord::Base  
   @@built_in_fields = [:display_text, :url, :notes]
   has_many :service_types
   serialize :service_data
+  # This value is not stored in db, but is set temporarily so
+  # the http request params can easily be passed around with a response
+  # object.
+  attr_accessor :http_request_params
 
   def initialize(params = nil)
     super(params)

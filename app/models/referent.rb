@@ -337,7 +337,7 @@ class Referent < ActiveRecord::Base
           end
         end
       ['title','btitle','jtitle'].each do | t_type |
-        if my_metadata[t_type]
+        if ! my_metadata[t_type].blank?
           citation[:subtitle] = my_metadata[t_type]
           break
         end
@@ -351,7 +351,7 @@ class Referent < ActiveRecord::Base
         else'Title'
       end
       ['title','btitle','jtitle'].each do | t_type |
-        if my_metadata[t_type]
+        if ! my_metadata[t_type].blank?
           citation[:title] = my_metadata[t_type]
           break
         end
@@ -365,20 +365,20 @@ class Referent < ActiveRecord::Base
     ['issn','isbn','volume','issue','date'].each do | key |
       citation[key.to_sym] = my_metadata[key]
     end
-    if my_metadata["au"]
+    if ! my_metadata["au"].blank?
       citation[:author] = my_metadata["au"]
-    elsif my_metadata["aulast"]
+    elsif  my_metadata["aulast"]
       citation[:author] = my_metadata["aulast"]
-      if my_metadata["aufirst"]
+      if ! my_metadata["aufirst"].blank?
    		citation[:author] += ',	'+my_metadata["aufirst"]
       else
-        if my_metadata["auinit"]
+        if ! my_metadata["auinit"].blank?
           citation[:author] += ',	'+my_metadata["auinit"]
         else
-		  if my_metadata["auinit1"]
+		  if ! my_metadata["auinit1"].blank?
             citation[:author] += ',	'+my_metadata["auinit1"]
    		  end
-       	  if my_metadata["auinitm"]
+       	  if ! my_metadata["auinitm"].blank?
             citation[:author] += my_metadata["auinitm"]
    		  end
    	    end
@@ -386,7 +386,7 @@ class Referent < ActiveRecord::Base
    	end 
    	if my_metadata['spage']
    	  citation[:page] = my_metadata['spage']
-   	  citation[:page] += ' - ' + my_metadata['epage'] if my_metadata['epage']
+   	  citation[:page] += ' - ' + my_metadata['epage'] if ! my_metadata['epage'].blank?
    	end
    	citation[:identifiers] = []
    	self.identifiers.each do | id |
@@ -410,18 +410,21 @@ class Referent < ActiveRecord::Base
       rv.destroy
     end    
   end
-  
-  def enhance_referent(key, value, metadata=true, private_data=false)
+
+  # options => { :overwrite => false } to only enhance if not already there
+  def enhance_referent(key, value, metadata=true, private_data=false, options = {})
     return if value.nil?
     
     match = false
-    unless metadata      
-      match = self.referent_values.find(:all, :conditions=>['key_name = ? AND value = ?', key, value])
+    if (not metadata)
+      # use :first so it will return nil, which is boolean false, on
+      # no match. [] is boolean true! 
+      match = self.referent_values.find(:first, :conditions=>['key_name = ? AND value = ?', key, value])
     else
       self.referent_values.find(:all, :conditions=>['key_name = ?', key]).each do | val |
         match = true
         next unless val.metadata?
-        unless val.value == value
+        unless (options[:overwrite] == false || val.value == value)
           val.value = value
           val.save
         end          

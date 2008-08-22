@@ -28,7 +28,8 @@ class GoogleBookSearch < Service
     return [ 
       ServiceTypeValue[:fulltext], 
       ServiceTypeValue[:cover_image],
-      ServiceTypeValue[:highlighted_link] ]
+      ServiceTypeValue[:highlighted_link],
+      ServiceTypeValue[:search_inside]    ]
   end
   
   def initialize(config)
@@ -58,6 +59,9 @@ class GoogleBookSearch < Service
     data = dedupe(data) if data.length > 1
     #return full views first
     full_views_shown = create_fulltext_service_response(request, data)
+
+    # Add search_inside link if appropriate
+    add_search_inside(request, data)
     
     # only if no full view is shown, add links for partial view or noview
     unless full_views_shown
@@ -90,14 +94,15 @@ class GoogleBookSearch < Service
     return keys
   end
   
-  def do_query(bibkeys, request)
+  def do_query(bibkeys, request)    
     header = build_headers(request)
     link = @url + bibkeys
+    
     data = open(link, 'rb', header) 
     # for some reason sometimes gbs doesn't send gzipped data
     begin
       return Zlib::GzipReader.new(data).read
-    rescue
+    rescue Exception => e
       return data.read
     end
   end
@@ -107,8 +112,11 @@ class GoogleBookSearch < Service
   # in the Request object.  We use them to make a good proxy request to
   # google. 
   def build_headers(request)
-
     orig_env = request.http_env || {}
+    unless request.http_env.kind_of?(Hash)
+      orig_env = {}
+      RAILS_DEFAULT_LOGGER.warn("Google book search: Attempt to access request.http_env which is not hash, not using. request id: #{request.id}")
+    end
 
     header = {}
 
@@ -124,8 +132,7 @@ class GoogleBookSearch < Service
     # Set referrer to be, well, an Umlaut page, like the one we are
     # currently generating would be best. That is, the resolve link. 
     
-    header["Referer"] = "http://" + 
-      orig_env['HTTP_HOST'] +  orig_env['REQUEST_URI']
+    header["Referer"] = "http://#{orig_env['HTTP_HOST']}#{orig_env['REQUEST_URI']}"
 
     # Proxy X-Forwarded headers. 
 
@@ -139,7 +146,7 @@ class GoogleBookSearch < Service
     #Theoretically the original host requested by the client in the Host HTTP request header. We're disembling a bit. 
     header['X-Forwarded-Host'] = 'books.google.com'
     # The proxy server: That is, Umlaut, us. 
-    header['X-Forwarded-Server'] = orig_env['SERVER_NAME']  
+    header['X-Forwarded-Server'] = orig_env['SERVER_NAME'] || '' 
     
     return header
   end
@@ -184,6 +191,21 @@ class GoogleBookSearch < Service
     end   
     return true
   end
+
+  def add_search_inside(request, data)
+    searchable_view = data.find{|d| d['preview'] == 'full' or d['preview'] == 'partial' }    
+
+    if ( searchable_view )
+      
+      request.add_service_response( 
+        {:service => self,
+        :display_text=>@display_name,
+        :url=> searchable_view['info_url']},
+        [:search_inside]
+       )                  
+    end
+    
+  end
   
   # create highlighted_link service response for partial and noview
   # Only show one web link. prefer a partial view over a noview
@@ -199,6 +221,7 @@ class GoogleBookSearch < Service
     return nil if info_views.blank?
     
     url = ''
+
     iv = info_views.first
     if iv['preview'] == 'partial'
       url = iv['preview_url']      
@@ -274,6 +297,19 @@ class GoogleBookSearch < Service
           :service_data => {:asin => 'asin', :size => size }
         },
         [ServiceTypeValue[:cover_image]])
+    end
+  end
+
+  # Catch url_for call for search_inside, because we're going to redirect
+  def response_url(service_type, submitted_params)
+    if ( ! (service_type.service_type_value.name == "search_inside" ))
+      return super(service_type, submitted_params)
+    else
+      # search inside!
+      base = service_type.service_response[:url]
+      query = CGI.escape(submitted_params["query"])
+      url = base + "&q=#{query}#search"
+      return url
     end
   end
   

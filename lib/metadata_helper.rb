@@ -119,7 +119,7 @@ module MetadataHelper
     if (referent.identifiers.find {|id| id =~ /^#{prefix}(.*)/})
       # Pull it out of our regexp match
       bare_identifier = $1
-    else
+    elsif (['lccn', 'oclcnum', 'isbn', 'issn'].include?(sub_scheme))
       # try the referent metadata
       bare_identifier = referent.metadata[sub_scheme]
     end

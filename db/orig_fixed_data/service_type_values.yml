@@ -61,6 +61,14 @@ audio:
   id: 17
   display_name: Digital Audio
   
+search_inside:
+  id: 18
+  display_name: Search Inside Tool
+
+referent_enhance:
+  id: 19
+  display_name: More Information
+  
 # Not sure what this is used for. Think it's a typo for abstract. 
 description:
   id: 100

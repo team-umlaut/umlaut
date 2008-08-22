@@ -1,17 +1,20 @@
 # Service that searches MBooks from the University of Michigan
 # Currently limited since it only searches by OCLCnum
 #
+# Supports full text links, and search inside. 
+#
 # Most MBooks will also be in Google Books (but not neccesarily vice versa).
 # However, U of M was more generous in deciding what books are public domain.
 # Therefore the main expected use case is to use with Google Books, with
 # MBooks being a lower priority, and suppress_if_gbs_fulltext set to true. 
 #
+# Some may prefer MBooks search inside interface to Google, so search inside
+# is not suppressed with presence of google. You can turn off MBooks
+# search inside entirely if you like. 
 # 
 # Two possibilities are available for sdr rights "full" or "searchonly".
 # The third possibility is that sdr will be null.
-# 
-# MBooks sometimes shows fulltext or search sometimes when GBS has lesser access
-# FIXME Eventually this service will be able to offer search inside
+
 
 class MBooks < Service
   require 'open-uri'
@@ -23,14 +26,14 @@ class MBooks < Service
   # FIXME add search_inside later, which ought to be _very_ easy to do with MBooks
   def service_types_generated
     types = [ ServiceTypeValue[:fulltext] ]
-    types << ServiceTypeValue[:highlighted_link] if @show_search_inside
+    types << ServiceTypeValue[:search_inside] if @show_search_inside
 
     return types
   end
   
   def initialize(config)
     @url = 'http://mirlyn.lib.umich.edu/cgi-bin/sdrsmd?'
-    @display_name = 'University of Michigan MBooks'
+    @display_name = 'MBooks'
     @num_full_views = 1
     @note =  '' #'Fulltext books from the University of Michigan'
     @show_search_inside = false
@@ -39,17 +42,6 @@ class MBooks < Service
   end
   
   def handle(request)
-    
-    
-    
-    if ( @suppress_if_gbs_fulltext &&
-         request.get_service_type("fulltext").find {|st|  st.service_response.service.class == GoogleBookSearch}   )
-         
-         RAILS_DEFAULT_LOGGER.debug("MBooks service: Aborting since GBS response already present")
-
-         return request.dispatched(self, true)
-    end
-    
     get_viewability(request)
     return request.dispatched(self, true)
   end
@@ -60,14 +52,23 @@ class MBooks < Service
     mb_response = do_query(params)
     c_response = clean_response(mb_response)
     return nil if c_response.nil?
+    
+    
     # FIXME once we can search for more than one identifier at a time we'll
     #   need to dedupe our resultset
-    full_views_shown = create_fulltext_service_response(request, c_response)
-    
-    unless full_views_shown
-      do_web_links(request, c_response)
+
+    # Only add fulltext if we're not skipping due to GBS
+    if ( @suppress_if_gbs_fulltext &&
+         request.get_service_type("fulltext").find {|st|  st.service_response.service.class == GoogleBookSearch}   )
+         
+         RAILS_DEFAULT_LOGGER.debug("MBooks service: Skipping fulltext since GBS response already present")
+    else
+         full_views_shown = create_fulltext_service_response(request, c_response)
     end
     
+
+    do_search_inside(request, c_response)
+        
   end
   
   # just a wrapper around get_bibkey_parameters
@@ -132,27 +133,35 @@ class MBooks < Service
     return true
   end
 
-  
-  # other than full view MBooks only provides searchonly
-  # FIXME until search inside is integrated into trunk create a link for this
-  def do_web_links(request, data)
-    search_views = data.select{|d| d['rights'] == 'searchonly'}
-    return nil if search_views.blank? or not @show_search_inside
+  def do_search_inside(request, data)
+    search_views = data.select{|d| d['rights'] == 'searchonly' || d['rights'] == 'full'}
+
+    return if search_views.blank?
     
     search_view = search_views.first
-    url = search_view['mburl']
-    display_text = "Search Inside"
-    #notes = search_view['handle']
-    request.add_service_response( { 
-        :service=>self,    
-        :url=>url,
-        :display_text=>display_text,
-        :service_data => {
-          #:notes => notes
-          }},
-      [ServiceTypeValue[:highlighted_link]]    ) 
+
+    request.add_service_response( 
+        {:service => self,
+        :display_text=>@display_name,
+        :url=> "http://sdr.lib.umich.edu/cgi/ptsearch?id=" +  
+          search_view["handle"]},
+        [:search_inside]
+       )
   end
   
+  
+  # Handle search_inside
+  def response_url(service_type, submitted_params)
+    if ( ! (service_type.service_type_value.name == "search_inside" ))
+      return super(service_type, submitted_params)
+    else
+      base = service_type.service_response[:url]      
+      query = CGI.escape(submitted_params["query"])
+      url = base + "&q1=#{query}"
+
+      return url
+    end
+  end
   
   # sample OCLCnums with appropriate results showing that we can pick up other
   #   resources by using this service

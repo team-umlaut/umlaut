@@ -1,8 +1,7 @@
 
 
-    <table width="100%" cellpadding="3" cellspacing="0">
 
-<tr><td><table width="100%" cellpadding="3" cellspacing="0">
+<table id="citation" width="100%" cellpadding="3" cellspacing="0">
 <% 
 cite = @user_request.referent.to_citation
 #rft_metadata = @user_request.referent.metadata
@@ -77,11 +76,7 @@ if pub.length > 0
   <td><span class="smallText"><%= pub.join('&nbsp;&nbsp;')%></span></td>
  </tr>
 <% end %>
-      </table>
+</table>
 
-</td><td align='right'><div id="cover_image">
 
-<%= render(:partial => "cover_image") %>
-
-</div></td></tr></table>
 

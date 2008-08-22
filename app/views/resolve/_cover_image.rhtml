@@ -4,11 +4,12 @@
   fix_size ||= true
 
   # small med and x-large correspond roughly to amazon sm, med and lg. 
-  # large corresponds roughly to google medium. 
-  dimensions = { "small" => { "height" => 75, "width" => 46 },
-                 "medium" => { "height" => 160, "width" => 99},
-                 "large" => { "height" => 206, "width" => 128 },
-                 "extra-large" => { "height" => 475, "width" => 294}}
+  # large corresponds roughly to google medium. Just one dimension to
+  # prevent disproportionate scaling. 
+  dimensions = { "small" => { "height" => 80 },
+                 "medium" => { "height" => 160},
+                 "large" => { "height" => 200 },
+                 "extra-large" => { "height" => 475}}
 
 
 

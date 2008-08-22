@@ -35,7 +35,8 @@ class LinkRouterController < ApplicationController
     if ( link_with_frameset?(svc_type) )
       redirect_to( frameset_action_url(svc_type) )
     else
-      url = ServiceList.get(svc_type.service_response.service_id).response_url(svc_type.service_response)
+      
+      url = ServiceList.get(svc_type.service_response.service_id).response_url(svc_type, params)
       
       # Call link_out_filters, if neccesary.
       # These are services listed as  task: link_out_filter  in services.yml

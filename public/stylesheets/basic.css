@@ -75,6 +75,19 @@ h4 {
   border: 1px solid #eeb211;
 }
 
+#search_inside_wrapper {
+  margin-left: 8px;
+}
+#search_inside {
+  margin-top: 12px;
+  padding-top: 6px;
+  border-top: 1px solid #E9E9E9;
+}
+#progress_search_inside {
+  margin-top: 12px;
+  padding-top: 6px;
+}
+
 #headerStatusBar {
   border-bottom: 1px solid #eeb211;
   background-color: #FCF1D4;
@@ -256,6 +269,12 @@ hr {
 	font-style: italic;
 	font-size:12px;
 }
+#fulltext .notAvailable {
+  margin-left: 16px;
+  padding-left: 0;
+}
+
+
 .available {
 	color: #00CC33;
 	font-style: italic;

@@ -366,26 +366,11 @@ class Sfx < Service
     return( Time.now > (expire_time + 5.minutes) )    
   end
 
-  # Handles click passthrough to SFX, if configured so. 
-  def response_url(response)
-    
-    if ( ! self.sfx_click_passthrough || expired_sfx_request(response) )
-      if ( expired_sfx_request( response ))
-        RAILS_DEFAULT_LOGGER.warn("SFX click passthrough not executed, due to calculation of expired SFX request. ServiceResponse id: #{response.id}")
-      end
-      return CGI.unescapeHTML(response[:url])
-    else
-      
-      # Okay, wacky abuse of SFX undocumented back-ends to pass the click
-      # through SFX, so statistics are captured by SFX. 
-      return self.pass_through_url(response)      
-    end
-  end
-
   # Try to provide a weird reverse-engineered url to take the user THROUGH
   # sfx to their destination, so sfx will capture for statistics.
   # This relies on certain information from the orignal sfx response
-  # being stored in the Response object at that point. 
+  # being stored in the Response object at that point. Used by
+  # sfx_backchannel_record service. 
   def self.pass_through_url(response)
     base_url = response[:sfx_base_url]    
     

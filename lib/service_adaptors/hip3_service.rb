@@ -38,6 +38,7 @@ class Hip3Service < Service
     # don't send mal-formed issn
     bib_searcher.issn = issn if issn =~ /\d{4}(-)?\d{3}(\d|X)/ 
     bib_searcher.isbn = isbn 
+
     
     bib_array = bib_searcher.search
 
@@ -141,28 +142,5 @@ class Hip3Service < Service
         return @map_856_to_service
       end      
     end
-  
-  #def to_holding(service_response)
-    # The hash we put in value_text is suitable to return to the view already
-  #  return YAML.load(service_response.value_text)
-  #end
 
-  # Copied from sfx.rb. Repeating ourselves, sorry. 
-  #def to_fulltext(response)
-    
-  
-  #  value_text = YAML.load(response.value_text)
-  #  return {:display_text=>response.response_key, :notes=>value_text[:notes],:coverage=>value_text[:coverage],:source=>value_text[:source]}
-  #end
-  
-  #def response_url(service_response)
-  #  debugger
-  #  1+1
-    # We stuck the URL for the relevant bib in the value_string
-   #return service_response.value_string
-  # return service_response[:url]
-  #end
-
-
-  
 end
