@@ -35,10 +35,14 @@ At the point the user clicks on a ServiceResponse, Umlaut will attempt to find a
  :coverage
  :authentication
 
+ highlighted_link (see also)
+ :source   [optional, otherwise service's display_name is used]
+
  Holdings set adds:
  :source_name
  :call_number
  :status
+ :request_url     a url to request the item. optional. 
 
  Some more used by Horizon holdings:
  :coverage_array (Array of coverage strings.)
@@ -49,7 +53,7 @@ At the point the user clicks on a ServiceResponse, Umlaut will attempt to find a
  Cover images:
  :display_text set to desired alt text
  :url    src url to img
- :size  => 'small', 'medium', or 'large. Also set in :key
+ :size  => 'small', 'medium', 'large' or 'extra-large'. Also set in :key
 
  Anything from amazon:
  :asin
