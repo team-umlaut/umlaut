@@ -24,17 +24,18 @@ class DissertationCatch < ReferentFilter
       # Reset it's title to the dissertation title
       title = metadata['atitle'] || metadata['title']
       referent.enhance_referent("btitle", title)
-      referent.enhance_referent("title", title)
+      referent.enhance_referent("title", title, true, false, :overwrite => true)
       # Now erase titles that do not apply 
       referent.remove_value("atitle")
-      referent.remove_value("title")
       referent.remove_value("jtitle")
+      referent.remove_value("stitle")
       # issn or isbn are wrong, probably point to Dissertation Abstracts
       referent.remove_value("issn")
       referent.remove_value("isbn")
       # Same with all article level metadata
       referent.remove_value("volume")
       referent.remove_value("issue")
+      referent.remove_value("issue_start")
       referent.remove_value("spage")
       referent.remove_value("epage")
     end
