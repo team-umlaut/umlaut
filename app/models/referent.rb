@@ -125,8 +125,6 @@ class Referent < ActiveRecord::Base
       AppConfig.param("referent_filters").each do |regexp, filter|
         if (regexp =~ rfr_id)
           filter.filter(rft) if filter.respond_to?(:filter)
-          # New referent values have been set, better refresh
-          rft.referent_values.reset
         end
       end
     end
@@ -252,7 +250,6 @@ class Referent < ActiveRecord::Base
   # easy access. See also #to_citation for a different hash, specifically
   # for use in View to print citation. And #to_context_object. 
   def metadata
-    self.referent_values
     metadata = {}
     self.referent_values.each { | val |
       metadata[val.key_name] = val.value if val.metadata? and not val.private_data?
@@ -409,33 +406,30 @@ class Referent < ActiveRecord::Base
 
   def remove_value(key)
     referent_values.find(:all, :conditions=> ['key_name =?', key]).each do |rv|
-      rv.destroy
+      referent_values.delete(rv)
     end    
   end
 
   # options => { :overwrite => false } to only enhance if not already there
   def enhance_referent(key, value, metadata=true, private_data=false, options = {})
     return if value.nil?
+
+    matches = self.referent_values.to_a.find_all do |rv| 
+      (rv.key_name == key) && (rv.metadata == metadata) && (rv.private_data == private_data) 
+    end
     
-    match = false
-    if (not metadata)
-      # use :first so it will return nil, which is boolean false, on
-      # no match. [] is boolean true! 
-      match = self.referent_values.find(:first, :conditions=>['key_name = ? AND value = ?', key, value])
-    else
-      self.referent_values.find(:all, :conditions=>['key_name = ?', key]).each do | val |
-        match = true
-        next unless val.metadata?
-        unless (options[:overwrite] == false || val.value == value)
-          val.value = value
-          val.save
-        end          
-      end      
-    end    
-    unless match
+    matches.each do |rv|
+      unless (options[:overwrite] == false || rv.value == value)
+        rv.value = value
+        rv.save!
+      end
+    end
+    
+    if (matches.length == 0)
       val = self.referent_values.create(:key_name => key, :value => value, :normalized_value => ReferentValue.normalize(value), :metadata => metadata, :private_data => private_data)
       val.save
-    end 
+    end
+    
     if key.match((/(^[ajb]?title$)|(^is[sb]n$)|(^volume$)|(^date$)/))
       case key
         when 'date' then self.year = ReferentValue.normalize(value)
