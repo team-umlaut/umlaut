@@ -125,8 +125,10 @@ class Referent < ActiveRecord::Base
       AppConfig.param("referent_filters").each do |regexp, filter|
         if (regexp =~ rfr_id)
           filter.filter(rft) if filter.respond_to?(:filter)
+          # New referent values have been set, better refresh
+          rft.referent_values.reset
         end
-      end      
+      end
     end
     return rft          
   end
