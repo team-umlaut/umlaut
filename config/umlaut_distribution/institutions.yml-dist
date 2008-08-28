@@ -35,6 +35,7 @@ global:
 #    - MBooks
 #    - WorldCatIdentities
 #    - OpenLibrary
+#    - CoverThing
 #    - RequestToFixture
 #    - InternetArchiveScraper #deprecated
 #    - Pubmed

@@ -218,6 +218,16 @@ OpenLibrary:
   priority: c
   status: active
 
+# Tries to fetch covers from LibraryThing's cover service. 
+# To get a developer key you need to sign up for a LibraryThing
+# account (www.librarything.com), and then get your developer key
+# from: http://www.librarything.com/services/keys.php
+CoverThing:
+  display_name: LibraryThing
+  type: CoverThing
+  developer_key: must_get_developer_key
+  priority: c
+
 # Start institution specific services  
 Opac:
   name: GT Catalog
