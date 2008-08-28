@@ -18,7 +18,6 @@ class CoverThing < Service
   end
   
   def handle(request)
-    debugger
     image_url = image_url(request.referent)
     return request.dispatched(self, true) unless image_url
 
