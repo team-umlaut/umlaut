@@ -14,6 +14,8 @@
 # 
 # Two possibilities are available for sdr rights "full" or "searchonly".
 # The third possibility is that sdr will be null.
+#
+# An ISBN with search-only: 0195101464
 
 
 class MBooks < Service
@@ -73,10 +75,21 @@ class MBooks < Service
   
   # just a wrapper around get_bibkey_parameters
   def get_parameters(rft)
-    # FIXME currently the API only supports oclcnum
-    get_bibkey_parameters(rft) do |isbn, lccn, oclcnum|      
-      return nil if oclcnum.nil?
-      'oclc=' << oclcnum          
+    # API supports oclcnum, isbn, or lccn, but not sure if let's us boolean
+    # combine them or not, so we'll just search one at a time depending on
+    # what's available
+    get_bibkey_parameters(rft) do |isbn, lccn, oclcnum|
+      # Prefer ISBN, best chance of a hit. Else oclc, else lccn.   
+    
+      if (! isbn.blank? )
+        return "isbn=" + isbn
+      elsif (! oclcnum.blank? )
+        return "oclc=" + oclcnum
+      elsif ( ! lccn.blank? )
+        return "lccn=" + lccn
+      else
+        return nil
+      end                    
     end
   end
   
