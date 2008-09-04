@@ -19,13 +19,26 @@
     for ( var i = sections.length-1 ; i>=0 ; --i ) {
       var section = sections[i];
       
-      var host_div_id = umlaut_section_map[section.id];
-      if ( host_div_id ) {
-        var host_div = document.getElementById( host_div_id );
-        if ( host_div ) {
-          host_div.innerHTML = section.html_content; 
-        }        
-      }      
+      config = umlaut_section_map[section.id];
+      if (typeof(config) == "string") {
+        config = {'host_div_id': config};
+      }
+      else if (typeof(config) == "undefined") {
+        config = {};
+      }
+      host_div_id = config.host_div_id;
+      
+      if ( host_div_id && $(host_div_id) ) {
+        $(host_div_id).innerHTML = section.html_content; 
+      }
+      //alert(section.response_count.value);
+      if (config.on_update) {
+        config.on_update.call(this, section.response_count.value);
+      }
+      if( config.on_complete && section.service_load_complete.value) {
+        config.on_complete.call(this, section.response_count.value);
+      }
+      
     }
     //Now do we need a reload?
     if ( jsonData.partial_html_sections.in_progress ) {
