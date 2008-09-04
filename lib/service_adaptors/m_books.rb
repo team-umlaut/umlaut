@@ -38,7 +38,7 @@ class MBooks < Service
     @display_name = 'MBooks'
     @num_full_views = 1
     @note =  '' #'Fulltext books from the University of Michigan'
-    @show_search_inside = false
+    @show_search_inside = true
     @suppress_if_gbs_fulltext = true
     super(config)
   end
@@ -75,21 +75,20 @@ class MBooks < Service
   
   # just a wrapper around get_bibkey_parameters
   def get_parameters(rft)
-    # API supports oclcnum, isbn, or lccn, but not sure if let's us boolean
-    # combine them or not, so we'll just search one at a time depending on
-    # what's available
+    # API supports oclcnum, isbn, or lccn, and can provide more than one of each. 
     get_bibkey_parameters(rft) do |isbn, lccn, oclcnum|
       # Prefer ISBN, best chance of a hit. Else oclc, else lccn.   
-    
-      if (! isbn.blank? )
-        return "isbn=" + isbn
-      elsif (! oclcnum.blank? )
-        return "oclc=" + oclcnum
-      elsif ( ! lccn.blank? )
-        return "lccn=" + lccn
+      keys = Array.new
+      
+      keys << "isbn=" + CGI.escape(isbn) unless isbn.blank?      
+      keys << "oclc=" + CGI.escape(oclcnum) unless oclcnum.blank?    
+      keys <<  "lccn=" + CGI.escape(lccn) unless lccn.blank?
+
+      if keys.length > 0
+        return keys.join("&")
       else
         return nil
-      end                    
+      end
     end
   end
   
