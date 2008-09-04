@@ -39,7 +39,8 @@
 <%end%>
   <!-- don't show the spinner unless it's identified as a book, otherwise
        too likely to be a false promise -->
-  <% if ( @user_request.referent.metadata['genre'] == 'book' && service_type_in_progress?('search_inside')) %>
+  <%
+  if ( @user_request.referent.format == 'book' && service_type_in_progress?('search_inside')) %>
     <!-- custom spinner -->
     
     <div id="progress_search_inside">
