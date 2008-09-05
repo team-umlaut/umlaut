@@ -41,7 +41,6 @@ class Hip3Service < Service
 
     
     bib_array = bib_searcher.search
-
     # Let's find any URLs, and add full text responses for those.
     urls = bib_array.collect {|b| b.marc_xml.find_all {|f| '856' === f.tag}}.flatten
     urls_seen = Array.new # for de-duplicating urls from catalog.
@@ -77,8 +76,9 @@ class Hip3Service < Service
       # get all those $z subfields and put em in notes.      
       value_text[:url] = url
 
+      # subfield 3 is being used for OCA records loaded in our catalog.
       value_text[:notes] =
-      field.subfields.collect {|f| f.value if f.code == 'z'}.compact.join(' ')
+      field.subfields.collect {|f| f.value if (f.code == 'z' || f.code == '3') }.compact.join(' ')
       value_text[:notes] += " Dates of coverage unknown."
 
       # Do we think this is a ToC link?
