@@ -188,7 +188,7 @@ class OpenLibrary < Service
     url = "http://" << server << pdf
     
     bytes = determine_download_size(server, pdf)
-    return nil if bytes = 0
+    return nil if bytes.nil? || bytes = 0
     
     note = bytes_to_mb(bytes)
 
@@ -218,6 +218,9 @@ class OpenLibrary < Service
     Net::HTTP.start(real_server, 80) do |http|
       # Send a HEAD request
       resp = http.head(real_pdf)
+
+      return nil if resp.kind_of?(Net::HTTPServerError) || resp.kind_of?(Net::HTTPClientError) 
+      
       bytes = resp['Content-Length'].to_i
       return bytes
     end
