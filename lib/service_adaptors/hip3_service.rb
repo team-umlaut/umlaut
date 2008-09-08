@@ -31,6 +31,7 @@ class Hip3Service < Service
   end
   
   def handle(request)
+    
     bib_searcher = Hip3::BibSearcher.new(@base_path)
     
     issn = request.referent.metadata['issn']
@@ -78,8 +79,12 @@ class Hip3Service < Service
 
       # subfield 3 is being used for OCA records loaded in our catalog.
       value_text[:notes] =
-      field.subfields.collect {|f| f.value if (f.code == 'z' || f.code == '3') }.compact.join(' ')
-      value_text[:notes] += " Dates of coverage unknown."
+      field.subfields.collect {|f| f.value if (f.code == 'z' || f.code == '3') }.compact.join('; ')
+
+      unless ( field['3']) # subfield 3 is in fact some kind of coverage note, usually. 
+        value_text[:notes] += "; " unless value_text[:notes].blank? 
+        value_text[:notes] += "Dates of coverage unknown."
+      end
 
       # Do we think this is a ToC link?
       service_type_value = self.url_service_type( field ) 
