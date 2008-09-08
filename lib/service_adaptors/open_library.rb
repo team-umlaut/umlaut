@@ -25,7 +25,7 @@ class OpenLibrary < Service
     types = Array.new
     types.push( ServiceTypeValue[:fulltext]) if @get_fulltext
     types.push( ServiceTypeValue[:highlighted_link]) if @get_fulltext
-    types.push( ServiceTypeValue[:cover_image]) if @get_fulltext 
+    types.push( ServiceTypeValue[:cover_image]) if @get_covers 
 
     return types
     
