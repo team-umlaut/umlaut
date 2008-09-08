@@ -173,6 +173,9 @@ class OpenLibrary < Service
     end  
   end
 
+  # TODO: If first one doesn't have a download, try second?
+  # In general, we need a better way of grouping ALL the results
+  # available for the user. 
   # Creates a highlighted_link for download of PDF
   # for first edition listed. 
   def create_download_link(request, editions)
@@ -183,7 +186,13 @@ class OpenLibrary < Service
     pdf = "/download/"<< ed['ocaid'] << "/" << 
       ed['ocaid'] << ".pdf"
     url = "http://" << server << pdf
-    note = determine_download_size(server, pdf)
+    
+    bytes = determine_download_size(server, pdf)
+    return nil if bytes = 0
+    
+    note = bytes_to_mb(bytes)
+
+    
     request.add_service_response(
         {:service=>self, 
           :display_text=>"Download: " << ed['title'], 
@@ -194,7 +203,7 @@ class OpenLibrary < Service
   end
   
   # they redirect so we actually have to do two HEAD requests to get the
-  # actual content length
+  # actual content length. Returns bytes as int. 
   def determine_download_size(server, pdf)
     real_location = ''
     Net::HTTP.start(server, 80) do |http|
@@ -209,8 +218,8 @@ class OpenLibrary < Service
     Net::HTTP.start(real_server, 80) do |http|
       # Send a HEAD request
       resp = http.head(real_pdf)
-      bytes = resp['Content-Length'].to_i 
-      return bytes_to_mb(bytes)
+      bytes = resp['Content-Length'].to_i
+      return bytes
     end
   end
   
