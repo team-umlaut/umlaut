@@ -251,7 +251,6 @@ class OpenLibrary < Service
     winner_numfields = 0
     editions.each do |e|
       score = score_metadata(e)
-      debugger
       if ( ( score[:oclcnum] && score[:oclcnum] > winner_oclcnum ) ||
            ( winner_oclcnum == 0 && score[:numfields] > winner_numfields)) 
            winner = e
