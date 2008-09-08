@@ -1,8 +1,36 @@
   //This script depends on jsr_class.js being imported by client too. 
 
+
   
   // Trim trailing slash from umlaut base url to normalize, if needed
   umlaut_base.replace(/\/$/,'');
+  
+  // Load prototype if not already present
+  if( typeof(window.Prototype) == "undefined") {    
+    document.write('<script type="text/javascript" src="'+umlaut_base+'/javascripts/prototype.js"><\/script>');
+  }
+  // load jsr_class.js if needed. 
+  if( typeof(window.JSONscriptRequest) ==  "undefined") {
+    document.write('<script type="text/javascript" src="'+umlaut_base+'/javascripts/embed/jsr_class.js"><\/script>');
+  }
+
+    function addEvent(obj, evType, fn)
+    { 
+      if (obj.addEventListener)
+      { 
+        obj.addEventListener(evType, fn, false); 
+        return true; 
+      } 
+      else if (obj.attachEvent)
+      { 
+        var r = obj.attachEvent("on"+evType, fn); 
+        return r; 
+      } 
+      else
+      { 
+        return false; 
+      } 
+    }
   
   // Loads a URL using the JSONscriptRequest to do a cross-domain AJAX. 
   function load_jsonp_url(url) {
@@ -29,9 +57,12 @@
       host_div_id = config.host_div_id;
       
       if ( host_div_id && $(host_div_id) ) {
-        $(host_div_id).innerHTML = section.html_content; 
+        //prototype update is used to execute <script> content,
+        //among other things. 
+        // prototype update WILL execute <script> tags contained in html. 
+        var content = section.html_content ? section.html_content : ""; 
+        $(host_div_id).update( content );
       }
-      //alert(section.response_count.value);
       if (config.on_update) {
         config.on_update.call(this, section.response_count.value);
       }
@@ -52,8 +83,11 @@
     }
   }
 
+  function doOnLoad() {
+    request = umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=jsonp&umlaut.jsonp=umlaut_partial_load_callback&' + umlaut_openurl_kev_co;
   
-  request = umlaut_host + umlaut_base_path + '/resolve/partial_html_sections?umlaut.response_format=jsonp&umlaut.jsonp=umlaut_partial_load_callback&' + umlaut_openurl_kev_co;
+    load_jsonp_url( request );
+  }
   
-  load_jsonp_url( request );
+  addEvent(window, 'load', doOnLoad);
   
