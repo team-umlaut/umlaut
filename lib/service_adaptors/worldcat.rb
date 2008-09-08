@@ -6,6 +6,7 @@ require 'uri'
 require 'net/http'
 class Worldcat < Service
   include MetadataHelper
+  include UmlautHttp
   
   def initialize(config)
     # defaults
@@ -68,8 +69,11 @@ class Worldcat < Service
 		http.read_timeout = 7
 
     
-		begin 
-			wc_response = http.get(worldcat_uri.path)
+		begin
+      # Fake being a proxy to send info on actual end-user client to worldcat,
+      # to lessen chance of worldcat traffic limiters. 
+      headers = proxy_like_headers( request, worldcat_uri.host )
+			wc_response = http.get(worldcat_uri.path, headers)
 		rescue  Timeout::Error => exception
 			return request.dispatched(self, DispatchedService::FailedTemporary, exception)
 		end

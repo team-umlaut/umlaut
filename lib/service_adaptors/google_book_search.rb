@@ -18,6 +18,7 @@ class GoogleBookSearch < Service
   require 'zlib'
   require 'json'
   include MetadataHelper
+  include UmlautHttp
   
   # required params
   
@@ -111,44 +112,8 @@ class GoogleBookSearch < Service
   # orig headers are the client's HTTP request headers, which we stored
   # in the Request object.  We use them to make a good proxy request to
   # google. 
-  def build_headers(request)
-    orig_env = request.http_env || {}
-    unless request.http_env.kind_of?(Hash)
-      orig_env = {}
-      RAILS_DEFAULT_LOGGER.warn("Google book search: Attempt to access request.http_env which is not hash, not using. request id: #{request.id}")
-    end
-
-    header = {}
-
-    # Bunch of headers we proxy as-is from the original client request,
-    # supplying reasonable defaults. 
-    
-    header["User-Agent"] = orig_env['HTTP_USER_AGENT'] || 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9) Gecko/2008061015 Firefox/3.0'
-    header['Accept'] = orig_env['HTTP_ACCEPT'] || 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-    header['Accept-Language'] = orig_env['HTTP_ACCEPT_LANGUAGE'] || 'en-us,en;q=0.5'
-    header['Accept-Encoding'] = orig_env['HTTP_ACCEPT_ENCODING'] || ''
-    header["Accept-Charset"] = orig_env['HTTP_ACCEPT_CHARSET'] || 'UTF-8,*'
-
-    # Set referrer to be, well, an Umlaut page, like the one we are
-    # currently generating would be best. That is, the resolve link. 
-    
-    header["Referer"] = "http://#{orig_env['HTTP_HOST']}#{orig_env['REQUEST_URI']}"
-
-    # Proxy X-Forwarded headers. 
-
-    # The original Client's ip, most important and honest. Look for
-    # and add on to any existing x-forwarded-for, if neccesary, as per
-    # x-forwarded-for convention. 
-
-    header['X-Forwarded-For'] =  (orig_env['HTTP_X_FORWARDED_FOR']) ?
-       (orig_env['HTTP_X_FORWARDED_FOR'] + ', ' + request.client_ip_addr) :
-       request.client_ip_addr
-    #Theoretically the original host requested by the client in the Host HTTP request header. We're disembling a bit. 
-    header['X-Forwarded-Host'] = 'books.google.com'
-    # The proxy server: That is, Umlaut, us. 
-    header['X-Forwarded-Server'] = orig_env['SERVER_NAME'] || '' 
-    
-    return header
+  def build_headers(request)    
+    return proxy_like_headers(request, 'books.google.com')
   end
   
   # Since we have a callback as part of the response we need to remove it.
