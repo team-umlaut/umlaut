@@ -13,7 +13,9 @@
       # Display special warnign header if it's title-level only,
       # and it's an article or issue level link. Are we
       # at the beginning of title level display?
-      if ( index == title_level_fulltxt.length)
+      if ( index == title_level_fulltxt.length && 
+           index != 0 &&
+           !title_level_request? )
          genre = @user_request.referent.metadata['genre']
          genre = "Journal" if genre && genre.downcase == 'article' %>
          </ul>
