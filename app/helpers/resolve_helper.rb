@@ -132,5 +132,74 @@ module ResolveHelper
     return (metadata['genre'] != 'book' && metadata['object_id'].blank? && user_entered_citation?(@user_request) ) ? true : false
   end
 
+  # Code-generating helper to add a "More" link to a list, with a maximum
+  # number of items to show before 'more'. AJAXy show, with unobtrusive
+  # degredation when no javascript. 
+  # Based on the idea here for a helper that takes a block. 
+  # http://blog.zmok.net/articles/2008/04/22/block-level-helpers-in-ruby-on-rails
+  #
+  # id:  id to use for HTML div for hidden part of list. Other ids
+  #      will be based on this id too.
+  # list: your list
+  # limit: how many lines to show before cut off. Default 5. Note that
+  #        at least two items will always be included in 'more'. If cutoff
+  #        is 5 and your list is 5, all 5 will be shown. If cut-off is 5
+  #        and list is 6, 4 items will be shown, with more. This is five
+  #        total lines if the 'more' is considered a line. 
+  # wrap_more_in_li: Typical idiom this is a list in <ul>, and the more
+  #           link should be generated in an <li> </li>. If you want
+  #           to suppress that, set false.
+  # block: will be passed |item, index|, should generate html for that
+  #           item in block. 
+  def list_with_limit(id, list, limit=5, wrap_more_in_li=true, &block)
+    list.each_index do |index|
+      item = list[index]      
+      yield(item, index)
+      break if list.length > limit && index >= limit-2  
+    end
+    
+    if (list.length > limit )
+      show_on_load = (params["umlaut.#{id}"] == "show")
+      extra_div_style = show_on_load ? "" : "display:none;"
+      initial_verb = show_on_load ? "Hide" : "Show"
+      opposite_value = show_on_load ? "hide" : "show"
+      
+    
+      toggle_js = " if ($('#{id}').visible())  { 
+        $('#{id}').hide();
+        $('#{id}_toggle_label').update('Show');
+        } else {
+          $('#{id}').show();
+          $('#{id}_toggle_label').update('Hide');
+        }"
+      
+      #url_for( params.merge({'umlaut.request_id' => @user_request.id, "umlaut.#{id}" => opposite_value}))
+      link_html = link_to_function("
+        <span id=\"#{id}_toggle_label\" >#{initial_verb}</span> 
+        #{list.length - limit + 1} more", 
+        toggle_js,
+        :href =>url_for( params.merge({'umlaut.request_id' => @user_request.id, "umlaut.#{id}" => opposite_value}))+"##{id}_toggle_link",
+        :name => "#{id}_toggle_link",
+        :class => 'list_with_limit_toggle'
+      )
+      if (wrap_more_in_li)
+        link_html = "<li class='link_with_limit_toggle'" + link_html + "</li>"
+      end
+        
+      concat(link_html , block.binding)
+      concat("<div id=\"#{id}\" class=\"list_with_limit_more\" style=\"#{extra_div_style}\">", block.binding)
+      
+      (limit-1).upto(list.length-1) do |index|
+        item = list[index]
+        yield(item, index)
+      end
+      
+      concat('</div>', block.binding)
+    end
+    
+  end
+
+
+
     
 end
