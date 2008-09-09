@@ -15,15 +15,18 @@
 <% 
          failed_dispatches = failed_service_dispatches()
          unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
-         <div id="service_errors_content" class="small_right_box" ">
+         <div id="service_errors_content" class="small_right_box">
 
 
-               <span class="error_icon">(!)</span><span class="smallText">Warning! Due to error, some sources could not be included:</span>
+               <span class="error_icon">(!)</span><span class="smallText">Some content may not be included due to errors:</span>
         <ul>
           <% failed_dispatches.each do | dispatch | %>
-            <li class="smallText"> <a onclick="el = document.getElementById('error_info<%= dispatch.id %>'); toggle_visible(el);"><strong><%= dispatch.service.display_name %> </strong></a>
+            <li class="smallText">           
+            Some <i><%= dispatch.service.service_types_generated.collect { |type|
+               type.display_name_pluralize.downcase}.join(",") %></i>
+             from <a onclick="$('error_info<%= dispatch.id %>').toggle(); return false;"><strong><%= dispatch.service.display_name %>  </strong> </a>
               <% exception_info = dispatch.exception_info %>
-                <div id="error_info<%= dispatch.id %>" style="visibility: hidden; height:0">
+                <div id="error_info<%= dispatch.id %>" style="display: none;">
                 technical error information
                 <ul>
                    <li> <%= exception_info[:class_name] if exception_info %> </li>
