@@ -25,7 +25,6 @@ class MBooks < Service
   
   attr_reader :url, :display_name, :note, :suppress_if_gbs_fulltext
   
-  # FIXME add search_inside later, which ought to be _very_ easy to do with MBooks
   def service_types_generated
     types = [ ServiceTypeValue[:fulltext] ]
     types << ServiceTypeValue[:search_inside] if @show_search_inside
@@ -35,7 +34,7 @@ class MBooks < Service
   
   def initialize(config)
     @url = 'http://mirlyn.lib.umich.edu/cgi-bin/sdrsmd?'
-    @display_name = 'MBooks'
+    @display_name = 'HathiTrust'
     @num_full_views = 1
     @note =  '' #'Fulltext books from the University of Michigan'
     @show_search_inside = true
