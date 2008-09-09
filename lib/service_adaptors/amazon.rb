@@ -24,9 +24,10 @@ class Amazon < Service
 
   def initialize(config)
     # defaults
-    @url = 'http://webservices.amazon.com/onca/xml'
+    @url = 'http://webservices.amazon.com/onca/xml'    
     @display_name = "Amazon.com"
     @display_text = "Amazon's page"
+    @limited_preview_display_text = "Excerpts"
     @service_types = ["abstract", "highlighted_link", "cover_image", "search_inside", "referent_enhance"]
     @make_aws_call = true
     
@@ -269,7 +270,7 @@ class Amazon < Service
       if (@service_types.include?("highlighted_link"))
         if ( search_inside || look_inside )
           service_data = { :url => inside_base, :asin=>asin,
-             :display_text => "Limited Preview" }
+             :display_text => @limited_preview_display_text }
                          
            request.add_service_response({:service=>self, :service_data=>service_data}, [ServiceTypeValue['highlighted_link']])
         else        

@@ -37,6 +37,7 @@ class GoogleBookSearch < Service
     # we include a callback in the url because it is expected that there will be one.
     @url = 'http://books.google.com/books?jscmd=viewapi&callback=gbscallback&bibkeys='
     @display_name = 'Google Book Search'
+    @limited_preview_display_text = "Excerpts"
     # default number of full views to show
     @num_full_views = 1
     super(config)
@@ -190,7 +191,7 @@ class GoogleBookSearch < Service
     iv = info_views.first
     if iv['preview'] == 'partial'
       url = iv['preview_url']      
-      display_text = "Limited Preview"
+      display_text = @limited_preview_display_text
     else
       url = iv['info_url']
       display_text = "Book Information"
