@@ -13,6 +13,9 @@ module UmlautHttp
   # and in general is more honest and gives the service some good information
   # about the actual end user.
   #
+  # Not generally neccesary for accessing actual APIs, but sometimes useful
+  # for screen scraping, or for an API intended to be client-side JS only.
+  #
   # request is an Umlaut Request, which has in it information about
   # original client request and ip. host is optional, and is the
   # ultimate destination you will be sending the proxy-like request to.
