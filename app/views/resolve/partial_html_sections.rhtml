@@ -1,17 +1,6 @@
 <partial_html_sections>
 
-<% if any_services_in_progress? %>
-  <in_progress>
-    <refresh_url><%= REXML::Text.new( url_for(params.merge( :'umlaut.request_id' => @user_request.id, :only_path => false ) )).to_s %></refresh_url>    
-    <refresh_url_path><%= REXML::Text.new( url_for(params.merge( :'umlaut.request_id' => @user_request.id, :only_path => true ) )).to_s %></refresh_url_path>
-    <requested_wait_seconds>4</requested_wait_seconds>
-    <services_in_progress>
-      <% @user_request.services_in_progress.collect { |s| s.service_types_generated}.flatten.uniq.each do |type| %> 
-          <service name="<%= type.name %>" />  
-      <% end %>
-    </services_in_progress>
-  </in_progress>
-<% end %>
+  <%= render(:partial => "api_in_progress", :layout => false) %>
 
 <% @partial_html_sections.each do |section| %>
   <html_section id="<%= section[:div_id] %>">

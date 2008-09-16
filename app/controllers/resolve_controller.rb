@@ -175,6 +175,7 @@ class ResolveController < ApplicationController
       view = AppConfig.param("resolve_view", "resolve/index")
       render :template => view
     end
+
   end
 
   # inputs an OpenURL request into the system and stores it, but does
@@ -228,16 +229,6 @@ class ResolveController < ApplicationController
   end
 
   
-  def json
-  	self.index
-  	@dispatch_hash = {:umlaut_response=>{:id => @requested_context_object.id}}
-  	@dispatch_response.instance_variables.each { |ir |
-  		@dispatch_hash[:umlaut_response][ir.to_s.gsub(/^@/, '')] = @dispatch_response.instance_variable_get(ir)
-  	}
-  	@headers["Content-Type"] = "text/javascript; charset=utf-8"
-  	render_text @dispatch_hash.to_json 
-		@context_object_handler.store(@dispatch_response)  	
-  end
 
   # Action called by AJAXy thing to update resolve menu with
   # new stuff that got done in the background. 
@@ -318,50 +309,22 @@ class ResolveController < ApplicationController
     # Run the request if neccesary. 
     self.service_dispatch()
     @user_request.save!
-    
-    # Format?
-    format = (params["umlaut.response_format"]) || "xml"
-    
-   if ( format == "xml" )      
-      # The partial_html_sections.rhtml returns xml
-      render(:content_type => "application/xml", :layout => false)
-   elsif ( format == 'json' || format == "jsonp")
-      
-      # get the xml in a string
-      xml_str = render_to_string(:layout=>false)
-      # convert to hash
-      data_as_hash = Hash.from_xml( xml_str )
-      # And conver to json. Ta-da!
-      json_str = data_as_hash.to_json
 
-      # Handle jsonp.
-      if ( format == "jsonp")
-        procname = params["umlaut.jsonp"] || "onPartialHtmlSectionsLoaded"
-        
-        json_str = procname + "( " + json_str + " );"
-      end
-
-      render(:text => json_str, :content_type=> "text/x-json",:layout=>false )
-    else
-      raise ArgumentError.new("format requested (#{format}) not understood by action")
-    end
+    self.api_render()
+    
   end
   
-  def xml
-		self.index
-		umlaut_doc = REXML::Document.new
-		root = umlaut_doc.add_element 'umlaut', 'id'=>@context_object_handler.id
-		co_doc = REXML::Document.new @context_object.xml
-		root.add co_doc.root
-		umlaut_doc = @dispatch_response.to_xml(umlaut_doc)
-  	@headers["Content-Type"] = "text/xml; charset=utf-8"
-  	render_text umlaut_doc.write
-		@context_object_handler.store(@dispatch_response)  	
+  def resolve_api
+
+    # Run the request if neccesary. 
+    self.service_dispatch()
+    @user_request.save!
+
+    api_render()
+    
   end  
 
-  # table of contents pull-out page. Obsolete? 
-  def toc
-  end
+
     
   def rescue_action_in_public(exception)
     render(:template => "error/resolve_error", :status => 500, :layout => AppConfig.param("resolve_layout", "resolve_basic")) 
@@ -500,6 +463,37 @@ class ResolveController < ApplicationController
                                :partial => error_div_info[:partial])             
         end
     end
+  end
+
+  # Uses an "umlaut.response_format" param to return either
+  # XML or JSON(p).  Assumes that a standardly rendered
+  # Rails template is there to deliver XML, will convert it
+  # to json using built in converters. 
+  def api_render
+    # Format?
+    format = (params["umlaut.response_format"]) || "xml"
+    
+     if ( format == "xml" )      
+        # The standard Rails template is assumed to return xml
+        render(:content_type => "application/xml", :layout => false)
+     elsif ( format == 'json' || format == "jsonp")        
+        # get the xml in a string
+        xml_str = render_to_string(:layout=>false)
+        # convert to hash
+        data_as_hash = Hash.from_xml( xml_str )
+        # And conver to json. Ta-da!
+        json_str = data_as_hash.to_json
+  
+        # Handle jsonp, deliver JSON inside a javascript function call,
+        # with function name specified in parameters. 
+        if ( format == "jsonp")
+          procname = params["umlaut.jsonp"] || "umlautLoaded"          
+          json_str = procname + "( " + json_str + " );"
+        end  
+        render(:text => json_str, :content_type=> "application/json",:layout=>false )
+      else
+        raise ArgumentError.new("format requested (#{format}) not understood by action #{params[:controller]} / #{params[:action]}")
+      end    
   end
 
   def service_dispatch()
