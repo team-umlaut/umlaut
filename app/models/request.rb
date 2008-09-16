@@ -310,19 +310,20 @@ class Request < ActiveRecord::Base
   # This one does make a db call, to get most up to date list.
   # Should return empty array, never nil. 
   def get_service_type(svc_type, options = {})
+    svc_type_obj = (svc_type.kind_of?(ServiceTypeValue)) ? svc_type : ServiceTypeValue[svc_type]
 
     if ( options[:refresh])
       return self.service_types.find(:all,
                                 :conditions =>
                                    ["service_type_value_id = ?",
-                                   ServiceTypeValue[svc_type].id ],
+                                   svc_type_obj.id ],
                                 :include => [:service_response]   
                                 )
     else
       # find on an assoc will go to db, unless we convert it to a plain
       # old array first.
       return self.service_types.to_a.find_all { |st|  
-       st.service_type_value == ServiceTypeValue[svc_type] }      
+       st.service_type_value == svc_type_obj }      
     end
   end
   
