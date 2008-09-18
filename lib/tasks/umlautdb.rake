@@ -53,6 +53,8 @@ namespace :umlaut do
       
           puts "Loading SFXUrls via direct access to SFX db."
           urls = SfxDb::SfxDbBase.fetch_sfx_urls
+          ignore_urls = AppConfig.param("sfx_load_ignore_hosts", []);
+          
           # We only want the hostnames
           hosts = urls.collect do |u|
             begin
@@ -65,7 +67,7 @@ namespace :umlaut do
           SfxUrl.transaction do
             SfxUrl.delete_all
       
-            hosts.each {|h| SfxUrl.new({:url => h}).create }      
+            hosts.each {|h| SfxUrl.new({:url => h}).create unless ignore_urls.find {|ignore| ignore === h }}      
           end
         else
           puts "Skipping load of SFXURLs via direct access to SFX db. No direct access is configured. Configure in config/umlaut_config/database.yml"

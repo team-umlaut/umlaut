@@ -70,6 +70,17 @@ def umlaut_configuration(config)
   #   config.app_config.resolve_view = "alternate/alt_holdings"
   #   config.app_config.resolve_view = "local/my_custom_holdings"
   config.app_config.resolve_view = "alternate/resolve_alternate"
+
+  # If you have a direct db connection to SFX set up, Umlaut loads
+  # all urls controlled by SFX, and stores them in SfxUrl model.
+  # This is used by some services to try and prevent duplicating
+  # SFX results. If you'd like to ignore some urls from Sfx and NOT
+  # store them in SfxUrl, then you can use this config. An array
+  # of either strings or regexps (mix and match okay) to match _host_
+  # portion of url only. .
+  #config.app_config.sfx_load_ignore_hosts = ['something.com', /.*\.domain\.com/]
+
+
   
   # link_with_frameset can be used to control whether (and when)
   # umlaut links to resources in a frameset page with an umlaut banner.
