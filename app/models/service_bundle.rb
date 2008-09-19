@@ -46,7 +46,7 @@ class ServiceBundle
             if ( local_request.can_dispatch?(local_service) )
               # Mark this service as in progress in the dispatch table.
               local_request.dispatched( local_service, DispatchedService::InProgress )
-            
+              
               # and actually execute it
               local_service.handle(local_request)
             end
@@ -83,6 +83,10 @@ class ServiceBundle
         raise aThread[:exception]
       end
     }
+    # Refresh our Request object's dispatched_services relationship,
+    # so it'll be up to date in the main thread.
+    request.dispatched_services.reset
+    
     threads.clear # more paranoia
     
     # AR opens a db connection per thread, and never ever
