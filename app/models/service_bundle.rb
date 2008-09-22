@@ -83,9 +83,10 @@ class ServiceBundle
         raise aThread[:exception]
       end
     }
-    # Refresh our Request object's dispatched_services relationship,
+    # Refresh our Request object's relationships,
     # so it'll be up to date in the main thread.
     request.dispatched_services.reset
+    request.service_types.reset
     
     threads.clear # more paranoia
     
