@@ -55,6 +55,10 @@ class InternetArchive < Service
     @show_web_link = true
     @display_name = "the Internet Archive"
     super(config)
+    @num_results_for_types ||= {}
+    @mediatypes.each do |type|
+      @num_results_for_types[type] ||= @num_results
+    end
   end
   
   def handle(request)
@@ -85,19 +89,19 @@ class InternetArchive < Service
     doc = JSON.parse(response)
     results = doc['response']['docs']
     
-    @mediatypes.each do |type|      
+    @mediatypes.each do |type|
      type_results = get_results_by_type(results, type)
       
       # if we have more results than we want to show in the main view
       # we can ceate a link (highlighted_link) to the search in the sidebar 
       num_found = type_results.length #doc['response']['numFound']
-      if @show_web_link and not type_results.empty? and @num_results < num_found
+      if (@show_web_link and not type_results.empty? and @num_results_for_types[type] < num_found )
         do_web_link(request, search_terms, type, num_found) 
       end
       
       # add a service response for each result for this mediatype
       type_results.each_with_index do |result, index|
-        break if index == @num_results 
+        break if index == @num_results_for_types[type] 
         display_name = @display_name
         if ( result["collection"] && COLLECTION_LABELS[result["collection"][0]])
           display_name += ": " + COLLECTION_LABELS[result["collection"][0]]
@@ -131,11 +135,13 @@ class InternetArchive < Service
     'http://archive.org/details/' + result['identifier']
   end
  
-  #FIXME displaying the num_found relies on the number of results from ia_params being 
+  # displaying the num_found relies on the number of results from ia_params being 
   # enough to capture all results for a mediatype. If there are more potential
-  # results then num_found will not be accurate
+  # results then num_found will not be accurate. But good enough. 
   def do_web_link(request, search_terms, type, num_found)
-    display_text = "#{num_found} digital #{type.singularize} files"
+    display_text = "#{num_found} digital #{type.singularize} " + (num_found > 1 ? "files" : "file")
+
+    
     url = create_web_link_url(search_terms, type)
     request.add_service_response( { 
         :service=>self,    
