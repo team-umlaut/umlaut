@@ -1,4 +1,16 @@
-  //This script depends on jsr_class.js being imported by client too. 
+  //  Javascript helper for inserting partial html snippets from Umlaut on your page using the Umlaut partial HTML API.
+  //
+  //
+  // This js assumes several global js variables will be set, to be used
+  // as paramaters to this script. 
+  //
+  // 1. umlaut_openurl_kev_co = URL-formatted openurl context object (ie, like COinS)
+  // 2. umlaut_base = base URL to umlaut instance, not including /resolve, the Umlaut app itself. 
+  // 3. umlaut_section_map =  a js hash mapping umlaut sections to id's of divs on your page. 
+  //
+  // For more information on how to use this script, please see: 
+  //
+  // http://wiki.code4lib.org/index.php/Umlaut_partial_html_API_javascript_helper
 
 
   
