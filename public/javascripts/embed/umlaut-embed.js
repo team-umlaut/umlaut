@@ -56,6 +56,10 @@
       }
       host_div_id = config.host_div_id;
       
+      if (config.before_update) {
+        config.before_update.call(this, section.response_count.value);
+      }
+      
       if ( host_div_id && $(host_div_id) ) {
         //prototype update is used to execute <script> content,
         //among other things. 
@@ -63,8 +67,8 @@
         var content = section.html_content ? section.html_content : ""; 
         $(host_div_id).update( content );
       }
-      if (config.on_update) {
-        config.on_update.call(this, section.response_count.value);
+      if (config.after_update) {
+        config.after_update.call(this, section.response_count.value);
       }
       if( config.on_complete && section.service_load_complete.value) {
         config.on_complete.call(this, section.response_count.value);
