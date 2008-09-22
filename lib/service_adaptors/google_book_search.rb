@@ -30,15 +30,15 @@ class GoogleBookSearch < Service
       ServiceTypeValue[:fulltext], 
       ServiceTypeValue[:cover_image],
       ServiceTypeValue[:highlighted_link],
-      ServiceTypeValue[:search_inside]    ]
+      ServiceTypeValue[:search_inside],
+      ServiceTypeValue[:excerpts]]
   end
   
   def initialize(config)
     # we include a callback in the url because it is expected that there will be one.
     @url = 'http://books.google.com/books?jscmd=viewapi&callback=gbscallback&bibkeys='
     @display_name = 'Google Book Search'
-    @limited_preview_display_text = "Excerpts"
-    # default number of full views to show
+    # number of full views to show
     @num_full_views = 1
     super(config)
   end
@@ -187,20 +187,23 @@ class GoogleBookSearch < Service
     return nil if info_views.blank?
     
     url = ''
-
     iv = info_views.first
+    type = nil
     if iv['preview'] == 'partial'
       url = iv['preview_url']      
-      display_text = @limited_preview_display_text
+      display_text = @display_name
+      type = ServiceTypeValue[:excerpts]
     else
       url = iv['info_url']
       display_text = "Book Information"
+      type = ServiceTypeValue[:highlighted_link]
     end
     request.add_service_response( { 
         :service=>self,    
         :url=>url,
         :display_text=>display_text},
-      [ServiceTypeValue[:highlighted_link]]    )    
+          [type]    
+       )
   end
   
   # We don't need to present a link for every bibkey if they are duplicates.

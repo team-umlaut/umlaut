@@ -1,0 +1,28 @@
+<%
+   excerpts = get_service_type('excerpts')  
+%>
+
+<% unless excerpts.empty? %>
+
+  <div id="excerpts" class="main_column_section">
+  <h3 id="excerpts_heading"><%= ServiceTypeValue[:excerpts].display_name %></h3>
+  <p class="sectionNote">A limited preview which may include table of contents, index, and other selected pages.</p>
+  <ul class="excerptslink">
+  
+  <%
+      list_with_limit('umlaut_excerpts', excerpts) do |item, index | %>      
+        <%= render(:partial => "fulltext_element", :object=> item, :locals => {:li_class => 'excerptslink'}) %>
+  <%  end %> 
+      
+  <% if (service_type_in_progress?('excerpts'))
+  %>
+    <li><%= render(:partial => "background_progress", 
+                   :locals => { :svc_types => [ServiceTypeValue[:excerpts]],
+                                :current_set_empty => excerpts.empty?
+                               } ) %></li>
+  
+  <% end %>
+  </ul>
+  </div>
+
+<% end %>

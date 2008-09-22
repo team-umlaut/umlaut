@@ -27,16 +27,16 @@ class Amazon < Service
     @url = 'http://webservices.amazon.com/onca/xml'    
     @display_name = "Amazon.com"
     @display_text = "Amazon's page"
-    @limited_preview_display_text = "Excerpts"
-    @service_types = ["abstract", "highlighted_link", "cover_image", "search_inside", "referent_enhance"]
+    @excerpts_display_text = "Excerpts"
+    @service_types = ["abstract", "highlighted_link", "cover_image", "search_inside", "referent_enhance", "excerpts"]
     @make_aws_call = true
     
     super(config)
 
     # Only a few service types can get by without an aws call
     if (! @make_aws_call &&
-          @service_types.find {|type|  ! ["search_inside", "highlighted_link"].include?(type) }  )
-      raise Exception.new("You can only set make_aws_call == false on the definition of an Amazon service adaptor when the adaptor is also set to generate no service responses other than highlighted_link and search_inside.")
+          @service_types.find {|type|  ! ["search_inside", "highlighted_link", "excerpts"].include?(type) }  )
+      raise Exception.new("You can only set make_aws_call == false on the definition of an Amazon service adaptor when the adaptor is also set to generate no service responses other than highlighted_link, search_inside, and excerpts")
     end
   end
 
@@ -44,18 +44,10 @@ class Amazon < Service
   def service_types_generated
     types = Array.new
 
-    types.push( ServiceTypeValue["abstract"]) if @service_types.include?("abstract")
-
-    types.push( ServiceTypeValue["highlighted_link"]) if @service_types.include?("highlighted_link")
-
-    types.push( ServiceTypeValue["cover_image"]) if @service_types.include?("cover_image")
-
-    types.push( ServiceTypeValue["search_inside"]) if @service_types.include?("search_inside")
-
-    types.push( ServiceTypeValue["similar_item"]) if @service_types.include?("similar_item")
-
-    types.push( ServiceTypeValue["subject"]) if @service_types.include?("subject")
-
+    @service_types.each do |type|
+      types.push( ServiceTypeValue[type])
+    end
+    
     return types
   end
   
@@ -267,13 +259,13 @@ class Amazon < Service
       # Link to look inside if we have it, otherwise ordinary amazon detail
       # page. 
 
-      if (@service_types.include?("highlighted_link"))
-        if ( search_inside || look_inside )
-          service_data = { :url => inside_base, :asin=>asin,
-             :display_text => @limited_preview_display_text }
+      if (@service_types.include?("excerpts") &&
+          ( search_inside || look_inside ))
+        service_data = { :url => inside_base, :asin=>asin,
+           :display_text => @display_name }
                          
-           request.add_service_response({:service=>self, :service_data=>service_data}, [ServiceTypeValue['highlighted_link']])
-        else        
+         request.add_service_response({:service=>self, :service_data=>service_data}, [ServiceTypeValue['excerpts']])
+      elsif ( @service_types.include?("highlighted_link"))
           # Just link to Amazon page if we can. If we did the AWS request
           # before, afraid we didn't store the item url, just the
           # asin, reconstruct a valid one, even if not the one given to us
@@ -283,7 +275,6 @@ class Amazon < Service
                          :display_text => @display_text }
                          
           request.add_service_response({:service=>self, :service_data=>service_data}, [ServiceTypeValue['highlighted_link']])
-        end
       end
       
     end

@@ -277,6 +277,11 @@ hr {
   padding-left: 0;
 }
 
+.sectionNote {
+  font-style: italic;
+  margin-left: 22px;
+  margin-bottom: 8px;
+}
 
 .available {
 	color: #00CC33;
@@ -372,6 +377,11 @@ ul.fulltextlink li.fulltextlink {
 
 ul.audiolink li.audiolink {
   background: url(../images/famfamfam/page_sound.gif) no-repeat 0px 0px;
+  padding: 0px 18px 8px 22px;
+}
+
+ul.excerptslink li.excerptslink {
+  background:  url(../images/famfamfam/book_open.png) no-repeat 0px 0px;
   padding: 0px 18px 8px 22px;
 }
 
