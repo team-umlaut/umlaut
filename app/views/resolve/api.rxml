@@ -56,7 +56,7 @@ xml.umlaut do
                 value = nil
                 # try calling to_xml, for instance for hashes
                 begin
-                  value = response.service_data[key].to_xml
+                  value = response.service_data[key].to_xml(:root => "records", :skip_instruct => true)
                   xml<< value
                 rescue
                   # oh well, no to_xml in there
