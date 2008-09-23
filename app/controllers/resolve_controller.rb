@@ -318,7 +318,7 @@ class ResolveController < ApplicationController
     
   end
   
-  def resolve_api
+  def api
 
     # Run the request if neccesary. 
     self.service_dispatch()
