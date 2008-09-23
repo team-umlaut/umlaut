@@ -4,7 +4,11 @@
           <%= render(:partial => "fulltext_element", :object=> st) %>
           <% data = st.view_data
              unless data[:content].blank? %>
-               <%= data[:content] %>
+             <div class="section_content_indent">
+                <% expand_contract_section("table of contents", "toc_#{ab.id}") do %>              
+                 <%= data[:content] %>
+                <% end %>
+              </div>
              <% end %>
         <% end %>
         </ul>

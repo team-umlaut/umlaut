@@ -105,10 +105,15 @@ h4 {
   padding: 10px;
 }
 
-li.link_with_limit_toggle {
+.expand_contract_toggle {
   margin-top: 4px;
   margin-bottom: 4px;
 }
+
+.expand_contract_content {
+  margin-top: 8px;
+}
+
 /*  2 columns: This is actually the class for the left column div, sorry.  */
 	
 #twoColumns {
