@@ -74,24 +74,30 @@ class Hip3Service < Service
       end
       # Okay, whole url then. 
       display_name = url if display_name.nil?
+      # But if we've got a $3, the closest MARC comes to a field
+      # that explains what this actually IS, use that too please.
+      display_name = field['3'] + ' from ' + display_name if field['3']
+      
       value_text = Hash.new
       # get all those $z subfields and put em in notes.      
       value_text[:url] = url
 
       # subfield 3 is being used for OCA records loaded in our catalog.
       value_text[:notes] =
-      field.subfields.collect {|f| f.value if (f.code == 'z' || f.code == '3') }.compact.join('; ')
+      field.subfields.collect {|f| f.value if (f.code == 'z') }.compact.join('; ')
 
       unless ( field['3']) # subfield 3 is in fact some kind of coverage note, usually. 
         value_text[:notes] += "; " unless value_text[:notes].blank? 
         value_text[:notes] += "Dates of coverage unknown."
       end
 
-      # Do we think this is a ToC link?
+      response_params = {:service=>self, :display_text=>display_name, :url=>url, :notes=>value_text[:notes], :service_data=>value_text}
+      
+      # Do we think this is a ToC link? Rejigger things. 
       service_type_value = self.url_service_type( field ) 
       
       # Add the response
-      request.add_service_response({:service=>self, :display_text=>display_name, :url=>url, :notes=>value_text[:notes], :service_data=>value_text}, [service_type_value])
+      request.add_service_response(response_params, [service_type_value])
     end
     
     #Okay, we actually want to make each _copy_ into a service response.
@@ -139,13 +145,17 @@ class Hip3Service < Service
     return request.dispatched(self, true)
   end
 
-    def url_service_type( field )
+    def url_service_type( field )            
       # LC records here at hopkins have "Table of contents only" in the 856$3
       # Think that's a convention from LC? 
       if (field['3'] && field['3'].downcase == "table of contents only")
         return "table_of_contents"
       elsif (field['3'] && field['3'].downcase =~ /description/)
         return "abstract"
+      elsif ( field['u']  )
+        # Any other loc.gov link, we know it's not full text, don't put
+        # it in full text field, put it as "see also". 
+        return "relevant_link"
       else
         return @map_856_to_service
       end      
