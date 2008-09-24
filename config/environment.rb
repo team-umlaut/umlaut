@@ -116,7 +116,7 @@ Rails::Initializer.run do |config|
   # data. But a seperate variable is provided in case you have
   # a reason to make the partial_html_sections action deliver
   # different content than what is on the resolve page. 
-  AppConfig::Base.partial_html_map = config.app_config.bg_update_map
+  AppConfig::Base.partial_html_map = AppConfig::Base.bg_update_map[:divs]
 
 
     
