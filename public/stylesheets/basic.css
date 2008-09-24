@@ -390,6 +390,10 @@ ul.excerptslink li.excerptslink {
   padding: 0px 18px 8px 22px;
 }
 
+.response {
+  margin-bottom: 4px; 
+}
+
 #banner_fulltext li.fulltextlink {
   padding-bottom: 4px;
 }
