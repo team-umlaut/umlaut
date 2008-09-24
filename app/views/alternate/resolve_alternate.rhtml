@@ -70,18 +70,15 @@
       <% toc_list = get_service_type('table_of_contents')
          ab_list = get_service_type('abstract')
       %>
-      <% if toc_list.length + ab_list.length > 0 %>
-      <div id="abstract_and_toc" class="main_column_section">
-      <h3>Abstract and Table of Contents </h3>
-      
-      
-      <div id="tables_of_contents" style="margin-bottom: 8px;" class="section_indent">
+    <div id="abstract_and_toc" class="main_column_section">
+
+      <div id="tables_of_contents" style="margin-bottom: 8px;" >
         <% unless toc_list.empty? %>
           <%= render(:partial=>'tables_of_contents') %>
         <% end %>      
       </div>
       
-      <div id="abstracts" class="section_indent">
+      <div id="abstracts">
         <% unless ab_list.empty? %>
           <%= render(:partial=>'abstracts') %>
         <% end %>
@@ -89,7 +86,7 @@
 
       
     </div>
-    <% end %>    
+        
   <!--close availability-->
   </div>
 
