@@ -22,46 +22,6 @@ class ResolveController < ApplicationController
   @@partial_for_block[:holding] = AppConfig.param("partial_for_holding", "holding")
   def self.partial_for_block ; @@partial_for_block ; end
   
-  # Divs to be updated by the background updater. See background_update.rjs
-  # Sorry that this is in a class variable for now, maybe we can come up
-  # with a better way to encapsulate this info.
-  @@background_updater = {:divs  => 
-                         [{ :div_id => "fulltext_wrapper", 
-                            :partial => "fulltext",
-                            :service_type_values => ["fulltext"]
-                          },
-                          { :div_id => "holding", 
-                            :partial => @@partial_for_block[:holding],
-                            :service_type_values => ["holding","holding_search"]
-                          },
-                          {:div_id => "highlighted_links",
-                           :partial => "highlighted_links_start",
-                           :service_type_values => ["highlighted_link"]
-                          },
-                          { :div_id => "audio_wrapper",
-                            :partial => "audio",
-                            :service_type_values => ["audio"]
-                          },
-                          { :div_id => "excerpts_wrapper",
-                            :partial => "excerpts",
-                            :service_type_values => ["excerpts"]
-                          },
-                          { :div_id => "search_inside_wrapper",
-                            :partial => "search_inside",
-                            :service_type_values => ["search_inside"]
-                          },
-                          { :div_id => "cover_image",
-                            :partial => "cover_image",
-                            :service_type_values => ["cover_image"]
-                          }
-                           ],
-                          :error_div =>
-                          { :div_id => 'service_errors',
-                            :partial => 'service_errors'}
-                        }
-   #re-use some of that for partial html sections too.
-   # see partial_html_sections action. 
-   @@partial_html_sections = @@background_updater[:divs]
    
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
@@ -238,9 +198,10 @@ class ResolveController < ApplicationController
   # new stuff that got done in the background. 
   def background_update
     # Might be a better way to store/pass this info.
-    # Divs that may possibly have new content. 
-    divs = @@background_updater[:divs] || []
-    error_div = @@background_updater[:error_div]
+    # Divs that may possibly have new content.
+    map = AppConfig.param("bg_update_map")
+    divs = map[:divs] || []
+    error_div = map[:error_div]
 
     # This method call render for us
     self.background_update_js(divs, error_div)     
@@ -291,7 +252,7 @@ class ResolveController < ApplicationController
     @force_bg_progress_spinner = true
 
     
-    @partial_html_sections = @@partial_html_sections
+    @partial_html_sections = AppConfig.param("partial_html_map")
     # calculate in progress for each section
     @partial_html_sections.each do |section|
          type_names = []
