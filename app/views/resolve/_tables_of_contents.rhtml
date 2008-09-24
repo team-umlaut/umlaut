@@ -1,7 +1,9 @@
+<% services = get_service_type('table_of_contents') %>
+<% if (services.length > 0) %> 
  <h4><%= ServiceTypeValue['table_of_contents'].display_name %></h4>
         <ul>
         <% 
-          get_service_type('table_of_contents').each do |st| %>
+          services.each do |st| %>
           <div class="response">
             <%= render(:partial => "fulltext_element", :object=> st) %>
             <% data = st.view_data
@@ -15,3 +17,4 @@
            </div>
         <% end %>
         </ul>
+<% end %>

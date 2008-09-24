@@ -152,10 +152,10 @@ class Hip3Service < Service
         return "table_of_contents"
       elsif (field['3'] && field['3'].downcase =~ /description/)
         return "abstract"
-      elsif ( field['u']  )
+      elsif ( field['u'] =~ /www\.loc\.gov/ )
         # Any other loc.gov link, we know it's not full text, don't put
         # it in full text field, put it as "see also". 
-        return "relevant_link"
+        return "highlighted_link"
       else
         return @map_856_to_service
       end      

@@ -1,6 +1,8 @@
+ <% services = get_service_type('abstract') %>
+ <% if (services.length > 0) %> 
  <h4><%= ServiceTypeValue['abstract'].display_name %> </h4>
         <ul>
-        <% get_service_type('abstract').each do |ab| %>
+        <% services.each do |ab| %>
           <div class="response">
             <%= render(:partial => "fulltext_element", :object=> ab) %>
             <% data = ab.view_data
@@ -14,3 +16,4 @@
              </div>
         <% end %>
         </ul>
+<% end %>
