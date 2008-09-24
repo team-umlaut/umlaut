@@ -47,6 +47,7 @@ class Hip3Service < Service
     urls_seen = Array.new # for de-duplicating urls from catalog.
     urls.each do |field|
       url = field['u']
+
       next if urls_seen.include?(url)
       # Don't add the URL if it matches our SFXUrl finder, because
       # that means we think this is an SFX controlled URL.
@@ -143,6 +144,8 @@ class Hip3Service < Service
       # Think that's a convention from LC? 
       if (field['3'] && field['3'].downcase == "table of contents only")
         return "table_of_contents"
+      elsif (field['3'] && field['3'].downcase =~ /description/)
+        return "abstract"
       else
         return @map_856_to_service
       end      
