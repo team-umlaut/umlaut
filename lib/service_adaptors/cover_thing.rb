@@ -46,7 +46,7 @@ class CoverThing < Service
   
  def image_url(referent)
    isbn = get_identifier(:urn, "isbn", referent)
-   isbn.gsub!(/[^\d]/, '') # just numeric isbn
+   isbn.gsub!(/[^\d]/, '') if isbn # just numeric isbn
    return nil if isbn.blank? # need an isbn to make the request
    
    return @base_url + @developer_key + '/medium/isbn/' + isbn
