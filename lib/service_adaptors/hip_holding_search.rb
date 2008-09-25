@@ -7,7 +7,13 @@ class HipHoldingSearch < Service
   def initialize(config)
     super(config)
     # Trim question-mark from base_url, if given
-    @base_path.chop! if (@base_path.rindex('?') ==  @base_path.length)      
+    @base_path.chop! if (@base_path.rindex('?') ==  @base_path.length)
+    # Default preemption by any holding
+    if @preempted_by
+      @preempted_by = { "existing_type" => "holding"}.merge(@preempted_by)
+    else
+      @preempted_by = { "existing_type" => "holding"}
+    end
   end
 
   def service_types_generated

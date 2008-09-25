@@ -48,7 +48,7 @@ class ServiceBundle
               local_request.dispatched( local_service, DispatchedService::InProgress )
               
               # and actually execute it
-              local_service.handle(local_request)
+              local_service.handle_wrapper(local_request)
             end
             
           rescue Exception => e

@@ -6,7 +6,7 @@
 # Most MBooks will also be in Google Books (but not neccesarily vice versa).
 # However, U of M was more generous in deciding what books are public domain.
 # Therefore the main expected use case is to use with Google Books, with
-# MBooks being a lower priority, and suppress_if_gbs_fulltext set to true. 
+# MBooks being a lower priority, using preempted_by config.  
 #
 # Some may prefer MBooks search inside interface to Google, so search inside
 # is not suppressed with presence of google. You can turn off MBooks
@@ -23,7 +23,7 @@ class MBooks < Service
   require 'json'
   include MetadataHelper
   
-  attr_reader :url, :display_name, :note, :suppress_if_gbs_fulltext
+  attr_reader :url, :display_name, :note
   
   def service_types_generated
     types = [ ServiceTypeValue[:fulltext] ]
@@ -38,7 +38,6 @@ class MBooks < Service
     @num_full_views = 1
     @note =  '' #'Fulltext books from the University of Michigan'
     @show_search_inside = true
-    @suppress_if_gbs_fulltext = true
     super(config)
   end
   
@@ -53,16 +52,10 @@ class MBooks < Service
     mb_response = do_query(params)
     c_response = clean_response(mb_response)
     return nil if c_response.nil?
-    
-    
-    # FIXME once we can search for more than one identifier at a time we'll
-    #   need to dedupe our resultset
 
     # Only add fulltext if we're not skipping due to GBS
-    if ( @suppress_if_gbs_fulltext &&
-         request.get_service_type("fulltext").find {|st|  st.service_response.service.class == GoogleBookSearch}   )
-         
-         RAILS_DEFAULT_LOGGER.debug("MBooks service: Skipping fulltext since GBS response already present")
+    if ( preempted_by(request, "fulltext"))
+         RAILS_DEFAULT_LOGGER.debug("MBooks service: Skipping due to pre-emption")
     else
          full_views_shown = create_fulltext_service_response(request, c_response)
     end
