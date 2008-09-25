@@ -5,15 +5,11 @@ class HipHoldingSearch < Service
   attr_reader :base_path
 
   def initialize(config)
+    # Default preemption by any holding
+    @preempted_by = { "existing_type" => "holding"}
     super(config)
     # Trim question-mark from base_url, if given
-    @base_path.chop! if (@base_path.rindex('?') ==  @base_path.length)
-    # Default preemption by any holding
-    if @preempted_by
-      @preempted_by = { "existing_type" => "holding"}.merge(@preempted_by)
-    else
-      @preempted_by = { "existing_type" => "holding"}
-    end
+    @base_path.chop! if (@base_path.rindex('?') ==  @base_path.length)    
   end
 
   def service_types_generated
