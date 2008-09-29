@@ -69,7 +69,6 @@ def umlaut_configuration(config)
   # Use a whole new view for resolve view, eg
   #   config.app_config.resolve_view = "alternate/alt_holdings"
   #   config.app_config.resolve_view = "local/my_custom_holdings"
-  config.app_config.resolve_view = "alternate/resolve_alternate"
 
   # If you have a direct db connection to SFX set up, Umlaut loads
   # all urls controlled by SFX, and stores them in SfxUrl model.

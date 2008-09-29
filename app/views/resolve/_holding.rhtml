@@ -1,47 +1,74 @@
-  <p><strong>Paper version  via:</strong></p>
+<% 
+=begin
+  jrochkind's alternative partial for displaying holdings. Displays more
+  information to deal with the more information we need to display from
+  our Horizon. In tabular format. Customized for JH's needs, but should
+  be usable by anyone. 
+=end
+%>
+<style type="text/css">
+.holding_heading_row {
+  border-top: 1px solid #E9E9E9; 
+  padding-right: 18px;
+  padding-top: 4px;
+  padding-bottom: 0px;
+}
+tr:first-child > td.holding_heading_row {
+  border-top: none;
+  padding-top: 0px;
+}
+</style>
 
+<h3><%= ServiceTypeValue[:holding].display_name_pluralize.titleize %> </h3>
 
-<ul>
+<div class="section_content_indent">
+<% holdings = get_service_type('holding') %>
+
+<table style="width: 100%">
 <%
-src = ""
-holdings = get_service_type('holding').each do |p|
+holdings.each do |p|
   target = p.view_data
-  if src != target[:source_name]
-  %>
-  <p><strong><%= target[:source_name] %></strong></p>
-  <%
-  src = target[:source_name]
-  end
-  display_text = ""
-  if (target[:call_number].nil? || target[:call_number].empty? )
-  	display_text = target[:display_text]
-  else
-  	display_text = target[:call_number]
-  end
-  %>
-<li><em><%= link_to display_text, {:controller=>'link_router', :id=>p.id}, 'target'=>'_blank' %>
-</em>
-<%
-    unless display_text == target[:display_text]%>
-    <br /><%= target[:display_text] %>
-    <% end 
-    unless target[:status].blank?%>
-      <br />
-      <% if target[:status] == "Not Charged" or target[:status] == "Available" %>
-      <span class='available'><%= target[:status].sub(/Not Charged/, "Available")%></span>
-      <% else %>
-      <%= target[:status] %>
+%>
+  <tr><td class="holding_heading_row"><h4><%= target[:collection_str] %></h4></td>
+      <td class="holding_heading_row"><span style="white-space: nowrap;"><%= target[:call_number]%></span></td>
+      
+      <% status_class = (target[:status] == "Not Charged" or target[:status] == "Available") ? 'available' : '' %> 
+      
+      <td class="holding_heading_row"><span class="<%= status_class %>"><%= target[:status]   %></span></td>
+      
+      <td class="holding_heading_row"><%= link_to(image_tag("more_info.gif", "border" => 0, "alt" => 'more info'), {:controller=>"link_router", :id=>p.id}, "target" => "_blank") %>
+      
+      <% if target[:request_url] %>
+        <br />       
+        <%= link_to( image_tag("request.gif", "border" => "0", "alt" => "request"),  target[:request_url], "target" => "_blank" ) %>      
       <% end %>
       
-      <%
-      end%>
-      </li>
-  <%
+      </td>
+  </tr>    
 
-  end
-  %>
-
-
+  <% unless target[:notes].blank? %>
+  <tr>
+  <td colspan="4"><div class="section_content_indent"><%= target[:notes] %></div> </td>
+  </tr>
+  <% end %>
+  
+  <% unless target[:coverage_str_array].blank? %>
+  <tr>
+    <td colspan="4">
+          <ul>
+          <%
+            hidden_div_id = "copies_#{p.id}"
+            list_with_limit(hidden_div_id, target[:coverage_str_array]) do |item, index|
+          %>
+            <li><%= item %></li>
+          <% end %>
+          </ul>
+    </td>
+  </tr>
+  <% end %>
+<%
+end %>
+</table>
 
 
 
@@ -50,16 +77,16 @@ if holdings.empty?
    searches = get_service_type('holding_search')
     searches.each do | result_st |
       response = result_st.view_data %>
-      <li> <%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %> </li>
+      <p><%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %> </p>
 <% 
    end
 end
 if (holdings.blank? && searches.blank? && ! service_types_in_progress?(['holding', 'holding_search']))
 %>
-<li class="notAvailable">Not Available </li>
+<p class="notAvailable">Not Available </p>
 <%
 end %>
-</ul>
+
 <% if session[:coins] %>
   <p>&nbsp;</p>
 
@@ -79,8 +106,6 @@ end %>
 <%   end
 %>
 <% if service_types_in_progress?(['holding', 'holding_search']) %>
-<ul>
-<li><%= render(:partial => "background_progress", :locals => { :svc_types => [ServiceTypeValue[:holding],ServiceTypeValue[:holding_search]], :current_set_empty => holdings.empty? } ) %></li>
-</ul>
+<p><%= render(:partial => "background_progress", :locals => { :svc_types => [ServiceTypeValue[:holding],ServiceTypeValue[:holding_search]], :current_set_empty => holdings.empty? } ) %></p>
 <% end %>
-
+</div>
