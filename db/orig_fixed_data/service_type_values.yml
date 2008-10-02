@@ -15,11 +15,13 @@ help:
   id: 4
   display_name: Help Link
   display_name_plural: Help Links
-  
+
+# Not currently used
 web_link:
   id: 5
   display_name: Web Result
-  
+
+# Not currently used. 
 relevant_link:
   id: 6
   display_name: Closest Web Result
@@ -34,12 +36,11 @@ table_of_contents:
   display_name: Table of Contents
   display_name_plural: Tables of Contents
 
-# Why this and cover art both? Who knows, but it's in code right now.   
 cover_image:
   id: 13
   display_name: Cover Image
   
-# Links to known destinations, like Amazon or OCLC
+# "See also" links to known destinations, like Amazon or OCLC
 highlighted_link:
   id: 14
   display_name: See Also Link
@@ -60,15 +61,20 @@ fulltext_title_level:
 audio:
   id: 17
   display_name: Digital Audio
-  
+
+# A search inside tool, presented with a search box for user. 
 search_inside:
   id: 18
   display_name: Search Inside Tool
 
+# A tool that will enhance the Referent metadata. Not always advertised
+# properly yet. 
 referent_enhance:
   id: 19
   display_name: More Information
-  
+
+# Link to partial text, as in Amazon or Google Books that don't have
+# full text, only excerpts. 
 excerpts:
   id: 20
   display_name: Limited Excerpts
