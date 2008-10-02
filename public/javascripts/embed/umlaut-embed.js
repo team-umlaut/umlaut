@@ -89,18 +89,17 @@
     }
     //Now do we need a reload?
     if ( jsonData.partial_html_sections.in_progress ) {
-      
+                 
       refresh_seconds = jsonData.partial_html_sections.in_progress.requested_wait_seconds;
           
       refresh_url = jsonData.partial_html_sections.in_progress.refresh_url
       
-      window.setTimeout( "load_jsonp_url('" + refresh_url + "')", 4000 );
+      window.setTimeout( "load_jsonp_url('" + refresh_url + "')", refresh_seconds * 1000 );
     }
   }
 
   function doOnLoad() {
     request = umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=jsonp&umlaut.jsonp=umlaut_partial_load_callback&' + umlaut_openurl_kev_co;
-  
     load_jsonp_url( request );
   }
   
