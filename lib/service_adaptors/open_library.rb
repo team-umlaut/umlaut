@@ -188,7 +188,7 @@ class OpenLibrary < Service
     url = "http://" << server << pdf
     
     bytes = determine_download_size(server, pdf)
-    return nil if bytes.nil? || bytes = 0
+    return nil if bytes.nil? || bytes == 0
     
     note = bytes_to_mb(bytes)
 
