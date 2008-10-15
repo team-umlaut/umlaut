@@ -50,6 +50,9 @@ At the point the user clicks on a ServiceResponse, Umlaut will attempt to find a
  :collection_str
  :location_str
 
+ search_inside
+ Has no additional conventional keys, but when calling it's url handling functionality, send it a url param query= with the users query. In the API, this means using the umlaut_passthrough_url, but adding a url parameter query on to it. This will redirect to the search results. 
+
  Cover images:
  :display_text set to desired alt text
  :url    src url to img
