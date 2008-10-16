@@ -10,6 +10,7 @@ class Worldcat < Service
   
   def initialize(config)
     # defaults
+    @suppress_precheck = false # it seems unneccesary to pre-check worldcat, it's mostly ALWAYS a positive hit. And pre-checking against worldcat is running into Worldcat's rate limiting defenses. If neccesary, you can turn this off. Really, we should be using the Worldcat API anyway. 
     @base_url = 'http://www.worldcat.org/'
     @display_text = 'Find in other libraries'
     @display_name = 'OCLC WorldCat.org'
@@ -64,40 +65,37 @@ class Worldcat < Service
       RAILS_DEFAULT_LOGGER.error(e)
       return request.dispatched(self, DispatchedService::FailedFatal)
     end
-		http = Net::HTTP.new worldcat_uri.host
-		http.open_timeout = 7
-		http.read_timeout = 7
 
+    unless ( @suppress_precheck )
     
-		begin
-      # Fake being a proxy to send info on actual end-user client to worldcat,
-      # to lessen chance of worldcat traffic limiters. 
-      headers = proxy_like_headers( request, worldcat_uri.host )
-			wc_response = http.get(worldcat_uri.path, headers)
-		rescue  Timeout::Error => exception
-			return request.dispatched(self, DispatchedService::FailedTemporary, exception)
-		end
-
-    # Bad response code?
-		unless wc_response.code == "200"
-      # Could be temporary, could be fatal. Let's say temporary. 
-			return request.dispatched(self, DispatchedService::FailedTemporary, Exception.new("oclc returned error http status code: #{wc_response.code}"))
-		end
-
-    # Sadly, worldcat returns a 200 even if there are no matches.
-    # We need to screen-scrape to discover if there are matches.
-    if (wc_response.body =~ /The page you tried was not found\./)
-      # Not found in worldcat, we won't add a link.
-      return request.dispatched(self, true)
+      http = Net::HTTP.new worldcat_uri.host
+      http.open_timeout = 7
+      http.read_timeout = 7
+  
+      
+      begin
+        # Fake being a proxy to send info on actual end-user client to worldcat,
+        # to lessen chance of worldcat traffic limiters. 
+        headers = proxy_like_headers( request, worldcat_uri.host )
+        wc_response = http.get(worldcat_uri.path, headers)
+      rescue  Timeout::Error => exception
+        return request.dispatched(self, DispatchedService::FailedTemporary, exception)
+      end
+  
+      # Bad response code?
+      unless wc_response.code == "200"
+        # Could be temporary, could be fatal. Let's say temporary. 
+        return request.dispatched(self, DispatchedService::FailedTemporary, Exception.new("oclc returned error http status code: #{wc_response.code}"))
+      end
+  
+      # Sadly, worldcat returns a 200 even if there are no matches.
+      # We need to screen-scrape to discover if there are matches.
+      if (wc_response.body =~ /The page you tried was not found\./)
+        # Not found in worldcat, we won't add a link.
+        return request.dispatched(self, true)
+      end
     end
     
-    #soup = BeautifulSoup.new wc_response.body    
-		#return false if soup.title.string == "Find in a Library: "
-
-    # Okay, actually add our link data. 
-    
-		#response.highlighted_links << {:type => "worldcat", :title =>"View record in Worldcat.org",:url => @worldcat_url+isxn+'/'+context_object.referent.metadata[isxn]+'&loc=30332'}
-
     request.add_service_response( {:service=>self, 
     :url=>worldcat_uri.to_s,
     :display_text=>@display_text}, 
