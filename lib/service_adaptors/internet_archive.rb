@@ -167,10 +167,15 @@ class InternetArchive < Service
   def create_query_params(search_terms, type=nil)
     # Downcase params to avoid weird misconfiguration in IA's SOLR
     # installation, where it's interpreting uppercase words as
-    # commands even within quotes. 
-    params = 'title:' << CGI.escape('"' << search_terms[:title].downcase << '"')
-    if (! search_terms[:creator].blank?)      
-      params << '+AND+creator:' << CGI.escape('(' << search_terms[:creator].downcase << ')')       
+    # commands even within quotes. Also take out any parens in input.
+    title = search_terms[:title].downcase
+    title.delete!("()")
+    
+    params = 'title:' << CGI.escape('"' << title << '"')
+    if (! search_terms[:creator].blank?)
+      creator = search_terms[:creator].downcase
+      creator.delete!("()")
+      params << '+AND+creator:' << CGI.escape('(' << creator << ')')       
     end
     mt = []
     params <<  '+AND+('
