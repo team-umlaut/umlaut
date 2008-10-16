@@ -31,7 +31,13 @@ class CoverThing < Service
     # Only way to know if we got an image or a transparent placeholder
     # is to check the content-length. Currently the transparent placeholder
     # is 43 bytes.
-    unless (response.content_length < 50)
+    # Not sure why response is ever nil, but sometimes it is, let's log
+    # some info.
+    debugger
+    if ( response.nil? || response.content_length.nil? )
+      RAILS_DEFAULT_LOGGER.warn("CoverThing: Null response for #{uri}, status #{response.class}")
+    end
+    unless (response.nil? || response.content_length.nil? || response.content_length < 50)
       request.add_service_response({
         :service=>self, 
         :display_text => 'Cover Image',
