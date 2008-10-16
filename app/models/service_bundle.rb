@@ -33,15 +33,9 @@ class ServiceBundle
         
         # Make a proc for the actual service execution, then we'll
         # execute it either in a thread or not, depending on settings.
-        service_execute = Proc.new do | local_request_id, local_service|
+        service_execute = Proc.new do | local_request, local_service|
           begin
-            service_start = Time.now
-            
-            # Reload the request, to make sure we have our own copy, not
-            # shared with other threads. A bit inefficient, but we help
-            # by pre-loading what we can. Sadly, no way to pre-load
-            # referent.referent_values that I can find. 
-            local_request = Request.find( local_request_id , :include => [:referent, :referrer, :service_types, :dispatched_services])
+            service_start = Time.now            
   
             if ( local_request.can_dispatch?(local_service) )
               # Mark this service as in progress in the dispatch table.
@@ -61,16 +55,16 @@ class ServiceBundle
             # And stick it in a thread variable too
             Thread.current[:exception] = e
           ensure
-            RAILS_DEFAULT_LOGGER.info("Completed service #{local_service.id},  level #{@priority_level}, request #{local_request_id}: in #{Time.now - service_start}.") if @log_timing
+            RAILS_DEFAULT_LOGGER.info("Completed service #{local_service.id},  level #{@priority_level}, request #{local_request.id}: in #{Time.now - service_start}.") if @log_timing
           end
         end
         
         if ( @use_threads )        
-          threads << Thread.new(request.id, service.clone) do | t_request_id, t_service |
-             service_execute.call(t_request_id, t_service)
+          threads << Thread.new(request, service.clone) do | t_request, t_service |
+             service_execute.call(t_request, t_service)
           end
         else
-          service_execute.call( request.id, service)
+          service_execute.call( request, service)
         end
     end
 
