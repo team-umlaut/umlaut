@@ -84,8 +84,14 @@ class InternetArchive < Service
     
     # using open() conveniently follows the redirect for us. Alas, it
     # doesn't give us access to the IA http status code response though.
-    
-    response = open(link).read
+    begin
+      response = open(link).read
+    rescue Exception => e
+      # Log more info for exception, and then just forward exception on,
+      # we don't have any way to handle it. 
+      RAILS_DEFAULT_LOGGER.error("InternetArchive exception, for url[[#{link}]] , Exception #{e.class}")
+      raise e
+    end
     doc = JSON.parse(response)
     results = doc['response']['docs']
     
