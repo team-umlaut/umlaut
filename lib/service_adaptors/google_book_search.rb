@@ -1,6 +1,8 @@
 # Service that searches Google Book Search to determine viewability.
 # It searches by ISBN, OCLCNUM and LCCN. If all of these identifiers are 
-# available it searches by all of them and then dedupes the results.
+# available it searches by all of them.
+#
+# Uses Google Books Data API, http://code.google.com/apis/books/docs/gdata/developers_guide_protocol.html
 # 
 # If a full view is available it returns a fulltext service response.
 # If there is only a partial view or noview it presents an appropriate 
@@ -10,10 +12,19 @@
 # 
 # If a thumbnail_url is returned in the responses, a cover image is displayed.
 # To get the size we want some manipulation of the thumbnail_url is 
-# necessary. This should work even if the Amazon service is enabled. It seems
-# that the GBS cover image will overwrite the Amazon one?
+# necessary. 
 
 class GoogleBookSearch < Service
+  # Identifiers used in API response to indicate viewability level
+  ViewFullUri = 'http://schemas.google.com/books/2008#view_all_pages'
+  ViewPartialUri = 'http://schemas.google.com/books/2008#view_partial'
+  # None might also be 'snippet', but Google doesn't want to distinguish
+  ViewNoneUri = 'http://schemas.google.com/books/2008#view_no_pages'
+  ViewUnknownUri = 'http://schemas.google.com/books/2008#view_unknown'
+  LinkPreviewUri = 'http://schemas.google.com/books/2008/preview'
+  LinkInfoUri = 'http://schemas.google.com/books/2008/info'
+  LinkThumbnailUri = 'http://schemas.google.com/books/2008/thumbnail'
+  
   require 'open-uri'
   require 'zlib'
   require 'json'
@@ -36,7 +47,7 @@ class GoogleBookSearch < Service
   
   def initialize(config)
     # we include a callback in the url because it is expected that there will be one.
-    @url = 'http://books.google.com/books?jscmd=viewapi&callback=gbscallback&bibkeys='
+    @url = 'http://books.google.com/books/feeds/volumes?q='
     @display_name = 'Google Book Search'
     # number of full views to show
     @num_full_views = 1
@@ -51,14 +62,8 @@ class GoogleBookSearch < Service
   def get_viewability(request)
     bibkeys = get_bibkeys(request.referent)
     return nil if bibkeys.nil?
-    gbs_response = do_query(bibkeys, request)
-    # sometimes we get a blank response back. why? dunno.
-    return nil if gbs_response.blank? or gbs_response == 'gbscallback({});'
+    data = do_query(bibkeys, request)
     
-    cleaned_response = clean_response(gbs_response)
-    data = parse_response(cleaned_response)
-    
-    data = dedupe(data) if data.length > 1
     #return full views first
     full_views_shown = create_fulltext_service_response(request, data)
 
@@ -85,71 +90,83 @@ class GoogleBookSearch < Service
     oclcnum = get_identifier(:info, "oclcnum", rft)
     lccn = get_identifier(:info, "lccn", rft)
 
-    
+    # Google oddly seems to want prefix mashed right up
+    # with identifier, eg http://books.google.com/books/feeds/volumes?q=OCLC32012617 
     keys = []
-    keys << 'ISBN:' + isbn if isbn
-    keys << 'OCLC:' + oclcnum if oclcnum
-    keys << 'LCCN:' + lccn if lccn
+    keys << 'ISBN' + isbn if isbn
+    keys << 'OCLC' + oclcnum if oclcnum
+    keys << 'LCCN' + lccn if lccn
     
     return nil if keys.empty?
-    keys = CGI.escape( keys.join(',') )
+    keys = CGI.escape( keys.join(' OR ') )
     return keys
   end
   
   def do_query(bibkeys, request)    
-    header = build_headers(request)
+    headers = build_headers(request)
     link = @url + bibkeys
+
+    response = open(link, 'rb', headers)
+    xml = response.read
+
     
-    data = open(link, 'rb', header) 
-    # for some reason sometimes gbs doesn't send gzipped data
-    begin
-      return Zlib::GzipReader.new(data).read
-    rescue Exception => e
-      return data.read
-    end
-  end
-  
-  # We try to build a good header
-  # orig headers are the client's HTTP request headers, which we stored
-  # in the Request object.  We use them to make a good proxy request to
-  # google. 
-  def build_headers(request)    
-    return proxy_like_headers(request, 'books.google.com')
-  end
-  
-  # Since we have a callback as part of the response we need to remove it.
-  # Also & is escaped and must be replaced.
-  def clean_response(resp)
-     resp = resp.sub(/^gbscallback\(/,'')
-     resp = resp.sub(/\);$/,'')
-     resp = resp.gsub('\x26','&')
-     return resp
-  end
-  
-  # besides parsing the JSON we flatten it to make it easier to work with.
-  def parse_response(resp)
-    j = JSON.parse(resp)
-    a = []
-    j.each do |k,v|
-      a << v
-    end
-    return a
-  end
+    #return REXML::Document.new(xml)
+    return Hpricot.XML(xml)
     
+        
+  end
+  
+  # We don't need to fake a proxy request anymore, but we still
+  # include X-Forwarded-For so google can return location-appropriate
+  # availability. If there's an existing X-Forwarded-For, we respect
+  # it and add on to it. 
+  def build_headers(request)
+    original_forwarded_for = nil
+    if (request.http_env && request.http_env['HTTP_X_FORWARDED_FOR'])
+      original_forwarded_for = request.http_env['HTTP_X_FORWARDED_FOR']                                  
+    end
+    
+    return {'X-Forwarded-For' =>  original_forwarded_for ?
+       (original_forwarded_for + ', ' + request.client_ip_addr.to_s) :
+        request.client_ip_addr.to_s}
+  end
+  
+  def find_entries(gbs_response, viewabilities)
+    unless (viewabilities.kind_of?(Array))
+      viewabilities = [viewabilities]
+    end
+
+    entries = gbs_response.search("/*/entry").find_all do |entry|
+      viewability = entry.at("gbs:viewability")
+      (viewability && viewabilities.include?(viewability["value"]))           
+    end
+
+    return entries
+  end
+  
+  # HPricot element, and a value of the rel attribute on the <link> you are
+  # interested in. 
+  def extract_link(entry, rel_type)
+    entry.at("link[@rel='#{rel_type}']")["href"]
+  end
+  
   # We only create a fulltext service response if we have a full view.
   # We create only as many full views as are specified in config.
   def create_fulltext_service_response(request, data)
     display_name = @display_name
+        
+    full_views = find_entries(data, ViewFullUri)
     
-    full_views = data.select { |d| d['preview'] == 'full'  }
     return nil if full_views.empty?
     count = 0
     full_views.each do |fv|
+      uri = extract_link(fv, LinkPreviewUri)
+    
       #note = fv['bib_key'].gsub(':', ': ') #get_search_title(request.referent)
       request.add_service_response(
         {:service=>self, 
           :display_text=>display_name, 
-          :url=>fv['preview_url']}, 
+          :url=>uri}, 
           #:notes=>note}, 
         [ :fulltext ]) 
       count += 1
@@ -159,14 +176,16 @@ class GoogleBookSearch < Service
   end
 
   def add_search_inside(request, data)
-    searchable_view = data.find{|d| d['preview'] == 'full' or d['preview'] == 'partial' }    
-
+    # Just take the first one we find, if multiple
+    searchable_view = find_entries(data, [ViewFullUri, ViewPartialUri])[0]        
+    
     if ( searchable_view )
+      url = extract_link(searchable_view, LinkInfoUri)
       
       request.add_service_response( 
         {:service => self,
         :display_text=>@display_name,
-        :url=> searchable_view['info_url']},
+        :url=> url},
         [:search_inside]
        )                  
     end
@@ -174,13 +193,18 @@ class GoogleBookSearch < Service
   end
   
   # create highlighted_link service response for partial and noview
-  # Only show one web link. prefer a partial view over a noview
-  def do_web_links(request, data)    
+  # Only show one web link. prefer a partial view over a noview.
+  # Some noviews have a snippet/search, but we have no way to tell. 
+  def do_web_links(request, data)
+
+    
     # some noview items will have a snippet view, but we have no way to tell
-    info_views = data.select{|d| d['preview'] == 'partial' }    
+    info_views = find_entries(data, ViewPartialUri)
+    viewability = ViewPartialUri
     
     if info_views.blank?
-      info_views = data.select{|d| d['preview'] == 'noview'}
+      info_views = find_entries(data, ViewNoneUri)
+      viewability = ViewNoneUri  
     end
     
     # Shouldn't ever get to this point, but just in case
@@ -189,12 +213,12 @@ class GoogleBookSearch < Service
     url = ''
     iv = info_views.first
     type = nil
-    if iv['preview'] == 'partial'
-      url = iv['preview_url']      
+    if (viewability == ViewPartialUri && 
+        url = extract_link(iv, LinkPreviewUri))
       display_text = @display_name
       type = ServiceTypeValue[:excerpts]
     else
-      url = iv['info_url']
+      url = extract_link(iv, LinkInfoUri)
       display_text = "Book Information"
       type = ServiceTypeValue[:highlighted_link]
     end
@@ -206,45 +230,23 @@ class GoogleBookSearch < Service
        )
   end
   
-  # We don't need to present a link for every bibkey if they are duplicates.
-  # We test duplicates by comparing info_urls. This ought to be safe since if
-  #   gbs returns a hit it ought to at least have an info_url.
-  # Right now we keep bibkey a string and just stuff in the other bibkeys.
-  # FIXME could be just stoopid to keep bibkey as a string, but then again we
-  #   might not need it at this stage so just discard it?
-  def dedupe(data)
-    kept_urls = []
-    saved = []
-    data.each do |d|
-      if kept_urls.include? d['info_url']
-        # stuff the bibkey into a matching hit
-        matching_saved = saved.select { |s| s['info_url'] == d['info_url']  }[0]
-        matching_saved['bib_key'] <<  ', ' << d['bib_key']
-      else # move into saved and record the info_url
-        kept_urls << d['info_url']
-        saved << d
-      end
-    end
-    return saved
-  end
+
   
-#  def extract_id(single_record)
-#     m = (single_record['info_url']).scan(/id=(.*)&/)
-#     m[0]
-#  end
  
   # Not all responses have a thumbnail_url. We look for them and return the 1st.
   def find_thumbnail_url(data)
-    thumbnail_urls = data.select{|d| d['thumbnail_url']}
-    # pick the first of the available thumbnails
-    thumbnail_urls[0]['thumbnail_url'] unless thumbnail_urls.empty?
+    entries = data.search("/*/entry").collect do |entry|
+      thumb_entry = entry.at("link[@rel='#{LinkThumbnailUri}']")
+      return thumb_entry ? thumb_entry['href'] : nil                 
+    end
+    # removenill values
+    entries.compact!    
+    
+    # pick the first of the available thumbnails, or nil
+    return entries[0]
   end
   
-  # FIXME currently we run this service foreground so we can pick up cover 
-  #   images. If we want this as a background service we need to make
-  #   cover_image a background service.
-  #   ( We just need to fix the view AJAX updater to update the cover image div 
-  #   for cover image background services. This can be done. )
+
   def add_cover_image(request, url)
     # We do like in Amazon service and return three sizes of images. 
     # it seems only size 1 = large and 5 = small work so medium and large 
@@ -261,9 +263,7 @@ class GoogleBookSearch < Service
           :display_text => 'Cover Image',
           :key=> size, 
           :url => zoom_url, 
-          # FIXME how is service_data used? we just put in fake data for asin
-          # and repeated the size from key
-          :service_data => {:asin => 'asin', :size => size }
+          :service_data => { :size => size }
         },
         [ServiceTypeValue[:cover_image]])
     end
