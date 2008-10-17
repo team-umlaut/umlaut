@@ -307,9 +307,12 @@ class ResolveController < ApplicationController
     # First, is it over-ridden in url?
     if ( params['umlaut.skip_resolve_menu'] == 'false')
       return nil
+    elsif ( params['umlaut.skip_resolve_menu_for_type'] )
+      skip = {:service_types => params['umlaut.skip_resolve_menu_for_type'] }
     end
-    # Otherwise, load from app config
-    skip  = AppConfig.param('skip_resolve_menu', false) if skip.nil?
+    
+    # Otherwise if not from url, load from app config
+    skip  ||= AppConfig.param('skip_resolve_menu', false) if skip.nil?
 
     if (skip.kind_of?( FalseClass ))
       # nope
@@ -332,8 +335,10 @@ class ResolveController < ApplicationController
           :conditions => ["service_type_value_id = ?", service.id])
         # Make sure we don't redirect to any known frame escapers!
         candidates.each do |st|
-          
-          unless known_frame_escaper?(st)
+
+          # Don't use it for direct link unless we know it can
+          # handle frameset, or we've chosen not to link with frameset. 
+          if ( ! known_frame_escaper?(st) ) 
             return_value = st
             break;
           end
@@ -346,6 +351,7 @@ class ResolveController < ApplicationController
       end
     elsif (skip.kind_of?(Proc ))
       return_value = skip.call( :request => @user_request )
+      
     else
       logger.error( "Unexpected value in app config 'skip_resolve_menu'; assuming false." )
     end
@@ -465,7 +471,16 @@ class ResolveController < ApplicationController
     
     expire_old_responses();
 
-
+    # Register background services as queued before we do anything,
+    # so if another request/refresh comes in to this same Umlaut
+    # request, won't try and run them again.
+    # Background services. First register them all as queued, so status
+    # checkers can see that.
+    ('a'..'z').each do | priority |
+      @collection.service_level(priority).each do | service |
+        @user_request.dispatched_queued(service)
+      end
+    end
     
     # Foreground services
     (0..9).each do | priority |
@@ -480,13 +495,7 @@ class ResolveController < ApplicationController
     # may have changed in another thread. 
     @user_request.referent.referent_values.reload
 
-    # Background services. First register them all as queued, so status
-    # checkers can see that.
-    ('a'..'z').each do | priority |
-      @collection.service_level(priority).each do | service |
-        @user_request.dispatched_queued(service)
-      end
-    end
+    # Now we run background services. 
     # Now we do some crazy magic, start a Thread to run our background
     # services. We are NOT going to wait for this thread to join,
     # we're going to let it keep doing it's thing in the background after
