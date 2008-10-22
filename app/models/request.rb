@@ -41,7 +41,7 @@ class Request < ActiveRecord::Base
     # will hook up with the right request even if user has no cookies. 
     # We don't check IP change anymore either, that was too open to
     # mistaken false negative when req.ip was being used. 
-    req = Request.find(request_id) unless request_id.nil?
+    req = Request.find_by_id(request_id) unless request_id.nil?
     
     # No match?  Just pretend we never had a request_id in url at all.
     request_id = nil if req == nil
