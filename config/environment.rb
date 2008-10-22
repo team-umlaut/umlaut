@@ -243,6 +243,8 @@ Rails::Initializer.run do |config|
         /^SPRINGER_LINK/,
       # Cookie/frameset issue. Reproducible on IE7, not on Firefox. 
         /^WILEY_INTERSCIENCE/,
+      # And now Wiley stuff is actually in Synergy
+        /^SYNERGY_BLACKWELL/,
       # Mysterious problem in frameset but not direct link, in IE only.
       # Assume cookie problem. Could be wrong, very very low reproducibilty.
        'LAWRENCE_ERLBAUM_ASSOCIATES_LEA_ONLINE',
