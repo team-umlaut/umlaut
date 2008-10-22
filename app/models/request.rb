@@ -39,10 +39,9 @@ class Request < ActiveRecord::Base
     # this request, in this session.  We don't actually match the
     # session_id in the cache lookup though, so background processing
     # will hook up with the right request even if user has no cookies. 
-    # But if IP has changed, don't re-use the request, becuase ip change
-    # may result in different responses.
-    client_ip = params['req.ip'] || a_rails_request.remote_ip()
-    req = Request.find(:first, :conditions => ["id = ? and client_ip_addr = ?", request_id, client_ip] ) unless request_id.nil?
+    # We don't check IP change anymore either, that was too open to
+    # mistaken false negative when req.ip was being used. 
+    req = Request.find(request_id) unless request_id.nil?
     
     # No match?  Just pretend we never had a request_id in url at all.
     request_id = nil if req == nil
@@ -50,7 +49,7 @@ class Request < ActiveRecord::Base
     # Serialized fingerprint of openurl http params, suitable for looking
     # up in the db to see if we've seen it before. 
     param_fingerprint = self.co_params_fingerprint( co_params )
-    
+    client_ip = params['req.ip'] || a_rails_request.remote_ip()
     unless (req)
       # If not found yet, then look for an existing request that had the same
       # openurl params as this one, in the same session. In which case, reuse.
