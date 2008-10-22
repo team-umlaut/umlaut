@@ -143,7 +143,15 @@ class ResolveController < ApplicationController
     # link is a ServiceType object
     link = should_skip_menu
     if ( ! link.nil? )
-      url = frameset_action_url( link, {'umlaut.skipped_menu' => 'true'})
+      if (params["umlaut.link_with_frameset"] !=  "false")
+        url = frameset_action_url( link, {'umlaut.skipped_menu' => 'true'})
+      else        
+        new_params = { :controller => "link_router",
+                   :action => "index",
+                   :id => link.id }
+      
+        url = url_for(new_params)
+      end
       redirect_to url
     else
       # Render configed view, if configed, or "index" view if not. 
@@ -319,7 +327,6 @@ class ResolveController < ApplicationController
   # that should be directly linked to. 
   def should_skip_menu
     # From usabilty test, do NOT skip if coming from A-Z list/journal lookup.
-
     # First, is it over-ridden in url?
     if ( params['umlaut.skip_resolve_menu'] == 'false')
       return nil
