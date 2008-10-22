@@ -4,7 +4,11 @@
 # umlaut request (that presumably was an OpenURL). 
 
 class ResolveController < ApplicationController
-  before_filter :init_processing  
+  before_filter :init_processing
+  # Init processing will look at this list, and for actions mentioned,
+  # will not create a @user_request if an existing one can't be found.
+  # Used for actions meant only to deal with existing requests. 
+  @@no_create_request_actions = ['background_update']
   after_filter :save_request
   
   # Take layout from config, default to resolve_basic.rhtml layout. 
@@ -26,7 +30,14 @@ class ResolveController < ApplicationController
 
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
-    @user_request ||= Request.new_request(params, session, request )
+    options = {}
+    if (  @@no_create_request_actions.include?(params[:action])  )
+      options[:allow_create] = false
+    end  
+    @user_request ||= Request.new_request(params, session, request, options )
+
+    # If we chose not to create a request and still don't have one, bale out.
+    return unless @user_request
     
     # Ip may be simulated with req.ip in context object, or may be
     # actual, request figured it out for us. 
@@ -197,6 +208,12 @@ class ResolveController < ApplicationController
   # Action called by AJAXy thing to update resolve menu with
   # new stuff that got done in the background. 
   def background_update
+    unless (@user_request)
+      # Couldn't find an existing request? We can do nothing.
+      raise Exception.new("background_update could not find an existing request to pull updates from, umlaut.request_id #{params["umlaut.request_id"]}")
+    end
+    
+    
     # Might be a better way to store/pass this info.
     # Divs that may possibly have new content.
     map = AppConfig.param("bg_update_map")
@@ -243,7 +260,6 @@ class ResolveController < ApplicationController
   # the caller a URL to refresh from if neccesary.   
   
   def partial_html_sections
-      
     # Tell our application_helper#url_for to generate urls with hostname
     @generate_urls_with_host = true
 
@@ -395,7 +411,8 @@ class ResolveController < ApplicationController
   # Helper method used here in controller for outputting js to
   # do the background service update. 
   def background_update_js(div_list, error_div_info=nil)
-    render :update do |page|      
+    render :update do |page|
+    
         # Calculate whether there are still outstanding responses _before_
         # we actually output them, to try and avoid race condition.
         # If no other services are running that might need to be
@@ -410,7 +427,7 @@ class ResolveController < ApplicationController
           keep_updater_going ||= @user_request.service_type_in_progress?(type)
           break if keep_updater_going # good enough, we need the updater to keep going
         end
-    
+
         # Stop the Prototype PeriodicalExecuter object if neccesary. 
         if (! keep_updater_going )
           page << "umlaut_background_executer.stop();"
@@ -468,7 +485,6 @@ class ResolveController < ApplicationController
   end
 
   def service_dispatch()
-    
     expire_old_responses();
 
     # Register background services as queued before we do anything,
@@ -481,7 +497,6 @@ class ResolveController < ApplicationController
         @user_request.dispatched_queued(service)
       end
     end
-    
     # Foreground services
     (0..9).each do | priority |
     
