@@ -8,7 +8,8 @@
 #   complicated or anything.
 %>
 
-<% # only include if we have any background services. We could check to make
+<% 
+   # only include if we have any background services. We could check to make
    # sure we only have background services we care about, but it's more work--
    # the updater will only run ONCE at most wrongly, then the
    # background_update action will stop it. 
@@ -16,7 +17,16 @@
 %>
 <script type="text/javascript">
 //<![CDATA[
-  umlaut_background_executer =  new PeriodicalExecuter(function() { new Ajax.Request("<%= url_for({:controller => 'resolve', :action=> 'background_update', :'umlaut.request_id' => @user_request.id}) %>", {asynchronous:true, evalScripts:true});  }, <%= AppConfig.param("poll_wait_seconds", 4) %>);
+  umlaut_background_executer =  new PeriodicalExecuter(function() { new Ajax.Request("<%= url_for({:controller => 'resolve', :action=> 'background_update', :'umlaut.request_id' => @user_request.id}) %>", {asynchronous:true, evalScripts:true, 
+     onFailure: function(response) {
+       umlaut_background_executer.stop();
+       spinners = document.getElementsByClassName("spinner");
+       for(i = 0; i < spinners.length; i++) {
+         spinners[i].update("Error, could not fetch more.");
+       }
+
+      }
+  });  }, <%= AppConfig.param("poll_wait_seconds", 4) %>);
 //]]>
 </script>  
 <%
