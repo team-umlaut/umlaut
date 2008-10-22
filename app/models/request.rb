@@ -18,10 +18,12 @@ class Request < ActiveRecord::Base
   # holds a hash representing submitted http params
   serialize :http_env
 
+  # Somewhat mis-named, because it doesn't always create a new request.
   # Either creates a new Request, or recovers an already created Request from
   # the db--in either case return a Request matching the OpenURL.
-  def self.new_request(params, session, a_rails_request )
-
+  # options[:allow_create] => false, will not create a new request, return
+  # nil if no existing request can be found. 
+  def self.new_request(params, session, a_rails_request, options = {} )
     # Pull out the http params that are for the context object,
     # returning a CGI::parse style hash, customized for what
     # ContextObject.new_from_form_vars wants. 
@@ -64,14 +66,14 @@ class Request < ActiveRecord::Base
       req.referent = Referent.find_or_create_by_context_object(context_object, req.referrer)
     end
 
-    unless (req)
+    unless (req || options[:allow_create] == false)
       # didn't find an existing one at all, just create one
       req = self.create_new_request!( :params => params, :session => session, :rails_request => a_rails_request, :contextobj_fingerprint => param_fingerprint, :context_object => context_object )
     end
 
     return req
   end
-
+    
   # input is a Rails request (representing http request)
   # We pull out a hash of request params (get and post) that
   # define a context object. We use CGI::parse instead of relying
@@ -239,10 +241,9 @@ class Request < ActiveRecord::Base
   # uses cached in memory association, so it wont' be a trip to the
   # db every time you call this. 
   def services_in_progress
-    
     # Intentionally using the in-memory array instead of going to db.
     # that's what the "to_a" is. Minimize race-condition on progress
-    # check, to some extent, although it doesn't really get rid of it. 
+    # check, to some extent, although it doesn't really get rid of it.
     dispatches = self.dispatched_services.to_a.find_all do | ds |
       (ds.status == DispatchedService::Queued) || 
       (ds.status == DispatchedService::InProgress)
@@ -404,7 +405,9 @@ class Request < ActiveRecord::Base
   # This method will exclude certain params that are not part of the context
   # object, or which we do not want to consider for equality, and will
   # then serialize in a canonical way such that two co's considered
-  # equivelent will have equivelent serialization. 
+  # equivelent will have equivelent serialization.
+  #
+  # Returns nil if there aren't any params to include in the fingerprint.
   def self.co_params_fingerprint(params)
     # Don't use ctx_time, consider two co's equal if they are equal but for ctx_tim. 
     excluded_keys = ["action", "controller", "page", /^umlaut\./,  "rft.action", "rft.controller", "ctx_tim"]
@@ -429,6 +432,8 @@ class Request < ActiveRecord::Base
           pair[1].sort! if (pair[1] && pair[1].respond_to?("sort!"))
       end
     end
+
+    return nil if params.blank?
     
     # And YAML-ize for a serliazation
     serialized = params.to_yaml
