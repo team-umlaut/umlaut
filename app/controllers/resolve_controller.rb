@@ -318,17 +318,20 @@ class ResolveController < ApplicationController
   # should be displayed, or the ServiceType join object
   # that should be directly linked to. 
   def should_skip_menu
-    # For usabilty test, do NOT skip if coming from A-Z list/journal lookup.
+    # From usabilty test, do NOT skip if coming from A-Z list/journal lookup.
 
     # First, is it over-ridden in url?
     if ( params['umlaut.skip_resolve_menu'] == 'false')
       return nil
-    elsif ( params['umlaut.skip_resolve_menu_for_type'] )
-      skip = {:service_types => params['umlaut.skip_resolve_menu_for_type'] }
+    elsif ( params['umlaut.skip_resolve_menu_for_type'] )      
+      skip = {:service_types => params['umlaut.skip_resolve_menu_for_type'].split(",") }
+      skip[:force] = true if params['umlaut.force_skip_resolve'] == "true"
     end
     
     # Otherwise if not from url, load from app config
     skip  ||= AppConfig.param('skip_resolve_menu', false) if skip.nil?
+
+    
 
     if (skip.kind_of?( FalseClass ))
       # nope
@@ -353,8 +356,9 @@ class ResolveController < ApplicationController
         candidates.each do |st|
 
           # Don't use it for direct link unless we know it can
-          # handle frameset, or we've chosen not to link with frameset. 
-          if ( ! known_frame_escaper?(st) ) 
+          # handle frameset, or we've overridden that check. 
+          # TODO: Or, if we've chosen not to link with frameset feature anyway.
+          if (skip[:force] == true || ! known_frame_escaper?(st) ) 
             return_value = st
             break;
           end
