@@ -11,7 +11,12 @@
          ! service_type_in_progress?('search_inside') ) %>
     <div id="search_inside" class="main_column_section">
 
-    <h3 id="audio_heading">Search inside this <%= @user_request.referent.type_of_thing %></h3>
+    <h3 id="audio_heading">Search inside this 
+    <%= 
+     thing = @user_request.referent.type_of_thing
+     thing = 'journal' if thing == 'article'
+     thing
+     %></h3>
     <% # We don't show the search box unless we have a search provider AND
         # we're completely done loading search providers. Too hard
         # to deal with AJAX updating of search providers without
