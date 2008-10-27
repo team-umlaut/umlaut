@@ -55,13 +55,13 @@ class LinkRouterController < ApplicationController
   protected
   # Should a link be displayed inside our banner frameset?
   # Depends on config settings, url params, and 
-  # whether the resolve menu was skipped or not. 
-  def link_with_frameset?(svc_type)
+  # whether the resolve menu was skipped or not.
+  def link_with_frameset?( svc_type)
     # Over-ridden in url?
     if ( params['umlaut.link_with_frameset'] == 'false' )
-      config = false
+      return false
     elsif ( params['umlaut.link_with_frameset'] == 'true')
-      config = true
+      return true
     end
 
     # Otherwise load from app config
