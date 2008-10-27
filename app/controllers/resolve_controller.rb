@@ -332,7 +332,6 @@ class ResolveController < ApplicationController
       return nil
     elsif ( params['umlaut.skip_resolve_menu_for_type'] )      
       skip = {:service_types => params['umlaut.skip_resolve_menu_for_type'].split(",") }
-      skip[:force] = true if params['umlaut.force_skip_resolve'] == "true"
     end
     
     # Otherwise if not from url, load from app config
@@ -364,8 +363,9 @@ class ResolveController < ApplicationController
 
           # Don't use it for direct link unless we know it can
           # handle frameset, or we've overridden that check. 
-          # TODO: Or, if we've chosen not to link with frameset feature anyway.
-          if (skip[:force] == true || ! known_frame_escaper?(st) ) 
+          # TODO: Or, if we've chosen not to link with frameset feature anyway,
+          # using other configuration. Tricky. 
+          if (params['umlaut.link_with_frameset'] == "false" || ! known_frame_escaper?(st) ) 
             return_value = st
             break;
           end
