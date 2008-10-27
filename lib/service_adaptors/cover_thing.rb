@@ -47,7 +47,8 @@ class CoverThing < Service
       },
       [ServiceTypeValue[:cover_image]])
     end
-    
+
+    return request.dispatched(self, true)    
   end
   
  def image_url(referent)
