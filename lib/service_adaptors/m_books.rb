@@ -160,7 +160,7 @@ class MBooks < Service
       return super(service_type, submitted_params)
     else
       base = service_type.service_response[:url]      
-      query = CGI.escape(submitted_params["query"])
+      query = CGI.escape(submitted_params["query"] || "")
       url = base + "&q1=#{query}"
 
       return url

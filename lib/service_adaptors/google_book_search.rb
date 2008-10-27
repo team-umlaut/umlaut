@@ -276,7 +276,7 @@ class GoogleBookSearch < Service
     else
       # search inside!
       base = service_type.service_response[:url]
-      query = CGI.escape(submitted_params["query"])
+      query = CGI.escape(submitted_params["query"] || "")
       url = base + "&q=#{query}#search"
       return url
     end

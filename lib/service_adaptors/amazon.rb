@@ -288,7 +288,7 @@ class Amazon < Service
     else
       # search inside!
       base = service_type.service_response[:url]
-      query = CGI.escape(submitted_params["query"])
+      query = CGI.escape(submitted_params["query"] || "")
       url = base + "/ref=sib_dp_srch_pop?v=search-inside&keywords=#{query}&go=Go%21"
       return url
     end
