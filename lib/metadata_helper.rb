@@ -106,7 +106,7 @@ module MetadataHelper
   # subscheme: "lccn", "oclcnum", "isbn", "issn", or anything else that could be found in either a urn an info uri or a referent metadata.
   # referent: an umlaut Referent object
   #
-  # returns nil if no identifier found, otherwise the bare identifeir (not formatted into a urn/uri right now. Option should be maybe be added?) 
+  # returns nil if no identifier found, otherwise the bare identifier (not formatted into a urn/uri right now. Option should be maybe be added?) 
   def get_identifier(type, sub_scheme, referent )
     raise Exception.new("type must be :urn or :info") unless type == :urn or type == :info
 
@@ -123,8 +123,10 @@ module MetadataHelper
       # try the referent metadata
       bare_identifier = referent.metadata[sub_scheme]
     end
+
     
-    return bare_identifier
+    return bare_identifier.blank? ? nil : bare_identifier
+    
     
   end
   
