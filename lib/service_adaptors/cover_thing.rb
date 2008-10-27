@@ -33,7 +33,6 @@ class CoverThing < Service
     # is 43 bytes.
     # Not sure why response is ever nil, but sometimes it is, let's log
     # some info.
-    debugger
     if ( response.nil? || response.content_length.nil? )
       RAILS_DEFAULT_LOGGER.warn("CoverThing: Null response for #{uri}, status #{response.class}")
     end
