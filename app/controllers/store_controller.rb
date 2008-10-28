@@ -15,7 +15,9 @@ class StoreController < ApplicationController
       referent = perm.referent
     elsif (perm && perm.context_obj_serialized)
       stored_co = perm.restore_context_object
-      referent = Referent.create_by_context_object( stored_co, :permalink => false )
+
+      # And a referrent, no referrer for now, we'll restore it later. 
+      referent = Referent.create_by_context_object( stored_co, nil, :permalink => false )
       perm.referent = referent
       perm.save!
       perm.add_tag_uri!( referent )
@@ -27,7 +29,7 @@ class StoreController < ApplicationController
       # object to send the user to the request. We can not resolve
       # this permalink!
       
-      RAILS_DEFAULT_LOGGER.error("Permalink request could not be resolved. Returning 404. Permalink id: #{perm.id}")
+      RAILS_DEFAULT_LOGGER.error("Permalink request could not be resolved. Returning 404. Permalink id: #{params[:id]}")
       
       render :file=>File.join(RAILS_ROOT,"public/404.html"), :layout=>false, :status=>404
       return
@@ -40,7 +42,7 @@ class StoreController < ApplicationController
     # We preserve original referrer. Even though this isn't entirely accurate
     # this is neccesary to get SFX to handle it properly when we call to SFX,
     # including handling source-specific private data, etc. 
-    co.referrer.add_identifier( perm.orig_rfr_id )
+    co.referrer.add_identifier( perm.orig_rfr_id ) if perm.orig_rfr_id
 
     # Let's add any supplementary umlaut params passed to us
     # Everything except the 'id' which we used for the Rails action. 
