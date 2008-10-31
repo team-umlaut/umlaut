@@ -195,7 +195,7 @@ function setDate() {
     about your article. If one piece of information is wrong, it could be causing
     the problem.</li>
   <% if help_url = AppConfig.param('help_url') %>
-  <li>For technical support, including access problems, please <a href="http://www.library.gatech.edu/email_form.php?type=org&amp;id=265">contact us</a>.</li>
+  <li>For technical support, including access problems, please <a href="<%= help_url %>">contact us</a>.</li>
   <% end %>
   </ul>
 
