@@ -46,8 +46,8 @@ class Worldcat < Service
 
     # Do some cleanup of the value. Sometimes spaces or other
     # weird chars get in there, why not strip out everything that
-    # isn't a number?
-    isxn_value.sub!( /[^\d]/, '')
+    # isn't a number or X?
+    isxn_value.sub!( /[^\dX]/, '')
     # and URL escape just to be safe, although really shouldn't be neccesary
     isxn_value = URI.escape( isxn_value )
     
