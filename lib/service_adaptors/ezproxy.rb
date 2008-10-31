@@ -1,8 +1,16 @@
+#  By default, proxies a URL after checking the EZProxy API to see if
+#  it's proxy-able. But you can set the config param precheck_with_api
+#  to false, and then this will simply automatically proxy all links
+#  from umlaut responses.  That is useful if you have your EZProxy
+#  server set to automatically redirect non-proxyable URLs to the original
+#  non-proxied version, the API check may not be neccesary. 
+
 # Required parameters:
-#   proxy_server
+#   proxy_server: hostname of EZProxy instance (no "http://", just hostname)
+#
+#   optional params:
 #   proxy_password (the ProxyURLPassword  parameter in ezproxy.cfg; must be set
 #                   to turn on proxy url api feature ).
-#   optional params:
 #   proxy_url_path: defaults to /proxy_url, the default ezproxy path to call api
 #   exclude_hosts: array of hosts to exclude from proxying _even if_ found in
 #                  ezproxy config. Each entry can be a string, in which
@@ -15,7 +23,7 @@
 
 
 class Ezproxy < Service
-  required_config_params :proxy_server, :proxy_password
+  required_config_params :proxy_server
   
   require 'rexml/document'
   require 'uri'
@@ -23,9 +31,12 @@ class Ezproxy < Service
   require 'cgi'  
 
   def initialize(config)
-    super(config)
+    @precheck_with_api = true
 
-    @proxy_login_path ||= "/login"
+    @proxy_login_path = "/login"
+    
+    super(config)
+    
     
     @proxy_url_path ||= "/proxy_url"
     @proxy_url_path = "/" + @proxy_url_path unless @proxy_url_path[0,1] = '/'
@@ -51,7 +62,14 @@ class Ezproxy < Service
     return nil if already_proxied(orig_url)
 
     return nil if excluded?(orig_url)
-    new_url =  proxy_urls( [orig_url] ).values[0]
+
+    debugger
+    new_url = nil
+    if @precheck_with_api
+      new_url =  check_proxy_urls( [orig_url] ).values[0]
+    else
+      new_url =  auto_proxy_url(orig_url)
+    end
     
     return new_url
   end
@@ -87,11 +105,17 @@ class Ezproxy < Service
     # looped through them all, no match?
     return false
   end
+
+  # pass in a url, this just mindlessly sends it through your
+  # ezproxy instance. 
+  def auto_proxy_url(url)
+    return "http://" + @proxy_server + @proxy_login_path + "?qurl=" + CGI.escape(url)
+  end
   
   # Pass in an array of URLs. Will determine if they are proxyable by EZProxy.
   # Returns a hash, where the key is the original URL, and the value is the
   # proxied url---or nil if could not be proxied. 
-  def proxy_urls(urls)
+  def check_proxy_urls(urls)
     url_doc = REXML::Document.new
     doc_root = url_doc.add_element "proxy_url_request", {"password"=>@proxy_password}
     urls_elem = doc_root.add_element "urls"
