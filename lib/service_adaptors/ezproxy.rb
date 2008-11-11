@@ -63,7 +63,7 @@ class Ezproxy < Service
 
     return nil if excluded?(orig_url)
 
-    debugger
+    #debugger
     new_url = nil
     if @precheck_with_api
       new_url =  check_proxy_urls( [orig_url] ).values[0]
