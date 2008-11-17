@@ -129,5 +129,17 @@ module MetadataHelper
     
     
   end
-  
+
+  # finds and normalizes an LCCN. If multiple LCCNs are in the record,
+  # returns the first one. 
+  def get_lccn(rft)
+    lccn = get_identifier(:info, "lccn", rft)
+    # LCCN can include a 0-3 letter alphabetic prefix, followed by numbers.
+    # No space should be in between the prefix and the numbers.
+    lccn.gsub!(' ', '')
+    # TBD: We could do more checking/normalization, maybe later. 
+    return lccn
+  end
+
+    
 end

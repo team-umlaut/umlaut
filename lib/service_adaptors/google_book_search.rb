@@ -88,7 +88,7 @@ class GoogleBookSearch < Service
   def get_bibkeys(rft)
     isbn = get_identifier(:urn, "isbn", rft)
     oclcnum = get_identifier(:info, "oclcnum", rft)
-    lccn = get_identifier(:info, "lccn", rft)
+    lccn = get_lccn(rft)
 
     # Google oddly seems to want prefix mashed right up
     # with identifier, eg http://books.google.com/books/feeds/volumes?q=OCLC32012617 

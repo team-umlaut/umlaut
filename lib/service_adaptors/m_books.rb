@@ -91,7 +91,7 @@ class MBooks < Service
   def get_bibkey_parameters(rft)
     isbn = get_identifier(:urn, "isbn", rft)
     oclcnum = get_identifier(:info, "oclcnum", rft)
-    lccn = get_identifier(:info, "lccn", rft)
+    lccn = get_lccn(rft)
         
     yield(isbn, lccn, oclcnum)    
   end
