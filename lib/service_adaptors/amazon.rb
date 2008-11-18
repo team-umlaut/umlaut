@@ -236,7 +236,7 @@ class Amazon < Service
         # distinguish between no results, "look inside", and "search inside".
         response = open(inside_base).read
   
-        if ( response =~ /\<option[^>]*\>Inside this Book\<\/option\>/ )
+        if ( response =~ /Search Inside This Book\:/ )
           # search_inside implies look_inside too. 
           search_inside= true
           look_inside = true
