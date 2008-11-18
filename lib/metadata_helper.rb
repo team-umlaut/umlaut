@@ -134,12 +134,32 @@ module MetadataHelper
   # returns the first one. 
   def get_lccn(rft)
     lccn = get_identifier(:info, "lccn", rft)
-    # LCCN can include a 0-3 letter alphabetic prefix, followed by numbers.
-    # No space should be in between the prefix and the numbers.
-    lccn.gsub!(' ', '')
-    # TBD: We could do more checking/normalization, maybe later. 
+    
+    lccn = normalize_lccn(lccn)
+    
     return lccn
   end
 
-    
+  # Some normalization. See:
+  # http://info-uri.info/registry/OAIHandler?verb=GetRecord&metadataPrefix=reg&identifier=info:lccn/
+  # doesn't validate right now, only normalizes.
+  # tbd, raise exception if invalid string. 
+  def normalize_lccn(lccn)
+    if ( lccn )
+      # remove whitespace
+      lccn = lccn.gsub(/\s/, '')
+      # remove any forward slashes and anything after them
+      lccn = lccn.sub(/\/.*$/, '')
+      # pad anything after a hyphen before removing hyphen, if neccesary
+      lccn = lccn.sub(/-(.*)/) do |match_str| 
+        if $1.length < 6 
+          ("0" * (6 - $1.length)) + $1 
+        else
+          $1
+        end
+      end
+    end
+    return lccn
+  end
+  
 end
