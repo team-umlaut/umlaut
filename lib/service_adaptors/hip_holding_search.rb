@@ -33,7 +33,9 @@ class HipHoldingSearch < Service
     hip_title_index = Hip3::BibSearcher::TITLE_KW_INDEX
     
     title = ref_metadata['jtitle']
-    hip_title_index = Hip3::BibSearcher::SERIAL_TITLE_KW_INDEX if title # use journal title index for jtitle
+    # use journal title index for jtitle.  Some sources add a jtitle when
+    # it's really a book, if there's a btitle too, don't use just serial index.
+    hip_title_index = Hip3::BibSearcher::SERIAL_TITLE_KW_INDEX if (title && ! ref_metadata['btitle']) 
     title = ref_metadata['btitle'] if title.blank?
     title = ref_metadata['title'] if title.blank?
     
