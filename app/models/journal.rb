@@ -1,10 +1,8 @@
 class Journal < ActiveRecord::Base
-  require 'acts_as_ferret'
   has_many :journal_titles
   has_many :coverages
   has_and_belongs_to_many :categories
   belongs_to :title_source
-  acts_as_ferret :fields => [:title, :alternate_titles, :subjects]
 
   # To let code set as read-only, used to create fake objects
   # that were fetched from SFX etc. AR will do the right thing

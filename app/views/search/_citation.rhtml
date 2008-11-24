@@ -44,7 +44,8 @@ end
 <%= ref_meta["atitle"] %>
 
 <% unless ref_meta["atitle"] == @context_object.referent.metadata["atitle"]%>
-	<%= link_to image_tag('http://sfx.galib.uga.edu/sfx_git1/sfx.gif', :border=>0), @current_context_object.to_hash.merge(:controller=>"resolve")%>
+	<%= 
+  link_to( image_tag('http://sfx.galib.uga.edu/sfx_git1/sfx.gif', :border=>0), url_for_with_co( {:controller=>'resolve'}, @current_context_object)) %>
 <% end%>
 </td>
 </tr>
@@ -120,7 +121,7 @@ unless ref_meta['atitle'].nil?
 end
 title_row = '<tr><td width="90" style="vertical-align: top;"><div align="right" class="'+style+'"><strong>'+title_label+':</strong></td><td><span class="'+style+'">'
 
-title_row += link_to title, @co.to_hash.merge(:controller=>"resolve")
+title_row += link_to(title, url_for_with_co({:controller => 'resolve'}, @co))
 
 title_row += '</span></td></tr>'
   unless @page_title

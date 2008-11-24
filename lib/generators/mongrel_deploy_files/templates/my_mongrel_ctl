@@ -1,0 +1,9 @@
+#!/bin/bash
+
+CLEAN=''
+if [[ $1 == 'start' || $1 == 'restart' ]] 
+then  
+  CLEAN='--clean'
+fi
+
+sudo mongrel_rails cluster::$1 -C <%= destination_path('config/umlaut_config/deploy/mongrel_cluster.yml') %> $CLEAN  

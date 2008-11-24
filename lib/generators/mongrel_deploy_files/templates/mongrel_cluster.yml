@@ -1,0 +1,13 @@
+--- 
+user: <%= user %>
+group: <%= group %>
+cwd: <%= destination_path('') %>
+log_file: log/mongrel.log
+port: <%= start_port %>
+environment: production
+address: <%= ip %>
+pid_file: tmp/pids/mongrel.pid
+servers: <%= num_mongrels %>
+<%- if web_prefix != '/' -%>
+prefix: <%= web_prefix %>
+<%- end -%>

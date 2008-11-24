@@ -1,6 +1,0 @@
-# Test database connection, this database will be created and
-# dropped by the activerecord units tests.
-adapter: sqlite3
-database: test/activerecord_provider/database/oaipmhtest
-username: 
-password:

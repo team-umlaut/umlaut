@@ -1,7 +1,5 @@
-require 'acts_as_ferret'
 class JournalTitle < ActiveRecord::Base
   belongs_to :journal, :foreign_key=>'object_id'
-  acts_as_ferret
 
   # To let code set as read-only, used to create fake objects
   # that were fetched from SFX etc. AR will do the right thing

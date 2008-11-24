@@ -12,7 +12,7 @@ class ResolveController < ApplicationController
   after_filter :save_request
   
   # Take layout from config, default to resolve_basic.rhtml layout. 
-  layout AppConfig.param("resolve_layout", "resolve_basic"), 
+  layout AppConfig.param("resolve_layout", "resolve_basic").to_s, 
          :except => [:banner_menu, :bannered_link_frameset, :partial_html_sections]
   require 'json/lexer'
   require 'json/objects'
@@ -33,7 +33,7 @@ class ResolveController < ApplicationController
     options = {}
     if (  @@no_create_request_actions.include?(params[:action])  )
       options[:allow_create] = false
-    end  
+    end
     @user_request ||= Request.new_request(params, session, request, options )
 
     # If we chose not to create a request and still don't have one, bale out.
@@ -137,7 +137,6 @@ class ResolveController < ApplicationController
   end
  		
   def index
-
     self.service_dispatch()
 
     # link is a ServiceType object
@@ -423,7 +422,6 @@ class ResolveController < ApplicationController
   # do the background service update. 
   def background_update_js(div_list, error_div_info=nil)
     render :update do |page|
-    
         # Calculate whether there are still outstanding responses _before_
         # we actually output them, to try and avoid race condition.
         # If no other services are running that might need to be
@@ -452,14 +450,14 @@ class ResolveController < ApplicationController
           # default to partial with same name as div_id
           partial = div[:partial] || div_id 
             
-          page.replace_html div_id, :partial => partial
+          page.replace_html div_id, :partial => partial.to_s
         end
 
         # Now update the error section if neccesary
         if ( ! error_div_info.nil? &&
              @user_request.failed_service_dispatches.length > 0 )
              page.replace_html(error_div_info[:div_id],
-                               :partial => error_div_info[:partial])             
+                               :partial => error_div_info[:partial].to_s)             
         end
     end
   end
