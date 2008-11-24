@@ -16,8 +16,9 @@ class MongrelDeployFilesGenerator < Rails::Generator::Base
 
       m.template("umlaut_http.conf", "config/umlaut_config/deploy/umlaut_http.conf", :assigns => options )
 
+      m.directory("script/local")
       # Giving owner rwx and group rx, nothing for other. 
-      m.template("my_mongrel_ctl", "script/umlaut/my_mongrel_ctl", :assigns => options, :chmod => 0750 )
+      m.template("my_mongrel_ctl", "script/local/my_mongrel_ctl", :assigns => options, :chmod => 0750 )
      
     end
   end
