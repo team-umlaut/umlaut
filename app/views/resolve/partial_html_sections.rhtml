@@ -13,7 +13,7 @@
     <response_count value="<%= section[:response_count] %>" />
     <html_content>
       <%= 
-          html = render(:partial => section[:partial])
+          html = render(:partial => section[:partial].to_s )
           # xml-escape our html, so we can safely embed it in our xml
           # even if it's not valid xhtml, and in one XML 'string'. 
           # We abuse REXML for it's XML-escaping powers. 
