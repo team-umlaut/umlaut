@@ -24,7 +24,14 @@ class Amazon < Service
 
   def initialize(config)
     # defaults
-    @url = 'http://webservices.amazon.com/onca/xml'    
+    @url = 'http://webservices.amazon.com/onca/xml'
+    # This was somehow reverse engineered to get the full-page (non-lightbox)
+    # reader url, which we prefer. Not sure if this will keep working forever,
+    # don't entirely understand what's going on. 
+    @reader_base_url = 'http://www.amazon.com/gp/sitbv3/reader/'
+    # Ordinarly reader url, which often returns the weird 'lightboxed' version.
+    #
+    # @reader_base_url = "http://www.amazon.com/gp/reader/";
     @display_name = "Amazon.com"
     @display_text = "Amazon's page"
     @excerpts_display_text = "Excerpts"
@@ -231,12 +238,14 @@ class Amazon < Service
       # need it for.
       if ( @service_types.include?("highlighted_link") ||
            @service_types.include?("search_inside"))
-        inside_base = "http://www.amazon.com/gp/reader/" + asin
+        inside_base = @reader_base_url + asin
         # lame screen-scrape for search inside availability. We need to
         # distinguish between no results, "look inside", and "search inside".
         response = open(inside_base).read
-  
-        if ( response =~ /Search Inside This Book\:/ )
+
+        # This regexp only suitable for screen-scraping the old-style "sitbv3"
+        # reader page screen
+        if ( response =~ /\<option[^>]*\>Inside this Book\<\/option\>/ )
           # search_inside implies look_inside too. 
           search_inside= true
           look_inside = true
