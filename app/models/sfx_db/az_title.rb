@@ -4,7 +4,9 @@ module SfxDb
     self.primary_key = 'AZ_TITLE_VER3_ID'
 
     belongs_to :object,
-               :foreign_key => 'OBJECT_ID'
+               :foreign_key => 'OBJECT_ID',
+               :class_name => "SfxDb::Object"
+
     has_many  :az_additional_titles,
                :foreign_key => 'AZ_TITLE_VER3_ID'
     has_many  :az_letter_groups,

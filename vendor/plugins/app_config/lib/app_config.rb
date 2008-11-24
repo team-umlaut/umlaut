@@ -40,7 +40,7 @@ module AppConfig
     # Name 'Base' for this class is required by
     # Initializer#initialize_framework_settings method.
     class Base #:nodoc
-        @@parameters = OrderedOptions.new
+        @@parameters = ActiveSupport::OrderedOptions.new
 
         def self.method_missing(name, *arguments)
             @@parameters.method_missing(name, *arguments)

@@ -48,7 +48,7 @@ class SfxBackchannelRecord < Service
 
     spawn(:method => :thread) do
       begin
-        direct_sfx_url = Sfx.pass_through_url(service_type.service_response)
+        direct_sfx_url = Sfx.pass_through_url(service_type.service_response.data_values)
         # now we call that url through a back channel just to record it
         # with SFX.
         

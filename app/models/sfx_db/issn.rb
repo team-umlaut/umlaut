@@ -4,7 +4,9 @@ module SfxDb
     self.primary_key = "ISSN_INTERNAL_ID"
 
     belongs_to :object,
-                :foreign_key => 'OBJECT_ID'
+                :foreign_key => 'OBJECT_ID',
+                :class_name => "SfxDb::Object"
+
    
   end
 end

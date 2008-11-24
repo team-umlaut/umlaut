@@ -57,14 +57,15 @@
         Search inside this <%= @user_request.referent.type_of_thing %> tools may be available. <%= link_to "Find available tools", {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %>
       <% end %>
       
-      <% unless @force_bg_progress_spinner == false # Not just nil, but false  %>
-      <script type="text/javascript">
-      <%= update_page do |page|
-           page.replace_html :progress_search_inside, "#{image_tag('spinner.gif')} Looking for tools to search inside this #{@user_request.referent.type_of_thing}."
-      end
+      <% unless @force_bg_progress_spinner == false # Not just nil, but false  
       %>
-      </script>
-    <% end %>
+        <script type="text/javascript">
+        <%= update_page do |page|
+             page.replace_html(:progress_search_inside, "#{image_tag('spinner.gif')} Looking for tools to search inside this #{@user_request.referent.type_of_thing}.")
+        end
+        %>
+        </script>
+      <% end %>
     </div>
     
   <% end %>

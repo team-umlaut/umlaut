@@ -29,7 +29,7 @@ class ServiceTypeValue < ActiveRecord::Base
   # Syncs db with db/orig_fixed_data/service_type_values.yml, only if
   # the db is out of date with file modified timestamp. 
   def self.load_values
-    db_time = ServiceTypeValue.maximum(:updated_at)
+    db_time = ServiceTypeValue.minimum(:updated_at)
 
     distro_file_time = File.new(@@distro_conf_file).ctime
     local_file_time = File.exists?(@@local_conf_file) ?
@@ -82,6 +82,8 @@ class ServiceTypeValue < ActiveRecord::Base
         hash.each do |key, value|
           value_obj[key] = value
         end
+        # force save by setting updated_at
+        value_obj.updated_at = Time.now
         value_obj.save!
         
         #if (existing)

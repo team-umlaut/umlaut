@@ -146,11 +146,11 @@ class Service
 
   # Default implementation to take a ServiceResponse and parse
   # into a hash of values useful to the view. Basic implementation
-  # just returns the service_response itself, as ServiceResponse
-  # implements the hash accessor method [] . 
+  # just asks ServiceResposne for it's data_values object, which
+  # contains all ServiceResponse data (including arbitrary keys serialized
+  # in the hash) in an object with the hash accessor method [] . 
   def response_to_view_data(service_response)
-      # That's it, pretty simple.
-      return service_response
+      return service_response.data_values
   end
 
   # Sub-class can call class method like:

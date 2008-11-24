@@ -123,7 +123,11 @@ class Institution < ActiveRecord::Base
         inst.default_institution = yaml_record["default_institution"] if yaml_record["default_institution"]
   
         inst.worldcat_registry_id = yaml_record["worldcat_registry_id"] if yaml_record["worldcat_registry_id"]
-      
+
+        # manually set updated_at to force save to db even if no changes,
+        # so we know when we last checked with updated_at.
+        inst.updated_at = Time.now
+        
         inst.save!
         RAILS_DEFAULT_LOGGER.info("Institution #{name} synced.")
       end

@@ -16,3 +16,21 @@ config.action_controller.perform_caching             = true
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
+
+################################
+# Umlaut-specific choices:     #
+################################
+
+# Tell the buffered logger to actually buffer logging in production,
+# for better efficiency. Not sure this actually works, I think Rails
+# flushes it after every request anyway, but can't hurt. 
+
+config.logger.auto_flushing = 30 if config.logger.methods.find{|m| m == 'auto_flushing='}
+
+# Call particular environment-specific local umlaut environment-like file. 
+path = File.join(RAILS_ROOT, "config", "umlaut_config", "environments", "production.rb")
+if File.exists?( path )
+    load path 
+    umlaut_configuration( config )
+end
+

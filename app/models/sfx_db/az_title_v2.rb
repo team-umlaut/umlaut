@@ -6,7 +6,10 @@ module SfxDb
     self.primary_key = 'OBJECT_ID' # This is a lie, it's really a compound pk, but it works anyway for what we need. Rails doesn't do compound pks formally. 
 
     belongs_to :object,
-               :foreign_key => 'OBJECT_ID'
+               :foreign_key => 'OBJECT_ID',
+               :class_name => "SfxDb::Object"
+
+               
 
     def to_context_object
       co = OpenURL::ContextObject.new

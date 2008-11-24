@@ -4,6 +4,7 @@ module SfxDb
     self.primary_key = 'INTERNAL_ID'
 
     belongs_to :target,
-               :foreign_key => 'TARGET'
+               :foreign_key => 'TARGET',
+               :class_name => "SfxDb::Target"
   end
 end

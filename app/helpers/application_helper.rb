@@ -6,9 +6,9 @@ module ApplicationHelper
   # to work properly. Just set @generate_url_with_host = true
   # in your controller, and urls will be generated with hostnames
   # for the remainder of that action. 
-  def url_for(options={}, *parameters_for_method_reference)          
+  def url_for(options={})          
     options[:only_path] = false if @generate_urls_with_host && options[:only_path].nil?
-    super(options, parameters_for_method_reference)          
+    super(options)          
   end
 
   # over-ride image_path to generate complete urls with hostname and everything

@@ -4,6 +4,8 @@ module SfxDb
     self.primary_key = 'AZ_TITLE_SEARCH_VER3_ID'
 
     belongs_to :az_title,
-               :foreign_key => 'AZ_TITLE_VER3_ID'
+               :foreign_key => 'AZ_TITLE_VER3_ID',
+               :class_name => "SfxDb::AzTitle"
+
   end
 end
