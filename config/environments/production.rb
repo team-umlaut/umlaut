@@ -31,6 +31,6 @@ config.logger.auto_flushing = 30 if config.logger.methods.find{|m| m == 'auto_fl
 path = File.join(RAILS_ROOT, "config", "umlaut_config", "environments", "production.rb")
 if File.exists?( path )
     load path 
-    umlaut_configuration( config )
+    umlaut_configuration( config )  if methods.find {|m| m == "umlaut_configuration"}
 end
 
