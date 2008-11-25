@@ -6,9 +6,11 @@ module SfxDb
     #has_many :issns,
     #          :foreign_key => 'OBJECT_ID'
     has_many  :titles,
-              :foreign_key => 'OBJECT_ID'
+              :foreign_key => 'OBJECT_ID',
+              :class_name => 'SfxDb::Title'
     has_many   :publishers,
-              :foreign_key => 'OBJECT_ID'
+              :foreign_key => 'OBJECT_ID',
+              :class_name => 'SfxDb::Publisher'
     has_many  :az_titles,
               :foreign_key=>'OBJECT_ID'
 
