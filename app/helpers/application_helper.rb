@@ -14,13 +14,17 @@ module ApplicationHelper
   # over-ride image_path to generate complete urls with hostname and everything
   # if @generate_url_with_host is set. This makes image_tag generate
   # src with full url with host. See #url_for
-  def image_path(source)
+  def path_to_image(source)
     path = super(source)
     if @generate_urls_with_host    
       path = request.protocol() + request.host_with_port() + path
     end
     return path
   end
+  # Rails2 uses 'path_to_image' instead, that's what we have to override,
+  # we used to use image_path, so let's alias that too. 
+  alias :image_path :path_to_image 
+
   
   # pass in an OpenURL::ContextObject, outputs a link.
   def resolver_link(context_object, params={})
