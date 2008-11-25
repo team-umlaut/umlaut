@@ -12,4 +12,6 @@
 # local config. 
 
 
-
+def umlaut_configuration(config)
+  # config.whatever = whatever
+end
