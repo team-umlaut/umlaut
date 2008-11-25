@@ -47,6 +47,9 @@ Rails::Initializer.run do |config|
     end
     config.logger = our_logger
 
+
+
+
   config.after_initialize do
     # Turning on ActiveRecord concurrency is neccesary because we use threading
     # for Umlaut
@@ -61,12 +64,18 @@ Rails::Initializer.run do |config|
     # threads, but it should be pretty big, probably around as big as
     # how many services you have configured.
     # For now, let's stay on Rails 2.1.
-    
+
+    # Make sure the 'json' gem is loaded appropriately
+    # Will first try to load C version, if not found
+    # will take pure ruby version bundled with Umlaut. 
+    require 'json'
+    # For the json gem, "To get the best compatibility to rails? JSON implementation, you can add:"
+    require 'json/add/rails'
 
     # Call local umlaut intializers
-      Dir["#{RAILS_ROOT}/config/umlaut_config/initializers/**/*.rb"].sort.each do |initializer|
- 	        load(initializer)
-      end
+    Dir["#{RAILS_ROOT}/config/umlaut_config/initializers/**/*.rb"].sort.each do |initializer|
+        load(initializer)
+    end
 
     # Reset all our DependentConfigs. Cool!
     DependentConfig.permanently_reset_all

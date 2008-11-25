@@ -45,6 +45,8 @@ class ServiceBundle
               local_service.handle_wrapper(local_request)
             end
             
+           
+            
           rescue Exception => e
             # Thread exception raising is weird, so we catch it inside
             # the thread, make the service a failure, and save

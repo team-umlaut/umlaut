@@ -14,8 +14,7 @@ class ResolveController < ApplicationController
   # Take layout from config, default to resolve_basic.rhtml layout. 
   layout AppConfig.param("resolve_layout", "resolve_basic").to_s, 
          :except => [:banner_menu, :bannered_link_frameset, :partial_html_sections]
-  require 'json/lexer'
-  require 'json/objects'
+  #require 'json/lexer'
 
   # If a background service was started more than 30 seconds
   # ago and isn't finished, we assume it died.
