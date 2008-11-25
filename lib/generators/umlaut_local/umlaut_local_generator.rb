@@ -8,7 +8,7 @@ class UmlautLocalGenerator < Rails::Generator::Base
       m.directory "config/umlaut_config"
       m.directory "config/umlaut_config/initializers/umlaut"
       m.directory "config/umlaut_config/environments"
-
+    
       # Create template files
       m.file "services.yml-dist", "config/umlaut_config/services.yml"
       m.file "institutions.yml-dist", "config/umlaut_config/institutions.yml"
@@ -24,13 +24,12 @@ class UmlautLocalGenerator < Rails::Generator::Base
       # works. 
       distro_rel_path = File.join( "../../../../config/initializers/umlaut".split("/"))
 
-      Dir.foreach( File.join(RAILS_ROOT, "config", "umlaut_config", "initializers", "umlaut" )) do |file_name|
+      Dir.foreach( File.join(RAILS_ROOT, "config", "initializers", "umlaut" )) do |file_name|
         # skip files begining with a period, such as ".svn", "." and ".."
         # skip files beginnning "#" too, vi temp files
         next if file_name[0..0] == '.'
         next if file_name[0..0] == '#'
 
-        
         m.file( File.join(distro_rel_path, file_name), "config/umlaut_config/initializers/umlaut/#{file_name}") do |file|
             output = ""
             file.each_line do |line|
