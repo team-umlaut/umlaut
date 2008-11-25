@@ -4,6 +4,6 @@ class WidenRequestParams < ActiveRecord::Migration
   end
 
   def self.down
-    change_column :requests, :params, :limit => 1024
+    change_column :requests, :params, :string, :limit => 1024
   end
 end
