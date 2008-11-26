@@ -81,7 +81,7 @@ module ResolveHelper
   def cover_image_response(size='medium')
     cover_images = get_service_type('cover_image')
     cover_images.each do |st|
-      return st if st.service_response[:size] == size 
+      return st if st.service_response.service_data[:size] == size 
     end
     return nil
   end
