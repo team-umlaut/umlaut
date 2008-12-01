@@ -115,6 +115,35 @@ class ApplicationController < ActionController::Base
 
     return url
   end
+
+  # Used to calculate a destination/target url for an Umlaut response item.
+  #
+  # Pass in a ServiceType join object (not actually a ServiceResponse, sorry)
+  # Calculates the URL for it, and then runs our link_out_filters on it,
+  # returning the final calculated url. 
+  #
+  # Also requires a rails 'params' object, since url calculation sometimes
+  # depends on submitted HTTP params.
+  #
+  # Used from LinkController's index,
+  # also potentially used from banner-frame pages to calculate
+  # what url to put in content frame.
+  helper_method :calculate_url_for_response
+  def calculate_url_for_response(svc_type)
+      url = ServiceList.get(svc_type.service_response.service_id).response_url(svc_type, params)
+      
+      # Call link_out_filters, if neccesary.
+      # These are services listed as  task: link_out_filter  in services.yml
+      (1..9).each do |priority|
+        @collection.link_out_service_level( priority ).each do |filter|
+          filtered_url = filter.link_out_filter(url, svc_type)
+          url = filtered_url if filtered_url
+        end
+      end
+
+      return url
+  end
+
   
   # helper method we need available in controllers too
   # Absolute URL for permalink for given request.

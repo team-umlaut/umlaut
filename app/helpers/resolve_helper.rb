@@ -88,9 +88,12 @@ module ResolveHelper
 
   # pass in a ServiceType object, usually for fulltext.
   # Returns a string URL that will take the user directly to
-  # that resource. Actually through an umlaut redirect, but eventually. 
-  def direct_url_for(service_type)
-    url_for( :controller => 'link_router', :'id' => service_type.id , :'umlaut.link_with_frameset' => 'false' )      
+  # that resource. No longer using umlaut redirect, look up
+  # the direct url through umlaut mechanisms first.
+  # If you want to log direct link clickthroughs, you need to
+  # hook in here. 
+  def direct_url_for(service_type)                 
+    return calculate_url_for_response(service_type)                                   
   end
 
   # Used by banner menu pages. 

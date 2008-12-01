@@ -36,22 +36,13 @@ class LinkRouterController < ApplicationController
       redirect_to( frameset_action_url(svc_type) )
     else
       
-      url = ServiceList.get(svc_type.service_response.service_id).response_url(svc_type, params)
+      url = calculate_url_for_response(svc_type)
       
-      # Call link_out_filters, if neccesary.
-      # These are services listed as  task: link_out_filter  in services.yml
-      (1..9).each do |priority|
-        @collection.link_out_service_level( priority ).each do |filter|
-          filtered_url = filter.link_out_filter(url, svc_type)
-          url = filtered_url if filtered_url
-        end
-      end
-            
       redirect_to url
     end
   end
+
     
-  
   protected
   # Should a link be displayed inside our banner frameset?
   # Depends on config settings, url params, and 
