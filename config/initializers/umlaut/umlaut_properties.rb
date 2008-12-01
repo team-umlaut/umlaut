@@ -27,6 +27,6 @@
   # Minimum height and width of browser window. We have little control over
   # what size a content provider generates a window for a link resolver. Often
   # it's too small for umlaut. So we resize in js, if these config params
-  # are given. 
-  #AppConfig::Base.minimum_window_width = 820
+  # are given. Set to 0 to disable. 
+  AppConfig::Base.minimum_window_width = 820
   #AppConfig::Base.minimum_window_height = 0
