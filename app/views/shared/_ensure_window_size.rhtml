@@ -3,33 +3,22 @@
      window for a link resolver. Often it's too small. So we resize in
      js. -->
 
+     
 <script language="javascript">
+
 min_width = <%= AppConfig.param('minimum_window_width', 0)%>;
 min_height = <%= AppConfig.param('minimum_window_height', 0)%>;
+
 // Default to something huge, so if we fail in getting dimensions,
 // we won't resize. 
 orig_width = 100000; 
 orig_height = 100000;
-if (top.window.innerWidth) 
-// all except Explorer
-{
-	orig_width = top.window.innerWidth;
-	orig_height = top.window.innerHeight;
-}
-else if (top.document.documentElement && top.document.documentElement.clientHeight && top.document.documentElement.clientHeight != 0)
-// Explorer 6 Strict Mode
-{
-	orig_width = top.document.documentElement.clientWidth;
-	orig_height = top.document.documentElement.clientHeight;
-}
-else if (top.document.body)
-// other Explorers
-{
-	orig_width = top.document.body.clientWidth;
-	orig_height = top.document.body.clientHeight;
-}
 
-  
+// Prototype 1.6.0, document.viewport. 
+if (document.viewport) {
+  orig_width = document.viewport.getWidth();
+  orig_height = document.viewport.getHeight();
+}
 
 
 width_diff = min_width - orig_width;
