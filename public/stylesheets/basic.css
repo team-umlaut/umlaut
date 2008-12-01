@@ -3,12 +3,23 @@ html, body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset{
 	padding: 0;
 	border: 0;
 }
+/* Not sure why we're forcing scroll bars, but that's what this
+   does */
 /* hide from IE mac \*/
 html {
     min-height: 100%;
     margin-bottom: 1px;
 }
 /* end hiding from IE5 mac */
+/* But on some pages, we definitely do NOT want to force
+   vertical scroll bar */
+html.noscroll {
+  margin-bottom: 0;
+  min-height: auto;
+  /* Make IE7 hide that annoying grayed out scrollbar, when we REALLY
+     don't want a scrollbar */
+  overflow: auto;
+}
 body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
@@ -453,15 +464,15 @@ ul.smallText li.fulltextlink {
 }
 	
 
-/* tiny menu in banner */
+/* Styles used for banner frame page with tiny menu in banner.
+   These styles used both for frameset and iframe version. 
+   Styles used for just iframe version come later. */
 
-/*#top_frame {
-  height: 70px;
-}*/
+
 body.banner {
-  height: 400px;
   background-color: #E6D19A;
 }
+
 .banner_menu {
   position: absolute;
   top: 8px;
@@ -530,6 +541,48 @@ body.banner {
 #banner_help {
   width: 130px;
 }
+
+/* Styles used specifically for new iframe version of banner page.
+   Note that page using iframe version styles must include the
+   special banner_with_iframe_ie6.css file in conditional
+   comments for IE less than 7 only, for IE6 and under compatibility. */
+  #banner_with_iframe #frame {
+    padding: 0;
+    margin: 0;
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border: 0;
+  }
+  #banner_with_iframe #content {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 98px;
+    left: 0px;
+    right: 0px;
+    bottom: 0;  
+  }
+  /* new iframe style banner frameset */
+  #banner_with_iframe #banner_header  {
+      background-color: #E6D19A;
+      position: absolute;
+      /* Ie6 likes it better when height/width comes before top, left, right, no idea why.  */
+      height: 94px;        
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 0;
+      margin: 0;
+      border-bottom: 4px gray solid;
+      overflow-y: auto;
+      overflow-x: hidden;
+  }
+/* End iframe banner styles */
 
 .smGrayBox {
 	border:1px solid #e9e9e9;

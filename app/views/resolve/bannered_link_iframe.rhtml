@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html class="noscroll">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title><%= AppConfig.param('app_name', 'Find It') %> | <%= @user_request.referent.to_citation[:title] %></title>
+     <%= stylesheet_link_tag 'basic' %>       
+      <!--[if lt IE 7]>
+        <%= stylesheet_link_tag 'banner_with_iframe_ie6.css' %>
+      <![endif]--> 
+     <%= render(:partial => "layout_helpers/resolve_head_content" ) %>
+
+</head>
+
+<body id="banner_with_iframe">
+  <div id="wholepage">
+    <div id="banner_header">
+    
+      <div id="banner_menu" class="banner_menu">
+        <div class="banner_menu_inner_container">
+        
+          <!-- 'see more' and other banner controls box -->
+          <div id="banner_controls" class="banner_section">
+            <%= resolver_link(@user_request.to_context_object, {:target=>"_top", :extra_params => {:action => 'index', :'umlaut.skip_resolve_menu' => 'false', :'umlaut.request_id' => @user_request.id}}) %><br/>
+            <span style="font-weight: bold; font-size: 15px;"><%= resolver_link(@user_request.to_context_object, {:text => 'See more options', :target=>"_top", :extra_params => {:'umlaut.request_id' => @user_request.id, :action => 'index', :'umlaut.skip_resolve_menu' => 'false'}}) %></span><br/>
+            
+            <%= link_to "#{ image_tag("frame_remove.gif", :border=>0, :align=>'bottom') } Remove banner", {:controller=>'link_router', :id=>(@service_type_join.id if @service_type_join)}, 'target'=>'_top', 'class'=>'smallText' %><br/>
+            
+            <% displayed_data = @service_type_join.view_data %>
+            <% unless displayed_data[:authentication].blank? %>
+                  <strong>Authentication:</strong> <%= displayed_data[:authentication] %>
+            <% end %>           
+          </div>
+        
+          <!-- fulltext choices box -->
+          <% fulltxt = get_service_type('fulltext')
+             title_level_fulltxt = get_service_type('fulltext_title_level')
+             unless fulltxt.blank? && title_level_fulltxt.blank?
+          %>
+            <div id="banner_fulltext" class="banner_section" >
+              <% if fulltxt.length + title_level_fulltxt.length > 1 %>
+                <h3>Other <%= ServiceTypeValue[:fulltext].display_name_pluralize.downcase%>:</h3>
+              <% end %>
+              <ul class="smallText fulltextlink">
+              <%        
+                fulltxt.each do | ft | 
+                target = ft.view_data
+              %>
+                  <li class="fulltextlink <%= 'frameescaping' if known_frame_escaper?(ft) %>"> 
+                  <%  # Currently displayed one should not be a link, but should
+                      # be greyed-out instead.
+                  if ( ft == @service_type_join ) %>
+                      <a class="grayedOut"><%= target[:display_text] %></a>
+                  <% else %>
+                      <%= frameset_link_to(ft, :'umlaut.banner_effects'=>'false') %>        
+                  <% end %>
+                  </li>
+              <% end
+                 unless title_level_request? || title_level_fulltxt.empty?
+                    genre = @user_request.referent.metadata['genre']
+                    genre = "Journal" if genre.downcase == 'article'
+              %>
+                </ul>
+                <h3><%= genre.titlecase %>-level Page Only:</h3>
+                <ul class="smallText fulltextlink">
+              <% 
+                 end
+                 title_level_fulltxt.each do |ft| 
+                 target = ft.view_data %>
+                  <li class="fulltextlink <%= 'frameescaping' if known_frame_escaper?(ft) %>"> 
+                  <%  # Currently displayed one should not be a link, but should
+                      # be greyed-out instead.
+                      if ( ft == @service_type_join ) %>
+                      <a class="grayedOut"><%= target[:display_text] %></a>
+                  <% else %>
+                    <%= frameset_link_to(ft) %>        
+                  <% end %>
+                  </li>
+              <% end %>
+              <ul>
+            </div>
+          <% end %>        
+         
+          <div id="banner_citation" class="banner_section">
+            <h3>You are looking for:</h3>
+            <%= render :partial=>'compact_citation' %>
+          </div>
+      
+          <!-- help box -->
+          <% help_responses = get_service_type('help') 
+            unless help_responses.blank?  %>    
+              <div id="banner_help" class="banner_section">
+                <span id="helpicon">?</span><span class="smallText">Problem?<br>Need help?
+                  <ul>
+                  <% help_responses.each do |help| %>
+                       <li><%= link_to help.view_data[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %></li>
+                   <% end %>
+                   </ul>
+                </span>
+             </div>
+           <% end %>  
+          </div>
+      </div>
+    </div>
+
+    <div id="content">
+      <iframe id="frame" src="<%= direct_url_for( @service_type_join )  %>">      
+        Your browser does not support frames. Would you like to:
+        <ul>
+           <li> <%= link_to("View #{AppConfig.param('app_name', 'Find It')} menu for this resource", {:action => 'index', :'umlaut.request_id' => @user_request.id, :'umlaut.skip_resolve_menu' => 'false'}) %> </li>
+           <li> <%= link_to("Go directly to full text from #{@service_type_join.view_data[:display_text]}", direct_url_for( @service_type_join )) %>
+           </li>
+        </ul>
+      </iframe>
+    </div>
+  </div>
+</body>
+</html>
+

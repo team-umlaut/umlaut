@@ -1,0 +1,28 @@
+/* IE specific code to deal with the fact that IE doesn't let
+   you set 'top' and 'bottom' (or 'left' and 'right') and stretch the
+   content between, and assorted other IE oddities with what we're
+   doing. */ 
+#banner_with_iframe #wholepage {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+#banner_with_iframe #banner_header {       
+  width: 100%;
+}
+#banner_with_iframe #content, #banner_with_iframe #frame {
+  width: 100%;
+  /* this expression thing only works in IE, compensate
+     for not being able to set both 'top' and 'bottom' */
+  height:expression(document.body.clientHeight-98);
+}
+#banner_with_iframe .banner_section {
+  height: 78px;
+}
+body#banner_with_iframe {
+  padding: 0; 
+  margin: 0; 
+  height: 100%; 
+  width: 100%;
+}
