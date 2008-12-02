@@ -31,7 +31,7 @@ class HipHoldingSearch < Service
     search_hash = {}
     
     hip_title_index = Hip3::BibSearcher::TITLE_KW_INDEX
-    
+
     title = ref_metadata['jtitle']
     # use journal title index for jtitle.  Some sources add a jtitle when
     # it's really a book, if there's a btitle too, don't use just serial index.
@@ -41,7 +41,12 @@ class HipHoldingSearch < Service
     
     # No title? We can do nothing at present.
     if ( title.blank? ) ; return request.dispatched(self, true) ; end;
-    
+
+    # Sometimes titles given in the OpenURL have some additional stuff
+    # in parens at the end, that messes up the search and isn't really
+    # part of the title. Eliminate!
+    title.gsub!(/\(.*\)\s*$/, '')
+      
     # remove non-alphanumeric
     title.gsub!(/[^\w\s]/, ' ')
     # remove some obvious stop words, cause HIP is going to choke on em
@@ -66,7 +71,6 @@ class HipHoldingSearch < Service
       end
       
     end
-    
     
     bib_searcher.search_hash = search_hash 
     unless bib_searcher.insufficient_query
