@@ -51,7 +51,8 @@ class SearchController < ApplicationController
   # param umlaut.title_search_type (aka sfx.title_search) 
   # can be 'begins', 'exact', or 'contains'. Other
   # form params should be OpenURL, generally
-  def journal_search    
+  def journal_search
+ 
     @batch_size = @@search_batch_size
     @page = 1  # page starts at 1 
     @page = params['page'].to_i if params['page']
@@ -61,9 +62,9 @@ class SearchController < ApplicationController
     search_co = @search_context_object
         
     if (params["umlaut.title_search_type"] == 'exact' ||
-        params["rft.object_id"] ||
-        params["rft.issn"] ||
-        params["rft_id"])
+        ! params["rft.object_id"].blank? ||
+        ! params["rft.issn"].blank? ||
+        ! params["rft_id"].blank? )
       # If we have an exact-type 'search', just switch to 'resolve' action
       redirect_to url_for_with_co( {:controller => 'resolve'}, search_co ) 
       
@@ -464,7 +465,6 @@ class SearchController < ApplicationController
   # Works with SFX 3.0. Will probably break with SFX 4.0, naturally.
   # Returns an Array of ContextObjects. 
   def find_by_title_via_sfx_db    
-      
     search_type = params['umlaut.title_search_type'] || 'contains'
     title_q = params['rft.jtitle']
 
