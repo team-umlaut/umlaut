@@ -202,6 +202,11 @@ class ResolveController < ApplicationController
       @user_request.save!
       
       self.setup_banner_link()
+
+      # Use our new view with iframe instead of frameset.
+      # Comment this out to go back to bannered_link_frameset
+      # view with actual frameset. 
+      render(:template => "resolve/bannered_link_iframe")
   end
 
   # The mini-menu itself. 
