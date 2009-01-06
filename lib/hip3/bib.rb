@@ -30,9 +30,10 @@ module Hip3
 
       self.bibNum = argBibNum
       raise ArgumentException.new("Nil 1st argument: You must supply a bib number to first arg of Bib.new") unless self.bibNum
-      
+
       self.hip_base_url = a_hip_base_path
       raise ArgumentException.new("Nil 2nd arg: You must supply the HIP instance base URL as a Net::URI object in 2nd arg to Bib.new") unless self.hip_base_url
+     
 			
 			self.httpSession = params[:http_session]
       self.httpSession ||= Hip3::HTTPSession.create(hip_base_url.host() )
@@ -105,7 +106,7 @@ module Hip3
 			return @bib_xml
 		end
 
-		def marc_xml			
+		def marc_xml
 			# Sadly, loading this takes ANOTHER request. At least this
 			# request, unlike the HIP requests, is speedy. We need this
       # for getting 856 urls with sub-fields. Depends on Casey
@@ -114,10 +115,14 @@ module Hip3
 				# should have copies or items, not both
 				path = "/mods/?format=marcxml&bib=#{bibNum}"
         #host = hip_base_url.host
-        host = 'catalog.library.jhu.edu'
+        host = hip_base_url.host
+        port = hip_base_url.port
+
+        # If it's https, rejigger it to be http, that's just the way we roll.      
+        port = 80 if port == 443;
         
         # put in a rescue on bad http, reword error. 
-          resp = Hip3::HTTPSession.start(host, hip_base_url.port) {|http| http.get(path) }
+        resp = Hip3::HTTPSession.start(host, port) {|http| http.get(path) }
         
         
 				
@@ -230,7 +235,6 @@ module Hip3
 		end
 
 		def http_url
-        
 		
 			return "#{hip_base_url.scheme}://#{hip_base_url.host}:#{hip_base_url.port}#{hip_http_path}"
 		end
