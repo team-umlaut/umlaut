@@ -1,4 +1,7 @@
 class Referent < ActiveRecord::Base
+  # for shortcut metadata manipulations
+  include MetadataHelper
+  
   # Shortcuts are really used as retrieval keys to 'shortcut' matching
   # referent. They hold normalized value (use ReferentValue.normalize) or
   # empty string. Never nil. 
@@ -286,6 +289,30 @@ class Referent < ActiveRecord::Base
     }    
   end
 
+  # Some shortcuts for pulling out/manipulating specific especially
+  # useful data elements.
+
+  # finds and normalizes an LCCN. If multiple LCCNs are in the record,
+  # returns the first one. Returns a NORMALIZED lccn, but does NOT do
+  # validation. see:
+  # http://info-uri.info/registry/OAIHandler?verb=GetRecord&metadataPrefix=reg&identifier=info:lccn/
+  def lccn
+    return get_lccn(self)
+  end
+
+  # Gets an ISSN, makes sure it's a valid ISSN or else returns nil.
+  # So will return a valid ISSN (NOT empty string) or nil. 
+  def issn
+    return get_issn(self)
+  end
+
+  def isbn
+    return get_isbn(self)
+  end
+
+  def oclcnum
+    return get_oclcnum(self)
+  end
   
   # Creates an OpenURL::ContextObject assembling all the data in this
   # referrent. 
