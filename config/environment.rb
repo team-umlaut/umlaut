@@ -134,11 +134,15 @@ Rails::Initializer.run do |config|
   #}
 
 
-  # Call local environment-like file for main environment
+  # Call local environment-like file for main environment  
+  
   path =  File.join(RAILS_ROOT, "config", "umlaut_config", "environment.rb")
   if File.exists?( path )
+    
+    
     load path
-    umlaut_configuration( config ) if methods.find {|m| m == "umlaut_configuration"}
+
+    umlaut_configuration( config ) #if methods.find {|m| m == "umlaut_configuration"}
   end
 
 end
