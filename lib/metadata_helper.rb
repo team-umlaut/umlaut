@@ -140,6 +140,14 @@ module MetadataHelper
     return lccn
   end
 
+  # Gets an ISSN, makes sure it's a valid ISSN or else returns nil.
+  # So will return a valid ISSN (NOT empty string) or nil. 
+  def get_issn(rft)
+    issn = rft.metadata['issn']
+    issn = nil unless issn =~ /\d{4}(-)?\d{3}(\d|X)/
+    return issn
+  end
+
   # Some normalization. See:
   # http://info-uri.info/registry/OAIHandler?verb=GetRecord&metadataPrefix=reg&identifier=info:lccn/
   # doesn't validate right now, only normalizes.
@@ -160,6 +168,14 @@ module MetadataHelper
       end
     end
     return lccn
+  end
+
+  def get_isbn(rft)
+    return get_identifier(:urn, "isbn", rft)    
+  end
+
+  def get_oclcnum(rft)
+    return get_identifier(:info, "oclcnum", rft)    
   end
   
 end
