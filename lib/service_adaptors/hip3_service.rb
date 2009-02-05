@@ -12,6 +12,8 @@ class Hip3Service < Service
   required_config_params :base_path, :display_name
   attr_reader :base_path
 
+  include MetadataHelper
+
   def initialize(config)
     # defaults
     @map_856_to_service = 'fulltext_title_level'
@@ -34,11 +36,8 @@ class Hip3Service < Service
     
     bib_searcher = Hip3::BibSearcher.new(@base_path)
     
-    issn = request.referent.metadata['issn']
-    isbn = request.referent.metadata['isbn']
-    # don't send mal-formed issn
-    bib_searcher.issn = issn if issn =~ /\d{4}(-)?\d{3}(\d|X)/ 
-    bib_searcher.isbn = isbn 
+    bib_searcher.issn = request.referent.issn 
+    bib_searcher.isbn = request.referent.isbn
 
     
     bib_array = bib_searcher.search
