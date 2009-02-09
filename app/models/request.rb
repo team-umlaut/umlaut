@@ -123,7 +123,7 @@ class Request < ActiveRecord::Base
   # in this request.
   # 
   # Status can be true (shorthand for DispatchedService::Success), false
-  # (shorthand for DispatchedService::TemporaryError), or one of the other
+  # (shorthand for DispatchedService::FailedTemporary), or one of the other
   # DispatchedService status codes.
   # If a DispatchedService row already exists in the db, that row will be
   # re-used, over-written with new status value.
@@ -181,51 +181,73 @@ class Request < ActiveRecord::Base
   # Create a ServiceResponse and it's associated ServiceType(s) object,
   # attached to this request.
   # First arg is a hash of key/values. Keys MUST include :service, with the
-  # value being the actual Service object, not just the ID.
-  # Other keys are as conventional for the service. 
+  # value being the actual Service object, not just the ID. Key may include
+  # :service_type_value => the ServiceTypeValue object (or string name) for
+  # the the 'type' of response this is. 
   # 
-  # second arg is an array of ServiceTypeValue objects, or
+  # Other keys are as conventional for the service. See documentation of
+  # conventional keys in ServiceResponse
+  #
+  # Eg, called from a service adapter plugin:
+  #   request.add_service_response(:service=>self, 
+  #               :service_type_value => 'cover_image', 
+  #               :display_text => 'Cover Image',  
+  #               :url => img.inner_html, 
+  #               :asin => asin, 
+  #               :size => size)
+  # 
+  # second arg (optional, use :service_type_value key in first arg instead)
+  # is an array of ServiceTypeValue objects, or
   # an array of 'names' of ServiceTypeValue objects. Ie,
   # ServiceTypeValue[:fulltext], or "fulltext" both work. A ServiceResponse
   # can be registered as being of more than one type, is why this is an array.
   def add_service_response(response_data,service_type=[])
-    unless response_data.empty?
-      #svc_resp = nil
-      
-      #ServiceResponse.find(:all, :conditions=>{:service_id => #response_data[:service].id, :response_key => response_data[:key], #:value_string => response_data[:value_string],:value_alt_string => response_data[:value_alt_string]}).each do | resp |
-      #  svc_resp = resp if YAML.load(resp.value_text.to_s) == YAML.load(response_data[:value_text].to_s)
-      #end
-      #unless svc_resp
-        svc_resp = ServiceResponse.new
+    svc_resp = ServiceResponse.new
+    svc_resp.service_id = response_data[:service].id
+    response_data.delete(:service)
 
-        
-        svc_resp.url = response_data[:url]
-        svc_resp.notes = response_data[:notes]
-        svc_resp.display_text = response_data[:display_text]
-        svc_resp.init_service_data(response_data[:service_data])
-        
-        svc_resp.service_id = response_data[:service].id
-        svc_resp.response_key = response_data[:key]
-        svc_resp.value_string = response_data[:value_string]
-        svc_resp.value_alt_string = response_data[:value_alt_string]
-        svc_resp.value_text = response_data[:value_text]           
-        svc_resp.save!
-        
-      #end
+    # fix 'key' to be legacy 'response_key'
+    if ( response_data[:key])
+      response_data[:response_key] = response_data.delete(:key)
     end
-    #stypes = []
-    unless service_type.empty?
-      service_type.each do | st |
-        #stype = ServiceType.find(:first, :conditions=>{:request_id => self.id, :service_response_id => svc_resp.id,:service_type => st})
-        
-        #unless stype
-          stype = ServiceType.new(:request => self, :service_response => svc_resp, :service_type_value => st)
-          stype.save!
-          #stypes << stype
-        #end
+
+    # Accumluate our list of service_response_value's from the several
+    # places they can be.
+    collected_stype_values = service_type
+    if ( response_data[:service_type_value])
+      # Can be ServiceTypeValue or string/symbol
+      if response_data[:service_type_value].kind_of?(ServiceTypeValue)
+        collected_stype_values.push(  response_data[:service_type_value])
+      else
+        collected_stype_values.push( ServiceTypeValue[ response_data[:service_type_value]  ])
       end
+      # Remove it. 
+      response_data.delete(:service_type_value)
     end
-    #return stypes
+
+    # Legacy code may include arbitrary key/value pairs in
+    # response_data[:service_data] or just in response_data
+    # itself. Merge in service_data to that overall hash.
+    if ( response_data[:service_data])
+      response_data.merge!( response_data[:service_data])
+      # And take out the service_data sub-hash. 
+      response_data.delete(:service_data)
+    end
+    
+    # response_data now includes actual key/values for the ServiceResponse
+    # send em.
+    svc_resp.take_key_values( response_data )
+          
+    svc_resp.save!
+  
+
+    # And add the actual ServiceType join objects based on our
+    # collected_style_values.
+    collected_stype_values.each do | st |      
+      stype = ServiceType.new(:request => self, :service_response => svc_resp, :service_type_value => st)
+      stype.save!
+    end
+        
   end
 
 

@@ -68,7 +68,7 @@ At the point the user clicks on a ServiceResponse, Umlaut will attempt to find a
 
 =end
 class ServiceResponse < ActiveRecord::Base  
-  @@built_in_fields = [:display_text, :url, :notes]
+  @@built_in_fields = [:display_text, :url, :notes, :response_key, :value_string, :value_alt_string, :value_text]
   has_many :service_types
   serialize :service_data
   # This value is not stored in db, but is set temporarily so
@@ -83,6 +83,19 @@ class ServiceResponse < ActiveRecord::Base
   
   def service
     return ServiceList.get( self.service_id )
+  end
+
+  def take_key_values(hash)    
+    # copy it, cause we're gonna modify it
+    hash = hash.clone
+    hash.each_pair do |key, value|
+      if ( self.class.built_in_fields.include?(key))
+        self.send(key.to_s + '=', value)
+        hash.delete(key)
+      end
+    end
+    # What's left is arbitrary key/values that go in service_data
+    init_service_data(hash)
   end
 
   def init_service_data(hash)
