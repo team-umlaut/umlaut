@@ -14,6 +14,7 @@ class UmlautLocalGenerator < Rails::Generator::Base
       m.file "institutions.yml-dist", "config/umlaut_config/institutions.yml"
       m.file "database.yml-dist", "config/umlaut_config/database.yml"
       m.file "umlaut_environment.rb", "config/umlaut_config/environment.rb"
+      m.file "environments/development.rb", "config/umlaut_config/environments/development.rb"
       m.file "local_service_type_values.yml-dist", "config/umlaut_config/local_service_type_values.yml"
 
       # Create local initializers, start from our stock initializers, but
