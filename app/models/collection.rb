@@ -98,7 +98,7 @@ class Collection
     # Load institutions from IDs. If the ID no longer exists in the db,
     # we'll just silently ignore it, which is fine. 
     inst_ids = data[:institutions]
-    @institutions = Institution.find(:all, :conditions => ['id in (?)', inst_ids.join(',') ])
+    @institutions = Institution.find(:all, :conditions => ['id in (?)', inst_ids ])
 
     # Services were manually marshalled whole in session as yaml.
     # First we need to make sure and 'require' all the service classes.
