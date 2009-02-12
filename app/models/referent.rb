@@ -416,7 +416,7 @@ class Referent < ActiveRecord::Base
    	end
    	citation[:identifiers] = []
    	self.identifiers.each do | id |
-   	  citation[:identifiers] << id unless id.match(/^tag:/)
+   	  citation[:identifiers] << id unless (id.blank? || id.match(/^tag:/))
    	end
    	return citation
   end
