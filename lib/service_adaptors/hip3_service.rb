@@ -31,73 +31,89 @@ class Hip3Service < Service
     
     return types
   end
-  
+
+
   def handle(request)
-    
     bib_searcher = Hip3::BibSearcher.new(@base_path)
     
     bib_searcher.issn = request.referent.issn 
     bib_searcher.isbn = request.referent.isbn
 
+    process_matches(bib_searcher.search, request)
     
-    bib_array = bib_searcher.search
+  end
+
+  # Takes an array of Hip3::Bib objects believed to be exact matches
+  # for the citation querried, and adds response objects for them
+  def process_matches(bib_array, request)
+    
+
+
     # Let's find any URLs, and add full text responses for those.
-    urls = bib_array.collect {|b| b.marc_xml.find_all {|f| '856' === f.tag}}.flatten
-    urls_seen = Array.new # for de-duplicating urls from catalog.
-    urls.each do |field|
-      url = field['u']
+    # According to way too complicated logic to try and merge catalog
+    # and SFX together without making a mess. 
 
-      next if urls_seen.include?(url)
-      # Don't add the URL if it matches our SFXUrl finder, because
-      # that means we think this is an SFX controlled URL.
-      next if SfxUrl.sfx_controls_url?(url)
-      # We have our own list of URLs to suppress, array of strings
-      # or regexps.
-      next if @suppress_urls.find {|suppress| suppress === url}
-      
-      # No u field? Forget it.
-      next if url.nil?
-      
-      urls_seen.push(url)
-      
-      # 	puts field.subfields.collect {|f| f.value if f.code == 'z'}.join
-      # For the text to display, let's try taking just the domain from the
-      # url
-      display_name = nil
+    urls_seen = Array.new
 
-      begin
-        u_obj = URI::parse( url )
-        display_name = u_obj.host
-      rescue Exception
-          #
+    bib_array.each do |bib|
+      bib.marc_xml.find_all {|f| '856' === f.tag}.each do |field|
+        url = field['u']
+
+        # No u field? Forget it.
+        next if url.nil?
+
+        # Already got it from another catalog record?
+        next if urls_seen.include?(url)
+
+        # If this is a journal, don't add the URL if it matches in our
+        # SFXUrl finder, because that means we think it's an SFX controlled
+        # URL. But if it's not a journal, use it anyway, because it's probably
+        # an e-book that is not in SFX, even if it's from a vendor who is in
+        # SFX. We use MARC leader byte 7 to tell. Confusing enough?
+        is_journal = (bib.marc_xml.leader[7,1] == 's')
+        next if  is_journal && SfxUrl.sfx_controls_url?(url)
+
+        urls_seen.push(url)
+        
+        # For the text to display, let's try taking just the domain from the
+        # url
+        display_name = nil
+        begin
+          u_obj = URI::parse( url )
+          display_name = u_obj.host
+        rescue Exception
+        end
+        # Okay, can't parse out a domain, whole url then.
+        display_name = url if display_name.nil?
+        # But if we've got a $3, the closest MARC comes to a field
+        # that explains what this actually IS, use that too please.
+        display_name = field['3'] + ' from ' + display_name if field['3']
+        
+        value_text = Hash.new
+        # get all those $z subfields and put em in notes.      
+        value_text[:url] = url
+  
+        # subfield 3 is being used for OCA records loaded in our catalog.
+        value_text[:notes] =
+        field.subfields.collect {|f| f.value if (f.code == 'z') }.compact.join('; ')
+  
+        unless ( field['3'] || ! is_journal ) # subfield 3 is in fact some kind of coverage note, usually. 
+          value_text[:notes] += "; " unless value_text[:notes].blank? 
+          value_text[:notes] += "Dates of coverage unknown."
+        end
+  
+        response_params = {:service=>self, :display_text=>display_name, :url=>url, :notes=>value_text[:notes], :service_data=>value_text}
+        
+        # Do we think this is a ToC link? Rejigger things. 
+        service_type_value = self.url_service_type( field ) 
+        
+        # Add the response
+        request.add_service_response(response_params, [service_type_value])
+
+        
       end
-      # Okay, whole url then. 
-      display_name = url if display_name.nil?
-      # But if we've got a $3, the closest MARC comes to a field
-      # that explains what this actually IS, use that too please.
-      display_name = field['3'] + ' from ' + display_name if field['3']
-      
-      value_text = Hash.new
-      # get all those $z subfields and put em in notes.      
-      value_text[:url] = url
-
-      # subfield 3 is being used for OCA records loaded in our catalog.
-      value_text[:notes] =
-      field.subfields.collect {|f| f.value if (f.code == 'z') }.compact.join('; ')
-
-      unless ( field['3']) # subfield 3 is in fact some kind of coverage note, usually. 
-        value_text[:notes] += "; " unless value_text[:notes].blank? 
-        value_text[:notes] += "Dates of coverage unknown."
-      end
-
-      response_params = {:service=>self, :display_text=>display_name, :url=>url, :notes=>value_text[:notes], :service_data=>value_text}
-      
-      # Do we think this is a ToC link? Rejigger things. 
-      service_type_value = self.url_service_type( field ) 
-      
-      # Add the response
-      request.add_service_response(response_params, [service_type_value])
     end
+
     
     #Okay, we actually want to make each _copy_ into a service response.
     #A bib may have multiple copies. We are merging bibs, and just worrying

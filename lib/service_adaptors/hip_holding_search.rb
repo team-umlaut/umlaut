@@ -1,6 +1,6 @@
 
 
-class HipHoldingSearch < Service
+class HipHoldingSearch < Hip3Service
   required_config_params :base_path, :display_name
   attr_reader :base_path
 
@@ -13,7 +13,45 @@ class HipHoldingSearch < Service
   end
 
   def service_types_generated
-    return [ServiceTypeValue['holding_search']]    
+    # Add one more to whatever the Hip3Service does. 
+    return super.push(ServiceTypeValue['holding_search'])    
+  end
+
+  def normalize_title(arg_title, options = {})
+
+    title = arg_title.clone
+    
+    return nil if title.blank?
+
+    # Sometimes titles given in the OpenURL have some additional stuff
+    # in parens at the end, that messes up the search and isn't really
+    # part of the title. Eliminate!
+    title.gsub!(/\(.*\)\s*$/, '')
+
+    # Remove things in brackets, part of an AACR2 GMD that's made it in.
+    title.sub!(/\[.*\]/, '')
+
+    # There seems to be some catoging/metadata disagreement about when to
+    # use ';' for a subtitle instead of ':'. Normalize to ':'.
+    title.sub!(/\;/, ':')
+
+    if (options[:remove_subtitle])
+      title.sub!(/\:(.*)$/, '')
+    end
+    
+    # Change ampersands to 'and' for consistency, we see it both ways.
+    title.gsub!(/\&/, 'and')
+      
+    # remove non-alphanumeric
+    title.gsub!(/[^\w\s]/, ' ')
+
+    # compress whitespace
+    title.strip!
+    title.gsub!(/\s+/, ' ')
+
+    title = nil if title.blank?
+
+    return title
   end
 
   def handle(request)  
@@ -29,32 +67,26 @@ class HipHoldingSearch < Service
     bib_searcher = Hip3::BibSearcher.new(@base_path)
 
     search_hash = {}
-    
-    hip_title_index = Hip3::BibSearcher::TITLE_KW_INDEX
 
-    title = ref_metadata['jtitle']
-    # use journal title index for jtitle.  Some sources add a jtitle when
-    # it's really a book, if there's a btitle too, don't use just serial index.
-    hip_title_index = Hip3::BibSearcher::SERIAL_TITLE_KW_INDEX if (title && ! ref_metadata['btitle']) 
+    if ( (! ref_metadata['jtitle'].blank?) && ref_metadata['bititle'].blank? )
+      hip_title_index = Hip3::BibSearcher::SERIAL_TITLE_KW_INDEX    
+    else
+      hip_title_index = Hip3::BibSearcher::TITLE_KW_INDEX
+    end
+    
+    title = ref_metadata['jtitle']     
     title = ref_metadata['btitle'] if title.blank?
     title = ref_metadata['title'] if title.blank?
     
-    # No title? We can do nothing at present.
-    if ( title.blank? ) ; return request.dispatched(self, true) ; end;
+    title_cleaned = normalize_title(title)
+    
+    
+    # plus remove some obvious stop words, cause HIP is going to choke on em
+    title_cleaned.gsub!(/\bthe\b|\band\b|\bor\b|\bof\b|\ba\b/i,'')
 
-    # Sometimes titles given in the OpenURL have some additional stuff
-    # in parens at the end, that messes up the search and isn't really
-    # part of the title. Eliminate!
-    title.gsub!(/\(.*\)\s*$/, '')
-      
-    # remove non-alphanumeric
-    title.gsub!(/[^\w\s]/, ' ')
-    # remove some obvious stop words, cause HIP is going to choke on em
-    title.gsub!(/\bthe\b|\band\b|\bor\b|\bof\b|\ba\b/i,'')
-
-    title_kws = title.split
+    title_kws = title_cleaned.split
     # limit to 12 keywords
-    title_kws = title_kws.slice( (0..11) ) if title_kws.length > 12
+    title_kws = title_kws.slice( (0..11) ) 
     
     search_hash[hip_title_index] = title_kws
     
@@ -73,14 +105,35 @@ class HipHoldingSearch < Service
     end
     
     bib_searcher.search_hash = search_hash 
-    unless bib_searcher.insufficient_query
-          
-      count = bib_searcher.count
-      if (count > 0)
+    unless bib_searcher.insufficient_query    
+      bibs = bib_searcher.search
+
+      # Ssee if any our matches are exact title matches. 'exact' after normalizing a bit, including removing subtitles.
+      matches = [];
+
+      requested_title = normalize_title( title, :remove_subtitle => true)
+
+      #debugger
+
+      
+      bibs.each do |bib|
+        # normalize btitle to match. 
+        btitle = normalize_title(bib.title, :remove_subtitle => true)            
+
+        if ( btitle.downcase == requested_title.downcase )
+          matches.push( bib );
+        end        
+      end
+      
+      if (matches.length > 0 )
+        # process as exact matches with method from Hip3Service
+        process_matches(matches, request)      
+      elsif (bibs.length > 0)
+        # process as holdings_search
         service_data = {}
         service_data[:source_name] = @display_name
-        service_data[:count] = count
-        service_data[:display_text] = "#{count} possible #{case; when count > 1 ; 'matches' ; else; 'match' ; end} in #{display_name}"
+        service_data[:count] = bibs.length
+        service_data[:display_text] = "#{bibs.length} possible #{case; when bibs.length > 1 ; 'matches' ; else; 'match' ; end} in #{display_name}"
 
         service_data[:url] = bib_searcher.search_url
 
