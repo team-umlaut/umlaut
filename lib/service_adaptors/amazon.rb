@@ -77,6 +77,11 @@ class Amazon < Service
         selected_aws_vals = 
           self.add_aws_service_responses(request, aws_response)
       end
+
+      if ( selected_aws_vals == nil)
+        # no aws found.
+        return request.dispatched(self, true)
+      end
       
       # Add service responses based on ASIN--may be run in a
       # later service wave. Look up asin in db if we don't have
