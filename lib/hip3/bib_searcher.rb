@@ -187,18 +187,34 @@ module Hip3
 				#return [Hip3::Bib.new( httpSession, bibNum.text, reDoc)]
         return [Hip3::Bib.new( bibNum.text, self.hip_base_url,
                                :http_session => httpSession,
-                               :bib_xml_doc => reDoc )]
+                               :bib_xml_doc => reDoc
+                               
+                               
+                               #TODO: Need title!!
+                               
+                               )]
 			end
 
 			
 			# Multi-response
-			# Get Bib #s for each result. XPath query.  
-			bibNums =  reDoc.elements.to_a('searchresponse/summary/searchresults/results/row/key').collect { |element| element.text }
-			
-			bibNums.uniq! # We should never have dups, but better safe than sorry.		
+			# Get Bib #s and titles for each result.
+      
+			bib_summaries =  reDoc.elements.to_a('searchresponse/summary/searchresults/results/row/');
 
-			#return bibNums.collect { |bibNum| Hip3::Bib.new(httpSession, bibNum) }
-      return bibNums.collect{ |bibNum| Hip3::Bib.new( bibNum, self.hip_base_url, :http_session => httpSession) }
+      return bib_summaries.collect do |bib_xml|
+        next unless bib_xml.elements['key']
+
+        # Find a title from the summary xml
+        title_el = bib_xml.elements['TITLE/data/text']
+        title = title_el ? title_el.text : nil
+        # remove possible author on there, after a '/' char. That's how HIP rolls. 
+        title.sub!(/\/.*$/, '')
+        
+        Hip3::Bib.new(bib_xml.elements['key'].text, self.hip_base_url, :http_session => httpSession, :title => title )
+      end
+      
+
+      #return bibNums.collect{ |bibNum| Hip3::Bib.new( bibNum, self.hip_base_url, :http_session => httpSession) }
 		end
 
     def insufficient_query

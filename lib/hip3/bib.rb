@@ -11,7 +11,9 @@ module Hip3
 	class Bib 
 		attr_accessor :httpSession, :hip_base_url
 		# should have copies or items, not both
-		attr_accessor :bibNum, :copies, :items 
+		attr_accessor :bibNum, :copies, :items
+    attr_writer :title
+    
 		# CustomFieldLookup objects
 		attr_accessor :item_field_lookup, :copy_field_lookup, :bib_field_lookup # We cache HIP's XML representation of bib with and without items serial items. 
 		attr_accessor :bib_xml, :xml_with_items 
@@ -27,7 +29,8 @@ module Hip3
     #                 advised to use a Hip3::HTTPSession for it's error 
     #                 handling.
 		def initialize(argBibNum, a_hip_base_path, params)
-
+      @title_label = 'Title'
+      
       self.bibNum = argBibNum
       raise ArgumentException.new("Nil 1st argument: You must supply a bib number to first arg of Bib.new") unless self.bibNum
 
@@ -37,6 +40,8 @@ module Hip3
 			
 			self.httpSession = params[:http_session]
       self.httpSession ||= Hip3::HTTPSession.create(hip_base_url.host() )
+
+      self.title = params[:title]
       
 			self.copies = nil
 
@@ -105,6 +110,8 @@ module Hip3
 			
 			return @bib_xml
 		end
+
+
 
 		def marc_xml
 			# Sadly, loading this takes ANOTHER request. At least this
@@ -204,6 +211,36 @@ module Hip3
 		def holdings
 			return items + copies
 		end
+
+    def title
+      unless (@title)
+        # title may already have been lazily loaded, or loaded by the
+        # bibsearcher. Otherwise, we need to extract it from the bib_xml, 
+        # which is kind of a pain.
+
+        # first find the index number of the title.
+        labels = bib_xml().root.get_elements('//fullnonmarc/searchresults/header/col/label')
+        title_index = nil
+        (0..(labels.length-1)).each do |i|
+          if (labels[i].text == @title_label)
+            title_index = i
+            break
+          end
+        end
+
+        if title_index
+          raw_title = bib_xml().elements["//fullnonmarc/searchresults/results/row/cell[#{title_index + 1}]/data/text"].text
+          # remove possible author on there, after a '/' char. That's how HIP rolls. 
+          @title = raw_title.sub(/\/.*$/, '')
+        else
+          @title = 'unknown'
+        end
+        
+      end
+      
+    
+      return @title
+    end
 		
 		# We could try to store the copies in a hash for efficiency, but
 		# we're only going to have a handful, it's not worth it. 
