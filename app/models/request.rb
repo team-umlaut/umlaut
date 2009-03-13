@@ -174,6 +174,8 @@ class Request < ActiveRecord::Base
     unless ( ds )
       ds = new_dispatch_object!(service, DispatchedService::Queued)
     end
+    ds.status = DispatchedService::Queued
+    ds.save!
     return ds
   end
   
