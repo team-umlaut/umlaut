@@ -500,22 +500,24 @@ class ResolveController < ApplicationController
   def service_dispatch()
     expire_old_responses();
 
-    # Register background services as queued before we do anything,
-    # so if another request/refresh comes in to this same Umlaut
-    # request, won't try and run them again.
-    # Background services. First register them all as queued, so status
-    # checkers can see that.
+    # background services are registered as 'queued' in part to make
+    # sure we don't run them twice as a result of a browser refresh
+    # or AJAX request. We want to make sure anything ALREADY
+    # marked as 'queued' is not re-run, and anything we're about to run
+    # gets marked as queued.
+    runnable_bg_service_ids = Array.new
     ('a'..'z').each do | priority |
       @collection.service_level(priority).each do | service |
-        @user_request.dispatched_queued(service)
+        runnable_bg_service_ids.push(service.id) if (@user_request.queue(service))
       end
     end
     # Foreground services
-    (0..9).each do | priority |
-    
-      next if @collection.service_level(priority).empty?
+    (0..9).each do | priority |      
+      services_to_run = @collection.service_level(priority)
+        
+      next if services_to_run.empty?
       
-      bundle = ServiceBundle.new(@collection.service_level(priority), priority)
+      bundle = ServiceBundle.new(services_to_run , priority)
       bundle.handle(@user_request)            
     end
     
@@ -531,10 +533,18 @@ class ResolveController < ApplicationController
     backgroundThread = Thread.new(@collection, @user_request) do | t_collection,  t_request|
       begin
         ('a'..'z').each do | priority |
-           service_list = t_collection.service_level(priority)
-           next if service_list.empty?
-           bundle = ServiceBundle.new( service_list, priority )
-           bundle.handle( t_request )           
+          # Only run the services that are runnable, that have their ids listed          
+          services_to_run, excluded_services =
+            t_collection.service_level(priority).partition do |s|
+              runnable_bg_service_ids.include?(s.id)
+            end
+            logger.debug("Skipping bg services already queued: #{excluded_services.collect {|s|s.id}.inspect}") unless excluded_services.blank?
+            
+            
+          next if services_to_run.empty?
+      
+          bundle = ServiceBundle.new(services_to_run , priority)
+          bundle.handle(t_request)                    
         end        
      rescue Exception => e
         # We are divorced from any request at this point, not much

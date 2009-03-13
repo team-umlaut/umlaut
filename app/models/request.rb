@@ -166,17 +166,21 @@ class Request < ActiveRecord::Base
   end
 
   # Will set dispatch record to queued for service--but only if it
-  # wasn't already set to somethign else! Existing status will not
-  # be-overwritten. Used preliminarily to dispatching background
-  # services. 
-  def dispatched_queued(service)
+  # wasn't already set to something else! Existing status will not
+  # be-overwritten. Used while dispatching background services to
+  # make sure not to double-dispatch.
+  # Returns 'true' if succesfully queued, or 'false' if it was ALREADY
+  # queued. 
+  
+  def queue(service)
     ds = find_dispatch_object(service)
-    unless ( ds )
+    if ( ds )
+      return false
+    else
       ds = new_dispatch_object!(service, DispatchedService::Queued)
-    end
-    ds.status = DispatchedService::Queued
-    ds.save!
-    return ds
+      ds.save!
+      return true
+    end            
   end
   
 
