@@ -67,3 +67,12 @@
   # probably no reason to.
   AppConfig::Base.session_expire_seconds = 1.day
 
+  # Umlaut tries to figure out from the SFX knowledge base
+  # which hosts are "SFX controlled", to avoid duplicating SFX
+  # urls with urls from catalog. But sometimes it misses some, or
+  # alternate hostnames for some. Regexps matching against
+  # urls can be included here. Eg,
+  # AppConfig::Base.additional_sfx_controlled_urls = [
+  #    %r{^http://([^\.]\.)*pubmedcentral\.com}
+  #  ]
+  AppConfig::Base.additional_sfx_controlled_urls = []
