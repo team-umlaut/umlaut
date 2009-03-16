@@ -253,7 +253,8 @@ class Request < ActiveRecord::Base
       stype = ServiceType.new(:request => self, :service_response => svc_resp, :service_type_value => st)
       stype.save!
     end
-        
+
+    return svc_resp
   end
 
 
