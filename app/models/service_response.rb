@@ -34,7 +34,9 @@ At the point the user clicks on a ServiceResponse, Umlaut will attempt to find a
  :notes          [newlines converted to <br>]
  :coverage
  :authentication
-
+ :match_reliability => One of MatchExact or MatchUnsure (maybe more later), for whether there's a chance this is an alternate Edition or the wrong work entirely. These are fuzzy of neccisity -- if it MIGHT be an alt edition, use MatchAltEdition even if you can't be sure it's NOT an exact match. 
+ :edition_str => String statement of edition or work to let the user disambiguate and see if it's what they want. Can be taken for instance from Marc 260. Generally only displayed when match_reliabilty is not MatchExact. If no value, Umlaut treats as MatchExact. 
+ 
  highlighted_link (see also)
  :source   [optional, otherwise service's display_name is used]
 
@@ -70,11 +72,17 @@ At the point the user clicks on a ServiceResponse, Umlaut will attempt to find a
 class ServiceResponse < ActiveRecord::Base  
   @@built_in_fields = [:display_text, :url, :notes, :response_key, :value_string, :value_alt_string, :value_text]
   has_many :service_types
-  serialize :service_data
+  serialize :service_data  
   # This value is not stored in db, but is set temporarily so
   # the http request params can easily be passed around with a response
   # object.
   attr_accessor :http_request_params
+
+  # Constants for 'match_reliability' value.
+  MatchExact = 'exact'
+  MatchUnsure = 'unsure'
+  #MatchAltEdition = 'edition'
+  #MatchAltWork = 'work'
 
   def initialize(params = nil)
     super(params)
