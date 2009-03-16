@@ -109,21 +109,24 @@ class InternetArchive < Service
       type_results.each_with_index do |result, index|
         break if index == @num_results_for_types[type] 
         display_name = @display_name
+        
         if ( result["collection"] && COLLECTION_LABELS[result["collection"][0]])
           display_name += ": " + COLLECTION_LABELS[result["collection"][0]]
         elsif ( result["collection"])
           display_name += ": " + result["collection"][0].titlecase
         end
         
-        note = result['title']
-        note << " by " << result['creator'].join(', ') if result['creator']
+        #note = result['title']
+        #note << " by " << result['creator'].join(', ') if result['creator']
 
         service_type = SERVICE_TYPE_MAP[type]
         request.add_service_response(
           {:service=>self, 
             :display_text=>display_name, 
-            :url=>create_result_url(result), 
-            :notes=>note}, [ service_type ])      
+            :url=>create_result_url(result),
+            :match_reliability => ServiceResponse::MatchUnsure,
+            :edition_str => edition_str(result)
+          }, [ service_type ])
       end  
     end
   end
@@ -193,6 +196,19 @@ class InternetArchive < Service
   
   def get_results_by_type(results, type)
     results.map{|doc| doc if doc["mediatype"] == type}.compact
+  end
+
+  def edition_str(result)
+    parts = []
+    
+    parts.push( result['title']) unless result['title'].blank?
+    parts.push( result['publisher'] ) unless result['publisher'].blank?
+    parts.push( result['year']) unless result['year'].blank?
+
+    edition_str = parts.join(', ')
+    edition_str = nil if edition_str.blank?
+
+    return edition_str
   end
   
   ## collection labels  
