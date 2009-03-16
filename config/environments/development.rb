@@ -5,6 +5,11 @@
 # since you don't have to restart the webserver when you make code changes.
 #config.cache_classes = false
 
+
+  ar_logger = config.logger.clone
+  ar_logger.level = Logger::INFO
+  ActiveRecord::Base.logger = ar_logger
+
 # For umlaut, this messed up our threaded code, I'm afraid, so we have to turn
 # off. 
 config.cache_classes = true
