@@ -45,7 +45,17 @@ holdings.each do |p|
       
       </td>
   </tr>    
-
+  
+  <% if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
+    <tr>
+      <td colspan="4">
+        <div class="section_content_indent edition_warning">
+          <em class="note label">May be an alternate edition</em> <%= target[:edition_str] %>
+        <div>
+      </td>
+    </tr>
+  <% end %>
+  
   <% unless target[:notes].blank? %>
   <tr>
   <td colspan="4"><div class="section_content_indent"><%= target[:notes] %></div> </td>
