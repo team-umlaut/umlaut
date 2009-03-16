@@ -49,6 +49,8 @@ h4 {
   margin-bottom: 2px;
 }
 
+
+
 /*a {
   text-decoration: none;
 }*/
@@ -417,6 +419,15 @@ ul.excerptslink li.excerptslink {
 .response_coverage_statement {
   margin-bottom: 4px;
   margin-top: 2px;
+}
+
+.edition_warning {
+   color: gray;
+}
+
+.edition_warning > .label {
+  font-style: normal;
+  font-weight: bold;
 }
 
 ul.smallText li.fulltextlink {
