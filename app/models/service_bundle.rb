@@ -21,6 +21,8 @@ class ServiceBundle
     return if (@services.nil? || @services.empty?)
 
     bundle_start = Time.now
+    RAILS_DEFAULT_LOGGER.info("Launching servicelevel #{@priority_level}, request #{request.id}") if @log_timing
+
     
     threads = []
     some_service_executed = false
@@ -43,6 +45,8 @@ class ServiceBundle
               
               # and actually execute it
               local_service.handle_wrapper(local_request)
+            else
+              RAILS_DEFAULT_LOGGER.info("NOT launching service #{local_service.id},  level #{@priority_level}, request #{local_request.id}: not in runnable state") if @log_timing
             end
             
            
@@ -79,10 +83,6 @@ class ServiceBundle
         raise aThread[:exception]
       end
     }
-    # Refresh our Request object's relationships,
-    # so it'll be up to date in the main thread.
-    request.dispatched_services.reset
-    request.service_types.reset
     
     threads.clear # more paranoia
     
