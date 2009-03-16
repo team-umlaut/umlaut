@@ -6,7 +6,8 @@ class HipHoldingSearch < Hip3Service
 
   def initialize(config)
     # Default preemption by any holding
-    @preempted_by = { "existing_type" => "holding"}
+    @preempted_by = { "existing_type" => "holding" }
+    @keyword_exact_match = true
     super(config)
     # Trim question-mark from base_url, if given
     @base_path.chop! if (@base_path.rindex('?') ==  @base_path.length)    
@@ -17,8 +18,7 @@ class HipHoldingSearch < Hip3Service
     return super.push(ServiceTypeValue['holding_search'])    
   end
 
-  def normalize_title(arg_title, options = {})
-
+  def normalize_title(arg_title, options = {})    
     title = arg_title.clone
     
     return nil if title.blank?
@@ -29,15 +29,21 @@ class HipHoldingSearch < Hip3Service
     title.gsub!(/\(.*\)\s*$/, '')
 
     # Remove things in brackets, part of an AACR2 GMD that's made it in.
-    title.sub!(/\[.*\]/, '')
+    # replace with ':' so we can keep track of the fact that everything
+    # that came afterwards was a sub-title like thing. 
+    title.sub!(/\[.*\]/, ':')
 
     # There seems to be some catoging/metadata disagreement about when to
     # use ';' for a subtitle instead of ':'. Normalize to ':'.
-    title.sub!(/\;/, ':')
+    # also normalize the first period, to a ':', even though it's kind of
+    # different, still seperates the 'main' title from other parts. 
+    title.sub!(/[\;\.]/, ':')
 
     if (options[:remove_subtitle])
       title.sub!(/\:(.*)$/, '')
     end
+
+    
     
     # Change ampersands to 'and' for consistency, we see it both ways.
     title.gsub!(/\&/, 'and')
@@ -49,12 +55,15 @@ class HipHoldingSearch < Hip3Service
     title.strip!
     title.gsub!(/\s+/, ' ')
 
+    title.downcase!
+    
     title = nil if title.blank?
 
     return title
   end
 
-  def handle(request)  
+  def handle(request)
+    
     # Only do anything if we have no holdings results from someone else.
     holdings = request.service_types.find(:all, :conditions=>["service_type_value_id = ?", "holding"])
     
@@ -96,16 +105,16 @@ class HipHoldingSearch < Hip3Service
     unless (request.referent.format == "journal" ||
               ( request.referent.format == "book" &&  ! ref_metadata['atitle'].blank?))
       # prefer aulast
-      if ref_metadata['aulast']
+      if (! ref_metadata['aulast'].blank?)
         search_hash[ Hip3::BibSearcher::AUTHOR_KW_INDEX ] = [ref_metadata['aulast']]
-      elsif ref_metadata['au']
+      elsif (! ref_metadata['au'].blank?)
         search_hash[ Hip3::BibSearcher::AUTHOR_KW_INDEX ] = [ref_metadata['au']]
       end
       
     end
     
     bib_searcher.search_hash = search_hash 
-    unless bib_searcher.insufficient_query    
+    unless bib_searcher.insufficient_query
       bibs = bib_searcher.search
 
       # Ssee if any our matches are exact title matches. 'exact' after normalizing a bit, including removing subtitles.
@@ -113,31 +122,42 @@ class HipHoldingSearch < Hip3Service
 
       requested_title = normalize_title( title, :remove_subtitle => true)
 
-      #debugger
-
-      
-      bibs.each do |bib|
-        # normalize btitle to match. 
-        btitle = normalize_title(bib.title, :remove_subtitle => true)            
-
-        if ( btitle.downcase == requested_title.downcase )
-          matches.push( bib );
-        end        
+      if ( @keyword_exact_match )
+        bibs.each do |bib|
+          # normalize btitle to match. 
+          btitle = normalize_title(bib.title, :remove_subtitle => true)            
+  
+          if ( btitle == requested_title )
+            matches.push( bib )
+          end        
+        end
       end
+      
+      responses_added = Hash.new
       
       if (matches.length > 0 )
         # process as exact matches with method from Hip3Service
-        process_matches(matches, request)      
-      elsif (bibs.length > 0)
+        # Add copies
+        # Add 856 urls.
+        responses_added = {}
+
+        unless preempted_by(request, "fulltext")
+          responses_added.merge!( add_856_links(request, matches.collect{|b| b.marc_xml}, :match_reliability => ServiceResponse::MatchUnsure ) )
+        end
+
+        responses_added.merge!(  add_copies(request, matches, :match_reliability => ServiceResponse::MatchUnsure ) )
+      end
+      
+      if (bibs.length > 0 && (! responses_added['holding']))
         # process as holdings_search
-        service_data = {}
+        service_data = {:service=>self}
         service_data[:source_name] = @display_name
         service_data[:count] = bibs.length
         service_data[:display_text] = "#{bibs.length} possible #{case; when bibs.length > 1 ; 'matches' ; else; 'match' ; end} in #{display_name}"
 
         service_data[:url] = bib_searcher.search_url
 
-        request.add_service_response({:service=>self, :display_text => service_data[:display_text], :url => service_data[:url], :service_data => service_data}, [ServiceTypeValue[:holding_search]])
+        request.add_service_response(service_data, [ServiceTypeValue[:holding_search]])
       end      
     end
     return request.dispatched(self, true)

@@ -13,6 +13,7 @@ class Hip3Service < Service
   attr_reader :base_path
 
   include MetadataHelper
+  include MarcHelper
 
   def initialize(config)
     # defaults
@@ -33,147 +34,96 @@ class Hip3Service < Service
   end
 
 
-  def handle(request)
+  def handle(request)    
     bib_searcher = Hip3::BibSearcher.new(@base_path)
     
     bib_searcher.issn = request.referent.issn 
     bib_searcher.isbn = request.referent.isbn
 
-    process_matches(bib_searcher.search, request)
-    
+    results = bib_searcher.search
+
+    add_856_links(request, results.collect {|b| b.marc_xml})
+    add_copies(request, results)
+
+    return request.dispatched(self, true)
+
   end
 
   # Takes an array of Hip3::Bib objects believed to be exact matches
   # for the citation querried, and adds response objects for them
-  def process_matches(bib_array, request)
+  # Returns a hash of arrays of ServiceResponses added. 
+  def add_copies(request, bib_array, options = {})
+    #debugger
     
+    # default    
+    options[:match_reliability] ||= ServiceResponse::MatchExact
 
+    responses_added = Hash.new
 
-    # Let's find any URLs, and add full text responses for those.
-    # According to way too complicated logic to try and merge catalog
-    # and SFX together without making a mess. 
-
-    urls_seen = Array.new
-
-    bib_array.each do |bib|
-      bib.marc_xml.find_all {|f| '856' === f.tag}.each do |field|
-        url = field['u']
-
-        # No u field? Forget it.
-        next if url.nil?
-
-        # Already got it from another catalog record?
-        next if urls_seen.include?(url)
-
-        # If this is a journal, don't add the URL if it matches in our
-        # SFXUrl finder, because that means we think it's an SFX controlled
-        # URL. But if it's not a journal, use it anyway, because it's probably
-        # an e-book that is not in SFX, even if it's from a vendor who is in
-        # SFX. We use MARC leader byte 7 to tell. Confusing enough?
-        is_journal = (bib.marc_xml.leader[7,1] == 's')
-        next if  is_journal && SfxUrl.sfx_controls_url?(url)
-
-        urls_seen.push(url)
-        
-        # For the text to display, let's try taking just the domain from the
-        # url
-        display_name = nil
-        begin
-          u_obj = URI::parse( url )
-          display_name = u_obj.host
-        rescue Exception
-        end
-        # Okay, can't parse out a domain, whole url then.
-        display_name = url if display_name.nil?
-        # But if we've got a $3, the closest MARC comes to a field
-        # that explains what this actually IS, use that too please.
-        display_name = field['3'] + ' from ' + display_name if field['3']
-        
-        value_text = Hash.new
-        # get all those $z subfields and put em in notes.      
-        value_text[:url] = url
-  
-        # subfield 3 is being used for OCA records loaded in our catalog.
-        value_text[:notes] =
-        field.subfields.collect {|f| f.value if (f.code == 'z') }.compact.join('; ')
-  
-        unless ( field['3'] || ! is_journal ) # subfield 3 is in fact some kind of coverage note, usually. 
-          value_text[:notes] += "; " unless value_text[:notes].blank? 
-          value_text[:notes] += "Dates of coverage unknown."
-        end
-  
-        response_params = {:service=>self, :display_text=>display_name, :url=>url, :notes=>value_text[:notes], :service_data=>value_text}
-        
-        # Do we think this is a ToC link? Rejigger things. 
-        service_type_value = self.url_service_type( field ) 
-        
-        # Add the response
-        request.add_service_response(response_params, [service_type_value])
-
-        
-      end
-    end
+    
 
     
     #Okay, we actually want to make each _copy_ into a service response.
     #A bib may have multiple copies. We are merging bibs, and just worrying
     #about the aggregated list of copies.
     holdings = bib_array.collect { |bib| bib.holdings }.flatten
-    holdings.each do |holding|
-
+    bib_array.each do |bib|
+      
     
-      next if holding.dummy?
-
-      url = holding.bib.http_url
+      bib.holdings.each do |holding|
+  
       
-      service_data = {}
-      service_data[:source_name] = holding.collection_str unless holding.collection_str.nil?
-      service_data[:call_number] = holding.call_no
-      service_data[:status] = holding.status_str
-      service_data[:location] = holding.location_str
-      service_data[:collection_str] = holding.collection_str
-      service_data[:copy_str] = holding.copy_str
-      service_data[:coverage_str] = holding.coverage_str
-      service_data[:coverage_str_array] = holding.coverage_str_to_a 
-      service_data[:notes] = holding.notes
-      service_data[:url] = url
-      # If it's not a serial copy, we can add a direct request url.
-      unless ( holding.kind_of?(Hip3::SerialCopy))
-        service_data[:request_url] = self.base_path + "?profile=general&menu=request&aspect=none&bibkey=#{holding.bib.bibNum}&itemkey=#{holding.id}"
-
-
+        next if holding.dummy?
+  
+        url = holding.bib.http_url
+        
+        service_data = {}
+        service_data[:source_name] = holding.collection_str unless holding.collection_str.nil?
+        service_data[:call_number] = holding.call_no
+        service_data[:status] = holding.status_str
+        service_data[:location] = holding.location_str
+        service_data[:collection_str] = holding.collection_str
+        service_data[:copy_str] = holding.copy_str
+        service_data[:coverage_str] = holding.coverage_str
+        service_data[:coverage_str_array] = holding.coverage_str_to_a 
+        service_data[:notes] = holding.notes
+        service_data[:url] = url
+        # If it's not a serial copy, we can add a direct request url.
+        unless ( holding.kind_of?(Hip3::SerialCopy))
+          service_data[:request_url] = self.base_path + "?profile=general&menu=request&aspect=none&bibkey=#{holding.bib.bibNum}&itemkey=#{holding.id}"
+        end
+  
+        # Need to say it's not an exact match neccesarily?
+        
+        unless ( options[:match_reliability] == ServiceResponse::MatchExact )
+            service_data[:match_reliability] = options[:match_reliability]
+            
+            service_data[:edition_str] = edition_statement(bib.marc_xml)
+        end
+        
+        display_text = ""
+        #display_text << (holding.location_str + ' ')unless holding.location_str.nil?
+        display_text << (holding.copy_str + ' ') unless holding.copy_str.nil?
+  
+        # coverage strings, may be multiple
+        holding.coverage_str_to_a.each {|s| display_text << (s + ' ')}
+  
+        display_text << holding.notes unless holding.notes.nil?
+        service_data[:display_text] = display_text
+        
+        response = request.add_service_response( {:service=>self, :display_text => display_text, :notes=>service_data[:notes], :url=> url, :service_data=>service_data }, ['holding']  )
+  
+        responses_added['holding'] ||= Array.new
+        responses_added['holding'].push( response )
+  
       end
-      
-      display_text = ""
-      #display_text << (holding.location_str + ' ')unless holding.location_str.nil?
-      display_text << (holding.copy_str + ' ') unless holding.copy_str.nil?
-
-      # coverage strings, may be multiple
-      holding.coverage_str_to_a.each {|s| display_text << (s + ' ')}
-
-      display_text << holding.notes unless holding.notes.nil?
-      service_data[:display_text] = display_text
-      
-      request.add_service_response( {:service=>self, :display_text => display_text, :notes=>service_data[:notes], :url=> url, :service_data=>service_data }, ['holding']  )
-
     end
-    return request.dispatched(self, true)
+
+    return responses_added
   end
 
-    def url_service_type( field )            
-      # LC records here at hopkins have "Table of contents only" in the 856$3
-      # Think that's a convention from LC? 
-      if (field['3'] && field['3'].downcase == "table of contents only")
-        return "table_of_contents"
-      elsif (field['3'] && field['3'].downcase =~ /description/)
-        return "abstract"
-      elsif ( field['u'] =~ /www\.loc\.gov/ )
-        # Any other loc.gov link, we know it's not full text, don't put
-        # it in full text field, put it as "see also". 
-        return "highlighted_link"
-      else
-        return @map_856_to_service
-      end      
-    end
+  def url_service_type( field )
+    return service_type_for_856(field, :default_service_type =>  @map_856_to_service)            
+  end
 
 end
