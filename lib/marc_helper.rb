@@ -116,25 +116,38 @@ module MarcHelper
   end
 
   # From a marc record, get a string useful to display for identifying
-  # which edition/version of a work this represents. Ironically, field
-  # 260 (pub data) is more useful than the marc field that's actually for
-  # 'edition'.
-  # Pass in a ruby marc object. 
+  # which edition/version of a work this represents. 
   def edition_statement(marc, options = {})
     options[:include_repro_info] ||= true
 
-    statement = ""
-    
-    
-    statement += marc['260'].subfields.collect {|s| s.value}.join(' ') if  marc['260']
-    
-    statement+= ' ' + marc['533'].subfields.collect {|s| s.value if s.code != '7'}.join(' ') if options[:include_repro_info] && marc['533']
+    parts = Array.new
 
-    statement.strip!
+    #250
+    if ( marc['250'])
+      parts.push( marc['250']['a'] ) unless marc['250']['a'].blank?
+      parts.push( marc['250']['b'] ) unless marc['250']['b'].blank?
+    end
+    
+    # 260
+    if ( marc['260'])
+      if (marc['260']['b'] =~ /s\.n\./)
+        parts.push(marc['260']['a']) unless marc['260']['a'].blank?
+      else
+        parts.push(marc['260']['b']) unless marc['260']['b'].blank?
+      end
+      parts.push( marc['260']['c'] ) unless marc['260']['c'].blank?
+    end
+      
+    # 533
+    if options[:include_repro_info] && marc['533']
+      marc['533'].subfields.each do |s| 
+        parts.push(s.value) if s.code != '7'
+      end
+    end
+      
+    return nil if parts.length == 0
 
-    statement = nil if statement.blank?
-
-    return statement    
+    return parts.join(' ')
   end
   
 end
