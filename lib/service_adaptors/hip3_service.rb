@@ -2,11 +2,7 @@
 # Params include:
 # map_856_to_service :  Umlaut ServiceTypeValue to map 856 links to. Defaults
 #                     to fulltext_title_level
-# suppress_urls:      array of strings or regexps to NOT use from the catalog.
-#                     Used for urls that duplicate SFX targets but which aren't
-#                     caught by SfxUrl.sfx_controls_url. Regexps can be put
-#                     in the services.yml like this:    
-#                        !ruby/regexp '/sagepub.com$/'
+
 
 class Hip3Service < Service
   required_config_params :base_path, :display_name
@@ -18,7 +14,6 @@ class Hip3Service < Service
   def initialize(config)
     # defaults
     @map_856_to_service = 'fulltext_title_level'
-    @suppress_urls = []
     super(config)
 
     # Trim question-mark from base_url, if given
