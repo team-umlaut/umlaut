@@ -65,7 +65,7 @@ module MarcHelper
         field.subfields.collect {|f| f.value if (f.code == 'z') }.compact.join('; ')
   
         unless ( field['3'] || ! is_journal ) # subfield 3 is in fact some kind of coverage note, usually. 
-          response_params[:notes] += "; " unless value_text[:notes].blank? 
+          response_params[:notes] += "; " unless response_params[:notes].blank? 
           response_params[:notes] += "Dates of coverage unknown."
         end
 
