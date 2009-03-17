@@ -63,7 +63,10 @@
                           { :div_id => 'abstracts',
                             :partial => "abstracts",
                             :service_type_values => ["abstract"]
-                          }
+                          },
+                          { :div_id => 'cited_by', 
+                            :partial => 'cited_by',
+                            :service_type_values => ['cited_by']}
                            ],
                           :error_div =>
                           { :div_id => 'service_errors',
