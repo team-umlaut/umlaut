@@ -500,30 +500,37 @@ class ResolveController < ApplicationController
   def service_dispatch()
     expire_old_responses();
 
-    # background services are registered as 'queued' in part to make
+    # Register ALL bg/fg services as 'queued' in part to make
     # sure we don't run them twice as a result of a browser refresh
     # or AJAX request. We want to make sure anything ALREADY
     # marked as 'queued' is not re-run, and anything we're about to run
     # gets marked as queued.
-    runnable_bg_service_ids = Array.new
-    ('a'..'z').each do | priority |
-      @collection.service_level(priority).each do | service |
-        runnable_bg_service_ids.push(service.id) if (@user_request.queue(service))
-      end
-    end
+        
+    queued_services = @user_request.queue_all_regular_services(@collection)
+    
     # Foreground services
     (0..9).each do | priority |      
-      services_to_run = @collection.service_level(priority)
+      services = @collection.service_level(priority)
+
+      # We can only really run ones that were succesfully queued          
+      services_to_run = services & queued_services
+      excluded_services = services - queued_services
+
+      logger.debug("Skipping services already queued for priority #{priority}: #{excluded_services.collect {|s|s.id}.inspect}") unless excluded_services.blank?
         
       next if services_to_run.empty?
       
       bundle = ServiceBundle.new(services_to_run , priority)
       bundle.handle(@user_request)            
     end
+
     
-    # Got to reload cached referent values association, that the services
+    # Got to reload cached associations that we need, that the services
     # may have changed in another thread. 
-    @user_request.referent.referent_values.reload
+    @user_request.referent.referent_values.reset
+    @user_request.dispatched_services.reset
+    @user_request.service_types.reset
+    
 
     # Now we run background services. 
     # Now we do some crazy magic, start a Thread to run our background
@@ -533,18 +540,25 @@ class ResolveController < ApplicationController
     backgroundThread = Thread.new(@collection, @user_request) do | t_collection,  t_request|
       begin
         ('a'..'z').each do | priority |
-          # Only run the services that are runnable, that have their ids listed          
-          services_to_run, excluded_services =
-            t_collection.service_level(priority).partition do |s|
-              runnable_bg_service_ids.include?(s.id)
-            end
-            logger.debug("Skipping bg services already queued: #{excluded_services.collect {|s|s.id}.inspect}") unless excluded_services.blank?
-            
+          # Only run the services that are runnable, that have their ids listed
+          services = t_collection.service_level(priority)
+          services_to_run = services & queued_services
+          excluded_services = services - queued_services
+
+          logger.debug("Skipping services already queued for priority #{priority}: #{excluded_services.collect {|s|s.id}.inspect}") unless excluded_services.blank?
+          
             
           next if services_to_run.empty?
       
           bundle = ServiceBundle.new(services_to_run , priority)
-          bundle.handle(t_request)                    
+          bundle.handle(t_request)
+
+          # Got to reload cached associations that we need, that the services
+          # may have changed in another thread, sorry.  
+          @user_request.referent.referent_values.reset
+          @user_request.dispatched_services.reset
+          @user_request.service_types.reset
+          
         end        
      rescue Exception => e
         # We are divorced from any request at this point, not much
@@ -558,6 +572,9 @@ class ResolveController < ApplicationController
         logger.error( e.backtrace.join("\n") )
      end
     end
-  end  
+  end
+
+
+  
 end
 

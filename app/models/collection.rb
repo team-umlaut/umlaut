@@ -262,6 +262,18 @@ class Collection
     return (@services[level] ||= [])
   end
 
+  # Returns all foreground or background services.
+  def all_regular_services
+    all_services = Array.new
+    ( (0..9).to_a  +  ('a'..'z').to_a  ).each do |priority|
+      s = self.service_level(priority)      
+      all_services.concat( s  ) if s
+    end
+    return all_services
+  end
+
+
+
   def link_out_service_level(level)
     return (@link_out_filters[level] ||= [])
   end

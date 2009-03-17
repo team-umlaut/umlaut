@@ -165,24 +165,7 @@ class Request < ActiveRecord::Base
     return ds.nil? || (ds.status == DispatchedService::Queued) || (ds.status == DispatchedService::FailedTemporary)        
   end
 
-  # Will set dispatch record to queued for service--but only if it
-  # wasn't already set to something else! Existing status will not
-  # be-overwritten. Used while dispatching background services to
-  # make sure not to double-dispatch.
-  # Returns 'true' if succesfully queued, or 'false' if it was ALREADY
-  # queued. 
-  
-  def queue(service)
-    ds = find_dispatch_object(service)
-    if ( ds )
-      return false
-    else
-      ds = new_dispatch_object!(service, DispatchedService::Queued)
-      ds.save!
-      return true
-    end            
-  end
-  
+
 
   # Create a ServiceResponse and it's associated ServiceType(s) object,
   # attached to this request.
@@ -300,6 +283,37 @@ class Request < ActiveRecord::Base
   
   def any_services_in_progress?
     return services_in_progress.length > 0
+  end
+
+    # Marks all foreground or background services as 'queued' in dispatched
+  # services. Among other reasons, this is to make sure we don't accidentally
+  # start them twice on browser refresh or AJAX request.
+  # If a service is already dispatched, it can't be queued.
+  # Returns an array of services that were succesfully queued. 
+  def queue_all_regular_services(collection)
+    
+    # Let's make sure to get a fresh copy of the dispatched_services please.
+    # We're going to fetch the whole assoc in, and then do an in-memory
+    # select against it.
+    self.dispatched_services.reset
+    
+    queued = Array.new
+    unable_to_queue = Array.new
+
+    services = collection.all_regular_services
+    services.each do |service|
+      # in-memory select, don't go to the db for each service! 
+      if ( found = self.dispatched_services.to_a.find {|s| s.service_id == service.id  } )
+        # We might later want to put code in here to re-queue
+        # a service that has FailedTemporarily. But not sure if that's
+        # dangerous.         
+        unable_to_queue.push( service )
+      else
+        self.new_dispatch_object!(service, DispatchedService::Queued).save!        
+        queued.push( service )        
+      end            
+    end
+    return queued
   end
 
   def to_context_object

@@ -27,10 +27,6 @@ class ServiceBundle
     threads = []
     some_service_executed = false
     @services.each do | service |
-        # Double check it's not already been run by somebody else, for
-        # instance if this is a browser re-load. Skip it before
-        # we even create a thread for it.
-        next unless request.can_dispatch?(service)
         some_service_executed = true
         
         # Make a proc for the actual service execution, then we'll
