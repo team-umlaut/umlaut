@@ -1,0 +1,29 @@
+<%
+   cited_by = get_service_type('cited_by')   
+%>
+
+<h3 id="cited_by_heading"><%= ServiceTypeValue[:cited_by].display_name %></h3>
+<ul class="cited_by_list">
+
+<%
+    list_with_limit('umlaut_cited_by', cited_by) do |item, index |  %>           
+      <%= render(:partial => "fulltext_element", :object=> item) %>
+<%    end %> 
+    
+<%
+if (cited_by.empty? &&
+    ! service_type_in_progress?('cited_by'))
+%>
+<li><p class="notAvailable">None found by <%= AppConfig.param("app_name") %></p></li>
+<%
+end 
+if (service_type_in_progress?('cited_by'))
+    
+%>
+  <li><%= render(:partial => "background_progress", 
+                 :locals => { :svc_types => [ServiceTypeValue[:cited_by]],                              
+                             } ) %></li>
+
+<% end %>
+</ul>
+
