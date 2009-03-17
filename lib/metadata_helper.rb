@@ -177,5 +177,14 @@ module MetadataHelper
   def get_oclcnum(rft)
     return get_identifier(:info, "oclcnum", rft)    
   end
+
+  def get_doi(rft)
+    return get_identifier(:info, "doi", rft)
+  end
+
+  def get_pmid(rft)
+    return get_identifier(:info, "pmid", rft)
+  end
+
   
 end
