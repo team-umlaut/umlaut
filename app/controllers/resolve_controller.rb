@@ -539,6 +539,12 @@ class ResolveController < ApplicationController
     # we return a response to the browser
     backgroundThread = Thread.new(@collection, @user_request) do | t_collection,  t_request|
       begin
+        # Deal with ruby's brain dead thread scheduling by setting
+        # bg threads to a lower priority so they don't interfere with fg
+        # threads.
+        Thread.current.priority = -1
+        
+      
         ('a'..'z').each do | priority |
           # Only run the services that are runnable, that have their ids listed
           services = t_collection.service_level(priority)

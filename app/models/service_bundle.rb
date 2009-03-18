@@ -63,7 +63,12 @@ class ServiceBundle
         
         if ( @use_threads )        
           threads << Thread.new(request, service.clone) do | t_request, t_service |
-             service_execute.call(t_request, t_service)
+            # Deal with ruby's brain dead thread scheduling by setting
+            # bg threads to a lower priority so they don't interfere with fg
+            # threads.
+            Thread.current.priority = -1
+          
+            service_execute.call(t_request, t_service)
           end
         else
           service_execute.call( request, service)
