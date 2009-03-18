@@ -145,8 +145,12 @@ module MarcHelper
       
     # 533
     if options[:include_repro_info] && marc['533']
-      marc['533'].subfields.each do |s| 
-        parts.push(s.value) if s.code != '7'
+      marc['533'].subfields.each do |s|
+        if ( s.code == 'a' )
+          parts.push('<em>' + s.value.gsub(/[^\w\s]/, '') + '</em>:'  )  
+        elsif ( s.code != 7 && s.code != 'f')
+          parts.push(s.value)
+        end       
       end
     end
       
