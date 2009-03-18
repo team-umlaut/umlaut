@@ -148,7 +148,7 @@ module MarcHelper
       marc['533'].subfields.each do |s|
         if ( s.code == 'a' )
           parts.push('<em>' + s.value.gsub(/[^\w\s]/, '') + '</em>:'  )  
-        elsif ( s.code != 7 && s.code != 'f')
+        elsif ( s.code != '7' && s.code != 'f')
           parts.push(s.value)
         end       
       end
