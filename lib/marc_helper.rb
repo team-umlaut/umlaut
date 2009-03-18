@@ -122,10 +122,7 @@ module MarcHelper
 
     parts = Array.new
 
-    #245$h GMD
-    unless ( marc['245'].blank? || marc['245']['h'].blank? )
-      parts.push(marc['245']['h'].gsub(/[^\w\s]/, '') + ':')
-    end
+
 
     #250
     if ( marc['250'])
@@ -142,13 +139,18 @@ module MarcHelper
       end
       parts.push( marc['260']['c'] ) unless marc['260']['c'].blank?
     end
+
+    #245$h GMD
+    unless ( marc['245'].blank? || marc['245']['h'].blank? )
+      parts.push('(' + marc['245']['h'].gsub(/[^\w\s]/, '').titlecase + ')')
+    end
       
     # 533
     if options[:include_repro_info] && marc['533']
       marc['533'].subfields.each do |s|
         if ( s.code == 'a' )
           parts.push('<em>' + s.value.gsub(/[^\w\s]/, '') + '</em>:'  )  
-        elsif ( s.code != '7' && s.code != 'f')
+        elsif ( s.code != '7' && s.code != 'f' && s.code != 'b')
           parts.push(s.value)
         end       
       end
