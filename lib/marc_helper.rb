@@ -7,7 +7,7 @@ module MarcHelper
   # Returns a hash of arrays of ServiceResponse objects added, keyed
   # by service type value string. 
   def add_856_links(request, marc_records, options = {})
-    options[:default_service_type] ||= "fulltext"
+    options[:default_service_type] ||= "fulltext_title_level"
     options[:match_reliability] ||= ServiceResponse::MatchExact
 
     responses_added = Hash.new
@@ -96,7 +96,7 @@ module MarcHelper
   # This is neccesarily a heuristic guess, Marc doesn't have enough granularity
   # to really let us know for sure. 
   def service_type_for_856(field, options)
-    options[:default_service_type] ||= "fulltext"
+    options[:default_service_type] ||= "fulltext_title_level"
 
     # LC records here at hopkins have "Table of contents only" in the 856$3
       # Think that's a convention from LC? 
