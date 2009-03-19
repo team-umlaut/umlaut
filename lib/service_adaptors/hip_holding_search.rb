@@ -90,15 +90,16 @@ class HipHoldingSearch < Hip3Service
     
     title_cleaned = normalize_title(title)
     
-    
-    # plus remove some obvious stop words, cause HIP is going to choke on em
-    title_cleaned.gsub!(/\bthe\b|\band\b|\bor\b|\bof\b|\ba\b/i,'')
-
-    title_kws = title_cleaned.split
-    # limit to 12 keywords
-    title_kws = title_kws.slice( (0..11) ) 
-    
-    search_hash[hip_title_index] = title_kws
+    unless title_cleaned.blank?
+      # plus remove some obvious stop words, cause HIP is going to choke on em
+      title_cleaned.gsub!(/\bthe\b|\band\b|\bor\b|\bof\b|\ba\b/i,'')
+  
+      title_kws = title_cleaned.split 
+      # limit to 12 keywords
+      title_kws = title_kws.slice( (0..11) ) 
+      
+      search_hash[hip_title_index] = title_kws
+    end
     
     # If it's a non-journal thing, add the author if we have an aulast (preferred) or au. 
     # But wait--if it's a book _part_, don't include the author name, since
