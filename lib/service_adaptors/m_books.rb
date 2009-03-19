@@ -34,6 +34,7 @@ class MBooks < Service
   
   def initialize(config)
     @url = 'http://mirlyn.lib.umich.edu/cgi-bin/sdrsmd?'
+    @hathi_search_url = 'http://sdr.lib.umich.edu/cgi/ptsearch'
     @display_name = 'HathiTrust'
     @num_full_views = 1
     @note =  '' #'Fulltext books from the University of Michigan'
@@ -99,6 +100,7 @@ class MBooks < Service
   # conducts query and parses the JSON
   def do_query(params)
     link = @url + params
+    
     return JSON.parse( open(link).read )
   end
   
@@ -138,6 +140,8 @@ class MBooks < Service
   end
 
   def do_search_inside(request, data)
+
+    
     search_views = data.select{|d| d['rights'] == 'searchonly' || d['rights'] == 'full'}
 
     return if search_views.blank?
@@ -147,7 +151,7 @@ class MBooks < Service
     request.add_service_response( 
         {:service => self,
         :display_text=>@display_name,
-        :url=> "http://sdr.lib.umich.edu/cgi/ptsearch?id=" +  
+        :url=> @hathi_search_url + '?id=' +  
           search_view["handle"]},
         [:search_inside]
        )
