@@ -18,7 +18,8 @@ class HipHoldingSearch < Hip3Service
     return super.push(ServiceTypeValue['holding_search'])    
   end
 
-  def normalize_title(arg_title, options = {})    
+  def normalize_title(arg_title, options = {})
+    return nil if arg_title.nil?
     title = arg_title.clone
     
     return nil if title.blank?
