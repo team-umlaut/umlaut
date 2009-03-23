@@ -89,17 +89,21 @@ class HipHoldingSearch < Hip3Service
     title = ref_metadata['title'] if title.blank?
     
     title_cleaned = normalize_title(title)
-    
-    unless title_cleaned.blank?
-      # plus remove some obvious stop words, cause HIP is going to choke on em
-      title_cleaned.gsub!(/\bthe\b|\band\b|\bor\b|\bof\b|\ba\b/i,'')
-  
-      title_kws = title_cleaned.split 
-      # limit to 12 keywords
-      title_kws = title_kws.slice( (0..11) ) 
+    if title_cleaned.blank?
+      # Not enough metadata to search.
+      RAILS_DEFAULT_LOGGER.debug("#{self.id} is missing title, can not search.")
+      return request.dispatched(self, true)
       
-      search_hash[hip_title_index] = title_kws
     end
+    
+    # plus remove some obvious stop words, cause HIP is going to choke on em
+    title_cleaned.gsub!(/\bthe\b|\band\b|\bor\b|\bof\b|\ba\b/i,'')
+
+    title_kws = title_cleaned.split 
+    # limit to 12 keywords
+    title_kws = title_kws.slice( (0..11) ) 
+    
+    search_hash[hip_title_index] = title_kws
     
     # If it's a non-journal thing, add the author if we have an aulast (preferred) or au. 
     # But wait--if it's a book _part_, don't include the author name, since
@@ -129,11 +133,13 @@ class HipHoldingSearch < Hip3Service
           # normalize btitle to match. 
           btitle = normalize_title(bib.title, :remove_subtitle => true)            
   
-          if ( btitle == requested_title )
+          if ( btitle == requested_title && ! btitle.blank?)
             matches.push( bib )
           end        
         end
       end
+
+      debugger
       
       responses_added = Hash.new
       
