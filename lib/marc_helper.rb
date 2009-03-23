@@ -142,7 +142,7 @@ module MarcHelper
 
     #245$h GMD
     unless ( marc['245'].blank? || marc['245']['h'].blank? )
-      parts.push('(' + marc['245']['h'].gsub(/[^\w\s]/, '').titlecase + ')')
+      parts.push('(' + marc['245']['h'].strip.gsub(/[^\w\s]/, '').titlecase + ')')
     end
       
     # 533
@@ -160,5 +160,22 @@ module MarcHelper
 
     return parts.join(' ')
   end
+
+  def gmd_values
+    return ['activity card', 
+'art original','art reproduction','braille','chart','diorama','electronic resource','filmstrip','flash card','game','globe','kit','manuscript','map','microform','microscope slides','model','motion picture','music','picture','realia','slide','sound recording','technical drawing','text','toy','transparency','videorecording']
+  end
+
+  # removes something that looks like a GMD in square brackets from
+  # the string. Pretty kludgey. 
+  def strip_gmd(arg_string, options = {})
+    options[:replacement] ||= ':'
+    
+    gmd_values.each do |gmd_val|
+      arg_string = arg_string.sub(/\[#{gmd_val}( \((tactile|braile|large print)\))?\]/, options[:replacement])
+    end
+    return arg_string
+  end
+
   
 end

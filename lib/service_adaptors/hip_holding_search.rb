@@ -4,6 +4,8 @@ class HipHoldingSearch < Hip3Service
   required_config_params :base_path, :display_name
   attr_reader :base_path
 
+  include MarcHelper
+
   def initialize(config)
     # Default preemption by any holding
     @preempted_by = { "existing_type" => "holding" }
@@ -32,8 +34,8 @@ class HipHoldingSearch < Hip3Service
     # Remove things in brackets, part of an AACR2 GMD that's made it in.
     # replace with ':' so we can keep track of the fact that everything
     # that came afterwards was a sub-title like thing. 
-    #title.sub!(/\[.*\]/, ':')
-
+    title = strip_gmd(title)
+    
     # There seems to be some catoging/metadata disagreement about when to
     # use ';' for a subtitle instead of ':'. Normalize to ':'.
     # also normalize the first period, to a ':', even though it's kind of
@@ -49,8 +51,11 @@ class HipHoldingSearch < Hip3Service
     # Change ampersands to 'and' for consistency, we see it both ways.
     title.gsub!(/\&/, 'and')
       
-    # remove non-alphanumeric
-    title.gsub!(/[^\w\s]/, ' ')
+    # remove non-alphanumeric, excluding apostrophe
+    title.gsub!(/[^\w\s\']/, ' ')
+
+    # apostrophe not to space, just eat it.
+    title.gsub!(/[\']/, '')
 
     # compress whitespace
     title.strip!
@@ -89,6 +94,7 @@ class HipHoldingSearch < Hip3Service
     title = ref_metadata['title'] if title.blank?
     
     title_cleaned = normalize_title(title)
+    
     if title_cleaned.blank?
       # Not enough metadata to search.
       RAILS_DEFAULT_LOGGER.debug("#{self.id} is missing title, can not search.")
