@@ -32,7 +32,7 @@ class HipHoldingSearch < Hip3Service
     # Remove things in brackets, part of an AACR2 GMD that's made it in.
     # replace with ':' so we can keep track of the fact that everything
     # that came afterwards was a sub-title like thing. 
-    title.sub!(/\[.*\]/, ':')
+    #title.sub!(/\[.*\]/, ':')
 
     # There seems to be some catoging/metadata disagreement about when to
     # use ';' for a subtitle instead of ':'. Normalize to ':'.
