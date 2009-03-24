@@ -279,6 +279,12 @@ class Referent < ActiveRecord::Base
     }
     return identifiers
   end
+
+  def add_identifier(id)
+    unless ( identifiers.find{|i| i == id}  )
+      self.referent_values.create(:key_name => 'identifier', :value => id, :normalized_value => ReferentValue.normalize(id), :metadata => false, :private_data => false).save!            
+    end
+  end
   
   def format
     self.referent_values
@@ -454,7 +460,7 @@ class Referent < ActiveRecord::Base
     
     if (matches.length == 0)
       val = self.referent_values.create(:key_name => key, :value => value, :normalized_value => ReferentValue.normalize(value), :metadata => metadata, :private_data => private_data)
-      val.save
+      val.save!
     end
     
     if key.match((/(^[ajb]?title$)|(^is[sb]n$)|(^volume$)|(^date$)/))
@@ -466,7 +472,7 @@ class Referent < ActiveRecord::Base
         when 'atitle' then self.atitle = ReferentValue.normalize(value)
         else self.title = ReferentValue.normalize(value)
       end
-      self.save
+      self.save!
     end
   end  
 end
