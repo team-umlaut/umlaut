@@ -129,7 +129,7 @@ class Scopus < Service
 
       if (@include_similar)
         url = more_like_this_url(first_hit)
-        # Need to pre-check it to see if there's actually hits.
+        # Pre-checking for actual hits not currently working, disabled.
         if (true || ( hits = check_for_hits(url) ) > 0 )
           request.add_service_response( :service=>self, :display_text => "#{hits} #{ServiceTypeValue[:similar].display_name.titlecase.pluralize}", :url => url, :service_type_value => :similar)          
         end                
@@ -137,7 +137,7 @@ class Scopus < Service
 
       if ( @include_more_by_authors)
         url = more_like_this_url(first_hit, :type => "aut")
-        # Need to pre-check it to see if there's actually hits.
+        # Pre-checking for actual hits not currently working, disabled. 
         if (true || ( hits = check_for_hits(url) ) > 0 )
           request.add_service_response( :service=>self, :display_text => "#{hits} More from these authors", :url => url, :service_type_value => :similar)          
         end        
@@ -234,6 +234,7 @@ class Scopus < Service
     return "#{@inward_more_like_url}?partnerID=#{@partner_id}&rel=#{@scopus_release}&eid=#{eid}&mltType=#{options[:type]}"
   end
 
+  # NOT currently working. Scopus doesn't make this easy. 
   # Takes a scopus direct url for which we're not sure if there will be results
   # or not, and requests it and html screen-scrapes to get hit count. (We
   # can conveniently find this just in the html <title> at least).
