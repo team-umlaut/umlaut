@@ -33,6 +33,7 @@ class Jcr < Service
     #defaults
     @wos_app_name = "Umlaut"
     @display_name = "Journal Citation Reports"
+    @link_text = "Journal Impact Factor"
     @api_url = "https://ws.isiknowledge.com/esti/xrpc"
     @include_for_article_level = true
     super(config)
@@ -123,7 +124,7 @@ class Jcr < Service
     
     if (impact_url )
       request.add_service_response(:service=>self, 
-        :display_text => "Journal Impact Factor",          
+        :display_text => @link_text,          
         :url => impact_url.inner_text, 
         :service_type_value => :highlighted_link)
     end
