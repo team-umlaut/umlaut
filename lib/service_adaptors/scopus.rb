@@ -3,7 +3,10 @@
 # PURPOSE: Includes "cited by", "similar articles" and "more by these authors"
 # links from scopus. Also will throw in an abstract from Scopus if found. 
 #
-# LIMTATIONS: Must find a match in scopus, naturally. "cited by" will only
+# LIMTATIONS: You must be a Scopus customer for these links generated to work
+# for your users at all! Off-campus users should be going through ezproxy, see
+# the EZProxy plug-in.
+# Must find a match in scopus, naturally. "cited by" will only
 # be included if Scopus has non-0 "cited by" links. But there's no good way
 # to precheck similar/more-by for this, so they are provided blind and may
 # result in 0 hits.  You can turn them off if you like, with @include_similar,
