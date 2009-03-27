@@ -30,6 +30,8 @@
     
   div_id = "progress_#{svc_types[0].name}" unless div_id
   current_set_empty = false if current_set_empty.nil?
+  
+  item_name ||= svc_types[0].display_name_pluralize
 %>
 
 <% # only display if there are more! 
@@ -42,7 +44,7 @@
     <% if @force_bg_progress_spinner %>
       <%= 
       image_tag('spinner.gif') %>
-      <span id="foo">Searching for <%= (current_set_empty ? "" : "more ") + svc_types[0].display_name_pluralize %></span>
+      <span id="foo">Searching for <%= (current_set_empty ? "" : "more ") + item_name %></span>
     <% end %>
   </div>
 
@@ -50,7 +52,7 @@
   %>
     <script type="text/javascript">
     <%= update_page do |page|
-         page.replace_html div_id, "#{image_tag('spinner.gif')} Searching for #{current_set_empty ? "" : "more "}#{svc_types[0].display_name_pluralize}"
+         page.replace_html div_id, "#{image_tag('spinner.gif')} Searching for #{current_set_empty ? "" : "more "}#{item_name}"
     end
     %>
     </script>
