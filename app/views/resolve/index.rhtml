@@ -87,9 +87,6 @@
       
     </div>
         
-    <div id="cited_by">
-        <%= render(:partial => "cited_by") %>
-    </div>
 
     
   <!--close availability-->
@@ -156,7 +153,9 @@ unless relevant_links.empty? %>
 </div>
 
 
-
+  <div id="related_items" class="smGrayBox">
+    <%= render :partial=>"related_items" %>
+  </div>
   
   <div id="highlighted_links">
   <%= render :partial=>"highlighted_links_start" %>

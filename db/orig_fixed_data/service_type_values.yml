@@ -82,6 +82,13 @@ excerpts:
 cited_by:
   id: 21
   display_name: Citing References
+
+# Used by ISI and Scopus at present. Maybe more later. 
+# "More like this" links. 
+similar:
+  id: 22
+  display_name: "Similar Articles"
+  
   
 # Not sure what this is used for. Think it's a typo for abstract. 
 description:
