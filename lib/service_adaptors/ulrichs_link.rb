@@ -12,7 +12,7 @@ class UlrichsLink < Service
 
   def handle(request)    
     unless (request.referent.metadata['issn'].blank?)
-      display_text = @link_name || "Periodical Information"
+      display_text = @link_name || "Periodical information"
 
       url = url_for_issn( request.referent.metadata['issn'] )
       

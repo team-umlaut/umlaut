@@ -134,7 +134,7 @@ class Scopus < Service
         url = more_like_this_url(first_hit)
         # Pre-checking for actual hits not currently working, disabled.
         if (true || ( hits = check_for_hits(url) ) > 0 )
-          request.add_service_response( :service=>self, :display_text => "#{hits} #{ServiceTypeValue[:similar].display_name.titlecase.pluralize}", :url => url, :service_type_value => :similar)          
+          request.add_service_response( :service=>self, :display_text => "#{hits} #{ServiceTypeValue[:similar].display_name_pluralize.downcase.capitalize}", :url => url, :service_type_value => :similar)          
         end                
       end
 
@@ -201,7 +201,7 @@ class Scopus < Service
     cited_by_url = cited_by_url( result )
     
     request.add_service_response(:service=>self, 
-      :display_text => "#{count} #{ServiceTypeValue[:cited_by].display_name.titlecase.pluralize}", 
+      :display_text => "#{count} #{ServiceTypeValue[:cited_by].display_name_pluralize.downcase.capitalize}", 
       :count=> count, 
       :url => cited_by_url, 
       :service_type_value => :cited_by)
