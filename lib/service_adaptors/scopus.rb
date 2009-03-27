@@ -1,20 +1,49 @@
-# This is still experimental.
-
-# Mainly finds 'cited by' from Scopus, and links to.
-# Also includes an abstract, if found. 
-
-# Register for a Scopus API key at: http://searchapi.scopus.com
-# Use your Umlaut base url as the 'website url' in your registration.
-
+# Service adapter plug-in.
+# 
+# PURPOSE: Includes "cited by", "similar articles" and "more by these authors"
+# links from scopus. Also will throw in an abstract from Scopus if found. 
+#
+# LIMTATIONS: Must find a match in scopus, naturally. "cited by" will only
+# be included if Scopus has non-0 "cited by" links. But there's no good way
+# to precheck similar/more-by for this, so they are provided blind and may
+# result in 0 hits.  You can turn them off if you like, with @include_similar,
+# and @include_more_by_authors. 
+#
+# REGISTERING:  This plug in actually has to use two seperate Scopus APIs.
+# For the first, the scopus 'json' search api, you must regsiter and get an
+# api key from scopus, which you can do here:
+# http://searchapi.scopus.com
+# Then include as @json_api_key in service config.
+#
+# For the second Scopus API, you theoretically need a Scopus "PartnerID" and
+# corresponding "release number", in @partner_id and @scopus_release
+# There's no real easy way to get one. Scopus says:
+#    "To obtain a partner ID or release number, contact your nearest regional
+#    Scopus office. A list of Scopus contacts is available at
+#    http://www.info.scopus.com/contactus/index.shtml"
+# Bah! But fortunately, using the "partnerID" assigned to the Scopus Json
+# API, 65, _seems_ to work, and is coded here as the default. You could try
+# going with that. When you register a partnerID, you also get a 'salt key',
+# which is currently not used by this code, but @link_salt_key is reserved
+# for it in case added functionality does later. 
+#
 class Scopus < Service
   require  'open-uri'
   require 'json'
   include MetadataHelper
+  include UmlautHttp
   
-  required_config_params :api_key
+  required_config_params :json_api_key
 
   def service_types_generated
-    return [ServiceTypeValue[:cited_by], ServiceTypeValue[:abstract]]
+    types = []
+    types.push( ServiceTypeValue[:abstract]) if @include_abstract
+    types.push( ServiceTypeValue[:cited_by] ) if @include_cited_by
+    types.push( ServiceTypeValue[:abstract] ) if @include_abstract
+    types.push( ServiceTypeValue[:similar] ) if @include_similar
+    types.push( ServiceTypeValue[@more_by_authors_type] ) if @include_more_by_authors
+
+    return types
   end
 
   def initialize(config)
@@ -22,13 +51,32 @@ class Scopus < Service
     @display_name = "Scopus"
     @registered_referer
     @scopus_search_base = 'http://www.scopus.com/scsearchapi/search.url'
-    @scopus_cited_by_base = 'http://www.scopus.com/scopus/search/submit/citedby.url'
+    
     @include_abstract = true
+    @include_cited_by = true
+    @include_similar = true
+    @include_more_by_authors = true
+    @more_by_authors_type = "similar"
+
+    @inward_cited_by_url = "http://www.scopus.com/scopus/inward/citedby.url"
+    #@partner_id = "E5wmcMWC"
+    @partner_id = 65
+    @link_salt_key = nil
+    @scopus_release = "R6.0.0"
+
+    # Scopus offers to algorithms for finding similar items.
+    # This variable can be:
+    # "key" => keyword based similarity 
+    # "ref" => reference based similiarity (cites similar refs?) Seems to offer 0 hits quite often, so we use keyword instead. 
+    # "aut" => author. More docs by same authors. Incorporate this latter as
+    # an additional link?
+    @more_like_this_type = "key"
+    @inward_more_like_url = "http://www.scopus.com/scopus/inward/mlt.url"
+    
     super(config)
   end
 
   def handle(request)
-
     
     scopus_search = scopus_search(request)
 
@@ -38,7 +86,7 @@ class Scopus < Service
     
     # The default fields returned dont' include the eid (Scopus unique id) that we need, so we'll supply our own exhaustive list of &fields=
     url = 
-    "#{@scopus_search_base}?devId=#{@api_key}&search=#{scopus_search}&callback=findit_callback&fields=title,doctype,citedbycount,inwardurl,sourcetitle,issn,vol,issue,page,pubdate,eid,scp,doi,firstAuth,authlist,affiliations,abstract";
+    "#{@scopus_search_base}?devId=#{@json_api_key}&search=#{scopus_search}&callback=findit_callback&fields=title,doctype,citedbycount,inwardurl,sourcetitle,issn,vol,issue,page,pubdate,eid,scp,doi,firstAuth,authlist,affiliations,abstract";
     
     # Make the call.
     headers = {}
@@ -68,14 +116,33 @@ class Scopus < Service
     else
       # error. 
     end
+
+    if ( first_hit )
     
+      if (@include_cited_by && first_hit["citedbycount"].to_i > 0)
+        add_cited_by_response(first_hit, request)
+      end
+  
+      if (@include_abstract && first_hit["abstract"])
+        add_abstract(first_hit, request)
+      end
 
-    if (first_hit && first_hit["citedbycount"].to_i > 0)
-      add_cited_by_response(first_hit, request)
-    end
+      if (@include_similar)
+        url = more_like_this_url(first_hit)
+        # Need to pre-check it to see if there's actually hits.
+        if (true || ( hits = check_for_hits(url) ) > 0 )
+          request.add_service_response( :service=>self, :display_text => "#{hits} #{ServiceTypeValue[:similar].display_name.titlecase.pluralize}", :url => url, :service_type_value => :similar)          
+        end                
+      end
 
-    if ( first_hit && @include_abstract && first_hit["abstract"])
-      add_abstract(first_hit, request)
+      if ( @include_more_by_authors)
+        url = more_like_this_url(first_hit, :type => "aut")
+        # Need to pre-check it to see if there's actually hits.
+        if (true || ( hits = check_for_hits(url) ) > 0 )
+          request.add_service_response( :service=>self, :display_text => "#{hits} More from these authors", :url => url, :service_type_value => :similar)          
+        end        
+      end
+
     end
 
     return request.dispatched(self, true)
@@ -130,7 +197,11 @@ class Scopus < Service
     count = result["citedbycount"]
     cited_by_url = cited_by_url( result )
     
-    request.add_service_response(:service=>self, :display_text => "#{count} #{ServiceTypeValue[:cited_by].display_name.downcase.pluralize} in #{@display_name}", :count=> count, :url => cited_by_url, :service_type_value => :cited_by)
+    request.add_service_response(:service=>self, 
+      :display_text => "#{count} #{ServiceTypeValue[:cited_by].display_name.titlecase.pluralize}", 
+      :count=> count, 
+      :url => cited_by_url, 
+      :service_type_value => :cited_by)
 
   end
 
@@ -149,8 +220,43 @@ class Scopus < Service
   end
 
   def cited_by_url(result)
-    eid = result["eid"]    
-    return "#{@scopus_cited_by_base}?eid=#{eid}&src=s&origin=recordpage"
+    eid = CGI.escape(result["eid"])    
+    #return "#{@scopus_cited_by_base}?eid=#{eid}&src=s&origin=recordpage"
+    # Use the new scopus direct link format!
+    return "#{@inward_cited_by_url}?partnerID=#{@partner_id}&rel=#{@scopus_release}&eid=#{eid}"
+    return 
   end
+
+  def more_like_this_url(result, options = {})
+    options[:type] ||= @more_like_this_type
+    
+    eid = CGI.escape(result["eid"])
+    return "#{@inward_more_like_url}?partnerID=#{@partner_id}&rel=#{@scopus_release}&eid=#{eid}&mltType=#{options[:type]}"
+  end
+
+  # Takes a scopus direct url for which we're not sure if there will be results
+  # or not, and requests it and html screen-scrapes to get hit count. (We
+  # can conveniently find this just in the html <title> at least).
+  # Works for cited_by and more_like_this searches at present. 
+  # May break if Scopus changes their html title!
+  def check_for_hits(url)
   
+    response = http_fetch(url).body
+
+    hpricot = Hpricot(response)
+
+    title = hpricot.at('title').inner_text
+    # title is "X documents" (or 'Documents') if there are hits.
+    # It's annoyingly "Search Error" if there are either 0 hits, or
+    # if there was an actual error. So we can't easily log actual
+    # errors, sorry.
+    title.downcase =~ /^\s*(\d+)?\s+document/
+    if ( hits = $1)
+      return hits.to_i
+    else
+      return 0
+    end    
+  end
+
+    
 end
