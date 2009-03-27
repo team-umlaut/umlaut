@@ -280,7 +280,7 @@ hr {
   padding: 4px;  
 }
 
-.see_also_source {
+.see_also_source, .link_source {
   color: gray;
   padding-left: 10px;
 }
@@ -597,18 +597,29 @@ body.banner {
 
 .smGrayBox {
 	border:1px solid #e9e9e9;
-	margin: 5px;
+	margin: 5px 5px 15px 5px;
 	padding: 5px;
 /*	width: 155px;*/
 
 }
-.tightbullets {
+/* prefer ul.tightbullets instead */
+div.tightbullets {
 	/* background: url(../images/bullet_basic.gif) no-repeat 0px 6px; */
   margin-left:5px;
 	padding-left: 10px;
 	padding-bottom: 5px;
 	line-height:13px;
 }
+
+ul.tightbullets {
+  margin-left:5px;
+	padding-left: 10px;
+	line-height:13px;
+}
+ul.tightbullets li {
+  padding-bottom: 5px;
+}
+
 ul.news {
 	margin: 5px 5px 10px 0px;
 }
