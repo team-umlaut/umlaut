@@ -107,7 +107,9 @@ module MetadataHelper
   # referent: an umlaut Referent object
   #
   # returns nil if no identifier found, otherwise the bare identifier (not formatted into a urn/uri right now. Option should be maybe be added?) 
-  def get_identifier(type, sub_scheme, referent )
+  def get_identifier(type, sub_scheme, referent, options = {} )
+    options[:multiple] ||= false
+    
     raise Exception.new("type must be :urn or :info") unless type == :urn or type == :info
 
     prefix = case type
@@ -116,17 +118,21 @@ module MetadataHelper
              end
     
     bare_identifier = nil
-    if (referent.identifiers.find {|id| id =~ /^#{prefix}(.*)/})
-      # Pull it out of our regexp match
-      bare_identifier = $1
-    elsif (['lccn', 'oclcnum', 'isbn', 'issn'].include?(sub_scheme))
+    identifiers = referent.identifiers.collect {|id| $1 if id =~ /^#{prefix}(.*)/}.compact
+
+    if ( identifiers.blank? &&  ['lccn', 'oclcnum', 'isbn', 'issn'].include?(sub_scheme) )
       # try the referent metadata
-      bare_identifier = referent.metadata[sub_scheme]
+      from_rft = referent.metadata[sub_scheme]
+      identifiers = [from_rft] unless from_rft.blank?
     end
 
-    
-    return bare_identifier.blank? ? nil : bare_identifier
-    
+    if ( options[:multiple])
+      return identifiers
+    elsif ( identifiers[0].blank? )
+      return nil
+    else
+      return identifiers[0]
+    end        
     
   end
 
@@ -186,5 +192,21 @@ module MetadataHelper
     return get_identifier(:info, "pmid", rft)
   end
 
+  # Returns an array, possibly empty. 
+  def get_gpo_item_nums(rft)
+    # In a technically illegal but used by OCLC info:gpo uri
+    ids = get_identifier(:info, "gpo", rft, :multiple => true)
+    # Remove the uri part. 
+    return ids.collect {|id| id.sub(/^info:gpo\//, '')  }
+  end
+
+  def get_sudoc(rft)
+    # In a technically illegal but oh well info:sudoc uri
+    id = get_identifier(:info, "sudoc", rft)
+    # Remove the uri part. 
+    id = id.sub(/^info:sudoc\//, '') if id
+
+    return id
+  end
   
 end
