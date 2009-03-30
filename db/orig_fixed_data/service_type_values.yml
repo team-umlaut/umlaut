@@ -53,7 +53,8 @@ holding_search:
   
 # This is meant for 'fulltext' from such sources as the OPAC/ILS, where
 # it will always be a title-level link, and dates of coverage usually
-# aren't checked. 
+# aren't checked. DEPRECATED. No longer used, use a fulltext wtih :coverage_checked
+# and/or :can_link_to_article set to false. 
 fulltext_title_level:
   id: 16
   display_name: Electronic Text Version
@@ -81,7 +82,7 @@ excerpts:
   
 cited_by:
   id: 21
-  display_name: Citing References
+  display_name: References
 
 # Used by ISI and Scopus at present. Maybe more later. 
 # "More like this" links. 

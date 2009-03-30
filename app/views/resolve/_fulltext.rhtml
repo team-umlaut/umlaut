@@ -1,7 +1,9 @@
 <%
-   fulltxt = get_service_type('fulltext')
-   title_level_fulltxt = get_service_type('fulltext_title_level')
-   all_fulltext = fulltxt + title_level_fulltxt
+   all_responses = get_service_type('fulltext')
+   
+   (title_level_fulltxt, fulltxt) = 
+      all_responses.partition {|i| i.view_data[:coverage_checked] == false || i.view_data[:can_link_to_article] == false}      
+      
 %>
 
 <div id="fulltext" class="main_column_section <%= unless fulltxt.blank? && title_level_fulltxt.blank?; 'highlighted_section' ; end %>">
@@ -9,7 +11,7 @@
 <ul class="fulltextlink">
 
 <%
-    list_with_limit('umlaut_fulltext', all_fulltext) do |item, index |
+    list_with_limit('umlaut_fulltext', all_responses) do |item, index |
       # Display special warnign header if it's title-level only,
       # and it's an article or issue level link. Are we
       # at the beginning of title level display?
@@ -29,18 +31,15 @@
     
 <%
 if (fulltxt.empty? && title_level_fulltxt.empty? &&
-    ! service_type_in_progress?('fulltext') &&
-    ! service_type_in_progress?('fulltext_title_level'))
+    ! service_type_in_progress?('fulltext'))
 %>
 <li><p class="notAvailable">Not Available </p></li>
 <%
 end 
-if (service_type_in_progress?('fulltext') ||
-    service_type_in_progress?('fulltext_title_level'))
+if (service_type_in_progress?('fulltext'))
 %>
   <li><%= render(:partial => "background_progress", 
-                 :locals => { :svc_types => [ServiceTypeValue[:fulltext],
-                              ServiceTypeValue[:fulltext_title_level]],
+                 :locals => { :svc_types => [ServiceTypeValue[:fulltext]],
                               :current_set_empty => fulltxt.empty? && title_level_fulltxt.empty?
                              } ) %></li>
 

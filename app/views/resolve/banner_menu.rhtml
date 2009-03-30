@@ -35,8 +35,10 @@
 
 
   
-  <% fulltxt = get_service_type('fulltext')
-     title_level_fulltxt = get_service_type('fulltext_title_level')
+  <% all_responses = get_service_type('fulltext')
+     (title_level_fulltxt, fulltxt) = 
+      all_responses.partition {|i| i.view_data[:coverage_checked] == false || i.view_data[:can_link_to_article] == false}
+       
      unless fulltxt.blank? && title_level_fulltxt.blank?
   %>
   <div id="banner_fulltext" class="banner_section" >

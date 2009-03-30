@@ -7,7 +7,7 @@ module MarcHelper
   # Returns a hash of arrays of ServiceResponse objects added, keyed
   # by service type value string. 
   def add_856_links(request, marc_records, options = {})
-    options[:default_service_type] ||= "fulltext_title_level"
+    options[:default_service_type] ||= "fulltext"
     options[:match_reliability] ||= ServiceResponse::MatchExact
 
     responses_added = Hash.new
@@ -79,7 +79,11 @@ module MarcHelper
         # Figure out the right service type value for this, fulltext, ToC,
         # whatever.
         service_type_value = service_type_for_856( field, options ) 
-                
+
+        # fulltext urls from MARC are always marked as specially stupid.
+        response_params[:coverage_checked] = false
+        response_params[:can_link_to_article] = false
+        
         # Add the response
         response = request.add_service_response(response_params, 
             [ service_type_value  ])

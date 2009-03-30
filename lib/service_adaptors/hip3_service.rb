@@ -13,7 +13,7 @@ class Hip3Service < Service
 
   def initialize(config)
     # defaults
-    @map_856_to_service = 'fulltext_title_level'
+    @map_856_to_service = 'fulltext'
     super(config)
 
     # Trim question-mark from base_url, if given
@@ -34,7 +34,8 @@ class Hip3Service < Service
     
     bib_searcher.issn = request.referent.issn 
     bib_searcher.isbn = request.referent.isbn
-
+    bib_searcher.sudoc = get_sudoc(request.referent)
+    
     results = bib_searcher.search
 
     add_856_links(request, results.collect {|b| b.marc_xml})

@@ -27,46 +27,50 @@ At the point the user clicks on a ServiceResponse, Umlaut will attempt to find a
 = Conventional keys:
 
  Absolute minimum: 
- :display_text
+ [:display_text]   Text that will be used 
 
  Basic set (used by fulltext and often others)
- :display_text
- :notes          [newlines converted to <br>]
- :coverage
- :authentication
- :match_reliability => One of MatchExact or MatchUnsure (maybe more later), for whether there's a chance this is an alternate Edition or the wrong work entirely. These are fuzzy of neccisity -- if it MIGHT be an alt edition, use MatchAltEdition even if you can't be sure it's NOT an exact match. 
- :edition_str => String statement of edition or work to let the user disambiguate and see if it's what they want. Can be taken for instance from Marc 260. Generally only displayed when match_reliabilty is not MatchExact. If no value, Umlaut treats as MatchExact. 
+ [:display_text]
+ [:notes]          (newlines converted to <br>)
+ [:coverage]
+ [:authentication]
+ [:match_reliability] => One of MatchExact or MatchUnsure (maybe more later), for whether there's a chance this is an alternate Edition or the wrong work entirely. These are fuzzy of neccisity -- if it MIGHT be an alt edition, use MatchAltEdition even if you can't be sure it's NOT an exact match. 
+ :edition_str => String statement of edition or work to let the user disambiguate and see if it's what they want. Can be taken for instance from Marc 260. Generally only displayed when match_reliabilty is not MatchExact. If no value, Umlaut treats as MatchExact.
+
+== Full text specific
+These are applicable only when the incoming OpenURL is an article-level citation. Umlaut uses Request#title_level_citation? to estimate this.
+
+  [:coverage_checked]  boolean, default true.  False for links from, eg, the catalog, where we weren't able to pre-check if the particular citation is included at this link.
+  [:can_link_to_article] boolean, default true. False if the links is _known_ not to deliver user to actual article requested, but just to a title-level page. Even though SFX links sometimes incorrectly do this, they are still not set to false here.  
  
- highlighted_link (see also)
- :source   [optional, otherwise service's display_name is used]
+== highlighted_link (see also)
+ [:source]   (optional, otherwise service's display_name is used)
 
- Holdings set adds:
- :source_name
- :call_number
- :status
- :request_url     a url to request the item. optional. 
+== Holdings set adds:
+ [:source_name]
+ [:call_number]
+ [:status]
+ [:request_url]     a url to request the item. optional. 
+ [:coverage_array] (Array of coverage strings.)
+ [:due_date]
+ [:collection_str]
+ [:location_str]
 
- Some more used by Horizon holdings:
- :coverage_array (Array of coverage strings.)
- :due_date
- :collection_str
- :location_str
-
- search_inside
+== search_inside
  Has no additional conventional keys, but when calling it's url handling functionality, send it a url param query= with the users query. In the API, this means using the umlaut_passthrough_url, but adding a url parameter query on to it. This will redirect to the search results. 
 
- Cover images:
- :display_text set to desired alt text
- :url    src url to img
- :size  => 'small', 'medium', 'large' or 'extra-large'. Also set in :key
+== Cover images:
+ [:display_text] set to desired alt text
+ [:url]    src url to img
+ [:size]  => 'small', 'medium', 'large' or 'extra-large'. Also set in :key
 
- Anything from amazon:
- :asin
+== Anything from amazon:
+ [:asin]
 
- Abstracts/Tocs:
+== Abstracts/Tocs:
    Can be a link to, or actual content. Either way, should be set
    up to link to source of content if possible. Basic set, plus:
-   :content           actual content, if available. 
+   [:content]           actual content, if available. 
 
 =end
 class ServiceResponse < ActiveRecord::Base  
