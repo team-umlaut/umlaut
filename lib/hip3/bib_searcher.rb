@@ -28,10 +28,13 @@ module Hip3
     TITLE_KW_INDEX = '.TW'
     SERIAL_TITLE_KW_INDEX = '.ST'
     AUTHOR_KW_INDEX = '.AW'
+
+    SUDOC_KW_INDEX = '.SD'
     
 		attr_accessor :httpSession 
 		attr_accessor :hip_base_url_str, :hip_base_url
 		attr_reader :issn, :isbn # writers provided concretely
+    attr_accessor :sudoc
     attr_reader :keywords
 		
 		# You can pass in a Net::HTTP, if you'd for instance like to keep
@@ -119,8 +122,12 @@ module Hip3
 			path = self.hip_base_url.path() + '?' 			"menu=search&aspect=power&npp=30&ipp=20&spp=20&profile=general&ri=2&source=%7E%21horizon"
 
       criteria = Array.new
-      criteria << "&index=#{ISSN_KW_INDEX}&term=#{URI.escape(self.issn)}" unless issn.nil? 
+      criteria<< "&index=#{SUDOC_KW_INDEX}&term=#{URI.escape('"' + self.sudoc + '"' )}" unless sudoc.nil?
+      criteria << "&index=#{ISSN_KW_INDEX}&term=#{URI.escape(self.issn)}" unless issn.nil?
+      # For some reason ISBN must be LAST in order, or HIP doesn't like it.
+      # Go figure. I hate you, HIP. 
       criteria << "&index=#{ISBN_KW_INDEX}&term=#{URI.escape(self.isbn)}" unless isbn.nil?
+      
       criteria << keyword_url_args
       path << criteria.join("&oper=or")
 
@@ -219,7 +226,7 @@ module Hip3
 
     def insufficient_query
       # Have to have some search criteria to search
-      return (self.issn.nil? && self.isbn.nil? && self.keywords.blank? && @search_hash.blank?)
+      return (self.issn.nil? && self.isbn.nil? && self.sudoc.blank? && self.keywords.blank? && @search_hash.blank?)
     end
 
     def search_url
