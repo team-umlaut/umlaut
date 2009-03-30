@@ -30,19 +30,8 @@ class Referent < ActiveRecord::Base
     
     rft = co.referent
 
-    # First try to find by id. There could be several.
-    
-    rft.identifiers.each do | ident |
-      rft_val = ReferentValue.find(:first,
-                        :conditions=> { :key_name => 'identifier', :normalized_value => ident} )
-          
-      # Not sure why there'd ever be an rft_val with a blank referent, but there was. 
-      if (rft_val && rft_val.referent && rft_val.referent.metadata_intersects?( rft ))            
-        return rft_val.referent
-      end      
-    end
         
-    # Else try to find by special indexed shortcut values. Create hash
+    # Try to find for re-use by special indexed shortcut values. Create hash
     # of shortcuts. 
     
     # Preload values as empty, even if they aren't found in our
