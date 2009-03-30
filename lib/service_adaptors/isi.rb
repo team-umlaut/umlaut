@@ -116,7 +116,7 @@ class Isi < Service
               if ( issn = request.referent.issn )
                 # ISSN _needs_ a hyphen for WoS, bah!
                 unless issn.match( /\-/ )
-                  issn = issn[0,3] + '-' + issn[4,7]
+                  issn = issn[0,4] + '-' + issn[4,7]
                 end
                 builder.val(issn, :name => "issn")
               end
@@ -166,7 +166,7 @@ class Isi < Service
 
     # Check for errors.
     if (error = (hpricot.at('val[@name = "error"]') || hpricot.at('null[@name = "error"]')))
-      raise Exception.new("Third party service error: #{error.inner_text}")
+      raise Exception.new("ISI service reported error: #{error.inner_text}")
     end
     
     results = hpricot.at('map[@name ="cite_id"] map[@name="WOS"]')

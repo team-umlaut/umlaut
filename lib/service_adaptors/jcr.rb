@@ -33,7 +33,7 @@ class Jcr < Service
     #defaults
     @wos_app_name = "Umlaut"
     @display_name = "Journal Citation Reports"
-    @link_text = "Journal Impact Factor"
+    @link_text = "Journal impact factor"
     @api_url = "https://ws.isiknowledge.com/esti/xrpc"
     @include_for_article_level = true
     super(config)
@@ -82,7 +82,7 @@ class Jcr < Service
             builder.map(:name => "cite_id") do
               metadata = request.referent.metadata
               if (issn = request.referent.issn)                              
-                issn = issn[0,3] + '-' + issn[4,7] unless issn =~ /\-/
+                issn = issn[0,4] + '-' + issn[4,7] unless issn =~ /\-/
                 builder.val(issn, :name => "issn")
               end
               # Journal title.  
