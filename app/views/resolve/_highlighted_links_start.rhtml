@@ -2,19 +2,17 @@
    if (! highlighted_links.blank? || service_type_in_progress?('highlighted_link')) %>
 <div class="smGrayBox">
 <h3>See also:</h3>
-<% highlighted_links.each do |hl_st| 
-    target = hl_st.view_data
-%>
-<div class="tightbullets"><%= link_to target[:display_text], {:controller=>'link_router', :id=>hl_st.id}, :target=>'_blank' %> 
-<% if (target[:source] || hl_st.service_response.service.display_name) %>
-  <br/>
-  <div class="see_also_source">from <%= target[:source] || hl_st.service_response.service.display_name %></div>
-<% end %>
-<% if target[:notes] %>
-  <div class="small_indent"><%= target[:notes] %> </div>
-<% end %>
-</div>
-<%end%>
+
+<ul class="tightbullets see_also">
+  <% highlighted_links.each do |hl_st| 
+    target = hl_st.view_data %>
+    
+       <%= render(:partial => "fulltext_element", :object=> hl_st, :locals => { :show_source => true, :li_class => "see_also"}) %>
+    
+  <% end %>
+</ul>
+
+
 <% if service_type_in_progress?('highlighted_link') %>
 <div class="tightbullets"><%= render(:partial => "background_progress", :locals => { :svc_type => ServiceTypeValue[:highlighted_link],:current_set_empty => highlighted_links.empty? } ) %></div>
 <% end %>
