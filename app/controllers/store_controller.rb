@@ -20,7 +20,6 @@ class StoreController < ApplicationController
       referent = Referent.create_by_context_object( stored_co, nil, :permalink => false )
       perm.referent = referent
       perm.save!
-      perm.add_tag_uri!( referent )
     end
     
 
