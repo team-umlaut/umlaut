@@ -12,6 +12,11 @@
         <%= render(:partial => "fulltext_element", :object=> item, :locals => { :show_source => true, :li_class => "related_item"}) %>
   <%    end %> 
     
+  <%
+  if (cited_by.length > 0) && (similar.length > 0) %>
+    <!-- a little seperation for readability -->
+    <br class="seperator"/>
+  <% end %>
 
   <%
       list_with_limit('umlaut_similar_items', similar) do |item, index |  %>           
