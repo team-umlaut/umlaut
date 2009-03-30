@@ -154,13 +154,19 @@ unless relevant_links.empty? %>
 
   <!-- only show the related_items if we're an article-level cite,
        or we actually have some generated -->
-  <% if (title_level_request? ||
+  <%
+    debugger
+     if (!(title_level_request?) ||
          get_service_type('similar').length > 0 ||
          get_service_type('cited_by').length >0)
    %>
     <div id="related_items" class="smGrayBox">
       <%= render :partial=>"related_items" %>
     </div>
+  <% else %>
+    <!-- putting a div here anyway as a target for the ajax, to avoid
+         issues -->
+    <div id="related_items" style="display:none"></div>
   <% end %>
   
   
