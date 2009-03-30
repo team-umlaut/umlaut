@@ -40,7 +40,7 @@ class HipHoldingSearch < Hip3Service
     # use ';' for a subtitle instead of ':'. Normalize to ':'.
     # also normalize the first period, to a ':', even though it's kind of
     # different, still seperates the 'main' title from other parts. 
-    title.sub!(/[\;\.]/, ':')
+    #title.sub!(/[\;\.]/, ':')
 
     if (options[:remove_subtitle])
       title.sub!(/\:(.*)$/, '')
@@ -144,8 +144,6 @@ class HipHoldingSearch < Hip3Service
           end        
         end
       end
-
-      debugger
       
       responses_added = Hash.new
       
