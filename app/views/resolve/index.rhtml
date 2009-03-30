@@ -152,10 +152,17 @@ unless relevant_links.empty? %>
   %>
 </div>
 
-
-  <div id="related_items" class="smGrayBox">
-    <%= render :partial=>"related_items" %>
-  </div>
+  <!-- only show the related_items if we're an article-level cite,
+       or we actually have some generated -->
+  <% if (title_level_request? ||
+         get_service_type('similar').length > 0 ||
+         get_service_type('cited_by').length >0)
+   %>
+    <div id="related_items" class="smGrayBox">
+      <%= render :partial=>"related_items" %>
+    </div>
+  <% end %>
+  
   
   <div id="highlighted_links">
   <%= render :partial=>"highlighted_links_start" %>
