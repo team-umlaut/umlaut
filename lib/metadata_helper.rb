@@ -201,12 +201,18 @@ module MetadataHelper
   end
 
   def get_sudoc(rft)
-    # In a technically illegal but oh well info:sudoc uri
-    id = get_identifier(:info, "sudoc", rft)
-    # Remove the uri part. 
-    id = id.sub(/^info:sudoc\//, '') if id
+    # Don't forget to unescape the sudoc that was escaped to maek it a uri!
+    
+    # Option 1: In a technically illegal but oh well info:sudoc uri
+    
+    sudoc = CGI.unescape(get_identifier(:info, "sudoc", rft))
 
-    return id
+    # Option 2: rsinger's purl for sudoc. http://dilettantes.code4lib.org/2009/03/a-uri-scheme-for-sudocs/    
+    unless sudoc
+      sudoc = identifiers.collect {|id| $1 if id =~ /^http:\/\/purl.org\/NET\/sudoc\/(.*)$/}.compact.slice(0)      
+    end
+
+    return sudoc
   end
   
 end

@@ -5,6 +5,8 @@
 # Right now, just a helper method for generating headers for proxy-like requests.
 
 module UmlautHttp
+  require 'net/http'
+  require 'uri'
 
   # Generate headers for a proxy-like request, so a service adaptor
   # can make a request to a foreign service that appears to be HTTP-proxied
@@ -61,6 +63,38 @@ module UmlautHttp
     
     return header
     
+  end
+
+  # Right now the main thing this will do for you is (sort of, stupidly) 
+  # maintain cookies given in redirects. 
+  # Later it might do other cooler things. Returns a Net::HTTP::Response
+  def http_fetch(uri, options = {})
+    options[:max_redirects] ||= 8
+    options[:redirects_left] ||= options[:max_redirects]
+    options[:raise_on_http_error_code] ||= true
+
+      uri = URI.parse(uri) unless uri.kind_of?(URI)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true if uri.scheme == "https"
+      headers = {}
+      headers["Cookie"] = options[:cookies] if options[:cookies]
+
+      response = http.request_get(uri.request_uri, headers)
+            
+      if ( response.kind_of?(Net::HTTPRedirection))
+         raise ArgumentError, "HTTP redirect too deep (max #{options[:max_redirects]})" if options[:redirects_left] <= 0
+
+         options[:cookies] = response['Set-Cookie']
+         
+         options[:redirects_left] = options[:redirects_left] - 1
+
+         debugger
+         
+         return http_fetch(response['location'], options)
+      else
+        response.value if options[:raise_on_http_error_code]        
+        return response
+      end
   end
   
   

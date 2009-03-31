@@ -26,7 +26,7 @@ class Worldcat < Service
     issn = get_identifier(:urn, "issn", request.referent)
     oclcnum = get_identifier(:info, "oclcnum", request.referent)
     
-            
+    
     isxn_key = nil
     isxn_value = nil
     if (! oclcnum.blank?)
@@ -47,7 +47,7 @@ class Worldcat < Service
     # Do some cleanup of the value. Sometimes spaces or other
     # weird chars get in there, why not strip out everything that
     # isn't a number or X?
-    isxn_value.sub!( /[^\dX]/, '')
+    isxn_value = isxn_value.gsub( /[^\dX]/, '')
     # and URL escape just to be safe, although really shouldn't be neccesary
     isxn_value = URI.escape( isxn_value )
     

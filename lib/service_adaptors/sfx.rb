@@ -53,7 +53,7 @@ class Sfx < Service
     # services_of_interest. Generally loaded from yml config in super.    
     @extra_targets_of_interest = {}
 
-    @sfx_timeout = 5
+    @sfx_timeout = 8
                                   
     super(config)                              
   end
