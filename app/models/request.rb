@@ -339,7 +339,10 @@ class Request < ActiveRecord::Base
     return ( data['atitle'].blank? &&
              data['volume'].blank? &&
              data['issue'].blank? &&
-             data['date'].blank? &&
+             # A date means we're not title-level only if
+             # we're not a book. 
+             (data['date'].blank? ||
+              referent.format == "book") &&            
         # pmid or doi is considered article-level, because SFX can
         # respond to those. Other identifiers may be useless. 
         (! referent.identifiers.find {|i| i =~ /^info\:(doi|pmid)/})

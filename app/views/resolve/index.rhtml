@@ -155,7 +155,6 @@ unless relevant_links.empty? %>
   <!-- only show the related_items if we're an article-level cite,
        or we actually have some generated -->
   <%
-    debugger
      if (!(title_level_request?) ||
          get_service_type('similar').length > 0 ||
          get_service_type('cited_by').length >0)
