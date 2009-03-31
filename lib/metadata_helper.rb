@@ -209,7 +209,7 @@ module MetadataHelper
 
     # Option 2: rsinger's purl for sudoc. http://dilettantes.code4lib.org/2009/03/a-uri-scheme-for-sudocs/    
     unless sudoc
-      sudoc = identifiers.collect {|id| $1 if id =~ /^http:\/\/purl.org\/NET\/sudoc\/(.*)$/}.compact.slice(0)      
+      sudoc = CGI.unescape( identifiers.collect {|id| $1 if id =~ /^http:\/\/purl.org\/NET\/sudoc\/(.*)$/}.compact.slice(0) )      
     end
 
     return sudoc
