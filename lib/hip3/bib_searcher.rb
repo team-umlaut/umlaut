@@ -134,7 +134,7 @@ module Hip3
       unless ( @search_hash.blank?)
         manual_criteria = []
         @search_hash.each_pair do |index, kws|
-          manual_criteria << kws.collect {|kw| "&index=#{index}&term=#{URI.escape(kw)}"}
+          manual_criteria << kws.collect {|kw| "&index=#{index}&term=#{URI.escape('"' + kw + '"')}"}
         end
         path << "&" << manual_criteria.join("&oper=and")
       end
@@ -149,7 +149,7 @@ module Hip3
     
     def keyword_url_args
       args =
-      self.keywords.collect { |k| "&index=#{@keyword_index}&term=#{CGI.escape(k)}" }
+      self.keywords.collect { |k| "&index=#{@keyword_index}&term=#{CGI.escape('"' + k + '"')}" }
 
       return args.join("&oper=and") || ""            
     end
