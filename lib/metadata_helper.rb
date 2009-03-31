@@ -205,11 +205,13 @@ module MetadataHelper
     
     # Option 1: In a technically illegal but oh well info:sudoc uri
     
-    sudoc = CGI.unescape(get_identifier(:info, "sudoc", rft))
+    sudoc = get_identifier(:info, "sudoc", rft)
+    sudoc = CGI.unescape(sudoc) if sudoc
 
     # Option 2: rsinger's purl for sudoc. http://dilettantes.code4lib.org/2009/03/a-uri-scheme-for-sudocs/    
     unless sudoc
-      sudoc = CGI.unescape( identifiers.collect {|id| $1 if id =~ /^http:\/\/purl.org\/NET\/sudoc\/(.*)$/}.compact.slice(0) )      
+      sudoc = rft.identifiers.collect {|id| $1 if id =~ /^http:\/\/purl.org\/NET\/sudoc\/(.*)$/}.compact.slice(0)
+      sudoc = CGI.unescape(sudoc) if sudoc
     end
 
     return sudoc
