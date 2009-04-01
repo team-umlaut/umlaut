@@ -49,7 +49,7 @@ class HipHoldingSearch < Hip3Service
     
     
     # Change ampersands to 'and' for consistency, we see it both ways.
-    title.gsub!(/\&/, 'and')
+    title.gsub!(/\&/, ' and ')
       
     # remove non-alphanumeric, excluding apostrophe
     title.gsub!(/[^\w\s\']/, ' ')
