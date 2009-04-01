@@ -83,6 +83,11 @@ module MarcHelper
         # fulltext urls from MARC are always marked as specially stupid.
         response_params[:coverage_checked] = false
         response_params[:can_link_to_article] = false
+
+        # Some debugging info, add the 001 bibID if we have one.
+        
+        response_params[:debug_info] = "BibID: #{marc_xml['001'].value}" if marc_xml['001']
+
         
         # Add the response
         response = request.add_service_response(response_params, 

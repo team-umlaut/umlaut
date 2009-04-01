@@ -299,6 +299,9 @@ class Sfx < Service
           value_text[:citation_volume] = sfx_metadata['rft.volume'];
           value_text[:citation_issue] = sfx_metadata['rft.issue']
           value_text[:citation_spage] = sfx_metadata['rft.spage']
+
+          # Some debug info
+          value_text[:debug_info] =" Target: #{sfx_target_name} ; SFX object ID: #{object_id}"
           
           display_text = (target/"/target_public_name").inner_html
     

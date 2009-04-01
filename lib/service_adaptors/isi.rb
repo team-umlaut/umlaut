@@ -47,6 +47,8 @@ class Isi < Service
     xml = gen_lamr_request(request)
     
     isi_response = do_lamr_request(xml)
+
+    debugger
     
     add_responses( request, isi_response )
     

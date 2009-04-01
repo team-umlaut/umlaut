@@ -134,9 +134,15 @@ module Hip3
         
 				
 				reader = MARC::XMLReader.new( StringIO.new(resp.body.to_s) )
-				# there should only be one record in there, just grap one.
-				
-				@marc_xml = reader.find { true }
+				# there should only be one record in there, just grap one. Since
+        # this is an odd object, we can't just do reader[0], but instead:        
+				xml = reader.find { true }
+        
+        # HIP marc doesn't have the bibID in it. We want the bibID in there.
+        # Set it ourselves.
+        xml.fields.push( MARC::ControlField.new('001', bibNum()))
+        
+				@marc_xml = xml 
 			end
 			return @marc_xml
 		end

@@ -17,16 +17,16 @@
 <% end %>
 
 <% unless view_data[:coverage].blank? %>
-<div class="response_coverage_statement">
-<%= view_data[:coverage] %>
-</div>
+  <div class="response_coverage_statement">
+  <%= view_data[:coverage] %>
+  </div>
 <% end
 %>
 <% unless view_data[:notes].blank? %>
-<div class="response_notes"><%= view_data[:notes] %></div>
+  <div class="response_notes"><%= view_data[:notes] %></div>
 <% end %>
 <% unless view_data[:authentication].blank? %>
-<div class="response_authentication_instructions"><strong>Authentication:</strong> <%= view_data[:authentication] %></div>
+  <div class="response_authentication_instructions"><strong>Authentication:</strong> <%= view_data[:authentication] %></div>
 <% end %>
 
 
@@ -35,5 +35,16 @@
     <em class="label">May be an alternate edition</em> <%= view_data[:edition_str] %>
   </div>
 <% end %>
+
+<!-- debug info, hidden with CSS, can be made visible with javascript. -->
+<div class="debug_info" style="display:none">
+  <b>Debug info:</b> <%= fulltext_element.service_response.service.id %>
+  
+  <% unless view_data[:debug_info].blank? %>
+    ; <%= view_data[:debug_info] %>
+  <% end %>
+
+</div>
+
 
 </li>

@@ -139,7 +139,9 @@ class HipHoldingSearch < Hip3Service
           # normalize btitle to match. 
           btitle = normalize_title(bib.title, :remove_subtitle => true)            
   
-          if ( btitle == requested_title && ! btitle.blank?)
+          if ( (btitle == requested_title ||
+                btitle == title ) &&
+                ! btitle.blank?)
             matches.push( bib )
           end        
         end

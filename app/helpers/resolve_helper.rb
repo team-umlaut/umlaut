@@ -225,5 +225,14 @@ module ResolveHelper
       
     end
   end
+
+
+  def link_to_toggle_debug_info(name = "[D]", options = {})
+    javascript = " $$('.debug_info').each( function(el) { el.toggle(); });"  
+  
+    return link_to_function(name, javascript, options)  
+  end
     
+  
+  
 end

@@ -683,4 +683,12 @@ ol.numberedListlg a {
 	}
 .azNav a:hover {
 	background-color: #eee;
-	}
+}
+  
+  
+.debug_info {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 4px;
+  background-color: #FCF1D4;
+}
