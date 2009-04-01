@@ -65,7 +65,9 @@
     url += @user_request.to_context_object.kev
     url += "&sfx.ignore_date_threshold=1" if title_level_request?
     
-    link_to('[S]', url, :target=>'_blank') %>
+    link_to('[S]', url, :target=>'_blank') 
+    %>
+    <%= link_to('[T]', "http://app01.mse.jhu.edu/findit-dev/resolve?#{@user_request.to_context_object.kev}") %>
   <% end %>
 </div>
 
