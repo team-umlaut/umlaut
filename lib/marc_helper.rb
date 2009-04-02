@@ -109,7 +109,7 @@ module MarcHelper
 
     # LC records here at hopkins have "Table of contents only" in the 856$3
       # Think that's a convention from LC? 
-      if (field['3'] && field['3'].downcase == "table of contents only")
+      if (field['3'] && field['3'].downcase =~ /table of contents( only)?/)
         return "table_of_contents"
       elsif (field['3'] && field['3'].downcase =~ /description/)
         # If it contains the word 'description', it's probably an abstract.
