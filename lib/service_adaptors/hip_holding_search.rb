@@ -20,54 +20,7 @@ class HipHoldingSearch < Hip3Service
     return super.push(ServiceTypeValue['holding_search'])    
   end
 
-  def normalize_title(arg_title, options = {})
-    return nil if arg_title.nil?
-    title = arg_title.clone
-    
-    return nil if title.blank?
-
-    # Sometimes titles given in the OpenURL have some additional stuff
-    # in parens at the end, that messes up the search and isn't really
-    # part of the title. Eliminate!
-    title.gsub!(/\(.*\)\s*$/, '')
-
-    # Remove things in brackets, part of an AACR2 GMD that's made it in.
-    # replace with ':' so we can keep track of the fact that everything
-    # that came afterwards was a sub-title like thing. 
-    title = strip_gmd(title)
-    
-    # There seems to be some catoging/metadata disagreement about when to
-    # use ';' for a subtitle instead of ':'. Normalize to ':'.
-    # also normalize the first period, to a ':', even though it's kind of
-    # different, still seperates the 'main' title from other parts. 
-    #title.sub!(/[\;\.]/, ':')
-
-    if (options[:remove_subtitle])
-      title.sub!(/\:(.*)$/, '')
-    end
-
-    
-    
-    # Change ampersands to 'and' for consistency, we see it both ways.
-    title.gsub!(/\&/, ' and ')
-      
-    # remove non-alphanumeric, excluding apostrophe
-    title.gsub!(/[^\w\s\']/, ' ')
-
-    # apostrophe not to space, just eat it.
-    title.gsub!(/[\']/, '')
-
-    # compress whitespace
-    title.strip!
-    title.gsub!(/\s+/, ' ')
-
-    title.downcase!
-    
-    title = nil if title.blank?
-
-    return title
-  end
-
+  
   def handle(request)
     
     # Only do anything if we have no holdings results from someone else.
@@ -93,23 +46,17 @@ class HipHoldingSearch < Hip3Service
     title = ref_metadata['btitle'] if title.blank?
     title = ref_metadata['title'] if title.blank?
     
-    title_cleaned = normalize_title(title)
-    
-    if title_cleaned.blank?
-      # Not enough metadata to search.
+    #title_terms = search_terms_for_title_tokenized(title)
+    # tokenized was too much recall, not enough precision. Try phrase
+    # search. 
+    title_terms = search_terms_for_title_phrase(title)
+    unless ( title_terms )
       RAILS_DEFAULT_LOGGER.debug("#{self.id} is missing title, can not search.")
-      return request.dispatched(self, true)
-      
+      return request.dispatched(true)
     end
     
-    # plus remove some obvious stop words, cause HIP is going to choke on em
-    title_cleaned.gsub!(/\bthe\b|\band\b|\bor\b|\bof\b|\ba\b/i,'')
-
-    title_kws = title_cleaned.split 
-    # limit to 12 keywords
-    title_kws = title_kws.slice( (0..11) ) 
     
-    search_hash[hip_title_index] = title_kws
+    search_hash[hip_title_index] = title_terms
     
     # If it's a non-journal thing, add the author if we have an aulast (preferred) or au. 
     # But wait--if it's a book _part_, don't include the author name, since
@@ -132,22 +79,34 @@ class HipHoldingSearch < Hip3Service
       # Ssee if any our matches are exact title matches. 'exact' after normalizing a bit, including removing subtitles.
       matches = [];
 
-      requested_title = normalize_title( title, :remove_subtitle => true)
+      # Various variant normalized forms of the title from the OpenURL
+      # request. #compact removes nil values. 
+      request_titles = [title, 
+                       normalize_title( title ), 
+                       normalize_title( title, :remove_subtitle => true)   ].compact
+      
+
 
       if ( @keyword_exact_match )
         bibs.each do |bib|
-          # normalize btitle to match. 
-          btitle = normalize_title(bib.title, :remove_subtitle => true)            
-  
-          if ( (btitle == requested_title ||
-                btitle == title ) &&
-                ! btitle.blank?)
+          # various variant normalized forms of the title from the bib
+          # #compact removes nil values. 
+          bib_titles = [ bib.title, 
+                         normalize_title(bib.title, :remove_subtitle => true),
+                         normalize_title(bib.title) ].compact
+
+          # Do any of the various forms match? Set intersection on our
+          # two sets.
+          if ( bib_titles & request_titles ).length > 0
             matches.push( bib )
           end        
         end
       end
       
       responses_added = Hash.new
+
+      
+      #debugger
       
       if (matches.length > 0 )
         # process as exact matches with method from Hip3Service
@@ -177,6 +136,44 @@ class HipHoldingSearch < Hip3Service
     return request.dispatched(self, true)
   end
 
+  # One algorithm for turning a title into HIP search terms.
+  # Tokenizes the title into individual words, eliminates stop-words,
+  # and combines each word with 'AND'. We started with this for maximum
+  # recall, but after some experimentation seems to have too low precision
+  # without sufficient enough increase in recall.
+  # Returns an array of keywords. 
+  def search_terms_for_title_tokenized(title)
+    title_cleaned = normalize_title(title)
+    
+    if title_cleaned.blank?
+      # Not enough metadata to search.
+      return nil      
+    end
+    
+    # plus remove some obvious stop words, cause HIP is going to choke on em
+    title_cleaned.gsub!(/\bthe\b|\band\b|\bor\b|\bof\b|\ba\b/i,'')
 
-  
+    title_kws = title_cleaned.split 
+    # limit to 12 keywords
+    title_kws = title_kws.slice( (0..11) )
+
+    return title_kws
+  end
+
+  # Another algorithm for turning a title into HIP search terms.
+  # This one doesn't tokenize, but keeps the whole title as a phrase
+  # search. Does eliminate punctuation. Does not remove things that
+  # look like a sub-title. 
+  # Returns an array with one item.
+  def search_terms_for_title_phrase(title)
+    title_cleaned = normalize_title(title)
+
+    if title_cleaned.blank?
+      # Not enough metadata to search.
+      return nil      
+    end
+
+    return [title_cleaned]
+    
+  end
 end
