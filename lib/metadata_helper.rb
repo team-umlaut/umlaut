@@ -8,6 +8,7 @@
 # Also includes some helpful methods for getting identifiers out in a convenient to work with way, regardless of non-standard ways they may have been stored. 
 
 module MetadataHelper
+  include MarcHelper # for strip gmd functionality
   
   # method that accepts a referent to return hash of common metadata elements 
   # choosing the available element for the format and the best available for 
@@ -20,6 +21,75 @@ module MetadataHelper
     # and not break services that use this module
     return {:title => title, :creator => creator}
   end
+
+
+  # A utility method to 'normalize' a title, for use when trying to match a
+  # title from one place with records in another database.
+  # Does lowercasing and removing puncutation, but also stripping out
+  # a bunch of other things that may result
+  # in false negatives. Exactly how you want to do for best results depends
+  # on the particular data you are working with, you need to experiment to see.
+  # MANY options are offered, although defaults are somewhat sensible.
+  # Much of this stuff especially takes account of titles that may have
+  # been generated from mark.
+  # Will never return the emtpy string, will sometimes return nil. 
+  def normalize_title(arg_title, options = {})
+    # default options
+    options[:rstrip_parens] ||= true
+    options[:remove_all_parens] ||= true
+    options[:strip_gmd] ||= true
+    options[:subtitle_on_semicolon] ||=false
+    options[:remove_subtitle] ||= false
+    options[:normalize_ampersand] ||= true
+    options[:remove_punctuation] ||= true
+    
+    return nil if arg_title.nil?
+    title = arg_title.clone
+    
+    return nil if title.blank?
+
+    # Sometimes titles given in the OpenURL have some additional stuff
+    # in parens at the end, that messes up the search and isn't really
+    # part of the title. Eliminate!
+    title.gsub!(/\([^)]*\)\s*$/, '') if options[:rstrip_parens]
+    # Or, not even just at the end, but anywhere! 
+    title.gsub!(/\([^)]*\)/, '') if options[:remove_all_parens]
+
+    # Remove things in brackets, part of an AACR2 GMD that's made it in.
+    # replace with ':' so we can keep track of the fact that everything
+    # that came afterwards was a sub-title like thing. 
+    title = strip_gmd(title) if options[:strip_gmd]
+    
+    # There seems to be some catoging/metadata disagreement about when to
+    # use ';' for a subtitle instead of ':'. Normalize to ':'.
+    # also normalize the first period, to a ':', even though it's kind of
+    # different, still seperates the 'main' title from other parts. 
+    title.sub!(/[\;\.]/, ':') if options[:subtitle_on_semicolon]
+
+    
+    title.sub!(/\:(.*)$/, '') if options[:remove_subtitle]
+    
+    # Change ampersands to 'and' for consistency, we see it both ways.
+    title.gsub!(/\&/, ' and ') if options[:normalize_ampersand]
+      
+    # remove non-alphanumeric, excluding apostrophe
+    title.gsub!(/[^\w\s\']/, ' ') if options[:remove_punctuation]
+
+    # apostrophe not to space, just eat it.
+    title.gsub!(/[\']/, '') if options[:remove_punctuation]
+
+    # compress whitespace
+    title.strip!
+    title.gsub!(/\s+/, ' ')
+
+    title.downcase!
+    
+    title = nil if title.blank?
+
+    return title
+  end
+
+
   
   # chooses the best available title for the format
   def get_search_title(rft)
@@ -43,34 +113,11 @@ module MetadataHelper
       title = metadata['title']
     end
 
-    # Sometimes you have no title at all
-    return nil if title.blank?
-
-    colon_index = title.index(':')
-    title = title.slice( (0..colon_index-1)  ) if colon_index
-
-    semicolon_index = title.index(';')
-    title = title.slice( (0..semicolon_index-1)  ) if semicolon_index
-
-    # Strip anything after a '(' too. 
-    paren_index = title.index("(");
-    title = title.slice( (0..paren_index-1)  ) if paren_index
-
-    # In general, changing punctuation to spaces seems helpful for eliminating
-    # false negatives. Not only "weird" punctuation like curly-quotes seems
-    # to result in false negative, but even normal punctuation can. If it's
-    # not a letter or number, let's get rid of it. This method may or may
-    # not be entirely unicode safe, but initial experiments were satisfactory.
-    # Some punctuation we'll want to keep (e.g. Uncle Tom's Cabin)
-    title = title.chars.gsub(/[^\w\s']/, ' ').to_s
+    return normalize_title(title, :remove_all_parens => true,
+                                   :subtitle_on_semicolon => true,
+                                   :remove_subtitle => true,
+                                   :remove_punctuation => true)
     
-    # FIXME if the author's name is part of title, strip it out?
-    # See Andersen's Fairy Tales. Stripping off names gets more hits.
-
-    return nil if title.blank?    
-
-
-    return title
   end
   
   # chooses the best available creator for the format

@@ -170,12 +170,17 @@ module MarcHelper
     return parts.join(' ')
   end
 
+  # AACR2 "General Material Designation" . While these are (I think?)
+  # controlled, it's actually really hard to find the list. Maybe they're
+  # only semi-controlled. 
+  # ONE list can be found here: http://www.oclc.org/bibformats/en/onlinecataloging/default.shtm#BCGFECEG
   def gmd_values
+    # 'computer file' is an old one that may still be found in data. 
     return ['activity card', 
-'art original','art reproduction','braille','chart','diorama','electronic resource','filmstrip','flash card','game','globe','kit','manuscript','map','microform','microscope slides','model','motion picture','music','picture','realia','slide','sound recording','technical drawing','text','toy','transparency','videorecording']
+'art original','art reproduction','braille','chart','diorama','electronic resource','computer file', 'filmstrip','flash card','game','globe','kit','manuscript','map','microform','microscope slides','model','motion picture','music','picture','realia','slide','sound recording','technical drawing','text','toy','transparency','videorecording']
   end
 
-  # removes something that looks like a GMD in square brackets from
+  # removes something that looks like an AACR2 GMD in square brackets from
   # the string. Pretty kludgey. 
   def strip_gmd(arg_string, options = {})
     options[:replacement] ||= ':'
