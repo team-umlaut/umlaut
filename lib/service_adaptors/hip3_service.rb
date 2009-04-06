@@ -14,6 +14,11 @@ class Hip3Service < Service
   def initialize(config)
     # defaults
     @map_856_to_service = 'fulltext'
+    # If you are sending an OpenURL from a library service, you may
+    # have the HIP bibnum, and include it in the OpenURL as, eg.
+    # rft_id=http://catalog.library.jhu.edu/bib/343434 (except URL-encoded)
+    # Then you'd set rft_id_bibnum_prefix to http://catalog.library.jhu.edu/bib/
+    @rft_id_bibnum_prefix = nil
     super(config)
 
     # Trim question-mark from base_url, if given
@@ -120,6 +125,21 @@ class Hip3Service < Service
 
   def url_service_type( field )
     return service_type_for_856(field, :default_service_type =>  @map_856_to_service)            
+  end
+
+  def get_bibnum(rft)
+    return nil unless @rft_id_bibnum_prefix
+
+    identifier = rft.identifiers.find do |id| 
+      id[0, @rft_id_bibnum_prefix.length] == @rft_id_bibnum_prefix
+    end
+
+    if ( identifier )
+      return identifier[@rft_id_bibnum_prefix.length, identifier.length]
+    else
+      return nil
+    end
+    
   end
 
 end

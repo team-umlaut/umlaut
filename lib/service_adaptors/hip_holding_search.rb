@@ -10,6 +10,11 @@ class HipHoldingSearch < Hip3Service
     # Default preemption by any holding
     @preempted_by = { "existing_type" => "holding" }
     @keyword_exact_match = true
+    # If you are sending an OpenURL from a library service, you may
+    # have the HIP bibnum, and include it in the OpenURL as, eg.
+    # rft_id=http://catalog.library.jhu.edu/bib/343434 (except URL-encoded)
+    # Then you'd set rft_id_bibnum_prefix to http://catalog.library.jhu.edu/bib/
+    @rft_id_bibnum_prefix = nil
     super(config)
     # Trim question-mark from base_url, if given
     @base_path.chop! if (@base_path.rindex('?') ==  @base_path.length)    
@@ -57,6 +62,10 @@ class HipHoldingSearch < Hip3Service
     
     
     search_hash[hip_title_index] = title_terms
+
+    # Do we have the bibnum?
+    bibnum = get_bibnum(request.referent) 
+    bib_searcher.bibnum = bibnum if bibnum 
     
     # If it's a non-journal thing, add the author if we have an aulast (preferred) or au. 
     # But wait--if it's a book _part_, don't include the author name, since
@@ -75,6 +84,7 @@ class HipHoldingSearch < Hip3Service
     bib_searcher.search_hash = search_hash 
     unless bib_searcher.insufficient_query
       bibs = bib_searcher.search
+      
 
       # Ssee if any our matches are exact title matches. 'exact' after normalizing a bit, including removing subtitles.
       matches = [];
@@ -105,8 +115,8 @@ class HipHoldingSearch < Hip3Service
       
       responses_added = Hash.new
 
-      
       #debugger
+
       
       if (matches.length > 0 )
         # process as exact matches with method from Hip3Service
@@ -115,6 +125,26 @@ class HipHoldingSearch < Hip3Service
         responses_added = {}
 
         unless preempted_by(request, "fulltext")
+
+          # Let's do some analysis of our results. If it's got a matching
+          # bibnum, then include it as an EXACT match.
+          req_bibnum = get_bibnum(request.referent)
+          if ( req_bibnum )
+            matches.each do |bib|
+              if (req_bibnum == bib.marc_xml['001'].value)
+                responses_added.merge!( add_856_links(request, [bib.marc_xml])  )
+                responses_added.merge!( add_copies( request, [bib] ))
+                matches.delete(bib)
+              end                                            
+            end
+          end
+          # Otherwise, sort records with matching dates FIRST.
+          # Some link generators use an illegal 'year' parameter, bah. 
+          if ( date = (request.referent['date'] || request.referent['year']))
+            req_year = date[0,4]
+            matches = matches.partition {|bib| get_years(bib.marc_xml).include?( req_year )}.flatten            
+          end
+          
           responses_added.merge!( add_856_links(request, matches.collect{|b| b.marc_xml}, :match_reliability => ServiceResponse::MatchUnsure ) )
         end
 
