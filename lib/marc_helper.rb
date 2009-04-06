@@ -124,6 +124,22 @@ module MarcHelper
       end
   end
 
+  # A MARC record has two dates in it, date1 and date2. Exactly
+  # what they represent is something of an esoteric mystery.
+  # But this will return them both, in an array. 
+  def get_years(marc)
+    array = []
+    
+    date1 = marc['008'].value[7,4].strip
+    array.push(date1) unless date1.blank?\
+    
+    date2 = marc['008'].value[11,4].strip
+    array.push(date2) unless date2.blank?
+
+    return array
+  end
+  
+  
   # From a marc record, get a string useful to display for identifying
   # which edition/version of a work this represents. 
   def edition_statement(marc, options = {})
