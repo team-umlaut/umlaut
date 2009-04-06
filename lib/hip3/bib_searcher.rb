@@ -29,12 +29,14 @@ module Hip3
     SERIAL_TITLE_KW_INDEX = '.ST'
     AUTHOR_KW_INDEX = '.AW'
 
+    BIBNUM_INDEX = 'BIB'
+
     SUDOC_KW_INDEX = '.SD'
     
 		attr_accessor :httpSession 
 		attr_accessor :hip_base_url_str, :hip_base_url
 		attr_reader :issn, :isbn # writers provided concretely
-    attr_accessor :sudoc
+    attr_accessor :sudoc, :bibnum
     attr_reader :keywords
 		
 		# You can pass in a Net::HTTP, if you'd for instance like to keep
@@ -122,22 +124,32 @@ module Hip3
 			path = self.hip_base_url.path() + '?' 			"menu=search&aspect=power&npp=30&ipp=20&spp=20&profile=general&ri=2&source=%7E%21horizon"
 
       criteria = Array.new
+
+      # Need to do search_hash first, to make sure bibnum and isbn search
+      # come LAST, for HIP. 
+      unless ( @search_hash.blank?)
+        manual_criteria = []
+        @search_hash.each_pair do |index, kws|
+         manual_criteria << kws.collect do |kw|
+             kw = '"' + kw + '"' unless [BIBNUM_INDEX, ISSN_KW_INDEX, ISBN_KW_INDEX].include?(index)
+            "&index=#{index}&term=#{URI.escape(kw)}"
+          end
+        end
+        path << manual_criteria.join("&oper=and") << "&oper=or"
+      end
+
+      
       criteria<< "&index=#{SUDOC_KW_INDEX}&term=#{URI.escape('"' + self.sudoc + '"' )}" unless sudoc.nil?
       criteria << "&index=#{ISSN_KW_INDEX}&term=#{URI.escape(self.issn)}" unless issn.nil?
-      # For some reason ISBN must be LAST in order, or HIP doesn't like it.
+      # For some reason ISBN must be LAST in order, and bibnum must be right before, or HIP doesn't like it.
+      criteria << "&index=#{BIBNUM_INDEX}&term=#{URI.escape(self.bibnum)}" unless bibnum.blank?
       # Go figure. I hate you, HIP. 
       criteria << "&index=#{ISBN_KW_INDEX}&term=#{URI.escape(self.isbn)}" unless isbn.nil?
       
       criteria << keyword_url_args
       path << criteria.join("&oper=or")
 
-      unless ( @search_hash.blank?)
-        manual_criteria = []
-        @search_hash.each_pair do |index, kws|
-          manual_criteria << kws.collect {|kw| "&index=#{index}&term=#{URI.escape('"' + kw + '"')}"}
-        end
-        path << "&" << manual_criteria.join("&oper=and")
-      end
+
 
       
       path << "&x=0&y=0&aspect=power"
@@ -195,10 +207,6 @@ module Hip3
         return [Hip3::Bib.new( bibNum.text, self.hip_base_url,
                                :http_session => httpSession,
                                :bib_xml_doc => reDoc
-                               
-                               
-                               #TODO: Need title!!
-                               
                                )]
 			end
 
