@@ -504,9 +504,8 @@ class ResolveController < ApplicationController
     # sure we don't run them twice as a result of a browser refresh
     # or AJAX request. We want to make sure anything ALREADY
     # marked as 'queued' is not re-run, and anything we're about to run
-    # gets marked as queued.
-        
-    queued_services = @user_request.queue_all_regular_services(@collection)
+    # gets marked as queued.        
+    queued_services = @user_request.queue_all_regular_services(@collection, :requeue_temp_fails => true)
     
     # Foreground services
     (0..9).each do | priority |      

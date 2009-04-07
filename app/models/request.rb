@@ -285,12 +285,13 @@ class Request < ActiveRecord::Base
     return services_in_progress.length > 0
   end
 
-    # Marks all foreground or background services as 'queued' in dispatched
+  # Marks all foreground or background services as 'queued' in dispatched
   # services. Among other reasons, this is to make sure we don't accidentally
   # start them twice on browser refresh or AJAX request.
   # If a service is already dispatched, it can't be queued.
   # Returns an array of services that were succesfully queued. 
-  def queue_all_regular_services(collection)
+  def queue_all_regular_services(collection, options = {})
+    options[:requeue_temp_fails] ||= false
     
     # Let's make sure to get a fresh copy of the dispatched_services please.
     # We're going to fetch the whole assoc in, and then do an in-memory
@@ -301,13 +302,21 @@ class Request < ActiveRecord::Base
     unable_to_queue = Array.new
 
     services = collection.all_regular_services
+
+    
     services.each do |service|
       # in-memory select, don't go to the db for each service! 
       if ( found = self.dispatched_services.to_a.find {|s| s.service_id == service.id  } )
-        # We might later want to put code in here to re-queue
-        # a service that has FailedTemporarily. But not sure if that's
-        # dangerous.         
-        unable_to_queue.push( service )
+        if ( options[:requeue_temp_fails] &&
+           found.status == DispatchedService::FailedTemporary )
+           # requeue it!
+           found.status = DispatchedService::Queued
+           found.exception_info = nil
+           found.save!                   
+           queued.push( service )        
+        else        
+          unable_to_queue.push( service )
+        end
       else
         self.new_dispatch_object!(service, DispatchedService::Queued).save!        
         queued.push( service )        
