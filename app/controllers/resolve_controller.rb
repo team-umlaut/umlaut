@@ -279,8 +279,9 @@ class ResolveController < ApplicationController
     @force_bg_progress_spinner = true
 
     
-    @partial_html_sections = AppConfig.param("partial_html_map")
+    @partial_html_sections = AppConfig.param("partial_html_map").clone
     # calculate in progress for each section
+    
     @partial_html_sections.each do |section|
          type_names = []
          type_names << section[:service_type_value] if section[:service_type_value]
