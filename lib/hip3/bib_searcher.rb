@@ -131,7 +131,7 @@ module Hip3
         manual_criteria = []
         @search_hash.each_pair do |index, kws|
          manual_criteria << kws.collect do |kw|
-             kw = '"' + kw + '"' unless [BIBNUM_INDEX, ISSN_KW_INDEX, ISBN_KW_INDEX].include?(index)
+             kw = '"' + kw + '"' unless [BIBNUM_INDEX, ISSN_KW_INDEX, ISBN_KW_INDEX, AUTHOR_KW_INDEX].include?(index)
             "&index=#{index}&term=#{URI.escape(kw)}"
           end
         end
