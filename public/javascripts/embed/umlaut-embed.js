@@ -96,6 +96,12 @@
       
       window.setTimeout( "load_jsonp_url('" + refresh_url + "')", refresh_seconds * 1000 );
     }
+    else {
+      // all-complete callback 
+      if ( umlaut_section_map['all-complete-callback'] ) {
+        umlaut_section_map['all-complete-callback'].call(this);
+      }
+    }
   }
 
   function doOnLoad() {
