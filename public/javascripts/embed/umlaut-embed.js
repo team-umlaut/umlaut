@@ -15,7 +15,7 @@
 
   
   // Trim trailing slash from umlaut base url to normalize, if needed
-  umlaut_base.replace(/\/$/,'');
+  umlaut_base = umlaut_base.replace(/\/$/,'');
   
   // Load prototype if not already present
   if( typeof(window.Prototype) == "undefined") {    
