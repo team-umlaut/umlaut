@@ -68,7 +68,11 @@ class InternetArchive < Service
   
   def do_query(request)
     # get the search terms for use in both fulltext search and highlighted_link
-    search_terms = get_search_terms(request.referent)
+    # IA does index apostrophes, although not generally other puncutation. Need to keep em.
+    search_terms = {:title => get_search_title(request.referent ,:keep_apostrophes=>true),
+    :creator => get_search_creator(request.referent)}
+
+    
     # We need both title and author to continue
     return nil if (search_terms[:title].blank? || search_terms[:creator].blank?)
 
@@ -92,6 +96,7 @@ class InternetArchive < Service
       RAILS_DEFAULT_LOGGER.error("InternetArchive exception, for url[[#{link}]] , Exception #{e.class}")
       raise e
     end
+    
     doc = JSON.parse(response)
     results = doc['response']['docs']
     

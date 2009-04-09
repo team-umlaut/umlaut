@@ -42,6 +42,8 @@ module MetadataHelper
     options[:remove_subtitle] ||= false
     options[:normalize_ampersand] ||= true
     options[:remove_punctuation] ||= true
+    # Even if you're removing other punctuation, keep the apostrophes?
+    options[:keep_apostrophes] ||=false
     
     return nil if arg_title.nil?
     title = arg_title.clone
@@ -76,7 +78,7 @@ module MetadataHelper
     title.gsub!(/[^\w\s\']/, ' ') if options[:remove_punctuation]
 
     # apostrophe not to space, just eat it.
-    title.gsub!(/[\']/, '') if options[:remove_punctuation]
+    title.gsub!(/[\']/, '') if options[:remove_punctuation] && ! options[:keep_apostrophes]
 
     # compress whitespace
     title.strip!
@@ -92,7 +94,14 @@ module MetadataHelper
 
   
   # chooses the best available title for the format
-  def get_search_title(rft)
+  def get_search_title(rft, options = {})
+    #defaults
+    options = {:remove_all_parens => true,
+               :subtitle_on_semicolon => true,
+               :remove_subtitle => true,
+               :remove_punctuation => true}.merge(options)
+
+    
     # Just make one call to create metadata hash
     metadata = rft.metadata
     title = nil
@@ -113,10 +122,7 @@ module MetadataHelper
       title = metadata['title']
     end
 
-    return normalize_title(title, :remove_all_parens => true,
-                                   :subtitle_on_semicolon => true,
-                                   :remove_subtitle => true,
-                                   :remove_punctuation => true)
+    return normalize_title(title, options)
     
   end
   
