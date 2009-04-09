@@ -9,7 +9,9 @@
 
 module MetadataHelper
   include MarcHelper # for strip gmd functionality
-  
+
+  # DEPRECATED, not flexible enough, you really need to custom fit
+  # for your given target. 
   # method that accepts a referent to return hash of common metadata elements 
   # choosing the available element for the format and the best available for 
   # searching. Wrapper around the other methods.
