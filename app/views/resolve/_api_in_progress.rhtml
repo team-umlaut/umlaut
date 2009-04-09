@@ -4,9 +4,11 @@ if any_services_in_progress? %>
   <in_progress>
     <% # URLS delivered by url_for already come with &amp; rather than & seperating query params, no need to XML-escape them. I used to not realize that and send them through REXML::Text to escape them. Old versions of REXML were buggy, and avoided double escaping. New versions are not buggy and the unneccesary trip through REXML::Text messed them up. Phew, that was crazy to debug
     %>
+    <umlaut_request_id><%= @user_request.id %></umlaut_request_id>
     <refresh_url><%= 
     url_for(params.merge( :'umlaut.request_id' => @user_request.id, :only_path => false ) ) %></refresh_url>    
     <refresh_url_path><%=  url_for(params.merge( :'umlaut.request_id' => @user_request.id, :only_path => true ) ) %></refresh_url_path>
+    <refresh_url_partial_path><%=  url_for(params.merge( :'umlaut.request_id' => @user_request.id, :only_path => true, :skip_relative_url_root => true ) ) %></refresh_url_partial_path>
     <requested_wait_seconds><%= AppConfig.param("poll_wait_seconds", 4)%></requested_wait_seconds>
     <services_in_progress>
       <% @user_request.services_in_progress.collect { |s| s.service_types_generated}.flatten.uniq.each do |type| %> 
