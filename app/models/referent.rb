@@ -133,7 +133,7 @@ class Referent < ActiveRecord::Base
     # First, remove any empty DOIs! or other empty identifiers?
     # LOTS of sources send awful empty identifiers. 
     # That's not a valid identifier!
-    empty_ids = co.referent.identifiers.find_all { |i| i =~ Regexp.new('^[^:]+:[^/]*/?$')}
+    empty_ids = co.referent.identifiers.find_all { |i| i =~ Regexp.new('^[^:]+:[^/:]*(/|:)?$')}
     empty_ids.each { |e| co.referent.delete_identifier( e )}
     
     # Now look for ISSN identifiers that are on article_level. FirstSearch
