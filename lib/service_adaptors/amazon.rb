@@ -135,7 +135,7 @@ class Amazon < Service
 
 
     unless (err.blank?)
-      if (err.at('code').inner_html == 'AWS.InvalidParameterValue')
+      if (err.at('code').inner_text == 'AWS.InvalidParameterValue')
         # Indicates an ISBN that Amazon doesn't know about, or that
         # was mal-formed. We can't tell the difference, so either
         # way let's silently ignore. 
@@ -145,7 +145,7 @@ class Amazon < Service
       end
     end
 
-    asin = (aws/"/ItemLookupResponse/Items/Item/ASIN").inner_html
+    asin = (aws/"/ItemLookupResponse/Items/Item/ASIN").inner_text
 
     # Store the asin in the referent as non-metadata private data, so
     # a future background service can use it. Store as a urn identifier.
@@ -187,14 +187,14 @@ class Amazon < Service
     if ( @service_types.include?("subject"))
       # gather Amazon's subject headings
       (aws/"/ItemLookupResponse/Items/Item/Subjects/Subject").each do |subject|
-        request.add_service_response({:service=>self, :key=>'Amazon',:value_string=>asin,:value_alt_string=>subject.inner_html},['subject'])
+        request.add_service_response({:service=>self, :key=>'Amazon',:value_string=>asin,:value_alt_string=>subject.inner_text},['subject'])
       end
     end
 
     if ( @service_types.include?("similar_item"))
       # Get Amazon's 'similar products' to help recommend other useful items
       (aws/"/ItemLookupResponse/Items/Item/SimilarProducts/SimilarProduct").each do |similar|
-        request.add_service_response({:service=>self,:key=>'book', :value_string=>(similar.at("/ASIN")).inner_html, :value_alt_string=>(similar.at("/Title")).inner_html},['similar_item'])
+        request.add_service_response({:service=>self,:key=>'book', :value_string=>(similar.at("/ASIN")).inner_text, :value_alt_string=>(similar.at("/Title")).inner_text},['similar_item'])
       end
 
    end
@@ -206,24 +206,25 @@ class Amazon < Service
       request.referent.enhance_referent('format', 'book', false) unless request.referent.format == 'book'
       unless request.referent.metadata['btitle']
         if title = (item_attributes.at("/title"))
-          request.referent.enhance_referent('btitle', title.inner_html)
+          request.referent.enhance_referent('btitle', title.inner_text)
         end
 
       end
 			# Enhance with full author name string even if aulast is already present, because full string may be useful for worldcat identities. 
       unless (request.referent.metadata['au'] )
         if author = (item_attributes.at("/author"))
-          request.referent.enhance_referent('au', author.inner_html)
+          request.referent.enhance_referent('au', author.inner_text)
         end
-      end    
+      end
+      
       unless request.referent.metadata['pub']
         if pub = (item_attributes.at("/publisher"))
-          request.referent.enhance_referent('pub', pub.inner_html)
+          request.referent.enhance_referent('pub', pub.inner_text)
         end
       end      
       unless request.referent.metadata['tpages']
         if tpages = (item_attributes.at("/numberofpages"))
-          request.referent.enhance_referent('tpages', tpages.inner_html)
+          request.referent.enhance_referent('tpages', tpages.inner_text)
         end
       end
     end
