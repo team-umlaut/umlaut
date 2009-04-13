@@ -320,6 +320,9 @@ class ResolveController < ApplicationController
 
     
   def rescue_action_in_public(exception)
+
+    RAILS_DEFAULT_LOGGER.fatal("Error request URI: #{request.request_uri}")    
+  
     render(:template => "error/resolve_error", :status => 500, :layout => AppConfig.param("resolve_layout", "resolve_basic")) 
   end  
 

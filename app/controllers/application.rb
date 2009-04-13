@@ -30,7 +30,9 @@ class ApplicationController < ActionController::Base
         @page_title = "Not Found!"
         @not_found_error = true
     end
- 
+
+    RAILS_DEFAULT_LOGGER.fatal("Error request URI: #{request.request_uri}")    
+    
     # search error works. 
     render :template => "error/search_error", :status=>status, :layout=>AppConfig.param("search_layout","search_basic")
   end
