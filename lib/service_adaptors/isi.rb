@@ -47,10 +47,14 @@ class Isi < Service
     xml = gen_lamr_request(request)
     
     isi_response = do_lamr_request(xml)
-
-    #debugger
     
-    add_responses( request, isi_response )
+    begin
+      add_responses( request, isi_response )
+    rescue IsiResponseException => e
+      # Log the error
+      RAILS_DEFAULT_LOGGER.error("#{e.message} ; OpenURL: ?#{request.to_context_object.kev}")
+      return request.dispatched(self, false)
+    end
     
     return request.dispatched(self, true)
   end
@@ -168,7 +172,7 @@ class Isi < Service
 
     # Check for errors.
     if (error = (hpricot.at('val[@name = "error"]') || hpricot.at('null[@name = "error"]')))
-      raise Exception.new("ISI service reported error: #{error.inner_text}")
+     raise IsiResponseException.new("ISI service reported error: #{error.inner_text}")      
     end
     
     results = hpricot.at('map[@name ="cite_id"] map[@name="WOS"]')
@@ -202,5 +206,9 @@ class Isi < Service
     end
     
   end
+  
+end
+
+class IsiResponseException < StandardError
   
 end
