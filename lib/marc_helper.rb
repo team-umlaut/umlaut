@@ -130,10 +130,15 @@ module MarcHelper
   def get_years(marc)
     array = []
     
-    date1 = marc['008'].value[7,4].strip
-    array.push(date1) unless date1.blank?\
+    # no marc 008? Weird, but okay. 
+    return array unless marc['008'] 
     
-    date2 = marc['008'].value[11,4].strip
+    date1 = marc['008'].value[7,4]
+    date1.strip! if date1
+    array.push(date1) unless date1.blank?
+    
+    date2 = marc['008'].value[11,4]
+    date2.strip! if date2
     array.push(date2) unless date2.blank?
 
     return array
