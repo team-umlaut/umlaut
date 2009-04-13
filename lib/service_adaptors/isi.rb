@@ -14,7 +14,11 @@
 #
 # If you later need to change the IP addresses entitled to use this API, use
 # http://scientific.thomson.com/scientific/techsupport/cpe/form.html.
-# to request a change. 
+# to request a change.
+#
+# Note, as of 13 april 09, there's a bug in ISI where journal titles including
+# ampersands cause an error. We will catch those errors and output a 'warning'
+# instead of an 'error', since it's a known problem. 
 class Isi < Service
   require  'open-uri'
   require 'json'
@@ -51,9 +55,18 @@ class Isi < Service
     begin
       add_responses( request, isi_response )
     rescue IsiResponseException => e
-      # Log the error
-      RAILS_DEFAULT_LOGGER.error("#{e.message} ; OpenURL: ?#{request.to_context_object.kev}")
-      return request.dispatched(self, false)
+      # Is this the known problem with ampersands?
+      # if so, output a warning, but report success not exception,
+      # because this is a known condition.
+      metadata = request.referent.metadata
+      if ( metadata["title"].include?('&') || metadata['jtitle'].include?('&'))
+        RAILS_DEFAULT_LOGGER.warn("ISI LAMR still exhibiting ampersand problems: #{e.message} ; OpenURL: ?#{request.to_context_object.kev}")
+        return request.dispatched(self, true)
+      else    
+        # Log the error, return exception condition. 
+        RAILS_DEFAULT_LOGGER.error("#{e.message} ; OpenURL: ?#{request.to_context_object.kev}")
+        return request.dispatched(self, false)
+      end
     end
     
     return request.dispatched(self, true)
@@ -111,7 +124,7 @@ class Isi < Service
               end
 
               # Journal title is crucial for ISI -- ISSN alone is
-              # not enough, weirdly! 
+              # not enough, weirdly!
               if ( ! metadata['jtitle'].blank? )
                 builder.val(metadata['jtitle'], :name => "stitle" )
               else
