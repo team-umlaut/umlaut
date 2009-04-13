@@ -177,11 +177,11 @@ class Scopus < Service
            ! metadata['volume'].blank? &&
            ! metadata['issue'].blank? &&
            ! metadata['spage'].blank? )
-        query = "VOLUME(#{metadata['volume']}) AND ISSUE(#{metadata['issue']}) AND PAGEFIRST(#{metadata['spage']}) "
+        query = "VOLUME(#{CGI.escape(metadata['volume'])}) AND ISSUE(#{CGI.escape(metadata['issue'])}) AND PAGEFIRST(#{CGI.escape(metadata['spage'])}) "
         if ( issn )
-          query += " AND (ISSN(#{issn}) OR EISSN(#{issn}))"
+          query += " AND (ISSN(#{CGI.escape(issn)}) OR EISSN(#{CGI.escape(issn)}))"
         else
-          query += " AND EXACTSRCTITLE(\"#{metadata['jtitle']}\")"
+          query += " AND EXACTSRCTITLE(\"#{CGI.escape(metadata['jtitle'])}\")"
         end
         return CGI.escape(query)
       end
