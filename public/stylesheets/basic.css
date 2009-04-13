@@ -423,6 +423,8 @@ ul.excerptslink li.excerptslink {
 
 .edition_warning {
    color: gray;
+   margin-top: 6px;
+   margin-bottom: 6px;
 }
 
 .edition_warning > .label {
