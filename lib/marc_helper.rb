@@ -172,7 +172,7 @@ module MarcHelper
 
     #245$h GMD
     unless ( marc['245'].blank? || marc['245']['h'].blank? )
-      parts.push('(' + marc['245']['h'].strip.gsub(/[^\w\s]/, '').titlecase + ')')
+      parts.push('(' + marc['245']['h'].gsub(/[^\w\s]/, '').strip.titlecase + ')')
     end
       
     # 533
