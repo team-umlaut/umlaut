@@ -312,7 +312,9 @@ class Amazon < Service
   end
 
   #amazon is in the habit of including things in parens at the end
-  #of the title that aren't really part of the title.
+  #of the title that aren't really part of the title. The parens
+  # are really an edition and/or series statement. We have nowhere
+  # good to store that. 
   def normalize_aws_title(title)
     title.sub(/\([^)]*\)\s*$/, '')
   end
