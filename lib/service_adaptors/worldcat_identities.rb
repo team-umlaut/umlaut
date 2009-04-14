@@ -106,7 +106,7 @@ class WorldcatIdentities < Service
 
     query_conditions = []
     query_conditions << "local.#{name_part}+#{name_operator}+%22#{name}%22" if name    
-    query_conditions << "local.OCLCNumber+%3D+%22#{oclcnum}%22" unless oclcnum.blank?
+    query_conditions << "local.OCLCNumber+%3D+%22#{CGI.escape(oclcnum)}%22" unless oclcnum.blank?
 
     query = query_conditions.join("+and+")
     
