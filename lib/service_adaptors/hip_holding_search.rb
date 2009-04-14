@@ -8,6 +8,7 @@ class HipHoldingSearch < Hip3Service
 
   def initialize(config)
     # Default preemption by any holding
+    @bib_limit = 4
     @preempted_by = { "existing_type" => "holding" }
     @keyword_exact_match = true
     # If you are sending an OpenURL from a library service, you may
@@ -83,8 +84,11 @@ class HipHoldingSearch < Hip3Service
     
     bib_searcher.search_hash = search_hash 
     unless bib_searcher.insufficient_query
-      bibs = bib_searcher.search
+      timing_debug("start search")
       
+      bibs = bib_searcher.search
+
+      timing_debug("bib searching")
 
       # Ssee if any our matches are exact title matches. 'exact' after normalizing a bit, including removing subtitles.
       matches = [];
@@ -115,10 +119,13 @@ class HipHoldingSearch < Hip3Service
       
       responses_added = Hash.new
 
+      timing_debug("Finding matches")
+      
       #debugger
 
       
       if (matches.length > 0 )
+        
         # process as exact matches with method from Hip3Service
         # Add copies
         # Add 856 urls.
@@ -138,17 +145,27 @@ class HipHoldingSearch < Hip3Service
               end                                            
             end
           end
+
+          timing_debug("Identified matches")
+          
           # Otherwise, sort records with matching dates FIRST.
           # Some link generators use an illegal 'year' parameter, bah. 
           if ( date = (request.referent['date'] || request.referent['year']))
             req_year = date[0,4]
             matches = matches.partition {|bib| get_years(bib.marc_xml).include?( req_year )}.flatten            
           end
+
+          timing_debug("Date sorted")
           
           responses_added.merge!( add_856_links(request, matches.collect{|b| b.marc_xml}, :match_reliability => ServiceResponse::MatchUnsure ) )
+
+          timing_debug("added 856's")
         end
 
         responses_added.merge!(  add_copies(request, matches, :match_reliability => ServiceResponse::MatchUnsure ) )
+
+        timing_debug("added copies")
+        
       end
       
       if (bibs.length > 0 && (! responses_added['holding']))
@@ -203,7 +220,19 @@ class HipHoldingSearch < Hip3Service
       return nil      
     end
 
-    return [title_cleaned]
+    return [title_cleaned]    
+  end
+
+  def timing_debug(waypoint = "Waypoint")
+    @last_timed ||= Time.now
+
+    before = @last_timed
+    @last_timed = Time.now
+
+    interval = @last_timed - before
+
+    RAILS_DEFAULT_LOGGER.debug("#{id}: #{waypoint}: #{interval}")
     
   end
+  
 end
