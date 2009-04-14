@@ -204,25 +204,26 @@ class Amazon < Service
       item_attributes = aws.at("/itemlookupresponse/items/item/itemattributes")
       
       request.referent.enhance_referent('format', 'book', false) unless request.referent.format == 'book'
-      unless request.referent.metadata['btitle']
+      metadata = request.referent.metadata
+      unless (metadata['btitle'] || metadata['title'])
         if title = (item_attributes.at("/title"))
-          request.referent.enhance_referent('btitle', title.inner_text)
+          request.referent.enhance_referent('btitle', normalize_aws_title(title.inner_text))
         end
 
       end
 			# Enhance with full author name string even if aulast is already present, because full string may be useful for worldcat identities. 
-      unless (request.referent.metadata['au'] )
+      unless (metadata['au'] )
         if author = (item_attributes.at("/author"))
           request.referent.enhance_referent('au', author.inner_text)
         end
       end
       
-      unless request.referent.metadata['pub']
+      unless metadata['pub']
         if pub = (item_attributes.at("/publisher"))
           request.referent.enhance_referent('pub', pub.inner_text)
         end
       end      
-      unless request.referent.metadata['tpages']
+      unless metadata['tpages']
         if tpages = (item_attributes.at("/numberofpages"))
           request.referent.enhance_referent('tpages', tpages.inner_text)
         end
@@ -308,6 +309,12 @@ class Amazon < Service
       url = base + "/ref=sib_dp_srch_pop?v=search-inside&keywords=#{query}&go=Go%21"
       return url
     end
+  end
+
+  #amazon is in the habit of including things in parens at the end
+  #of the title that aren't really part of the title.
+  def normalize_aws_title(title)
+    title.sub(/\([^)]*\)\s*$/, '')
   end
 
   
