@@ -149,6 +149,7 @@ module MarcHelper
   # which edition/version of a work this represents. 
   def edition_statement(marc, options = {})
     options[:include_repro_info] ||= true
+    options[:exclude_533_fields] = ['7','f','b', 'e']
 
     parts = Array.new
 
@@ -180,7 +181,7 @@ module MarcHelper
       marc['533'].subfields.each do |s|
         if ( s.code == 'a' )
           parts.push('<em>' + s.value.gsub(/[^\w\s]/, '') + '</em>:'  )  
-        elsif ( s.code != '7' && s.code != 'f' && s.code != 'b')
+        elsif (! options[:exclude_533_fields].include?( s.code ))
           parts.push(s.value)
         end       
       end
