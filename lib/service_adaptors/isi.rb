@@ -59,7 +59,8 @@ class Isi < Service
       # if so, output a warning, but report success not exception,
       # because this is a known condition.
       metadata = request.referent.metadata
-      if ( metadata["title"].include?('&') || metadata['jtitle'].include?('&'))
+      if ( (metadata["title"] && metadata["title"].include?('&')) ||
+           (metadata["jtitle"] && metadata['jtitle'].include?('&')))
         RAILS_DEFAULT_LOGGER.warn("ISI LAMR still exhibiting ampersand problems: #{e.message} ; OpenURL: ?#{request.to_context_object.kev}")
         return request.dispatched(self, true)
       else    
