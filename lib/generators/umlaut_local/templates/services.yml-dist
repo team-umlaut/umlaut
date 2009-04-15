@@ -26,7 +26,11 @@
 #too, for instance commonly a password or api_key giving you access to the 
 #foreign web service. 
 
-# Global services
+#####################
+#
+#  FOREGROUND SERVICES
+#
+#####################
 
 # If you have your SFX set up to get Metadata from crossref with a DOI,
 # then the SFX service will do that. If that's all this service does,
@@ -48,6 +52,34 @@ Pubmed:
   url: http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi
   priority: 1
   status: active
+  
+# This is used to help create fixtures for testing
+# file is a required parameter. Set this to the full path of a file to append
+# rough fixture data to.
+RequestToFixture:
+  name: RequestToFixture
+  type: RequestToFixture
+  priority: 1
+  status: active
+  file: /full/path/to/file/new_fixtures.yml
+  
+# Example SFX service, change for your local environment. 
+JH_SFX:
+  name: Find It @ JH 
+  display_name: Find It @ JH
+  type: Sfx
+  base_url: http://sfx.library.jhu.edu:8000/sfxlcl3
+  priority: 3
+  status: active  
+  click_passthrough: false
+  sfx_requests_expire_crontab: '00 00 * * 00' 
+  sfx_timeout: 9
+  extra_targets_of_interest: 
+      LOCAL_FEEDBACK_MSE: help
+      LOCAL_FEEDBACK_SAIS: help
+      LOCAL_FEEDBACK_WELCH: help
+      LOCAL_FEEDBACK_AFL: help
+      LOCAL_FEEDBACK_APL: help
   
 # First wave of amazon in the foreground, see level c for more in bg. 
 Amazon:
@@ -77,63 +109,31 @@ Amazon_bg:
     - search_inside
 
   
-Google:
-  name: Google
-  type: GoogleSearch
-  url: http://google.com/
-  api_key: 
-  priority: 3
-  status: active
+############################
+#
+#  BACKGROUND SERVICES
+#
+###########################
 
-Yahoo:
-  name: Yahoo
-  type: YahooSearch
-  url: http://search.yahooapis.com/
-  api_key: 
-  priority: 3
-  status: active
-  
-MyWeb:
-  name: Yahoo MyWeb
-  type: YahooMyWeb
-  url: http://search.yahooapis.com/
-  api_key: 
-  priority: background
-  status: active  
-
-Connotea:
-  name: Connotea
-  type: Connotea
-  url:
-  priority: background
-  status: disabled
 
 UlrichsLink:
   name: UlrichsLink
   type: UlrichsLink
   display_name: Ulrich's Directory
   link_name: Periodical Information
-  priority: 3
+  priority: c
   status: active
 
+# Worldcat scraper is quite slow, move it to wave 'd' to avoid
+# holding up wave 'c'
 WorldCat:
   name: WorldCat
   type: Worldcat
   display_name: OCLC WorldCat.org
   display_text: Find in other libraries
-  priority: 3
-  status: active
-  search_zip_code: 60601
-
-# deprecated. Use InternetArchive if it is working
-InternetArchiveScraper:
-  name: InternetArchiveScraper
-  type: InternetArchiveScraper
-  display_name: the Internet Archive
-  display_text: Internet Archive
   priority: c
   status: active
-  url: http://www.archive.org/search.php?query=
+  search_zip_code: 60601
 
 InternetArchive:
   name: InternetArchive
@@ -154,34 +154,60 @@ InternetArchive:
 GoogleBookSearch:
   display_name: Google Book Search
   type: GoogleBookSearch
-  priority: 3
-  status: active
-
-# This is used to help create fixtures for testing
-# file is a required parameter. Set this to the full path of a file to append
-# rough fixture data to.
-RequestToFixture:
-  name: RequestToFixture
-  type: RequestToFixture
-  priority: 1
-  status: active
-  file: /full/path/to/file/new_fixtures.yml
-
-MBooks:
-  name: MBooks
-  type: MBooks
   priority: c
   status: active
-# MBooks is expected to be a lower priority than Google Books, and
-# only be shown if no GBS fulltext exists. 
-  preempted_by:
-    self_type: fulltext
-    existing_service: GoogleBookSearch
-    existing_type: fulltext
 
-  # WorldcatIdentities is best prioritized after metadata-enhancing
-  # services like Amazon or your catalog, to get full advantage
-  # of metadata. 
+
+# Experimental, see InternetArchive instead
+OpenLibrary:
+  name: OpenLibrary
+  type: OpenLibrary
+  priority: c
+  status: disabled
+
+# Tries to fetch covers from LibraryThing's cover service. 
+# To get a developer key you need to sign up for a LibraryThing
+# account (www.librarything.com), and then get your developer key
+# from: http://www.librarything.com/services/keys.php
+CoverThing:
+  display_name: LibraryThing
+  type: CoverThing
+  developer_key: must_get_developer_key
+  priority: c
+  # Dont bother running if we already have a cover
+  preempted_by:
+    existing_type: cover_image  
+
+# Provides a link to compare online prices via ISBNdb
+IsbnDb:
+ display_name: ISBNdb.com
+ type: IsbnDb
+ priority: c
+ access_key: [get from isbndb]
+
+# Must register with Scopus. See 
+# http://umlaut.rubyforge.org/api/classes/Scopus.html
+ScopusCitations:
+  type: Scopus
+  priority: c
+  json_api_key: [get from scopus]
+  
+# Must register with Thomson/ISI. See:
+http://umlaut.rubyforge.org/api/classes/Isi.html
+IsiCitations:
+  type: Isi
+  priority: c
+  
+# Must register with Thomson/ISI. Same registration as IsiCitations.
+# http://umlaut.rubyforge.org/api/classes/Jcr.html
+Jcr:
+  type: Jcr
+  priority: c
+  
+
+# WorldcatIdentities is best prioritized after metadata-enhancing
+# services like Amazon or your catalog, to get full advantage
+# of metadata. 
 WorldCatIdentities:
   name: WorldCatIdentities
   type: WorldcatIdentities
@@ -214,82 +240,57 @@ WorldCatIdentities:
   #if you want to use a different baseurl than umlaut set it here
   #openurl_base: http://localhost:3000/resolve?
 
-OpenLibrary:
-  name: OpenLibrary
-  type: OpenLibrary
-  priority: c
+# Run MBooks after GBS, to avoid GBS/MBooks dups 
+HathiTrust:
+  name: MBooks
+  type: MBooks
+  priority: d
   status: active
-
-# Tries to fetch covers from LibraryThing's cover service. 
-# To get a developer key you need to sign up for a LibraryThing
-# account (www.librarything.com), and then get your developer key
-# from: http://www.librarything.com/services/keys.php
-CoverThing:
-  display_name: LibraryThing
-  type: CoverThing
-  developer_key: must_get_developer_key
-  priority: c
-  # Dont bother running if we already have a cover
+  # MBooks is expected to be a lower priority than Google Books, and
+  # only be shown if no GBS fulltext exists. 
   preempted_by:
-    existing_type: cover_image
+    self_type: fulltext
+    existing_service: GoogleBookSearch
+    existing_type: fulltext
 
-# Start institution specific services  
-Opac:
-  name: GT Catalog
-  type: VoyagerNative
-  url: http://gil.gatech.edu/cgi-bin/Pwebrecon.cgi?DB=local
-  sru_url: http://search.library.gatech.edu/srw/GT/GIT
-  dsn: 
-  username: 
-  password: 
-  priority: 2
-  status: active
-  
-Opac2:
-  name: GIL Express
-  type: Voyager
-  url: http://giluc.usg.edu/cgi-bin/Pwebrecon.cgi?DB=local
-  sru_url: http://search.library.gatech.edu/srw/GILUC/Voyager
-  priority: 2
-  status: active
-  
-GT_SFX:
-  name: Find It @ GT
-  type: Sfx
-  base_url: http://sfx.galib.uga.edu/sfx_git1
-  priority: 2
-  status: active
+# Gpo service will try to add full text links from catalog.gpo.gov
+# Runs after other full text generators, to only generate if no other
+# fulltext found. 
+Gpo:
+  type: Gpo
+  priority: e
+  preempted_by:
+    - existing_type: fulltext
+    - existing_type: fulltext_title_level
 
-LIB_HIP:
- name: Lib Libraries Catalog
- display_name: Lib Libraries Catalog
- type: Hip3Service
- priority: c # After SFX, to get SFX metadata enhancement
- base_path: 
-
-JH_HIP_search:
- name: JH Libraries Catalog
- display_name: JH Libraries Catalog
- type: HipHoldingSearch
- priority: d
- base_path: http://catalog.library.jhu.edu/ipac20/ipac.jsp
-
-IsbnDb:
- display_name: ISBNdb.com
- type: IsbnDb
- priority: c
- access_key: [get from isbndb]
-
+#######################
+#
+# Specialty plug-ins, link-out filters, etc.
+#
+########################
+ 
+# Tries to log outgoing clicks with SFX for statistics. Works pretty
+# imperfectly.
 SFX_backchannel_record:
  display_name: SFX statistics
  type: SfxBackchannelRecord
  task: link_out_filter
  priority: 6
 
-GT_EZProxy:
+# Sends outgoing clicks through EZProxy. 
+EZProxy:
   name: EZProxy
   type: Ezproxy  
+  task: link_out_filter
+  priority: 5  
   status: disabled
+  # Your EZProxy location and api password
   host:  http://www.library.gatech.edu:2048
   password: 
   path: /proxy_url  
+  # Set to false to omit prechecking with api, just send all clicks
+  # through EZProxy. Applicable if EZProxy is set up to redirect if not
+  # proxyable. 
+  precheck_with_api: true
+  # Certain hostnames to EXCLUDE from sending through EZProxy. 
+  exclude: [ 'one.example.org', 'two.example.org' ]

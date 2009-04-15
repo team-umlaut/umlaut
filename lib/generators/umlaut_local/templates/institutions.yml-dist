@@ -34,16 +34,16 @@ global:
 #    - GoogleBookSearch
 #    - MBooks
 #    - WorldCatIdentities
-#    - OpenLibrary
 #    - CoverThing
 #    - RequestToFixture
-#    - InternetArchiveScraper #deprecated
-#    - Pubmed
+#    - InternetArchive
 #    - Amazon
-#    - Google
-#    - Yahoo
-#    - YahooMyWeb
-#    - Crossref 
+#    - Crossref
+#    - Gpo
+#    - ScopusCitations
+#    - IsiCitations
+#    - Jcr
+
 
 # Define institution specific services here    
 #Local_Library:
@@ -55,4 +55,4 @@ global:
 #    - Opac
 #    - Opac2
 #    - GT_SFX
-#    - GT_EZProxy
+#    - EZProxy
