@@ -107,7 +107,8 @@ class Scopus < Service
     results = JSON.parse(response)
 
     if ( results["ERROR"])
-      throw Exception.new("Error from Scopus API: #{results["ERROR"].inspect}")
+      RAILS_DEFAULT_LOGGER.error("Error from Scopus API: #{results["ERROR"].inspect}   openurl: ?#{request.referent.kev}")
+      return request.dispatched(self, false)
     end
 
     # For reasons not clear to me, the JSON data structures vary.
