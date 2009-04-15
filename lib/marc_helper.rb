@@ -154,6 +154,10 @@ module MarcHelper
     parts = Array.new
 
 
+    #245$h GMD
+    unless ( marc['245'].blank? || marc['245']['h'].blank? )
+      parts.push('(' + marc['245']['h'].gsub(/[^\w\s]/, '').strip.titlecase + ')')
+    end
 
     #250
     if ( marc['250'])
@@ -169,11 +173,6 @@ module MarcHelper
         parts.push(marc['260']['b']) unless marc['260']['b'].blank?
       end
       parts.push( marc['260']['c'] ) unless marc['260']['c'].blank?
-    end
-
-    #245$h GMD
-    unless ( marc['245'].blank? || marc['245']['h'].blank? )
-      parts.push('(' + marc['245']['h'].gsub(/[^\w\s]/, '').strip.titlecase + ')')
     end
       
     # 533
