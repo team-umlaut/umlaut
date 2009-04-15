@@ -28,11 +28,11 @@ module Hip3
 			i = index_for(label)
 			return nil if i.nil?
 				
-			if ( list.kind_of?(REXML::Element) )
+			if ( list.kind_of?(Hpricot::Node) )
 				# Assume they passed in a HIP 'row' element, turn it
 				# into a nice array of strings. Can't figure out how
 				# to test if it really is a 'row' element!
- 				list = list.elements.to_a('cell/data/text').collect {|e| e.text}
+ 				list = list.search('/cell/data/text').collect {|e| e.inner_text}
 			end
 			
 			return list.at( i )

@@ -12,9 +12,9 @@ module Hip3
     # Holdings sometimes use the bib to lazy load more stuff.	
     attr_accessor :bib  
 		
-		# If input is nil, returns nil, else returns input.text
+		# If input is nil, returns nil, else returns input.inner_text
 		def textValue(el)
-			return ( el == nil ? nil : el.text)
+			return ( el == nil ? nil : el.inner_text)
 		end
 		
 		# Return an array of holding strings, possibly empty, possibly single-valued.

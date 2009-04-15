@@ -27,12 +27,12 @@ module Hip3
 		end
 				
 		def loadFromSerialElement( serialElement )
-			self.location_str = serialElement.elements['location'].text
-			self.id = serialElement.elements['copykey'].text
+			self.location_str = serialElement.at('/location').inner_text
+			self.id = serialElement.at('/copykey').inner_text
 			
 			# Okay, this part is potentially fragile, we have to pull out based on
 			# order in the XML, not sure if that can change. Sorry, that's HIP for you.
-			copyElements = serialElement.elements.to_a('copy/cell/data/text').collect {|e| e.text}
+			copyElements = serialElement.search('/copy/cell/data/text').collect {|e| e.inner_text}
 			# Fix this to use field lookup
 			self.location_str = bib.copy_field_lookup.text_value_for(copyElements, @@Field_labels[:location])
 			self.collection_str =  bib.copy_field_lookup.text_value_for(copyElements, @@Field_labels[:collection])
@@ -44,11 +44,11 @@ module Hip3
 			
 			#Okay, got to get the 'runs' for summary holdings info.
 			self.runs ||= []
-			serialElement.elements.to_a('runlist/run').each do |run|
-				label = run.elements['runlabel'].text
-				run.elements.to_a('data/rundata').each do |rundata|
-          run = {:label => label, :statement => rundata.elements['text'].text}
-          run[:note] = rundata.elements['note'].text if rundata.elements['note']
+			serialElement.search('/runlist/run').each do |run|
+				label = run.at('/runlabel').inner_text
+				run.search('/data/rundata').each do |rundata|
+          run = {:label => label, :statement => textValue(rundata.at('/text'))}
+          run[:note] = textValue(rundata.at('/note'))
 				  
           self.runs.push( run )
 				end

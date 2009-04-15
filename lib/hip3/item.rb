@@ -22,7 +22,7 @@ module Hip3
 	
 		def loadFromItemRowElement( el )
       
-			@id = textValue(el.elements['key']);			
+			@id = textValue(el.at('/key'));			
 			
 			# Pull out the values built into HIP automatically. They have weird
 			# XML elements, but I think I've appropriately identified them, 
@@ -32,20 +32,18 @@ module Hip3
       
 			#@copy_str = textValue(el.elements['MIDSPINE/data/text'])
       @copy_str = @bib.item_field_lookup.text_value_for(el, "Copy")
-			#@collection_str = textValue( el.elements['SHELVINGLOCATION/data/text'])
       @collection_str = @bib.item_field_lookup.text_value_for(el, "Collection")
 
       #Maybe. Not sure where else to get this. 
-			@location_str = textValue(el.elements['LOCALLOCATION/data/text'])
+			@location_str = textValue(el.at('/LOCALLOCATION/data/text'))
       
 			#@call_no = textValue(el.elements['COPYNUMBER/data/text'])
       @call_no = @bib.item_field_lookup.text_value_for(el, "Call No.")
-      
-			#@status_str = textValue(el.elements['AVAILABLETHRU/data/text'])
+      			
       @status_str = @bib.item_field_lookup.text_value_for(el, "Status")
 
       # Not sure about this one. 
-			@avail_date_str = textValue(el.elements['AVAILABILITYDATE/data/text'])
+			@avail_date_str = textValue(el.at('/AVAILABILITYDATE/data/text'))
 			
 			# Pull out the values we had to configure in Copy display
 			@rmst_str = @bib.item_field_lookup.text_value_for(el, @@Field_labels[:rmst])

@@ -2,8 +2,7 @@
 
 
 require 'net/http'
-require 'rexml/document'
-
+require 'hpricot'
 
 #  Hip3 Module has been written for JHU's HIP3 installation. It may not work
 # quite right with other installations, I'm almost certain it needs to be
@@ -173,7 +172,7 @@ module Hip3
       return [] if insufficient_query
 
       httpResp = httpSession.get( searchPath, nil )
-      reDoc = REXML::Document.new( httpResp.body )
+      reDoc = Hpricot.XML( httpResp.body )
 
       # Confusingly, sometimes
 			# this gives us a search results page, and sometimes it gives us
@@ -194,19 +193,18 @@ module Hip3
       return [] if insufficient_query
 			httpResp = httpSession.get(searchPath(), nil )
 		
-			reDoc = REXML::Document.new( httpResp.body )
-		
+			bib_xml = Hpricot.XML( httpResp.body )
 			# Confusingly, sometimes
 			# this gives us a search results page, and sometimes it gives us
 			# a single bib
 
 			# single bib?
-			if ( bibNum = reDoc.elements['searchresponse/fullnonmarc/searchresults/results/row/key'])
+			if ( bibNum = bib_xml.at('/searchresponse/fullnonmarc/searchresults/results/row/key'))
 				# Single bib
 				#return [Hip3::Bib.new( httpSession, bibNum.text, reDoc)]
-        return [Hip3::Bib.new( bibNum.text, self.hip_base_url,
+        return [Hip3::Bib.new( bibNum.inner_text, self.hip_base_url,
                                :http_session => httpSession,
-                               :bib_xml_doc => reDoc
+                               :bib_xml_doc => bib_xml
                                )]
 			end
 
@@ -214,27 +212,24 @@ module Hip3
 			# Multi-response
 			# Get Bib #s and titles for each result.
       
-			bib_summaries =  reDoc.elements.to_a('searchresponse/summary/searchresults/results/row/');
+			bib_summaries =  bib_xml.search('searchresponse/summary/searchresults/results/row');
 
       return bib_summaries.collect do |bib_xml|
-        next unless bib_xml.elements['key']
+        next unless bib_xml.at('/key')
 
         # Find a title from the summary xml
-        title_el = bib_xml.elements['TITLE/data/text']
-        title = title_el ? title_el.text : nil
-        # remove possible author on there, after a '/' char. That's how HIP rolls. 
+        title_el = bib_xml.at('/TITLE/data/text')
+        title = title_el ? title_el.inner_text : nil
+        # remove possible author on there, after a '/' char. That's how HIP rolls.
         title.sub!(/\/.*$/, '')
         
-        Hip3::Bib.new(bib_xml.elements['key'].text, self.hip_base_url, :http_session => httpSession, :title => title )
+        Hip3::Bib.new(bib_xml.at('/key').inner_text, self.hip_base_url, :http_session => httpSession, :title => title )
       end
-      
-
-      #return bibNums.collect{ |bibNum| Hip3::Bib.new( bibNum, self.hip_base_url, :http_session => httpSession) }
 		end
 
     def insufficient_query
       # Have to have some search criteria to search
-      return (self.issn.nil? && self.isbn.nil? && self.sudoc.blank? && self.keywords.blank? && @search_hash.blank?)
+      return (self.issn.nil? && self.isbn.nil? && self.sudoc.blank? && self.bibnum.blank? && self.keywords.blank? && @search_hash.blank?)
     end
 
     def search_url

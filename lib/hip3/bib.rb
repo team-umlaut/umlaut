@@ -23,7 +23,7 @@ module Hip3
     # First arg: Horizon BibNo this thing represents.
     # Second arg: Net::URI representing HIP base path.
     # labelled args:
-		# bib_xml_doc => is optional rexml representing bib from HIP. If you have
+		# bib_xml_doc => is optional Hpricot representing bib from HIP. If you have
     # it already, give it to us and we won't have to fetch it. 
     # http_session => optional already initialized http session. You are
     #                 advised to use a Hip3::HTTPSession for it's error 
@@ -62,7 +62,7 @@ module Hip3
 		def load_from_store
 				
 			# If we have serial copies, load those. We never should have both, but oh well. 
-			serialElements = bib_xml.elements.to_a('searchresponse/subscriptionsummary/serial')
+			serialElements = bib_xml.search('searchresponse/subscriptionsummary/serial')
 			self.copies = serialElements.collect do |serialElement|
 				holding = Hip3::SerialCopy.new( self, serialElement )				
 			
@@ -72,7 +72,7 @@ module Hip3
 						
 			# If we didn't have copies, we might have items directly in this bib.  
 			if (self.copies.length == 0 &&
-				!bib_xml.elements.to_a('searchresponse/items/searchresults/results/row').nil?)
+				!bib_xml.search('searchresponse/items/searchresults/results/row').nil?)
 				self.xml_with_items = bib_xml
 				load_items_from_store
 			end
@@ -94,7 +94,7 @@ module Hip3
         
         
 				resp = Hip3::HTTPSession.safe_get(httpSession, bibWithItemsRequestPath)
-				@xml_with_items = REXML::Document.new( resp.body )
+				@xml_with_items = Hpricot.XML( resp.body )
 			end
 		
 			return @xml_with_items
@@ -105,7 +105,7 @@ module Hip3
 				summaryRequestPath = hip_http_xml_path
 		
 				resp = Hip3::HTTPSession.safe_get(httpSession, summaryRequestPath )
-				@bib_xml = REXML::Document.new( resp.body )						
+				@bib_xml = Hpricot.XML( resp.body )						
 			end
 			
 			return @bib_xml
@@ -152,7 +152,7 @@ module Hip3
 		# without this extra fetch. 
 		def load_items_from_store
 					
-			itemRowElements =  xml_with_items.elements.to_a('searchresponse/items/searchresults/results/row');			
+			itemRowElements =  xml_with_items.search('searchresponse/items/searchresults/results/row');			
 			itemRowElements.each do | el |
 				# constructor will take care of registering the thing with us
 				Hip3::Item.new(el, self)
@@ -167,7 +167,7 @@ module Hip3
 			# This guy loads our lookup obj
 			unless @item_field_lookup
 				xml = self.xml_with_items
-				itemLabels = xml.elements.to_a('searchresponse/items/searchresults/header/col/label').collect {|e| e.text}				
+				itemLabels = xml.search('searchresponse/items/searchresults/header/col/label').collect {|e| e.inner_text}				
 				@item_field_lookup = CustomFieldLookup.new(itemLabels)
 			end
 			
@@ -178,7 +178,7 @@ module Hip3
 		# => CustomFieldLookup object. 
 		def copy_field_lookup
 			unless @copy_field_lookup
-				labels = self.bib_xml.elements.to_a('searchresponse/subscriptionsummary/header/col/label').collect {|e| e.text}
+				labels = self.bib_xml.search('searchresponse/subscriptionsummary/header/col/label').collect {|e| e.inner_text}
 				@copy_field_lookup = CustomFieldLookup.new(labels)
 			end
 			
@@ -187,7 +187,7 @@ module Hip3
 
 		def bib_field_lookup
 			unless ( @bib_field_lookup)
-				labels = self.bib_xml.elements.to_a('searchresponse/fullnonmarc/header/col/label').collect {|e| e.text}
+				labels = self.bib_xml.search('searchresponse/fullnonmarc/header/col/label').collect {|e| e.inner_text}
 				@bib_field_lookup = CustomFieldLookup.new(labels)
 			end
 			return @bib_field_lookup
@@ -195,7 +195,7 @@ module Hip3
 
 		# Look up a field added in HIP Admin screen, by label given in that screen.
 		def custom_field_for_label(label)
-			dataRows = self.bib_xml.elements.to_a('searchresponse/fullnonmarc/results/row[1]/cell');
+			dataRows = self.bib_xml.search('searchresponse/fullnonmarc/results/row[1]/cell');
 			return bib_field_lookup.text_value_for(dataRows, label)
 		end
 
@@ -225,7 +225,7 @@ module Hip3
         # which is kind of a pain.
 
         # first find the index number of the title.
-        labels = bib_xml().root.get_elements('//fullnonmarc/searchresults/header/col/label')
+        labels = bib_xml().search('//fullnonmarc/searchresults/header/col/label')
         title_index = nil
         (0..(labels.length-1)).each do |i|
           if (labels[i].text == @title_label)
@@ -235,7 +235,7 @@ module Hip3
         end
 
         if title_index
-          raw_title = bib_xml().elements["//fullnonmarc/searchresults/results/row/cell[#{title_index + 1}]/data/text"].text
+          raw_title = bib_xml().at("//fullnonmarc/searchresults/results/row/cell[#{title_index + 1}]/data/text").inner_text
           # remove possible author on there, after a '/' char. That's how HIP rolls. 
           @title = raw_title.sub(/\/.*$/, '')
         else
