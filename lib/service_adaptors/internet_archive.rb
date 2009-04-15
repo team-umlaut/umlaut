@@ -23,6 +23,7 @@ class InternetArchive < Service
   require 'open-uri' #
   require 'cgi'
   require 'json' #we ask IA for json
+  require 'timeout' # used to timeout our requests
   include MetadataHelper
   
   # No parameters are required, we have working defaults for them all. 
@@ -54,6 +55,7 @@ class InternetArchive < Service
     # Should the web link to further results be shown? default to true
     @show_web_link = true
     @display_name = "the Internet Archive"
+    @http_timeout = 5.seconds
     super(config)
     @num_results_for_types ||= {}
     @mediatypes.each do |type|
@@ -62,7 +64,11 @@ class InternetArchive < Service
   end
   
   def handle(request)
-    do_query(request)    
+    begin
+      do_query(request)
+    rescue Timeout::Error => e
+      return request.dispatched(self, false, e)
+    end
     return request.dispatched(self, true)
   end
   
@@ -89,7 +95,10 @@ class InternetArchive < Service
     # using open() conveniently follows the redirect for us. Alas, it
     # doesn't give us access to the IA http status code response though.
     begin
-      response = open(link).read
+      response = nil
+      timeout(@http_timeout) {
+        response = open(link).read
+      }
     rescue Exception => e
       # Log more info for exception, and then just forward exception on,
       # we don't have any way to handle it. 
