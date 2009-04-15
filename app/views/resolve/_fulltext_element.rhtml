@@ -32,7 +32,7 @@
 
 <% if (!view_data[:match_reliability].blank?) && view_data[:match_reliability] != ServiceResponse::MatchExact %>
   <div class="edition_warning">
-    <em class="label">May be an alternate edition</em> <%= view_data[:edition_str] %>
+    <em class="label">Edition information</em> <%= view_data[:edition_str] %>
   </div>
 <% end %>
 
