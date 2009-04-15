@@ -228,7 +228,7 @@ module Hip3
         labels = bib_xml().search('//fullnonmarc/searchresults/header/col/label')
         title_index = nil
         (0..(labels.length-1)).each do |i|
-          if (labels[i].text == @title_label)
+          if (labels[i].inner_text == @title_label)
             title_index = i
             break
           end
