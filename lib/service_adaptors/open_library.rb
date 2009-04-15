@@ -1,3 +1,4 @@
+# EXPERIMENTAL, uncomplete. 
 # Searches Open Library for fulltext, and cover images.
 # To some extent duplicates what the InternetArchive service does,
 # but using the OpenLibrary API.
@@ -9,7 +10,6 @@
 # submitted by users). Here is an example: ?rft.isbn=0921307802
 # Size of images returned is unpredictable. They can be huge sometimes.
 # Counting on enforced re-sizing in img tag attributes. 
-# 
 # 
 #
 
