@@ -31,8 +31,7 @@ class ApplicationController < ActionController::Base
         @not_found_error = true
     end
 
-    RAILS_DEFAULT_LOGGER.fatal("Error request URI: #{request.request_uri}")    
-    
+   RAILS_DEFAULT_LOGGER.fatal("Error request URI: #{request.request_uri}\n User agent: #{request.headers['User-Agent']}")        
     # search error works. 
     render :template => "error/search_error", :status=>status, :layout=>AppConfig.param("search_layout","search_basic")
   end
