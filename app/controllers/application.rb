@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
        logger.warn("\n\n#{exception.class} (#{exception.message}):\n" + 
                  "   Request uri: #{request.request_uri}  \n" +
                  "   User-agent: #{request.headers['User-Agent']}\n" +
-                 "   Referer: #{request.headers['Referer']}")
+                 "   Referer: #{request.headers['Referer']}\n")
      end
   end
   
