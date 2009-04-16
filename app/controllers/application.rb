@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   #  { :only_path => false }
   #end
 
-
+  
   # Default error page. Individual controllers can over-ride. 
   def rescue_action_in_public(exception)
     status = 500
@@ -31,9 +31,24 @@ class ApplicationController < ActionController::Base
         @not_found_error = true
     end
 
-   RAILS_DEFAULT_LOGGER.fatal("Error request URI: #{request.request_uri}\n User agent: #{request.headers['User-Agent']}")        
-    # search error works. 
+    # search error works.
     render :template => "error/search_error", :status=>status, :layout=>AppConfig.param("search_layout","search_basic")
+  end
+
+  # Over-ride to keep routing error backtraces out of our logs, and
+  # log them special. 
+  def log_error(exception)
+    unless ( exception.kind_of?(::ActionController::RoutingError) ||
+         exception.kind_of?(::ActionController::UnknownAction) ||
+         exception.kind_of?(::ActionController::UnknownController))
+
+         super(exception)
+     else
+       logger.warn("\n\n#{exception.class} (#{exception.message}):\n" + 
+                 "   Request uri: #{request.request_uri}  \n" +
+                 "   User-agent: #{request.headers['User-Agent']}\n" +
+                 "   Referer: #{request.headers['Referer']}")
+     end
   end
   
   def app_before_filter
