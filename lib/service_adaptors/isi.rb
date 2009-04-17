@@ -81,7 +81,7 @@ class Isi < Service
   # article title really helps, and jtitle+atitle+year is often enough too. 
   def sufficient_metadata?(referent)
     metadata = referent.metadata
-    return get_doi(referent) || get_pmid(rft) ||
+    return get_doi(referent) || get_pmid(referent) ||
         (  ( metadata['jtitle'] || 
              metadata['title'] )   &&           
            (! (metadata['atitle'].blank? ||
