@@ -35,7 +35,7 @@ class Isi < Service
   def initialize(config)
     #defaults
     @wos_app_name = "Umlaut"
-    @display_name = "ISI Web of Science\xc2\xae" # trademark symbol
+    @display_name = "Web of Science\xc2\xae" # trademark symbol
     @api_url = "https://ws.isiknowledge.com/esti/xrpc"
     @include_cited_by = true
     @include_similar = true
@@ -81,7 +81,7 @@ class Isi < Service
   # article title really helps, and jtitle+atitle+year is often enough too. 
   def sufficient_metadata?(referent)
     metadata = referent.metadata
-    return get_doi(referent) ||
+    return get_doi(referent) || get_pmid(rft) ||
         (  ( metadata['jtitle'] || 
              metadata['title'] )   &&           
            (! (metadata['atitle'].blank? ||
@@ -124,6 +124,10 @@ class Isi < Service
               # DOI
               if ( doi = get_doi(request.referent))
                 builder.val(doi, :name => "doi")
+              end
+
+              if ( pmid = get_pmid(request.referent))
+                builder.val(pmid, :name => "pmid")
               end
 
               # Journal title is crucial for ISI -- ISSN alone is
