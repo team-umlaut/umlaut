@@ -126,7 +126,8 @@ class Jcr < Service
       request.add_service_response(:service=>self, 
         :display_text => @link_text,          
         :url => impact_url.inner_text, 
-        :service_type_value => :highlighted_link)
+        :service_type_value => :highlighted_link,
+        :debug_info => "url: #{impact_url.inner_text}")
     end
     
     

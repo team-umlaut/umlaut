@@ -209,7 +209,8 @@ class Isi < Service
       request.add_service_response(:service=>self, 
         :display_text => "#{count} #{ServiceTypeValue[:cited_by].display_name_pluralize.downcase.capitalize}", 
         :count=> count, 
-        :url => cited_by_url, 
+        :url => cited_by_url,
+        :debug_info => "url: " + cited_by_url,
         :service_type_value => :cited_by)
     end
     
@@ -221,7 +222,8 @@ class Isi < Service
     if (@include_similar && similar_url )
         request.add_service_response( :service=>self, 
           :display_text => " #{ServiceTypeValue[:similar].display_name_pluralize.downcase.capitalize}", 
-          :url => similar_url, 
+          :url => similar_url,
+          :debug_info => "url: " + similar_url,
           :service_type_value => :similar)
     end
     
