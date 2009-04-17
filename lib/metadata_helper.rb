@@ -231,8 +231,12 @@ module MetadataHelper
     return lccn
   end
 
+  # Gets isbn, also removes any weird stuff on the end sometimes
+  # included as 'isbn', but not part of the isbn. Like (paperback)
+  # and such.
   def get_isbn(rft)
-    return get_identifier(:urn, "isbn", rft)    
+    isbn = get_identifier(:urn, "isbn", rft)
+    isbn = isbn.sub(/[^\dX-]+$/, '')
   end
 
   def get_oclcnum(rft)
