@@ -115,6 +115,9 @@ module MarcHelper
         # If it contains the word 'description', it's probably an abstract.
         # That's the best we can do, sadly. 
         return "abstract"
+      elsif (field['3'] && field['3'].downcase == 'sample text')
+        # LC records often include these links. 
+        return "excerpts"
       elsif ( field['u'] =~ /www\.loc\.gov/ )
         # Any other loc.gov link, we know it's not full text, don't put
         # it in full text field, put it as "see also". 
