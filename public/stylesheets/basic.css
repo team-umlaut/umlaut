@@ -285,6 +285,10 @@ hr {
   padding-left: 10px;
 }
 
+.see_also .response_notes {
+  padding-left: 10px;
+}
+
 .notAvailable {
 	color: #FF0000;
 	font-style: italic;
