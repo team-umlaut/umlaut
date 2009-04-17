@@ -35,7 +35,7 @@ class Isi < Service
   def initialize(config)
     #defaults
     @wos_app_name = "Umlaut"
-    @display_name = "ISI Web of Knowledge"
+    @display_name = "ISI Web of Science\xc2\xae" # trademark symbol
     @api_url = "https://ws.isiknowledge.com/esti/xrpc"
     @include_cited_by = true
     @include_similar = true
@@ -51,6 +51,8 @@ class Isi < Service
     xml = gen_lamr_request(request)
     
     isi_response = do_lamr_request(xml)
+
+    
     
     begin
       add_responses( request, isi_response )
