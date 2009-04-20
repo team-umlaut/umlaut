@@ -32,8 +32,8 @@ class Jcr < Service
   def initialize(config)
     #defaults
     @wos_app_name = "Umlaut"
-    @display_name = "Journal Citation Reports\xc2\xae" # trademark symbol
-    @link_text = "Journal impact factor trend graph"
+    @display_name = "Journal Citation Reports\xc2\xae" # trademark symbol, utf-8
+    @link_text = "Journal impact factor"
     @api_url = "https://ws.isiknowledge.com/esti/xrpc"
     @include_for_article_level = true
     super(config)
