@@ -199,10 +199,14 @@ class Scopus < Service
     # reversed engineered predictable URLs. 
 
     count = result["citedbycount"]
+    label = ServiceTypeValue[:cited_by].display_name_pluralize.downcase.capitalize    
+      if count && count == 1
+        label = ServiceTypeValue[:cited_by].display_name.downcase.capitalize
+      end
     cited_by_url = cited_by_url( result )
     
     request.add_service_response(:service=>self, 
-      :display_text => "#{count} #{ServiceTypeValue[:cited_by].display_name_pluralize.downcase.capitalize}", 
+      :display_text => "#{count} #{label}", 
       :count=> count, 
       :url => cited_by_url, 
       :service_type_value => :cited_by)
