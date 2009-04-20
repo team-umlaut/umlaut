@@ -82,7 +82,8 @@ excerpts:
   
 cited_by:
   id: 21
-  display_name: References to this
+  display_name: Article that cites this
+  display_name_plural: Articles that cite this
 
 # Used by ISI and Scopus at present. Maybe more later. 
 # "More like this" links. 
