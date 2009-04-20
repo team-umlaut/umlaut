@@ -48,9 +48,14 @@ Rails::Initializer.run do |config|
     config.logger = our_logger
 
 
+  
 
 
   config.after_initialize do
+    # Pick a unique cookie name to distinguish our session data from others'
+    ActionController::Base.session_options[:session_key] = '_u2_session_id'
+
+  
     # Turning on ActiveRecord concurrency is neccesary because we use threading
     # for Umlaut
     # In >1.2.1, this needs to be in an after_initialize block.
