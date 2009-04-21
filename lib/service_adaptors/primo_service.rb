@@ -16,6 +16,11 @@
 #                     caught by SfxUrl.sfx_controls_url. Regexps can be put
 #                     in the services.yml like this:    
 #                        [!ruby/regexp '/\$\$LWEB$/']
+# suppress_tocs:      array of strings or regexps to NOT link to for Tables of Contents.
+#                     Used for urls that duplicate SFX targets but which aren't
+#                     caught by SfxUrl.sfx_controls_url. Regexps can be put
+#                     in the services.yml like this:    
+#                        [!ruby/regexp '/\$\$LWEB$/']
 # ez_proxy:           string or regexp of an ezproxy prefix. 
 #                     Used in the case where an ezproxy prefix (on any other regexp) is hardcoded in the URL,
 #                     and needs to be removed ino order to match against SFXUrls.
@@ -48,6 +53,7 @@ class PrimoService < Service
   def initialize(config)
     # defaults
     @suppress_urls = []
+    @suppress_tocs = []
     @suppress_holdings = []
     super(config)
 
@@ -58,8 +64,8 @@ class PrimoService < Service
   # Standard method, used by background service updater. See Service docs. 
   def service_types_generated
     # We generate full text and holdings types, right now.
-    #types = [ ServiceTypeValue[:fulltext], ServiceTypeValue[:holding], ServiceTypeValue[:table_of_contents] ]
-    types = [ ServiceTypeValue[:fulltext], ServiceTypeValue[:holding] ]
+    types = [ ServiceTypeValue[:fulltext], ServiceTypeValue[:holding], ServiceTypeValue[:table_of_contents] ]
+    #types = [ ServiceTypeValue[:fulltext], ServiceTypeValue[:holding] ]
     
     return types
   end
@@ -93,7 +99,7 @@ class PrimoService < Service
     primo_searcher.genre = genre 
 
     # Get URLs from Primo Searcher (executes search)
-    urls = primo_searcher.urls # Array of Exlibris::Primo::PrimoURLs
+    urls = primo_searcher.urls # Array of Exlibris::Primo::Url
 
     # Let's find any URLs, and add full text responses for those.
     urls_seen = Array.new # for de-duplicating urls from catalog.
@@ -130,11 +136,49 @@ class PrimoService < Service
       response_params = {:service=>self, :display_text=>display_name, :url=>url, :notes=>value_text[:notes], :service_data=>value_text}
       
       # Add the response
-      request.add_service_response(response_params, ['fulltext_title_level'])
+      request.add_service_response(response_params, ['fulltext'])
+    end
+
+    # Get TOCs from Primo Searcher
+    tocs = primo_searcher.tocs # Array of Exlibris::Primo::Toc
+
+    # Let's find any TOCs, and add table of contents responses for those.
+    tocs_seen = Array.new # for de-duplicating urls from catalog.
+    tocs.each do |primo_toc|
+      url = primo_toc.url # actual url
+
+      next if tocs_seen.include?(url)
+
+      # We have our own list of URLs to suppress, array of strings
+      # or regexps.
+      next if @suppress_tocs.find {|suppress| suppress === url}
+      
+      # No url? Forget it.
+      next if url.nil?
+      
+      tocs_seen.push(url)
+      
+      display_name = primo_toc.display # URL display name, based on Primo Normalization Rules 
+      display_name = url if display_name.nil? # set display name to URL if no other display name
+      
+      value_text = Hash.new
+
+      value_text[:url] = url
+
+      value_text[:notes] = primo_toc.notes
+      if ( value_text[:notes].blank?) 
+        # TODO: Update for coverage, could be based on Primo Normalization Rules
+        #value_text[:notes] += "Dates of coverage unknown."
+      end
+
+      response_params = {:service=>self, :display_text=>display_name, :url=>url, :notes=>value_text[:notes], :service_data=>value_text}
+      
+      # Add the response
+      request.add_service_response(response_params, ['table_of_contents'])
     end
 
     # Get holdings from Primo Searcher
-    holdings = primo_searcher.holdings # Array of Exlibris::Primo::PrimoHoldings
+    holdings = primo_searcher.holdings # Array of Exlibris::Primo::Holding
     #Okay, we actually want to make each _copy_ into a service response.
     #A bib may have multiple copies. We are merging bibs, and just worrying
     #about the aggregated list of copies.
@@ -147,7 +191,7 @@ class PrimoService < Service
       #next if SfxUrl.sfx_controls_url?(url)
       # We have our own list of Holdings to suppress, array of strings
       # or regexps.
-      next if @suppress_holdings.find {|suppress| suppress === holding.raw}
+      next if @suppress_holdings.find {|suppress| suppress === holding.text}
       service_data = {}
       service_data[:call_number] = holding.call_number
       service_data[:status] = holding.status
@@ -156,6 +200,7 @@ class PrimoService < Service
       service_data[:coverage_str_array] = holding.coverage_str_to_a 
       service_data[:notes] = holding.notes
       service_data[:url] = holding.url
+      service_data[:request_url] = holding.request_url
       service_data[:display_text] = holding.text
       
       request.add_service_response( {:service=>self, :display_text => service_data[:display_text], :notes=>service_data[:notes], :url=> service_data[:url], :service_data=>service_data }, ['holding']  )
