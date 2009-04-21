@@ -52,7 +52,10 @@ class SearchController < ApplicationController
   # can be 'begins', 'exact', or 'contains'. Other
   # form params should be OpenURL, generally
   def journal_search
- 
+    # for reasons I can't tell, our JS on IE ends up putting some
+    # newlines in the object_id, which messes us all up.
+    params['rft.object_id'].strip! if params['rft.object_id']
+    
     @batch_size = @@search_batch_size
     @page = 1  # page starts at 1 
     @page = params['page'].to_i if params['page']
