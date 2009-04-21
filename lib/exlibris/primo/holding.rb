@@ -4,11 +4,13 @@ module Exlibris::Primo
   class Holding
     attr_accessor :primo_base_url, :primo_view_id, :primo_config
     attr_accessor :record_id, :original_source_id, :source_id, :source_record_id
-    attr_accessor :institution, :library_code, :id_one, :id_two, :status_code, :origin
-    attr_accessor :call_number
+    attr_accessor :institution, :library_code, :id_one, :id_two, :status_code, :status, :origin
+    attr_accessor :call_number, :type
     attr_accessor :source_config, :text, :raw
-    attr_reader :library, :status, :collection_str
+    attr_reader :library, :collection_str
     attr_reader :primo_url, :url, :coverage_str, :notes
+    attr_reader :request_url
+    
     def initialize(e)
       unless e.nil?
         if e.kind_of? Holding
@@ -30,12 +32,13 @@ module Exlibris::Primo
           @original_source_id = e.original_source_id
           @source_id = e.source_id
           @source_record_id = e.source_record_id
-        elsif e.kind_of? REXML::Element
+          @type = e.type
+          @source_config = e.source_config
+        elsif e.kind_of? Hpricot::Elem
           @primo_config = primo_config
-          @raw = e.text 
-          # TODO: Further investigation, not sure what purpose text serves.
-          @text = raw
-          a = raw.split(/\$(?=\$)/) unless raw.nil?
+          @raw = e 
+          @text = raw.inner_text
+          a = text.split(/\$(?=\$)/) unless raw.nil?
           a.each do |s|
             @institution = s.sub!(/^\$I/, "") unless s.match(/^\$I/).nil?
             @library_code = s.sub!(/^\$L/, "") unless s.match(/^\$L/).nil?
@@ -60,8 +63,11 @@ module Exlibris::Primo
     end
     
     def status
-      h = primo_config["statuses"] unless primo_config.nil?
-      map(status_code, h)
+      unless @status
+        h = primo_config["statuses"] unless primo_config.nil?
+        @status = map(status_code, h)
+      end
+      return @status
     end
     
     def collection_str
@@ -85,33 +91,21 @@ module Exlibris::Primo
     def notes
     end
     
+    def to_a
+      return [self]
+    end
+    
     def to_source
       source_class = source_config["class_name"] unless source_config.nil?
       if source_class.nil?
         s = self
       else
-        s = Exlibris::Primo::Source.const_get(source_class).new(source_config, self)
-=begin
-        s.institution = institution
-        s.library = library
-        s.id_one = id_one
-        s.id_two = id_two
-        s.status = status
-        s.origin = origin
-        s.collection_str = collection_str
-        s.call_number = call_number
-        s.record_id = record_id
-        s.primo_base_url = primo_base_url
-        s.primo_view_id = primo_view_id
-        s.record_id = record_id
-        s.original_source_id = original_source_id
-        s.source_id = source_id
-        s.source_record_id = source_record_id
-=end
+        s = Exlibris::Primo::Source.const_get(source_class).new(self)
       end
       return s
     end
-    private
+    
+    protected
     def map(str, h=nil)
       return str if (h.nil? or !h.kind_of? Hash)
       return (h[str].nil? ? str : h[str])

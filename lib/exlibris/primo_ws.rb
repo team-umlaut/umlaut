@@ -6,6 +6,7 @@ module Exlibris::PrimoWS
   Default_SOAP_Action = ""
   require 'soap/rpc/driver'
   require 'rexml/document'
+  require 'hpricot'
   # The PrimoWebService constructor accepts arguments of the following forms:  
   #   String method, 
   #   WebServiceParams params, 
@@ -31,16 +32,17 @@ module Exlibris::PrimoWS
     def response
       return @response unless @response.nil?
       response_str = eval request
-      @response = REXML::Document.new(response_str).root
+      @response = Hpricot.XML(response_str)
       response
     end
     
     def error
       return @error if @error.kind_of? Array
       @error = []
-      e = response.elements["//ERROR"]
-      @error.push(e.attribute("MESSAGE", "http://www.exlibrisgroup.com/xsd/jaguar/search")) unless e.nil?
-      error   
+      response.search("ERROR").each do |e|
+        @error.push(e.attributes["MESSAGE"]) unless e.nil?
+      end
+     error   
     end
   end
 

@@ -4,10 +4,10 @@ module Exlibris::Primo::Source
     attr_accessor :source_base_url, :source_type
     attr_reader :source_url
 
-    def initialize(config, e=nil)
-      @source_base_url = config["base_url"] unless config.nil?
-      @source_type = config["type"] unless config.nil?
+    def initialize(e=nil)
       super(e)
+      @source_base_url = source_config["base_url"] unless source_config.nil?
+      @source_type = source_config["type"] unless source_config.nil?
     end
     
     def source_url
