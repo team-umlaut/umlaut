@@ -62,14 +62,16 @@ class SearchController < ApplicationController
     @start_result_num = (@page * @batch_size) - (@batch_size - 1)
     
     @search_context_object  = context_object_from_params
-    search_co = @search_context_object
-        
+    # It's a journal, make it so
+    @search_context_object.referent.set_format('journal')
+    @search_context_object.referent.set_metadata('genre', 'journal')
+            
     if (params["umlaut.title_search_type"] == 'exact' ||
         ! params["rft.object_id"].blank? ||
         ! params["rft.issn"].blank? ||
         ! params["rft_id"].blank? )
       # If we have an exact-type 'search', just switch to 'resolve' action
-      redirect_to url_for_with_co( {:controller => 'resolve'}, search_co ) 
+      redirect_to url_for_with_co( {:controller => 'resolve'}, @search_context_object ) 
       
       # don't do anything else.
       return
