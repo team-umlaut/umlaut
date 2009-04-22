@@ -697,4 +697,5 @@ ol.numberedListlg a {
   margin-bottom: 5px;
   padding: 4px;
   background-color: #FCF1D4;
+  overflow: auto;
 }
