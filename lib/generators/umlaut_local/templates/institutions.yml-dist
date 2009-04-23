@@ -35,6 +35,8 @@ global:
 #    - MBooks
 #    - WorldCatIdentities
 #    - CoverThing
+     - UlrichsCover
+     - ElsevierCover
 #    - RequestToFixture
 #    - InternetArchive
 #    - Amazon

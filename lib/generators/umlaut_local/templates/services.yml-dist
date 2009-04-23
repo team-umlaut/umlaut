@@ -176,7 +176,19 @@ CoverThing:
   priority: c
   # Dont bother running if we already have a cover
   preempted_by:
-    existing_type: cover_image  
+    existing_type: cover_image
+    
+# Free journal sample covers from Elsevier    
+ElsevierCover:
+  type: ElsevierCover
+  priority: c
+
+# Journal sample covers from Ulrichs. While Ulrichs provides
+# no authenticated protection to this service, you probably shoudln't
+# use it if you're not an ulrich's subscriber. 
+UlrichsCover:
+  type: UlrichsCover
+  priority: c
 
 # Provides a link to compare online prices via ISBNdb
 IsbnDb:
