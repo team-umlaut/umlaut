@@ -92,22 +92,28 @@ class Gpo < Service
     # one or more 'a' tags in there. These are links to fulltext. 
     links = hpricot.search('//tr[@class = "tr1"][td]/td:eq(6)/a')
 
+    urls_seen = []
+    
     links.each do |link|
       # The href is an internally pointing ILS link. But the text inside
       # the a is what we want, it's actually a URL, fortunately. . 
 
       url = link.inner_text
-      notes = nil
-      if (links.length > 1)        
-        notes = "via " + URI.parse(url).host
-      end
-
-      request.add_service_response(:service => self, 
-       :display_text => @display_name,
-       :url => url,
-       :notes => notes,
-       :service_type_value => "fulltext"
-       )
+      unless urls_seen.include?(url)
+      
+        notes = nil
+        if (links.length > 1)        
+          notes = "via " + URI.parse(url).host
+        end
+  
+        request.add_service_response(:service => self, 
+         :display_text => @display_name,
+         :url => url,
+         :notes => notes,
+         :service_type_value => "fulltext"
+         )
+         urls_seen.push( url )
+      end         
     end
     
   end
