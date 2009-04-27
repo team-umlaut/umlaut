@@ -37,6 +37,7 @@ global:
 #    - CoverThing
      - UlrichsCover
      - ElsevierCover
+     - JstorCover
 #    - RequestToFixture
 #    - InternetArchive
 #    - Amazon

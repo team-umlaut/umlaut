@@ -189,6 +189,13 @@ ElsevierCover:
 UlrichsCover:
   type: UlrichsCover
   priority: c
+  
+# Journal sampel covers from JStor. These are available at a publically
+# accessible and predictable URL, but I'm not entirely sure if they
+# intended this; this could break if their architecture changes. 
+JstorCover:
+  type: JStorCover
+  priority: c
 
 # Provides a link to compare online prices via ISBNdb
 IsbnDb:
