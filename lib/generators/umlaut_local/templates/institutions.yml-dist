@@ -28,9 +28,9 @@ global:
   default_institution: true
   display_name: 
   services:
-    - UlrichsLink
-    - WorldCat
-    - InternetArchive
+     - UlrichsLink
+     - WorldCat
+     - InternetArchive
 #    - GoogleBookSearch
 #    - MBooks
 #    - WorldCatIdentities
