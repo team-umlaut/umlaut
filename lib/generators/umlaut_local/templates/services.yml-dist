@@ -117,7 +117,6 @@ Amazon_bg:
 
 
 UlrichsLink:
-  name: UlrichsLink
   type: UlrichsLink
   display_name: Ulrich's Directory
   link_name: Periodical Information
@@ -212,7 +211,7 @@ ScopusCitations:
   json_api_key: [get from scopus]
   
 # Must register with Thomson/ISI. See:
-http://umlaut.rubyforge.org/api/classes/Isi.html
+# http://umlaut.rubyforge.org/api/classes/Isi.html
 IsiCitations:
   type: Isi
   priority: c
