@@ -193,7 +193,7 @@ UlrichsCover:
 # accessible and predictable URL, but I'm not entirely sure if they
 # intended this; this could break if their architecture changes. 
 JstorCover:
-  type: JStorCover
+  type: JstorCover
   priority: c
 
 # Provides a link to compare online prices via ISBNdb
