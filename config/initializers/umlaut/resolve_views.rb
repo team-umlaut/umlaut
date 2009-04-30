@@ -7,6 +7,10 @@
   # partial APIs, in another config parameter below, partial_html_map, that by
   # default is based on bg_update_map
 
+  # Use a custom resolve menu view, if you really can't configure
+  # the existing one satisfactorily.
+  # AppConfig::Base.resolve_view = 'local/my_institution_resolve_index.erb.html'
+
 
   # Use custom layouts for your local look and feel
   #AppConfig::Base.resolve_layout = "distribution/jhu_resolve"
