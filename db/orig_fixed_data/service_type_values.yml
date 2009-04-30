@@ -107,6 +107,10 @@ similar_item:
   id: 102
   display_name: Similar Item
 
+# Used to save/send the citation/holdings
+export_citation:
+  id: 103
+  display_name: Save citation
 
   
 # If you want to add your own custom ones, make them start with ids at 100000,

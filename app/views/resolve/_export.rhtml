@@ -1,0 +1,25 @@
+<% export_citations = get_service_type('export_citation')
+   if (! export_citations.blank? || service_type_in_progress?('export_citation')) %>
+<div class="smGrayBox">
+<h3><%= ServiceTypeValue[:export_citation].display_name %>:</h3>
+<% export_citations.each do |export_citation| 
+    target = export_citation.view_data
+%>
+<div class="tightbullets">
+<%= link_to(target[:display_text], {:controller=>'link_router', :id=>export_citation.id}, :target=>'_blank') unless target[:ajax_id] %> 
+<% if target[:ajax_id] %>
+  <%= link_to_remote(target[:display_text], :url=> {:controller=>target[:controller], :action=>target[:ajax_id], :id => @user_request.referent.permalinks[0].id, :format => "js"}, :html=>{:id => "export_#{export_citation.id}", :href =>url_for(:controller => target[:controller], :action => target[:ajax_id], :id => @user_request.referent.permalinks[0].id, :format => "html"), :target => "_blank" }) %>
+  <div id="<%= target[:ajax_id] %>_success" class="success small_indent" style="display: none;"></div>
+  <div id="<%= target[:ajax_id] %>" class="ajax_div" style="display: none;"></div>
+<% end %>
+<% if target[:notes] %>
+  <div class="small_indent"><%= target[:notes] %> </div>
+<% end %>
+</div>
+<%end%>
+<% if service_type_in_progress?('export_citation') %>
+<div class="tightbullets"><%= render(:partial => "background_progress", :locals => { :svc_type => ServiceTypeValue[:export_citation],:current_set_empty => export_citations.empty? } ) %></div>
+<% end %>
+</div>
+<% end %>
+
