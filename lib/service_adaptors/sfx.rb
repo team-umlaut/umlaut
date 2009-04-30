@@ -154,6 +154,10 @@ class Sfx < Service
     # for metadata enhancing. We'll do that here:
     fulltext_seen_in_index = {}
     
+
+    # Multiple context objs are _very_messy_.  Just skip the whole thing
+    # if more than 5 context objects exist (currently not implemented)
+    # return if sfx_objs.length > 5
     
     0.upto(sfx_objs.length - 1 ) do |sfx_obj_index|
     
@@ -227,6 +231,7 @@ class Sfx < Service
         # but this whole multiple hits thing is messy.
         if ( sfx_obj_index > 0 &&
              ( umlaut_service == 'document_delivery' || 
+               umlaut_service == 'export_citation' || 
                umlaut_service == 'help'))
             next
         end
