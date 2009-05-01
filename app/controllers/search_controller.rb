@@ -139,9 +139,12 @@ class SearchController < ApplicationController
       joins = " inner join AZ_LETTER_GROUP_VER3 as lg on AZ_TITLE_VER3.AZ_TITLE_VER3_ID = lg.AZ_TITLE_VER3_ID"
       # Need a special condition for 0-9
       if ( params[:id] == '0-9')
-        conditions = ["lg.AZ_LETTER_GROUP_VER3_NAME IN ('0','1','2','3','4','5','6','7','8','9')"]
+        conditions = ["AZ_PROFILE=? AND lg.AZ_LETTER_GROUP_VER3_NAME IN ('0','1','2','3','4','5','6','7','8','9')",
+        sfx_az_profile]
       else
-        conditions = ['lg.AZ_LETTER_GROUP_VER3_NAME = ?', params[:id].upcase]
+        conditions = ["AZ_PROFILE=? AND lg.AZ_LETTER_GROUP_VER3_NAME = ?", 
+        sfx_az_profile,
+        params[:id].upcase]
       end
 
       @hits = SfxDb::AzTitle.count(:joins => joins,
@@ -194,19 +197,17 @@ class SearchController < ApplicationController
    query = params['rft.jtitle']
    unless ( query.blank? )
     if (@use_umlaut_journal_index)
-      @titles = Journal.find_all_by_contents(:all, :conditions => ['contents = ?',"alternate_titles:*"+query+"*"], :limit=>@@autocomplete_limit).collect {|j| {:object_id => j[:object_id], :title=> j.title }   }
+      @titles = Journal.find_all_by_contents(:all, :conditions => ["contents = ?","alternate_titles:*"+query+"*"], :limit=>@@autocomplete_limit).collect {|j| {:object_id => j[:object_id], :title=> j.title }   }
     else      
   
-      # Use V2 list instead.
-      @titles = SfxDb::AzTitleV2.find(:all, 
-      :conditions => ['TITLE_DISPLAY like ?', "%" + query + "%"],
+      # Use V3 list instead.
+      @titles = SfxDb::AzTitle.find(:all, 
+      :conditions => ["AZ_PROFILE = ? AND TITLE_DISPLAY like ?", 
+        sfx_az_profile,
+        "%" + query + "%"],
       :limit => @@autocomplete_limit).collect {|to| {:object_id => to.OBJECT_ID, :title=>to.TITLE_DISPLAY}
       }
       
-      #@titles = SfxDb::AzTitle.find(:all, 
-      #:conditions => ['TITLE_DISPLAY like ?', "%" + query + "%"],
-      #:limit => @@autocomplete_limit).collect {|to| {:object_id => to.OBJECT_ID, :title=>to.TITLE_DISPLAY}
-      #}
     end
    end
    render :partial => 'journal_titles'
@@ -577,11 +578,17 @@ class SearchController < ApplicationController
     # to AZ_TITLE_SEARCH_VER3 for alternate titles too. 
     conditions = case search_type
       when 'contains'
-        ['TITLE_DISPLAY like ? OR ts.TITLE_SEARCH like ?', "%" + title_q.upcase + "%", "%" + title_q.upcase + "%"]
+        ['AZ_PROFILE = ? AND TITLE_DISPLAY like ? OR ts.TITLE_SEARCH like ?',
+        sfx_az_profile,
+        "%" + title_q.upcase + "%", "%" + title_q.upcase + "%"]
       when 'begins'
-       ['TITLE_DISPLAY like ? OR TITLE_SORT like ? OR ts.TITLE_SEARCH like ?', title_q + '%', title_q + '%', title_q + "%"]
+       ['AZ_PROFILE = ? AND TITLE_DISPLAY like ? OR TITLE_SORT like ? OR ts.TITLE_SEARCH like ?',
+       sfx_az_profile,
+       title_q + '%', title_q + '%', title_q + "%"]
       else # exact
-        ['TITLE_DISPLAY = ? OR TITLE_SORT =  ? OR ts.TITLE_SEARCH = ?', title_q, title_q, title_q]
+        ['AZ_PROFILE = ? AND TITLE_DISPLAY = ? OR TITLE_SORT =  ? OR ts.TITLE_SEARCH = ?', 
+        sfx_az_profile,
+        title_q, title_q, title_q]
     end
 
     # First get object_ids we're interested in, then
@@ -609,7 +616,11 @@ class SearchController < ApplicationController
     return [ object_ids, total_hits]
   end
 
- 
+  # sfx a-z profile as defined in config, used for direct db connections
+  # to sfx. 
+  def sfx_az_profile
+    AppConfig.param("sfx_az_profile", "default")
+  end
 
   # This guy actually works to talk to an SFX instance over API.
   # But it's really slow. And SFX doesn't seem to take account
