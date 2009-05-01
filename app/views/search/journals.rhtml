@@ -71,9 +71,13 @@ function setDate() {
                                             
           <td width="89%">Journal Title:
 
-            <%= text_field_with_auto_complete :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off', :size=>'40'}, {:after_update_element=>'updateObjectId', :min_chars => 4}
+            <%= text_field :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off', :size=>'40'} %>
+           
+          
+            <% text_field_with_auto_complete :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off', :size=>'40'}, {:after_update_element=>'updateObjectId', :min_chars => 4, 'parameters' => "foo=bar"}
             %>
-                                                                                         
+            <div class="auto_complete" id="journal_title_auto_complete"></div>
+            
             <select name="umlaut.title_search_type" id="sfx_title_search">
               <option value="contains">contains</option>
               <option value="begins">begins
@@ -81,7 +85,21 @@ function setDate() {
               <option value="exact">exact match</option>
             </select>
             &nbsp;&nbsp;&nbsp;&nbsp;ISSN:
-            <input type=text name="rft.issn" size="10" maxlength="9"></td>
+            <input type=text name="rft.issn" size="10" maxlength="9">
+            
+            <!-- Rails helper wasn't flexible enough for us, we create
+                 the scriptaculous thing by hand - need to make sure
+                 value of umlaut.title_search_type is sent too. -->
+            <script type="text/javascript">
+            //<![CDATA[
+              var journal_title_auto_completer11 = new Ajax.Autocompleter('journal_title', 'journal_title_auto_complete', '<%= url_for(:controller =>"search", :action=>"auto_complete_for_journal_title") %>', {afterUpdateElement:updateObjectId, minChars:4, 
+               callback: function(element, query_string) {
+                return query_string + "&umlaut.title_search_type=" + $('sfx_title_search').getValue()   }
+              })
+            //]]>
+            </script>
+          </td>
+            
         </tr>
                                           
     </table>

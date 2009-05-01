@@ -195,16 +195,22 @@ class SearchController < ApplicationController
   def auto_complete_for_journal_title
    # Don't search on blank query.
    query = params['rft.jtitle']
+   search_type = params["umlaut.title_search_type"] || "contains"
    unless ( query.blank? )
     if (@use_umlaut_journal_index)
-      @titles = Journal.find_all_by_contents(:all, :conditions => ["contents = ?","alternate_titles:*"+query+"*"], :limit=>@@autocomplete_limit).collect {|j| {:object_id => j[:object_id], :title=> j.title }   }
+      wildcard_query = query + "*"
+      wildcard_query = "*" + wildcard_query if search_type == "contains"
+    
+      @titles = Journal.find_all_by_contents(:all, :conditions => ["contents = ?","alternate_titles:" + wildcard_query], :limit=>@@autocomplete_limit).collect {|j| {:object_id => j[:object_id], :title=> j.title }   }
     else      
   
       # Use V3 list instead.
+      wildcard_query = query + "%"
+      wildcard_query = "%" + wildcard_query if search_type == "contains"
       @titles = SfxDb::AzTitle.find(:all, 
       :conditions => ["AZ_PROFILE = ? AND TITLE_DISPLAY like ?", 
         sfx_az_profile,
-        "%" + query + "%"],
+        wildcard_query],
       :limit => @@autocomplete_limit).collect {|to| {:object_id => to.OBJECT_ID, :title=>to.TITLE_DISPLAY}
       }
       
