@@ -110,7 +110,7 @@ class PrimoService < Service
       # Don't add the URL if it matches our SFXUrl finder, because
       # that means we think this is an SFX controlled URL.
       # Handle EZProxy if hardcoded.
-      next if SfxUrl.sfx_controls_url?(handle_ezproxy(url))
+      next if (SfxUrl.sfx_controls_url?(handle_ezproxy(url)) and !(request.get_service_type('fulltext', {}).empty?))
       # We have our own list of URLs to suppress, array of strings
       # or regexps.
       next if @suppress_urls.find {|suppress| suppress === url}
