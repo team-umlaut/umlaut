@@ -1,0 +1,53 @@
+<% 
+unless @user_request.nil?
+cite = @user_request.referent.to_citation %>
+<div class="inner_ajax_div">
+<% remote_form_for params[:action], :url => {:controller => "export_email", :action => "send_txt", :id => params[:id], :format => "js"}, :html => { :action => url_for(:controller => "export_email", :action => "send_txt", :id => params[:id], :format => "html"), :class => "ajax_form" } do |f| %>
+  <%= f.hidden_field :title, :value => "#{h(cite[:title])}/#{h(cite[:author])}" %>
+  <h2>Send the title and location of an item to your mobile phone</h2>
+  <div><%= flash[:error]%><% flash[:error] = nil%></div>
+  <h3><strong>Title:</strong> <%= h(cite[:title]) %>/<%= h(cite[:author]) %></h3>
+  <div>
+    <%= f.label :number, 'Enter your mobile phone number:' %>
+    <%= f.text_field :number %>
+    <p class="smallText"><em>use the full 10 digits, no dashes or spaces</em></p>
+  </div>
+  <div>
+    <%= f.label :provider, 'Select your provider:' %>
+    <%
+      txt = ServiceList.get('NYU_Txt')
+      providers = txt.instance_variable_get("@providers")
+    %>
+    <%= f.select :provider, providers.sort %>
+  </div>
+<%
+  holdings = @user_request.get_service_type('holding', {})
+  unless holdings.nil?
+%>
+  <div id="holdings">Choose the item you want to send:</div>
+  <ul>
+<%
+    holdings.each do |p|
+      target = p.view_data
+ %>
+   <li>
+    <%= f.radio_button :holding, p.id %>
+    <%= f.label :holding, target[:collection_str]+ " "+ target[:call_number].upcase+ " "+ target[:status] %>
+   </li>
+<%
+    end
+%>
+  </ul>
+<%
+  end
+%>
+  <p class="smallText"><em>Note: charges may apply if your service plan does not cover unlimited texting</em></p>
+  <div class="submit">
+    <%= submit_tag 'Send!' %>
+    <%= link_to_remote 'Cancel', :url => {:controller => "export_email", :action => "reset", :id => params[:action]}, :html => {:class => "cancel"}%>
+  </div>
+<%
+end 
+end
+%>
+</div>

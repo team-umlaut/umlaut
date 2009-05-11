@@ -1,0 +1,13 @@
+Title: <%= @title%>
+<%
+  unless @holdings.nil?
+%>
+Holdings:
+<%
+@holdings.each do |holding|
+  target = holding.view_data%>
+  - <%= target[:collection_str]+ " "+ target[:call_number].upcase+ " "+ target[:status]  %>
+<%
+  end
+end
+%>
