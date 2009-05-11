@@ -15,7 +15,9 @@ module Exlibris::Primo
     attr_reader :count, :holdings, :urls
     attr_reader :titles, :authors
     attr_reader :au, :aulast, :aufirst
+    attr_reader :oclcid, :lccn
     attr_reader :btitle, :jtitle
+    attr_reader :cover_image
     attr_reader :goto_source
     
     def initialize(base_url, config, goto_source, base_view_id)
@@ -187,6 +189,30 @@ module Exlibris::Primo
         @authors.push(e.inner_text.chars.to_s)
       end
       return authors
+    end
+ 
+    def cover_image
+      return @cover_image unless @cover_image.nil?
+      search if response.nil?
+      @cover_image = ""
+      @cover_image = response.at("//addata/lad02").inner_text unless response.at("//addata/lad02").nil?
+      return cover_image
+    end
+ 
+    def oclcid
+      return @oclcid unless @oclcid.nil?
+      search if response.nil?
+      @oclcid = ""
+      @oclcid = response.at("//addata/oclcid").inner_text.chars.to_s unless response.at("//addata/oclcid").nil?
+      return oclcid
+    end
+ 
+    def lccn
+      return @lccn unless @lccn.nil?
+      search if response.nil?
+      @lccn = ""
+      @lccn = response.at("//addata/lccn").inner_text.chars.to_s unless response.at("//addata/lccn").nil?
+      return lccn
     end
  
     def control_hash (record, xpath)
