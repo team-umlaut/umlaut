@@ -281,6 +281,29 @@ Gpo:
     - existing_type: fulltext
     - existing_type: fulltext_title_level
 
+# Email service for exporting holdings    
+NYU_Email:
+  name: Email
+  type: EmailExport
+  priority: e
+  status: active
+
+# Txt service for exporting holdings
+# Add providers and SMS gateway.
+# Based on http://timesync.gmu.edu/wordpress/?p=853.
+NYU_Txt:
+  name: Send to Phone
+  type: TxtHoldingExport
+  priority: e
+  status: active
+  providers:
+    Cingular/AT&T: cingularme.com
+    Nextel: messaging.nextel.com
+    Sprint: messaging.sprintpcs.com
+    T-Mobile: tmomail.net
+    Verizon: vtext.com
+    Virgin: vmobl.com
+
 #######################
 #
 # Specialty plug-ins, link-out filters, etc.
