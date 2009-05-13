@@ -1,16 +1,26 @@
 #
-#   services.yml params include:
-#   api_key:    required
+#   As of Aug 15 2009, Amazon API calls will require a secret key from Amazon.
+#   If you are unable to get such an account/key, this service can still be used
+#   for certain functions by setting 'make_aws_call' to false, and configuring
+#   'service_types' to only include one or more of:  ["search_inside",
+#   "highlighted_link", "excerpts"]
+#   Other services, such as enhance_referent and cover_image require api access.
+# 
+#
+#   services.yml params:
+#   api_key:    required. AWS "access key". 
+#   secret_key:  required unless make_aws_call==false. AWS "secret access key". 
 #   service_types: Optional. Array of strings of service type values to be
 #                  loaded, to over-ride defaults.
-#   make_aws_call:  default true.   If false, then assumes that a previous wave
+#   make_aws_call:  default true.   If false, then either uses an ASIN stored
+#                     in referent from previous service, or tries assuming
+#                     that an ISBN, if present, is the ASIN. 
 #                     of services ran an amazon service adaptor
-#                     and stored an asin in the referent. highlighted_link
-#                     and search_inside can just use that asin and avoid
-#                     another AWS call. Used to split amazon into
+#                     Can be used to split amazon into
 #                     two waves, since highlighted_link and cover_image
 #                     calls require _another_ HTTP request to amazon
-#                     and screen scrape.
+#                     and screen scrape. Or can be used if you don't
+#                     have access to Amazon API. 
 #
 #  See example of two-wave amazon in config/umlaut_distribution/services.yml-dist. 
 #
@@ -37,8 +47,18 @@ class Amazon < Service
     @excerpts_display_text = "Excerpts"
     @service_types = ["abstract", "highlighted_link", "cover_image", "search_inside", "referent_enhance", "excerpts"]
     @make_aws_call = true
+    @http_timeout = 5
     
     super(config)
+
+    # Need the secret_key after 15 aug 09.
+    unless (@secret_key || ! @make_aws_call)
+      if ( Time.now < Time.gm(2009, 8, 15))
+        RAILS_DEFAULT_LOGGER.warn("Amazon service will require a secret_key after 15 August 2009 to make Amazon API calls.")
+      else
+        raise Exception.new("Amazon API now requires a secret_key. The Amazon service can only be used with make_aws_call=false unless you have an Amazon secret key configured.")
+      end
+    end
 
     # Only a few service types can get by without an aws call
     if (! @make_aws_call &&
@@ -62,7 +82,7 @@ class Amazon < Service
     
     isbn = request.referent.metadata['isbn']
     isbn = isbn.gsub(/[^0-9X]/,'') if isbn
-
+    
     return request.dispatched(self, true) if isbn.blank?
 
     begin
@@ -112,14 +132,25 @@ class Amazon < Service
       # got to try converting to 10. An ISBN-13 is never an ASIN. 
       isbn = ISBN_Tools.isbn13_to_isbn10(isbn)   
     end  
+
+    query_params = {
+      "Service"=>"AWSECommerceService",
+      "AWSAccessKeyId"=>@api_key,
+      "Operation"=>"ItemLookup",
+      "ResponseGroup"=>"Large,Subjects",
+      "ItemId"=>isbn }
     
-    query = "Service=AWSECommerceService&SubscriptionId=#{@api_key}&Operation=ItemLookup&ResponseGroup=Large,Subjects&ItemId="+isbn
+    # has to be signed
+    aws = AwsProductSign.new(:access_key => @api_key, 
+                             :secret_key => @secret_key )
+    query = aws.query_with_signature( query_params )
+    
     uri = URI.parse(self.url+'?'+query)
     # send the request
     http = Net::HTTP.new(uri.host, 80)  
-    http.open_timeout = 5
-    http.read_timeout = 5
-    http_response = http.send_request('POST', uri.path + '?' + uri.query)    
+    http.open_timeout = @http_timeout
+    http.read_timeout = @http_timeout
+    http_response = http.send_request('GET', uri.path + '?' + uri.query)    
     
     return http_response
   end
@@ -217,7 +248,7 @@ class Amazon < Service
           request.referent.enhance_referent('au', author.inner_text)
         end
       end
-      
+
       unless metadata['pub']
         if pub = (item_attributes.at("/publisher"))
           request.referent.enhance_referent('pub', pub.inner_text)
