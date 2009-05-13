@@ -37,13 +37,13 @@ class GoogleBookSearch < Service
   attr_reader :url, :display_name, :num_full_views 
   
   def service_types_generated
-    return [
-      ServiceTypeValue[:referent_enhance],
+    types= [
       ServiceTypeValue[:fulltext], 
       ServiceTypeValue[:cover_image],
       ServiceTypeValue[:highlighted_link],
       ServiceTypeValue[:search_inside],
       ServiceTypeValue[:excerpts]]
+    types.push(ServiceTypeValue[:referent_enhance]) if @referent_enhance
   end
   
   def initialize(config)
@@ -52,6 +52,8 @@ class GoogleBookSearch < Service
     @display_name = 'Google Book Search'
     # number of full views to show
     @num_full_views = 1
+    # default off for now
+    @referent_enhance = false
     super(config)
   end
   
@@ -61,7 +63,7 @@ class GoogleBookSearch < Service
     return nil if bibkeys.nil?
     data = do_query(bibkeys, request)
 
-    enhance_referent(request, data)
+    enhance_referent(request, data) if @referent_enhance
     
     #return full views first
     full_views_shown = create_fulltext_service_response(request, data)
