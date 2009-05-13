@@ -141,10 +141,15 @@ class Amazon < Service
       "ItemId"=>isbn }
     
     # has to be signed
-    aws = AwsProductSign.new(:access_key => @api_key, 
-                             :secret_key => @secret_key )
-    query = aws.query_with_signature( query_params )
-    
+    query = nil
+    if ( @secret_key )
+      aws = AwsProductSign.new(:access_key => @api_key, 
+                               :secret_key => @secret_key )
+      query = aws.query_with_signature( query_params )
+    else
+      query = query_params.collect {|key, value| CGI.escape("key") + '=' + CGI.escape("value")}.join("&")
+    end
+      
     uri = URI.parse(self.url+'?'+query)
     # send the request
     http = Net::HTTP.new(uri.host, 80)  
