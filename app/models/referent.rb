@@ -382,8 +382,11 @@ class Referent < ActiveRecord::Base
     if (my_metadata['genre'] == 'book')
       citation[:pub] = my_metadata['pub'] unless my_metadata['pub'].blank?
     end
+
+    citation[:issn] = issn if issn
+    citation[:isbn] = isbn if isbn
     
-    ['issn','isbn','volume','issue','date'].each do | key |
+    ['volume','issue','date'].each do | key |
       citation[key.to_sym] = my_metadata[key]
     end
     if ! my_metadata["au"].blank?
