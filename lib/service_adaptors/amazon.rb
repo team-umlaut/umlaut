@@ -147,7 +147,7 @@ class Amazon < Service
     
     # has to be signed
     query = nil
-    debugger
+
     if ( @secret_key )
       aws = AwsProductSign.new(:access_key => @api_key, 
                                :secret_key => @secret_key )
