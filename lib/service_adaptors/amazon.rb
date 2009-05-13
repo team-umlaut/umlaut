@@ -5,7 +5,12 @@
 #   'service_types' to only include one or more of:  ["search_inside",
 #   "highlighted_link", "excerpts"]
 #   Other services, such as enhance_referent and cover_image require api access.
-# 
+#
+#   More about registering for and finding your AWS access key and secret key
+#   can be found here:
+# http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/AWSCredentials.html
+# http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/ViewingCredentials.html
+#
 #
 #   services.yml params:
 #   api_key:    required. AWS "access key". 
