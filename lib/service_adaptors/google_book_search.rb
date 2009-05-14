@@ -28,6 +28,7 @@ class GoogleBookSearch < Service
   require 'open-uri'
   require 'zlib'
   require 'json'
+  require 'hpricot'
   include MetadataHelper
   include UmlautHttp
   
@@ -44,6 +45,7 @@ class GoogleBookSearch < Service
       ServiceTypeValue[:search_inside],
       ServiceTypeValue[:excerpts]]
     types.push(ServiceTypeValue[:referent_enhance]) if @referent_enhance
+    return types
   end
   
   def initialize(config)
@@ -278,8 +280,9 @@ class GoogleBookSearch < Service
   def find_thumbnail_url(data)
     entries = data.search("/*/entry").collect do |entry|
       thumb_entry = entry.at("link[@rel='#{LinkThumbnailUri}']")
-      return thumb_entry ? thumb_entry['href'] : nil                 
+      thumb_entry ? thumb_entry['href'] : nil                 
     end
+    
     # removenill values
     entries.compact!    
     
