@@ -62,7 +62,7 @@ class GoogleBookSearch < Service
   def handle(request)
 
     bibkeys = get_bibkeys(request.referent)
-    return nil if bibkeys.nil?
+    return request.dispatched(self, true) if bibkeys.nil?
     data = do_query(bibkeys, request)
 
     enhance_referent(request, data) if @referent_enhance
