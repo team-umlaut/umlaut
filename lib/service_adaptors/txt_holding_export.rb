@@ -1,7 +1,7 @@
 class TxtHoldingExport < EmailExport
 
   def initialize(config)
-    @controller ||= "export_email")
+    @controller ||= "export_email"
     @ajax_id ||= "txt"
     super(config)
   end
