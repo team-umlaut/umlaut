@@ -25,7 +25,7 @@ cite = @user_request.referent.to_citation %>
     <%
       providers = @svc_type.service_response.service.instance_variable_get("@providers")
     %>
-    <%= select_tag "provider", options_for_select(providers.sort) %>
+    <%= select_tag "provider", options_for_select(providers.sort, @provider) %>
   </div>
 <%
   holdings = @user_request.get_service_type('holding', {})
@@ -38,7 +38,7 @@ cite = @user_request.referent.to_citation %>
         target = p.view_data
  %>
        <li>
-        <%= radio_button_tag 'holding', p.id %>
+        <%= radio_button_tag 'holding', p.id, (@holding_id.to_s == p.id.to_s) || holdings.length == 1 %>
         <%= label_tag "holding_#{p.id}", formatted_txt_holding_status(target) %>
        </li>
 <%
