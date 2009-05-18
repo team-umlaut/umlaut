@@ -13,7 +13,7 @@ class ExportEmailController < ApplicationController
     
     respond_to do |format|
       format.js { render :action => "show_modal_dialog.rjs"}
-      format.html { render }
+      format.html { @force_html_form = true ; render }
     end
   end 
   
@@ -22,7 +22,7 @@ class ExportEmailController < ApplicationController
     
     respond_to do |format|
       format.js { render :action => "show_modal_dialog.rjs"}
-      format.html { render }
+      format.html { @force_html_form = true ; render }
     end
   end
   
@@ -37,7 +37,7 @@ class ExportEmailController < ApplicationController
     respond_to do |format|
       if valid_email?
         format.js { render :action => "modal_dialog_success.rjs"}
-        format.html { render }
+        format.html {  render }
       else
         @partial = "email"
         @error = email_validation_error
@@ -64,12 +64,12 @@ class ExportEmailController < ApplicationController
         Emailer.deliver_short_citation(@email, @user_request, location(@holding_id), call_number(@holding_id)) 
     
         format.js { render :action => "modal_dialog_success.rjs"} 
-        format.html { render } # send_txt.rhtml
+        format.html { @force_html_form = true ; render } # send_txt.rhtml
       else
         @partial = "txt"
         @error = txt_validation_error        
         format.js { render :action => "show_modal_dialog.rjs" }
-        format.html { render :action => "txt.rhtml", :id => params[:id], :format => params[:format] }
+        format.html { @force_html_form = true ; render :action => "txt.rhtml", :id => params[:id], :format => params[:format] }
       end
     end
   end
