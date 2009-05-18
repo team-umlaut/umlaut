@@ -30,7 +30,7 @@ class ExportEmailController < ApplicationController
   end
 
   def send_email
-    @email = params[:txt][:email] unless params.nil? or params[:txt].nil? or params[:txt][:email].nil? or params[:txt][:email].empty?
+    @email = params[:email]
     @holdings = @user_request.get_service_type('holding', { :refresh=>true })
     
     Emailer.deliver_citation(@email, @user_request, @holdings) if valid_email?
@@ -40,7 +40,7 @@ class ExportEmailController < ApplicationController
         format.html { render }
       else
         @partial = "email"
-        flash[:error] = email_validation_error
+        @error = email_validation_error
         format.js { render :action => "show_modal_dialog.rjs", :id => params[:id], :format => params[:format] }
         format.html { render :action => "email.rhtml", :id => params[:id], :format => params[:format] }
       end
@@ -48,20 +48,18 @@ class ExportEmailController < ApplicationController
   end
   
   def send_txt
-    debugger
-    @number = params[:txt][:number] unless params.nil? or params[:txt].nil? or params[:txt][:number].blank? 
+    @number = params[:number]
     # Remove any punctuation or spaces etc
     @number.gsub!(/[^\d]/, '') if @number
 
     
-    @provider = params[:txt][:provider] unless params.nil? or params[:txt].nil? or params[:txt][:provider].blank? 
+    @provider = params[:provider]
     
     @email = "#{@number}@#{@provider}" unless @number.nil? or @provider.nil?
 
-    @holding_id = params[:txt][:holding] unless params.nil? or params[:txt].nil? or params[:txt][:holding].blank? 
+    @holding_id = params[:holding]
     
-    respond_to do |format|
-      debugger
+    respond_to do |format|      
       if valid_txt_number? && valid_txt_holding?
         Emailer.deliver_short_citation(@email, @user_request, location(@holding_id), call_number(@holding_id)) 
     
@@ -69,7 +67,7 @@ class ExportEmailController < ApplicationController
         format.html { render } # send_txt.rhtml
       else
         @partial = "txt"
-        flash[:error] = txt_validation_error        
+        @error = txt_validation_error        
         format.js { render :action => "show_modal_dialog.rjs" }
         format.html { render :action => "txt.rhtml", :id => params[:id], :format => params[:format] }
       end
