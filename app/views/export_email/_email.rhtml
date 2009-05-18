@@ -12,7 +12,7 @@ cite = @user_request.referent.to_citation %>
   <h3><strong>Title:</strong> <%= h(cite[:title]) %>/<%= h(cite[:author]) %></h3>
   <div>
     <%= label_tag 'email', 'Enter your email address:' %>
-    <%= text_field_tag 'email', @email %>
+    <%= text_field_tag 'email', params[:email] %>
   </div>
   <div class="section">
     <%= submit_tag 'Send!' %>

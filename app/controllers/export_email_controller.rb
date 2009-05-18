@@ -33,18 +33,18 @@ class ExportEmailController < ApplicationController
     @email = params[:email]
     @holdings = @user_request.get_service_type('holding', { :refresh=>true })
     
-    Emailer.deliver_citation(@email, @user_request, @holdings) if valid_email?
-    respond_to do |format|
       if valid_email?
-        format.js { render :action => "modal_dialog_success.rjs"}
-        format.html {  render }
+        Emailer.deliver_citation(@email, @user_request, @holdings) 
+        respond_to do |format|
+          format.js { render :action => "modal_dialog_success.rjs"}
+          format.html {  render }
+        end
       else
         @partial = "email"
-        @error = email_validation_error
-        format.js { render :action => "show_modal_dialog.rjs", :id => params[:id], :format => params[:format] }
-        format.html { render :action => "email.rhtml", :id => params[:id], :format => params[:format] }
+        flash[:error] = email_validation_error
+        redirect_to params.merge(:action => "email")        
       end
-    end
+    
   end
   
   def send_txt
@@ -59,19 +59,17 @@ class ExportEmailController < ApplicationController
 
     @holding_id = params[:holding]
     
-    respond_to do |format|      
       if valid_txt_number? && valid_txt_holding?
         Emailer.deliver_short_citation(@email, @user_request, location(@holding_id), call_number(@holding_id)) 
-    
-        format.js { render :action => "modal_dialog_success.rjs"} 
-        format.html { @force_html_form = true ; render } # send_txt.rhtml
-      else
-        @partial = "txt"
-        @error = txt_validation_error        
-        format.js { render :action => "show_modal_dialog.rjs" }
-        format.html { @force_html_form = true ; render :action => "txt.rhtml", :id => params[:id], :format => params[:format] }
-      end
-    end
+
+        respond_to do |format|      
+          format.js { render :action => "modal_dialog_success.rjs"} 
+          format.html { @force_html_form = true ; render } # send_txt.rhtml
+        end
+      else        
+        flash[:error] = txt_validation_error        
+        redirect_to params.merge(:action => "txt")
+      end    
   end
   
   private

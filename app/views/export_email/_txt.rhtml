@@ -16,7 +16,7 @@ cite = @user_request.referent.to_citation %>
   <div class="section">
     <%= label_tag('number', 'Enter your mobile phone number:') %>
     
-    <%= text_field_tag('number', @number, :size => 14) %>
+    <%= text_field_tag('number', params[:number], :size => 14) %>
     <p class="smallText"><em>10 digit US cell phone number</em></p>
   </div>
   
@@ -25,7 +25,7 @@ cite = @user_request.referent.to_citation %>
     <%
       providers = @svc_type.service_response.service.instance_variable_get("@providers")
     %>
-    <%= select_tag "provider", options_for_select(providers.sort, @provider) %>
+    <%= select_tag "provider", options_for_select(providers.sort, params[:provider]) %>
   </div>
 <%
   holdings = @user_request.get_service_type('holding', {})
@@ -38,7 +38,7 @@ cite = @user_request.referent.to_citation %>
         target = p.view_data
  %>
        <li>
-        <%= radio_button_tag 'holding', p.id, (@holding_id.to_s == p.id.to_s) || holdings.length == 1 %>
+        <%= radio_button_tag 'holding', p.id, (params[:holding].to_s == p.id.to_s) || holdings.length == 1 %>
         <%= label_tag "holding_#{p.id}", formatted_txt_holding_status(target) %>
        </li>
 <%
