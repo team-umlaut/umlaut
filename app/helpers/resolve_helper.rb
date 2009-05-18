@@ -176,7 +176,9 @@ module ResolveHelper
     concat("</div>", options[:out_binding] )            
   end
   
- 
+  def generating_embed_partials?
+    return @generating_embed_partials == true
+  end
 
   # Code-generating helper to add a "More" link to a list, with a maximum
   # number of items to show before 'more'. AJAXy show, with unobtrusive

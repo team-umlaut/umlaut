@@ -278,6 +278,9 @@ class ResolveController < ApplicationController
     # spinner in does not generally work through ajax techniques.
     @force_bg_progress_spinner = true
 
+    # Mark that we're doing a partial generation, because it might
+    # matter later. 
+    @generating_embed_partials = true
     
     @partial_html_sections = AppConfig.param("partial_html_map").clone
     # calculate in progress for each section
