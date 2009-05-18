@@ -26,7 +26,6 @@ class AjaxExport < Service
   def response_url(svc_type, params)
     # Hash that caller will pass to url_for to create an internally
     # facing link.
-    debugger
     return {:controller=>@form_controller, 
      :action=>@form_action, 
      :id => svc_type, 
