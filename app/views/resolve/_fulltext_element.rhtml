@@ -10,7 +10,28 @@
    view_data = fulltext_element.view_data
 %>
 
-<li class="<%= li_class %>"> <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>fulltext_element.id}, 'target'=>"_blank" %>
+<li class="<%= li_class %>"> 
+
+  <!-- fancy schmancy ajax? -->
+  <% if view_data[:link_supports_ajax_call] 
+  # Generate a hyperlink that will call our standard service action
+  # link with format=>js in a javascript context. With fallback to straight
+  # html on the href. Weird that Rails doesn't do this fallback for us. 
+  %>
+      <%= link_to_remote(view_data[:display_text], 
+      :url=> {:controller=>'link_router', 
+              :id=>fulltext_element.id, 
+              :format => "js"}, 
+     :html=> {:id => "svctype_link_#{fulltext_element.id}", 
+              :href => url_for(:controller=>'link_router',      
+                               :id=>fulltext_element.id, 
+                               :format => "html"), 
+              :target => "_blank" }) %>
+  <% else 
+    # Ordinary href link. 
+  %>      
+    <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>fulltext_element.id}, 'target'=>"_blank", 'id' => "svctype_link_#{fulltext_element.id}" %>
+  <% end %>
 
 <% if show_source %>
   <div class="link_source">from <%= view_data[:source] || fulltext_element.service_response.service.display_name %></div>

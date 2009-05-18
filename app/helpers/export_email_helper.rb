@@ -1,0 +1,33 @@
+module ExportEmailHelper
+
+  def formatted_txt_holding_status(view_data)
+    output = ""
+
+    output << view_data[:collection_str] if view_data[:collection_str]
+    output << " " + view_data[:call_number] if view_data[:call_number]
+    output << " " + view_data[:status] if view_data[:status]
+    
+    return output
+  end
+
+  # outputs some javascript to make sure a div is set properly to show, 
+  # and is on screen.
+  def js_ensure_show_dialog(div_id)
+    return <<-EOF
+      var div = $('#{div_id}');
+      
+      div.absolutize();
+      div.setStyle("zIndex", 1000);
+      viewport_y_offset = div.viewportOffset()[1];
+      
+      if ( viewport_y_offset < 0) {
+        var old_top = parseInt(div.getStyle('top'));
+        var new_top = old_top + ( viewport_y_offset * -1) + 24;
+        div.setStyle({top: new_top + 'px'})
+      }
+
+    EOF
+  end
+
+  
+end

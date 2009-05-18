@@ -348,7 +348,7 @@ class Referent < ActiveRecord::Base
           when /bookitem|book/ then ['Chapter/Part Title', 'Book Title']
           when /proceeding|conference/ then ['Proceeding Title', 'Conference Name']
           when 'report' then ['Report Title','Report']    
-	else
+          else
           if self.format == 'book'
             ['Chapter/Part Title', 'Title']
           elsif self.format == 'journal'
@@ -360,6 +360,7 @@ class Referent < ActiveRecord::Base
       ['title','btitle','jtitle'].each do | t_type |
         if ! my_metadata[t_type].blank?
           citation[:subtitle] = my_metadata[t_type]
+          citation[:container_title] = my_metadata[t_type]
           break
         end
       end

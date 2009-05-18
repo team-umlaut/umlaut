@@ -70,7 +70,10 @@
                           },
                           { :div_id => 'related_items',
                             :partial => 'related_items',
-                            :service_type_values => ['cited_by', 'similar']}
+                            :service_type_values => ['cited_by', 'similar']},
+                          { :div_id => 'export_citation',
+                            :partial => 'export',
+                            :service_type_values => ['export_citation']}
                            ],
                           :error_div =>
                           { :div_id => 'service_errors',

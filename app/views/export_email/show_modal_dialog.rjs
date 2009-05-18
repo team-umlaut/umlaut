@@ -1,0 +1,21 @@
+# Will show the modal dialog div, partial rendered according to string in
+# @partial ivar, or if not defaults to partial
+# with the same name as the current action. 
+
+# Ugh, we want to create a new DIV under the body, whatever it's ID. The RJS
+# helpers aren't very helpful. We use some raw js. 
+page << <<EOF
+  if($('ajax_svc_#{@svc_type.id}') == null ) {
+    $$('body').first().insert( {'top': '<div id="ajax_svc_#{@svc_type.id}" class="ajax_modal_dialog" style="display:none"></div>'} );
+  }
+EOF
+
+page.replace_html( "ajax_svc_#{@svc_type.id}", :partial => (@partial || params[:action]))
+
+page[:menuWrapper].visual_effect :opacity, :from => 1.0, :to => 0.3, :duration => 0.0
+page[:"ajax_svc_#{@svc_type.id}"].show
+
+# Okay, we're going to make sure it's on the browser screen, please. 
+page << js_ensure_show_dialog("ajax_svc_#{@svc_type.id}")
+  
+

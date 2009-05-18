@@ -1,24 +1,28 @@
 class ExportEmailController < ApplicationController
   filter_parameter_logging :email
+  before_filter :load_objects
+  layout AppConfig.param("search_layout", "search_basic").to_s
 
-  layout AppConfig.param("resolve_layout", "resolve_basic").to_s, 
-         :except => [:banner_menu, :bannered_link_frameset, :partial_html_sections]
+  def load_objects
+    @svc_type = ServiceType.find(params[:id])
+    @user_request = @svc_type.request if @svc_type
+  end
   
   def email
-    @user_request = user_request(params[:id])
+
     
     respond_to do |format|
-      format.js { render :action => "#{params[:action]}.rjs"} # txt.rjs
-      format.html { render :action => "#{params[:action]}.rhtml"} # txt.rhtml
+      format.js { render :action => "show_modal_dialog.rjs"}
+      format.html { render }
     end
   end 
   
   def txt
-    @user_request = user_request(params[:id])
+
     
     respond_to do |format|
-      format.js { render :action => "#{params[:action]}.rjs"} # txt.rjs
-      format.html { render :action => "#{params[:action]}.rhtml"} # txt.rhtml
+      format.js { render :action => "show_modal_dialog.rjs"}
+      format.html { render }
     end
   end
   
@@ -26,69 +30,74 @@ class ExportEmailController < ApplicationController
   end
 
   def send_email
-    @user_request = user_request(params[:id])
     @email = params[:txt][:email] unless params.nil? or params[:txt].nil? or params[:txt][:email].nil? or params[:txt][:email].empty?
-    @title = params[:txt][:title] unless params.nil? or params[:txt].nil? or params[:txt][:title].nil? or params[:txt][:title].empty?
-    @holdings = user_request(params[:id]).get_service_type('holding', { :refresh=>true })
-    Emailer.deliver_citation(@email, @title, @holdings) if valid_email?
+    @holdings = @user_request.get_service_type('holding', { :refresh=>true })
+    
+    Emailer.deliver_citation(@email, @user_request, @holdings) if valid_email?
     respond_to do |format|
       if valid_email?
-        format.js { render :action => "#{params[:action]}.rjs"} # txt.rjs
-        format.html { render :action => "#{params[:action]}.rhtml"} # send_txt.rhtml
+        format.js { render :action => "modal_dialog_success.rjs"}
+        format.html { render }
       else
+        @partial = "email"
         flash[:error] = email_validation_error
-        format.js { render :action => "email.rjs", :id => params[:id], :format => params[:format] }
+        format.js { render :action => "show_modal_dialog.rjs", :id => params[:id], :format => params[:format] }
         format.html { render :action => "email.rhtml", :id => params[:id], :format => params[:format] }
       end
     end
   end
   
   def send_txt
-    @user_request = user_request(params[:id])
-    @number = params[:txt][:number] unless params.nil? or params[:txt].nil? or params[:txt][:number].nil? or params[:txt][:number].empty?
-    @provider = params[:txt][:provider] unless params.nil? or params[:txt].nil? or params[:txt][:provider].nil? or params[:txt][:provider].empty?
+    debugger
+    @number = params[:txt][:number] unless params.nil? or params[:txt].nil? or params[:txt][:number].blank? 
+    # Remove any punctuation or spaces etc
+    @number.gsub!(/[^\d]/, '') if @number
+
+    
+    @provider = params[:txt][:provider] unless params.nil? or params[:txt].nil? or params[:txt][:provider].blank? 
+    
     @email = "#{@number}@#{@provider}" unless @number.nil? or @provider.nil?
 
-    @title = params[:txt][:title] unless params.nil? or params[:txt].nil? or params[:txt][:title].nil? or params[:txt][:title].empty?
-
-    @holding_id = params[:txt][:holding] unless params.nil? or params[:txt].nil? or params[:txt][:holding].nil? or params[:txt][:holding].empty?
+    @holding_id = params[:txt][:holding] unless params.nil? or params[:txt].nil? or params[:txt][:holding].blank? 
     
-    Emailer.deliver_short_citation(@email, @title, location(@holding_id), call_number(@holding_id)) if valid_txt?
     respond_to do |format|
-      if valid_txt?
-        format.js { render :action => "#{params[:action]}.rjs"} # txt.rjs
-        format.html { render :action => "#{params[:action]}.rhtml"} # send_txt.rhtml
+      debugger
+      if valid_txt_number? && valid_txt_holding?
+        Emailer.deliver_short_citation(@email, @user_request, location(@holding_id), call_number(@holding_id)) 
+    
+        format.js { render :action => "modal_dialog_success.rjs"} 
+        format.html { render } # send_txt.rhtml
       else
-        flash[:error] = txt_validation_error
-        format.js { render :action => "txt.rjs", :id => params[:id], :format => params[:format] }
+        @partial = "txt"
+        flash[:error] = txt_validation_error        
+        format.js { render :action => "show_modal_dialog.rjs" }
         format.html { render :action => "txt.rhtml", :id => params[:id], :format => params[:format] }
       end
     end
   end
   
   private
-    def valid_txt?
-      return !(@number.nil? or @holding_id.nil?)
+    def valid_txt_number?
+      return (! @number.blank?) && @number.length == 10
+    end
+
+    def valid_txt_holding?
+       return ! @holding_id.blank?
     end
     
     def valid_email?
-      return !(@email.nil?)
+      return @email =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
     end
     
-  def user_request(id)
-    permalink = Permalink.find(id)
-    referent = permalink.referent
-    return referent.requests.first unless referent.nil?
-  end
   
   def txt_validation_error
     rv = ""
-    unless valid_txt?
+    unless valid_txt_number? && valid_txt_holding?
       rv += "<div class=\"validation_errors\">"
       rv += "<span>Please provide the following:</span>"
       rv += "<ul>"
-      rv += "<li>a valid number</li>" if @number.nil?
-      rv += "<li>the item you wish to send</li>" if @holding_id.nil?
+      rv += "<li>a valid number</li>" unless valid_txt_number?
+      rv += "<li>the item you wish to send</li>" unless valid_txt_holding?
       rv += "</ul>"
       rv += "</div>"
     end
@@ -101,13 +110,13 @@ class ExportEmailController < ApplicationController
       rv += "<div class=\"validation_errors\">"
       rv += "<span>Please provide the following:</span>"
       rv += "<ul>"
-      rv += "<li>a valid email address</li>" if @email.nil?
+      rv += "<li>a valid email address</li>"
       rv += "</ul>"
       rv += "</div>"
     end
     return rv
   end
-      
+
   def holding(id)
     return ServiceType.find(id) unless id.nil?
   end
@@ -119,5 +128,9 @@ class ExportEmailController < ApplicationController
   def call_number(id)
     return holding(id).view_data[:call_number] unless holding(id).nil?
   end
-      
+
+
+
+
+ 
 end
