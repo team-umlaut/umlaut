@@ -22,7 +22,6 @@ class UlrichsLink < Service
   end
 
   def handle(request)
-    debugger
     unless (request.referent.issn.blank?)
       display_text = @link_name
 
