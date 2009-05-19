@@ -701,9 +701,8 @@ ol.numberedListlg a {
 /* popup window! */
 
 .ajax_modal_dialog {
-  background-image:url(/images/export_bg_top.gif);
-  background-position:left top;
-  background-repeat:no-repeat;
+  border: 1px solid #999999;
+  background-color: white;
   position:absolute;
   left: 20%;
   top: 2em;
@@ -711,20 +710,14 @@ ol.numberedListlg a {
   font-size: 12px;
 }
 
-.ajax_modal_dialog .inner_modal_dialog {
-  background-image:url(/images/export_bg_bot.gif);
-  background-position:left bottom;
-  background-repeat:no-repeat;
-  padding-bottom:14px;
+.ajax_modal_dialog .inner_modal_dialog {    
+  background-color: #e6e6e6;
+  margin: 1px;
+  padding: 1em;
 }
 
 .ajax_modal_dialog .modal_dialog_form {
-background-image:url(/images/export_bg_mid.gif);
-background-position:left top;
-background-repeat:repeat-y;
-margin-top:14px;
-padding:0 15px;
-width:395px;
+  width:395px;
 }
 
 .ajax_modal_dialog h2, .ajax_modal_dialog h3 {
