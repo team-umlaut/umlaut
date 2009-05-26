@@ -2,7 +2,9 @@
    # But anyway, displays a typical full text element in typical markup.
    # pass in a ServiceType object for the response as :object 
    
-   #optional argument, :locals => {:li_class => 'whatever'}
+   #optional argument, :locals => 
+   #    :li_class => class to add to <li>
+   #    :show_source => default false, if true display the source of the link
    li_class ||= "fulltextlink"
    show_source ||= false
    
