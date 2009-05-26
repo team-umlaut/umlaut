@@ -6,7 +6,10 @@
 
   <div id="excerpts" class="main_column_section">
   <h3 id="excerpts_heading"><%= ServiceTypeValue[:excerpts].display_name %></h3>
-  <p class="sectionNote">A limited preview which may include table of contents, index, and other selected pages.</p>
+  <% if ServiceTypeValue[:excerpts].section_prompt %>
+    <p class="sectionNote"><%= ServiceTypeValue[:excerpts].section_prompt %></p>
+  <% end %>
+  
   <ul class="excerptslink">
   
   <%

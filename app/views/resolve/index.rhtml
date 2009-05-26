@@ -44,8 +44,17 @@
     <% docdels = get_service_type('document_delivery')
        if (display_ill?) && (! docdels.empty?)  %>
           <div class="main_column_section">
-          <h3>Request a copy from Inter-Library Loan</h3>
+            <div class="section_heading">
+              <h3><%= ServiceTypeValue[:document_delivery].section_heading %></h3>
+              <% if ServiceTypeValue[:document_delivery].section_prompt %>
+                <p class="sectionNote">
+                  <%= ServiceTypeValue[:document_delivery].section_prompt %>
+                </p>
+              <% end %>
+            </div>
+            
             <%= render(:partial => "docdel" ) %>
+          
         </div>
     <% end %>
   

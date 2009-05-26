@@ -19,7 +19,14 @@ tr:first-child > td.holding_heading_row {
 }
 </style>
 
-<h3><%= ServiceTypeValue[:holding].display_name_pluralize.titleize %> </h3>
+<div class="section_heading">
+  <h3><%= ServiceTypeValue[:holding].section_heading %> </h3>
+  <% if ServiceTypeValue[:highlighted_link].section_prompt %>
+    <p class="sectionNote">
+      <%= ServiceTypeValue[:highlighted_link].section_prompt %>
+    </p>
+  <% end %>
+</div>
 
 <div class="section_content_indent">
 <% holdings = get_service_type('holding') %>
