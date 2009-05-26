@@ -45,14 +45,7 @@
        if (display_ill?) && (! docdels.empty?)  %>
           <div class="main_column_section">
           <h3>Request a copy from Inter-Library Loan</h3>
-          <ul>
-          <% docdels.each do | doc_del_type |
-  
-                valueHash = doc_del_type.view_data_from_service_type%>
-              <li><%= link_to 'for ' + valueHash[:display_text], {:controller=>'link_router', :id=>doc_del_type.id}, 'target'=>'_blank'%>
-              </li>
-        <% end %>
-        </ul>
+            <%= render(:partial => "docdel" ) %>
         </div>
     <% end %>
   

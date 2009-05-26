@@ -1,0 +1,15 @@
+<% doc_dels =  get_service_type("document_delivery") 
+%>
+
+<div class="main_column_section">
+  <ul>
+  <% doc_dels.each do | doc_del_type |
+
+      valueHash = doc_del_type.view_data_from_service_type   %>
+      
+      <li><%= link_to 'for ' + valueHash[:display_text], {:controller=>'link_router', :id=>doc_del_type.id}, 'target'=>'_blank'%>
+      </li>
+
+  <% end %>
+  </ul>
+</div>
