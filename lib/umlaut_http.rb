@@ -87,8 +87,6 @@ module UmlautHttp
          options[:cookies] = response['Set-Cookie']
          
          options[:redirects_left] = options[:redirects_left] - 1
-
-         debugger
          
          return http_fetch(response['location'], options)
       else
