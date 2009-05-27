@@ -101,7 +101,6 @@ class GoogleBookSearch < Service
     # here, in fact that seems not to be so. But we can get an ISBN,
     # useful if we looked up by LCCN or OCLCnum in GBS and don't have
     # one already.
-    debugger
     unless ( request.referent.isbn  )      
       # Usually provides an ISBN-10 and a -13. We don't care, either
       # is fine for us, just take the first one present.  
