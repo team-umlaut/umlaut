@@ -54,7 +54,7 @@ AppConfig::Base.resolve_main_sections =
                             :service_type_values => ["holding","holding_search"]
                           },
                           { :div_id => "document_delivery",
-                            :partial => "docdel",
+                            :partial => "document_delivery",
                             :service_type_values => ["document_delivery"]},
                           { :div_id => 'tables_of_contents',
                             :partial => 'tables_of_contents',
