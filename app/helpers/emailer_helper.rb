@@ -3,8 +3,6 @@ module EmailerHelper
   
   # returns a plain text short citation
   def brief_citation(request, options = {})
-
-    debugger
     
     options[:include_labels] ||= false
 
