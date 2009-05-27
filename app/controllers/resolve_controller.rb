@@ -456,9 +456,11 @@ class ResolveController < ApplicationController
           div_id = div[:div_id]
           next if div_id.nil?
           # default to partial with same name as div_id
-          partial = div[:partial] || div_id 
-            
-          page.replace_html div_id, :partial => partial.to_s
+          partial = div[:partial] || div_id
+          # Replace it's content if it exists. 
+          page << "if($(#{div_id})) {"
+            page.replace_html div_id, :partial => partial.to_s
+          page << "}"        
         end
 
         # Now update the error section if neccesary
