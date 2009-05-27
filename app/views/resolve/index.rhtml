@@ -39,29 +39,50 @@
       <%= render(:partial => "audio") %>
     </div>
   
-
-
-    <% docdels = get_service_type('document_delivery')
-       if (display_ill?) && (! docdels.empty?)  %>
-          <div class="main_column_section">
-            <div class="section_heading">
-              <h3><%= ServiceTypeValue[:document_delivery].section_heading %></h3>
-              <% if ServiceTypeValue[:document_delivery].section_prompt %>
-                <p class="sectionNote">
-                  <%= ServiceTypeValue[:document_delivery].section_prompt %>
-                </p>
-              <% end %>
-            </div>
-            
-            <%= render(:partial => "docdel" ) %>
-          
-        </div>
+    <% holding_output = capture do %>
+      <div id="holding" class="main_column_section">
+        <%= render(:partial => ResolveController.partial_for_block[:holding] ) %>
+      </div>
     <% end %>
-  
-  
-    <div id="holding" class="main_column_section">
-      <%= render(:partial => ResolveController.partial_for_block[:holding] ) %>
-    </div>
+      
+    
+    <% docdel_output = capture do %>
+      <% docdels = get_service_type('document_delivery')
+         if (display_ill?) && (! docdels.empty?)  %>
+            <div class="main_column_section">
+              <div class="section_heading">
+                <h3><%= ServiceTypeValue[:document_delivery].section_heading %></h3>
+                <% if ServiceTypeValue[:document_delivery].section_prompt %>
+                  <p class="sectionNote">
+                    <%= ServiceTypeValue[:document_delivery].section_prompt %>
+                  </p>
+                <% end %>
+              </div>
+              
+              <%= render(:partial => "docdel" ) %>
+            
+          </div>
+      <% end %>
+    <% end %>
+    
+    <!-- sometimes holding and docdel have their display order reversed
+         by local configuration -->    
+    <%  
+        sections = AppConfig.param("resolve_main_sections")
+    
+        h_index = index_of_id("resolve_main_sections", "holding") 
+        d_index = index_of_id("resolve_main_sections", "document_delivery")
+        
+        if d_index >= h_index
+    %>             
+        <%= holding_output %>    
+        <%= docdel_output %>
+    <% else %>
+        <%= docdel_output %>
+        <%= holding_output %>
+    <% end %>
+        
+
 
     <% # abstract/toc is admittedly a little bit cheesy right now, it shouldn't
        # neccesary be in this part of the page, and should maybe use

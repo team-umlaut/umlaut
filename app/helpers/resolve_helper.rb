@@ -61,6 +61,32 @@ module ResolveHelper
     #  return true
     #end
   end
+
+  # Finds the configured index of a div with given id, in either main
+  # or sidebar column. Index discovered from lists configured in
+  # initializers/umlaut/resolve_views.rb
+  # section should be one of "resolve_main_sections" or "resolve_sidebar_sections"
+  # Returns -1 if not found. 
+  # Right now only used for determining if holdings or document_delivery
+  # should go first. In the future, may be used for more config
+  # of resolve view. 
+  def index_of_id(section, id)    
+    # lazy cache
+    @@resolve_view_section_indexes ||= {}
+    unless (@@resolve_view_section_indexes[section])
+            
+      @@resolve_view_section_indexes[section] ||= {}
+                  
+      AppConfig.param(section).each_with_index do |defn, index|        
+        id = defn[:div_id]
+        @@resolve_view_section_indexes[section][ id ] = index
+      end      
+    end
+    
+    return @@resolve_view_section_indexes[section][id] || -1
+  end
+    
+ 
   
   def display_closest_web_results?  
     return '' unless (@action_name == 'index' or @action_name == 'start') and @dispatch_response.relevant_links.length > 0
