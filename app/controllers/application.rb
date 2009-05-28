@@ -144,7 +144,7 @@ class ApplicationController < ActionController::Base
   # what url to put in content frame.
   helper_method :calculate_url_for_response
   def calculate_url_for_response(svc_type)
-      svc = ServiceList.get(svc_type.service_response.service_id)
+      svc = ServiceList.instance.instantiate!(svc_type.service_response.service_id, @user_request)
       
       destination =  svc.response_url(svc_type, params)
 

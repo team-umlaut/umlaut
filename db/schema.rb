@@ -61,17 +61,6 @@ ActiveRecord::Schema.define(:version => 20090526192301) do
 
   add_index "dispatched_services", ["request_id", "service_id"], :name => "dptch_request_id"
 
-  create_table "institutions", :force => true do |t|
-    t.string   "name",                               :default => "",    :null => false
-    t.boolean  "default_institution",                :default => false, :null => false
-    t.string   "worldcat_registry_id", :limit => 25
-    t.text     "configuration"
-    t.datetime "updated_at"
-  end
-
-  add_index "institutions", ["name"], :name => "inst_name"
-  add_index "institutions", ["default_institution"], :name => "inst_dflt_idx"
-
   create_table "institutions_users", :force => true do |t|
     t.integer "institution_id", :default => 0, :null => false
     t.integer "user_id",        :default => 0, :null => false

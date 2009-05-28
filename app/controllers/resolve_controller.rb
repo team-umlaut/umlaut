@@ -40,7 +40,7 @@ class ResolveController < ApplicationController
     
     # Ip may be simulated with req.ip in context object, or may be
     # actual, request figured it out for us. 
-    @collection = Collection.new(@user_request.client_ip_addr, session)      
+    @collection = Collection.new(@user_request, session)      
     @user_request.save!
 
     # Set 'timed out' background services to dead if neccesary. 
@@ -91,10 +91,10 @@ class ResolveController < ApplicationController
           # the DispatchedService record, and service will be automatically
           # run again. 
           
-          serv_id = ds.service.id
+          serv_id = ds.service.service_id
           expired_responses = @user_request.service_types.each do |st|
             
-            if st.service_response.service.id == serv_id
+            if st.service_response.service.service_id == serv_id
               @user_request.service_types.delete(st)
               responses_expired += 1
               st.service_response.destroy
@@ -111,7 +111,7 @@ class ResolveController < ApplicationController
     # We keep the id of the ServiceType join object in param 'umlaut.id' for
     # banner frameset link type actions. Take it out and stick the object
     # in a var if available.    
-    joinID = params[:'umlaut.id']
+    joinID = params['umlaut.id'.to_sym]
     
     @service_type_join = @user_request.service_types.find_all_by_id(joinID).first if joinID
     
@@ -126,7 +126,7 @@ class ResolveController < ApplicationController
     
 
     unless @service_type_join 
-       raise "No service_type_join found!. params[umlaut.id] == #{params[:'umlaut.id']}"
+       raise "No service_type_join found!. params[umlaut.id] == #{params['umlaut.id'.to_sym]}"
     end
     
   end
@@ -172,7 +172,7 @@ class ResolveController < ApplicationController
     # Return data in headers allowing client to redirect user
     # to view actual response. 
     headers["x-umlaut-request_id"] = @user_request.id
-    headers["x-umlaut-resolve_url"] = url_for( :controller => 'resolve', :'umlaut.request_id' => @user_request.id )
+    headers["x-umlaut-resolve_url"] = url_for( :controller => 'resolve', 'umlaut.request_id'.to_sym => @user_request.id )
     headers["x-umlaut-permalink_url"] = permalink_url( request, @user_request )
 
     # Return empty body. Once we have the xml response done,
@@ -247,8 +247,8 @@ class ResolveController < ApplicationController
       params_hash = 
          {:controller=>"resolve",
           :action=>'index', 
-          :'umlaut.skip_resolve_menu' => params['umlaut.skip_resolve_menu'],
-          :'umlaut.request_id' => @user_request.id }
+          'umlaut.skip_resolve_menu'.to_sym => params['umlaut.skip_resolve_menu'],
+          'umlaut.request_id'.to_sym => @user_request.id }
       
       url = url_for_with_co( params_hash, @user_request.to_context_object )
       
@@ -381,7 +381,7 @@ class ResolveController < ApplicationController
 
       # But wait, make sure it's included in :services if present.
       if (return_value && skip[:services] )
-        return_value = nil unless skip[:services].include?( return_value.service_response.service.id )
+        return_value = nil unless skip[:services].include?( return_value.service_response.service.service_id )
       end
     elsif (skip.kind_of?(Proc ))
       return_value = skip.call( :request => @user_request )
@@ -400,7 +400,7 @@ class ResolveController < ApplicationController
   # At the moment this is just hard-coded in for certain SFX targets only,
   # that is works for SFX targets only. We should make this configurable
   # with a lambda config.
-  helper_method :'known_frame_escaper?'
+  helper_method 'known_frame_escaper?'.to_sym
   def known_frame_escaper?(service_type)
 
     bad_target_regexps = AppConfig.param('frameset_problem_targets')[:sfx_targets]
@@ -511,22 +511,26 @@ class ResolveController < ApplicationController
     # or AJAX request. We want to make sure anything ALREADY
     # marked as 'queued' is not re-run, and anything we're about to run
     # gets marked as queued.        
-    queued_services = @user_request.queue_all_regular_services(@collection, :requeue_temp_fails => true)
+    queued_service_ids = @user_request.queue_all_regular_services(@collection, :requeue_temp_fails => true).collect {|s| s.service_id }
     
     # Foreground services
     (0..9).each do | priority |      
-      services = @collection.service_level(priority)
+      services = @collection.instantiate_services!(:level => priority)
 
       # We can only really run ones that were succesfully queued          
-      services_to_run = services & queued_services
-      excluded_services = services - queued_services
+      services_to_run = services.find_all { |s|
+        queued_service_ids.include?(s.service_id)  
+      }
+      excluded_services = services.find_all {|s| 
+        ! queued_service_ids.include?(s.service_id)  
+      }
 
-      logger.debug("Skipping services already queued for priority #{priority}: #{excluded_services.collect {|s|s.id}.inspect}") unless excluded_services.blank?
+      logger.debug("Skipping services already queued for priority #{priority}: #{excluded_services.collect {|s|s.service_id}.inspect}") unless excluded_services.blank?
         
       next if services_to_run.empty?
       
       bundle = ServiceBundle.new(services_to_run , priority)
-      bundle.handle(@user_request)            
+      bundle.handle(@user_request, session.session_id)            
     end
 
     
@@ -552,17 +556,22 @@ class ResolveController < ApplicationController
       
         ('a'..'z').each do | priority |
           # Only run the services that are runnable, that have their ids listed
-          services = t_collection.service_level(priority)
-          services_to_run = services & queued_services
-          excluded_services = services - queued_services
+          services = t_collection.instantiate_services!(:level => priority)
+          services_to_run = services.find_all { |s|
+            queued_service_ids.include?(s.service_id)  
+          }
+          excluded_services = services.find_all {|s| 
+            ! queued_service_ids.include?(s.service_id)  
+          }
 
-          logger.debug("Skipping services already queued for priority #{priority}: #{excluded_services.collect {|s|s.id}.inspect}") unless excluded_services.blank?
+          
+          logger.debug("Skipping services already queued for priority #{priority}: #{excluded_services.collect {|s|s.service_id}.inspect}") unless excluded_services.blank?
           
             
           next if services_to_run.empty?
       
           bundle = ServiceBundle.new(services_to_run , priority)
-          bundle.handle(t_request)
+          bundle.handle(t_request, session.session_id)
 
           # Got to reload cached associations that we need, that the services
           # may have changed in another thread, sorry.  

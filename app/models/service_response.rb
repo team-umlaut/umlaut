@@ -92,9 +92,10 @@ class ServiceResponse < ActiveRecord::Base
     super(params)
     self.service_data = {} unless self.service_data
   end
-  
+
+  # Instantiates and returns a new Service associated with this response.
   def service
-    return ServiceList.get( self.service_id )
+    return ServiceList.instance.instantiate!( self.service_id, nil )
   end
 
   def take_key_values(hash)    
