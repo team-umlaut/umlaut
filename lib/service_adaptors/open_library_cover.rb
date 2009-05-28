@@ -1,5 +1,8 @@
-# Looks for cover images from OpenLibrary Cover API. 
-
+# Looks for cover images from OpenLibrary Cover API.
+# Lookig up covers in OL can require multiple HTTP requests, one for each
+# identifier, which can sometimes lead to slowness. 
+# OL also doesn't have great cover image coverage.  So if you have access to
+# Amazon or Google covers, you probably don't need this service. 
 class OpenLibraryCover < Service
   require 'net/http'
   
@@ -8,8 +11,8 @@ class OpenLibraryCover < Service
   end
 
   def initialize(config)
-    @base_url = "http://covers.openlibrary.org/b/"
-    @size = "M"
+    @base_url = "http://covers.openlibrary.org/b/"    
+    @size = "medium" # "small", "medium" or "large"
     super(config)
   end
 
@@ -29,8 +32,9 @@ class OpenLibraryCover < Service
       next unless ids[type]
 
       uri = cover_uri(type, ids[type] )
+      s_time = Time.now
       response = Net::HTTP.get_response(URI.parse(uri))
-
+      RAILS_DEFAULT_LOGGER.debug("#{@id}: #{Time.now - s_time}s to lookup #{uri}")
       
       if response.kind_of?( Net::HTTPNotFound  )
         # OL has no cover      
@@ -56,7 +60,7 @@ class OpenLibraryCover < Service
   end
 
   def cover_uri(type, id)
-    @base_url + type.to_s + "/" + id.to_s + "-" + @size + ".jpg?default=false"
+    @base_url + type.to_s + "/" + id.to_s + "-" + @size[0,1].upcase + ".jpg?default=false"
   end
 
   
