@@ -2,7 +2,9 @@
    # But anyway, displays a typical full text element in typical markup.
    # pass in a ServiceType object for the response as :object 
    
-   #optional argument, :locals => {:li_class => 'whatever'}
+   #optional argument, :locals => 
+   #    :li_class => class to add to <li>
+   #    :show_source => default false, if true display the source of the link
    li_class ||= "fulltextlink"
    show_source ||= false
    
@@ -10,7 +12,29 @@
    view_data = fulltext_element.view_data
 %>
 
-<li class="<%= li_class %>"> <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>fulltext_element.id}, 'target'=>"_blank" %>
+<li class="<%= li_class %>"> 
+
+  <!-- fancy schmancy ajax? But not if we're generating embed partials,
+       won't work. -->
+  <% if view_data[:link_supports_ajax_call] && ! generating_embed_partials? 
+  # Generate a hyperlink that will call our standard service action
+  # link with format=>js in a javascript context. With fallback to straight
+  # html on the href. Weird that Rails doesn't do this fallback for us. 
+  %>
+      <%= link_to_remote(view_data[:display_text], 
+      :url=> {:controller=>'link_router', 
+              :id=>fulltext_element.id, 
+              :format => "js"},
+     :html=> {:id => "svctype_link_#{fulltext_element.id}", 
+              :href => url_for(:controller=>'link_router',      
+                               :id=>fulltext_element.id, 
+                               :format => "html"), 
+              :target => "_blank" }) %>
+  <% else 
+    # Ordinary href link. 
+  %>      
+    <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>fulltext_element.id}, 'target'=>"_blank", 'id' => "svctype_link_#{fulltext_element.id}" %>
+  <% end %>
 
 <% if show_source %>
   <div class="link_source">from <%= view_data[:source] || fulltext_element.service_response.service.display_name %></div>
@@ -38,7 +62,7 @@
 
 <!-- debug info, hidden with CSS, can be made visible with javascript. -->
 <div class="debug_info" style="display:none">
-  <b>Debug info:</b> <%= fulltext_element.service_response.service.id %>
+  <b>Debug info:</b> <%= fulltext_element.service_response.service.service_id %>
   
   <% unless view_data[:debug_info].blank? %>
     ; <%= view_data[:debug_info] %>

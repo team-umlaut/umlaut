@@ -151,7 +151,7 @@ class Request < ActiveRecord::Base
   # you might want to dispatch the service (again). If it returns true though,
   # don't, it's been done. 
   def dispatched?(service)
-    ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
+    ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.service_id})
     # Return true if it exists and is any value but FailedTemporary.
     # FailedTemporary, it's worth running again, the others we shouldn't. 
     return (! ds.nil?) && (ds.status != DispatchedService::FailedTemporary)
@@ -160,7 +160,7 @@ class Request < ActiveRecord::Base
   # marked as Queued, or Failed---otherwise it should be already working,
   # or done. 
   def can_dispatch?(service)
-    ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
+    ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.service_id})
     
     return ds.nil? || (ds.status == DispatchedService::Queued) || (ds.status == DispatchedService::FailedTemporary)        
   end
@@ -192,7 +192,7 @@ class Request < ActiveRecord::Base
   # can be registered as being of more than one type, is why this is an array.
   def add_service_response(response_data,service_type=[])
     svc_resp = ServiceResponse.new
-    svc_resp.service_id = response_data[:service].id
+    svc_resp.service_id = response_data[:service].service_id
     response_data.delete(:service)
 
     # fix 'key' to be legacy 'response_key'
@@ -306,7 +306,7 @@ class Request < ActiveRecord::Base
     
     services.each do |service|
       # in-memory select, don't go to the db for each service! 
-      if ( found = self.dispatched_services.to_a.find {|s| s.service_id == service.id  } )
+      if ( found = self.dispatched_services.to_a.find {|s| s.service_id == service.service_id  } )
         if ( options[:requeue_temp_fails] &&
            found.status == DispatchedService::FailedTemporary )
            # requeue it!
@@ -438,14 +438,14 @@ class Request < ActiveRecord::Base
   end
 
   def find_dispatch_object(service)
-    return self.dispatched_services.find(:first, :conditions=>{:service_id => service.id})
+    return self.dispatched_services.find(:first, :conditions=>{:service_id => service.service_id})
   end
   # Warning, doesn't check for existing object first. Use carefully, usually
   # paired with find_dispatch_object. Doesn't actually call save though,
   # caller must do that (in case caller wants to further initialize first). 
   def new_dispatch_object!(service, status)
     ds = DispatchedService.new
-    ds.service_id = service.id
+    ds.service_id = service.service_id
     ds.status = status
     self.dispatched_services << ds
     return ds

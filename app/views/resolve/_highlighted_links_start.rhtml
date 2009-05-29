@@ -1,7 +1,14 @@
 <% highlighted_links = get_service_type('highlighted_link')
    if (! highlighted_links.blank? || service_type_in_progress?('highlighted_link')) %>
-<div class="smGrayBox">
-<h3>See also:</h3>
+<div class="smGrayBox highlighted_link">
+    <div class="section_heading">
+      <h3><%= ServiceTypeValue[:highlighted_link].section_heading %></h3>
+      <% if ServiceTypeValue[:highlighted_link].section_prompt %>
+        <p class="sectionNote">
+          <%= ServiceTypeValue[:highlighted_link].section_prompt %>
+        </p>
+      <% end %>
+    </div>
 
 <ul class="tightbullets see_also">
   <% highlighted_links.each do |hl_st| 

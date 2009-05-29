@@ -144,18 +144,28 @@ class ApplicationController < ActionController::Base
   # what url to put in content frame.
   helper_method :calculate_url_for_response
   def calculate_url_for_response(svc_type)
-      url = ServiceList.get(svc_type.service_response.service_id).response_url(svc_type, params)
+      svc = ServiceList.instance.instantiate!(svc_type.service_response.service_id, @user_request)
       
-      # Call link_out_filters, if neccesary.
-      # These are services listed as  task: link_out_filter  in services.yml
-      (1..9).each do |priority|
-        @collection.link_out_service_level( priority ).each do |filter|
-          filtered_url = filter.link_out_filter(url, svc_type)
-          url = filtered_url if filtered_url
-        end
-      end
+      destination =  svc.response_url(svc_type, params)
 
-      return url
+      # if response_url returned a string, it's an external url and we're
+      # done. If it's something else, usually a hash, then pass it to
+      # url_for to generate a url.
+      if destination.kind_of?(String)
+        url = destination
+
+        # Call link_out_filters, if neccesary.
+        # These are services listed as  task: link_out_filter  in services.yml
+        (1..9).each do |priority|
+          @collection.link_out_service_level( priority ).each do |filter|
+            filtered_url = filter.link_out_filter(url, svc_type)
+            url = filtered_url if filtered_url
+          end
+        end
+        return url
+      else
+        return url_for(destination)
+      end
   end
 
   

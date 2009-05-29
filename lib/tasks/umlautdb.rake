@@ -1,6 +1,4 @@
 
-
-
 namespace :umlaut do
     desc "Perform nightly maintenance. Set up in cron."
     task :nightly_maintenance => [:load_sfx_urls, :expire_sessions, :expire_old_data]
@@ -37,14 +35,6 @@ namespace :umlaut do
     desc "Loads in all initial fixed data for an umlaut installation."
     task :load_initial_data => [:load_sites, :load_service_type_values] 
   
-    desc "Syncs db to match config/umlaut_config/institutions.yml. Will create institutions as neccesary, but will never delete any institutions from db. "
-    
-    task :sync_institutions => :environment do
-        # The method writes stuff to log, we don't want to write it to app
-        # log, send it to stdout instead. 
-        RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)        
-        Institution.sync_institutions!
-    end
 
       desc "Loads sfx_urls from SFX installation. SFX mysql login needs to be set in config."
       task :load_sfx_urls => :environment do

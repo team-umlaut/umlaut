@@ -16,7 +16,7 @@ class ServiceBundle
     @forward_exceptions = false
   end
 
-  def handle(request)
+  def handle(request, session_id)
     
     return if (@services.nil? || @services.empty?)
 
@@ -38,11 +38,13 @@ class ServiceBundle
             if ( local_request.can_dispatch?(local_service) )
               # Mark this service as in progress in the dispatch table.
               local_request.dispatched( local_service, DispatchedService::InProgress )
+
+              local_service.session_id = session_id
               
               # and actually execute it
               local_service.handle_wrapper(local_request)
             else
-              RAILS_DEFAULT_LOGGER.info("NOT launching service #{local_service.id},  level #{@priority_level}, request #{local_request.id}: not in runnable state") if @log_timing
+              RAILS_DEFAULT_LOGGER.info("NOT launching service #{local_service.service_id},  level #{@priority_level}, request #{local_request.object_id}: not in runnable state") if @log_timing
             end
             
            
@@ -53,11 +55,11 @@ class ServiceBundle
             # the exception in case we want it later!
             local_request.dispatched(service, DispatchedService::FailedFatal, e)
             # Log it too
-            RAILS_DEFAULT_LOGGER.error("Threaded service raised exception. Service: #{service.id}, #{e}, #{e.backtrace.join("\n")}")
+            RAILS_DEFAULT_LOGGER.error("Threaded service raised exception. Service: #{service.service_id}, #{e}, #{e.backtrace.join("\n")}")
             # And stick it in a thread variable too
             Thread.current[:exception] = e
           ensure
-            RAILS_DEFAULT_LOGGER.info("Completed service #{local_service.id},  level #{@priority_level}, request #{local_request.id}: in #{Time.now - service_start}.") if @log_timing
+            RAILS_DEFAULT_LOGGER.info("Completed service #{local_service.service_id},  level #{@priority_level}, request #{local_request.id}: in #{Time.now - service_start}.") if @log_timing
           end
         end
         

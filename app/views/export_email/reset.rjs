@@ -1,4 +1,3 @@
-page[:twoColumns].visual_effect :opacity, :from => 0.3, :to => 1.0, :duration => 0.0
-page[params[:id]].hide
-success_id = params[:id]+ "_success"
-page[success_id].hide
+page[:menuWrapper].visual_effect :opacity, :from => 0.3, :to => 1.0, :duration => 0.0
+page[:"ajax_svc_#{@svc_type.id}"].hide
+

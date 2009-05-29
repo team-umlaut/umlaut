@@ -28,6 +28,7 @@ class GoogleBookSearch < Service
   require 'open-uri'
   require 'zlib'
   require 'json'
+  require 'hpricot'
   include MetadataHelper
   include UmlautHttp
   
@@ -37,12 +38,14 @@ class GoogleBookSearch < Service
   attr_reader :url, :display_name, :num_full_views 
   
   def service_types_generated
-    return [ 
+    types= [
       ServiceTypeValue[:fulltext], 
       ServiceTypeValue[:cover_image],
       ServiceTypeValue[:highlighted_link],
       ServiceTypeValue[:search_inside],
       ServiceTypeValue[:excerpts]]
+    types.push(ServiceTypeValue[:referent_enhance]) if @referent_enhance
+    return types
   end
   
   def initialize(config)
@@ -51,18 +54,18 @@ class GoogleBookSearch < Service
     @display_name = 'Google Book Search'
     # number of full views to show
     @num_full_views = 1
+    # default off for now
+    @referent_enhance = false
     super(config)
   end
   
   def handle(request)
-    get_viewability(request)
-    return request.dispatched(self, true)
-  end
-  
-  def get_viewability(request)
+
     bibkeys = get_bibkeys(request.referent)
-    return nil if bibkeys.nil?
+    return request.dispatched(self, true) if bibkeys.nil?
     data = do_query(bibkeys, request)
+
+    enhance_referent(request, data) if @referent_enhance
     
     #return full views first
     full_views_shown = create_fulltext_service_response(request, data)
@@ -79,7 +82,46 @@ class GoogleBookSearch < Service
     if thumbnail_url
       add_cover_image(request, thumbnail_url)    
     end
+
+    return request.dispatched(self, true)
   end
+
+  # Take the FIRST hit from google, and use it's values to enhance
+  # our metadata. Will NOT overwrite existing data. 
+  def enhance_referent(request, data)
+ 
+    entry = data.at('/*/entry')
+
+    element_enhance(request, "title", entry.at("dc:title"))
+    element_enhance(request, "au", entry.at("dc:creator"))
+    element_enhance(request, "pub", entry.at("dc:publisher"))
+    element_enhance(request, "date", entry.at("dc:date"))
+
+    # While the GBS docs suggest we can get an OCLCnum or LCCN
+    # here, in fact that seems not to be so. But we can get an ISBN,
+    # useful if we looked up by LCCN or OCLCnum in GBS and don't have
+    # one already.
+    unless ( request.referent.isbn  )      
+      # Usually provides an ISBN-10 and a -13. We don't care, either
+      # is fine for us, just take the first one present.  
+      if (  isbn_element = entry.search("dc:identifier").find {|el| el.inner_html =~ /^ISBN\:/} )
+
+        # Just get the whole thing starting at position 5 please. 
+        isbn = isbn_element.inner_html[5, 1000]
+        
+        request.referent.add_identifier( "urn:isbn:#{isbn}")
+      end
+    end
+    
+  end
+
+  # Will not over-write existing referent values. 
+  def element_enhance(request, rft_key, hpricot_el)
+    if (hpricot_el)
+      request.referent.enhance_referent(rft_key, hpricot_el.inner_html, true, false, :overwrite => false)
+    end
+  end
+
   
   # returns nil or escaped string of bibkeys
   # to increase the chances of good hit, we send all available bibkeys 
@@ -237,8 +279,9 @@ class GoogleBookSearch < Service
   def find_thumbnail_url(data)
     entries = data.search("/*/entry").collect do |entry|
       thumb_entry = entry.at("link[@rel='#{LinkThumbnailUri}']")
-      return thumb_entry ? thumb_entry['href'] : nil                 
+      thumb_entry ? thumb_entry['href'] : nil                 
     end
+    
     # removenill values
     entries.compact!    
     

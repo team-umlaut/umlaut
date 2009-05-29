@@ -1,19 +1,22 @@
 <% 
 unless @user_request.nil?
 cite = @user_request.referent.to_citation %>
-<div class="inner_ajax_div">
-<% remote_form_for :txt, :url => {:controller => "export_email", :action => "send_email", :id => params[:id], :format => "js"}, :html => { :action => url_for(:controller => "export_email", :action => "send_email", :id => params[:id], :format => "html"), :class => "ajax_form" } do |f| %>
-  <%= f.hidden_field :title, :value => "#{h(cite[:title])}/#{h(cite[:author])}" %>
+<div class="inner_modal_dialog">
+<% form_remote_tag  :remote => (@force_html_form != true), :url => {:controller => "export_email", :action => "send_email", :id => params[:id], :format => "js"}, :html => { :action => url_for(:controller => "export_email", :action => "send_email", :id => params[:id], :format => "html"), :class => "modal_dialog_form" } do  %>
   <h2>Email the title and locations</h2>
-  <div><%= flash[:error]%><% flash[:error] = nil%></div>
+  
+  <div class="formError">
+    <%= @error || flash[:error] %>
+  </div>
+  
   <h3><strong>Title:</strong> <%= h(cite[:title]) %>/<%= h(cite[:author]) %></h3>
   <div>
-    <%= f.label :email, 'Enter your email address:' %>
-    <%= f.text_field :email %>
+    <%= label_tag 'email', 'Enter your email address:' %>
+    <%= text_field_tag 'email', params[:email] %>
   </div>
-  <div class="submit">
+  <div class="section">
     <%= submit_tag 'Send!' %>
-    <%= link_to_remote 'Cancel', :url => {:controller => "export_email", :action => "reset", :id => "email"}, :html => {:class => "cancel"}%>
+    <%= link_to_remote 'Cancel', :url => {:controller => "export_email", :action => "reset", :id => @svc_type.id}, :html => {:class => "cancel"}%>
   </div>
 <%
 end 

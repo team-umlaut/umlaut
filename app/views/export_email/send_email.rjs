@@ -1,5 +1,0 @@
-page.replace_html "email_success", :partial => params[:action]
-page[:email].hide
-page[:email_success].show
-page[:twoColumns].visual_effect :opacity, :from => 0.3, :to => 1.0, :duration => 0.0
-page[:email_success].visual_effect :fade, :duration => 10.0

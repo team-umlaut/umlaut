@@ -1,5 +1,0 @@
-page.replace_html "txt_success", :partial => params[:action]
-page[:txt].hide
-page[:txt_success].show
-page[:twoColumns].visual_effect :opacity, :from => 0.3, :to => 1.0, :duration => 0.0
-page[:txt_success].visual_effect :fade, :duration => 10.0

@@ -1,15 +1,18 @@
 fulltext:
   id: 1
   display_name: Electronic Version
+  section_heading: "Electronic Version via:"
   
 holding:
   id: 2
   display_name: Copy in Library
   display_name_plural: Copies in Library
+  section_heading: Copies in Library
   
 document_delivery:
   id: 3
   display_name: Request Service
+  section_heading: Request a copy from Inter-Library Loan
   
 help:
   id: 4
@@ -44,6 +47,7 @@ cover_image:
 highlighted_link:
   id: 14
   display_name: See Also Link
+  section_heading: "See also:"
   
 # Link to search holdings, generally with a count given, ie "5 possible matches". 
 holding_search:
@@ -62,6 +66,7 @@ fulltext_title_level:
 audio:
   id: 17
   display_name: Digital Audio
+  section_heading: "Digital Audio via:"
 
 # A search inside tool, presented with a search box for user. 
 search_inside:
@@ -79,6 +84,7 @@ referent_enhance:
 excerpts:
   id: 20
   display_name: Limited Excerpts
+  section_prompt: A limited preview which may include table of contents, index, and other selected pages.
   
 cited_by:
   id: 21

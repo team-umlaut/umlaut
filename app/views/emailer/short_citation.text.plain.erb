@@ -1,3 +1,8 @@
-Call# <%= @call_number%>
-Title: <%= @title%>
-Loc: <%= @location%>
+<%= @call_number%>
+<%= @location%>
+<% unless @user_request.title_level_citation? %>
+<%= brief_citation(@user_request) %>
+<% else %>
+<%= @title%>
+<% end -%>
+

@@ -1,0 +1,24 @@
+<% doc_dels =  get_service_type("document_delivery") 
+%>
+
+<div>
+    <div class="section_heading">
+      <h3><%= ServiceTypeValue[:document_delivery].section_heading %></h3>
+      <% if ServiceTypeValue[:document_delivery].section_prompt %>
+        <p class="sectionNote">
+          <%= ServiceTypeValue[:document_delivery].section_prompt %>
+        </p>
+      <% end %>
+    </div>
+              
+  <ul class="document_delivery">
+  <% doc_dels.each do | doc_del_type |
+
+      valueHash = doc_del_type.view_data_from_service_type   %>
+      
+      <li><%= link_to 'for ' + valueHash[:display_text], {:controller=>'link_router', :id=>doc_del_type.id}, 'target'=>'_blank'%>
+      </li>
+
+  <% end %>
+  </ul>
+</div>

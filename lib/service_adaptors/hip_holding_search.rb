@@ -121,8 +121,6 @@ class HipHoldingSearch < Hip3Service
 
       timing_debug("Finding matches")
       
-      #debugger
-
       
       if (matches.length > 0 )
         
@@ -231,7 +229,7 @@ class HipHoldingSearch < Hip3Service
 
     interval = @last_timed - before
 
-    RAILS_DEFAULT_LOGGER.debug("#{id}: #{waypoint}: #{interval}")
+    RAILS_DEFAULT_LOGGER.debug("#{service_id}: #{waypoint}: #{interval}")
     
   end
   

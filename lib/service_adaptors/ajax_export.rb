@@ -12,18 +12,24 @@ class AjaxExport < Service
     return types
   end
   
-  def handle(request)
-    service_data = {}
-    controller = self.instance_variable_get("@controller")
-    ajax_id = self.instance_variable_get("@ajax_id")
-    service_data[:url] = "/#{controller}/#{ajax_id}" 
-    service_data[:ajax_id] = ajax_id
-    service_data[:controller] = controller;
-    service_data[:display_text] = self.name
+  def handle(request)    
       
-    request.add_service_response( {:service=>self, :display_text => service_data[:display_text], :notes=>service_data[:notes], :url=> service_data[:url], :ajax_id=> service_data[:ajax_id], :service_data=>service_data }, ['export_citation']  )
+    request.add_service_response(:service=>self, 
+      :display_text => @display_text,
+      :link_supports_ajax_call => true,
+      :notes=> @note,
+      :service_type_value => 'export_citation'  )
 
     return request.dispatched(self, true)
+  end
+
+  def response_url(svc_type, params)
+    # Hash that caller will pass to url_for to create an internally
+    # facing link.
+    return {:controller=>@form_controller, 
+     :action=>@form_action, 
+     :id => svc_type, 
+     :format => params[:format]}
   end
   
 end
