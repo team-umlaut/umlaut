@@ -15,12 +15,6 @@
   # Below: Just always display it, if it's supplied by SFX. 
   AppConfig::Base.resolve_display_ill = lambda {|umlaut_request| return true}
 
-
-  #   Direct-link-with-frameset was an interesting experiment, but in jrochkind
-  #   and JHU's experience/analysis, it is not reliable and consistent enough
-  #   to actually use. We are no longer using it, and do not recommend
-  #   the use of link_with_frameset or skip_resolve_menu any longer.  
-  #
   
   # link_with_frameset can be used to control whether (and when)
   # umlaut links to resources in a frameset page with an umlaut banner.
@@ -64,12 +58,8 @@
 
   # A pretty typical direct-linking setup, excludes queries that come
   # from citation linker/azlist/opensearch from direct linking. 
-  # AppConfig::Base.skip_resolve_menu = {:service_types => ['fulltext'],
-  #:services=>['JH_SFX'], :excluded_rfr_ids => ["info:sid/sfxit.com:citation",
-  #'info:sid/umlaut.code4lib.org:citation',
-  #'info:sid/umlaut.code4lib.org:azlist',  
-  #'info:sid/umlaut.code4lib.org:opensearch']}
-  AppConfig::Base.skip_resolve_menu = false
+  AppConfig::Base.skip_resolve_menu = {:service_types => ['fulltext'], :services=>['JH_SFX'], :excluded_rfr_ids => ["info:sid/sfxit.com:citation", 'info:sid/umlaut.code4lib.org:citation', 'info:sid/umlaut.code4lib.org:azlist',
+  'info:sid/umlaut.code4lib.org:opensearch']}
 
 
   # When nightly_maintenance will expire sessions. Default to

@@ -236,7 +236,7 @@ module MetadataHelper
   # and such.
   def get_isbn(rft)
     isbn = get_identifier(:urn, "isbn", rft)
-    isbn = isbn.gsub(/[^\dX-]/, '') if isbn
+    isbn = isbn.sub(/[^\dX-]+$/, '') if isbn
 
     isbn
   end

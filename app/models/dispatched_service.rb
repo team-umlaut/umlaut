@@ -1,6 +1,4 @@
 class DispatchedService < ActiveRecord::Base
-  belongs_to :request
-  
   # Serialized hash of exception info. 
   serialize :exception_info
   
@@ -16,15 +14,14 @@ class DispatchedService < ActiveRecord::Base
   FailedFatal = 'failed_fatal' # Complete, failed,
   # Failed, but it might be worth trying again.
   FailedTemporary = 'failed_temporary'
- 
- 
+  
+
+  belongs_to :request
   def service=(service)
-    self.service_id = service.service_id
+    self.service_id = service.id
   end
-  # instantiates a new service object that represents the service
-  # that dispatched. 
   def service
-    return ServiceList.instance.instantiate!( self.service_id, request )
+    return ServiceList.get( self.service_id )
   end
 
   # For old-time's sake, true can be used for Succesful

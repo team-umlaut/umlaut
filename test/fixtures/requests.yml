@@ -8,11 +8,3 @@ frankenstein:
   referent_id: 1
   client_ip_addr: 127.0.0.1
   created_at: 2008-06-28 17:26:08 -04:00
-  
-  
-simple_request:
-  session_id: "f747f4273c1ecb12f1f764cc10c646d3"
-  referent: simple_request_referent
-  client_ip_addr: "128.220.205.186" 
-  contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301370" 
-  http_env: { SERVER_NAME : "app01.mse.jhu.edu", "HTTP_ACCEPT_ENCODING" : "gzip,deflate", "HTTP_USER_AGENT" : "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)", "HTTP_ACCEPT_LANGUAGE" : "en-us,en;q=0.5", "HTTP_HOST" : "app01.mse.jhu.edu:3000", "HTTP_KEEP_ALIVE" : "300", "HTTP_ACCEPT_CHARSET" : "ISO-8859-1,utf-8;q=0.7,*;q=0.7", "HTTP_VERSION" : "HTTP/1.1", "REQUEST_URI" : "/resolve?url_ver=Z39.88-2004&url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&ctx_enc=info%3Aofi%2Fenc%3AUTF-8&rft.issn=0098-7484&rft.genre=journal&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal", "HTTP_ACCEPT" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "HTTP_CONNECTION" : "keep-alive" }

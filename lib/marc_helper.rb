@@ -31,7 +31,6 @@ module MarcHelper
         # an e-book that is not in SFX, even if it's from a vendor who is in
         # SFX. We use MARC leader byte 7 to tell. Confusing enough?
         is_journal = (marc_xml.leader[7,1] == 's')
-        
         next if  is_journal && (SfxUrl.sfx_controls_url?(url))
         # TO DO: Configure suppress urls in SfxUrl. 
         

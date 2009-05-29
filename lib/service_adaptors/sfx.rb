@@ -27,7 +27,7 @@
 #     sure to include in umlaut. A hash with target_name as key, and umlaut
 #     ResponseTypeValue name as value.
 # sfx_timeout: in seconds, for both open/read timeout value for SFX connection.
-#          Defaults to 8.
+#          Defaults to 5. 
 class Sfx < Service
   require 'uri'
   #require 'open_url'

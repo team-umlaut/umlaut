@@ -32,9 +32,7 @@
 # to. If service returns original url or nil, original url will still be used. 
 
 class Service
-  attr_reader :priority, :service_id, :url, :task, :status, :name
-  attr_writer :session_id
-  attr_accessor :request
+  attr_reader :priority, :id, :url, :task, :status, :name
   @@required_params_for_subclass = {} # initialize class var
 
   # Some constants for 'function' values
@@ -92,7 +90,7 @@ class Service
       return handle(request)
     else
       # Pre-empted, log and close dispatch record as 'succesful'.
-      RAILS_DEFAULT_LOGGER.debug("Service #{service_id} was pre-empted and not run.")
+      RAILS_DEFAULT_LOGGER.debug("Service #{id} was pre-empted and not run.")
       return request.dispatched(self, true)
     end
   end
@@ -121,7 +119,7 @@ class Service
   def display_name
     # If no display_name is set, default to the id string. Not a good idea,
     # but hey. 
-    return @display_name ||= self.service_id    
+    return @display_name ||= self.id    
   end
 
 
@@ -167,77 +165,6 @@ class Service
       a = @@required_params_for_subclass[self.name]
       a.push( p ) unless a.include?( p )
     end
-  end
-
-
-  def session_id
-    unless (@session_id)
-      raise Exception.new("This service has not been initialized with a request!") unless request
-      
-      @session_id = request.session_id
-    end
-    return @session_id
-  end
-
-  # FakeSession little placeholder class we'll use in self.session to trick
-  # out Rails.
-  class FakeSession
-    attr_accessor :session_id  
-    def initialize(a_session_id)
-      self.session_id = a_session_id
-    end
-    def new_session
-      return self.session_id
-    end
-  end
-  # Returns a read-only version of the session hash. Lazy loaded. 
-  # See #update_session for making changes. Will have to be fixed
-  # for Rails 2.3.
-  def session    
-    #lazy load
-    unless (@session_data || session_id.blank? )           
-      # Craziness to restore a session in Rails pre 2.2. Will definitely
-      # need to be changed for Rails 2.3
-      
-      fake_cgi_session = FakeSession.new(session_id)
-  
-      @session_store_obj = 
-          ActionController::Base.session_store.new(fake_cgi_session)
-      @_session_data = @session_store_obj.restore
-      # modifications here are not going to be automatically stored,
-      # so don't do them. See #update_session instead. 
-      @session_data = @_session_data.clone
-      @session_data.freeze
-    end
-    if ( session_id.blank? && @session_data.nil?)
-      raise Exception.new("No session_id is available, therefore no session is available.")
-    end
-    return @session_data
-  end
-
-  
-  # If we just allowed changes to our session hash, and rewrote it to
-  # the store, we'd get a race condition where we could over-write another
-  # service's changes. Rails itself is actually subject to that too.
-  # So, you tell us exactly which values you want to update, we'll
-  # refetch a fresh session, and save it with your changes.
-  #
-  # We're not actually guarding against the race condition, just
-  # fetching and storing quickly and hoping to miss it. FIXME.
-  #
-  # example: update_session( :new_value => "foo", :other => "bar")
-  #
-  # Will have to be fixed for Rails 2.3.
-  def update_session(new_values)
-    # force a new fetch
-    @session = nil
-    session
-    #and update that guy, with our mutable version
-    @_session_data.merge!(new_values)
-    @session_store_obj.close
-    # and update our cached copy to have the changes. 
-    @session_data = @_session_data.clone
-    @session_data.freeze
   end
 
  # This method is called by Umlaut when user clicks on a service response. 
@@ -315,7 +242,7 @@ class Service
           ( other_type == "*" || other_type == "+" ||
             st.service_type_value.name == other_type)  &&
           ( service == "*" ||
-            st.service_response.service.service_id == service)         
+            st.service_response.service.id == service)         
         end
       end
       break if preemption

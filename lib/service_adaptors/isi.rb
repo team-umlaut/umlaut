@@ -196,16 +196,7 @@ class Isi < Service
     end
     
     results = hpricot.at('map[@name ="cite_id"] map[@name="WOS"]')
-    unless (results)
-      error_message = "#{self.id}: "
-      error_message << 'Unexpected ISI response. The ISI response was not reported as an error, but did not contain a <map name="WOS"> inside a <map name="cite_id"> as we expected it to:'
-      error_message << "\n ISI XML request:\n#{gen_lamr_request(request)}\n"
-      error_message << "\n ISI http response status: #{isi_response.code}\n"
-      error_message << "\n ISI http response body:\n#{isi_response.body}\n"
-      RAILS_DEFAULT_LOGGER.error(error_message)
-    end
 
-    
     # cited by
     
     count = results.at('val[@name="timesCited"]')

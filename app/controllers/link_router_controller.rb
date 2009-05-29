@@ -11,6 +11,8 @@ class LinkRouterController < ApplicationController
   # app parameter. .
   def index
 
+    @collection = Collection.new(request.remote_ip, session)      
+
     # Capture mysterious exception for better error reporting. 
     begin
       svc_type = ServiceType.find(params[:id])
@@ -25,9 +27,6 @@ class LinkRouterController < ApplicationController
       return            
     end
 
-
-    @collection = Collection.new(svc_type.request, session)          
-
     clickthrough = Clickthrough.new
     clickthrough.request_id = svc_type.request_id
     clickthrough.service_response_id = svc_type.service_response_id
@@ -35,8 +34,10 @@ class LinkRouterController < ApplicationController
 
     if ( link_with_frameset?(svc_type) )
       redirect_to( frameset_action_url(svc_type) )
-    else      
-      url = calculate_url_for_response(svc_type)      
+    else
+      
+      url = calculate_url_for_response(svc_type)
+      
       redirect_to url
     end
   end

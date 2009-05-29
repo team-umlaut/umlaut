@@ -1,19 +1,13 @@
 Title: <%= @title%>
 <%
   unless @holdings.nil?
--%>
-<% unless @user_request.title_level_citation? %>
-
-<%= brief_citation(@user_request) %>
-
-<% end -%>
-
+%>
 Holdings:
 <%
 @holdings.each do |holding|
-  target = holding.view_data -%>
-  * <%= target[:collection_str] %> <%= target[:call_number] %>  <%= target[:status]  %>
+  target = holding.view_data%>
+  - <%= target[:collection_str]+ " "+ target[:call_number].upcase+ " "+ target[:status]  %>
 <%
   end
 end
--%>
+%>

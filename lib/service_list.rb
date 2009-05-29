@@ -1,61 +1,54 @@
-require 'singleton'
-# This guy is a singleton, get one with ServiceList.instance
 class ServiceList
-  include Singleton # call ServiceList.instance to get the singleton instance.
-  @@services_yaml_path = RAILS_ROOT+"/config/umlaut_config/services.yml"
+  private_class_method :new
+  @@services = nil
 
-  def initialize
-    @services = nil
-  end
+  # Returns a copy of a Service object, intialized with values
+  # from services.yaml, matching definition given by input param 'name'
+  # Does NOT create a new copy with every call; instead lazy-loads once and
+  # caches. 
+  def self.get(name)
+    @@services = YAML.load_file(RAILS_ROOT+"/config/umlaut_config/services.yml") unless @@services
 
-  # Pretty much only used for testing
-  def self.yaml_path=(path)
-    @@services_yaml_path = path
-    self.instance.reload
-  end
-
-  
-  # Returns a NEW copy of a Service object, intialized with values
-  # from services.yaml, matching definition given by input param 'name', the
-  # name/id a service is referred to by in services.yml
-  def instantiate!(name, request)
-    if (cached_service_data[name].nil?)
+    if (@@services[name].nil?)
       raise NameError.new("No such service named #{name} has been loaded. Check config/umlaut_config/services.yml", name)
     end
-    if (cached_service_data[name]["type"].nil?)
+    if (@@services[name]["type"].nil?)
       raise "Service #{name} does not a type defined, and needs one. Check the config/umlaut_config/services.yml file."
     end
-        
-    className = cached_service_data[name]["type"]
+    
+    require_dependency 'service_adaptors/'+@@services[name]["type"].underscore
+    
+    className = @@services[name]["type"]
     classConst = Kernel.const_get(className)
-    service = classConst.new(self.definition(name))
-    service.request = request
-
-    return service
+    
+    return classConst.new(@@services[name].merge({"id"=>name}))
   end
 
-  def definition(name)
-    return cached_service_data[name]      
+  def self.require_service_class(service_name)
+    require_dependency 'service_adaptors/'+service_name.underscore
   end
 
-  # call cached_service_data, but don't return the results, they're private man!
-  def reload
-    @services = nil
-    cached_service_data
-    true
-  end
+  @@services_yml_ctime = nil
+  @@services_yml_ctime_checked = nil
+  # pass in a time. Return: Has the services.yml been changed since then?
+  # It might take 60 seconds to notice the services.yml has been changed,
+  # because we do cache last change time for 60s.
+  # This is currently used by collection, so services stored in session
+  # will be refreshed when neccesary. It is NOT yet used by ServiceList
+  # itself to fresh it's cached services; doing that in a thread-safe
+  # way is tricky. Just restart the mongrels to refresh cached services.
+  def self.stale_services?(time)
   
-  protected
-  
-  def cached_service_data
-    unless @services
-      @services = YAML.load_file(@@services_yaml_path)
-      # Add 'service_id' keys to all the hashes by the id they were named in the hash.
-      @services.each_pair do |key, value|
-        value['service_id'] = key
-      end
-    end
-    return @services    
+    # Instead of examining the file ctime on _every_ request, we cache
+    # for a minute.
+    if ( @@services_yml_ctime.nil? || @@services_yml_ctime_checked < Time.now - 60 )
+      path = File.join( RAILS_ROOT, "config", "umlaut_config", "services.yml")
+      @@services_yml_ctime = File.new(path).ctime
+      @@services_yml_ctime_checked = Time.now
+    end    
+    
+    return time.nil? || @@services_yml_ctime > time
   end
+
   
 end

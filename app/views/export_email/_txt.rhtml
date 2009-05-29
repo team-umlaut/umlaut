@@ -1,60 +1,50 @@
 <% 
 unless @user_request.nil?
 cite = @user_request.referent.to_citation %>
-
-<div class="inner_modal_dialog send_to_txt">
-<% form_remote_tag :remote => (@force_html_form != true), :url => {:controller => "export_email", :action => "send_txt", :id => params[:id], :format => "js"}, :html => { :action => url_for(:controller => "export_email", :action => "send_txt", :id => params[:id], :format => "html"), :class => "modal_dialog_form" } do %>
+<div class="inner_ajax_div">
+<% remote_form_for params[:action], :url => {:controller => "export_email", :action => "send_txt", :id => params[:id], :format => "js"}, :html => { :action => url_for(:controller => "export_email", :action => "send_txt", :id => params[:id], :format => "html"), :class => "ajax_form" } do |f| %>
+  <%= f.hidden_field :title, :value => "#{h(cite[:title])}/#{h(cite[:author])}" %>
   <h2>Send the title and location of an item to your mobile phone</h2>
-  
-  <div class="formError">
-    <%= @error || flash[:error] %>
+  <div><%= flash[:error]%><% flash[:error] = nil%></div>
+  <h3><strong>Title:</strong> <%= h(cite[:title]) %>/<%= h(cite[:author]) %></h3>
+  <div>
+    <%= f.label :number, 'Enter your mobile phone number:' %>
+    <%= f.text_field :number %>
+    <p class="smallText"><em>use the full 10 digits, no dashes or spaces</em></p>
   </div>
-  
-  <h3><strong>Title:</strong> 
-    <%= h(cite[:title]) %>/<%= h(cite[:author]) %>
-  </h3>
-  <div class="section">
-    <%= label_tag('number', 'Enter your mobile phone number:') %>
-    
-    <%= text_field_tag('number', params[:number], :size => 14) %>
-    <p class="smallText"><em>10 digit US cell phone number</em></p>
-  </div>
-  
-  <div class="section">
-    <%= label_tag('provider', 'Select your provider:') %>
+  <div>
+    <%= f.label :provider, 'Select your provider:' %>
     <%
-      providers = @svc_type.service_response.service.instance_variable_get("@providers")
+      txt = ServiceList.get('NYU_Txt')
+      providers = txt.instance_variable_get("@providers")
     %>
-    <%= select_tag "provider", options_for_select(providers.sort, params[:provider]) %>
+    <%= f.select :provider, providers.sort %>
   </div>
 <%
   holdings = @user_request.get_service_type('holding', {})
+  unless holdings.nil?
 %>
-  <div class="section">
-    <p>Choose the item you want to send:</p>
-    <ul>
+  <div id="holdings">Choose the item you want to send:</div>
+  <ul>
 <%
-      holdings.each do |p|
-        target = p.view_data
+    holdings.each do |p|
+      target = p.view_data
  %>
-       <li>
-        <%= radio_button_tag 'holding', p.id, (params[:holding].to_s == p.id.to_s) || holdings.length == 1 %>
-        <%= label_tag "holding_#{p.id}", formatted_txt_holding_status(target) %>
-       </li>
+   <li>
+    <%= f.radio_button :holding, p.id %>
+    <%= f.label :holding, target[:collection_str]+ " "+ target[:call_number].upcase+ " "+ target[:status] %>
+   </li>
 <%
     end
 %>
   </ul>
-  </div>
-
-
-  <div class="section">
-    <p class="smallText"><em>Note: charges may apply if your service plan does not cover unlimited texting</em></p>
-  
+<%
+  end
+%>
+  <p class="smallText"><em>Note: charges may apply if your service plan does not cover unlimited texting</em></p>
+  <div class="submit">
     <%= submit_tag 'Send!' %>
-    <%= link_to_remote 'Cancel', :url => {:controller => "export_email", :action => "reset", :id => @svc_type.id}, :html => {:class => "cancel"}%>
-    
-
+    <%= link_to_remote 'Cancel', :url => {:controller => "export_email", :action => "reset", :id => params[:action]}, :html => {:class => "cancel"}%>
   </div>
 <%
 end 

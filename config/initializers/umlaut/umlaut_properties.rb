@@ -4,9 +4,6 @@
   # App name. 
   AppConfig::Base.app_name = 'Find It'
 
-  # Sometimes Umlaut sends out email, what email addr should it be from?
-  AppConfig::Base.from_email_addr = 'no_reply@umlaut.example.com'
-
   # rfr_ids used for umlaut generated pages.
   AppConfig::Base.rfr_ids ||= Hash.new
   AppConfig::Base.rfr_ids[:opensearch] = "info:sid/umlaut.code4lib.org:opensearch"

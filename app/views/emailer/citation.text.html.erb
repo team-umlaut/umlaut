@@ -1,0 +1,22 @@
+<p>
+Title: <%= @title%><br />
+<%
+  unless @holdings.nil?
+%>
+  <div>Holdings:</div>
+  <ul>
+<%
+    @holdings.each do |holding|
+      target = holding.view_data
+ %>
+   <li>
+    <%= target[:collection_str]+ " "+ target[:call_number].upcase+ " "+ target[:status]  %>
+   </li>
+<%
+    end
+%>
+  </ul>
+<%
+  end
+%>
+</p>

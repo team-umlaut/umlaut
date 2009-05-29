@@ -5,8 +5,7 @@
   <div id="twoColumns"> <!-- called twoColumns, but it's really just the left column -->
 
 
-  <h1>Find a <%=@user_request.referent.type_of_thing.titlecase %></h1>
-  
+  <h1>Finding <%=@user_request.referent.type_of_thing.pluralize.titlecase %></h1>
   <div class="resourceInfo">
     <table width="100%" cellpadding="3" cellspacing="0">
       <tr>
@@ -40,40 +39,27 @@
       <%= render(:partial => "audio") %>
     </div>
   
-    <% holding_output = capture do %>
-      <div id="holding" class="main_column_section">
-        <%= render(:partial => ResolveController.partial_for_block[:holding] ) %>
-      </div>
-    <% end %>
-      
-    
-    <% docdel_output = capture do %>
-      <% docdels = get_service_type('document_delivery')
-         if (display_ill?) && (! docdels.empty?)  %>
-            <div id="document_delivery" class="main_column_section document_delivery">              
-                <%= render(:partial => "document_delivery" ) %>            
-            </div>
-      <% end %>
-    <% end %>
-    
-    <!-- sometimes holding and docdel have their display order reversed
-         by local configuration -->    
-    <%  
-        sections = AppConfig.param("resolve_main_sections")
-    
-        h_index = index_of_id("resolve_main_sections", "holding") 
-        d_index = index_of_id("resolve_main_sections", "document_delivery")
-        
-        if d_index >= h_index
-    %>             
-        <%= holding_output %>    
-        <%= docdel_output %>
-    <% else %>
-        <%= docdel_output %>
-        <%= holding_output %>
-    <% end %>
-        
 
+
+    <% docdels = get_service_type('document_delivery')
+       if (display_ill?) && (! docdels.empty?)  %>
+          <div class="main_column_section">
+          <h3>Request a copy from Inter-Library Loan</h3>
+          <ul>
+          <% docdels.each do | doc_del_type |
+  
+                valueHash = doc_del_type.view_data_from_service_type%>
+              <li><%= link_to 'for ' + valueHash[:display_text], {:controller=>'link_router', :id=>doc_del_type.id}, 'target'=>'_blank'%>
+              </li>
+        <% end %>
+        </ul>
+        </div>
+    <% end %>
+  
+  
+    <div id="holding" class="main_column_section">
+      <%= render(:partial => ResolveController.partial_for_block[:holding] ) %>
+    </div>
 
     <% # abstract/toc is admittedly a little bit cheesy right now, it shouldn't
        # neccesary be in this part of the page, and should maybe use
@@ -139,32 +125,32 @@ unless relevant_links.empty? %>
   
 <div id="rightColumn">
 
-  <div class="sidebar_section, smGrayBox">
-    <%= render :partial=>"help" 
-    %>
-  </div>
+<div class="sidebar_section, smGrayBox">
+<%= render :partial=>"help" 
+%>
+</div>
 
   <!-- coins -->
   <%= @user_request.to_context_object.coins %>
 
 
-  <div class="sidebar_section">    
-  <%
-  #{:action=>'web_search', :service_type=>'web_link', :label=>'Web Search Results'}
-  [{:action=>'toc', :service_type=>'table_of_contents', :label=>'Table of Contents'},
-  {:action=>'abstract', :service_type=>'abstract', :label=>'Abstract or Description'}].each do | menu |
-      unless controller.action_name == menu[:action]
-          if get_service_type(menu[:service_type]).length > 0
-              li_display= 'block'
-          else
-              li_display = 'none'
-          end %>
-    <!-- <p class="tightbullets" id='umlaut-<%=  menu[:service_type].gsub(/\s/,'_')-%>' style="display:<%=li_display%>"> -->
-    <% link_to menu[:label], :action=>menu[:action], :'umlaut.request_id'=>@user_request.id %></p>
-    <% end 
-    end
-    %>
-  </div>
+<div class="sidebar_section">    
+<%
+#{:action=>'web_search', :service_type=>'web_link', :label=>'Web Search Results'}
+[{:action=>'toc', :service_type=>'table_of_contents', :label=>'Table of Contents'},
+{:action=>'abstract', :service_type=>'abstract', :label=>'Abstract or Description'}].each do | menu |
+    unless controller.action_name == menu[:action]
+        if get_service_type(menu[:service_type]).length > 0
+            li_display= 'block'
+        else
+            li_display = 'none'
+        end %>
+  <!-- <p class="tightbullets" id='umlaut-<%=  menu[:service_type].gsub(/\s/,'_')-%>' style="display:<%=li_display%>"> -->
+  <% link_to menu[:label], :action=>menu[:action], :'umlaut.request_id'=>@user_request.id %></p>
+  <% end 
+  end
+  %>
+</div>
 
   <!-- only show the related_items if we're an article-level cite,
        or we actually have some generated -->
@@ -193,8 +179,8 @@ unless relevant_links.empty? %>
   
   <!-- service errors -->
   <div id="service_errors">
-     <%= render :partial => 'service_errors' %>          
-  </div>
+       <%= render :partial => 'service_errors' %>          
+   </div>
        
   
 </div>

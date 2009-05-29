@@ -1,14 +1,10 @@
+   # sync institutions.yml to db if needed by timestamp.
+    begin
+      Institution.sync_institutions
+      ServiceTypeValue.load_values
+    rescue Exception => e
+      # If we're just starting out and don't have a db yet, we can't run
+      # this, oh well.
+      RAILS_DEFAULT_LOGGER.warn("Couldn't check institutions and service_type_values for syncing: #{e}")
+    end
 
-# Only pre-load the data in production
-if ( RAILS_ENV == "production")
-  start_t = Time.now
-  
-  # pre-load ServiceTypeValue cache
-  ServiceTypeValue.load_values
-  
-  # Preload Institution and Service definitions from yml. 
-  ServiceList.instance.reload
-  InstitutionList.instance.reload
-  
-  RAILS_DEFAULT_LOGGER.debug("sync_umlaut_data loading caches: #{Time.now - start_t}")
-end

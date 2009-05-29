@@ -3,9 +3,6 @@
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
 config.cache_classes = true
-# Don't check view timestamps! This becomes uneccesary in Rails 2.2, and will
-# probably raise there. 
-config.action_view.cache_template_loading = true
 
 # Use a different logger for distributed setups
 # config.logger = SyslogLogger.new

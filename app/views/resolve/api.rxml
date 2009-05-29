@@ -45,7 +45,7 @@ xml.umlaut do
           # indeed confusing.
           xml.response( :id => st.id ) do
             
-            xml.service( response.service.service_id )
+            xml.service( response.service.id )
             xml.comment!("Attributes really vary depending on particular service, this makes it kind of tricky to deal with in an API. See documentation in ServiceResponse for conventions. Reccommend that you use umlaut_passthrough_url for url. Final destination url isis calculated on-demand by umlaut.") 
             ["display_text", "url", "notes"].each do |att|
               xml.tag!(att, response.attributes[att])

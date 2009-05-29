@@ -25,7 +25,7 @@ class GoogleBookSearchTest < Test::Unit::TestCase
     # Tell the ServiceList to use our basic services.yml, not the live one.
     ServiceList.yaml_path =  RAILS_ROOT+"/lib/generators/umlaut_local/templates/services.yml-dist"
     
-    @gbs_default = ServiceList.instance.instantiate!("GoogleBookSearch", nil)
+    @gbs_default = ServiceList.instance.instantiate!("GoogleBookSearch")
     @gbs_minimum = GoogleBookSearch.new({"priority"=>1})
     
     # Bunch of responses in the proper format somtimes followed by the hash that
