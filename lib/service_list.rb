@@ -52,7 +52,7 @@ class ServiceList
       @services = YAML.load_file(@@services_yaml_path)
       # Add 'service_id' keys to all the hashes by the id they were named in the hash.
       @services.each_pair do |key, value|
-        value['service_id'] = key
+        value['service_id'] = key if value && key
       end
     end
     return @services    
