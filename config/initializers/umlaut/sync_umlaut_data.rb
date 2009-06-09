@@ -4,7 +4,11 @@ if ( RAILS_ENV == "production")
   start_t = Time.now
   
   # pre-load ServiceTypeValue cache
-  ServiceTypeValue.load_values
+  begin
+    ServiceTypeValue.load_values
+  rescue ActiveRecord::ActiveRecordError
+     RAILS_DEFAULT_LOGGER.debug("Could not sync ServiceTypeValues to db. Perhaps schema hasn't been created yet.")
+  end
   
   # Preload Institution and Service definitions from yml. 
   ServiceList.instance.reload
