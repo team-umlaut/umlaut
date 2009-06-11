@@ -62,7 +62,19 @@ class CollectionTest < Test::Unit::TestCase
       service = collection.instantiate_service!("UlrichsCover")
 
       assert_not_nil service, "Service for UlrichsCover not returned"
-      assert_not_nil service.request, "Service for UlrichsCover does not have request set."
+      assert_not_nil service.request, "Service for UlrichsCover does not have request set."      
+    end
+
+    def test_get_nonexisting_task
+      collection = Collection.new(requests(:simple_request) , @fake_session)
+
+      null_services = collection.instantiate_services!(:task => :no_such_task)
+
+      assert_equal [], null_services
+
+      null_services = collection.instantiate_services!(:task => :no_such_task, :level => 1)
+
+      assert_equal [], null_services
       
     end
 end

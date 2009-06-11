@@ -81,8 +81,8 @@ class Collection
   def get_service_definitions(options = {})
     options[:task] ||= Service::StandardTask
     
-    configs_for_task = @service_definitions[ options[:task] ] 
-
+    configs_for_task = @service_definitions[ options[:task] ] || {}
+    
     service_configs = case options[:level]
                         when nil
                           # All of of them for this task
