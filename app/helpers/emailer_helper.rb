@@ -11,8 +11,10 @@ module EmailerHelper
     
     cite = request.referent.to_citation 
 
+    title = truncate(cite[:title].strip,:length => 70, :omission => '...')
+    
     rv << (cite[:title_label].strip + ": ")if options[:include_labels]
-    rv << cite[:title].strip
+    rv << title
     rv << "\n"
     
     if cite[:author]  
@@ -28,9 +30,9 @@ module EmailerHelper
 
     pub = []
     pub << date_format(cite[:date]) unless cite[:date].blank?	
-    pub << 'Volume: '+cite[:volume].strip unless cite[:volume].blank?
-    pub << 'Issue: '+cite[:issue].strip unless cite[:issue].blank?	
-    pub << 'Page: '+cite[:page].strip unless cite[:page].blank?
+    pub << 'Vol: '+cite[:volume].strip unless cite[:volume].blank?
+    pub << 'Iss: '+cite[:issue].strip unless cite[:issue].blank?	
+    pub << 'p. '+cite[:page].strip unless cite[:page].blank?
     if pub.length > 0
       rv << "Published: " if options[:include_labels]
       rv << pub.join('  ')
