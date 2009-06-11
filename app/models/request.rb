@@ -358,12 +358,10 @@ class Request < ActiveRecord::Base
         )
   end
 
-  # pass in string name of a service type value, get back list of
+  # pass in a ServiceTypeValue (or string name of such), get back list of
   # ServiceType objects with that value belonging to this request.
   # :refresh=>true will force a trip to the db to get latest values.
-  # otherwise, association is used. 
-  # This one does make a db call, to get most up to date list.
-  # Should return empty array, never nil. 
+  # otherwise, association is used.  
   def get_service_type(svc_type, options = {})
     svc_type_obj = (svc_type.kind_of?(ServiceTypeValue)) ? svc_type : ServiceTypeValue[svc_type]
 

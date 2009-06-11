@@ -2,7 +2,11 @@
 <html>
 <html lang="EN">
 <head>
-<title><%= AppConfig.param("app_name") %> | <%= @page_title %></title>
+<title><%= AppConfig.param("app_name") %> 
+  <% if @page_title %>
+  | 
+  <%end%>
+  <%= @page_title %></title>
  <%= stylesheet_link_tag 'basic' %> 
 
 
@@ -12,53 +16,23 @@
 
 <body>
 
-<style type="text/css">
-  #help {
-    width: 190px;
-    font-size: 10px;
-    float: right;
-    margin: 0;
-  }
-  .centered_block {
-    width: 768px;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    padding:6px;
-    display: block; 
-    border: 1px solid #eeb211;
-    background-color: #FFFDEA;
-  }
-  #header {
-    margin-top: 10px;
-    font-size: 10px;
-    margin-bottom: -11px;
-  }
-  #footer {
-    margin-bottom: 10px;
-    font-size: 10px;
-    margin-top: -11px;
-  }
-</style>
 
-<div id="header" class="centered_block">
-  <%= image_tag('/local/header.gif', :style=>"float: left;") 
-  %>
-  <div style="clear: both;"></div>
-</div>
+
   
   
-<div id="menuWrapper">
+<div class="umlaut container">
 
+    <div id="header" class="header">
+      <%= image_tag('/local/header.gif') 
+      %>
+    </div>
 
     <%= @content_for_layout %>
     
     <!-- even with nothing in it, footer neccesary for CSS clear=both -->
-    <div id="footer" class="footer"></div>
-</div>
-
-<div class="centered_block" id="footer">
-    FindIt service provided by <%= link_to 'Johns Hopkins Libraries', 'http://webapps.jhu.edu/jhuniverse/libraries/' %> | Powered by <%= link_to 'Umlaut', 'http://umlaut.rubyforge.org/' %>, using services from <%= link_to 'SFX', 'http://www.exlibrisgroup.com/sfx.htm' %>, <%= link_to 'CrossRef', 'http://www.crossref.org' %>, <%= link_to 'Amazon', 'http://www.amazon.com' %>, <%= link_to 'OCLC Worldcat', 'http://www.worldcat.org' %>, <%= link_to 'ISBNdb', 'http://isbndb.com' %> and others.  
+    <div class="footer">
+      FindIt service provided by <%= link_to 'Johns Hopkins Libraries', 'http://webapps.jhu.edu/jhuniverse/libraries/' %> | Powered by <%= link_to 'Umlaut', 'http://umlaut.rubyforge.org/' %>, using services from <%= link_to 'SFX', 'http://www.exlibrisgroup.com/sfx.htm' %>, <%= link_to 'CrossRef', 'http://www.crossref.org' %>, <%= link_to 'Amazon', 'http://www.amazon.com' %>, <%= link_to 'OCLC Worldcat', 'http://www.worldcat.org' %>, <%= link_to 'ISBNdb', 'http://isbndb.com' %> and others.  
+    </div>
 </div>
 
 </body>

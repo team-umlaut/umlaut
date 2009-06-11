@@ -6,27 +6,7 @@
   be usable by anyone. 
 =end
 %>
-<style type="text/css">
-.holding_heading_row {
-  border-top: 1px solid #E9E9E9; 
-  padding-right: 18px;
-  padding-top: 4px;
-  padding-bottom: 0px;
-}
-tr:first-child > td.holding_heading_row {
-  border-top: none;
-  padding-top: 0px;
-}
-</style>
 
-<div class="section_heading">
-  <h3><%= ServiceTypeValue[:holding].section_heading %> </h3>
-  <% if ServiceTypeValue[:highlighted_link].section_prompt %>
-    <p class="sectionNote">
-      <%= ServiceTypeValue[:highlighted_link].section_prompt %>
-    </p>
-  <% end %>
-</div>
 
 <div class="section_content_indent">
 <% holdings = get_service_type('holding') %>
@@ -122,7 +102,5 @@ end %>
     </ul></p>
 <%   end
 %>
-<% if service_types_in_progress?(['holding', 'holding_search']) %>
-<p><%= render(:partial => "background_progress", :locals => { :svc_types => [ServiceTypeValue[:holding],ServiceTypeValue[:holding_search]], :current_set_empty => holdings.empty? } ) %></p>
-<% end %>
+
 </div>

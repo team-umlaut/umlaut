@@ -23,11 +23,6 @@ class ServiceTypeValue < ActiveRecord::Base
     return self.display_name_plural || self.display_name.pluralize
   end
 
-  # default to display_name if section_heading is nil. 
-  def section_heading
-    return super || display_name
-  end
-
   @@distro_conf_file = File.join(RAILS_ROOT, "db", "orig_fixed_data", "service_type_values.yml")
   @@local_conf_file = File.join(RAILS_ROOT, "config", "umlaut_config", "local_service_type_values.yml")
   

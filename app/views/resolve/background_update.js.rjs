@@ -1,0 +1,39 @@
+
+        # Calculate whether there are still outstanding responses _before_
+        # we actually output them, to try and avoid race condition.
+        # If no other services are running that might need to be
+        # updated, stop the darn auto-checker! The auto-checker watches
+        # a js boolean variable 'background_update_check'.
+        renderers = SectionRenderer.bg_update_sections.collect do |s|
+          SectionRenderer.new(@user_request, s)
+        end
+
+        keep_updater_going = (renderers.find {|r| r.services_in_progress?} != nil)
+
+        RAILS_DEFAULT_LOGGER.debug("keep going pre render? #{keep_updater_going}")
+        
+        # Stop the Prototype PeriodicalExecuter object if neccesary.
+        if (! keep_updater_going )
+          page << "umlaut_background_executer.stop();"
+        end
+          
+        # Now update our content -- we don't try to figure out which divs have
+        # new content, we just update them all. Too hard to figure it out. 
+        renderers.each do |renderer|
+          next if renderer.div_id.nil?
+          page << "if($('#{renderer.div_id}')) {"
+            page.replace_html( renderer.div_id, render_section( renderer )) 
+          page << "}"        
+        end
+
+        
+        # Now update the error section if neccesary
+        error_div_info = AppConfig.param("error_div")
+        if ( ! error_div_info.nil? &&
+             @user_request.failed_service_dispatches.length > 0 )
+             page.replace_html(error_div_info[:div_id],
+                               :partial => error_div_info[:partial].to_s)             
+        end
+
+        RAILS_DEFAULT_LOGGER.debug("keep going POST render? #{keep_updater_going}")
+        

@@ -1,6 +1,6 @@
 <% 
 unless @user_request.nil?
-cite = @user_request.referent.to_citation %>
+%>
 
 <div class="inner_modal_dialog send_to_txt">
 <% form_remote_tag :remote => (@force_html_form != true), :url => {:controller => "export_email", :action => "send_txt", :id => params[:id], :format => "js"}, :html => { :action => url_for(:controller => "export_email", :action => "send_txt", :id => params[:id], :format => "html"), :class => "modal_dialog_form" } do %>
@@ -11,7 +11,7 @@ cite = @user_request.referent.to_citation %>
   </div>
   
   <h3><strong>Title:</strong> 
-    <%= h(cite[:title]) %>/<%= h(cite[:author]) %>
+    <%= h(brief_citation(@user_request)) %>
   </h3>
   <div class="section">
     <%= label_tag('number', 'Enter your mobile phone number:') %>
@@ -39,7 +39,7 @@ cite = @user_request.referent.to_citation %>
  %>
        <li>
         <%= radio_button_tag 'holding', p.id, (params[:holding].to_s == p.id.to_s) || holdings.length == 1 %>
-        <%= label_tag "holding_#{p.id}", formatted_txt_holding_status(target) %>
+        <%= label_tag "holding_#{p.id}", formatted_html_holding_status(target) %>
        </li>
 <%
     end

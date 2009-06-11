@@ -2,23 +2,20 @@
 
   <%= render(:partial => "api_in_progress", :layout => false) %>
 
-<% @partial_html_sections.each do |section| %>
+<% @partial_html_sections.each do |section| 
+    renderer = SectionRenderer.new(@user_request, section) 
+
+%>
   <html_section id="<%= section[:div_id] %>">
     <included_services>
-       <% section[:service_type_values].each do |type_name| %>
-         <service name="<%= type_name %>" />
+       <% renderer.service_type_values.each do |svc_type| %>
+         <service name="<%= svc_type.name %>" />
        <% end %>
     </included_services>
-    <service_load_complete value="<%= section[:complete?]  %>" />
-    <response_count value="<%= section[:response_count] %>" />
+    <service_load_complete value="<%= ! renderer.services_in_progress?  %>" />
+    <response_count value="<%= renderer.responses_list.length %>" />
     <html_content>
-      <%= 
-          html = render(:partial => section[:partial].to_s )
-          # xml-escape our html, so we can safely embed it in our xml
-          # even if it's not valid xhtml, and in one XML 'string'. 
-          # We abuse REXML for it's XML-escaping powers. 
-          REXML::Text.new( html ).to_s 
-       %>
+      <%=  escape_xml(  render_section(renderer) ) %> 
     </html_content>
   </html_section>
 <% end %>

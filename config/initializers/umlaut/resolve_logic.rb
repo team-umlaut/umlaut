@@ -2,18 +2,6 @@
   # Reccommend you leave set to true, unless debugging. 
   AppConfig::Base.threaded_services = true
     
-  # Custom logic as to whether the ILL (doc_del) section of the resolve
-  # menu should be shown. This sample logic is, I think, copied from rsinger's
-  # original, not sure what motivates it. 
-  # AppConfig::Base.resolve_display_ill = lambda do |umlaut_request|
-  #     return true if (umlaut_request.get_service_type('fulltext').empty? &&
-  #                     umlaut_request.get_service_type('holding').empty?) ||
-  #                     ( @umlaut_request.referent.format != 'journal' ) ||
-  #                     ( ! @umlaut.request.referent.metadata['atitle'].empty? )
-  #     return false
-  #  end
-  # Below: Just always display it, if it's supplied by SFX. 
-  AppConfig::Base.resolve_display_ill = lambda {|umlaut_request| return true}
 
 
   #   Direct-link-with-frameset was an interesting experiment, but in jrochkind

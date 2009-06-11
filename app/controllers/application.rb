@@ -107,8 +107,23 @@ class ApplicationController < ActionController::Base
     return url_for_with_co(params, original_co)
     
   end
-  
 
+  # Just replaces <, >, &, ', and " so you can include arbitrary text
+  # as an xml payload. I think those three chars are all you need for
+  # an xml escape. Weird this isn't built into Rails, huh?
+  def escape_xml(string)    
+   string.gsub(/[&<>\'\"]/) do | match |
+     case match
+       when '&' then '&amp;'
+       when '<' then '&lt;'
+       when '>' then '&gt;'
+       when '"' then '&quot;'
+       when "'" then '&apos;'
+     end
+   end   
+  end
+  helper_method :escape_xml
+  
   # Pass in a hash of Rails params, plus a context object.
   # Get back a url suitable for calling those params in your
   # rails app, with the kev OpenURL context object tacked on
@@ -174,7 +189,7 @@ class ApplicationController < ActionController::Base
   # Have to supply rails request and umlaut request.
   protected
   helper_method :permalink_url
-  def permalink_url(rails_request, umlaut_request)
+  def permalink_url(rails_request, umlaut_request, options = {})
     # if we don't have everything, we can't make a permalink. 
     unless (umlaut_request && umlaut_request.referent &&
             umlaut_request.referent.permalinks &&
@@ -183,9 +198,9 @@ class ApplicationController < ActionController::Base
             return nil
     end
     
-    return url_for(:controller=>"store",    
+    return url_for(options.merge({:controller=>"store",    
         :id=>umlaut_request.referent.permalinks[0].id,
-        :only_path => false )
+    :only_path => false}) )
         
   end
 

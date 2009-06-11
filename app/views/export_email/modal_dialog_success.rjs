@@ -7,7 +7,7 @@ form_id = "ajax_svc_" + params[:id]
 
 # Return the overall page to normal. 
 page[form_id.to_sym].hide
-page[:menuWrapper].visual_effect :opacity, :from => 0.3, :to => 1.0, :duration => 0.0
+page[:container].visual_effect :opacity, :from => 0.3, :to => 1.0, :duration => 0.0
 
 # Ugh, we want to create a new DIV under the body, whatever it's ID. The RJS
 # helpers aren't very helpful. We use some raw js. 

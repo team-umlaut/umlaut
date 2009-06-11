@@ -1,5 +1,5 @@
 <%
-   search_providers = get_service_type('search_inside')   
+   search_providers = search_inside  
 %>
 
   
@@ -9,14 +9,15 @@
       # that has a text input box in it otherwise. 
       if ( search_providers.length > 0 && 
          ! service_type_in_progress?('search_inside') ) %>
-    <div id="search_inside" class="main_column_section">
-
-    <h3 id="audio_heading">Search inside this 
-    <%= 
-     thing = @user_request.referent.type_of_thing
-     thing = 'journal' if thing == 'article'
-     thing
-     %></h3>
+    <div class="umlaut_section search_inside">
+      <div class="section_heading">
+        <h3>Search inside this 
+          <%= 
+           thing = @user_request.referent.type_of_thing
+           thing = 'journal' if thing == 'article'
+           thing
+       %></h3>
+      </div>
     <% # We don't show the search box unless we have a search provider AND
         # we're completely done loading search providers. Too hard
         # to deal with AJAX updating of search providers without
@@ -46,28 +47,12 @@
        too likely to be a false promise -->
   <%
   if ( @user_request.referent.format == 'book' && service_type_in_progress?('search_inside')) %>
-    <!-- custom spinner -->
-    
-    <div id="progress_search_inside">
-      <% if @force_bg_progress_spinner %>
-          <%= 
-          image_tag('spinner.gif') %>
-           Looking for tools to search inside this <%= @user_request.referent.type_of_thing %>.
-      <% else %> 
-        Search inside this <%= @user_request.referent.type_of_thing %> tools may be available. <%= link_to "Find available tools", {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %>
-      <% end %>
-      
-      <% unless @force_bg_progress_spinner == false # Not just nil, but false  
-      %>
-        <script type="text/javascript">
-        <%= update_page do |page|
-             page.replace_html(:progress_search_inside, "#{image_tag('spinner.gif')} Looking for tools to search inside this #{@user_request.referent.type_of_thing}.")
-        end
-        %>
-        </script>
-      <% end %>
-    </div>
-    
+  
+    <%= render(:partial => "background_progress",
+           :locals => {
+            :svc_type => "search_inside",
+            :progress_message => "Looking for tools to search inside this #{@user_request.referent.type_of_thing}" }) %>
+  
   <% end %>
 
 

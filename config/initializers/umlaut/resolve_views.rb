@@ -1,14 +1,9 @@
   # Set up what partials and layouts to use for resolution services. 
-  # Also sets up a mapping that explains for a div on the resolve menu,
-  # what partial is used to fill it, and what ServiceTypeValues are possibly
-  # displayed by that partial. 
 
-  # This is used by the background updating scripts, and also used by the
-  # partial APIs, in another config parameter below, partial_html_map, that by
-  # default is based on bg_update_map
 
   # Use a custom resolve menu view, if you really can't configure
-  # the existing one satisfactorily.
+  # the existing one satisfactorily. Deprecatd, you should hardly ever
+  # need this with the section description feature below. 
   # AppConfig::Base.resolve_view = 'local/my_institution_resolve_index.erb.html'
 
 
@@ -16,98 +11,139 @@
   #AppConfig::Base.resolve_layout = "distribution/jhu_resolve"
   #AppConfig::Base.search_layout = 'distribution/jhu_search'
 
-  # Use a custom partial for the local holdings block on the resolve page
-  #AppConfig::Base.partial_for_holding = 'alternate/holding_alternate'
 
 
-  # We list all of the divs and their content for the resolve menu.
-  # We imagine a future Umlaut that takes much more config from here,
-  # abstractly constructing the entire page from this. Right now,
-  # it's re-used for background update and for the partial js api.
-  # And the order of holdings and document_delivery in resolve_main_sections
-  # does determine their order on the page, that's it. 
   
-AppConfig::Base.resolve_main_sections = 
+  # Describe Individual sections of content. Used for rendering Umlaut html
+  # page, used for background-updating of Umlaut html page, used for partial
+  # html api.
+  #
+  # This is a list of hashes. Can include recognized keys from SectionRenderer,
+  # see documentation there for details.
+  #
+  # Order of descripton hashes in this list determines order of display
+  # on the HTML resolve page.
+  #
+  # Additional hash values determine where and whether each section is
+  # displayed.
+  #
+  # html_area => can be sybmols: :main, :sidebar, or :resource_info.  Tells the
+  #              resolve/index page to include this section in the designated
+  #              area. Some sections are called out by ID for inclusion
+  #              in the resolve page, eg cover_image. But most need an
+  #              html_area key set to be displayed. 
+  # bg_update => false, won't be included in bg update. defaults to true.
+  # partial_html_api => false, won't be included in partial html api. defaults to true.
+
+  # You can over-ride this list in your local resolve_views.rb. But rather
+  # than re-setting the entire list, for forwards compabibility it's best to try
+  # to modify the already existing list just enough. 
+  # For instance, to swap order of elements in your local initializer,
+  # you can use a convenience method in SectionRenderer:
+  # eg: SectionRenderer.swap_if_needed!("document_delivery", "holding")
+  #   => ensure document_delivery comes _before_ holding, swapping their
+  #      places if neccesary. 
+AppConfig::Base.resolve_sections = 
                          [
                           { :div_id => "cover_image",
                             :partial => "cover_image",
-                            :service_type_values => ["cover_image"]
+                            :visibility => :responses_exist,
+                            :show_heading => false,
+                            :show_spinner => false
                           },
-                          { :div_id => "search_inside_wrapper",
-                            :partial => "search_inside",
-                            :service_type_values => ["search_inside"]
+                          { :div_id => "search_inside",
+                            :html_area => :resource_info,
+                            # partial handles it's own visiblity and spinner
+                            :partial => "search_inside",                            
+                            :show_partial_only => true                      
                           },
-                          { :div_id => "fulltext_wrapper",
+                          { :div_id => "fulltext",
+                            :section_title => "#{ServiceTypeValue[:fulltext].display_name} via:",
+                            :html_area => :main,
+                            # we use a custom complete partial for list with 
+                            #limit and custom labels for 'can not link direct
+                            #to citation''
                             :partial => "fulltext",
-                            :service_type_values => ["fulltext"]
+                            :show_partial_only => true
                           },
-                          { :div_id => "excerpts_wrapper",
-                            :partial => "excerpts",
-                            :service_type_values => ["excerpts"]
+                          { :div_id => "excerpts",
+                            :section_prompt => 
+                              "A limited preview which may include table of contents, index, and other selected pages.",
+                            :html_area => :main,
+                            :list_visible_limit => 5,
+                            :visibility => :responses_exist,                            
                           },
-                          { :div_id => "audio_wrapper",
-                            :partial => "audio",
-                            :service_type_values => ["audio"]
+                          { :div_id => "audio",
+                            :section_title =>
+                              "#{ServiceTypeValue[:audio].display_name} via",
+                            :html_area => :main,
+                            :visibility => :responses_exist                            
                           },
-                          { :div_id => "holding", 
-                          :partial => DependentConfig.new {AppConfig.param("partial_for_holding","holding")},
-                            :service_type_values => ["holding","holding_search"]
+                          { :div_id => "holding",
+                            :section_title => ServiceTypeValue[:holding].display_name_pluralize,
+                            :html_area => :main,
+                            :partial => 'holding',
+                            :service_type_values =>
+                              ["holding","holding_search"],
                           },
                           { :div_id => "document_delivery",
-                            :partial => "document_delivery",
-                            :service_type_values => ["document_delivery"]},
-                          { :div_id => 'tables_of_contents',
-                            :partial => 'tables_of_contents',
-                            :service_type_values => ["table_of_contents"]
+                            :section_title => "Request a copy from Inter-Library Loan",
+                            :html_area => :main,
+                            :visibility => :responses_exist,
+                            :bg_update => false
                           },
-                          { :div_id => 'abstracts',
-                            :partial => "abstracts",
-                            :service_type_values => ["abstract"]
+                          { :div_id => 'table_of_contents',
+                            :html_area => :main,
+                            :visibility => :responses_exist
+                          },
+                          { :div_id => 'abstract',
+                            :html_area => :main,
+                            :visibility => :responses_exist                          },
+                          { :div_id => 'help',
+                            :html_area => :sidebar,
+                            :bg_update => false,
+                            :partial => 'help',
+                            :show_heading => false,
+                            :show_spinner => false,
+                            :visibility => :responses_exist
+                          },
+                          { :div_id => 'coins',
+                            :html_area => :sidebar,
+                            :partial=>"coins", 
+                            :service_type_values => [], 
+                            :show_heading => false, 
+                            :show_spinner => false,
+                            :bg_update => false,
+                            :partial_html_api => false
+                          },
+                          { :div_id => 'export_citation',
+                            :html_area => :sidebar,
+                            :visibility => :in_progress,
+                            :item_name_plural => "Export tools"
+                            },
+                          { :div_id => 'related_items',
+                            :html_area => :sidebar,
+                            :partial => 'related_items',
+                            :section_title => "More like this",
+                            :item_name_plural => "Related Items",
+                            # custom visibility, show it for item-level cites,
+                            # or if we actually have some
+                            :visibility => lambda do |renderer|
+                               (! renderer.request.title_level_citation?) ||
+                               (! renderer.responses_empty?)
+                            end,
+                            :service_type_values => ['cited_by', 'similar']},
+                          { :div_id => "highlighted_link",
+                            :section_title => "See also",
+                            :html_area => :sidebar,
+                            :visibility => :in_progress,
+                            :partial_locals => { :show_source => true }
                           }
                        ]
+                    
 
-                          
-AppConfig::Base.resolve_sidebar_sections = 
-               [
-                  { :div_id => 'related_items',
-                    :partial => 'related_items',
-                    :service_type_values => ['cited_by', 'similar']},
-                  { :div_id => 'export_citation',
-                    :partial => 'export',
-                    :service_type_values => ['export_citation']},
-                  {:div_id => "highlighted_links",
-                   :partial => "highlighted_links_start",
-                   :service_type_values => ["highlighted_link"]
-                  }
-                ]
-                 
-  
-  # Divs to be updated by the background updater in resolve controller. See
-  # background_update.rjs. Specifies certain div sections on the resolve menu--
-  # what the div id is, what partial view is used to fill it, and what
-  # ServiceTypeValues are generated. This data structure can then be used
-  # by the background updater to automatically update certain divs on the page
-  # as more info comes in, and to generate spinners in the right places.
-  # Also includes specification of a div to put errors in, so error display
-  # be updated when generated by a background service. 
-  
-  
-  AppConfig::Base.bg_update_map = {:divs  =>    
-  ( 
-    DependentConfig.new { AppConfig::Base.resolve_main_sections } +
-    DependentConfig.new{ AppConfig::Base.resolve_sidebar_sections }
-  ) ,
-              :error_div =>
-                    { :div_id => 'service_errors',
-                      :partial => 'service_errors'}
-  }
+  # Tells the bg updater 
+  AppConfig::Base.error_div = { :div_id => 'service_errors',
+                                :partial => 'service_errors'}
 
-                        
-  # Map specifying portions of HTML to be generated and exposed by the
-  # partial_html_sections action API in resolve controller.
-  # In fact, this is the same information needed in bg_update_divs
-  # above, so we store it in the same format and simply copy that
-  # data. But a seperate variable is provided in case you have
-  # a reason to make the partial_html_sections action deliver
-  # different content than what is on the resolve page. 
-  AppConfig::Base.partial_html_map = DependentConfig.new {AppConfig::Base.bg_update_map[:divs]}
+ 

@@ -1,10 +1,12 @@
+  
+  
   <div class="oneColumn">
   <h1>Journals</h1>
     
 <%= render :partial=>"a_to_z" %>
 
   <% if flash[:error] %>
-    <div id="error" class="citationLinker notice"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
+    <div id="error" class="notice citationLinker"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
   <% end %>
 
   <h2 class="cl_header">Searching for a specific journal?</h2>

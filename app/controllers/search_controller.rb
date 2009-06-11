@@ -28,6 +28,7 @@ class SearchController < ApplicationController
   before_filter :normalize_params
   
   def index
+    @page_title = "Journals"  
     # Oddly, render doesn't call the action method.
     journals()
   	render :action=>'journals'

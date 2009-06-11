@@ -12,7 +12,7 @@ EOF
 
 page.replace_html( "ajax_svc_#{@svc_type.id}", :partial => (@partial || params[:action]))
 
-page[:menuWrapper].visual_effect :opacity, :from => 1.0, :to => 0.3, :duration => 0.0
+page[:container].visual_effect :opacity, :from => 1.0, :to => 0.3, :duration => 0.0
 page[:"ajax_svc_#{@svc_type.id}"].show
 
 # Okay, we're going to make sure it's on the browser screen, please. 

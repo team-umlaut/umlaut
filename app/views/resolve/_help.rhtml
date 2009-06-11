@@ -1,18 +1,10 @@
-<style>
-.nopadding {
-  margin: 0;
-  padding: 0;
-  vertical-align: top;
-}
-</style>
 
-<% help_responses = get_service_type('help')
-     unless (help_responses.blank?) %>
-     <div id="help">
-<span id="helpicon">?</span>
+
+
+        <span id="helpicon">?</span>
         <span class="smallText">Question? Problem? Contact:</span>
         <ul style="text-align: right">
-        <% help_responses.each do |help|
+        <% help.each do |help|
               value_hash = help.view_data %>
               <li> <%= link_to value_hash[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %>  
               <% unless value_hash[:note].blank? %>
@@ -22,6 +14,4 @@
               </li>    
         <% end %>
         </ul>
-     </div>
-  <% end %>
   

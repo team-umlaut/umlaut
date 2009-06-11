@@ -1,18 +1,18 @@
-<% # Can actually be probably used for other service types than full text.
-   # But anyway, displays a typical full text element in typical markup.
-   # pass in a ServiceType object for the response as :object 
+<% 
+   # Displays a typical Umlaut response element in typical markup.
+   # Pass in a ServiceType object for the response using Rails partial
+   # :object or :collection convention
    
    #optional argument, :locals => 
-   #    :li_class => class to add to <li>
    #    :show_source => default false, if true display the source of the link
-   li_class ||= "fulltextlink"
    show_source ||= false
    
+   service_type = standard_response_item # passed in via :object or :collection
    # passed in in :object or :collection 
-   view_data = fulltext_element.view_data
+   view_data = service_type.view_data
 %>
 
-<li class="<%= li_class %>"> 
+<li class="response_item"> 
 
   <!-- fancy schmancy ajax? But not if we're generating embed partials,
        won't work. -->
@@ -23,21 +23,31 @@
   %>
       <%= link_to_remote(view_data[:display_text], 
       :url=> {:controller=>'link_router', 
-              :id=>fulltext_element.id, 
+              :id=>service_type.id, 
               :format => "js"},
-     :html=> {:id => "svctype_link_#{fulltext_element.id}", 
+     :html=> {:id => "svctype_link_#{service_type.id}", 
               :href => url_for(:controller=>'link_router',      
-                               :id=>fulltext_element.id, 
+                               :id=>service_type.id, 
                                :format => "html"), 
               :target => "_blank" }) %>
+  <% elsif (view_data[:content] ) 
+     #collapsible content on page
+  %>
+    <% expand_contract_section(view_data[:display_text], "svc_id_#{service_type.id}") do %>
+      <div class="section_content_indent">
+        <%= view_data[:content] %>
+      </div>
+    <% end %>
+  
+  
   <% else 
     # Ordinary href link. 
   %>      
-    <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>fulltext_element.id}, 'target'=>"_blank", 'id' => "svctype_link_#{fulltext_element.id}" %>
+    <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>service_type.id}, 'target'=>"_blank", 'id' => "svctype_link_#{service_type.id}" %>
   <% end %>
 
 <% if show_source %>
-  <div class="link_source">from <%= view_data[:source] || fulltext_element.service_response.service.display_name %></div>
+  <div class="link_source">from <%= view_data[:source] || service_type.service_response.service.display_name %></div>
 <% end %>
 
 <% unless view_data[:coverage].blank? %>
@@ -62,7 +72,7 @@
 
 <!-- debug info, hidden with CSS, can be made visible with javascript. -->
 <div class="debug_info" style="display:none">
-  <b>Debug info:</b> <%= fulltext_element.service_response.service.service_id %>
+  <b>Debug info:</b> <%= service_type.service_response.service.service_id %>
   
   <% unless view_data[:debug_info].blank? %>
     ; <%= view_data[:debug_info] %>

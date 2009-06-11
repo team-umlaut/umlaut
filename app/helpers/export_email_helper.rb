@@ -1,11 +1,28 @@
 module ExportEmailHelper
-
+  include EmailerHelper
+  
   def formatted_txt_holding_status(view_data)
     output = ""
 
     output << view_data[:collection_str] if view_data[:collection_str]
     output << " " + view_data[:call_number] if view_data[:call_number]
     output << " " + view_data[:status] if view_data[:status]
+    
+    return output
+  end
+
+  def formatted_html_holding_status(view_data)
+    output = ""
+
+    output << ('<span class="collection">' +
+                view_data[:collection_str] +
+                '</span') if view_data[:collection_str]
+    output << (' ' + '<span class="call_no">' + ' ' +
+                view_data[:call_number] +
+               '</span') if view_data[:call_number]
+    output << (' ' + '<span class="status">' + ' ' +
+               view_data[:status] +
+               '</span>') if view_data[:status]
     
     return output
   end

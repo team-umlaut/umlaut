@@ -1,8 +1,4 @@
-<% if controller.controller_name() == 'request' %>
-<body onload="<%= display_closest_web_results? -%><%= remote_function(:url => { :action => :do_background_services, :id=>@context_object_handler.id, :background_id=>@background_id }, :success=>"showIDs(request.responseText)")-%>">
-<% else %>
 <body>
-<%end%>
 
 
 <% if @user_request %>

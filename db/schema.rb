@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090526192301) do
+ActiveRecord::Schema.define(:version => 20090604141711) do
 
   create_table "categories", :force => true do |t|
     t.string "category",    :limit => 100, :default => "", :null => false
@@ -196,8 +196,6 @@ ActiveRecord::Schema.define(:version => 20090526192301) do
     t.string   "display_name"
     t.string   "display_name_plural"
     t.datetime "updated_at"
-    t.string   "section_heading"
-    t.string   "section_prompt"
   end
 
   create_table "service_types", :force => true do |t|
