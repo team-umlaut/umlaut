@@ -446,11 +446,12 @@ class SectionRenderer
   def self.swap_if_needed!(first, second)
 
     list = AppConfig.param("resolve_sections")
+    return unless list
 
     index1 = find_index(list) {|s| s[:div_id] == first}
     index2 = find_index(list) {|s| s[:div_id] == second}
 
-    (list[index1], list[index2] = list[index2], list[index1]) if index1 > index2
+    (list[index1], list[index2] = list[index2], list[index1]) if index1 && index2 && (index1 > index2)
 
     list
   end
