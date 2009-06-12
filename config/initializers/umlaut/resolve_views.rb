@@ -43,107 +43,109 @@
   # eg: SectionRenderer.swap_if_needed!("document_delivery", "holding")
   #   => ensure document_delivery comes _before_ holding, swapping their
   #      places if neccesary. 
-AppConfig::Base.resolve_sections = 
-                         [
-                          { :div_id => "cover_image",
-                            :partial => "cover_image",
-                            :visibility => :responses_exist,
-                            :show_heading => false,
-                            :show_spinner => false
-                          },
-                          { :div_id => "search_inside",
-                            :html_area => :resource_info,
-                            # partial handles it's own visiblity and spinner
-                            :partial => "search_inside",                            
-                            :show_partial_only => true                      
-                          },
-                          { :div_id => "fulltext",
-                            :section_title => "#{ServiceTypeValue[:fulltext].display_name} via:",
-                            :html_area => :main,
-                            # we use a custom complete partial for list with 
-                            #limit and custom labels for 'can not link direct
-                            #to citation''
-                            :partial => "fulltext",
-                            :show_partial_only => true
-                          },
-                          { :div_id => "excerpts",
-                            :section_prompt => 
-                              "A limited preview which may include table of contents, index, and other selected pages.",
-                            :html_area => :main,
-                            :list_visible_limit => 5,
-                            :visibility => :responses_exist,                            
-                          },
-                          { :div_id => "audio",
-                            :section_title =>
-                              "#{ServiceTypeValue[:audio].display_name} via",
-                            :html_area => :main,
-                            :visibility => :responses_exist                            
-                          },
-                          { :div_id => "holding",
-                            :section_title => ServiceTypeValue[:holding].display_name_pluralize,
-                            :html_area => :main,
-                            :partial => 'holding',
-                            :service_type_values =>
-                              ["holding","holding_search"],
-                          },
-                          { :div_id => "document_delivery",
-                            :section_title => "Request a copy from Inter-Library Loan",
-                            :html_area => :main,
-                            :visibility => :responses_exist,
-                            :bg_update => false
-                          },
-                          { :div_id => 'table_of_contents',
-                            :html_area => :main,
-                            :visibility => :responses_exist
-                          },
-                          { :div_id => 'abstract',
-                            :html_area => :main,
-                            :visibility => :responses_exist                          },
-                          { :div_id => 'help',
-                            :html_area => :sidebar,
-                            :bg_update => false,
-                            :partial => 'help',
-                            :show_heading => false,
-                            :show_spinner => false,
-                            :visibility => :responses_exist
-                          },
-                          { :div_id => 'coins',
-                            :html_area => :sidebar,
-                            :partial=>"coins", 
-                            :service_type_values => [], 
-                            :show_heading => false, 
-                            :show_spinner => false,
-                            :bg_update => false,
-                            :partial_html_api => false
-                          },
-                          { :div_id => 'export_citation',
-                            :html_area => :sidebar,
-                            :visibility => :in_progress,
-                            :item_name_plural => "Export tools"
+ begin
+   AppConfig::Base.resolve_sections = 
+                           [
+                            { :div_id => "cover_image",
+                              :partial => "cover_image",
+                              :visibility => :responses_exist,
+                              :show_heading => false,
+                              :show_spinner => false
                             },
-                          { :div_id => 'related_items',
-                            :html_area => :sidebar,
-                            :partial => 'related_items',
-                            :section_title => "More like this",
-                            :item_name_plural => "Related Items",
-                            # custom visibility, show it for item-level cites,
-                            # or if we actually have some
-                            :visibility => lambda do |renderer|
-                               (! renderer.request.title_level_citation?) ||
-                               (! renderer.responses_empty?)
-                            end,
-                            :service_type_values => ['cited_by', 'similar']},
-                          { :div_id => "highlighted_link",
-                            :section_title => "See also",
-                            :html_area => :sidebar,
-                            :visibility => :in_progress,
-                            :partial_locals => { :show_source => true }
-                          }
-                       ]
-                    
-
-  # Tells the bg updater 
-  AppConfig::Base.error_div = { :div_id => 'service_errors',
-                                :partial => 'service_errors'}
-
- 
+                            { :div_id => "search_inside",
+                              :html_area => :resource_info,
+                              # partial handles it's own visiblity and spinner
+                              :partial => "search_inside",                            
+                              :show_partial_only => true                      
+                            },
+                            { :div_id => "fulltext",
+                              :section_title => "#{ServiceTypeValue[:fulltext].display_name} via:",
+                              :html_area => :main,
+                              # we use a custom complete partial for list with 
+                              #limit and custom labels for 'can not link direct
+                              #to citation''
+                              :partial => "fulltext",
+                              :show_partial_only => true
+                            },
+                            { :div_id => "excerpts",
+                              :section_prompt => 
+                                "A limited preview which may include table of contents, index, and other selected pages.",
+                              :html_area => :main,
+                              :list_visible_limit => 5,
+                              :visibility => :responses_exist,                            
+                            },
+                            { :div_id => "audio",
+                              :section_title =>
+                                "#{ServiceTypeValue[:audio].display_name} via",
+                              :html_area => :main,
+                              :visibility => :responses_exist                            
+                            },
+                            { :div_id => "holding",
+                              :section_title => ServiceTypeValue[:holding].display_name_pluralize,
+                              :html_area => :main,
+                              :partial => 'holding',
+                              :service_type_values =>
+                                ["holding","holding_search"],
+                            },
+                            { :div_id => "document_delivery",
+                              :section_title => "Request a copy from Inter-Library Loan",
+                              :html_area => :main,
+                              :visibility => :responses_exist,
+                              :bg_update => false
+                            },
+                            { :div_id => 'table_of_contents',
+                              :html_area => :main,
+                              :visibility => :responses_exist
+                            },
+                            { :div_id => 'abstract',
+                              :html_area => :main,
+                              :visibility => :responses_exist                          },
+                            { :div_id => 'help',
+                              :html_area => :sidebar,
+                              :bg_update => false,
+                              :partial => 'help',
+                              :show_heading => false,
+                              :show_spinner => false,
+                              :visibility => :responses_exist
+                            },
+                            { :div_id => 'coins',
+                              :html_area => :sidebar,
+                              :partial=>"coins", 
+                              :service_type_values => [], 
+                              :show_heading => false, 
+                              :show_spinner => false,
+                              :bg_update => false,
+                              :partial_html_api => false
+                            },
+                            { :div_id => 'export_citation',
+                              :html_area => :sidebar,
+                              :visibility => :in_progress,
+                              :item_name_plural => "Export tools"
+                              },
+                            { :div_id => 'related_items',
+                              :html_area => :sidebar,
+                              :partial => 'related_items',
+                              :section_title => "More like this",
+                              :item_name_plural => "Related Items",
+                              # custom visibility, show it for item-level cites,
+                              # or if we actually have some
+                              :visibility => lambda do |renderer|
+                                 (! renderer.request.title_level_citation?) ||
+                                 (! renderer.responses_empty?)
+                              end,
+                              :service_type_values => ['cited_by', 'similar']},
+                            { :div_id => "highlighted_link",
+                              :section_title => "See also",
+                              :html_area => :sidebar,
+                              :visibility => :in_progress,
+                              :partial_locals => { :show_source => true }
+                            }
+                         ]
+                      
+  
+    # Tells the bg updater 
+    AppConfig::Base.error_div = { :div_id => 'service_errors',
+                                  :partial => 'service_errors'}
+rescue ActiveRecord::ActiveRecordError => e
+  RAILS_DEFAULT_LOGGER.warn("Couldn't initiailize resolve_views. Database schema not created yet? #{e.inspect}")
+end
