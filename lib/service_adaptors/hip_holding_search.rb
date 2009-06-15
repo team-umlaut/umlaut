@@ -57,7 +57,7 @@ class HipHoldingSearch < Hip3Service
     # search. 
     title_terms = search_terms_for_title_phrase(title)
     unless ( title_terms )
-      RAILS_DEFAULT_LOGGER.debug("#{self.id} is missing title, can not search.")
+      RAILS_DEFAULT_LOGGER.debug("#{self.service_id} is missing title, can not search.")
       return request.dispatched(self, true)
     end
     
