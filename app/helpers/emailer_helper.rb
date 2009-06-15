@@ -11,7 +11,7 @@ module EmailerHelper
     
     cite = request.referent.to_citation 
 
-    title = truncate(cite[:title].strip,:length => 70, :omission => '...')
+    title = truncate(cite[:title].strip,70,'...')
     
     rv << (cite[:title_label].strip + ": ")if options[:include_labels]
     rv << title
