@@ -79,8 +79,10 @@ class ApplicationController < ActionController::Base
   def log_processing
     super
     if logger && logger.info?
-      logger.info("  HTTP Referer: #{request.referer[0..100]}") if request && request.referer
+      logger.info("  HTTP Referer: #{request.referer}") if request && request.referer
       logger.info("  HTTP Referer: [none]") unless request && request.referer
+
+      logger.info("  User-Agent: #{request.user_agent}")
     end
   end
 
