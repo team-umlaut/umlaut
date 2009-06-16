@@ -44,7 +44,7 @@ class ServiceBundle
               # and actually execute it
               local_service.handle_wrapper(local_request)
             else
-              RAILS_DEFAULT_LOGGER.info("NOT launching service #{local_service.service_id},  level #{@priority_level}, request #{local_request.object_id}: not in runnable state") if @log_timing
+              RAILS_DEFAULT_LOGGER.info("NOT launching service #{local_service.service_id},  level #{@priority_level}, request #{local_request.id}: not in runnable state") if @log_timing
             end
             
            
