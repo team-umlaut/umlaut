@@ -121,7 +121,6 @@ class HipHoldingSearch < Hip3Service
 
       timing_debug("Finding matches")
       
-      
       if (matches.length > 0 )
         
         # process as exact matches with method from Hip3Service
@@ -136,7 +135,7 @@ class HipHoldingSearch < Hip3Service
           req_bibnum = get_bibnum(request.referent)
           if ( req_bibnum )
             matches.each do |bib|
-              if (req_bibnum == bib.bib_num)
+              if (req_bibnum == bib.bibNum)
                 responses_added.merge!( add_856_links(request, [bib.marc_xml])  )
                 responses_added.merge!( add_copies( request, [bib] ))
                 matches.delete(bib)
