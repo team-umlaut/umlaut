@@ -15,7 +15,8 @@ module MarcHelper
     # Keep track of urls to avoid putting the exact same url in twice
     urls_seen = Array.new
     
-    marc_records.each do |marc_xml|      
+    marc_records.each do |marc_xml|
+    
       marc_xml.find_all {|f| '856' === f.tag}.each do |field|
         url = field['u']
 
@@ -25,15 +26,8 @@ module MarcHelper
         # Already got it from another catalog record?
         next if urls_seen.include?(url)
 
-        # If this is a journal, don't add the URL if it matches in our
-        # SFXUrl finder, because that means we think it's an SFX controlled
-        # URL. But if it's not a journal, use it anyway, because it's probably
-        # an e-book that is not in SFX, even if it's from a vendor who is in
-        # SFX. We use MARC leader byte 7 to tell. Confusing enough?
-        is_journal = (marc_xml.leader[7,1] == 's')
-        
-        next if  is_journal && (SfxUrl.sfx_controls_url?(url))
-        # TO DO: Configure suppress urls in SfxUrl. 
+        # Trying to avoid duplicates with SFX/link resolver. 
+        next if  should_skip_856_link?(request, marc_xml, url)
         
         urls_seen.push(url)
         
@@ -99,6 +93,38 @@ module MarcHelper
       end
     end
     return responses_added
+  end
+
+  # Used by #add_856_links. Complicated logic to try and avoid
+  # presenting a URL from the catalog that duplicates what SFX does,
+  # but present a URL from the catalog when it's really needed.
+  #
+  # One reason not to include Catalog links for an article-level
+  # citation, even if SFX provided no targets, is maybe SFX
+  # provided no targets because SFX _knew_ that the _particular date_
+  # requested is not available. The catalog doesn't know that, but
+  # we don't want to show a link from the catalog that SFX really
+  # already knew wasn't going to be available.
+  #
+  # So:
+  #
+  # If this is a journal, skip the URL if it matches in our
+  # SFXUrl finder, because that means we think it's an SFX controlled
+  # URL. But if it's not a journal, use it anyway, because it's probably
+  # an e-book that is not in SFX, even if it's from a vendor who is in
+  # SFX. We use MARC leader byte 7 to tell if it's a journal. Confusing enough?
+  # Not yet!  Even if it is a journal, if this isn't an article-level
+  # cite and there are no other full text already provided, we
+  # still include. 
+  def should_skip_856_link?(request, marc_record, url)
+     is_journal = (marc_record.leader[7,1] == 's')
+
+     return (  is_journal && 
+               SfxUrl.sfx_controls_url?(url) && 
+                !(  request.title_level_citation? &&     
+                    request.get_service_type("fulltext").length == 0  
+                 )
+              )
   end
 
   # Take a ruby Marc Field object representing an 856 field,
