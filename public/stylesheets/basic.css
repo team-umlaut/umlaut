@@ -219,6 +219,7 @@ h4 {
 .expand_contract_toggle {
   margin-top: 4px;
   margin-bottom: 4px;
+  margin-left: -18px;
 }
 
 
@@ -242,9 +243,7 @@ li.expand_contract_section {
   background: none;
 }
 
-.expand_contract_toggle {
-  margin-left: -18px;
-}
+
 
 img.toggle_icon {
   border: none;
@@ -286,6 +285,12 @@ img.toggle_icon {
 .umlaut_section.fulltext .response_item  {
   background: url(../images/famfamfam/page_text.gif) no-repeat 0px 0px;
   padding: 0px 18px 8px 22px;
+}
+
+.umlaut_section.fulltext .expand_contract_toggle,
+.umlaut_section.audio .expand_contract_toggle,
+.umlaut_section.excerpts .expand_contract_toggle {
+  margin-left: 8px; 
 }
 
 

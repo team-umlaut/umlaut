@@ -120,7 +120,6 @@ module ResolveHelper
     fragment = "#{id}_toggle_link"
 
 
-    concat('<li class="expand-contract_section">', options[:out_binding]) if options[:in_list]
     
     concat('<div class="expand_contract_section">', options[:out_binding])
     
@@ -136,45 +135,9 @@ module ResolveHelper
     yield()      
     concat("</div>", options[:out_binding] )
     concat("</div>", options[:out_binding])
-
-    concat('</li>', options[:out_binding]) if options[:in_list]
     
   end
   
-  def expand_contract_section2(arg_heading, id, options={}, &block)
-    #Defaults
-    options[:initial_expand] ||= false
-    # ugh, when we call this inside another partial with block, we need to pass the block.binding that we can give to concat
-    options[:out_binding] ||= block.binding 
-    
-    # Set up proper stuff for current state.  
-    expanded = (params["umlaut.show_#{id}"] == "true") || options[:initial_expand]
-    opposite_value = (! expanded).to_s
-    heading = ( expanded ? "Hide " : "Show ") + arg_heading
-    initial_hide = ( expanded ? "" : "display: none;")
-    toggle_js = " if ($('#{id}').visible())  { 
-        $('#{id}').hide();
-        $('#{id}_toggle_label').update('Show #{escape_javascript(arg_heading)}');
-      } else {
-        $('#{id}').show();
-        $('#{id}_toggle_label').update('Hide #{escape_javascript(arg_heading)}');
-      }"
-
-    # Construct HTML
-    html = link_to_function("<span id=\"#{id}_toggle_label\" >#{heading}</span>", 
-      toggle_js,
-      :href =>url_for( params.merge({'umlaut.request_id' => @user_request.id, "umlaut.show_#{id}" => opposite_value}))+"##{id}_toggle_link",
-      :name => "#{id}_toggle_link",
-      :class => 'expand_contract_toggle'
-    )
-    
-    html += "<div id=\"#{id}\" class=\"expand_contract_content\" style=\"#{initial_hide}\">"
-
-    # Generate
-    concat(html, options[:out_binding])      
-    yield()      
-    concat("</div>", options[:out_binding] )            
-  end
   
   def generating_embed_partials?
     return @generating_embed_partials == true
@@ -184,7 +147,8 @@ module ResolveHelper
   # number of items to show before 'more'. AJAXy show, with unobtrusive
   # degredation when no javascript. 
   # Based on the idea here for a helper that takes a block. Uses
-  # expand_contract_section for actual hidden overflow. 
+  # expand_contract_section for actual hidden overflow. Will split list
+  # into two different <ul>'s, one before the cut and one after. 
   # http://blog.zmok.net/articles/2008/04/22/block-level-helpers-in-ruby-on-rails
   #
   # id:  id to use for HTML div for hidden part of list. Other ids
@@ -200,29 +164,43 @@ module ResolveHelper
   #
   # Example, in a view:
   # <ul>
-  # <% list_with_limit("div_id_for_list", list, 10) do |item, index| %>
+  # <% list_with_limit("div_id_for_list", list, :limit=>10) do |item, index| %>
   #     <li>Item Number: <%= index %>: <%= item.title %></li>
   # <% end %>
   # <ul>
-  def list_with_limit(id, list, limit=5, &block)
+  def list_with_limit(id, list, options = {}, &block)
+    
+    # backwards compatible to when third argument was just a number
+    # for limit. 
+    options = {:limit => options} unless options.kind_of?(Hash)  
+    options[:limit] ||= 5
+    
+  
     list.each_index do |index|
       item = list[index]
 
       yield(item, index)
       
-      break if list.length > limit && index >= limit-2  
+      break if list.length > options[:limit] && index >= options[:limit]-2  
     end
     
-    if (list.length > limit )
+    if (list.length > options[:limit] )
 
       # passing out_binding in is neccesary for this partial with block
       # inside a partial with block, bah. 
-      expand_contract_section("#{list.length - limit + 1} more", id, :out_binding => block.binding, :in_list => true) do
-        (limit-1).upto(list.length-1) do |index|
+
+      concat("</ul>", block.binding)
+
+      expand_contract_section("#{list.length - options[:limit] + 1} more", id, :out_binding => block.binding) do
+
+        concat("<ul class=\"#{options[:ul_class]}\">", block.binding)
+        (options[:limit]-1).upto(list.length-1) do |index|
           item = list[index]
           yield(item, index)
         end
+
       end
+      
       
     end
   end
