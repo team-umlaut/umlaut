@@ -11,39 +11,39 @@
   <%= renderer.render_heading %>
 
   
-
-<ul class="response_list">
-
-<%
-    list_with_limit('umlaut_fulltext', all_responses, :ul_class => "response_list", :limit => renderer.list_visible_limit ) do |item, index |
-      # Display special warnign header if it's title-level only,
-      # and it's an article or issue level link. Are we
-      # at the beginning of title level display?
-      if ( index == fulltxt.length && 
-           index != 0 &&
-           !title_level_request? )
-         genre = @user_request.referent.metadata['genre']
-         genre = "Journal" if genre && genre.downcase == 'article' %>
-         </ul>
-         <div class="section_subheading">
-           <h4><%= genre ? genre.titlecase : "Title" %>-level Page Only</h4>
-            <p><span class="notice">Can not link directly to citation. Dates or extent of coverage may be unknown.</span></p>
-         </div>
-          <ul class="response_list">
-      <% end %>    
-    
-      <%= render(:partial => "standard_response_item", :object=> item) %>
-<% end %> 
-    
-<%
-if (fulltxt.empty? && title_level_fulltxt.empty? &&
-    ! service_type_in_progress?('fulltext'))
-%>
-<li><p class="notAvailable">Not Available </p></li>
-<% end %>
-
-</ul>
-<%= render( renderer.spinner_render_hash) if renderer.services_in_progress? %>
-
+<div class="umlaut_section_content">
+  <ul class="response_list">
+  
+  <%
+      list_with_limit('umlaut_fulltext', all_responses, :ul_class => "response_list", :limit => renderer.list_visible_limit ) do |item, index |
+        # Display special warnign header if it's title-level only,
+        # and it's an article or issue level link. Are we
+        # at the beginning of title level display?
+        if ( index == fulltxt.length && 
+             index != 0 &&
+             !title_level_request? )
+           genre = @user_request.referent.metadata['genre']
+           genre = "Journal" if genre && genre.downcase == 'article' %>
+           </ul>
+           <div class="section_subheading">
+             <h4><%= genre ? genre.titlecase : "Title" %>-level Page Only</h4>
+              <p><span class="notice">Can not link directly to citation. Dates or extent of coverage may be unknown.</span></p>
+           </div>
+            <ul class="response_list">
+        <% end %>    
+      
+        <%= render(:partial => "standard_response_item", :object=> item) %>
+  <% end %> 
+      
+  <%
+  if (fulltxt.empty? && title_level_fulltxt.empty? &&
+      ! service_type_in_progress?('fulltext'))
+  %>
+  <li><p class="notAvailable">Not Available </p></li>
+  <% end %>
+  
+  </ul>
+  <%= render( renderer.spinner_render_hash) if renderer.services_in_progress? %>
+</div>
 </div>
 
