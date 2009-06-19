@@ -21,7 +21,9 @@
     <% # We don't show the search box unless we have a search provider AND
         # we're completely done loading search providers. Too hard
         # to deal with AJAX updating of search providers without
-        # interrupting user. %>
+        # interrupting user. 
+        %>
+  <div class="umlaut_section_content">
 
     <form target="_blank" action="<%= url_for(:controller=>'link_router', :action=>'index') %>">
     
@@ -40,7 +42,6 @@
     <input name="query" type="text" /> <input value="search" type="submit">
     </form>    
 
-</div>
     
 <%end%>
   <!-- don't show the spinner unless it's identified as a book, otherwise
@@ -54,6 +55,6 @@
             :progress_message => "Looking for tools to search inside this #{@user_request.referent.type_of_thing}" }) %>
   
   <% end %>
-
-
+  </div>
+</div>
 

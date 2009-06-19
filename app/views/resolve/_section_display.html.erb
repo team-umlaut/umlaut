@@ -12,33 +12,38 @@
       <% if presenter.show_heading? %>
         <%= presenter.render_heading %>
       <% end %>
-  
-      <% if presenter.custom_partial? %>
-        <%= render( presenter.content_render_hash ) %>
-      <% elsif presenter.list_visible_limit %>
-        <ul class="response_list <%= presenter.div_id %>">
-
-          <% list_with_limit("#{presenter.div_id}_list_with_limit", presenter.responses_list, presenter.list_visible_limit) do |item, index| %>
-             <%= render( presenter.item_render_hash(item) ) %>
-          <% end %>
-        </ul>
-      <% elsif presenter.responses_list.length == 0 && ! presenter.services_in_progress?%>
-      <ul class="response_list">
-        <li>
-          None available.
-        </li>
-       </ul>
-      <% else %>
-        <ul class="response_list <%= presenter.div_id %>">
-          <%= render( presenter.content_render_hash ) %>
-        </ul>
-      <% end %>
-
-      <% if presenter.show_spinner? %>
-        <%= render(presenter.spinner_render_hash) %>
-      <% end %>
       
-  <% unless presenter.show_partial_only? %>    
+      <% unless presenter.show_partial_only? %>
+      <div class="umlaut_section_content">
+      <% end %>
+  
+        <% if presenter.custom_partial? %>
+          <%= render( presenter.content_render_hash ) %>
+        <% elsif presenter.list_visible_limit %>
+          <ul class="response_list <%= presenter.div_id %>">
+  
+            <% list_with_limit("#{presenter.div_id}_list_with_limit", presenter.responses_list, presenter.list_visible_limit) do |item, index| %>
+               <%= render( presenter.item_render_hash(item) ) %>
+            <% end %>
+          </ul>
+        <% elsif presenter.responses_list.length == 0 && ! presenter.services_in_progress?%>
+        <ul class="response_list">
+          <li>
+            None available.
+          </li>
+         </ul>
+        <% else %>
+          <ul class="response_list <%= presenter.div_id %>">
+            <%= render( presenter.content_render_hash ) %>
+          </ul>
+        <% end %>
+  
+        <% if presenter.show_spinner? %>
+          <%= render(presenter.spinner_render_hash) %>
+        <% end %>
+      
+  <% unless presenter.show_partial_only? %>
+      </div>
     </div>
   <% end %>
   
