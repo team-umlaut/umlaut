@@ -214,6 +214,8 @@ class Scopus < Service
   end
 
   def add_abstract(first_hit, request)
+
+    return if first_hit["abstract"].blank?
     
     request.add_service_response( :service=>self, :display_text => "Abstract from #{@display_name}", :content => first_hit["abstract"], :url => detail_url(first_hit), :service_type_value => :abstract)
   end
