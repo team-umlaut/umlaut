@@ -12,7 +12,6 @@
 
   
 <div class="umlaut_section_content">
-  <ul class="response_list">
   
   <%
       list_with_limit('umlaut_fulltext', all_responses, :ul_class => "response_list", :limit => renderer.list_visible_limit ) do |item, index |
@@ -39,10 +38,11 @@
   if (fulltxt.empty? && title_level_fulltxt.empty? &&
       ! service_type_in_progress?('fulltext'))
   %>
-  <li><p class="notAvailable">Not Available </p></li>
+  <ul class="response_list fulltext">
+    <li><p class="notAvailable">Not Available </p></li>
+  </ul>
   <% end %>
   
-  </ul>
   <%= render( renderer.spinner_render_hash) if renderer.services_in_progress? %>
 </div>
 </div>

@@ -3,10 +3,9 @@
    similar = get_service_type('similar')
 %>
 
-<ul class="related_items response_list">
 
   <%
-      list_with_limit('umlaut_cited_by', cited_by) do |item, index |  %>           
+      list_with_limit('umlaut_cited_by', cited_by, :ul_class => "related_items response_list") do |item, index |  %>           
         <%= render(:partial => "standard_response_item", :object=> item, :locals => { :show_source => true, :li_class => "related_item"}) %>
   <%    end %> 
     
@@ -17,18 +16,18 @@
   <% end %>
 
   <%
-      list_with_limit('umlaut_similar_items', similar) do |item, index |  %>           
+      list_with_limit('umlaut_similar_items', similar, :ul_class =>"related_items response_list") do |item, index |  %>           
         <%= render(:partial => "standard_response_item", :object=> item, :locals => { :show_source => true}) %>
   <%    end %>
   
 
 
   <% if (!service_types_in_progress?([ServiceTypeValue['cited_by'], ServiceTypeValue['similar']])) && similar.empty? && cited_by.empty? %>
-    <li><i>No related items found.</i></li>
-  
+    <ul class="related_items response_list">
+      <li><i>No related items found.</i></li>
+    </ul>
   <% end %>
 
-</ul>
 
 
 

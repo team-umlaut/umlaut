@@ -133,8 +133,8 @@ module ResolveHelper
 
     concat("<div id=\"#{id}\" class=\"expand_contract_content\" style=\"#{initial_hide}\">",options[:out_binding])      
     yield()      
-    concat("</div>", options[:out_binding] )
-    concat("</div>", options[:out_binding])
+    concat("</div><!--exc-->", options[:out_binding] )
+    concat("</div><!--exc-->", options[:out_binding])
     
   end
   
@@ -148,7 +148,8 @@ module ResolveHelper
   # degredation when no javascript. 
   # Based on the idea here for a helper that takes a block. Uses
   # expand_contract_section for actual hidden overflow. Will split list
-  # into two different <ul>'s, one before the cut and one after. 
+  # into two different <ul>'s, one before the cut and one after. Will generate
+  # <ul> tags itself. 
   # http://blog.zmok.net/articles/2008/04/22/block-level-helpers-in-ruby-on-rails
   #
   # id:  id to use for HTML div for hidden part of list. Other ids
@@ -163,18 +164,18 @@ module ResolveHelper
   #           item in block.
   #
   # Example, in a view:
-  # <ul>
   # <% list_with_limit("div_id_for_list", list, :limit=>10) do |item, index| %>
   #     <li>Item Number: <%= index %>: <%= item.title %></li>
   # <% end %>
-  # <ul>
   def list_with_limit(id, list, options = {}, &block)
     
     # backwards compatible to when third argument was just a number
     # for limit. 
     options = {:limit => options} unless options.kind_of?(Hash)  
     options[:limit] ||= 5
-    
+
+    concat("<ul class=\"#{options[:ul_class]}\">", block.binding)
+
   
     list.each_index do |index|
       item = list[index]
@@ -198,7 +199,7 @@ module ResolveHelper
           item = list[index]
           yield(item, index)
         end
-
+        concat("</ul>", block.binding)
       end
       
       

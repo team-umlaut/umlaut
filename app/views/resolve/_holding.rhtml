@@ -52,14 +52,14 @@ holdings.each do |p|
   <% unless target[:coverage_str_array].blank? %>
   <tr>
     <td colspan="4">
-          <ul>
+          
           <%
             hidden_div_id = "copies_#{p.id}"
             list_with_limit(hidden_div_id, target[:coverage_str_array]) do |item, index|
           %>
             <li><%= item %></li>
           <% end %>
-          </ul>
+          
     </td>
   </tr>
   <% end %>
