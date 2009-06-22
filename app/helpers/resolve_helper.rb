@@ -131,9 +131,8 @@ module ResolveHelper
     concat( link_to( icon + heading, 
                     params.merge({'umlaut.request_id' => @user_request.id,
                       "umlaut.show_#{id}" => (! expanded).to_s,
-                      :anchor => fragment}),
+                      :anchor => fragment, :action => action}),
                       :id => fragment,
-                      :action => action,
                       :onclick => "return ult_expand_contract_toggle(this);",
                       :class => "expand_contract_toggle"), options[:out_binding])
 
