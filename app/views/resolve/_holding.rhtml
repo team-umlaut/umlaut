@@ -10,63 +10,63 @@
 
 <div class="section_content_indent">
 <% holdings = get_service_type('holding') %>
-
-<table style="width: 100%">
-<%
-holdings.each do |p|
-  target = p.view_data
-%>
-  <tr><td class="holding_heading_row"><h4><%= target[:collection_str] %></h4></td>
-      <td class="holding_heading_row"><span style="white-space: nowrap;"><%= target[:call_number]%></span></td>
-      
-      <% status_class = (target[:status] == "Not Charged" or target[:status] == "Available") ? 'available' : '' %> 
-      
-      <td class="holding_heading_row"><span class="<%= status_class %>"><%= target[:status]   %></span></td>
-      
-      <td class="holding_heading_row"><%= link_to(image_tag("more_info.gif", "border" => 0, "alt" => 'more info'), {:controller=>"link_router", :id=>p.id}, "target" => "_blank") %>
-      
-      <% if target[:request_url] %>
-        <br />       
-        <%= link_to( image_tag("request.gif", "border" => "0", "alt" => "request"),  target[:request_url], "target" => "_blank" ) %>      
-      <% end %>
-      
-      </td>
-  </tr>    
-  
-  <% if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
+<% unless holdings.empty? %>  
+  <table style="width: 100%">
+  <%
+  holdings.each do |p|
+    target = p.view_data
+  %>
+    <tr><td class="holding_heading_row"><h4><%= target[:collection_str] %></h4></td>
+        <td class="holding_heading_row"><span style="white-space: nowrap;"><%= target[:call_number]%></span></td>
+        
+        <% status_class = (target[:status] == "Not Charged" or target[:status] == "Available") ? 'available' : '' %> 
+        
+        <td class="holding_heading_row"><span class="<%= status_class %>"><%= target[:status]   %></span></td>
+        
+        <td class="holding_heading_row"><%= link_to(image_tag("more_info.gif", "border" => 0, "alt" => 'more info'), {:controller=>"link_router", :id=>p.id}, "target" => "_blank") %>
+        
+        <% if target[:request_url] %>
+          <br />       
+          <%= link_to( image_tag("request.gif", "border" => "0", "alt" => "request"),  target[:request_url], "target" => "_blank" ) %>      
+        <% end %>
+        
+        </td>
+    </tr>    
+    
+    <% if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
+      <tr>
+        <td colspan="4">
+          <div class="section_content_indent edition_warning">
+            <em class="note label">Edition information</em> <%= target[:edition_str] %>
+          <div>
+        </td>
+      </tr>
+    <% end %>
+    
+    <% unless target[:notes].blank? %>
+    <tr>
+    <td colspan="4"><div class="section_content_indent"><%= target[:notes] %></div> </td>
+    </tr>
+    <% end %>
+    
+    <% unless target[:coverage_str_array].blank? %>
     <tr>
       <td colspan="4">
-        <div class="section_content_indent edition_warning">
-          <em class="note label">Edition information</em> <%= target[:edition_str] %>
-        <div>
+            
+            <%
+              hidden_div_id = "copies_#{p.id}"
+              list_with_limit(hidden_div_id, target[:coverage_str_array]) do |item, index|
+            %>
+              <li><%= item %></li>
+            <% end %>
+            
       </td>
     </tr>
-  <% end %>
-  
-  <% unless target[:notes].blank? %>
-  <tr>
-  <td colspan="4"><div class="section_content_indent"><%= target[:notes] %></div> </td>
-  </tr>
-  <% end %>
-  
-  <% unless target[:coverage_str_array].blank? %>
-  <tr>
-    <td colspan="4">
-          
-          <%
-            hidden_div_id = "copies_#{p.id}"
-            list_with_limit(hidden_div_id, target[:coverage_str_array]) do |item, index|
-          %>
-            <li><%= item %></li>
-          <% end %>
-          
-    </td>
-  </tr>
-  <% end %>
-<%
-end %>
-</table>
-
+    <% end %>
+  <%
+  end %>
+  </table>
+<% end %>
 
 
 <% 
