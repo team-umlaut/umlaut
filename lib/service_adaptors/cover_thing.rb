@@ -14,6 +14,7 @@ class CoverThing < Service
     @display_name = "LibraryThing"
     # http://covers.librarything.com/devkey/KEY/medium/isbn/0545010225
     @base_url = 'http://covers.librarything.com/devkey/';
+    @lt404url = 'http://www.librarything.com/coverthing404.php'
     super(config)
   end
   
@@ -30,10 +31,15 @@ class CoverThing < Service
     
     # Only way to know if we got an image or a transparent placeholder
     # is to check the content-length. Currently the transparent placeholder
-    # is 43 bytes.
+    # is 43 bytes. -- not true anymore, now we can check for a redirect,
+    # I guess.
+
     # Not sure why response is ever nil, but sometimes it is, let's log
     # some info.
-    if ( response.nil? || response.content_length.nil? )
+    if ( response.kind_of?(Net::HTTPRedirection) && response["location"] == @lt404url)
+      # no cover found.
+      return request.dispatched(self, true)
+    elsif ( response.nil? || response.content_length.nil? )
       RAILS_DEFAULT_LOGGER.warn("CoverThing: Null response for #{uri}, status #{response.class}")
     end
     unless (response.nil? || response.content_length.nil? || response.content_length < 50)
