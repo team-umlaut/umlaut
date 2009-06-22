@@ -199,10 +199,10 @@ module ResolveHelper
           item = list[index]
           yield(item, index)
         end
-        concat("</ul>", block.binding)
-      end
-      
-      
+        concat("</ul>", block.binding)      
+      end      
+    else
+      concat("</ul>", block.binding)
     end
   end
 
