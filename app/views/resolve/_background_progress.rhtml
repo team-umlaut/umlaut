@@ -39,8 +39,7 @@
  if service_types_in_progress?(svc_types) %>
   <div id="<%= div_id %>" class="background_progress_spinner" >
     <% unless @force_bg_progress_spinner %>
-      <%= current_set_empty ? "" : "More " %><%= svc_types[0].display_name_pluralize %> may be available. 
-      <%= link_to "#{current_set_empty ? "" : "more"} #{item_name} may be available.", {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %> 
+      <%= link_to "#{current_set_empty ? "" : "More"} #{item_name} may be available.", {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %> 
     <% end %>
     <% if @force_bg_progress_spinner %>
       <%= 
