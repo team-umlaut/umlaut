@@ -93,6 +93,10 @@ h4 {
 	padding-top: 4em;
   padding-bottom: 2em;
   font-size:90%;
+  /* For reasons I can not explain, giving this thing a border
+     with the same color as it's bg keeps IE7 happier; without the
+     border, IE7 doesn't really display the div right. */
+  border: 1px solid #FCF1D4;
 }
 
 .headerStatusBar {
