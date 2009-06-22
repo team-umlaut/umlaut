@@ -222,6 +222,12 @@ h4 {
   margin-left: -18px;
 }
 
+/* IE-only, IE doesn't like our negative margin
+   inside a table. Use that crazy '*' so only IE will see it. */
+table .expand_contract_toggle {
+  *margin-left: 0;
+}
+
 
 
 .section_subheading {
