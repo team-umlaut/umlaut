@@ -42,7 +42,8 @@
     <input name="query" type="text" /> <input value="search" type="submit">
     </form>    
 
-    
+  </div>
+</div>
 <%end%>
   <!-- don't show the spinner unless it's identified as a book, otherwise
        too likely to be a false promise -->
@@ -55,6 +56,5 @@
             :progress_message => "Looking for tools to search inside this #{@user_request.referent.type_of_thing}" }) %>
   
   <% end %>
-  </div>
-</div>
+
 
