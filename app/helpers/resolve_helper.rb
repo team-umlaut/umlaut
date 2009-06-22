@@ -122,12 +122,18 @@ module ResolveHelper
 
     
     concat('<div class="expand_contract_section">', options[:out_binding])
+
+    action = params["action"]
+    # Make sure a self-referencing link from partial_html_sections
+    # really goes to full HTML view. 
+    action = "index" if action == "partial_html_sections"
     
     concat( link_to( icon + heading, 
                     params.merge({'umlaut.request_id' => @user_request.id,
                       "umlaut.show_#{id}" => (! expanded).to_s,
                       :anchor => fragment}),
                       :id => fragment,
+                      :action => action,
                       :onclick => "return ult_expand_contract_toggle(this);",
                       :class => "expand_contract_toggle"), options[:out_binding])
 
