@@ -120,7 +120,9 @@ h4 {
 
 .umlaut_resolve {
   font-size: 12px;
-  background-color: #FFFDEA;
+  /* for reasons not clear, IE7 started freaking out if this bg color
+     was there. Shouldn't be neccesary anyway, it was overkill. */
+  /*background-color: #FFFDEA;*/
 }
 
 .umlaut_resolve a {
