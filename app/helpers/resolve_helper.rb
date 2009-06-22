@@ -174,6 +174,8 @@ module ResolveHelper
     options = {:limit => options} unless options.kind_of?(Hash)  
     options[:limit] ||= 5
 
+    return if list.empty?
+
     concat("<ul class=\"#{options[:ul_class]}\">", block.binding)
 
   
