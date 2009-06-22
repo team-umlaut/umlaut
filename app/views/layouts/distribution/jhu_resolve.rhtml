@@ -2,7 +2,7 @@
 <html lang="EN">
 <head>
 <title><%= AppConfig.param("app_name") %> | <%= @page_title %></title>
- <%= stylesheet_link_tag 'basic' %> 
+      <link media="screen" rel="stylesheet" type="text/css" href="<%= stylesheet_path("basic") %>"></link>
 
 
 <%= render(:partial => "layout_helpers/resolve_head_content" ) %>
