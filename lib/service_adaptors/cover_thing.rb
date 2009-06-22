@@ -40,7 +40,7 @@ class CoverThing < Service
       # no cover found.
       return request.dispatched(self, true)
     elsif ( response.nil? || response.content_length.nil? )
-      RAILS_DEFAULT_LOGGER.warn("CoverThing: Null response for #{uri}, status #{response.class}")
+      RAILS_DEFAULT_LOGGER.debug("CoverThing: Null response for #{uri}, status #{response.class}")
     end
     unless (response.nil? || response.content_length.nil? || response.content_length < 50)
       request.add_service_response({
