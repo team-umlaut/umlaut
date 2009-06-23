@@ -237,8 +237,8 @@ module MetadataHelper
   def get_isbn(rft)
     isbn = get_identifier(:urn, "isbn", rft)
     isbn = isbn.gsub(/[^\dX-]/, '') if isbn
-
-    isbn
+    return nil if isbn.blank?
+    return isbn
   end
 
   def get_oclcnum(rft)
