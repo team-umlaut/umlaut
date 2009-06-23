@@ -3,6 +3,10 @@
   // Load this script, and then call:
   // embedUmlaut(umlaut_base_url, kev_openurl, section_mapping, options);
   //
+  // embedUmlaut itself uses prototype dom:loaded pseudo-event to do certain things only
+  // after dom loaded, so you can call embedUmlaut anywhere. You don't need to wait until
+  // dom loaded yourself, and doing so may break things. 
+  //
   // Function will load some external scripts, make a call to the umlaut partial_html_section
   // api, and load sections into the page according to section_mapping and options.
   // 
@@ -104,6 +108,12 @@
         options["load_prototype"] != false ) {    
       document.write('<script type="text/javascript" src="'+umlaut_base+'/javascripts/prototype.js"><\/script>');
     }
+    // Load umlaut-specific js files for supporting javascript behaviors
+    // on embedded content. 
+    if (( typeof(window.ult_expand_contract_toggle) == "undefined") &&
+          options["load_umlaut_js_behaviors"] != false) {
+      document.write('<script type="text/javascript" src="' + umlaut_base+ '/javascripts/expand_contract_toggle.js"></script>');
+      }
     
      
      // this is tricky, but we're actually defining a global function
@@ -111,9 +121,11 @@
      umlaut_partial_load_callback = umlaut_create_callback_function(section_mapping, options);     
 
      // Create initial umlaut partial_html_sections url
-     //normalize to have no trailing slash.     
-     umlaut_base = umlaut_base.replace(/\/$/,''); 
+     //normalize to have no trailing slash.          
+     umlaut_base = umlaut_base.replace(/\/$/,'');
+     
      var request = umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=jsonp&umlaut.jsonp=umlaut_partial_load_callback&' + openurl_kev_co;     
+          
      //prototype-ism dom:loaded
      document.observe("dom:loaded", function() {load_jsonp_url(request);});     
   }
