@@ -42,7 +42,9 @@ class HipHoldingSearch < Hip3Service
 
     search_hash = {}
 
-    if ( (! ref_metadata['jtitle'].blank?) && ref_metadata['bititle'].blank? )
+    if ( request.referent.format != "book" && 
+        (! ref_metadata['jtitle'].blank?) && 
+        ref_metadata['bititle'].blank? )
       hip_title_index = Hip3::BibSearcher::SERIAL_TITLE_KW_INDEX    
     else
       hip_title_index = Hip3::BibSearcher::TITLE_KW_INDEX
