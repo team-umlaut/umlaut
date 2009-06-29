@@ -93,11 +93,21 @@
     };
   }
 
-
-  
-  function embedUmlaut(umlaut_base, openurl_kev_co, section_mapping, options) {
+  // One trick pony to embed umlaut. Caller can call each of the methods seperately,
+  // if customization is needed. First method needs to be called in page flow,
+  // second needs to be called in a dom:loaded callback. 
+  function embedUmlaut(umlaut_base, opneurl_kev_co, section_mapping, options) {
+    embedUmlautSetup(umlaut_base, opneurl_kev_co, section_mapping, options);
     
-    // Load external js files if we need them
+    document.observe("dom:loaded", function() {
+      embedUmlautLoadDom(umlaut_base, opneurl_kev_co, section_mapping, options);
+    });
+  }
+  
+  // Loads in external js files, if needed/requested, by doing a document.write.
+  // Thus, this needs to be called in actual page flow, not in an event callback.
+  function embedUmlautSetup(umlaut_base, opneurl_kev_co, section_mapping, options) {
+     // Load external js files if we need them
     // load jsr_class.js if needed. 
     if (( typeof(window.JSONscriptRequest) ==  "undefined") &&
         options["load_jsr_class"] != false) {
@@ -113,12 +123,16 @@
     if (( typeof(window.ult_expand_contract_toggle) == "undefined") &&
           options["load_umlaut_js_behaviors"] != false) {
       document.write('<script type="text/javascript" src="' + umlaut_base+ '/javascripts/expand_contract_toggle.js"></script>');
-      }
-    
-     
-     // this is tricky, but we're actually defining a global function
-     // umlaut_partial_load_callback(...)
-     umlaut_partial_load_callback = umlaut_create_callback_function(section_mapping, options);     
+    }
+         
+    // this is tricky, but we're actually defining a global function
+    // umlaut_partial_load_callback(...)
+    umlaut_partial_load_callback = umlaut_create_callback_function(section_mapping, options); 
+  }
+  
+  // Loads content from Umlaut and adds it to the dom. Should be called in a dom:loaded
+  // event callback. 
+  function embedUmlautLoadDom(umlaut_base, openurl_kev_co, section_mapping, options) {           
 
      // Create initial umlaut partial_html_sections url
      //normalize to have no trailing slash.          
@@ -127,7 +141,7 @@
      var request = umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=jsonp&umlaut.jsonp=umlaut_partial_load_callback&' + openurl_kev_co;     
           
      //prototype-ism dom:loaded
-     document.observe("dom:loaded", function() {load_jsonp_url(request);});     
+     load_jsonp_url(request);     
   }
   
   
