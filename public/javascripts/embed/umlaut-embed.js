@@ -1,4 +1,8 @@
-  //  Javascript helper for inserting partial html snippets from Umlaut on your page using the Umlaut partial HTML API.
+/* DEPRECATED. Use umlaut-embed-func.js instead, better calling conventions. */
+
+
+
+//  Javascript helper for inserting partial html snippets from Umlaut on your page using the Umlaut partial HTML API.
   //
   //
   // This js assumes several global js variables will be set, to be used
