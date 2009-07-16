@@ -715,8 +715,23 @@ body.banner {
   position:absolute;
   left: 25%;
   top: 20%;
-  z-index: 100;  
+  z-index: 1000;  
   font-size: 12px;
+}
+
+.ajax_modal_bg_overlay {
+    background-color: gray;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 99.9%;
+    height: 99.9%;
+    z-index: 999;
+    opacity: 0.6;
+    -moz-opacity: 0.6;  
+    filter: alpha(opacity=60); 
 }
 
 .ajax_modal_dialog .inner_modal_dialog {    

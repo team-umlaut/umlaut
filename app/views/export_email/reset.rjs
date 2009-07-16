@@ -1,3 +1,4 @@
 page[:container].visual_effect :opacity, :from => 0.3, :to => 1.0, :duration => 0.0
 page[:"ajax_svc_#{@svc_type.id}"].hide
+page[:umlaut_modal_bg_overlay].hide
 

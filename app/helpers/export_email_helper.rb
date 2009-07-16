@@ -37,12 +37,11 @@ module ExportEmailHelper
       div.setStyle("zIndex", 1000);
       viewport_y_offset = div.viewportOffset()[1];
       
-      if ( viewport_y_offset < 0) {
+      if ( viewport_y_offset < 0 || viewport_y_offset > (document.viewport.getHeight() * .8)) {
         var old_top = parseInt(div.getStyle('top'));
-        var new_top = old_top + ( viewport_y_offset * -1) + 24;
+        var new_top = old_top + ( viewport_y_offset * -1) + (document.viewport.getHeight() * .15);
         div.setStyle({top: new_top + 'px'})
       }
-
     EOF
       end
 
