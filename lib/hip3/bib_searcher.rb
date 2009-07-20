@@ -120,7 +120,7 @@ module Hip3
 		def searchPath(args = {})
       args[:xml] = true if args[:xml].nil?
       
-			path = self.hip_base_url.path() + '?' 			"menu=search&aspect=power&npp=30&ipp=20&spp=20&profile=general&ri=2&source=%7E%21horizon"
+			path = self.hip_base_url.path() + '?' 			"menu=search&aspect=power&npp=30&ipp=20&spp=20&profile=general&ri=2"
 
       criteria = Array.new
 
@@ -192,7 +192,8 @@ module Hip3
 		def search
       return [] if insufficient_query
 			httpResp = httpSession.get(searchPath(), nil )
-		
+
+      
 			bib_xml = Hpricot.XML( httpResp.body )
 			# Confusingly, sometimes
 			# this gives us a search results page, and sometimes it gives us
@@ -247,12 +248,21 @@ module Hip3
 
 		
 		def get(path, headers=nil, &block)
-			#ta = Time.new
-			response = super(path, headers, block)
-			#duration = Time.new - ta
-			#puts "Duration: #{duration}"
-			#$time_in_http += duration
-			
+      limit = 6
+      tries = 0
+      response = nil
+      debugger
+      while (response == nil || response.kind_of?(Net::HTTPRedirection) && tries < limit)
+        # follow redirects
+        if response.kind_of?( Net::HTTPRedirection )
+          response = Net::HTTP.get_response(URI.parse(response['location']))
+        else
+          response = super(path, headers, block)      
+        end
+        tries = tries + 1
+      end
+
+      
 			#This method raises if not 2xx response status.
 			#No idea why such a method is called 'value'
 			response.value
