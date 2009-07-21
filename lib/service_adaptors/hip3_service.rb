@@ -19,6 +19,7 @@ class Hip3Service < Service
     # rft_id=http://catalog.library.jhu.edu/bib/343434 (except URL-encoded)
     # Then you'd set rft_id_bibnum_prefix to http://catalog.library.jhu.edu/bib/
     @rft_id_bibnum_prefix = nil
+    @profile = "general"
     super(config)
 
     # Trim question-mark from base_url, if given
@@ -40,7 +41,7 @@ class Hip3Service < Service
     bib_searcher.issn = request.referent.issn 
     bib_searcher.isbn = request.referent.isbn
     bib_searcher.sudoc = get_sudoc(request.referent)
-    
+
     results = bib_searcher.search
 
     add_856_links(request, results.collect {|b| b.marc_xml})
@@ -90,8 +91,8 @@ class Hip3Service < Service
         service_data[:notes] = holding.notes
         service_data[:url] = url
         # If it's not a serial copy, we can add a direct request url.
-        unless ( holding.kind_of?(Hip3::SerialCopy))
-          service_data[:request_url] = self.base_path + "?profile=general&menu=request&aspect=none&bibkey=#{holding.bib.bibNum}&itemkey=#{holding.id}"
+        unless ( holding.kind_of?(Hip3::SerialCopy) )
+          service_data[:request_url] = self.base_path + "?profile=#{@profile}&menu=request&aspect=none&bibkey=#{holding.bib.bibNum}&itemkey=#{holding.id}"
         end
   
         # Need to say it's not an exact match neccesarily?

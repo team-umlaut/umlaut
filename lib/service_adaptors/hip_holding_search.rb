@@ -16,6 +16,7 @@ class HipHoldingSearch < Hip3Service
     # rft_id=http://catalog.library.jhu.edu/bib/343434 (except URL-encoded)
     # Then you'd set rft_id_bibnum_prefix to http://catalog.library.jhu.edu/bib/
     @rft_id_bibnum_prefix = nil
+    @profile = "general"
     super(config)
     # Trim question-mark from base_url, if given
     @base_path.chop! if (@base_path.rindex('?') ==  @base_path.length)    
