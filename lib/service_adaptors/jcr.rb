@@ -113,10 +113,10 @@ class Jcr < Service
     hpricot = Hpricot.XML(isi_response.body)
 
     # Check for errors.
-    if (error = (hpricot.at('val[@name = "error"]') || hpricot.at('null[@name = "error"]')))
+    if (error = (hpricot.at('val[@name = "error"]') || hpricot.at('error') || hpricot.at('null[@name = "error"]')))
       raise Exception.new("Third party service error: #{error.inner_text}")
     end
-    
+
 
     results = hpricot.at('map[@name ="cite_id"] map[@name="JCR"]')
 

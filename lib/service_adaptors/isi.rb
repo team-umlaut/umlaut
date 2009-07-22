@@ -67,7 +67,7 @@ class Isi < Service
       else    
         # Log the error, return exception condition. 
         RAILS_DEFAULT_LOGGER.error("#{e.message} ; OpenURL: ?#{request.to_context_object.kev}")
-        return request.dispatched(self, false)
+        return request.dispatched(self, false, e)
       end
     end
     
@@ -188,9 +188,9 @@ class Isi < Service
 
   def add_responses(request, isi_response)
     hpricot = Hpricot.XML(isi_response.body)
-
+    
     # Check for errors.
-    if (error = (hpricot.at('val[@name = "error"]') || hpricot.at('null[@name = "error"]')))
+    if (error = (hpricot.at('val[@name = "error"]') || hpricot.at("error") || hpricot.at('null[@name = "error"]')))
      raise IsiResponseException.new("ISI service reported error: #{error.inner_text}")      
     end
     
