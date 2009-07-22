@@ -36,7 +36,7 @@ class Isi < Service
     #defaults
     @wos_app_name = "Umlaut"
     @display_name = "Web of Science\xc2\xae" # trademark symbol
-    @api_url = "https://ws.isiknowledge.com/esti/xrpc"
+    @api_url = "https://ws.isiknowledge.com/cps/xrpc"
     @include_cited_by = true
     @include_similar = true
     super(config)
