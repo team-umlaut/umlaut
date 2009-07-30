@@ -33,7 +33,7 @@ class MBooks < Service
   end
   
   def initialize(config)
-    @url = 'http://mirlyn.lib.umich.edu/cgi-bin/sdrsmd?'
+    @url = 'http://mirlyn-classic.lib.umich.edu/cgi-bin/sdrsmd?'
     @hathi_search_url = 'http://sdr.lib.umich.edu/cgi/ptsearch'
     @display_name = 'HathiTrust'
     @num_full_views = 1
