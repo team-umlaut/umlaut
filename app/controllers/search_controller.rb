@@ -29,14 +29,16 @@ class SearchController < ApplicationController
   
   def index
     @page_title = "Journals"  
-    # Oddly, render doesn't call the action method.
-    journals()
-  	render :action=>'journals'
+    journals()          
   end  
   
   def journals
     #fall through to view
     @submit_hash = params["umlaut.display_coins"] ? {:controller=>'resolve', :action=>'display_coins'} : {:controller=>'search', :action=>'journal_search'}
+
+    # Render configed view, if configed, or default 
+    view = AppConfig.param("search_view", "search/journals")
+    render :template => view
   end
 
 
@@ -112,7 +114,7 @@ class SearchController < ApplicationController
       redirect_to( url_for_with_co({:controller => 'resolve'}, @display_results[0]) )      
     elsif (@display_results.length == 0)
       # 0 hits, do it too.
-      redirect_to(  url_for_with_co({:controller => 'resolve'}, @search_context_object) )            
+      redirect_to(  url_for_with_co({:controller => 'resolve'}, @search_context_object) )
     end
 
   end

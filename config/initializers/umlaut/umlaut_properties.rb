@@ -33,3 +33,7 @@
   # are given. Set to 0 to disable. 
   AppConfig::Base.minimum_window_width = 820
   #AppConfig::Base.minimum_window_height = 0
+
+  # Use your own custom search view? Stick in app/views/local and refer
+  # to it here. 
+  #AppConfig::Base.search_view = "local/my_search"
