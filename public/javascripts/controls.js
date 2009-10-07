@@ -281,7 +281,12 @@ Autocompleter.Base = Class.create({
       }
 
       this.stopIndicator();
-      this.index = 0;
+      // jrochkind jhu umlaut customization. 7 oct 2009. 
+      // Start out with NO element selected. The auto selection
+      // was VERY annoying on the journal search page, led
+      // to very confusing behavior. 
+      //this.index = 0;
+      this.index = -1;
       
       if(this.entryCount==1 && this.options.autoSelect) {
         this.selectEntry();
