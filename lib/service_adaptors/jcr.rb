@@ -110,6 +110,9 @@ class Jcr < Service
   end
 
   def add_responses(request, isi_response)
+    # raise if it's an HTTP error code
+    isi_response.value!
+    
     hpricot = Hpricot.XML(isi_response.body)
 
     # Check for errors.

@@ -187,6 +187,9 @@ class Isi < Service
   end
 
   def add_responses(request, isi_response)
+    #raise if it's an error HTTP response
+    isi_response.value
+    
     hpricot = Hpricot.XML(isi_response.body)
     
     # Check for errors.
@@ -206,7 +209,6 @@ class Isi < Service
 
     
     # cited by
-    
     count = results.at('val[@name="timesCited"]')
     count = count ? count.inner_text.to_i : 0    
     
