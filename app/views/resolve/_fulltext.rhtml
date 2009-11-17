@@ -19,7 +19,6 @@
         # and it's an article or issue level link. Are we
         # at the beginning of title level display?
         if ( index == fulltxt.length && 
-             index != 0 &&
              !title_level_request? )
            genre = @user_request.referent.metadata['genre']
            genre = "Journal" if genre && genre.downcase == 'article' %>
