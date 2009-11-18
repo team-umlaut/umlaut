@@ -17,9 +17,24 @@ class ResolveController < ApplicationController
   #require 'json/lexer'
 
   # If a background service was started more than 30 seconds
-  # ago and isn't finished, we assume it died.
-  BACKGROUND_SERVICE_TIMEOUT = 30
+  # ago and isn't finished, we assume it died. This value
+  # can be set in app config variable background_service_timeout.
 
+  class << self; attr_accessor :background_service_timeout end
+  @background_service_timeout = AppConfig.param("background_service_timeout", 30.seconds)
+
+  
+  # If a service has status FailedTemporary, and it's older than a
+  # certain value, it will be re-queued in #serviceDispatch.
+  # This value defaults to 10 times background_service_timeout,
+  # but can be set in app config variable requeue_failedtemporary_services
+  # If you set it too low, you can wind up with a request that never completes,
+  # as it constantly re-queues a service which constantly fails.
+  class << self; attr_accessor :requeue_failedtemporary_services end
+  @requeue_failedtemporary_services = AppConfig.param("requeue_failedtemporary_services", background_service_timeout * 10)
+  
+  
+  
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
     options = {}
@@ -35,17 +50,18 @@ class ResolveController < ApplicationController
     # actual, request figured it out for us. 
     @collection = Collection.new(@user_request, session)      
     @user_request.save!
-
+    debugger
     # Set 'timed out' background services to dead if neccesary. 
     @user_request.dispatched_services.each do | ds |
         if ( (ds.status == DispatchedService::InProgress ||
               ds.status == DispatchedService::Queued ) &&
-              (Time.now - ds.updated_at) > BACKGROUND_SERVICE_TIMEOUT)
+              (Time.now - ds.updated_at) > self.class.background_service_timeout)
 
-              ds.store_exception( Exception.new("background service timed out (took longer than #{BACKGROUND_SERVICE_TIMEOUT} to run); thread assumed dead.")) unless ds.exception_info
+              ds.store_exception( Exception.new("background service timed out (took longer than #{self.class.background_service_timeout} to run); thread assumed dead.")) unless ds.exception_info
               # Fail it temporary, it'll be run again. 
               ds.status = DispatchedService::FailedTemporary
               ds.save!
+              logger.warn("Background service timed out, thread assumed dead. #{@user_request.id} / #{ds.service.service_id}")
         end
     end
     
@@ -404,7 +420,7 @@ class ResolveController < ApplicationController
      if ( format == "xml" )      
         # The standard Rails template is assumed to return xml
         render(:content_type => "application/xml", :layout => false)
-     elsif ( format == 'json' || format == "jsonp")        
+     elsif ( format == 'json' || format == "jsonp")
         # get the xml in a string
         xml_str = render_to_string(:layout=>false)
         # convert to hash

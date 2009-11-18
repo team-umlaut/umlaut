@@ -6,7 +6,9 @@
 #
 # Constituent openurl data is stored in Referent and Referrer. 
 class Request < ActiveRecord::Base
-
+   
+  
+  
   has_many :dispatched_services
   # Order service_type joins (ie, service_responses) by id, so the first
   # added to the db comes first. Less confusing to have a consistent order.
@@ -307,8 +309,12 @@ class Request < ActiveRecord::Base
     services.each do |service|
       # in-memory select, don't go to the db for each service! 
       if ( found = self.dispatched_services.to_a.find {|s| s.service_id == service.service_id  } )
+        # Okay, if it failed temporary, and it's after our resurrection
+        # wait time, go ahead and requeue it. 
         if ( options[:requeue_temp_fails] &&
-           found.status == DispatchedService::FailedTemporary )
+           found.status == DispatchedService::FailedTemporary  &&
+           (Time.now - found.updated_at) > ResolveController.requeue_failedtemporary_services) 
+           
            # requeue it!
            found.status = DispatchedService::Queued
            found.exception_info = nil
