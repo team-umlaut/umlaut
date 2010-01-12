@@ -486,7 +486,10 @@ class SearchController < ApplicationController
     object_ids, @hits = object_ids_local_sfx_db(title_q, search_type, @batch_size, @page)
               
     # Now fetch objects with publication information
-    sfx_objects = SfxDb::Object.find( object_ids,
+    # Sometimes SFX db lacks referential integrity, so we don't count
+    # on these object_ids actually being there, doing a find all instead
+    # of just a 'find'. 
+    sfx_objects = SfxDb::Object.find( :all, :conditions => {:OBJECT_ID => object_ids},
     :include => [:publishers, :main_titles, :primary_issns, :primary_isbns])
     
     # We got the right set of @batch_size objects, but they're not sorted
