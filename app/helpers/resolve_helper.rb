@@ -92,9 +92,10 @@ module ResolveHelper
 
   def display_not_found_warning?(uml_request)
     metadata = uml_request.referent.metadata
+    display_manually_entered_typo_warning = AppConfig.param("display_manually_entered_typo_warning", true)
     
   
-    return (metadata['genre'] != 'book' && metadata['object_id'].blank? && user_entered_citation?(@user_request) ) ? true : false
+    return (metadata['genre'] != 'book' && metadata['object_id'].blank? && user_entered_citation?(@user_request) && display_manually_entered_typo_warning) ? true : false
   end
 
 

@@ -11,7 +11,8 @@
   #AppConfig::Base.resolve_layout = "distribution/jhu_resolve"
   #AppConfig::Base.search_layout = 'distribution/jhu_search'
 
-
+  # Use custom configuration to turn off the manual entry typo warning
+  #AppConfig::Base.display_manually_entered_typo_warning = false
 
   
   # Describe Individual sections of content. Used for rendering Umlaut html
