@@ -135,7 +135,7 @@ class GoogleBookSearch < Service
     # Google oddly seems to want prefix mashed right up
     # with identifier, eg http://books.google.com/books/feeds/volumes?q=OCLC32012617 
     keys = []
-    keys << 'ISBN' + isbn if isbn
+    keys << 'isbn:' + isbn if isbn
     keys << 'OCLC' + oclcnum if oclcnum
     keys << 'LCCN' + lccn if lccn
     
