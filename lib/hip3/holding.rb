@@ -34,7 +34,8 @@ module Hip3
                collection_str == "Internet Resource" ||
                collection_str == "Welch Online Journals" || 
                collection_str == "Welch Online Journal" ||
-               collection_str == "Gibson-Electronic Journals & Indexes" ) 
+               collection_str == "Gibson-Electronic Journals & Indexes" ||
+               collection_str == "Gibson - Electronic Journals")
 				
 			#return ((  (call_no == "World Wide Web" || call_no.blank?) &&
 			#		( collection_str == "Internet" || collection_str == "Welch Online Journals" || collection_str == "Welch Online Journal")) ||
