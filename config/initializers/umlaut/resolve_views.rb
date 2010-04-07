@@ -14,6 +14,8 @@
   # Use custom configuration to turn off the manual entry typo warning
   #AppConfig::Base.display_manually_entered_typo_warning = false
 
+  # Open search results in a new target window.
+  #AppConfig::Base.search_result_target_window = "_blank"
   
   # Describe Individual sections of content. Used for rendering Umlaut html
   # page, used for background-updating of Umlaut html page, used for partial

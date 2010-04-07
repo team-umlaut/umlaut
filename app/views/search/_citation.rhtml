@@ -121,7 +121,7 @@ unless ref_meta['atitle'].nil?
 end
 title_row = '<tr><td width="90" style="vertical-align: top;"><div align="right" class="'+style+'"><strong>'+title_label+':</strong></td><td><span class="'+style+'">'
 
-title_row += link_to(title, url_for_with_co({:controller => 'resolve'}, @co))
+title_row += link_to(title, url_for_with_co({:controller => 'resolve'}, @co), {:target => search_result_target_window})
 
 title_row += '</span></td></tr>'
   unless @page_title
