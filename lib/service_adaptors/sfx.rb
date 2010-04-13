@@ -26,6 +26,14 @@
 # extra_targets_of_interest: sfx target_names of targets you want to make
 #     sure to include in umlaut. A hash with target_name as key, and umlaut
 #     ResponseTypeValue name as value.
+# really_distant_relationships: An array of relationship type codes from SFX 
+#     "related objects".  See Table 18 in SFX 3.0 User's Manual. Related
+#     objects that have only a "really distant relationship" will NOT
+#     be shown as fulltext, but will instead be banished to the see also
+#     "highlighted_link" section. You must have display of related objects
+#     turned ON in SFX display admin, to get related objects at all in
+#     Umlaut. NOTE: This parameter has a default value to a certain set of
+#     relationships, set to empty array [] to eliminate defaults. 
 # sfx_timeout: in seconds, for both open/read timeout value for SFX connection.
 #          Defaults to 8.
 class Sfx < Service
@@ -54,6 +62,8 @@ class Sfx < Service
     @extra_targets_of_interest = {}
 
     @sfx_timeout = 8
+
+    @really_distant_relationships = ["CONTINUES_IN_PART", "CONTINUED_IN_PART_BY", "ABSORBED_IN_PART", "ABSORBED_BY"]
                                   
     super(config)                              
   end
@@ -153,6 +163,9 @@ class Sfx < Service
     # We need to keep track of which ones we find full text in,
     # for metadata enhancing. We'll do that here:
     fulltext_seen_in_index = {}
+
+    # We're going to keep our @really_distant_relationship stuff here. 
+    related_titles = {}
     
 
     # Multiple context objs are _very_messy_.  Just skip the whole thing
@@ -211,7 +224,7 @@ class Sfx < Service
           end
         end
       end
-            
+      
       # For each target delivered by SFX
       sfx_obj.search("/ctx_obj_targets/target").each_with_index do|target, target_index|  
         value_text = {}
@@ -270,9 +283,28 @@ class Sfx < Service
 
 
           related_note = ""
-          # If this is from a related object, add that on as a note too.
+          # If this is from a related object, add that on as a note too...
+          # And maybe skip this entirely! 
           if (related_node = target.at('/related_service_info'))
-            related_note = "This version provided from related title: <i>" + CGI.unescapeHTML( related_node.at('/related_object_title').inner_html ) + "</i>.\n"
+            relationship = related_node.at('/relation_type').inner_text
+            issn = related_node.at('/related_object_issn').inner_text
+            sfx_object_id = related_node.at('/related_object_id').inner_text
+            title = related_node.at('/related_object_title').inner_text
+            
+            if @really_distant_relationships.include?(
+              related_node.at('/relation_type').inner_text)
+              # Show title-level link in see-also instead of full text.
+              related_titles[issn] = {
+                :sfx_object_id => sfx_object_id,
+                :title => title,
+                :relationship => relationship,
+                :issn => issn
+              }
+              
+              next
+            end
+            
+            related_note = "This version provided from related title:  <i>" + CGI.unescapeHTML( title ) + "</i>.\n"
           end
   
           if ( sfx_service_type == 'getDocumentDelivery' )
@@ -318,6 +350,17 @@ class Sfx < Service
           request.add_service_response(initHash , [umlaut_service])
         end
       end
+    end
+
+    # Add in links to our related titles
+    related_titles.each_pair do |issn, hash|
+      request.add_service_response(
+        {
+         :service => self,
+         :display_text => "#{sfx_relationship_display(hash[:relationship])}: #{hash[:title]}",
+         :notes => "#{ServiceTypeValue['fulltext'].display_name} available",
+         :related_object_hash => hash 
+        }, ["highlighted_link"])
     end
     
     # only enhance for journal type metadata. For book type
@@ -503,6 +546,15 @@ class Sfx < Service
     return co
   end
 
+  # Custom url generation for the weird case 
+  def response_url(service_type, submitted_params)
+    if (related_object =  service_type.service_response.data_values[:related_object_hash])
+      {:controller => 'resolve', "rft.issn" => related_object[:issn], "rft.title" => related_object[:title], "rft.object_id" => related_object[:sfx_object_id] }
+    else
+      service_type.service_response['url']
+    end        
+  end
+  
   protected
   # There are weird encoding issues in metadata from SFX. 
   # I THINK I've fixed them in #parse_perl_data
@@ -537,6 +589,21 @@ class Sfx < Service
                         
   end
 
+
+  
+  # From Table 18 in SFX General User's Guide 3.0. 
+  def sfx_relationship_display(sfx_code)
+    sfx_code = sfx_code.to_s
+    # Most can simply be #humanized, a couple of over-rides
+    @sfx_relationship_display ||= {
+      "TRANSLATION_ENTRY" => "Translation",          
+    }
+
+    display = @sfx_relationship_display[sfx_code]
+    display = sfx_code.humanize if display.nil?
+
+    return display
+  end
   
   end
   
