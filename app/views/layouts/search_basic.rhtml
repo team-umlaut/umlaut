@@ -9,12 +9,16 @@
 </title>
 
 <%= stylesheet_link_tag 'basic' %> 
-<%= javascript_include_tag :defaults %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
-<%= render(:partial => "layout_helpers/resolve_head_content" ) %>
+<%= render_javascript_behaviors(:search_complete) %>
 
+<!-- open search auto-discovery -->
+<link rel="search"
+     type="application/opensearchdescription+xml"
+    title="<%= AppConfig.param('opensearch_short_name', 'Find Journals') %>"
+     href="<%= url_for(:controller=>'open_search', :only_path=>false) %>" ></link>
 
 </head>
 <body>

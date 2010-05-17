@@ -36,7 +36,6 @@ class LinkRouterController < ApplicationController
     if ( link_with_frameset?(svc_type) )
       redirect_to( frameset_action_url(svc_type) )
     else
-      debugger
       url = calculate_url_for_response(svc_type)      
       redirect_to url
     end

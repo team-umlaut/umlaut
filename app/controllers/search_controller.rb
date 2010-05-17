@@ -58,6 +58,26 @@ class SearchController < ApplicationController
     # for reasons I can't tell, our JS on IE ends up putting some
     # newlines in the object_id, which messes us all up.
     params['rft.object_id'].strip! if params['rft.object_id']
+
+
+    ## If needed combine date elements to an OpenURL date
+    unless (params["__year"].blank? && 
+            params["__month"].blank? && 
+            params["__day"].blank?)
+      isoDate = ""
+      unless ["", "****", "Year"].include?(params["__year"])
+        isoDate += params["__year"]
+        unless ["", "***", "Month"].include?(params["__month"])
+          isoDate += "-" + params["__month"]
+          unless ["", "**", "Day"].include?(params["__day"])
+            isoDate += "-" + params["__day"]
+          end
+        end
+      end
+      unless isoDate.blank?
+        params["date"] = isoDate
+      end
+    end
     
     @batch_size = @@search_batch_size
     @page = 1  # page starts at 1 
@@ -219,7 +239,7 @@ class SearchController < ApplicationController
       
     end
    end
-   render :partial => 'journal_titles'
+   render :text => @titles.to_json, :content_type => "application/json"   
   end
 
   

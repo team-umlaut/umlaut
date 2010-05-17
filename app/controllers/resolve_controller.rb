@@ -50,7 +50,6 @@ class ResolveController < ApplicationController
     # actual, request figured it out for us. 
     @collection = Collection.new(@user_request, session)      
     @user_request.save!
-    debugger
     # Set 'timed out' background services to dead if neccesary. 
     @user_request.dispatched_services.each do | ds |
         if ( (ds.status == DispatchedService::InProgress ||
@@ -430,7 +429,7 @@ class ResolveController < ApplicationController
   
         # Handle jsonp, deliver JSON inside a javascript function call,
         # with function name specified in parameters. 
-        if ( format == "jsonp")
+        if ( format == "jsonp" || params["umlaut.jsonp"])
           procname = params["umlaut.jsonp"] || "umlautLoaded"          
           json_str = procname + "( " + json_str + " );"
         end  

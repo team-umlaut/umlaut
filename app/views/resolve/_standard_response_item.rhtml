@@ -16,20 +16,16 @@
 
   <!-- fancy schmancy ajax? But not if we're generating embed partials,
        won't work. -->
-  <% if view_data[:link_supports_ajax_call] && ! generating_embed_partials? 
+  <% if view_data[:link_supports_ajax_call]  
   # Generate a hyperlink that will call our standard service action
-  # link with format=>js in a javascript context. With fallback to straight
-  # html on the href. Weird that Rails doesn't do this fallback for us. 
+  # due to special class for unobtrusive JS. 
   %>
-      <%= link_to_remote(view_data[:display_text], 
-      :url=> {:controller=>'link_router', 
-              :id=>service_type.id, 
-              :format => "js"},
-     :html=> {:id => "svctype_link_#{service_type.id}", 
-              :href => url_for(:controller=>'link_router',      
-                               :id=>service_type.id, 
-                               :format => "html"), 
-              :target => "_blank" }) %>
+      <%= link_to(view_data[:display_text], 
+              {:controller=>'link_router', 
+              :id=>service_type.id},
+              {:id => "svctype_link_#{service_type.id}",                
+              :target => "_blank",
+              :class => "ajax_window"}) %>
   <% elsif (view_data[:content] ) 
      #collapsible content on page
   %>

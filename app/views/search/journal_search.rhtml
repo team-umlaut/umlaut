@@ -17,37 +17,20 @@ end
 <h1><%= @page_title %>
 </h1>
 
-<script type="text/javascript" language="JavaScript1.1">
-<!--
-
-function updateObjectId(elem, val) {
-    document.getElementById('rft_object_id').value = val.attributes['title'].value;
-    document.getElementById('rft_title').value = elem.value
-    document.getElementById('sfx_title_search').selectedIndex = 2
-}
-function clearObjectId() {
-    if(document.getElementById('rft_title').value != document.getElementById('journal_title').value) {
-        document.getElementById('rft_object_id').value = '';
-        document.getElementById('rft_title').value = '';
-    }
-}
-
-// -->
-</script>
 <div class="citationLinker" style="margin-bottom: 8px">                                                                        
   <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'})  %>
       <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
       <!-- <input type=hidden name="rfr_id" value="info:sid/umlaut.code4lib.org:citation"> -->
 
-      <input type="hidden" id="rft_title" name="rft.title">
-      <input type="hidden" id="rft_object_id" name="rft.object_id">
-      <input type="hidden" id="date" name="rft.date">
+      <input type="hidden" class="rft_title" name="rft.title">
+      <input type="hidden" class="rft_object_id" name="rft.object_id">
+      <input type="hidden" class="date" name="rft.date">
           
       Journal Title:
-      <%= text_field_with_auto_complete :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off', :size=>'40', :value=>params['rft.jtitle']}, {:after_update_element=>'updateObjectId', :min_chars => 4}
+      <%= text_field :journal, :title, {:name=>'rft.jtitle', :autocomplete=>'off', :size=>'40', :value=>params['rft.jtitle'], :class=>"title_search"}
       %>
                                                                              
-      <select name="umlaut.title_search_type" id="sfx_title_search">
+      <select name="umlaut.title_search_type" class="sfx_title_search">
           <option value="contains" <%= "SELECTED" if params["umlaut.title_search_type"] == "contains" %>>contains</option>
           <option value="begins" <%= "SELECTED" if params["umlaut.title_search_type"] == "begins" %> >begins
           with</option>

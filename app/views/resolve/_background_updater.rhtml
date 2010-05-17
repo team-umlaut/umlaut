@@ -1,38 +1,42 @@
-<% 
+<%- 
 #   Include this partial to put the background updater device on your page.
-#
-#   Started out using periodically_call_remote here, but we need to capture
-#   the Prototype PeriodicalExecter function in a js veriable, which
-#   the  built in generator won't do. So we're doing it by hand
-#   based on the output of periodically_call_remote. It's not that
-#   complicated or anything.
-%>
+#   This actually just sets up the Umlaut JQuery background updater, for
+#   unobtrusive adding of background html content to menu page.  
+-%>
 
 <% 
    # only include if we have any background services. We could check to make
    # sure we only have background services we care about, but it's more work--
    # the updater will only run ONCE at most wrongly, then the
    # background_update action will stop it. 
-   if ( any_services_in_progress? )
+   if (  any_services_in_progress? )
 %>
 <script type="text/javascript">
 //<![CDATA[
-  umlaut_background_executer =  new PeriodicalExecuter(function() { new Ajax.Request("<%= url_for({:controller => 'resolve', :action=> 'background_update', :'umlaut.request_id' => @user_request.id}) %>", {asynchronous:true, evalScripts:true, 
-     onFailure: function(response) {
-       umlaut_background_executer.stop();
-       spinners = document.getElementsByClassName("spinner");
-       for(i = 0; i < spinners.length; i++) {
-         spinners[i].update("Error, could not fetch more.");
-       }
+jQuery(document).ready( function($) {
+  var updater = new Umlaut.HtmlUpdater("<%= request.protocol + request.host + request.port_string + request.relative_url_root %>"  ,  "umlaut.request_id=<%= @user_request.id %>"  );
 
-      }
-  });  }, <%= AppConfig.param("poll_wait_seconds", 4) %>);
+  <% SectionRenderer.bg_update_sections.collect do |section| %>
+    updater.add_section_target({ umlaut_section_id: "<%= section[:div_id]  %>"  });    
+  <% end %>
+  
+  //Add one for errors
+  <% if error_div_info = AppConfig.param("error_div") %>
+    updater.add_section_target({ umlaut_section_id: "ERRORS", selector: "#<%= error_div_info[:div_id] %>" }); 
+  <% end %>
+  
+  //Wait the designated number of seconds before kicking off the first bg 
+  //update request. Future requests will be automatically made with delay.. 
+  setTimeout(function() { updater.update(); },
+             <%= AppConfig.param("poll_wait_seconds", 4)*1000 %>
+             );
+  
+});
+
+
+
+
 //]]>
 </script>  
-<%
-# The above was based on source from this call: 
-#periodically_call_remote :url => {:action => "background_update", :"umlaut.request_id" => @user_request.id }, 
-#    :condition => 'background_update_check',
-#    :frequency => 4
-%> 
+ 
 <% end %>

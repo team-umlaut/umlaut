@@ -115,7 +115,8 @@ module ResolveHelper
 
     icon = image_tag( ( expanded ? "list_open.png" : "list_closed.png"),
                        :alt => "",
-                       :class => "toggle_icon")
+                       :class => "toggle_icon",
+                       :border => "0")
     heading = content_tag(:span,( expanded ? "Hide " : "Show "), :class=>'expand_contract_action_label') + arg_heading
     initial_hide = ( expanded ? "" : "display: none;")
     fragment = "#{id}_toggle_link"
@@ -134,7 +135,6 @@ module ResolveHelper
                       "umlaut.show_#{id}" => (! expanded).to_s,
                       :anchor => fragment, :action => action}),
                       :id => fragment,
-                      :onclick => "return ult_expand_contract_toggle(this);",
                       :class => "expand_contract_toggle"), options[:out_binding])
 
     concat("<div id=\"#{id}\" class=\"expand_contract_content\" style=\"#{initial_hide}\">",options[:out_binding])      
@@ -145,9 +145,6 @@ module ResolveHelper
   end
   
   
-  def generating_embed_partials?
-    return @generating_embed_partials == true
-  end
 
   # Code-generating helper to add a "More" link to a list, with a maximum
   # number of items to show before 'more'. AJAXy show, with unobtrusive

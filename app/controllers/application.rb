@@ -7,11 +7,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :app_before_filter
 
-  # This is SUPPOSED to default to 'false'. For our partial html snippet thing. 
-  #def default_url_options(some_param)
-  #  { :only_path => false }
-  #end
-
+  
   
   # Default error page. Individual controllers can over-ride. 
   def rescue_action_in_public(exception)
@@ -180,11 +176,22 @@ class ApplicationController < ActionController::Base
           end
         end
         return url
-      else
-        return url_for(destination)
+      else        
+        return url_for(params_preserve_xhr(destination))
       end
   end
 
+  # if it's an xml-http-request, and we're redirecting to ourselves...
+  # afraid we're going to lost the X-Requested-With header on redirect,
+  # messing up our Rails code. Add it as a query param, sorry weird
+  # workaround.
+  def params_preserve_xhr(my_params = params)
+    if request.xml_http_request?                  
+        my_params = my_params.clone
+        my_params["X-Requested-With"] = "XmlHttpRequest"
+    end
+    my_params
+  end
   
   # helper method we need available in controllers too
   # Absolute URL for permalink for given request.

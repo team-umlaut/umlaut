@@ -38,23 +38,14 @@
 <% # only display if there are more! 
  if service_types_in_progress?(svc_types) %>
   <div id="<%= div_id %>" class="background_progress_spinner" >
-    <% unless @force_bg_progress_spinner %>
-      <%= link_to "#{current_set_empty ? "" : "More"} #{item_name} may be available.", {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %> 
-    <% end %>
-    <% if @force_bg_progress_spinner %>
+
       <%= 
       image_tag('spinner.gif', :alt =>"") %>
-      <%= progress_message %>
-    <% end %>
+      <span class="message"><%= progress_message %></span>
+      
+      <noscript>
+        <%= link_to "Load #{current_set_empty ? "" : "more"} #{item_name}.", {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %> 
+      </noscript>
   </div>
 
-  <% unless @force_bg_progress_spinner == false # Not just nil, but false 
-  %>
-    <script type="text/javascript">
-    <%= update_page do |page|
-         page.replace_html div_id, "#{image_tag('spinner.gif', :alt => "")} #{progress_message}"
-    end
-    %>
-    </script>
-  <% end %>
 <% end %>

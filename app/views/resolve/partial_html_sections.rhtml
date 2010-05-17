@@ -16,9 +16,22 @@
     <response_count value="<%= renderer.responses_list.length %>" />
     <html_content>
       <%=  escape_xml(  render_section(renderer) ) %> 
-    </html_content>
+    </html_content>    
   </html_section>
 <% end %>
+    <% #special one for errors
+      error_div_info = AppConfig.param("error_div")
+      if ( (!error_div_info.nil?) &&
+           @user_request.failed_service_dispatches.length > 0)
+     %>
+     <html_section id="ERRORS">
+       <html_content>
+        <%= escape_xml( render(:partial => error_div_info[:partial].to_s)) %>
+       </html_content>
+     </html_section>
+     <% end %>
+    
+    
 </partial_html_sections>
 
 

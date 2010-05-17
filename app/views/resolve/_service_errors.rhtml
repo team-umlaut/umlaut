@@ -1,16 +1,3 @@
-<script type="text/javascript">
-  function toggle_visible(el) {
-   if (el.style.visibility == 'hidden' ) {
-    el.style.visibility='visible'; 
-    el.style.height='auto';
-   }
-   else {
-    el.style.visibility='hidden'; 
-    el.style.height=0;
-   }
-  }
-</script>
-
 
 <% 
          failed_dispatches = failed_service_dispatches()
@@ -24,9 +11,9 @@
             <li class="smallText">           
             Some <i><%= dispatch.service.service_types_generated.collect { |type|
                type.display_name_pluralize.downcase}.join(",") %></i>
-             from <a onclick="$('error_info<%= dispatch.id %>').toggle(); return false;"><strong><%= dispatch.service.display_name %>  </strong> </a>
+             from <a class="simple_visible_toggle"><strong><%= dispatch.service.display_name %>  </strong> </a>
               <% exception_info = dispatch.exception_info %>
-                <div id="error_info<%= dispatch.id %>" style="display: none;">
+                <div style="display: none;">
                 technical error information
                 <ul>
                    <li> <%= exception_info[:class_name] if exception_info %> </li>

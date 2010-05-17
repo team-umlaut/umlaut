@@ -11,47 +11,9 @@
 
   <h2 class="cl_header">Searching for a specific journal?</h2>
 
-<script type="text/javascript" language="JavaScript1.1">
-<!--
 
-
-function updateObjectId(elem, val) {
-    document.getElementById('rft_object_id').value = val.attributes['title'].value;
-    document.getElementById('rft_title').value = elem.value
-    document.getElementById('sfx_title_search').selectedIndex = 2
-}
-function clearObjectId() {
-    if(document.getElementById('rft_title').value != document.getElementById('journal_title').value) {
-        document.getElementById('rft_object_id').value = '';
-        document.getElementById('rft_title').value = '';
-    }
-}
-
-function setDate() {
-        var selYear  = document.OpenURL.__year.selectedIndex;
-        var selMonth = document.OpenURL.__month.selectedIndex;
-        var selDay   = document.OpenURL.__day.selectedIndex;
-        var year     = document.OpenURL.__year.options[selYear].value;
-        var month    = document.OpenURL.__month.options[selMonth].value;
-        var day      = document.OpenURL.__day.options[selDay].value;
-        var isodate  = "";
-        if (year != "****" && year != "Year" && /^\d+$/.test(year)) {
-                isodate += year;
-                if (month != "***" && month != "Month" && /^\d+$/.test(month)) {
-                        isodate += "-" + month;
-                        if (day != "**" && day != "Day" && /^\d+$/.test(day)) {
-                                isodate += "-" + day;
-                        }
-                }
-        }
-
-        document.OpenURL.date.value = isodate;
-}
-
-// -->
-</script>
                                   
-  <%= form_tag(@submit_hash, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'})  %>
+  <%= form_tag(@submit_hash, {:method=>'get', :class=>"OpenURL", :name=>'OpenURL', :id=>'OpenURL'})  %>
   <div class="citationLinker">                                      
 
       <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
@@ -64,8 +26,8 @@ function setDate() {
               If you have both the journal
               title
       and ISSN, use the ISSN.</strong></td>
-        <input type="hidden" id="rft_title" name="rft.title">
-          <input type="hidden" id="rft_object_id" name="rft.object_id">
+        <input type="hidden" class="rft_title" name="rft.title">
+          <input type="hidden" class="rft_object_id" name="rft.object_id">
           <input type="hidden" id="date" name="rft.date">
         </tr>
         <tr>
@@ -73,11 +35,10 @@ function setDate() {
                                             
           <td width="89%">Journal Title:
 
-            <%= text_field :journal, :title, {:name=>'rft.jtitle', :onchange=>'clearObjectId();',:autocomplete=>'off', :size=>'40'} %>
+            <%= text_field :journal, :title, {:name=>'rft.jtitle', :autocomplete=>'off', :size=>'40', :class=>"title_search"} %>
                     
-            <div class="auto_complete" id="journal_title_auto_complete"></div>
             
-            <select name="umlaut.title_search_type" id="sfx_title_search">
+            <select name="umlaut.title_search_type" class="sfx_title_search">
               <option value="contains">contains</option>
               <option value="begins">begins
               with</option>
@@ -86,17 +47,7 @@ function setDate() {
             &nbsp;&nbsp;&nbsp;&nbsp;ISSN:
             <input type=text name="rft.issn" size="10" maxlength="9">
             
-            <!-- Rails helper wasn't flexible enough for us, we create
-                 the scriptaculous thing by hand - need to make sure
-                 value of umlaut.title_search_type is sent too. -->
-            <script type="text/javascript">
-            //<![CDATA[
-              var journal_title_auto_completer11 = new Ajax.Autocompleter('journal_title', 'journal_title_auto_complete', '<%= url_for(:controller =>"search", :action=>"auto_complete_for_journal_title") %>', {afterUpdateElement:updateObjectId, minChars:4, 
-               callback: function(element, query_string) {
-                return query_string + "&umlaut.title_search_type=" + $('sfx_title_search').getValue()   }
-              })
-            //]]>
-            </script>
+           
           </td>
             
         </tr>
@@ -114,7 +65,7 @@ function setDate() {
       <tr>
        
         <td width="46%">Date: 
-          <select name="__year" onChange="setDate('rft.date',document.OpenURL)">
+          <select name="__year">
 
           <option value="" selected>Year</option>
             <% (-1*Time.now.year..-1*1950).each do |year| %>
@@ -122,7 +73,7 @@ function setDate() {
             <% end %>
           </select>
 
-          <select name="__month" onChange="setDate('rft.date',document.OpenURL)">
+          <select name="__month">
             <option value="" selected>Month
             <option value="01">Jan
             <option value="02">Feb
@@ -138,7 +89,7 @@ function setDate() {
             <option value="12">Dec
           </select>
 
-          <select name="__day" onChange="setDate('rft.date',document.OpenURL)">
+          <select name="__day">
             <option value="" selected>Day
             <option value="01">01
             <option value="02">02
@@ -173,10 +124,10 @@ function setDate() {
           </select>
 
           &nbsp;&nbsp;&nbsp;Volume:
-          <input type=text name="rft.volume" size="5" maxlength="5" value="" id='volume'>&nbsp;&nbsp;&nbsp;Issue:
-          <input type=text name="rft.issue" size="5" value="" id="issue">
+          <input type=text name="rft.volume" size="5" maxlength="5" value="" class='volume'>&nbsp;&nbsp;&nbsp;Issue:
+          <input type=text name="rft.issue" size="5" value="" class="issue">
           &nbsp;&nbsp;&nbsp;Start page:
-          <input type=text name="rft.spage" size="5" value="" id='spage'>
+          <input type=text name="rft.spage" size="5" value="" class='spage'>
 </td>
       
       </tr>

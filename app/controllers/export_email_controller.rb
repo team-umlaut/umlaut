@@ -1,29 +1,26 @@
 class ExportEmailController < ApplicationController
   filter_parameter_logging :email
   before_filter :load_objects
-  layout AppConfig.param("search_layout", "search_basic").to_s
+  layout (proc do |controller|         
+     if (controller.request.xhr? ||
+         controller.params["X-Requested-With"] == "XmlHttpRequest")
+       nil
+     else
+       AppConfig.param("search_layout", "search_basic").to_s
+     end
+  end)
 
   def load_objects
     @svc_type = ServiceType.find(params[:id])
     @user_request = @svc_type.request if @svc_type
   end
   
-  def email
+  def email    
 
-    
-    respond_to do |format|
-      format.js { render :action => "show_modal_dialog.rjs"}
-      format.html { @force_html_form = true ; render }
-    end
   end 
   
-  def txt
+  def txt    
 
-    
-    respond_to do |format|
-      format.js { render :action => "show_modal_dialog.rjs"}
-      format.html { @force_html_form = true ; render }
-    end
   end
   
   def reset
@@ -36,13 +33,12 @@ class ExportEmailController < ApplicationController
       if valid_email?
         Emailer.deliver_citation(@email, @user_request, @holdings) 
         respond_to do |format|
-          format.js { render :action => "modal_dialog_success.rjs"}
           format.html {  render }
         end
       else
         @partial = "email"
         flash[:error] = email_validation_error
-        redirect_to params.merge(:action => "email")        
+        redirect_to params_preserve_xhr(params.merge(:action => "email"))        
       end
     
   end
@@ -62,13 +58,10 @@ class ExportEmailController < ApplicationController
       if valid_txt_number? && valid_txt_holding?
         Emailer.deliver_short_citation(@email, @user_request, location(@holding_id), call_number(@holding_id)) 
 
-        respond_to do |format|      
-          format.js { render :action => "modal_dialog_success.rjs"} 
-          format.html { @force_html_form = true ; render } # send_txt.rhtml
-        end
+        render # send_txt.rhtml       
       else        
         flash[:error] = txt_validation_error        
-        redirect_to params.merge(:action => "txt")
+        redirect_to params_preserve_xhr(params.merge(:action => "txt"))
       end    
   end
   
