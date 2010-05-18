@@ -213,7 +213,7 @@ module ResolveHelper
 
 
   def link_to_toggle_debug_info(name = "[D]", options = {})
-    javascript = " $$('.debug_info').each( function(el) { el.toggle(); });"  
+    javascript = " jQuery('.debug_info').toggle();"  
   
     return link_to_function(name, javascript, options)  
   end
