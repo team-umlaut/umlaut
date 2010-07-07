@@ -362,7 +362,6 @@ class Sfx < Service
          :related_object_hash => hash 
         }, ["highlighted_link"])
     end
-    
     # only enhance for journal type metadata. For book type
     # metadata SFX will return something, but it may not be the manifestation
     # we want. With journal titles, less of an issue. 
@@ -564,6 +563,9 @@ class Sfx < Service
     sfx_co = Sfx.parse_perl_data(perl_data.to_s)
     
     sfx_metadata = sfx_co.referent.metadata
+    # Do NOT enhance for metadata type 'BOOK', unreliable matching from
+    # SFX!
+    return if sfx_metadata["object_type"].downcase == "book" || sfx_metadata["genre"].downcase == "book"
     
     # If we already had metadata for journal title and the SFX one
     # differs, we want to over-write it. This is good for ambiguous
