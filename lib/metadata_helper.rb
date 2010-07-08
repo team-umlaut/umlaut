@@ -93,17 +93,9 @@ module MetadataHelper
     return title
   end
 
-
-  
-  # chooses the best available title for the format
-  def get_search_title(rft, options = {})
-    #defaults
-    options = {:remove_all_parens => true,
-               :subtitle_on_semicolon => true,
-               :remove_subtitle => true,
-               :remove_punctuation => true}.merge(options)
-
-    
+  # pick title out of OpenURL referent from best element available,
+  # no normalization. 
+  def raw_search_title(rft)
     # Just make one call to create metadata hash
     metadata = rft.metadata
     title = nil
@@ -123,7 +115,19 @@ module MetadataHelper
     elsif metadata['title']
       title = metadata['title']
     end
+    return title
+  end
+  
+  # chooses the best available title for the format, normalizes
+  def get_search_title(rft, options = {})
+    #defaults
+    options = {:remove_all_parens => true,
+               :subtitle_on_semicolon => true,
+               :remove_subtitle => true,
+               :remove_punctuation => true}.merge(options)
 
+    title = raw_search_title(rft)
+    
     return normalize_title(title, options)
     
   end
@@ -134,6 +138,7 @@ module MetadataHelper
     metadata = rft.metadata
     # Identify dc.creator query. Prefer aulast alone if available.
     creator = nil
+    
     creator = metadata['aulast'] unless metadata['aulast'].blank?
     creator = metadata['au'] if creator.blank?
     # FIXME if capital letters are next to each other should we insert a space?
@@ -148,6 +153,17 @@ module MetadataHelper
     return creator
   end
 
+  def get_top_level_creator(rft)
+     # If it's a non-journal thing, add the author if we have an aulast (preferred) or au. 
+    # But wait--if it's a book _part_, don't include the author name, since
+    # it _might_ just be the author of the part, not of the book. 
+    unless (rft.format == "journal" ||
+              ( rft.format == "book" &&  ! rft.metadata['atitle'].blank?))
+       return get_search_creator(rft)
+    end
+    return nil
+  end
+  
   # oclcnum, lccn, and isbn are both _supposed_ to be stored as identifiers
   # with an info: uri. info:oclcnum/#, info:lccn/#. But SFX sometimes stores
   # them in the referent metadata instead: rft.lccn, rft.oclcnum. .
@@ -276,6 +292,22 @@ module MetadataHelper
     end
 
     return sudoc
+  end
+
+  def get_year(rft)
+    # Some link generators use an illegal 'year' parameter    
+    if (date = (rft['date'] || rft['year']))
+      return date[0,4]
+    end
+    return nil
+  end
+
+  # Look at weird bad OpenURLs, use heuristics to see if the 'title' probably
+  # represents a journal rather than a book. 
+  def title_is_serial?(rft)
+    (rft.format != "book" &&
+    ( ! rft.metadata['jtitle'].blank?) &&
+    rft.metadata['btitle'].blank?)    
   end
   
 end

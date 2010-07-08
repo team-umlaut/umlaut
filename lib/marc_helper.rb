@@ -174,7 +174,12 @@ module MarcHelper
 
     return array
   end
-  
+
+  # Take the title out of a marc record
+  def get_title(marc)
+    marc['245'].find_all {|sf| sf.code == "a" || sf.code == "b" || sf.code == "k"}.collect {|sf| sf.text}.join(" ").sub(/\s*[;:\/.,]\s*$/)
+  end
+
   
   # From a marc record, get a string useful to display for identifying
   # which edition/version of a work this represents. 
@@ -184,7 +189,8 @@ module MarcHelper
 
     parts = Array.new
 
-
+    return "" unless marc
+    
     #245$h GMD
     unless ( marc['245'].blank? || marc['245']['h'].blank? )
       parts.push('(' + marc['245']['h'].gsub(/[^\w\s]/, '').strip.titlecase + ')')
