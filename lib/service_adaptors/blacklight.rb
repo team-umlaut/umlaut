@@ -8,7 +8,7 @@ require 'marc'
 # 
 # Params include:
 # [base_url]
-#    required. Complete URL to catalog.atom. Eg "https://blacklight.mse.jhu.edu/catalog.atom"
+#    required. Complete URL to catalog.atom action. Eg "https://blacklight.mse.jhu.edu/catalog.atom"
 # [bl_fields]
 #    required with at least some entries if you want this to do anything. Describe the names of given semantic fields in your BL instance.
 #    * issn
@@ -54,6 +54,7 @@ class Blacklight < Service
     @keyword_per_page = 10
     @identifier_search = true
     @keyword_search = true
+    @link_to_search = true
     super(config)
     @bl_fields = { "id" => "id "}.merge(@bl_fields)
   end
@@ -68,6 +69,7 @@ class Blacklight < Service
 
   def handle(request)        
     ids_processed = []
+    holdings_added = 0
     if (@identifier_search && url = blacklight_precise_search_url(request) )
       doc = Nokogiri::XML( http_fetch(url).body )
       
@@ -85,19 +87,17 @@ class Blacklight < Service
       # Got to make a second fetch for dlf_expanded info, cause BL doens't
       # (yet) let us ask for more than one at once
       holdings_url = blacklight_precise_search_url( request, "dlf_expanded" )
-      add_holdings( holdings_url )
-  
-      
-      
+      holdings_added += add_holdings( holdings_url ) if holdings_url
     end
       
     #keyword search.    
     if (@keyword_search &&
         url = blacklight_keyword_search_url(request))
+        
         doc = Nokogiri::XML( http_fetch(url).body )
         # filter out matches whose titles don't really match at all, or
         # which have already been seen in identifier search. 
-        entries = filter_keyword_entries( doc.xpath("atom:feed/atom:entry", xml_ns) , :exclude_ids => ids_processed, :remove_subtitle => (! title_is_serial?(request)) )
+        entries = filter_keyword_entries( doc.xpath("atom:feed/atom:entry", xml_ns) , :exclude_ids => ids_processed, :remove_subtitle => (! title_is_serial?(request.referent)) )
 
         marc_by_atom_id = {}
         
@@ -111,7 +111,6 @@ class Blacklight < Service
           
           marc
         end
-        debugger
        
         # We've filtered out those we consider just plain bad
         # matches, everything else we're going to call
@@ -126,9 +125,27 @@ class Blacklight < Service
         # Fetch and add in the holdings
         url = blacklight_url_for_ids(bib_ids_from_atom_entries(entries))
         
-        add_holdings( url, :match_reliability => ServiceResponse::MatchUnsure, :marc_data => marc_by_atom_id ) if url
+        holdings_added += add_holdings( url, :match_reliability => ServiceResponse::MatchUnsure, :marc_data => marc_by_atom_id ) if url
+
+        debugger
+        
+        if (@link_to_search && holdings_added ==0)
+          hit_count = doc.at_xpath("atom:feed/opensearch:totalResults/text()", xml_ns).to_s.to_i
+          html_result_url = doc.at_xpath("atom:feed/atom:link[@rel='alternate'][@type='text/html']/attribute::href", xml_ns).to_s
+        
+          request.add_service_response( 
+          { 
+            :service => self,
+            :source_name => @display_name,
+            :count => hit_count,
+            :display_text => "#{hit_count} possible #{case; when hit_count > 1 ; 'matches' ; else; 'match' ; end} in #{@display_name}", 
+            :url => html_result_url
+          },
+          [ServiceTypeValue[:holding_search]])
+        end
     end
-      
+
+
     
     
     return request.dispatched(self, true)
@@ -157,7 +174,9 @@ class Blacklight < Service
     return base_url + "?search_field=#{@cql_search_field}&content_format=#{format}&q=#{CGI.escape(cql)}"             
   end
 
-  def blacklight_keyword_search_url(request, format="marc")
+  def blacklight_keyword_search_url(request, options = {})
+    options[:format] ||= "atom"
+    options[:content_format] ||= "marc"
     
     clauses = []
 
@@ -172,7 +191,7 @@ class Blacklight < Service
     end
 
     
-    url = base_url + "?search_field=#{@cql_search_field}&content_format=#{format}&q=#{CGI.escape(clauses.join(" AND "))}"
+    url = base_url + "?search_field=#{@cql_search_field}&content_format=#{options[:content_format]}&q=#{CGI.escape(clauses.join(" AND "))}"
 
     if (@bl_fields["serials_limit_clause"] &&
         title_is_serial?(request.referent))        
@@ -184,7 +203,7 @@ class Blacklight < Service
 
   # Takes a url that will return atom response of dlf_expanded content.
   # Adds Umlaut "holding" ServiceResponses for dlf_expanded, as appropriate.
-  # 
+  # Returns number of holdings added.  
   def add_holdings(holdings_url, options = {})
     options[:match_reliability] ||= ServiceResponse::MatchExact
     options[:marc_data] ||= {}
@@ -230,6 +249,8 @@ class Blacklight < Service
     service_data.each do |data|
       request.add_service_response(data.merge(:service => self), ["holding"])
     end
+
+    return service_data.length
   end
 
   def filter_keyword_entries(atom_entries, options = {})
