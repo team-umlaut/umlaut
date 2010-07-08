@@ -68,7 +68,6 @@ class Blacklight < Service
 
   def handle(request)        
     ids_processed = []
-    
     if (@identifier_search && url = blacklight_precise_search_url(request) )
       doc = Nokogiri::XML( http_fetch(url).body )
       
@@ -98,7 +97,7 @@ class Blacklight < Service
         doc = Nokogiri::XML( http_fetch(url).body )
         # filter out matches whose titles don't really match at all, or
         # which have already been seen in identifier search. 
-        entries = filter_keyword_entries( doc.xpath("atom:feed/atom:entry", xml_ns) , :exclude_ids => ids_processed )
+        entries = filter_keyword_entries( doc.xpath("atom:feed/atom:entry", xml_ns) , :exclude_ids => ids_processed, :remove_subtitle => (! title_is_serial?(request)) )
 
         marc_by_atom_id = {}
         
@@ -235,12 +234,14 @@ class Blacklight < Service
 
   def filter_keyword_entries(atom_entries, options = {})
     options[:exclude_ids] ||= []
+    options[:remove_subtitle] ||= true
   
     request_title_forms = [
-        raw_search_title(request.referent).downcase,
-        normalize_title( raw_search_title(request.referent), :remove_subtitle => true),
+        raw_search_title(request.referent).downcase,        
         normalize_title( raw_search_title(request.referent) )
-    ].compact
+    ]
+    request_title_forms << normalize_title( raw_search_title(request.referent), :remove_subtitle => true) if options[:remove_subtitle]
+    request_title_forms.compact
 
     # Only keep entries with title match, and that aren't in the
     # exclude_ids list. 
@@ -249,9 +250,10 @@ class Blacklight < Service
    
       entry_title_forms = [
         title.downcase,
-        normalize_title(title, :remove_subtitle=>true),
         normalize_title(title)
-      ].compact
+      ]
+      entry_title_forms << normalize_title(title, :remove_subtitle=>true) if options[:remove_subtitle]
+      entry_title_forms.compact
       
       ((entry_title_forms & request_title_forms).length > 0 &&
        (bib_ids_from_atom_entries(atom_entry) & options[:exclude_ids]).length == 0)
