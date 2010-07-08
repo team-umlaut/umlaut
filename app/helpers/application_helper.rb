@@ -29,7 +29,6 @@ module ApplicationHelper
   # We want stylesheets and javascripts to do the exact same thing,
   # magic of polymorphous super() makes it work:
   def path_to_stylesheet(source)
-    debugger
     path = super
     if @generate_urls_with_host    
       path = request.protocol() + request.host_with_port() + path
