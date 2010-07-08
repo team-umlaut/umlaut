@@ -6,6 +6,7 @@
 
 module UmlautHttp
   require 'net/http'
+  require 'net/https'
   require 'uri'
 
   # Generate headers for a proxy-like request, so a service adaptor
