@@ -565,7 +565,7 @@ class Sfx < Service
     sfx_metadata = sfx_co.referent.metadata
     # Do NOT enhance for metadata type 'BOOK', unreliable matching from
     # SFX!
-    return if sfx_metadata["object_type"].downcase == "book" || sfx_metadata["genre"].downcase == "book"
+    return if sfx_metadata["object_type"] == "BOOK" || sfx_metadata["genre"] == "book"
     
     # If we already had metadata for journal title and the SFX one
     # differs, we want to over-write it. This is good for ambiguous
