@@ -37,7 +37,11 @@
       <tr>
         <td colspan="4">
           <div class="section_content_indent edition_warning">
-            <em class="note label">Edition information</em> <%= target[:edition_str] %>
+            <% unless target[:edition_str].blank? %>
+              <em class="note label">Edition information</em> <%= target[:edition_str] %>
+            <% else %>
+              <em class="note label">May be alternate edition.</em>
+            <% end %>
           <div>
         </td>
       </tr>

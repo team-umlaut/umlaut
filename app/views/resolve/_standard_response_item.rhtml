@@ -62,7 +62,12 @@
 
 <% if (!view_data[:match_reliability].blank?) && view_data[:match_reliability] != ServiceResponse::MatchExact %>
   <div class="edition_warning">
-    <em class="label">Edition information</em> <%= view_data[:edition_str] %>
+    <% unless view_data[:edition_str].blank? %>
+      <em class="note label">Edition information</em> <%= view_data[:edition_str] %>
+    <% else %>
+      <em class="note label">May be alternate edition.</em>
+    <% end %>
+    
   </div>
 <% end %>
 
