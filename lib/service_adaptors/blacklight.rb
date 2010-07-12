@@ -157,9 +157,21 @@ class Blacklight < Service
   def blacklight_precise_search_url(request, format = "marc")
     # Add search clauses for our identifiers, if we have them and have a configured search field for them. 
     clauses = []
-    ["issn", "lccn", "isbn", "oclcnum"].each do |key|
-      clauses.push( "#{bl_fields[key]} = \"#{request.referent.send(key)}\"") if bl_fields[key] && request.referent.send(key)
+    added = []
+    ["lccn", "isbn", "oclcnum"].each do |key|
+      if bl_fields[key] && request.referent.send(key)
+        clauses.push( "#{bl_fields[key]} = \"#{request.referent.send(key)}\"")
+        added << key
+      end
     end
+    # Only add ISSN if we don't have an ISBN, reduces false matches
+    if ( !added.include?("isbn") &&
+         bl_fields["issn"] && 
+         request.referent.issn)
+       clauses.push("#{bl_fields["issn"]} = \"#{request.referent.issn}\"")
+    end
+      
+    
     # Add Solr document identifier if we can get one from the URL
     
     if (id = get_solr_id(request.referent))
