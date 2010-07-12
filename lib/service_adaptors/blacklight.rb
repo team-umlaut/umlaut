@@ -67,7 +67,9 @@ class Blacklight < Service
   end
 
 
-  def handle(request)        
+  def handle(request)
+    debugger
+ 
     ids_processed = []
     holdings_added = 0
     if (@identifier_search && url = blacklight_precise_search_url(request) )
@@ -89,7 +91,7 @@ class Blacklight < Service
       holdings_url = blacklight_precise_search_url( request, "dlf_expanded" )
       holdings_added += add_holdings( holdings_url ) if holdings_url
     end
-      
+    debugger
     #keyword search.    
     if (@keyword_search &&
         url = blacklight_keyword_search_url(request))
@@ -101,10 +103,10 @@ class Blacklight < Service
 
         marc_by_atom_id = {}
         
-        # namespaces make xpath harder than it should be, but css
-        # selector still easy, thanks nokogiri! Grab the marc from our
-        # results. 
-        marc_matches = entries.xpath("//atom:feed/atom:entry/atom:content[@type='application/marc']", xml_ns).collect do |encoded_marc21|
+        # Grab the marc from our entries. Important not to do a // xpath
+        # search, or we'll wind up matching parent elements not actually
+        # included in our 'entries' list. 
+        marc_matches = entries.xpath("atom:content[@type='application/marc']", xml_ns).collect do |encoded_marc21|
           marc = MARC::Reader.decode( Base64.decode64(encoded_marc21.text) )
 
           marc_by_atom_id[ encoded_marc21.at_xpath("ancestor::atom:entry/atom:id/text()", xml_ns).to_s  ] = marc
