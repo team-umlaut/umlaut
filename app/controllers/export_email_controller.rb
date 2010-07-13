@@ -28,10 +28,11 @@ class ExportEmailController < ApplicationController
 
   def send_email
     @email = params[:email]
+    @fulltexts = @user_request.get_service_type('fulltext', { :refresh=>true })
     @holdings = @user_request.get_service_type('holding', { :refresh=>true })
     
       if valid_email?
-        Emailer.deliver_citation(@email, @user_request, @holdings) 
+        Emailer.deliver_citation(@email, @user_request, @fulltexts, @holdings) 
         respond_to do |format|
           format.html {  render }
         end

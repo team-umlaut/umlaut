@@ -1,19 +1,24 @@
 Title: <%= @title%>
+<% 
+unless @user_request.title_level_citation?
+  puts brief_citation(@user_request)
+end
+unless @fulltexts.nil? or @fulltexts.empty? %>
+Electronic Versions:
 <%
-  unless @holdings.nil?
--%>
-<% unless @user_request.title_level_citation? %>
-
-<%= brief_citation(@user_request) %>
-
-<% end -%>
-
-Holdings:
-<%
-@holdings.each do |holding|
-  target = holding.view_data -%>
-  * <%= target[:collection_str] %> <%= target[:call_number] %>  <%= target[:status]  %>
+  @fulltexts.each do |fulltext|
+      view_data = fulltext.view_data %>
+  * <%= view_data[:display_text] %>: <%= view_data[:url] %>
 <%
   end
 end
--%>
+unless @holdings.nil? or @holdings.empty? %>
+Holdings:
+<%
+  @holdings.each do |holding|
+      target = holding.view_data
+    if target[:latest] == true %>
+  * <%= target[:collection_str] %> <%= target[:call_number] %>  <%= target[:status] %>
+<%  end
+  end
+end %>

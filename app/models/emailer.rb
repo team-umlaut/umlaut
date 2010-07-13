@@ -3,7 +3,7 @@ class Emailer < ActionMailer::Base
  # make note of the headers, content type, and time sent
  # these help prevent your email from being flagged as spam
   
-  def citation(recipient, user_request, holdings)
+  def citation(recipient, user_request, fulltexts, holdings)
     email = AppConfig.param("from_email_addr")
     @recipients   = recipient
     @from         = email
@@ -13,6 +13,7 @@ class Emailer < ActionMailer::Base
     @content_type = "text/plain"
  
     @body["title"]  = find_good_title(user_request.referent)
+    @body["fulltexts"]  = fulltexts
     @body["holdings"]  = holdings
     @body["user_request"] = user_request
 
