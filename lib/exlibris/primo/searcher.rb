@@ -6,6 +6,7 @@ module Exlibris::Primo
     ISSN_Index = "isbn"
     Title_Index = "title"
     Author_Index = "creator"
+    Any_Index = "any"
 
     attr_accessor :base_url, :config, :base_view_id
     attr_accessor :referrer, :primo_id
@@ -14,7 +15,8 @@ module Exlibris::Primo
     attr_accessor :response, :error
     attr_reader :count, :holdings, :urls
     attr_reader :titles, :authors
-    attr_reader :au, :aulast, :aufirst
+    attr_reader :au, :aulast, :aufirst, :aucorp
+    attr_reader :pub, :place
     attr_reader :oclcid, :lccn
     attr_reader :btitle, :jtitle
     attr_reader :cover_image
@@ -31,22 +33,24 @@ module Exlibris::Primo
       return nil if insufficient_query
       # Primo Id doesn't require Query Term to be specified, empty QueryTerms element is sufficient.
       qts = Exlibris::PrimoWS::QueryTerms.new()
-      if primo_id.nil?
+      if primo_id.nil? or primo_id.empty?
         # Primo ISSN Query Term
-        issn_qt = QueryTerm.new(issn, ISSN_Index) unless issn.nil?
+        issn_qt = QueryTerm.new(issn, ISSN_Index) unless issn.nil? or issn.empty?
         qts = Exlibris::PrimoWS::QueryTerms.new(issn_qt) unless issn_qt.nil?
 
         # Primo ISBN Query Term
-        isbn_qt = QueryTerm.new(isbn, ISBN_Index) unless isbn.nil?
+        isbn_qt = QueryTerm.new(isbn, ISBN_Index) unless isbn.nil? or isbn.empty?
         qts = Exlibris::PrimoWS::QueryTerms.new(isbn_qt) unless isbn_qt.nil?
 
         #TODO: Use Title/Author/Genre search if no ISN
-        if issn.nil? and isbn.nil?
+        if (issn.nil? or issn.empty?) and (isbn.nil? or isbn.empty?)
           #TODO: Limit by genre
-          title_qt = QueryTerm.new(title, Title_Index, "exact") unless title.nil?
+          title_qt = QueryTerm.new(title, Title_Index, "begins_with") unless title.nil?
           qts = Exlibris::PrimoWS::QueryTerms.new(title_qt) unless title_qt.nil?
-          author_qt = QueryTerm.new(title, Author_Index, "exact") unless title.nil? or author.nil?
+          author_qt = QueryTerm.new(author, Author_Index, "exact") unless title.nil? or author.nil?
           qts.add_query_term(author_qt) unless author_qt.nil?
+          genre_qt = QueryTerm.new(genre, Any_Index, "exact") unless title.nil? or author.nil? or genre.nil?
+          qts.add_query_term(genre_qt) unless genre_qt.nil?
         end
       end
       psr = PrimoSearchRequest.new(qts) unless qts.nil?
@@ -71,11 +75,14 @@ module Exlibris::Primo
       # Loop through records and to get ids and sources
       #response.each_element("//record") do |rec|
       response.search("//record") do |rec|
-        holdings_seen = Array.new # for de-duplicating holdings from a given source.  Needed for Primo/Aleph bug.
+        rec_genre = (rec.at("addata/genre").nil?) ? "article" : rec.at("addata/genre").inner_text
+        #Check for genre
+        next unless (genre == rec_genre or (genre == "journal" and rec_genre == "article"))
+        holdings_seen = Array.new # for de-duplicating holdings from a given source.  Needed for Primo/Aleph single location bug.
         # Just take the first element for record level elements 
         # (should only be one, except may sourceid which will be handled later)
         record_id = rec.at("control/recordid").inner_text unless rec.at("control/recordid").nil?
-        type = rec.at("display/type").inner_text unless rec.at("display/type").nil?
+        display_type = rec.at("display/type").inner_text unless rec.at("display/type").nil?
         original_source_id = rec.at("control/originalsourceid").inner_text unless rec.at("control/originalsourceid").nil?
         original_source_ids = control_hash(rec, "control/originalsourceid")
         source_id = rec.at("control/sourceid").inner_text unless rec.at("control/sourceid").nil?
@@ -85,11 +92,12 @@ module Exlibris::Primo
         rec.search("display/availlibrary") do |e|
           # Get holdings based on display/availlibrary
           holding = Holding.new(e)
+          holding.match_reliability = (reliable_match?(rec)) ? ServiceResponse::MatchExact : ServiceResponse::MatchUnsure
           holding.primo_base_url = base_url
           holding.primo_view_id = base_view_id
           holding.primo_config = config
           holding.record_id = record_id
-          holding.type = type
+          holding.display_type = display_type
           holding_original_source_id = (holding.origin.nil? ? original_source_ids[record_id] : original_source_ids[holding.origin]) unless original_source_ids.empty?
           holding.original_source_id = (holding_original_source_id.nil? ? original_source_id : holding_original_source_id)
           holding_source_id = (holding.origin.nil? ? source_ids[record_id] : source_ids[holding.origin]) unless source_ids.empty?
@@ -98,26 +106,16 @@ module Exlibris::Primo
           holding.source_record_id = (holding_source_record_id.nil? ? source_record_id : holding_source_record_id)
           holding.source_config = sources_config[holding.source_id] unless sources_config.nil?
           
-#          holding = holding.to_source if goto_source
-#          @holdings.push(holding) unless holding.nil? or holding.library.nil?
-#=begin
-          # This is a hack.
-          # TODO: Figure out a better way to do this.
-          if goto_source
-            # We don't want to link to all journal items
-            unless type.upcase == "JOURNAL"
-              # Check if we've already seen this record.  Needed for Primo/Aleph bug.
-              seen_holdings_key = holding.source_id.to_s+ holding.source_record_id.to_s
-              next if holdings_seen.include?(seen_holdings_key)
-              
-              # If we get this far, record that we've seen this holding.
-              holdings_seen.push(seen_holdings_key)
-            end
-            
-            # Some sources may be mapping several source holdings to one primo holding
-            # We want to display all source holdings.
-            holding = holding.to_source
-          end
+          # Some sources may be mapping several source holdings to one primo holding
+          # We want to display all source holdings.
+          holding = holding.to_source if goto_source
+          # There are some cases where source records may need to be deduplicated against existing records
+          # Check if we've already seen this record.
+          seen_holdings_key = holding.source_id.to_s+ holding.source_record_id.to_s
+          next if holding.dedup? and holdings_seen.include?(seen_holdings_key)
+          # If we get this far, record that we've seen this holding.
+          holdings_seen.push(seen_holdings_key)
+
           holding.to_a.each do |h|
             @holdings.push(h) unless h.nil? or h.library.nil?
           end
@@ -131,7 +129,7 @@ module Exlibris::Primo
       return @btitle unless @btitle.nil?
       search if response.nil?
       @btitle = ""
-      @btitle = response.at("//addata/btitle").inner_text.chars.to_s unless response.at("//addata/btitle").nil?
+      @btitle = response.at("//addata/btitle").inner_text.chars.to_s unless response.nil? or response.at("//addata/btitle").nil?
       return btitle
     end
  
@@ -139,7 +137,7 @@ module Exlibris::Primo
       return @jtitle unless @jtitle.nil?
       search if response.nil?
       @jtitle = ""
-      @jtitle = response.at("//addata/jtitle").inner_text.chars.to_s unless response.at("//addata/jtitle").nil?
+      @jtitle = response.at("//addata/jtitle").inner_text.chars.to_s unless response.nil? or response.at("//addata/jtitle").nil?
       return jtitle
     end
  
@@ -159,7 +157,7 @@ module Exlibris::Primo
       return @au unless @au.nil?
       search if response.nil?
       @au = ""
-      @au = response.at("//addata/au").inner_text.chars.to_s unless response.at("//addata/au").nil?
+      @au = response.at("//addata/au").inner_text.chars.to_s unless response.nil? or response.at("//addata/au").nil?
       return au
     end
  
@@ -167,7 +165,7 @@ module Exlibris::Primo
       return @aulast unless @aulast.nil?
       search if response.nil?
       @aulast = ""
-      @aulast = response.at("//addata/aulast").inner_text.chars.to_s unless response.at("//addata/aulast").nil?
+      @aulast = response.at("//addata/aulast").inner_text.chars.to_s unless response.nil? or response.at("//addata/aulast").nil?
       return aulast
     end
  
@@ -175,8 +173,16 @@ module Exlibris::Primo
       return @aufirst unless @aufirst.nil?
       search if response.nil?
       @aufirst = ""
-      @aufirst = response.at("//addata/aufirst").inner_text.chars.to_s unless response.at("//addata/aufirst").nil?
+      @aufirst = response.at("//addata/aufirst").inner_text.chars.to_s unless response.nil? or response.at("//addata/aufirst").nil?
       return aufirst
+    end
+ 
+    def aucorp
+      return @aucorp unless @aucorp.nil?
+      search if response.nil?
+      @aucorp = ""
+      @aucorp = response.at("//addata/aucorp").inner_text.chars.to_s unless response.nil? or response.at("//addata/aucorp").nil?
+      return aucorp
     end
  
     def authors
@@ -191,11 +197,27 @@ module Exlibris::Primo
       return authors
     end
  
+    def pub
+      return @pub unless @pub.nil?
+      search if response.nil?
+      @pub = ""
+      @pub = response.at("//addata/pub").inner_text.chars.to_s unless response.nil? or response.at("//addata/pub").nil?
+      return pub
+    end
+ 
+    def place
+      return @place unless @place.nil?
+      search if response.nil?
+      @place = ""
+      @place = response.at("//addata/cop").inner_text.chars.to_s unless response.nil? or response.at("//addata/cop").nil?
+      return place
+    end
+ 
     def cover_image
       return @cover_image unless @cover_image.nil?
       search if response.nil?
       @cover_image = ""
-      @cover_image = response.at("//addata/lad02").inner_text unless response.at("//addata/lad02").nil?
+      @cover_image = response.at("//addata/lad02").inner_text unless response.nil? or response.at("//addata/lad02").nil?
       return cover_image
     end
  
@@ -203,7 +225,7 @@ module Exlibris::Primo
       return @oclcid unless @oclcid.nil?
       search if response.nil?
       @oclcid = ""
-      @oclcid = response.at("//addata/oclcid").inner_text.chars.to_s unless response.at("//addata/oclcid").nil?
+      @oclcid = response.at("//addata/oclcid").inner_text.chars.to_s unless response.nil? or response.at("//addata/oclcid").nil?
       return oclcid
     end
  
@@ -211,7 +233,7 @@ module Exlibris::Primo
       return @lccn unless @lccn.nil?
       search if response.nil?
       @lccn = ""
-      @lccn = response.at("//addata/lccn").inner_text.chars.to_s unless response.at("//addata/lccn").nil?
+      @lccn = response.at("//addata/lccn").inner_text.chars.to_s unless response.nil? or response.at("//addata/lccn").nil?
       return lccn
     end
  
@@ -276,7 +298,7 @@ module Exlibris::Primo
       return [] if insufficient_query
       ws = nil
       # Call Primo Web Services
-      if primo_id
+      unless primo_id.nil? or primo_id.empty?
         ws = GetRecord.new(primo_id, base_url)
       else
         ws = SearchBrief.new(search_request, base_url)
@@ -288,18 +310,23 @@ module Exlibris::Primo
     def insufficient_query
       # Have to have some search criteria to search
       # TODO: Include title/author/genre search
-      #return (self.primo_id.nil? && self.issn.nil? && self.isbn.nil? && (self.title.nil? or self.author.nil? or self.genre.nil? )
-      return (self.primo_id.nil? && self.issn.nil? && self.isbn.nil?)
+      #return (self.primo_id.nil? && self.issn.nil? && self.isbn.nil? && (self.title.nil? or self.author.nil? or self.genre.nil?))
+      return ((self.primo_id.nil? or self.primo_id.empty?) && (self.issn.nil? or self.issn.empty?) && (self.isbn.nil? or self.isbn.empty?) && ((self.title.nil? or self.title.empty?) or (self.author.nil? or self.author.empty?) or (self.genre.nil? or self.genre.empty?)))
+      #return (self.primo_id.nil? && self.issn.nil? && self.isbn.nil?)
     end
     
     private
     def goto_source?
-      @goto_source.to_i == 1 or primo_referrer?
+      @goto_source or primo_referrer?
     end
 
     def primo_referrer?
       return false if referrer.nil?
       return (referrer.match('info:sid/primo.exlibrisgroup.com').nil? ? false : true)
+    end
+    
+    def reliable_match?(rec)
+      return true unless ((self.primo_id.nil? or self.primo_id.empty?) && (self.issn.nil? or self.issn.empty?) && (self.isbn.nil? or self.isbn.empty?) && (rec.at("display/title").inner_text != title))
     end
   end
 end

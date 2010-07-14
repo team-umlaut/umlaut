@@ -39,8 +39,12 @@ class PrimoEnhancer < Service
       end
       request.referent.enhance_referent('aulast', primo_searcher.aulast) unless primo_searcher.aulast.empty?
       request.referent.enhance_referent('aufirst', primo_searcher.aufirst) unless primo_searcher.aufirst.empty?
+      request.referent.enhance_referent('aucorp', primo_searcher.aucorp) unless primo_searcher.aucorp.empty?
       request.referent.enhance_referent('au', primo_searcher.au) unless primo_searcher.au.empty?
-      
+
+      request.referent.enhance_referent('pub', primo_searcher.pub) unless primo_searcher.pub.empty?
+      request.referent.enhance_referent('place', primo_searcher.place) unless primo_searcher.place.empty?
+
       request.referent.enhance_referent('oclcnum', primo_searcher.oclcid, true, false, { :overwrite => false })
       request.referent.enhance_referent('lccn', primo_searcher.lccn, true, false, { :overwrite => false })
 
