@@ -51,6 +51,12 @@
     umlaut_base = umlaut_base.replace(/\/$/,'');
     this.umlaut_uri =  umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=json&' + context_object;
     
+    // Because of weird mongrel deployment, tell umlaut to generate https
+    // links if we're requesting https, won't happen automatically. 
+    if (this.umlaut_uri.substring(0, 6) == "https:") {
+      this.umlaut_uri = this.umlaut_uri + "&umlaut.force_https_links=true";
+    }
+    
     this.section_targets = [];
            
     this.add_section_target = function(config) {
