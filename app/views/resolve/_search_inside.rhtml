@@ -27,7 +27,8 @@
 
     <form target="_blank" action="<%= url_for(:controller=>'link_router', :action=>'index') %>">
     
-      via 
+    <span class="source">
+    via 
     <% if search_providers.length > 1 %>
       <select name="id">
       <% search_providers.each do |st| %>
@@ -38,6 +39,7 @@
       <input type="hidden" name="id" value="<%= search_providers[0].id %>">
       <%= search_providers[0].view_data[:display_text] %>:
     <% end %>
+    </span>
     
     <input name="query" type="text" /> <input value="search" type="submit">
     </form>    
