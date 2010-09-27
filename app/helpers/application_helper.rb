@@ -8,7 +8,6 @@ module ApplicationHelper
   # for the remainder of that action. 
   def url_for(options={})
     options[:only_path] = false if @generate_urls_with_host && options[:only_path].nil?
-    options[:protocol] = "https" if params["umlaut.force_https_links"]
     super(options)          
   end
 
@@ -18,7 +17,7 @@ module ApplicationHelper
   def path_to_image(source)
     path = super(source)
     if @generate_urls_with_host
-      protocol = (params["umlaut.force_https_links"] ? "https://" : request.protocol())
+      protocol =  request.protocol()
       path = protocol + request.host_with_port() + path
     end
     return path
