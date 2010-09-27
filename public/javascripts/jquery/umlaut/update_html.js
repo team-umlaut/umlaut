@@ -88,8 +88,10 @@
                   if (umlaut_html_section == undefined) {
                     continue;
                   }                  
-                  
-                  var count = parseInt(umlaut_html_section.response_count.value);
+                  var count = null;
+                  if (typeof umlaut_html_section.response_count != "undefined") { 
+                    count = parseInt(umlaut_html_section.response_count.value);
+                  }
                   var existing_element = section_target.ensure_placement_destination();
                   var new_element = $('<div class="umlaut" style="display:none" class="' + section_target.umlaut_section_id +'"></div>');
                   new_element.html(umlaut_html_section.html_content);
