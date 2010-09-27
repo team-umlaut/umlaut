@@ -17,13 +17,19 @@
   if img_st 
       img_data = img_st.view_data
       
-      params = {'src'=>img_data[:url],
+      img_params = {'src'=>img_data[:url],
       'class'=>'cover_image',
       'alt'=>h(img_data[:display_text])}
       
-      params.merge!( dimensions[size]) if fix_size
+      # If we're in https mode, and the original url is http, use
+      # Umlaut proxy to avoid browser security warning. 
+      if (request.protocol != img_params['src'][0..6])
+        img_params['src'] = url_for(:controller => "resource", :action => "proxy", :id => img_st.id )
+      end
       
-      tag('img', params )
+      img_params.merge!( dimensions[size]) if fix_size
+      
+      tag('img', img_params )
       
  end %>
       
