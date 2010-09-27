@@ -9,7 +9,8 @@ class ElsevierCover < Service
   end
 
   def initialize(config)
-    @base_url = "http://www1.elsevier.com/inca/covers/store/issn/"
+    #@base_url = "http://www1.elsevier.com/inca/covers/store/issn/"
+    @base_url = "http://www.extranet.elsevier.com/inca_covers_store/issn/"
     
     super(config)
   end
