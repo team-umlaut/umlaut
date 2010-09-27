@@ -137,7 +137,7 @@ class GoogleBookSearch < Service
     keys = []
     keys << 'isbn:' + isbn if isbn
     keys << 'OCLC' + oclcnum if oclcnum
-    keys << 'LCCN' + lccn if lccn
+    keys << 'LCCN' + lccn if lccn && keys.length == 0
     
     return nil if keys.empty?
     keys = CGI.escape( keys.join(' OR ') )
