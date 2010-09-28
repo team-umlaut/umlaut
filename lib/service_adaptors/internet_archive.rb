@@ -37,10 +37,13 @@ class InternetArchive < Service
   }
   
   def service_types_generated
-    return [ 
+    types = [ 
       ServiceTypeValue[:fulltext], 
       ServiceTypeValue[:audio],
-      ServiceTypeValue[:'highlighted_link'] ]
+      ServiceTypeValue[:'highlighted_link']      
+      ]
+    types << ServiceTypeValue[:search_inside] if @include_search_inside
+    return types
   end
   
   def initialize(config)
@@ -56,6 +59,7 @@ class InternetArchive < Service
     @show_web_link = true
     @display_name = "the Internet Archive"
     @http_timeout = 5.seconds
+    @include_search_inside = false
     super(config)
     @num_results_for_types ||= {}
     @mediatypes.each do |type|
@@ -111,12 +115,38 @@ class InternetArchive < Service
     
     @mediatypes.each do |type|
      type_results = get_results_by_type(results, type)
-      
+
+
+
+     
       # if we have more results than we want to show in the main view
       # we can ceate a link (highlighted_link) to the search in the sidebar 
       num_found = type_results.length #doc['response']['numFound']
       if (@show_web_link and not type_results.empty? and @num_results_for_types[type] < num_found )
         do_web_link(request, search_terms, type, num_found) 
+      end
+
+      # Check for search inside only for first result of type 'text'
+      if (@include_search_inside &&
+          type == 'texts' &&
+          (first_hit = type_results[0]) && 
+          (identifier = first_hit["identifier"])
+          )
+        direct_url = URI.parse("http://www.archive.org/stream/" + identifier)
+
+        # Head request, if we get a 200, we think it means we have page
+        # turner with search.
+        req = Net::HTTP.new(direct_url.host, direct_url.port)
+        response = req.request_head(direct_url.path)
+        if response.code == "200"
+          # search inside!
+          request.add_service_response(
+            {:service => self,
+            :display_text=> @display_name,
+            :url => direct_url.to_s},
+            [:search_inside]
+          )
+        end        
       end
       
       # add a service response for each result for this mediatype
@@ -223,6 +253,18 @@ class InternetArchive < Service
     edition_str = nil if edition_str.blank?
 
     return edition_str
+  end
+
+  # catch and redirect response_url fo rsearch_inside
+  def response_url(service_type, submitted_params)
+    if ( ! (service_type.service_type_value.name == "search_inside" ))
+      return super(service_type, submitted_params)
+    else
+      base = service_type.service_response[:url]
+      query = CGI.escape(submitted_params["query"] || "")
+      url = base + "#search/#{query}"
+      return url
+    end
   end
   
   ## collection labels  
