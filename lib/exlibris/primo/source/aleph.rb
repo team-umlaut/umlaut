@@ -1,9 +1,11 @@
 module Exlibris::Primo::Source
   class Aleph < Exlibris::Primo::Source::Base
-    attr_accessor :aleph_item_barcode, :aleph_sequence_number
+    attr_accessor :aleph_item_barcode, :aleph_sequence_number, :aleph_sub_library_code
    
     def initialize(e=nil)
       super(e)
+      h = primo_config["aleph_sub_library_codes"] unless primo_config.nil?
+      @aleph_sub_library_code = map(library_code, h)
     end
 
     alias aleph_config source_config
@@ -30,14 +32,9 @@ module Exlibris::Primo::Source
       source_url
     end
     
-    def aleph_sub_library_code
-      h = aleph_config["sub_library_codes"] unless aleph_config.nil?
-      map(library_code, h)
-    end
-    
     def actionable?
-      # Default to everything is requestable (why not be optimistic?!)
-      return true if request_statuses.nil?
+      # Default to nothing is requestable
+      return false if request_statuses.nil?
       return request_statuses.include?(status_code) 
     end
     
