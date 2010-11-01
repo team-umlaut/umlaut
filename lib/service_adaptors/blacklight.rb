@@ -68,8 +68,6 @@ class Blacklight < Service
 
 
   def handle(request)
-    debugger
- 
     ids_processed = []
     holdings_added = 0
     if (@identifier_search && url = blacklight_precise_search_url(request) )
@@ -91,7 +89,6 @@ class Blacklight < Service
       holdings_url = blacklight_precise_search_url( request, "dlf_expanded" )
       holdings_added += add_holdings( holdings_url ) if holdings_url
     end
-    debugger
     #keyword search.    
     if (@keyword_search &&
         url = blacklight_keyword_search_url(request))
@@ -128,22 +125,22 @@ class Blacklight < Service
         url = blacklight_url_for_ids(bib_ids_from_atom_entries(entries))
         
         holdings_added += add_holdings( url, :match_reliability => ServiceResponse::MatchUnsure, :marc_data => marc_by_atom_id ) if url
-
-        debugger
         
         if (@link_to_search && holdings_added ==0)
           hit_count = doc.at_xpath("atom:feed/opensearch:totalResults/text()", xml_ns).to_s.to_i
           html_result_url = doc.at_xpath("atom:feed/atom:link[@rel='alternate'][@type='text/html']/attribute::href", xml_ns).to_s
-        
-          request.add_service_response( 
-          { 
-            :service => self,
-            :source_name => @display_name,
-            :count => hit_count,
-            :display_text => "#{hit_count} possible #{case; when hit_count > 1 ; 'matches' ; else; 'match' ; end} in #{@display_name}", 
-            :url => html_result_url
-          },
-          [ServiceTypeValue[:holding_search]])
+
+          if hit_count > 0          
+            request.add_service_response( 
+            { 
+              :service => self,
+              :source_name => @display_name,
+              :count => hit_count,
+              :display_text => "#{hit_count} possible #{case; when hit_count > 1 ; 'matches' ; else; 'match' ; end} in #{@display_name}", 
+              :url => html_result_url
+            },
+            [ServiceTypeValue[:holding_search]])
+          end
         end
     end
 
