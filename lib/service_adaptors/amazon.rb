@@ -174,8 +174,8 @@ class Amazon < Service
     
     # if we get an error from Amazon, return now. 
     err = (aws/"/ItemLookupResponse/Items/Request/Errors/Error")
-
-
+    err = (aws/"/ItemLookupErrorResponse") if err.blank?
+    
     unless (err.blank?)
       if (err.at('code').inner_text == 'AWS.InvalidParameterValue')
         # Indicates an ISBN that Amazon doesn't know about, or that
@@ -194,7 +194,7 @@ class Amazon < Service
     request.referent.add_identifier("urn:asin:#{asin}") unless asin.blank?
 
     return_hash[:asin] = asin
-
+    
     if ( @service_types.include?("cover_image") )
       # collect cover art urls
       ["small","medium","large"].each do | size |
