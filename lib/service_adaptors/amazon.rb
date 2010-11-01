@@ -142,7 +142,7 @@ class Amazon < Service
       "Service"=>"AWSECommerceService",
       "AWSAccessKeyId"=>@api_key,
       "Operation"=>"ItemLookup",
-      "ResponseGroup"=>"Large,Subjects",
+      "ResponseGroup"=>"Large",
       "ItemId"=>isbn }
     
     # has to be signed
@@ -224,14 +224,6 @@ class Amazon < Service
       end
     end
     
-        
-    
-    if ( @service_types.include?("subject"))
-      # gather Amazon's subject headings
-      (aws/"/ItemLookupResponse/Items/Item/Subjects/Subject").each do |subject|
-        request.add_service_response({:service=>self, :key=>'Amazon',:value_string=>asin,:value_alt_string=>subject.inner_text},['subject'])
-      end
-    end
 
     if ( @service_types.include?("similar_item"))
       # Get Amazon's 'similar products' to help recommend other useful items
