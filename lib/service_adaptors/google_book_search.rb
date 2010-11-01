@@ -148,6 +148,7 @@ class GoogleBookSearch < Service
     headers = build_headers(request)
     link = @url + bibkeys
 
+    
     response = open(link, 'rb', headers)
     xml = response.read
 
@@ -167,10 +168,13 @@ class GoogleBookSearch < Service
     if (request.http_env && request.http_env['HTTP_X_FORWARDED_FOR'])
       original_forwarded_for = request.http_env['HTTP_X_FORWARDED_FOR']                                  
     end
-    
+
+    # we used to prepare a comma seperated list in x-forwarded-for if
+    # we had multiple requests, as per the x-forwarded-for spec, but I
+    # think Google doesn't like it. 
     return {'X-Forwarded-For' =>  original_forwarded_for ?
-       (original_forwarded_for + ', ' + request.client_ip_addr.to_s) :
-        request.client_ip_addr.to_s}
+        original_forwarded_for  :
+        request.client_ip_addr.to_s}    
   end
   
   def find_entries(gbs_response, viewabilities)
@@ -196,7 +200,7 @@ class GoogleBookSearch < Service
   # We create only as many full views as are specified in config.
   def create_fulltext_service_response(request, data)
     display_name = @display_name
-        
+
     full_views = find_entries(data, ViewFullUri)
     
     return nil if full_views.empty?
@@ -239,7 +243,6 @@ class GoogleBookSearch < Service
   # Some noviews have a snippet/search, but we have no way to tell. 
   def do_web_links(request, data)
 
-    
     # some noview items will have a snippet view, but we have no way to tell
     info_views = find_entries(data, ViewPartialUri)
     viewability = ViewPartialUri
