@@ -115,6 +115,11 @@ Amazon_bg:
 #
 ###########################
 
+NYU_bX:
+  type: Bx
+  display_name: bX Recommendations
+  priority: c
+  token: [contact exlibris]
 
 UlrichsLink:
   type: UlrichsLink
