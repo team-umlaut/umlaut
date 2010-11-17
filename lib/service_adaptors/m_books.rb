@@ -34,7 +34,11 @@ class MBooks < Service
   
   def initialize(config)
     @url = 'http://mirlyn-classic.lib.umich.edu/cgi-bin/sdrsmd?'
-    @hathi_search_url = 'http://sdr.lib.umich.edu/cgi/ptsearch'
+    @hathi_search_url = 'https://babel.hathitrust.org/shcgi/ptsearch'
+    # HT links are handle.net, but we can't really use Shib login with
+    # handle.net, so we hard-code the particular host that the handle.net
+    # resolves to, sorry! 
+    @hathi_link_url = "https://babel.hathitrust.org/shcgi/pt"
     @display_name = 'HathiTrust'
     @num_full_views = 1
     @note =  '' #'Fulltext books from the University of Michigan'
@@ -53,7 +57,7 @@ class MBooks < Service
     mb_response = do_query(params)
     c_response = clean_response(mb_response)
     return nil if c_response.nil?
-
+    
     # Only add fulltext if we're not skipping due to GBS
     if ( preempted_by(request, "fulltext"))
          RAILS_DEFAULT_LOGGER.debug("MBooks service: Skipping due to pre-emption")
@@ -100,7 +104,6 @@ class MBooks < Service
   # conducts query and parses the JSON
   def do_query(params)
     link = @url + params
-    
     return JSON.parse( open(link).read )
   end
   
@@ -130,7 +133,7 @@ class MBooks < Service
       request.add_service_response(
         {:service=>self, 
           :display_text=>display_name, 
-          :url=>fv['mburl'], 
+          :url=>@hathi_link_url + '?id=' + fv['handle'], 
           :notes=> @note}, 
         [ :fulltext ]) 
       count += 1
