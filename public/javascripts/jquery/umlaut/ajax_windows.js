@@ -5,7 +5,7 @@ jQuery(document).ready(function($) {
 
     $("a.ajax_window").live("click", function(event) {                
         
-        $(shared_modal_d).load(  event.target.href, function() {
+        $(shared_modal_d).load(  this.href, function() {
             var heading = shared_modal_d.find("h1, h2, h3, h4, h5, h6").eq(0).remove();
             $(shared_modal_d).dialog("option", "title", heading.text());
             $(shared_modal_d).dialog("open");
@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
     });
     
     function ajax_form_catch(event) {
-        $(shared_modal_d).load( $(event.target).closest("form").attr("action"), $(this).serialize(), function() {
+        $(shared_modal_d).load( $(event.target).closest("form").attr("action"), $(event.target).closest("form").serialize(), function() {
            var heading = shared_modal_d.find("h1, h2, h3, h4, h5, h6").eq(0).remove();
            $(shared_modal_d).dialog("option", "title", heading.text());
            $(shared_modal_d).dialog("open");
