@@ -1,21 +1,30 @@
 # The search controller handles searches fo manually entered citations,
 # or possibly ambiguous citations generally. It also provides an A-Z list.
 #
-# As source of this data, it can either use an Umlaut local journal index
-# (supplemented by the SFX API for date-sensitive querries),
-# or it can instead talk directly to the SFX db (still supplemented
-# by the API).  Whether it uses the journal index depends on
-# the value of the app config parameter use_umlaut_journal_index.
+# As a source of this data, it generally talks to the SFX database directly. 
+# The particular method it uses to get this data is defined in a SearchMethod
+# module (app/controllers/search_methods), that gets applied to the controller.
+# Currently Sfx3 direct database or Sfx4 direct database are supported. In
+# either case with database connection info in your database.yml file under
+# sfx_db. 
+# 
+# Future plans include a local database of titles, perhaps loaded from an 
+# external KB. Not done yet.
 #
-# The umlaut local journal index is probably not quite working at the moment.
-#
-# Otherwise, it'll try to talk to the SFX db directly using
-# a database config named 'sfx_db' defined in config/database.yml 
-#
-# In either case, for talking to SFX API, how does it know where to find the
-# SFX to talk to? You can either define it in app config param
-# 'search_sfx_base_url', or if not defined there, the code will try to find
-# by looking at default Institutions for SFX config info.  
+# = SearchMethod module implementation
+# A search method is just a ruby module, that will be applied to a controller,
+# that defines two methods:
+#   [#find_by_title]
+#     Takes no arguments, instead use methods in the controller like
+#     #sfx_az_profile, #title_query_param, #search_type_param, #batch_size and
+#     #page to return state.  Returns a two-element array pair, first element
+#     is a list of OpenURL::ContextObject for current batch, send element
+#     is int total hit count. 
+#   [#find_by_group]
+#     Used for clicks on "A", "B" ... "0-9", "Other" links.  Find the group
+#     link clicked on in params[:id].  Use #batch_size and #page for paging.
+#     As in #find_by_title, return two element array, first elememt is array
+#     of OpenURL::ContextObject, second element is total hit count. 
 class SearchController < ApplicationController
   include SearchMethods::Sfx4
 
