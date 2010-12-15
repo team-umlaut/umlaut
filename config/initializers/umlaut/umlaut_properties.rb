@@ -21,9 +21,7 @@
   # connection to your SFX db also needs to be defined in database.yml
   #AppConfig::Base.main_sfx_base_url = 'http://sfx.library.jhu.edu:8000/jhu_sfx?'
   # 
-  # Is your SFX database connection Sfx3 or Sfx4?
-  #AppConfig::Base.az_search_method = SearchMethods::Sfx4
-  #AppConfig::Base.az_search_method = SearchMethods::Sfx3  
+
 
   # help url used on error page and a few other places.
   #AppConfig::Base.help_url = "http://www.library.jhu.edu/services/askalib/index.html"
