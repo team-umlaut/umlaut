@@ -121,7 +121,13 @@ class Collection
     
       inst.services.each do | svc_id |
         svc_def = ServiceList.instance.definition(svc_id)
-            
+        
+        if svc_def.nil?
+          #raise Exception.new("Service referenced in institution, but not defined in services.yml: #{svc_id}")
+          Rails.logger.warn("Service referenced in institution, but not defined in services.yml: #{svc_id}")
+          next;
+        end        
+      
         task = svc_def['task'] || Service::StandardTask
         level = svc_def['priority']
         
