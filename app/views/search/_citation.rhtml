@@ -43,7 +43,7 @@ end
 
 <%= ref_meta["atitle"] %>
 
-<% unless ref_meta["atitle"] == @context_object.referent.metadata["atitle"]%>
+<% unless @context_object.nil? or ref_meta["atitle"] == @context_object.referent.metadata["atitle"]%>
 	<%= 
   link_to( image_tag('http://sfx.galib.uga.edu/sfx_git1/sfx.gif', :border=>0), url_for_with_co( {:controller=>'resolve'}, @current_context_object)) %>
 <% end%>
@@ -185,7 +185,7 @@ end
 
       </table>
 
-</td><td width="10%" align='right'><%= resolver_link(@current_context_object) %></td></tr></table>
+</td><td width="10%" align='right'><%= resolver_link(@current_context_object, {:target => search_result_target_window}) %></td></tr></table>
 
 
 
