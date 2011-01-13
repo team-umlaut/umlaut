@@ -177,6 +177,183 @@ module Exlibris::PrimoWS
     end
   end
 
+  #TODO: make class constructor "smarter" 
+  #TODO: enhance error handling 
+  class Tags < PrimoWebService
+    Service = "tags"
+    Input_Namespace = "http://www.exlibris.com/primo/xsd/wsRequest"
+    def initialize(method_name, param_name, input_root, additional_input, base_url_str, namespace, soapaction)
+      service = Service
+      input = WebServiceInput.new(input_root)
+      input.add_namespace(Input_Namespace)
+      additional_input.each_element do |e|  
+        input.add_element(e)
+      end
+      super(base_url_str, service, namespace, soapaction, method_name, param_name, input)
+    end
+  end
+
+  # Get Tags based on user_id and doc_id
+  class GetTags < Tags
+    Method_Name = "getTags"
+    Param_Name = "getTagsRequest"
+    Input_Root = "getTagsRequest"
+    def initialize(user_id, doc_id, base_url_str, namespace=Default_Namespace, soapaction=Default_SOAP_Action)
+      additional_input = AdditionalInput.new()
+      additional_input.add_element_with_text("userId", user_id)
+      additional_input.add_element_with_text("docId", doc_id)
+      super(Method_Name, Param_Name, Input_Root, additional_input, base_url_str, namespace, soapaction)
+    end
+  end
+  
+  # Get Tags based on user_id
+  class GetAllMyTags < Tags
+    Method_Name = "getAllMyTags"
+    Param_Name = "getAllMyTagsRequest"
+    Input_Root = "getAllMyTagsRequest"
+    def initialize(user_id, base_url_str, namespace=Default_Namespace, soapaction=Default_SOAP_Action)
+      additional_input = AdditionalInput.new()
+      additional_input.add_element_with_text("userId", user_id)
+      super(Method_Name, Param_Name, Input_Root, additional_input, base_url_str, namespace, soapaction)
+    end
+  end
+
+
+  # Get Tags based on doc_id
+  class GetTagsForRecord < Tags
+    Method_Name = "getTagsForRecord"
+    Param_Name = "getTagsForRecordRequest"
+    Input_Root = "getTagsForRecordRequest"
+    def initialize(doc_id, base_url_str, namespace=Default_Namespace, soapaction=Default_SOAP_Action)
+      additional_input = AdditionalInput.new()
+      additional_input.add_element_with_text("docId", doc_id)
+      super(Method_Name, Param_Name, Input_Root, additional_input, base_url_str, namespace, soapaction)
+    end
+  end
+
+  # Add Tag based on user_id and doc_id
+  class AddTag < Tags
+    Method_Name = "addTag"
+    Param_Name = "addTagRequest"
+    Input_Root = "addTagRequest"
+    def initialize(user_id, doc_id, value, base_url_str, namespace=Default_Namespace, soapaction=Default_SOAP_Action)
+      additional_input = AdditionalInput.new()
+      additional_input.add_element_with_text("userId", user_id)
+      additional_input.add_element_with_text("docId", doc_id)
+      additional_input.add_element_with_text("value", value)
+      super(Method_Name, Param_Name, Input_Root, additional_input, base_url_str, namespace, soapaction)
+    end
+  end
+
+  # Remove Tag based on user_id and doc_id
+  class RemoveTag < Tags
+    Method_Name = "removeTag"
+    Param_Name = "removeTagRequest"
+    Input_Root = "removeTagRequest"
+    def initialize(user_id, doc_id, value, base_url_str, namespace=Default_Namespace, soapaction=Default_SOAP_Action)
+      additional_input = AdditionalInput.new()
+      additional_input.add_element_with_text("userId", user_id)
+      additional_input.add_element_with_text("docId", doc_id)
+      additional_input.add_element_with_text("value", value)
+      super(Method_Name, Param_Name, Input_Root, additional_input, base_url_str, namespace, soapaction)
+    end
+  end
+
+#TODO: make class constructor "smarter" 
+#TODO: enhance error handling 
+class Reviews < PrimoWebService
+  Service = "reviews"
+  Input_Namespace = "http://www.exlibris.com/primo/xsd/wsRequest"
+  def initialize(method_name, param_name, input_root, additional_input, base_url_str, namespace, soapaction)
+    service = Service
+    input = WebServiceInput.new(input_root)
+    input.add_namespace(Input_Namespace)
+    additional_input.each_element do |e|  
+      input.add_element(e)
+    end
+    super(base_url_str, service, namespace, soapaction, method_name, param_name, input)
+  end
+end
+
+# Get Reviews based on user_id and doc_id
+class GetReviews < Reviews
+  Method_Name = "getReviews"
+  Param_Name = "getReviewsRequest"
+  Input_Root = "getReviewsRequest"
+  def initialize(user_id, doc_id, base_url_str, namespace=Default_Namespace, soapaction=Default_SOAP_Action)
+    additional_input = AdditionalInput.new()
+    additional_input.add_element_with_text("userId", user_id)
+    additional_input.add_element_with_text("docId", doc_id)
+    super(Method_Name, Param_Name, Input_Root, additional_input, base_url_str, namespace, soapaction)
+  end
+end
+
+# Get Reviews based on user_id
+class GetAllMyReviews < Reviews
+  Method_Name = "getAllMyReviews"
+  Param_Name = "getAllMyReviewsRequest"
+  Input_Root = "getAllMyReviewsRequest"
+  def initialize(user_id, base_url_str, namespace=Default_Namespace, soapaction=Default_SOAP_Action)
+    additional_input = AdditionalInput.new()
+    additional_input.add_element_with_text("userId", user_id)
+    super(Method_Name, Param_Name, Input_Root, additional_input, base_url_str, namespace, soapaction)
+  end
+end
+
+
+# Get Reviews based on doc_id
+class GetReviewsForRecord < Reviews
+  Method_Name = "getReviewsForRecord"
+  Param_Name = "getReviewsForRecordRequest"
+  Input_Root = "getReviewsForRecordRequest"
+  def initialize(doc_id, base_url_str, namespace=Default_Namespace, soapaction=Default_SOAP_Action)
+    additional_input = AdditionalInput.new()
+    additional_input.add_element_with_text("docId", doc_id)
+    super(Method_Name, Param_Name, Input_Root, additional_input, base_url_str, namespace, soapaction)
+  end
+end
+
+# Get Reviews based on user_id and rating
+class GetReviewsByRating < Reviews
+  Method_Name = "getReviewsByRating"
+  Param_Name = "getReviewsByRatingRequest"
+  Input_Root = "getReviewsByRatingRequest"
+  def initialize(user_id, rating, base_url_str, namespace=Default_Namespace, soapaction=Default_SOAP_Action)
+    additional_input = AdditionalInput.new()
+    additional_input.add_element_with_text("userId", user_id)
+    additional_input.add_element_with_text("rating", rating)
+    super(Method_Name, Param_Name, Input_Root, additional_input, base_url_str, namespace, soapaction)
+  end
+end
+
+# Add Review based on user_id and doc_id
+class AddReview < Reviews
+  Method_Name = "addReview"
+  Param_Name = "addReviewRequest"
+  Input_Root = "addReviewRequest"
+  def initialize(user_id, doc_id, value, base_url_str, namespace=Default_Namespace, soapaction=Default_SOAP_Action)
+    additional_input = AdditionalInput.new()
+    additional_input.add_element_with_text("userId", user_id)
+    additional_input.add_element_with_text("docId", doc_id)
+    additional_input.add_element_with_text("value", value)
+    super(Method_Name, Param_Name, Input_Root, additional_input, base_url_str, namespace, soapaction)
+  end
+end
+
+# Remove Review based on user_id and doc_id
+class RemoveReview < Reviews
+  Method_Name = "removeReview"
+  Param_Name = "removeReviewRequest"
+  Input_Root = "removeReviewRequest"
+  def initialize(user_id, doc_id, value, base_url_str, namespace=Default_Namespace, soapaction=Default_SOAP_Action)
+    additional_input = AdditionalInput.new()
+    additional_input.add_element_with_text("userId", user_id)
+    additional_input.add_element_with_text("docId", doc_id)
+    additional_input.add_element_with_text("value", value)
+    super(Method_Name, Param_Name, Input_Root, additional_input, base_url_str, namespace, soapaction)
+  end
+end
+
   class WebServiceInput < REXML::Element
     def initialize(root)
       super(root)

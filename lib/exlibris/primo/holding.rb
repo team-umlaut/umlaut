@@ -8,7 +8,8 @@ module Exlibris::Primo
     attr_accessor :call_number, :display_type
     attr_accessor :source_config, :text, :raw
     attr_accessor :match_reliability
-    attr_reader :library, :collection_str
+    attr_accessor :request_link_supports_ajax_call
+    attr_reader :library, :collection
     attr_reader :primo_url, :url, :coverage_str, :notes
     attr_reader :action_url
 
@@ -24,8 +25,6 @@ module Exlibris::Primo
           @id_two = e.id_two
           @status_code = e.status_code
           @origin = e.origin
-          @collection_str = e.collection_str
-          @call_number = e.call_number
           @record_id = e.record_id
           @primo_base_url = e.primo_base_url
           @primo_view_id = e.primo_view_id
@@ -35,7 +34,10 @@ module Exlibris::Primo
           @source_record_id = e.source_record_id
           @display_type = e.display_type
           @source_config = e.source_config
+          @collection = e.collection
+          @call_number = e.call_number
           @match_reliability = e.match_reliability
+          @request_link_supports_ajax_call = e.request_link_supports_ajax_call
         elsif e.kind_of? Hpricot::Elem
           @primo_config = primo_config
           @raw = e 
@@ -51,7 +53,9 @@ module Exlibris::Primo
             @status_code = "check_holdings"
             @origin = s.sub!(/^\$O/, "") unless s.match(/^\$O/).nil?
           end
+          @collection = id_one
           @call_number = id_two
+          @request_link_supports_ajax_call = false
         end
       end
     end
@@ -67,15 +71,9 @@ module Exlibris::Primo
     end
     
     def status
-      unless @status
-        h = primo_config["statuses"] unless primo_config.nil?
-        @status = map(status_code, h)
-      end
-      return @status
-    end
-    
-    def collection_str
-      library + " " + id_one
+      return @status unless @status.nil?
+      h = primo_config["statuses"] unless primo_config.nil?
+      return @status = map(status_code, h)
     end
     
     def url
@@ -110,7 +108,7 @@ module Exlibris::Primo
     end
     
     def max_holdings
-      5
+      10
     end
     
     def dedup?

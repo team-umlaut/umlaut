@@ -120,7 +120,9 @@ class PrimoService < Service
       service_data[:status_code] = holding.status_code
       service_data[:call_number] = holding.call_number
       service_data[:status] = holding.status
-      service_data[:collection_str] = holding.collection_str
+      service_data[:status_code] = holding.status_code
+      service_data[:library] = holding.library
+      service_data[:collection] = holding.collection
       service_data[:coverage_str] = holding.coverage_str
       service_data[:coverage_str_array] = holding.coverage_str_to_a 
       service_data[:notes] = holding.notes
@@ -129,6 +131,7 @@ class PrimoService < Service
       service_data[:request_url] = holding.request_url
       service_data[:display_text] = holding.text
       service_data[:match_reliability] = holding.match_reliability
+      service_data[:request_link_supports_ajax_call] = holding.request_link_supports_ajax_call
       service_data[:expired] = false
       service_data[:latest] = true
       

@@ -9,7 +9,7 @@ module Exlibris::Primo::Source
     end
 
     alias aleph_config source_config
-    alias aleph_library original_source_id
+    alias aleph_bib_library original_source_id
     alias aleph_sub_library library
     alias aleph_collection id_one
     alias aleph_call_number id_two
@@ -17,7 +17,7 @@ module Exlibris::Primo::Source
     alias aleph_bib_number source_record_id
 
     def source_url
-      "#{aleph_base_url}/F?func=item-global&doc_library=#{aleph_library}&local_base=PRIMOCOMMON&doc_number=#{aleph_bib_number}&sub_library=#{aleph_sub_library_code}"
+      "#{aleph_base_url}/F?func=item-global&doc_library=#{aleph_bib_library}&local_base=PRIMOCOMMON&doc_number=#{aleph_bib_number}&sub_library=#{aleph_sub_library_code}"
     end
     
     def action_url
