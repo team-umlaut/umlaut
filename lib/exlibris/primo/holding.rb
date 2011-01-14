@@ -102,7 +102,14 @@ module Exlibris::Primo
       if source_class.nil?
         s = self
       else
-        s = Exlibris::Primo::Source.const_get(source_class).new(self)
+        begin
+          # Check source class in source module, if not found, see if there is a local class
+          s = (Exlibris::Primo::Source.const_defined?(source_class)) ? Exlibris::Primo::Source.const_get(source_class).new(self) : Exlibris::Primo::Source::Local.const_get(source_class).new(self)
+        rescue Exception => e
+          RAILS_DEFAULT_LOGGER.error("#{e.message}")
+          RAILS_DEFAULT_LOGGER.error("Class #{source_class} can't be found in either Exlibris::Primo::Source or Exlibris::Primo::Source::Local.  Please check primo.yml to ensure the class_name is defined correctly.  Not converting to source.")
+          s = self
+        end
       end
       return s
     end
