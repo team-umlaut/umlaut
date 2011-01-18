@@ -229,7 +229,7 @@ class PrimoService < Service
       if holdings.empty? and !primo_referrer?(referrer) and (!primo_service_exists?(holding_search_services)) and (!title.nil?)
         service_data = {}
         service_data[:type] = "link_to_search"
-        service_data[:display_text] = "Search for this title in BobCat."
+        service_data[:display_text] = (@link_to_search_text.nil?) ? "Search for this title." : @link_to_search_text
         service_data[:note] = ""
         service_data[:url] = @base_path+"/primo_library/libweb/action/dlSearch.do?institution=#{@base_view_id}&vid=#{@base_view_id}&onCampus=false&query=#{CGI::escape("title,exact,"+title)}&indx=1&bulkSize=10&group=GUEST"
         request.add_service_response( {:service=>self, :display_text => service_data[:display_text], :notes=>service_data[:notes], :url=> service_data[:url], :service_data=>service_data }, ['holding_search']  )
