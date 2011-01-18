@@ -10,8 +10,8 @@ module Exlibris::Primo
     attr_accessor :match_reliability
     attr_accessor :request_link_supports_ajax_call
     attr_reader :library, :collection
-    attr_reader :primo_url, :url, :coverage_str, :notes
-    attr_reader :action_url
+    attr_reader :coverage_str, :notes
+    attr_reader :primo_url, :url, :request_url
 
     def initialize(e)
       unless e.nil?
@@ -65,6 +65,10 @@ module Exlibris::Primo
       return primo_base_url + "/primo_library/libweb/action/dlDisplay.do?docId=" + record_id + "&institution=" + institution + "&vid=" + primo_view_id + "&reset_config=true"
     end
     
+    def url
+      primo_url
+    end
+    
     def library
       h = primo_config["libraries"] unless primo_config.nil?
       map(library_code, h)
@@ -76,10 +80,6 @@ module Exlibris::Primo
       return @status = map(status_code, h)
     end
     
-    def url
-      primo_url
-    end
-
     def coverage_str
     end
 

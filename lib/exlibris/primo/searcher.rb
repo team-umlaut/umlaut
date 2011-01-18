@@ -119,7 +119,6 @@ module Exlibris::Primo
           holding.to_a.each do |h|
             @holdings.push(h) unless h.nil? or h.library.nil?
           end
-#=end
         end
       end
       return holdings

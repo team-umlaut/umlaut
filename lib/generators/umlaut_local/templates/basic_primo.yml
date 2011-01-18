@@ -1,0 +1,14 @@
+libraries:
+  "PRIMO_LIBRARY_CODE1": "Primo Library Description One"
+  "PRIMO_LIBRARY_CODE2": "Primo Library Description Two"
+aleph_sub_library_codes:
+  "PRIMO_LIBRARY_CODE1": "ALEPH_SUB_LIBRARY_CODE1"
+  "PRIMO_LIBRARY_CODE2": "ALEPH_SUB_LIBRARY_CODE2"
+statuses:
+  "available": "Available"
+  "unavailable": "Check Availability"
+  "check_holdings": "Check Availability"
+
+
+
+

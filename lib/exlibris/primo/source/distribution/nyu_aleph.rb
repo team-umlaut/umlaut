@@ -17,13 +17,12 @@ module Exlibris::Primo::Source::Local
       @request_link_supports_ajax_call = true
     end
     
-    def actionable?
+    def requestable?
       return super if aleph_item_permissions.empty?
       # Check tab 15 requestable item statuses and requestable circ statuses
       return false if ((["N"].include?(aleph_item_permissions[:hold_request]) and ["N"].include?(aleph_item_permissions[:photocopy_request])) or ["Reshelving"].include?(aleph_item_circulation_status))
       return true
     end
-    alias requestable? actionable?
 
     def to_a
       return self.holdings if processing_aleph_items?

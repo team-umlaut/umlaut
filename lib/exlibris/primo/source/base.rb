@@ -12,5 +12,9 @@ module Exlibris::Primo::Source
     def source_url
       source_base_url
     end
+    
+    def url
+      source_url
+    end
   end
 end

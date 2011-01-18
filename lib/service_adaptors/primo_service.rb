@@ -127,7 +127,6 @@ class PrimoService < Service
       service_data[:coverage_str_array] = holding.coverage_str_to_a 
       service_data[:notes] = holding.notes
       service_data[:url] = holding.url
-      service_data[:action_url] = holding.action_url
       service_data[:request_url] = holding.request_url
       service_data[:display_text] = holding.text
       service_data[:match_reliability] = holding.match_reliability
