@@ -123,6 +123,7 @@ class PrimoService < Service
       service_data[:status_code] = holding.status_code
       service_data[:library] = holding.library
       service_data[:collection] = holding.collection
+      service_data[:collection_str] = "#{holding.library} #{holding.collection}"
       service_data[:coverage_str] = holding.coverage_str
       service_data[:coverage_str_array] = holding.coverage_str_to_a 
       service_data[:notes] = holding.notes
