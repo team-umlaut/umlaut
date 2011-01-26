@@ -21,7 +21,10 @@ module SearchMethods
           "(T.TITLE_DISPLAY LIKE '#{connection.quote_string(title_query_param)}%' OR T.TITLE_SORT LIKE '#{connection.quote_string(title_query_param)}%')"
           #"TS.TITLE_SEARCH LIKE '#{connection.quote_string(title_query_param)}%'"
         else # exact
-          "TS.TITLE_SEARCH = '#{connection.quote_string(title_query_param)}'"
+          "( TS.TITLE_SEARCH = '#{connection.quote_string(title_query_param)}' OR 
+             T.TITLE_DISPLAY = '#{connection.quote_string(title_query_param)}' OR
+             T.TITLE_SORT = '#{connection.quote_string(title_query_param)}'
+           )"                        
         end.upcase
         
       from_where_clause = %{
