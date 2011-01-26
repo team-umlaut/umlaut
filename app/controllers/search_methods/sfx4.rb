@@ -15,7 +15,11 @@ module SearchMethods
         when "contains"
           "MATCH (TS.TITLE_SEARCH) AGAINST ('+#{connection.quote_string(title_query_param)}*' IN BOOLEAN MODE)"
         when "begins"
-          "TS.TITLE_SEARCH LIKE '#{connection.quote_string(title_query_param)}%'"
+          # For 'begins', searching against TITLE itself rather than TITLE_SEARCH gives us 
+          # results more like SFX4 native, without so many 'also known as' titles confusing
+          # things.           
+          "(T.TITLE_DISPLAY LIKE '#{connection.quote_string(title_query_param)}%' OR T.TITLE_SORT LIKE '#{connection.quote_string(title_query_param)}%')"
+          #"TS.TITLE_SEARCH LIKE '#{connection.quote_string(title_query_param)}%'"
         else # exact
           "TS.TITLE_SEARCH = '#{connection.quote_string(title_query_param)}'"
         end.upcase
