@@ -13,7 +13,18 @@ module SearchMethods
         
       query_match_clause = case search_type_param
         when "contains"
-          "MATCH (TS.TITLE_SEARCH) AGAINST ('+#{connection.quote_string(title_query_param)}*' IN BOOLEAN MODE)"
+          terms = title_query_param.split(" ")
+          #SFX4 seems to ignore 'the' or 'a' on the front, so we will too. 
+          if (["the", "a"].include? terms[0])
+            terms = terms.slice(1..-1)
+          end
+          # Then make each term required, but stemmed. Seems to match SFX4, 
+          # and more importantly give us decent results. 
+          query = terms.collect do |term|
+            "+" + connection.quote_string(term) + "*"
+          end.join(" ")
+          
+          "MATCH (TS.TITLE_SEARCH) AGAINST ('#{query}' IN BOOLEAN MODE)"
         when "begins"
           # For 'begins', searching against TITLE itself rather than TITLE_SEARCH gives us 
           # results more like SFX4 native, without so many 'also known as' titles confusing
@@ -51,7 +62,6 @@ module SearchMethods
           "SELECT COUNT(*) #{from_where_clause}"
       )
       
-                       
       object_ids = connection.select_all(statement).collect {|i| i.values.first}
                   
       sql = SfxDb::Object.send(:sanitize_sql_array,
