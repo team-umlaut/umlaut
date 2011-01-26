@@ -75,8 +75,7 @@ class SearchController < ApplicationController
     
     @search_context_object = context_object_from_params
     
-    if (params["umlaut.title_search_type"] == 'exact' ||
-        ! params["rft.object_id"].blank? ||
+    if (! params["rft.object_id"].blank? ||
         ! params["rft.issn"].blank? ||
         ! params["rft_id"].blank? )
       # If we have an exact-type 'search', just switch to 'resolve' action
