@@ -59,7 +59,7 @@ module SearchMethods
 
       # do the count  
       total_hits = SfxDb::Object.count_by_sql(
-          "SELECT COUNT(*) #{from_where_clause}"
+          "SELECT COUNT(DISTINCT(T.OBJECT_ID)) #{from_where_clause}"
       )
       
       object_ids = connection.select_all(statement).collect {|i| i.values.first}
