@@ -42,7 +42,21 @@ namespace :umlaut do
         if SfxDb.connection_configured?
       
           puts "Loading SFXUrls via direct access to SFX db."
-          urls = SfxDb::SfxDbBase.fetch_sfx_urls
+          #sfxlcl41.TARGET_SERVICE
+          # Check if we have an SFX3 schema, or if not use SFX4
+          sfx3 = true
+          begin
+            SfxDb::Object.connection.select_all("SHOW FIELDS FROM TARGET_SERVICE")
+          rescue ActiveRecord::StatementInvalid
+            sfx3 = false
+          end
+          
+          if sfx3
+            urls = SfxDb::SfxDbBase.fetch_sfx_urls
+          else
+            urls = SearchMethods::Sfx4.fetch_sfx_urls
+          end
+          
           ignore_urls = AppConfig.param("sfx_load_ignore_hosts", []);
           
           # We only want the hostnames
@@ -53,7 +67,8 @@ namespace :umlaut do
             rescue Exception
             end
           end
-      
+          hosts.uniq!
+          
           SfxUrl.transaction do
             SfxUrl.delete_all
             
