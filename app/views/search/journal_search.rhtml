@@ -24,7 +24,15 @@ end
 
       <input type="hidden" class="rft_title" name="rft.title">
       <input type="hidden" class="rft_object_id" name="rft.object_id">
-      <input type="hidden" class="date" name="rft.date">
+
+      <%-
+      # specific article fields from prior form may be present, if the user is now choosing from
+      # amongst serveral possible title matches. Preserve them on refinement of search terms.  
+      -%>
+      <% params.slice("rft.date", "__year", "__month", "__day", "rft.volume", "rft.issue", "rft.spage").each_pair do |key, value| %>
+        <%= hidden_field_tag key, value %>
+      <% end %>
+      
           
       Journal Title:
       <%= text_field :journal, :title, {:name=>'rft.jtitle', :autocomplete=>'off', :size=>'40', :value=>params['rft.jtitle'], :class=>"title_search"}
