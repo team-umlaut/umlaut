@@ -11,8 +11,11 @@ class Collection
   attr_accessor :institutions
   
   # Build a new Collection object and gather appropriate institutions
-  # and services.
-  def initialize(umlaut_request, session)
+  # and services. Pass in a specified institution name
+  # in third parameter to use only that institution, otherwise we'll
+  # use default institutes. 
+  def initialize(umlaut_request, session, aInstitution = nil)
+    @requested_institution = aInstitution
     @client_ip = umlaut_request.client_ip_addr
     @umlaut_request = umlaut_request
     @rails_session = session
@@ -97,10 +100,15 @@ class Collection
 
 
   def calculate_collection_data
-  
-    # Add default institutions
-    InstitutionList.instance.default_institutions.each do | dflt |
-      @institutions << dflt
+    @institutions = []
+    if @requested_institution      
+      i = InstitutionList.instance.get(@requested_institution)
+      @institutions << i if i    
+    else
+      # Add default institutions
+      InstitutionList.instance.default_institutions.each do | dflt |
+        @institutions << dflt
+      end
     end
     
     # Get any institutions that the user has associated with themself

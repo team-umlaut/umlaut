@@ -101,8 +101,9 @@ class Request < ActiveRecord::Base
     co_params.delete(nil)
 
     # Exclude params that are for Rails or Umlaut, and don't belong to the
-    # context object. 
-    excluded_keys = ["action", "controller", "page", /^umlaut\./, 'rft.action', 'rft.controller']
+    # context object. Except leave in umlaut.institution, that matters for
+    # cachability. 
+    excluded_keys = ["action", "controller", "page", /^umlaut\.(?!institution)/, 'rft.action', 'rft.controller']
     co_params.keys.each do |key|
       excluded_keys.each do |exclude|
         co_params.delete(key) if exclude === key;
@@ -468,7 +469,7 @@ class Request < ActiveRecord::Base
   # Returns nil if there aren't any params to include in the fingerprint.
   def self.co_params_fingerprint(params)
     # Don't use ctx_time, consider two co's equal if they are equal but for ctx_tim. 
-    excluded_keys = ["action", "controller", "page", /^umlaut\./,  "rft.action", "rft.controller", "ctx_tim"]
+    excluded_keys = ["action", "controller", "page",  "rft.action", "rft.controller", "ctx_tim"]
     # "url_ctx_val", "request_xml"
     
     # Hash.sort will do a first run through of canonicalization for us
