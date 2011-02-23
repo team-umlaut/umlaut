@@ -48,7 +48,7 @@ class ResolveController < ApplicationController
     
     # Ip may be simulated with req.ip in context object, or may be
     # actual, request figured it out for us. 
-    @collection = Collection.new(@user_request, session)      
+    @collection = Collection.new(@user_request, session, params["umlaut.institution"])      
     @user_request.save!
     # Set 'timed out' background services to dead if neccesary. 
     @user_request.dispatched_services.each do | ds |
