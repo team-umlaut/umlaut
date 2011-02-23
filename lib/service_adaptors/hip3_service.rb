@@ -36,7 +36,6 @@ class Hip3Service < Service
 
 
   def handle(request)    
-    debugger
     bib_searcher = Hip3::BibSearcher.new(@base_path)
     
     bib_searcher.issn = request.referent.issn 
