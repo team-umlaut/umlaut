@@ -1,3 +1,7 @@
+#
+# DEPRECATED, this old MBooks umich api will be going away, see HathiTrust
+# service instead. 
+#
 # Service that searches MBooks from the University of Michigan
 # Currently limited since it only searches by OCLCnum
 #
