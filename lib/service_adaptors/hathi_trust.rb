@@ -92,9 +92,8 @@ class HathiTrust < Service
       # if ALL the id's we supply match. 
       keys << "isbn:" + CGI.escape(isbn) unless (isbn.blank? || keys.length > 0)
 
-      if keys.length > 0
-        # join by "|" for HT alternate, boolean union
-        return keys.join("|")
+      if keys.length > 0        
+        return keys.join(";")
       else
         return nil
       end
