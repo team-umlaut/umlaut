@@ -70,6 +70,7 @@ class Blacklight < Service
   def handle(request)
     ids_processed = []
     holdings_added = 0
+    debugger
     if (@identifier_search && url = blacklight_precise_search_url(request) )
       doc = Nokogiri::XML( http_fetch(url).body )
       
@@ -236,12 +237,13 @@ class Blacklight < Service
       atom_id = atom_entry.at_xpath("atom:id/text()", xml_ns).to_s
 
       edition_str = edition_statement(options[:marc_data][atom_id])
+      url = atom_entry.at_xpath("atom:link[@rel='alternate'][@type='text/html']/attribute::href", xml_ns).to_s
       
       xml_to_holdings( xml_metadata ).merge(
         :service => self,
         :match_reliability => options[:match_reliability],
         :edition_str => edition_str,
-        :url => atom_entry.at_xpath("atom:link[@rel='alternate'][@type='text/html']/attribute::href", xml_ns).to_s
+        :url => url
       )
     end
     
