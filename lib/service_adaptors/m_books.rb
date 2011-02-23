@@ -51,13 +51,13 @@ class MBooks < Service
     return request.dispatched(self, true)
   end
   
-  def get_viewability(request)    
+  def get_viewability(request)
     params = get_parameters(request.referent)
     return nil if params.nil?
     mb_response = do_query(params)
     c_response = clean_response(mb_response)
     return nil if c_response.nil?
-    
+    debugger
     # Only add fulltext if we're not skipping due to GBS
     if ( preempted_by(request, "fulltext"))
          RAILS_DEFAULT_LOGGER.debug("MBooks service: Skipping due to pre-emption")

@@ -160,6 +160,16 @@ h4 {
 	padding: 2px;
 }	
 
+td.cover_image {
+  border: 1px black solid;
+  width: 100px;
+}
+img.cover_image {
+  /* try to keep too large images sent by third party services from getting out of control */
+  max-height: 400px;  
+  max-width: 400px;
+}
+
 .resource_info_sections .umlaut_section {
   margin-top: 12px;
   margin-bottom: 4px;

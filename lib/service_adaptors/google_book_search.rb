@@ -60,7 +60,12 @@ class GoogleBookSearch < Service
   end
   
   def handle(request)
-
+    # Google does a terrible job if we search on a serial, we might
+    # get certain volumes back but there's no way to know they're just
+    # certain volumes. And we can't be sure if this is a serial or not!
+    # But if we think it's likely is a serial, bail out entirely. 
+    return request.dispatched(self, true) if likely_serial?(request.referent)
+    
     bibkeys = get_bibkeys(request.referent)
     return request.dispatched(self, true) if bibkeys.nil?
     data = do_query(bibkeys, request)
@@ -122,21 +127,33 @@ class GoogleBookSearch < Service
     end
   end
 
+  # We can't be sure if it's a serial or not, but we take a guess
+  # , cause we aren't going to bother searching google if it is.
+  def likely_serial?(rft)
+    # If genre=journal was really set and was accurate, it's a journal.
+    # But often it's not. If we have an ISSN, that's likely enough to
+    # be a journal. 
+     (rft.metadata['genre'] == "journal") || (not get_issn(rft).nil?)
+  end
   
   # returns nil or escaped string of bibkeys
   # to increase the chances of good hit, we send all available bibkeys 
   # and later dedupe by id.
   # FIXME Assumes we only have one of each kind of identifier.
   def get_bibkeys(rft)
-    isbn = get_identifier(:urn, "isbn", rft)
-    oclcnum = get_identifier(:info, "oclcnum", rft)
+    isbn = get_isbn(rft)
+    oclcnum = get_oclcnum(rft)
     lccn = get_lccn(rft)
 
     # Google oddly seems to want prefix mashed right up
     # with identifier, eg http://books.google.com/books/feeds/volumes?q=OCLC32012617 
+    # except for ISBN it lets us do a reasonable search
     keys = []
     keys << 'isbn:' + isbn if isbn
     keys << 'OCLC' + oclcnum if oclcnum
+    
+    # LCCN is especially unreliable in GBS,
+    # only use it if we've got nothing else
     keys << 'LCCN' + lccn if lccn && keys.length == 0
     
     return nil if keys.empty?

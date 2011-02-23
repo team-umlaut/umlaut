@@ -113,6 +113,9 @@ class WorldcatIdentities < Service
     # Sort keys is important when we don't have an oclcnumber, and doesn't hurt
     # when we do. 
     query += "&sortKeys=holdingscount"
+    
+    debugger
+    
     return index, query 
   end
   
