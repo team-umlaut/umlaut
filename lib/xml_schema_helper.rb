@@ -42,12 +42,12 @@ module XmlSchemaHelper
       "dlf:simpleavailability/dlf:availabilitymsg")
 
     data[:location] = xml_choose_first(xml,
-      [ marc_xpath("852", "a"),
+      [ marc_xpath("852", "b"),
         "daia:daia/daia:document/daia:item/daia:department"
       ])
-
+    
     data[:source_name] = data[:collection_str] = xml_choose_first(xml,
-      [ marc_xpath(852, "b"),
+      [ marc_xpath(852, "c"),
         "daia:daia/daia:document/daia:item/daia:storage"
       ])
 
