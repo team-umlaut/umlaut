@@ -40,7 +40,7 @@ module XmlSchemaHelper
 
     data[:status] = xml_choose_first(xml,    
       "dlf:simpleavailability/dlf:availabilitymsg")
-
+                
     data[:location] = xml_choose_first(xml,
       [ marc_xpath("852", "b"),
         "daia:daia/daia:document/daia:item/daia:department"
@@ -67,10 +67,8 @@ module XmlSchemaHelper
     data[:coverage_str] = data[:coverage_str_array].join(" ")
     
     data[:notes] = xml.xpath(marc_xpath(852, "z"), xml_ns).collect {|sf| sf.text.to_s}.join("\n")
-
-    
-
-    data[:request_uri] = xml_choose_first(xml, "daia:daia/daia:document/daia:item/daia:available")
+        
+    data[:request_url] = xml_choose_first(xml, "daia:daia/daia:document/daia:item/daia:available/attribute::href")
 
     if (data[:collection_str].blank? && data[:location].blank? && data[:call_number].blank? )
       data[:collection_str] = xml_choose_first(xml, "dlf:simpleavailability/dlf:location")
