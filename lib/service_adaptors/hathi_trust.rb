@@ -50,10 +50,10 @@ class HathiTrust < Service
   
   def handle(request)
     params = get_parameters(request.referent)
-    return nil if params.blank?
+    return request.dispatched(self, true) if params.blank?
     
     ht_json = do_query(params)
-    return nil if ht_json.nil?
+    return request.dispatched(self, true) if ht_json.nil?
     
     #extract the "items" list from the first result group from
     #response.
