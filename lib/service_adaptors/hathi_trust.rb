@@ -16,7 +16,10 @@ require 'cgi'
 # search inside entirely if you like.
 #
 # For HT records representing one volume of several, a :excerpts type
-# response will be added. Or set config show_excerpts=false to prevent this. 
+# response will be added if full text is avail for some. Or a :highlighted_link
+# if only search inside is available for some.
+# Or set config show_multi_volume=false to prevent this and ignore partial
+# volumes. 
 # 
 # Two possibilities are available for sdr rights "full" or "searchonly".
 # The third possibility is that sdr will be null.
@@ -28,9 +31,9 @@ class HathiTrust < Service
   attr_reader :url, :display_name, :note
   
   def service_types_generated    
-    types = [ ServiceTypeValue[:fulltext], ServiceTypeValue[:excerpts] ]
+    types = [ ServiceTypeValue[:fulltext] ]
+    types.concat([ServiceTypeValue[:excerpts], ServiceTypeValue[:highlighted_link]]) if @show_multi_volume
     types << ServiceTypeValue[:search_inside] if @show_search_inside
-
     return types
   end
   
@@ -44,7 +47,7 @@ class HathiTrust < Service
     @num_full_views = 1 # max num full view links to include
     @note =  '' #'Fulltext books from the University of Michigan'
     @show_search_inside = true
-    @show_excerpts = true
+    @show_multi_volume = true
     super(config)
   end
   
@@ -67,11 +70,13 @@ class HathiTrust < Service
       RAILS_DEFAULT_LOGGER.debug("#{self.class}: Skipping due to pre-emption")
     else
       full_views_shown = create_fulltext_service_response(request, items)
-      if full_views_shown == 0 && @show_excerpts
-        #possibly partial volumes
-        create_partial_view_response(request, ht_json)
-      end
     end
+    
+    if @show_multi_volume
+      #possibly partial volumes
+      create_partial_volume_responses(request, ht_json)
+    end
+
     
 
     create_search_inside(request, items)
@@ -113,14 +118,12 @@ class HathiTrust < Service
   end
   
   # conducts query and parses the JSON
-  def do_query(params)
+  def do_query(params)    
     link = @api_url + "/brief/json/" + params
     return JSON.parse( open(link).read )
   end
   
-  
-  
-  # FIXME abstract this out for use with both GBS and MBooks
+    
   def create_fulltext_service_response(request, items)
     return nil if items.empty?
     
@@ -145,24 +148,50 @@ class HathiTrust < Service
     return count
   end
   
+  
   # If HT has partial serial volumes, include a link to that. 
   # Need to pass in complete HT json response
-  def create_partial_view_response(request, ht_json)
+  def create_partial_volume_responses(request, ht_json)
     items =  ht_json.values.first["items"]
-    serial_record_ids = items.collect do |i| 
+    full_ids = items.collect do |i| 
       i["fromRecord"] if (is_serial_part?(i) && full_view?(i))
     end.compact.uniq
-    serial_record_ids.each do |recordId|
+    
+    full_ids.each do |recordId|
       record = ht_json.values.first["records"][recordId]
       next unless record && record["recordURL"]
         
       request.add_service_response(
         {:service=>self, 
-          :display_text=>display_name,           
-          :url=> record["recordURL"], 
-          :notes=> excerpt_note_for(record)}, 
+          :display_text=>@display_name,           
+          :url=> record["recordURL"],
+          :notes => excerpt_note_for(record)
+        }, 
         [ :excerpts ])       
     end
+    
+    if full_ids.empty?
+      search_ids = items.collect do |i|
+        i["fromRecord"] if (is_serial_part?(i) )
+      end.compact.uniq
+      
+      search_ids.each do |recordId|
+        record = ht_json.values.first["records"][recordId]
+        next unless record && record["recordURL"]
+        
+        request.add_service_response(
+          {:service=>self, 
+            :display_text=>"Search inside some volumes",           
+            :url=> record["recordURL"]
+          }, 
+          [ :highlighted_link ]
+        )   
+
+      end
+      
+    end
+    
+    
   end
   
   def create_search_inside(request, items)
@@ -256,5 +285,9 @@ class HathiTrust < Service
   
   # Example of a serial with some full text volumes:
   # JAMA, lccn:07037314
+  #
+  # Example of a multi-volume with search-only, split accross
+  # two HT records. 
+  # Handbook of biochemistry and molecular biology lccn: 75029514
   
 end
