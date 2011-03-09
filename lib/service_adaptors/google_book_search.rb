@@ -323,7 +323,13 @@ class GoogleBookSearch < Service
       # search inside!
       base = service_type.service_response[:url]
       query = CGI.escape(submitted_params["query"] || "")
-      url = base + "&q=#{query}#search"
+      # attempting to reverse engineer a bit to get 'snippet'
+      # style results instead of 'onepage' style results. 
+      # snippet seem more user friendly, and are what google's own
+      # interface seems to give you by default. but 'onepage' is the
+      # default from our deep link, but if we copy the JS hash data,
+      # it looks like we can get Google to 'snippet'.       
+      url = base + "&q=#{query}#v=snippet&q=#{query}&f=false"
       return url
     end
   end
