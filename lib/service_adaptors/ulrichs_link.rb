@@ -13,7 +13,9 @@ class UlrichsLink < Service
     super(config)
     # better one, which Yvette at Ulrich's showed me for SFX, which seems to work better.
     @vendor ||= "Umlaut"
-    @base_url ||= "http://www.ulrichsweb.com/ulrichsweb/Search/call_fullCitation.asp?/vendor_redirect.asp?oVendor=#{@vendor}&oIssn="
+    @base_url ||= "https://ulrichsweb.serialssolutions.com/api/openurl?issn="
+    # Old one
+    #@base_url ||= "http://www.ulrichsweb.com/ulrichsweb/Search/call_fullCitation.asp?/vendor_redirect.asp?oVendor=#{@vendor}&oIssn="
     @link_name = "Periodical information"
   end
   
