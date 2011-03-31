@@ -241,9 +241,13 @@ module Hip3
 
 	
 	class HTTPSession < Net::HTTP
+		@@timeout = 5
 		
 		def HTTPSession.create(a_host, a_port = 80)
-			HTTPSession.new(a_host, a_port)
+			http = HTTPSession.new(a_host, a_port)			
+			http.read_timeout = @@timeout 
+      http.open_timeout = @@timeout
+			return http
 		end
 
 		
@@ -251,7 +255,7 @@ module Hip3
       limit = 6
       tries = 0
       response = nil
-      debugger
+
       while (response == nil || response.kind_of?(Net::HTTPRedirection) && tries < limit)
         # follow redirects
         if response.kind_of?( Net::HTTPRedirection )
