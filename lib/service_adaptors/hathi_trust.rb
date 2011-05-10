@@ -6,6 +6,16 @@ require 'cgi'
 #
 # Supports full text links, and search inside. 
 #
+# We link to HathiTrust using a direct babel.hathitrust.org URL instead
+# of the handle.net redirection, for two reasonsL
+# 1) Can't use the handle.net redirection for the "direct link to search
+#    results for user-entered query" feature. 
+# 2) Some may want to force a Shibboleth login on HT links. Can't do that
+#    with the handle.net redirection either. If you do want to do that,
+#    possibly in concert with an EZProxy mediated WAYFless login,
+#    set direct_link_base in your services.yml to:
+#    "https://babel.hathitrust.org/shcgi/"
+#
 # Many (but not all) HT books will also be in Google Books (and vice versa)
 # However, HT was more generous in deciding what books are public domain than GBS.
 # Therefore the main expected use case is to use with Google Books, with
@@ -39,10 +49,10 @@ class HathiTrust < Service
   
   def initialize(config)
     @api_url = 'http://catalog.hathitrust.org/api/volumes'
-    # We use direct link URL because we need our EZProxy to catch it
-    # for shib WAYFless login, which it won't with a handle.net, sorry.
-    # We also need direct link for direct link to search results.
-    @direct_link_base = 'https://babel.hathitrust.org/shcgi/'
+    # Set to 'https://babel.hathitrust.org/shcgi/' to force
+    # Shibboleth login, possibly in concert with EZProxy providing
+    # WAYFLess login. 
+    @direct_link_base = 'http://babel.hathitrust.org/cgi/'
     @display_name = 'HathiTrust'
     @num_full_views = 1 # max num full view links to include
     @note =  '' #'Fulltext books from the University of Michigan'
