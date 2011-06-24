@@ -1,11 +1,11 @@
 module Exlibris::Primo
-  # Class for handling Primo TOCs from links/linktotoc
-  class Toc
-    @base_attributes = [ :record_id, :linktotoc, :url, :display,  :notes ]
+  # Class for handling Primo Rsrcs from links/linktorsrc
+  class Rsrc
+    @base_attributes = [ :record_id, :linktorsrc, :v, :url, :display, :institution_code, :origin, :notes ]
     class << self; attr_reader :base_attributes end
     def initialize(options={})
       base_attributes = (self.class.base_attributes.nil?) ? 
-        Exlibris::Primo::Toc.base_attributes : self.class.base_attributes
+        Exlibris::Primo::Rsrc.base_attributes : self.class.base_attributes
       base_attributes.each { |attribute|
         self.class.send(:attr_reader, attribute)
       }

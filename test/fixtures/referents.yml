@@ -12,3 +12,28 @@ frankenstein:
 simple_request_referent:
   issn: "0098-7484"
   
+primo_id_referent:
+  title: "Travels with my aunt"
+  isbn: "0143039008"
+
+primo_checked_out_referent:
+  title: "Argument realization"
+  isbn: "0521663318"
+
+primo_journal1_referent:
+  title: "The Musical quarterly."
+  isbn: "0027-4631"
+
+primo_journal2_referent:
+  title: "Journal of behavioral economics"
+  isbn: "0090-5720"
+
+primo_journal3_referent:
+  title: "The Journal of religious history"
+  isbn: "0022-4227"
+
+primo_journal4_referent:
+  title: "The journal of the American Board of Family Practice"
+  isbn: "0893-8652"
+
+

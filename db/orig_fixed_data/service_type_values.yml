@@ -112,6 +112,9 @@ export_citation:
   id: 103
   display_name: Export tool
 
-  
+primo_source:
+  id: 104
+  display_name: Primo Source
+
 # If you want to add your own custom ones, make them start with ids at 100000,
 # to leave plenty of space for future standard umlaut ones. 

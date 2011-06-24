@@ -1,242 +1,182 @@
-include Exlibris::PrimoWS
+# == Overview
+# Searcher searches Primo for records.
+# Searcher must have sufficient metadata to make 
+# the request. Sufficient means either:
+#     * We have a Primo doc id
+#     * We have either an isbn OR an issn
+#     * We have a title AND an author AND a genre
+# If none of these criteria are met, Searcher.search
+# will raise a RuntimeException. 
 module Exlibris::Primo
-  # Use web services for better performance
   class Searcher
-    ISBN_Index = "isbn"
-    ISSN_Index = "isbn"
-    Title_Index = "title"
-    Author_Index = "creator"
-    Any_Index = "any"
+    #@required_setup = [ :base_url ]
+    #@setup_default_values = { :vid => "DEFAULT", :config => {} }
 
-    attr_accessor :base_url, :config, :base_view_id
-    attr_accessor :referrer, :primo_id
-    attr_accessor :issn, :isbn
-    attr_accessor :title, :author, :genre
-    attr_accessor :response, :error
-    attr_reader :count, :holdings, :urls
-    attr_reader :titles, :authors
-    attr_reader :au, :aulast, :aufirst, :aucorp
-    attr_reader :pub, :place
-    attr_reader :oclcid, :lccn
-    attr_reader :btitle, :jtitle
-    attr_reader :cover_image
-    attr_reader :goto_source
+    attr_reader :response, :count
+    attr_reader :cover_image, :titles, :author
+    attr_reader :holdings, :rsrcs, :tocs
     
-    def initialize(base_url, config, goto_source, base_view_id)
-      @base_url = base_url
-      @config = config
-      @goto_source = goto_source
-      @base_view_id = base_view_id
+    # Instantiates the object and performs the search for based on the input search criteria.
+    # setup parameter requires { :base_url => http://primo.server.institution.edu }
+    # Other optional parameters are :vid => "view_id", :config => { Hash of primo config settings}
+    # search_params are a sufficient combination of 
+    # { :primo_id => "primo_1", :isbn => "ISBN", :issn => "ISSN", 
+    #   :title => "=Title", :author => "Author", :genre => "Genre" }
+    def initialize(setup, search_params)
+      @holding_attributes = Exlibris::Primo::Holding.base_attributes
+      @base_url = setup[:base_url]
+      raise_required_setup_parameter_error :base_url if @base_url.nil?
+      @vid = setup.fetch(:vid, "DEFAULT")
+      raise_required_setup_parameter_error :vid if @vid.nil?
+      @config = setup.fetch(:config, {})
+      raise_required_setup_parameter_error :config if @config.nil?
+      search_params.each { |param, value| self.instance_variable_set("@#{param}".to_sym, value) }
+      # Perform the search
+      search
     end
 
-    def search_request
-      return nil if insufficient_query
-      # Primo Id doesn't require Query Term to be specified, empty QueryTerms element is sufficient.
-      qts = Exlibris::PrimoWS::QueryTerms.new()
-      if primo_id.nil? or primo_id.empty?
-        # Primo ISSN Query Term
-        issn_qt = QueryTerm.new(issn, ISSN_Index) unless issn.nil? or issn.empty?
-        qts = Exlibris::PrimoWS::QueryTerms.new(issn_qt) unless issn_qt.nil?
-
-        # Primo ISBN Query Term
-        isbn_qt = QueryTerm.new(isbn, ISBN_Index) unless isbn.nil? or isbn.empty?
-        qts = Exlibris::PrimoWS::QueryTerms.new(isbn_qt) unless isbn_qt.nil?
-
-        #TODO: Use Title/Author/Genre search if no ISN
-        if (issn.nil? or issn.empty?) and (isbn.nil? or isbn.empty?)
-          #TODO: Limit by genre
-          title_qt = QueryTerm.new(title, Title_Index, "begins_with") unless title.nil?
-          qts = Exlibris::PrimoWS::QueryTerms.new(title_qt) unless title_qt.nil?
-          author_qt = QueryTerm.new(author, Author_Index, "exact") unless title.nil? or author.nil?
-          qts.add_query_term(author_qt) unless author_qt.nil?
-          genre_qt = QueryTerm.new(genre, Any_Index, "exact") unless title.nil? or author.nil? or genre.nil?
-          qts.add_query_term(genre_qt) unless genre_qt.nil?
-        end
-      end
-      psr = PrimoSearchRequest.new(qts) unless qts.nil?
-    end
-
-    def count
-      return @count unless @count.nil?
-      search if response.nil?
-      a = 0
-      response.search("//DOCSET").each { |e| a = e.attributes["TOTALHITS"] unless e.nil? }
-      @count = a
-      return count
-    end
-
-    # Returns holdings array
-    def holdings
-      return @holdings if @holdings.kind_of? Array
-      search if response.nil?
-      @holdings = []
-      return @holdings if response.nil?
-      sources_config = config["sources"] unless config.nil?
-      # Loop through records and to get ids and sources
-      #response.each_element("//record") do |rec|
-      response.search("//record") do |rec|
-        rec_genre = (rec.at("addata/genre").nil?) ? "article" : rec.at("addata/genre").inner_text
-        #Check for genre
-        next unless (genre == rec_genre or (genre == "journal" and rec_genre == "article"))
-        holdings_seen = Array.new # for de-duplicating holdings from a given source.  Needed for Primo/Aleph single location bug.
-        # Just take the first element for record level elements 
-        # (should only be one, except may sourceid which will be handled later)
-        record_id = rec.at("control/recordid").inner_text unless rec.at("control/recordid").nil?
-        display_type = rec.at("display/type").inner_text unless rec.at("display/type").nil?
-        original_source_id = rec.at("control/originalsourceid").inner_text unless rec.at("control/originalsourceid").nil?
-        original_source_ids = control_hash(rec, "control/originalsourceid")
-        source_id = rec.at("control/sourceid").inner_text unless rec.at("control/sourceid").nil?
-        source_ids = control_hash(rec, "control/sourceid")
-        source_record_id = rec.at("control/sourcerecordid").inner_text unless rec.at("control/sourcerecordid").nil?
-        source_record_ids = control_hash(rec, "control/sourcerecordid")
-        rec.search("display/availlibrary") do |e|
-          # Get holdings based on display/availlibrary
-          holding = Holding.new(e)
-          holding.match_reliability = (reliable_match?(rec)) ? ServiceResponse::MatchExact : ServiceResponse::MatchUnsure
-          holding.primo_base_url = base_url
-          holding.primo_view_id = base_view_id
-          holding.primo_config = config
-          holding.record_id = record_id
-          holding.display_type = display_type
-          holding_original_source_id = (holding.origin.nil? ? original_source_ids[record_id] : original_source_ids[holding.origin]) unless original_source_ids.empty?
-          holding.original_source_id = (holding_original_source_id.nil? ? original_source_id : holding_original_source_id)
-          holding_source_id = (holding.origin.nil? ? source_ids[record_id] : source_ids[holding.origin]) unless source_ids.empty?
-          holding.source_id = (holding_source_id.nil? ? source_id : holding_source_id)
-          holding_source_record_id = (holding.origin.nil? ? source_record_ids[record_id] : source_record_ids[holding.origin]) unless source_record_ids.empty?
-          holding.source_record_id = (holding_source_record_id.nil? ? source_record_id : holding_source_record_id)
-          holding.source_config = sources_config[holding.source_id] unless sources_config.nil?
-          
-          # Some sources may be mapping several source holdings to one primo holding
-          # We want to display all source holdings.
-          holding = holding.to_source if goto_source
-          # There are some cases where source records may need to be deduplicated against existing records
-          # Check if we've already seen this record.
-          seen_holdings_key = holding.source_id.to_s+ holding.source_record_id.to_s
-          next if holding.dedup? and holdings_seen.include?(seen_holdings_key)
-          # If we get this far, record that we've seen this holding.
-          holdings_seen.push(seen_holdings_key)
-
-          holding.to_a.each do |h|
-            @holdings.push(h) unless h.nil? or h.library.nil?
-          end
-        end
-      end
-      return holdings
+    private
+    def self.add_attr_reader(reader)
+      attr_reader reader.to_sym
     end
     
-    def btitle
-      return @btitle unless @btitle.nil?
-      search if response.nil?
-      @btitle = ""
-      @btitle = response.at("//addata/btitle").inner_text.chars.to_s unless response.nil? or response.at("//addata/btitle").nil?
-      return btitle
+    # Execute search based on instance vars
+    # Process Holdings based on display/availlibrary
+    # Process URLs based on links/linktorsrc
+    # Process TOCs based on links/linktotoc
+    def search
+      raise "Insufficient search terms for #{self.class}. Please refer to #{self.class}'s documentation to determine how to structure a sufficient query." if insufficient_query?
+      # Call Primo Web Services
+      unless @primo_id.nil? or @primo_id.empty?
+        get_record = Exlibris::PrimoWS::GetRecord.new(@primo_id, @base_url) 
+        @response = get_record.response
+        process_record and process_search_results #since this is a search in addition to being a record call
+      else
+        brief_search = Exlibris::PrimoWS::SearchBrief.new(search_params, @base_url)
+        @response = brief_search.response
+        process_search_results
+      end
     end
- 
-    def jtitle
-      return @jtitle unless @jtitle.nil?
-      search if response.nil?
-      @jtitle = ""
-      @jtitle = response.at("//addata/jtitle").inner_text.chars.to_s unless response.nil? or response.at("//addata/jtitle").nil?
-      return jtitle
+
+    # Determine whether we have sufficient search criteria to search
+    # Sufficient means either:
+    #     * We have a Primo doc id
+    #     * We have either an isbn OR an issn
+    #     * We have a title AND an author AND a genre
+    def insufficient_query?
+      return false unless (@primo_id.nil? or @primo_id.empty?)
+      return false unless (@issn.nil? or @issn.empty?) and (@isbn.nil? or @isbn.empty?)
+      return false unless (@title.nil? or @title.empty?) or (@author.nil? or @author.empty?) or (@genre.nil? or @genre.empty?)
+      return true
     end
- 
-    def titles
-      return @titles if @titles.kind_of? Array
-      search if response.nil?
+    
+    # Search params are determined by input to Exlibris::PrimoWS::SearchBrief
+    def search_params
+      search_params = {}
+      unless (@issn.nil? or @issn.empty?) and (@isbn.nil? or @isbn.empty?)
+        search_params[:isbn] = @isbn unless @isbn.nil?
+        search_params[:issn] = @issn if search_params.empty?
+      else
+        search_params[:title] = @title unless @title.nil?
+        search_params[:author] = @author unless @title.nil? or @author.nil?
+        search_params[:genre] = @genre unless @title.nil? or @author.nil? or @genre.nil?
+      end
+      return search_params
+    end
+    
+    # Process a single record
+    def process_record
+      @count = response.at("//DOCSET")["TOTALHITS"] unless response.nil? or @count
+      response.at("//addata").each_child do |addata_child|
+        name = addata_child.pathname and value = addata_child.inner_text.chars.to_s if addata_child.elem?
+        self.class.add_attr_reader name.to_sym unless name.nil?
+        instance_variable_set("@#{name}".to_sym, value) unless name.nil?
+      end
+      @cover_image = response.at("//addata/lad02").inner_text unless response.at("//addata/lad02").nil?
       @titles = []
-      return @titles if response.nil?
-      # Loop through display/titles
-      response.search("//display/title") do |e|
-        @titles.push(e.inner_text.chars.to_s)
+      response.search("//display/title") do |title|
+        @titles.push(title.inner_text.chars.to_s)
       end
-      return titles
-    end
- 
-    def au
-      return @au unless @au.nil?
-      search if response.nil?
-      @au = ""
-      @au = response.at("//addata/au").inner_text.chars.to_s unless response.nil? or response.at("//addata/au").nil?
-      return au
-    end
- 
-    def aulast
-      return @aulast unless @aulast.nil?
-      search if response.nil?
-      @aulast = ""
-      @aulast = response.at("//addata/aulast").inner_text.chars.to_s unless response.nil? or response.at("//addata/aulast").nil?
-      return aulast
-    end
- 
-    def aufirst
-      return @aufirst unless @aufirst.nil?
-      search if response.nil?
-      @aufirst = ""
-      @aufirst = response.at("//addata/aufirst").inner_text.chars.to_s unless response.nil? or response.at("//addata/aufirst").nil?
-      return aufirst
-    end
- 
-    def aucorp
-      return @aucorp unless @aucorp.nil?
-      search if response.nil?
-      @aucorp = ""
-      @aucorp = response.at("//addata/aucorp").inner_text.chars.to_s unless response.nil? or response.at("//addata/aucorp").nil?
-      return aucorp
-    end
- 
-    def authors
-      return @authors if @authors.kind_of? Array
-      search if response.nil?
       @authors = []
-      return @authors if response.nil?
-      # Loop through rdisplay/creator
       response.search("//display/creator") do |e|
         @authors.push(e.inner_text.chars.to_s)
       end
-      return authors
     end
  
-    def pub
-      return @pub unless @pub.nil?
-      search if response.nil?
-      @pub = ""
-      @pub = response.at("//addata/pub").inner_text.chars.to_s unless response.nil? or response.at("//addata/pub").nil?
-      return pub
+    # Process search results
+    # Process Holdings based on display/availlibrary
+    # Process URLs based on links/linktorsrc
+    # Process TOCs based on links/linktotoc
+    def process_search_results
+      @count = response.at("//sear:DOCSET")["TOTALHITS"] unless response.nil? or @count
+      @holdings = []
+      @rsrcs = []
+      @tocs = []
+      # Loop through records to set metadata for holdings, urls and tocs
+      response.search("//record") do |record|
+        # Default genre to article if necessary
+        record_genre = (record.at("addata/genre").nil?) ? "article" : record.at("addata/genre").inner_text
+        # Don't process if passed in genre doesn't match the record genre unless the discrepancy is only b/w journals and articles
+        # If genre is nil, it means that we're working off id numbers, so we should be good to proceed
+        next unless @genre.nil? or @genre == record_genre or (@genre == "journal" and record_genre == "article")
+        # Just take the first element for record level elements 
+        # (should only be one, except sourceid which will be handled later)
+        record_id = record.at("control/recordid").inner_text
+        display_type = record.at("display/type").inner_text
+        original_source_id = record.at("control/originalsourceid").inner_text
+        original_source_ids = process_control_hash(record, "control/originalsourceid")
+        source_id = record.at("control/sourceid").inner_text
+        source_ids = process_control_hash(record, "control/sourceid")
+        source_record_id = record.at("control/sourcerecordid").inner_text
+        # Process holdings
+        source_record_ids = process_control_hash(record, "control/sourcerecordid")
+        record.search("display/availlibrary") do |availlibrary|
+          availlibrary, institution_code, library_code, id_one, id_two, status_code, origin = process_availlibrary availlibrary
+          holding_original_source_id = (origin.nil?) ? original_source_ids[record_id] : original_source_ids[origin] unless original_source_ids.empty?
+          holding_original_source_id = original_source_id if holding_original_source_id.nil?
+          holding_source_id = (origin.nil?) ? source_ids[record_id] : source_ids[origin] unless source_ids.empty?
+          holding_source_id = source_id if holding_source_id.nil?
+          holding_source_record_id = (origin.nil?) ? source_record_ids[record_id] : source_record_ids[origin] unless source_record_ids.empty?
+          holding_source_record_id =  source_record_id if holding_source_record_id.nil?
+          holding_parameters = {
+            :base_url => @base_url, :vid => @vid, :config => @config,
+            :record_id => record_id, :original_source_id => holding_original_source_id,
+            :source_id => holding_source_id, :source_record_id => holding_source_record_id,
+            :origin => origin, :availlibrary => availlibrary, :institution_code => institution_code, 
+            :library_code => library_code, :id_one => id_one, :id_two => id_two, 
+            :status_code => status_code, :origin => origin, :display_type => display_type, :notes => "",
+            :match_reliability => 
+              (reliable_match?(:title => record.at("display/title"), :author => record.at("display/creator"))) ? 
+                ServiceResponse::MatchExact : ServiceResponse::MatchUnsure 
+          }
+          holding = Exlibris::Primo::Holding.new(holding_parameters)
+          @holdings.push(holding) unless holding.nil?
+        end
+        # Process urls
+        record.search("links/linktorsrc") do |linktorsrc|
+          linktorsrc, v, url, display, institution_code, origin = process_linktorsrc linktorsrc
+          rsrc = Exlibris::Primo::Rsrc.new({
+            :record_id => record_id, :linktorsrc => linktorsrc, 
+            :v => v, :url => url, :display => display, 
+            :institution_code => institution_code, :origin => origin,
+            :notes => ""
+          }) unless linktorsrc.nil?
+          @rsrcs.push(rsrc) unless rsrc.nil?
+        end
+        # Process tocs
+        record.search("links/linktotoc") do |linktotoc|
+          linktotoc, url, display = process_linktotoc linktotoc
+          toc = Exlibris::Primo::Toc.new({
+            :record_id => record_id, :linktotoc => linktotoc, 
+            :url => url, :display => display, 
+            :notes => ""
+          }) unless linktotoc.nil?
+          @tocs.push(toc) unless (toc.nil? or toc.url.nil?)
+        end
+      end
     end
- 
-    def place
-      return @place unless @place.nil?
-      search if response.nil?
-      @place = ""
-      @place = response.at("//addata/cop").inner_text.chars.to_s unless response.nil? or response.at("//addata/cop").nil?
-      return place
-    end
- 
-    def cover_image
-      return @cover_image unless @cover_image.nil?
-      search if response.nil?
-      @cover_image = ""
-      @cover_image = response.at("//addata/lad02").inner_text unless response.nil? or response.at("//addata/lad02").nil?
-      return cover_image
-    end
- 
-    def oclcid
-      return @oclcid unless @oclcid.nil?
-      search if response.nil?
-      @oclcid = ""
-      @oclcid = response.at("//addata/oclcid").inner_text.chars.to_s unless response.nil? or response.at("//addata/oclcid").nil?
-      return oclcid
-    end
- 
-    def lccn
-      return @lccn unless @lccn.nil?
-      search if response.nil?
-      @lccn = ""
-      @lccn = response.at("//addata/lccn").inner_text.chars.to_s unless response.nil? or response.at("//addata/lccn").nil?
-      return lccn
-    end
- 
-    def control_hash (record, xpath)
+
+    def process_control_hash(record, xpath)
       h = {}
       record.search(xpath) do |e|
         str = e.inner_text unless e.nil?
@@ -252,80 +192,67 @@ module Exlibris::Primo
       return h
     end
     
-    # Returns urls array
-    def urls
-      return @urls if @urls.kind_of? Array
-      search if response.nil?
-      @urls = []
-      return @urls if response.nil?
-      # Loop through records and to get ids and sources
-      response.search("//record") do |rec|
-        # Just take first element for record id elements, there should only be one
-        record_id = rec.at("control/recordid").inner_text
-        rec.search("links/linktorsrc") do |e|
-          # Get urls based on links/linktorsrc
-          url = Url.new(e) unless e.nil?
-          url.record_id = record_id unless record_id.nil?
-          @urls.push(url) unless url.nil?
-        end
-      end
-      return urls
-    end
-
-    # Returns tocs array
-    def tocs
-      return @tocs if @tocs.kind_of? Array
-      search if response.nil?
-      @tocs = []
-      return @tocs if response.nil?
-      # Loop through records and to get ids and sources
-      response.search("//record") do |rec|
-        # Just take last element for record id elements, there should only be one
-        record_id = rec.at("control/recordid").inner_text
-        rec.search("links/linktotoc") do |e|
-          # Get tocs based on links/linktotoc
-          toc = Toc.new(e) unless e.nil?
-          toc.record_id = record_id unless record_id.nil?
-          @tocs.push(toc) unless (toc.nil? or toc.url.nil?)
-        end
-      end
-      return tocs
-    end
-
-    # Execute search based on instance vars
-    def search
-      return [] if insufficient_query
-      ws = nil
-      # Call Primo Web Services
-      unless primo_id.nil? or primo_id.empty?
-        ws = GetRecord.new(primo_id, base_url)
-      else
-        ws = SearchBrief.new(search_request, base_url)
-      end
-      @response = ws.response unless ws.nil?
-      @error = ws.error unless ws.nil?
-    end
-
-    def insufficient_query
-      # Have to have some search criteria to search
-      # TODO: Include title/author/genre search
-      #return (self.primo_id.nil? && self.issn.nil? && self.isbn.nil? && (self.title.nil? or self.author.nil? or self.genre.nil?))
-      return ((self.primo_id.nil? or self.primo_id.empty?) && (self.issn.nil? or self.issn.empty?) && (self.isbn.nil? or self.isbn.empty?) && ((self.title.nil? or self.title.empty?) or (self.author.nil? or self.author.empty?) or (self.genre.nil? or self.genre.empty?)))
-      #return (self.primo_id.nil? && self.issn.nil? && self.isbn.nil?)
+    # Determine how sure we are that this is a match.
+    # Dynamically compares record metadata to input values 
+    # based on the values passed in.
+    # Minimum requirement is to check title.
+    def reliable_match?(record_metadata)
+      return true unless (@primo_id.nil? or @primo_id.empty?)
+      return true unless (@issn.nil? or @issn.empty?) and (@isbn.nil? or @isbn.empty?)
+      return false if (record_metadata.nil? or record_metadata.empty? or record_metadata[:title].nil? or record_metadata[:title].empty?)
+      # Titles must be equal
+      return false unless record_metadata[:title].downcase.eql?(title.downcase)
+      # Compare record metadata with metadata that was passed in.  
+      # Only check if the record metadata value contains the input value since we can't be too strict.
+      record_metadata.each { |type, value| return false if value.downcase.match("#{self.method(type).call}".downcase).nil?}
+      return true
     end
     
-    private
-    def goto_source?
-      @goto_source or primo_referrer?
-    end
-
-    def primo_referrer?
-      return false if referrer.nil?
-      return (referrer.match('info:sid/primo.exlibrisgroup.com').nil? ? false : true)
+    def process_availlibrary(input)
+      availlibrary, institution_code, library_code, id_one, id_two, status_code, origin =
+        nil, nil, nil, nil, nil, nil, nil
+      return institution_code, library_code, id_one, id_two, status_code, origin if input.nil? or input.inner_text.nil?
+      availlibrary = input.inner_text
+      availlibrary.split(/\$(?=\$)/).each do |s|
+        institution_code = s.sub!(/^\$I/, "") unless s.match(/^\$I/).nil?
+        library_code = s.sub!(/^\$L/, "") unless s.match(/^\$L/).nil?
+        id_one = s.sub!(/^\$1/, "") unless s.match(/^\$1/).nil?
+        id_two = s.sub!(/^\$2/, "") unless s.match(/^\$2/).nil?
+        # Always display "Check Availability" if this is from Primo.
+        #@status_code = s.sub!(/^\$S/, "") unless s.match(/^\$S/).nil?
+        status_code = "check_holdings"
+        origin = s.sub!(/^\$O/, "") unless s.match(/^\$O/).nil?
+      end
+      return availlibrary, institution_code, library_code, id_one, id_two, status_code, origin
     end
     
-    def reliable_match?(rec)
-      return true unless ((self.primo_id.nil? or self.primo_id.empty?) && (self.issn.nil? or self.issn.empty?) && (self.isbn.nil? or self.isbn.empty?) && (rec.at("display/title").inner_text != title))
+    def process_linktorsrc(input)
+      linktorsrc, v, url, display, institution_code, origin = nil, nil, nil, nil, nil, nil
+      return linktorsrc, v, url, display, institution_code, origin if input.nil? or input.inner_text.nil?
+      linktorsrc = input.inner_text
+      linktorsrc.split(/\$(?=\$)/).each do |s|
+        v = s.sub!(/^\$V/, "")  unless s.match(/^\$V/).nil?
+        url = s.sub!(/^\$U/, "")  unless s.match(/^\$U/).nil?
+        display = s.sub!(/^\$D/, "")  unless s.match(/^\$D/).nil?
+        institution_code = s.sub!(/^\$I/, "") unless s.match(/^\$I/).nil?
+        origin = s.sub!(/^\$O/, "") unless s.match(/^\$O/).nil?
+      end
+      return linktorsrc, v, url, display, institution_code, origin
+    end
+
+    def process_linktotoc(input)
+      linktotoc, url, display, = nil, nil, nil
+      return linktotoc, url, display if input.nil? or input.inner_text.nil?
+      linktotoc = input.inner_text
+      linktotoc.split(/\$(?=\$)/).each do |s|
+        url = s.sub!(/^\$U/, "")  unless s.match(/^\$U/).nil?
+        display = s.sub!(/^\$D/, "")  unless s.match(/^\$D/).nil?
+      end
+      return linktotoc, url, display
+    end
+
+    def raise_required_setup_parameter_error(parameter)
+      raise "Initialization error in #{self.class}. Missing required setup parameter: #{parameter}."
     end
   end
 end
