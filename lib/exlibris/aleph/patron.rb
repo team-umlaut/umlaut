@@ -11,7 +11,7 @@ module Exlibris::Aleph
 
     # Place a hold on the specificed item.
     # Raises errors if 
-    def place_hold(bib_library, bib_id, adm_library, item_id, params)
+    def place_hold(adm_library, bib_library, bib_id, item_id, params)
       pickup_location = params[:pickup_location]
       raise "Error in place hold.  Missing pickup location." if pickup_location.nil?
       last_interest_date = params.fetch(:last_interest_date, "")

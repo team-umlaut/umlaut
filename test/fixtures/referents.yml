@@ -22,18 +22,44 @@ primo_checked_out_referent:
 
 primo_journal1_referent:
   title: "The Musical quarterly."
-  isbn: "0027-4631"
+  issn: "0027-4631"
 
 primo_journal2_referent:
   title: "Journal of behavioral economics"
-  isbn: "0090-5720"
+  issn: "0090-5720"
 
 primo_journal3_referent:
   title: "The Journal of religious history"
-  isbn: "0022-4227"
+  issn: "0022-4227"
 
 primo_journal4_referent:
   title: "The journal of the American Board of Family Practice"
-  isbn: "0893-8652"
+  issn: "0893-8652"
 
+primo_toc_referent:
+  title: "The risk management process : business strategy and tactics"
+  isbn: "9780471405542"
 
+primo_bobst_available_referent:
+  title: "Parole, personnage et référence dans le théâtre de Jean Racine"
+
+primo_bobst_checked_out_referent:
+  title: "Aquinas and Maimonides on the possibility of the knowledge of God : an examination of the Quaestio de attributis"
+  isbn: "1402047207"
+
+primo_bobst_ill_referent:
+  title: "El Niño inocente de La Guardia"
+  isbn: "0729302156"
+
+primo_bobst_in_processing_referent:
+  title: "Plurilinguismo e lirica medievale : da Raimbaut de Vaqueiras a Dante"
+
+primo_bobst_offsite_referent:
+  title: "Natural learning and mathematics"
+  isbn: "0435083287"
+
+primo_bafc_available_referent:
+  title: "Shajiabang [sound recording] : model opera of the Cultural Revolution : orchestral highlights"
+
+primo_bafc_checked_out_referent:
+  title: "Founder of the Delta blues [sound recording]"

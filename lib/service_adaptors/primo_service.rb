@@ -207,9 +207,9 @@ class PrimoService < Service
     rescue Exception => e
       # Log error and return finished
       RAILS_DEFAULT_LOGGER.error(
-        "Error in #{self.class}. 
-         Returning 0 Primo services. 
-         #{primo_searcher.class} raised the following exception: #{e}")
+        "Error in #{self.class}. "+ 
+        "Returning 0 Primo services. "+ 
+        "#{primo_searcher.class} raised the following exception:\n#{e}")
       return request.dispatched(self, true)
     end
     # Enhance the referent with metadata from Primo Searcher if primo id is present
@@ -355,8 +355,8 @@ class PrimoService < Service
   def primo_config
     default_file = "#{RAILS_ROOT}/config/umlaut_config/primo.yml"
     config_file = @primo_config.nil? ? default_file : "#{RAILS_ROOT}/config/umlaut_config/"+ @primo_config
-    config_hash = YAML.load_file(config_file) if File.exists?(config_file)
-    RAILS_DEFAULT_LOGGER.warn("Primo config file not found: #{config_file}.")
+    RAILS_DEFAULT_LOGGER.warn("Primo config file not found: #{config_file}.") and return {} unless File.exists?(config_file)
+    config_hash = YAML.load_file(config_file)
     return (config_hash.nil?) ? {} : config_hash
   end
   

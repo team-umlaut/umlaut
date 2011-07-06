@@ -9,7 +9,7 @@ class PrimoSearcherTest < ActiveSupport::TestCase
     @vid = @primo_definition["vid"]
     @primo_holdings_doc_id = "nyu_aleph000062856"
     @primo_rsrcs_doc_id = "nyu_aleph002895625"
-    @primo_tocs_doc_id = ""
+    @primo_tocs_doc_id = "nyu_aleph003149772"
     @primo_dedupmrg_doc_id = "dedupmrg41684735"
     @primo_test_checked_out_doc_id = "nyu_aleph000089771"
     @primo_test_offsite_doc_id = "nyu_aleph002169696"
@@ -199,34 +199,33 @@ class PrimoSearcherTest < ActiveSupport::TestCase
     }
   end
 
-  # # Test search for a single Primo document w/ tocs.
-  # def test_tocs
-  #   searcher = Exlibris::Primo::Searcher.new(
-  #     @searcher_setup, 
-  #     { :primo_id => @primo_tocs_doc_id })
-  #   tocs = searcher.tocs
-  #   assert_instance_of(Array, rsrcs,
-  #     "#{searcher.class} tocs is an unexpected object: #{tocs.class}")
-  #   assert_equal(2, tocs.count,
-  #     "#{searcher.class} returned an unexpected amount of tocs (#{tocs.count}) for doc id: #{@primo_tocs_doc_id}.")
-  #   first_toc = tocs.first
-  #   assert_instance_of(
-  #     Exlibris::Primo::Toc, 
-  #     first_toc, 
-  #     "#{searcher.class} first toc is an unexpected object: #{first_toc.class}")
-  # test_data = { 
-  #   :record_id => "nyu_aleph002895625", 
-  #   :url => "http://ezproxy.library.nyu.edu:2048/login?url=http://mq.oxfordjournals.org/",
-  #   :display => "Online Version",
-  #   :origin => nil, 
-  #   :notes => "" }
-  # test_data.each { |key, value|
-  #   assert_equal(
-  #     value, 
-  #     first_toc.send(key), 
-  #     "#{searcher.class} first toc has an unexpected #{key}: #{first_toc.send(key)}")
-  # }
-  # end
+  # Test search for a single Primo document w/ tocs.
+  def test_tocs
+    searcher = Exlibris::Primo::Searcher.new(
+      @searcher_setup, 
+      { :primo_id => @primo_tocs_doc_id })
+    tocs = searcher.tocs
+    assert_instance_of(Array, tocs,
+      "#{searcher.class} tocs is an unexpected object: #{tocs.class}")
+    assert_equal(1, tocs.count,
+      "#{searcher.class} returned an unexpected amount of tocs (#{tocs.count}) for doc id: #{@primo_tocs_doc_id}.")
+    first_toc = tocs.last
+    assert_instance_of(
+      Exlibris::Primo::Toc, 
+      first_toc, 
+      "#{searcher.class} first toc is an unexpected object: #{first_toc.class}")
+  test_data = { 
+    :record_id => "nyu_aleph003149772", 
+    :url => "http://www.loc.gov/catdir/toc/onix07/2001024342.html",
+    :display => "Table of Contents",
+    :notes => "" }
+  test_data.each { |key, value|
+    assert_equal(
+      value, 
+      first_toc.send(key), 
+      "#{searcher.class} first toc has an unexpected #{key}: #{first_toc.send(key)}")
+  }
+  end
   
   def test_dedupmrg
       searcher = Exlibris::Primo::Searcher.new(

@@ -57,4 +57,59 @@ primo_journal4_request:
   session_id: "f747f4273c1ecb12f1f764cc10c646d6"
   client_ip_addr: "127.0.0.1" 
   contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301376" 
+
+primo_toc_request:
+  id: 26
+  referent: primo_toc_referent
+  session_id: "f747f4273c1ecb12f1f764cc10c646d7"
+  client_ip_addr: "127.0.0.1" 
+  contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377" 
   
+primo_bobst_available_request:
+  id: 27
+  referent: primo_bobst_available_referent
+  session_id: "f747f4273c1ecb12f1f764cc10c646d7"
+  client_ip_addr: "127.0.0.1" 
+  contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377" 
+
+primo_bobst_checked_out_request:
+  id: 28
+  referent: primo_bobst_checked_out_referent
+  session_id: "f747f4273c1ecb12f1f764cc10c646d7"
+  client_ip_addr: "127.0.0.1" 
+  contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377" 
+
+primo_bobst_ill_request:
+  id: 29
+  referent: primo_bobst_ill_referent
+  session_id: "f747f4273c1ecb12f1f764cc10c646d7"
+  client_ip_addr: "127.0.0.1" 
+  contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377" 
+
+primo_bobst_in_processing_request:
+  id: 30
+  referent: primo_bobst_in_processing_referent
+  session_id: "f747f4273c1ecb12f1f764cc10c646d7"
+  client_ip_addr: "127.0.0.1" 
+  contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377" 
+
+primo_bobst_offsite_request:
+  id: 31
+  referent: primo_bobst_offsite_referent
+  session_id: "f747f4273c1ecb12f1f764cc10c646d7"
+  client_ip_addr: "127.0.0.1" 
+  contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377" 
+
+primo_bafc_available_request:
+  id: 32
+  referent: primo_bafc_available_referent
+  session_id: "f747f4273c1ecb12f1f764cc10c646d7"
+  client_ip_addr: "127.0.0.1" 
+  contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377" 
+
+primo_bafc_checked_out_request:
+  id: 33
+  referent: primo_bafc_checked_out_referent
+  session_id: "f747f4273c1ecb12f1f764cc10c646d7"
+  client_ip_addr: "127.0.0.1" 
+  contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377" 

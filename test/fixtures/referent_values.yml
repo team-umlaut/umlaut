@@ -458,3 +458,292 @@ primo_journal4_rv5:
   normalized_value: "0893-8652"
   metadata: true
   private_data: false
+
+primo_toc_rv1:
+  referent: primo_toc_referent
+  key_name: "format"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_toc_rv2:
+  referent: primo_toc_referent
+  key_name: "genre"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_toc_rv3:
+  referent: primo_toc_referent
+  key_name: "primo"
+  value: "nyu_aleph003149772"
+  normalized_value: "nyu_aleph003149772"
+  metadata: true
+  private_data: false
+
+primo_toc_rv4:
+  referent: primo_toc_referent
+  key_name: "title"
+  value: "The risk management process : business strategy and tactics"
+  normalized_value: "The risk management process : business strategy and tactics"
+  metadata: true
+  private_data: false
+
+primo_toc_rv5:
+  referent: primo_toc_referent
+  key_name: "isbn"
+  value: "9780471405542"
+  normalized_value: "9780471405542"
+  metadata: true
+  private_data: false
+
+primo_bobst_available_rv1:
+  referent: primo_bobst_available_referent
+  key_name: "format"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_bobst_available_rv2:
+  referent: primo_bobst_available_referent
+  key_name: "genre"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_bobst_available_rv3:
+  referent: primo_bobst_available_referent
+  key_name: "primo"
+  value: "nyu_aleph002045809"
+  normalized_value: "nyu_aleph002045809"
+  metadata: true
+  private_data: false
+
+primo_bobst_available_rv4:
+  referent: primo_bobst_available_referent
+  key_name: "title"
+  value: "Parole, personnage et référence dans le théâtre de Jean Racine"
+  normalized_value: "Parole, personnage et référence dans le théâtre de Jean Racine"
+  metadata: true
+  private_data: false
+  
+primo_bobst_checked_out_rv1:
+  referent: primo_bobst_checked_out_referent
+  key_name: "format"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_bobst_checked_out_rv2:
+  referent: primo_bobst_checked_out_referent
+  key_name: "genre"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_bobst_checked_out_rv3:
+  referent: primo_bobst_checked_out_referent
+  key_name: "primo"
+  value: "nyu_aleph000017832"
+  normalized_value: "nyu_aleph000017832"
+  metadata: true
+  private_data: false
+
+primo_bobst_checked_out_rv4:
+  referent: primo_bobst_checked_out_referent
+  key_name: "title"
+  value: "Aquinas and Maimonides on the possibility of the knowledge of God : an examination of the Quaestio de attributis"
+  normalized_value: "Aquinas and Maimonides on the possibility of the knowledge of God : an examination of the Quaestio de attributis"
+  metadata: true
+  private_data: false
+
+primo_bobst_checked_out_rv5:
+  referent: primo_bobst_checked_out_referent
+  key_name: "isbn"
+  value: "1402047207"
+  normalized_value: "1402047207"
+  metadata: true
+  private_data: false
+
+primo_bobst_ill_rv1:
+  referent: primo_bobst_ill_referent
+  key_name: "format"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_bobst_ill_rv2:
+  referent: primo_bobst_ill_referent
+  key_name: "genre"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_bobst_ill_rv3:
+  referent: primo_bobst_ill_referent
+  key_name: "primo"
+  value: "nyu_aleph002801015"
+  normalized_value: "nyu_aleph002801015"
+  metadata: true
+  private_data: false
+
+primo_bobst_ill_rv4:
+  referent: primo_bobst_ill_referent
+  key_name: "title"
+  value: "El Niño inocente de La Guardia"
+  normalized_value: "El Niño inocente de La Guardia"
+  metadata: true
+  private_data: false
+
+primo_bobst_ill_rv5:
+  referent: primo_bobst_ill_referent
+  key_name: "isbn"
+  value: "0729302156"
+  normalized_value: "0729302156"
+  metadata: true
+  private_data: false
+  
+primo_bobst_in_processing_rv1:
+  referent: primo_bobst_in_processing_referent
+  key_name: "format"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_bobst_in_processing_rv2:
+  referent: primo_bobst_in_processing_referent
+  key_name: "genre"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_bobst_in_processing_rv3:
+  referent: primo_bobst_in_processing_referent
+  key_name: "primo"
+  value: "nyu_aleph002723601"
+  normalized_value: "nyu_aleph002723601"
+  metadata: true
+  private_data: false
+
+primo_bobst_in_processing_rv4:
+  referent: primo_bobst_in_processing_referent
+  key_name: "title"
+  value: "Plurilinguismo e lirica medievale : da Raimbaut de Vaqueiras a Dante"
+  normalized_value: "Plurilinguismo e lirica medievale : da Raimbaut de Vaqueiras a Dante"
+  metadata: true
+  private_data: false
+
+primo_bobst_offsite_rv1:
+  referent: primo_bobst_offsite_referent
+  key_name: "format"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_bobst_offsite_rv2:
+  referent: primo_bobst_offsite_referent
+  key_name: "genre"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_bobst_offsite_rv3:
+  referent: primo_bobst_offsite_referent
+  key_name: "primo"
+  value: "nyu_aleph002045324"
+  normalized_value: "nyu_aleph002045324"
+  metadata: true
+  private_data: false
+
+primo_bobst_offsite_rv4:
+  referent: primo_bobst_offsite_referent
+  key_name: "title"
+  value: "Natural learning and mathematics"
+  normalized_value: "Natural learning and mathematics"
+  metadata: true
+  private_data: false
+
+primo_bobst_offsite_rv5:
+  referent: primo_bobst_offsite_referent
+  key_name: "isbn"
+  value: "0435083287"
+  normalized_value: "0435083287"
+  metadata: true
+  private_data: false
+
+primo_bafc_available_rv1:
+  referent: primo_bafc_available_referent
+  key_name: "format"
+  value: "audio"
+  normalized_value: "audio"
+  metadata: true
+  private_data: false
+
+primo_bafc_available_rv2:
+  referent: primo_bafc_available_referent
+  key_name: "genre"
+  value: "audio"
+  normalized_value: "audio"
+  metadata: true
+  private_data: false
+
+primo_bafc_available_rv3:
+  referent: primo_bafc_available_referent
+  key_name: "primo"
+  value: "nyu_aleph000013884"
+  normalized_value: "nyu_aleph000013884"
+  metadata: true
+  private_data: false
+
+primo_bafc_available_rv4:
+  referent: primo_bafc_available_referent
+  key_name: "title"
+  value: "Shajiabang [sound recording] : model opera of the Cultural Revolution : orchestral highlights"
+  normalized_value: "Shajiabang [sound recording] : model opera of the Cultural Revolution : orchestral highlights"
+  metadata: true
+  private_data: false
+
+primo_bafc_checked_out_rv1:
+  referent: primo_bafc_checked_out_referent
+  key_name: "format"
+  value: "audio"
+  normalized_value: "audio"
+  metadata: true
+  private_data: false
+
+primo_bafc_checked_out_rv2:
+  referent: primo_bafc_checked_out_referent
+  key_name: "genre"
+  value: "audio"
+  normalized_value: "audio"
+  metadata: true
+  private_data: false
+
+primo_bafc_checked_out_rv3:
+  referent: primo_bafc_checked_out_referent
+  key_name: "primo"
+  value: "nyu_aleph002094735"
+  normalized_value: "nyu_aleph002094735"
+  metadata: true
+  private_data: false
+
+primo_bafc_checked_out_rv4:
+  referent: primo_bafc_checked_out_referent
+  key_name: "title"
+  value: "Founder of the Delta blues [sound recording]"
+  normalized_value: "Founder of the Delta blues [sound recording]"
+  metadata: true
+  private_data: false
+

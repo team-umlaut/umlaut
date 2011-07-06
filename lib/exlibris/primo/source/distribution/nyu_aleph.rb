@@ -60,15 +60,15 @@ module Exlibris::Primo::Source::Local
           @aleph_items ||= 
             (aleph_record.nil? or display_type.upcase == "JOURNAL") ? 
               {} : aleph_record.items 
-          @coverage ||= get_coverage(aleph_record)
-          # Don't need to exclude JOURNALS explicitly since we
-          # handled them above.
+          # Overwrite the current coverage.
+          @coverage = get_coverage(aleph_record)
+          # Don't need to exclude JOURNALS explicitly since we handled them above.
           @getting_aleph_holdings ||= !(@aleph_items.empty? or @aleph_items.size > @max_holdings)
         rescue Exception => e
           RAILS_DEFAULT_LOGGER.error("Error getting data from Aleph REST APIs. #{e.message}")
           @aleph_items = []
           @coverage = []
-          # TODO: Figure out if this is the right thing to do.
+          # TODO: Figure out if setting the URL to Primo is the right thing to do.
           # On the one hand, if Aleph REST APIs are down, Aleph may be down,
           # so we don't want to send users to a dead link.
           # On the other hand, if they just came from Primo, they don't want to 
@@ -209,8 +209,7 @@ module Exlibris::Primo::Source::Local
           ) unless bib_866_collection.nil? or bib_866_j.nil? and bib_866_k.nil?
           locations_seen.push({
             :adm_library => bib_866_adm_library, 
-            :sub_library_code => bib_866_sub_library_code 
-          })
+            :sub_library_code => bib_866_sub_library_code })
         end
       end
       # Get aleph holding XML.
@@ -231,8 +230,7 @@ module Exlibris::Primo::Source::Local
           ).inner_text unless aleph_holding.at("//datafield[@tag='852']/subfield[@code='c']").nil?
           next if locations_seen.include?({
             :adm_library => holding_adm_library, 
-            :sub_library_code => holding_sub_library_code
-          })
+            :sub_library_code => holding_sub_library_code })
           holding_collection = @aleph_helper.collection_text(
             :adm_library_code => holding_adm_library.downcase,
             :sub_library_code => holding_sub_library_code,
@@ -319,7 +317,8 @@ module Exlibris::Primo::Source::Local
     
     # TODO: Implement to send mail.
     def alert_the_authorities(error)
-      puts "Something is amiss. #{error}"
+      RAILS_DEFAULT_LOGGER.error("Error in #{self.class}. Something is amiss with Aleph. #{error}")
+      puts "Something is amiss with Aleph. #{error}"
     end
   end
 end

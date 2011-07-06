@@ -161,7 +161,7 @@ module Exlibris::Primo
             :institution_code => institution_code, :origin => origin,
             :notes => ""
           }) unless linktorsrc.nil?
-          @rsrcs.push(rsrc) unless rsrc.nil?
+          @rsrcs.push(rsrc) unless (rsrc.nil? or rsrc.url.nil?)
         end
         # Process tocs
         record.search("links/linktotoc") do |linktotoc|

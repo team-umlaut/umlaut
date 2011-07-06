@@ -108,6 +108,34 @@ NYU_Primo_Source:
   base_url: http://bobcatdev.library.nyu.edu
   vid: NYU
 
+#NYU Primo Service
+TNS_Primo:
+  type: PrimoService
+  priority: 2 # After SFX, to get SFX metadata enhancement
+  status: active
+  base_url: http://bobcatdev.library.nyu.edu
+  vid: NS
+  holding_search_institution: NS
+  holding_search_text: Search for this title in BobCat.
+  suppress_holdings: [ !ruby/regexp '/\$\$LBWEB/', !ruby/regexp '/\$\$LNWEB/', !ruby/regexp '/\$\$LTWEB/', !ruby/regexp '/\$\$LWEB/', !ruby/regexp '/\$\$1Restricted Internet Resources/' ]
+  ez_proxy: !ruby/regexp '/https\:\/\/ezproxy\.library\.nyu\.edu\/login\?url=/'
+  primo_config: tns_primo.yml
+  service_types:
+    - primo_source
+    - holding_search
+    - fulltext
+    - table_of_contents
+    - referent_enhance
+    - cover_image
+
+#NYU Primo Source Service
+TNS_Primo_Source:
+  type: PrimoSource
+  priority: a
+  status: active
+  base_url: http://bobcatdev.library.nyu.edu
+  vid: NS
+
 # First wave of amazon in the foreground, see level c for more in bg. 
 Amazon:
   type: Amazon

@@ -8,6 +8,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
     @base_url = @primo_definition["base_url"]
     @vid = @primo_definition["vid"]
     @primo_default = ServiceList.instance.instantiate!("NYU_Primo", nil)
+    @primo_tns = ServiceList.instance.instantiate!("TNS_Primo", nil)
     @holding_search_institution = 
     @primo_minimum = PrimoService.new({
       "priority"=>1, "service_id" => "NYU_Primo", 
@@ -104,7 +105,8 @@ class PrimoServiceTest < ActiveSupport::TestCase
     test_data.each { |key, value|
       assert_equal(
         value, 
-        request.referent.metadata[key])
+        request.referent.metadata[key],
+        "#{key} different than expected.")
     }
     holdings = request.get_service_type('holding')
     assert_equal(
@@ -135,7 +137,8 @@ class PrimoServiceTest < ActiveSupport::TestCase
     test_data.each { |key, value|
       assert_equal(
         value, 
-        holdings.first.view_data[key])
+        holdings.first.view_data[key],
+        "#{key} different than expected.")
     }
   end
   
@@ -159,7 +162,8 @@ class PrimoServiceTest < ActiveSupport::TestCase
     test_data.each { |key, value|
       assert_equal(
         value, 
-        request.referent.metadata[key])
+        request.referent.metadata[key],
+        "#{key} different than expected.")
     }
     holdings = request.get_service_type('holding')
     assert_equal(
@@ -190,7 +194,8 @@ class PrimoServiceTest < ActiveSupport::TestCase
     test_data.each { |key, value|
       assert_equal(
         value, 
-        holdings.first.view_data[key])
+        holdings.first.view_data[key],
+        "#{key} different than expected.")
     }
   end
   
@@ -214,7 +219,8 @@ class PrimoServiceTest < ActiveSupport::TestCase
     test_data.each { |key, value|
       assert_equal(
         value, 
-        request.referent.metadata[key])
+        request.referent.metadata[key],
+        "#{key} different than expected.")
     }
     holdings = request.get_service_type('holding')
     assert_equal(
@@ -245,7 +251,8 @@ class PrimoServiceTest < ActiveSupport::TestCase
     test_data.each { |key, value|
       assert_equal(
         value, 
-        holdings.first.view_data[key])
+        holdings.first.view_data[key],
+        "#{key} different than expected.")
     }
   end
   
@@ -285,13 +292,14 @@ class PrimoServiceTest < ActiveSupport::TestCase
       :coverage => [], 
       :notes => "",
       :url => "http://alephstage.library.nyu.edu/F?func=item-global&doc_library=NYU01&local_base=PRIMOCOMMON&doc_number=000062856&sub_library=BOBST", 
-      :request_url => nil, 
+      :request_url => "http://alephstage.library.nyu.edu/F?func=item-global&doc_library=NYU01&local_base=PRIMOCOMMON&doc_number=000062856&sub_library=BOBST",
       :match_reliability => ServiceResponse::MatchExact, 
       :request_link_supports_ajax_call => true }
     test_data.each { |key, value|
       assert_equal(
         value, 
-        holdings.first.view_data[key])
+        holdings.first.view_data[key],
+        "#{key} different than expected.")
     }
     source_data = {
       :aleph_doc_library => "NYU01",
@@ -320,7 +328,85 @@ class PrimoServiceTest < ActiveSupport::TestCase
     source_data.each { |key, value|
       assert_equal(
         value, 
-        holdings.first.view_data[:source_data][key])
+        holdings.first.view_data[:source_data][key],
+        "#{key} different than expected.")
+    }
+end
+
+  def test_available_tns_aleph
+    # Available
+    request = requests(:primo_id_request)
+    @primo_tns.handle(request)
+    request.dispatched_services.reset
+    request.service_types.reset
+    primo_sources = request.get_service_type('primo_source')
+    assert_equal(
+      1, primo_sources.length)
+    primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+    primo_source.handle(request)
+    request.dispatched_services.reset
+    request.service_types.reset
+    holdings = request.get_service_type('holding')
+    assert_equal(
+      1, holdings.length)
+    test_data = { 
+      :record_id => "nyu_aleph000062856", 
+      :source_id => "nyu_aleph", 
+      :original_source_id => "NYU01", 
+      :source_record_id => "000062856",
+      :institution_code => "NYU", 
+      :institution => "NYU", 
+      :library_code => "BOBST",
+      :library => "NYU Bobst",
+      :status_code => "available", 
+      :status => "Available", 
+      :id_one => "Main Collection", 
+      :id_two => "(PR6013.R44 T7 2004)", 
+      :collection => "Main Collection", 
+      :call_number => "(PR6013.R44 T7 2004)", 
+      :origin => nil, 
+      :display_type => "book", 
+      :coverage => [], 
+      :notes => "",
+      :url => "http://alephstage.library.nyu.edu/F?func=item-global&doc_library=NYU01&local_base=PRIMOCOMMON&doc_number=000062856&sub_library=BOBST", 
+      :request_url => nil, 
+      :match_reliability => ServiceResponse::MatchExact, 
+      :request_link_supports_ajax_call => true }
+    test_data.each { |key, value|
+      assert_equal(
+        value, 
+        holdings.first.view_data[key],
+        "#{key} different than expected.")
+    }
+    source_data = {
+      :aleph_doc_library => "NYU01",
+      :aleph_sub_library => "NYU Bobst",
+      :aleph_sub_library_code => "BOBST",
+      :aleph_collection => "Main Collection",
+      :aleph_call_number => "(PR6013.R44 T7 2004)",
+      :aleph_doc_number => "000062856",
+      :aleph_url => "http://alephstage.library.nyu.edu",
+      :illiad_url => "http://illiaddev.library.nyu.edu",
+      :aleph_sub_library_code => "BOBST",
+      :aleph_item_id => "NYU50000062856000010",
+      :aleph_item_adm_library => "NYU50",
+      :aleph_item_sub_library_code => "BOBST",
+      :aleph_item_collection_code => "MAIN",
+      :aleph_item_doc_number => "000062856",
+      :aleph_item_sequence_number => "1.0",
+      :aleph_item_barcode => "31142041146104",
+      :aleph_item_status_code => "01",
+      :aleph_item_process_status_code => nil,
+      :aleph_item_circulation_status => "On Shelf",
+      :aleph_item_location => "PR6013.R44&nbsp;T7 2004",
+      :aleph_item_description => nil,
+      :aleph_item_hol_doc_number => "002992203"
+    }
+    source_data.each { |key, value|
+      assert_equal(
+        value, 
+        holdings.first.view_data[:source_data][key],
+        "#{key} different than expected.")
     }
 end
 
@@ -366,7 +452,8 @@ def test_checked_out_nyu_aleph
     test_data.each { |key, value|
       assert_equal(
         value, 
-        holdings.first.view_data[key])
+        holdings.first.view_data[key],
+        "#{key} different than expected.")
     }
     source_data = {
       :aleph_doc_library => "NYU01",
@@ -395,7 +482,132 @@ def test_checked_out_nyu_aleph
     source_data.each { |key, value|
       assert_equal(
         value, 
-        holdings.first.view_data[:source_data][key])
+        holdings.first.view_data[:source_data][key],
+        "#{key} different than expected.")
+    }
+end
+
+def test_journal1_nyu_aleph
+    request = requests(:primo_journal1_request)
+    @primo_default.handle(request)
+    request.referent.referent_values.reset
+    request.dispatched_services.reset
+    request.service_types.reset
+    primo_sources = request.get_service_type('primo_source')
+    assert_equal(
+      4, primo_sources.length)
+    primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+    primo_source.handle(request)
+    request.dispatched_services.reset
+    request.service_types.reset
+    holdings = request.get_service_type('holding')
+    assert_equal(
+      4, holdings.length)
+    test_data = { 
+      :record_id => "nyu_aleph002895625", 
+      :source_id => "nyu_aleph", 
+      :original_source_id => "NYU01", 
+      :source_record_id => "002895625",
+      :institution_code => "NYU", 
+      :institution => "NYU", 
+      :library_code => "BOBST",
+      :library => "NYU Bobst",
+      :status_code => "check_holdings", 
+      :status => "Check Availability", 
+      :id_one => "Main Collection", 
+      :id_two => "(ML1 .M819 )", 
+      :collection => "Main Collection", 
+      :call_number => "(ML1 .M819 )", 
+      :origin => nil, 
+      :display_type => "journal", 
+      :coverage => ["Available in Main Collection: VOLUMES: 1-89 (YEARS: 1915-2006)"], 
+      :notes => "",
+      :url => "http://alephstage.library.nyu.edu/F?func=item-global&doc_library=NYU01&local_base=PRIMOCOMMON&doc_number=002895625&sub_library=BOBST", 
+      :request_url => nil, 
+      :match_reliability => ServiceResponse::MatchExact, 
+      :request_link_supports_ajax_call => false }
+    test_data.each { |key, value|
+      assert_equal(
+        value, 
+        holdings.first.view_data[key],
+        "#{key} different than expected.")
+    }
+    source_data = {
+      :aleph_doc_library => "NYU01",
+      :aleph_sub_library => "NYU Bobst",
+      :aleph_sub_library_code => "BOBST",
+      :aleph_collection => "Main Collection",
+      :aleph_call_number => "(ML1 .M819 )",
+      :aleph_doc_number => "002895625",
+      :aleph_sub_library_code => "BOBST"
+    }
+    source_data.each { |key, value|
+      assert_equal(
+        value, 
+        holdings.first.view_data[:source_data][key],
+        "#{key} different than expected.")
+    }
+end
+
+def test_journal1_tns_aleph
+    request = requests(:primo_journal1_request)
+    @primo_tns.handle(request)
+    request.referent.referent_values.reset
+    request.dispatched_services.reset
+    request.service_types.reset
+    primo_sources = request.get_service_type('primo_source')
+    assert_equal(
+      4, primo_sources.length)
+    primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+    primo_source.handle(request)
+    request.dispatched_services.reset
+    request.service_types.reset
+    holdings = request.get_service_type('holding')
+    assert_equal(
+      4, holdings.length)
+    test_data = { 
+      :record_id => "nyu_aleph002895625", 
+      :source_id => "nyu_aleph", 
+      :original_source_id => "NYU01", 
+      :source_record_id => "002895625",
+      :institution_code => "NYU", 
+      :institution => "NYU", 
+      :library_code => "BOBST",
+      :library => "NYU Bobst",
+      :status_code => "check_holdings", 
+      :status => "Check Availability", 
+      :id_one => "Main Collection", 
+      :id_two => "(ML1 .M819 )", 
+      :collection => "Main Collection", 
+      :call_number => "(ML1 .M819 )", 
+      :origin => nil, 
+      :display_type => "journal", 
+      :coverage => ["Available in Main Collection: VOLUMES: 1-89 (YEARS: 1915-2006)"], 
+      :notes => "",
+      :url => "http://alephstage.library.nyu.edu/F?func=item-global&doc_library=NYU01&local_base=PRIMOCOMMON&doc_number=002895625&sub_library=BOBST", 
+      :request_url => nil, 
+      :match_reliability => ServiceResponse::MatchExact, 
+      :request_link_supports_ajax_call => false }
+    test_data.each { |key, value|
+      assert_equal(
+        value, 
+        holdings.first.view_data[key],
+        "#{key} different than expected.")
+    }
+    source_data = {
+      :aleph_doc_library => "NYU01",
+      :aleph_sub_library => "NYU Bobst",
+      :aleph_sub_library_code => "BOBST",
+      :aleph_collection => "Main Collection",
+      :aleph_call_number => "(ML1 .M819 )",
+      :aleph_doc_number => "002895625",
+      :aleph_sub_library_code => "BOBST"
+    }
+    source_data.each { |key, value|
+      assert_equal(
+        value, 
+        holdings.first.view_data[:source_data][key],
+        "#{key} different than expected.")
     }
 end
 

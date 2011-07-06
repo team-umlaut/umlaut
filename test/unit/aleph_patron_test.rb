@@ -21,7 +21,7 @@ class AlephPatronTest < ActiveSupport::TestCase
     assert_raise(REXML::ParseException) { patron.loans }
     assert_raise(REXML::ParseException) { patron.renew_loans() }
     assert_raise(REXML::ParseException) { patron.renew_loans(@aleph_renew_item_id) }
-    assert_raise(RuntimeError) { patron.place_hold(@aleph_doc_library, @aleph_doc_number, @aleph_adm_library, @aleph_item_id, {:pickup_location => @pickup_location}) }
+    assert_raise(RuntimeError) { patron.place_hold(@aleph_adm_library, @aleph_doc_library, @aleph_doc_number, @aleph_item_id, {:pickup_location => @pickup_location}) }
   end
 
   # Test search for a single Primo document.
@@ -33,8 +33,8 @@ class AlephPatronTest < ActiveSupport::TestCase
     #assert_nil(patron.error, "Failure in #{patron.class} while renewing all loans: #{patron.error}")
     #renew_loans = patron.renew_loans(@aleph_renew_item_id)
     #assert_nil(patron.error, "Failure in #{patron.class} while renewing loan #{@aleph_renew_item_id}: #{patron.error}")
-    assert_raise(RuntimeError) { patron.place_hold(@aleph_doc_library, @aleph_doc_number, @aleph_adm_library, @aleph_item_id, {}) }
-    place_hold = patron.place_hold(@aleph_doc_library, @aleph_doc_number, @aleph_adm_library, @aleph_item_id, {:pickup_location => @pickup_location})
+    assert_raise(RuntimeError) { patron.place_hold(@aleph_adm_library, @aleph_doc_library, @aleph_doc_number, @aleph_item_id, {}) }
+    place_hold = patron.place_hold(@aleph_adm_library, @aleph_doc_library, @aleph_doc_number, @aleph_item_id, {:pickup_location => @pickup_location})
     assert_nil(patron.error, "Failure in #{patron.class} while placing hold: #{patron.error}")
   end
 end
