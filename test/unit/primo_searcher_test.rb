@@ -19,6 +19,7 @@ class PrimoSearcherTest < ActiveSupport::TestCase
     @primo_test_diacritics3_doc_id = "nyu_aleph003365921"
     @primo_test_journals1_doc_id = "nyu_aleph002895625"
     @primo_invalid_doc_id = "thisIsNotAValidDocId"
+    @primo_test_problem_doc_id = "nyu_aleph000509288"
     @primo_test_isbn = "0143039008"
     @primo_test_title = "Travels with My Aunt"
     @primo_test_author = "Graham Greene"
@@ -61,6 +62,17 @@ class PrimoSearcherTest < ActiveSupport::TestCase
     assert_instance_of(Hpricot::Doc, search_results, "#{searcher.class} search result is an unexpected object: #{search_results.class}")
     assert_equal(@primo_holdings_doc_id, search_results.at("//control/recordid").inner_text, "#{searcher.class} returned an unexpected record: #{search_results.to_original_html}")
     assert(searcher.count.to_i > 0, "#{searcher.class} returned 0 results for doc id: #{@primo_holdings_doc_id}.")
+  end
+
+  # Test search for a Primo problem record
+  def test_search_by_genre_discrepancy
+    searcher = Exlibris::Primo::Searcher.new(@searcher_setup, {:primo_id => @primo_test_problem_doc_id})
+    assert_not_nil(searcher, "#{searcher.class} returned nil when instantiated.")
+    search_results = searcher.response
+    assert_instance_of(Hpricot::Doc, search_results, "#{searcher.class} search result is an unexpected object: #{search_results.class}")
+    assert_equal(@primo_test_problem_doc_id, search_results.at("//control/recordid").inner_text, "#{searcher.class} returned an unexpected record: #{search_results.to_original_html}")
+    assert(searcher.count.to_i > 0, "#{searcher.class} returned 0 results for doc id: #{@primo_test_problem_doc_id}.")
+    assert_equal(1, searcher.holdings.length, "#{searcher.class} returned unexpected holdings")
   end
 
   # Test search for an invalid Primo document.

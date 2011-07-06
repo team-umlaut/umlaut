@@ -194,11 +194,12 @@ class PrimoService < Service
     }
     # don't send mal-formed issn
     issn = request.referent.metadata['issn'] if request.referent.metadata['issn'] =~ /\d{4}(-)?\d{3}(\d|X)/
+    title = title(request)
     search_params = {
       :primo_id => primo_id,
       :isbn => request.referent.metadata['isbn'], 
       :issn => issn,
-      :title => title(request),
+      :title => title,
       :author => author(request),
       :genre => request.referent.metadata['genre']
     }

@@ -113,3 +113,17 @@ primo_bafc_checked_out_request:
   session_id: "f747f4273c1ecb12f1f764cc10c646d7"
   client_ip_addr: "127.0.0.1" 
   contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377" 
+
+primo_tnsgi_available_request:
+  id: 34
+  referent: primo_tnsgi_available_referent
+  session_id: "f747f4273c1ecb12f1f764cc10c646d7"
+  client_ip_addr: "127.0.0.1" 
+  contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377" 
+
+primo_bobst_problem1_request:
+  id: 35
+  referent: primo_bobst_problem1_referent
+  session_id: "f747f4273c1ecb12f1f764cc10c646d7"
+  client_ip_addr: "127.0.0.1" 
+  contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377" 

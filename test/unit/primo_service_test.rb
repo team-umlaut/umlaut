@@ -679,4 +679,80 @@ def test_journal2_nyu_aleph
       assert_equal(0, holdings.length)
       assert_equal(primo_sources.length, holdings.length)
   end
+  
+  def test_bobst_genre_discrepancy
+      request = requests(:primo_bobst_problem1_request)
+      @primo_default.handle(request)
+      request.dispatched_services.reset
+      request.service_types.reset
+      primo_sources = request.get_service_type('primo_source')
+      assert_equal(
+        1, primo_sources.length)
+      primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+      primo_source.handle(request)
+      request.dispatched_services.reset
+      request.service_types.reset
+      holdings = request.get_service_type('holding')
+      assert_equal(
+        1, holdings.length)
+      test_data = { 
+        :record_id => "nyu_aleph000509288", 
+        :source_id => "nyu_aleph", 
+        :original_source_id => "NYU01", 
+        :source_record_id => "000509288",
+        :institution_code => "NYU", 
+        :institution => "NYU", 
+        :library_code => "BOBST",
+        :library => "NYU Bobst",
+        :status_code => "available", 
+        :status => "Available", 
+        :id_one => "Main Collection", 
+        :id_two => "(ML410.J33 M47 2005a)", 
+        :collection => "Main Collection", 
+        :call_number => "(ML410.J33 M47 2005a)", 
+        :origin => nil, 
+        :display_type => "book", 
+        :coverage => [], 
+        :notes => "",
+        :url => "http://alephstage.library.nyu.edu/F?func=item-global&doc_library=NYU01&local_base=PRIMOCOMMON&doc_number=000509288&sub_library=BOBST", 
+        :request_url => "http://alephstage.library.nyu.edu/F?func=item-global&doc_library=NYU01&local_base=PRIMOCOMMON&doc_number=000509288&sub_library=BOBST",
+        :match_reliability => ServiceResponse::MatchExact, 
+        :request_link_supports_ajax_call => true }
+      test_data.each { |key, value|
+        assert_equal(
+          value, 
+          holdings.first.view_data[key],
+          "#{key} different than expected.")
+      }
+      source_data = {
+        :aleph_doc_library => "NYU01",
+        :aleph_sub_library => "NYU Bobst",
+        :aleph_sub_library_code => "BOBST",
+        :aleph_collection => "Main Collection",
+        :aleph_call_number => "(ML410.J33 M47 2005a)",
+        :aleph_doc_number => "000509288",
+        :aleph_url => "http://alephstage.library.nyu.edu",
+        :illiad_url => "http://illiaddev.library.nyu.edu",
+        :aleph_sub_library_code => "BOBST",
+        :aleph_item_id => "NYU50000509288000010",
+        :aleph_item_adm_library => "NYU50",
+        :aleph_item_sub_library_code => "BOBST",
+        :aleph_item_collection_code => "MAIN",
+        :aleph_item_doc_number => "000509288",
+        :aleph_item_sequence_number => "1.0",
+        :aleph_item_barcode => "31142045676163",
+        :aleph_item_status_code => "01",
+        :aleph_item_process_status_code => nil,
+        :aleph_item_circulation_status => "On Shelf",
+        :aleph_item_location => "ML410.J33&nbsp;M47 2005a",
+        :aleph_item_description => nil,
+        :aleph_item_hol_doc_number => "003227224"
+      }
+      source_data.each { |key, value|
+        assert_equal(
+          value, 
+          holdings.first.view_data[:source_data][key],
+          "#{key} different than expected.")
+      }
+  end
 end

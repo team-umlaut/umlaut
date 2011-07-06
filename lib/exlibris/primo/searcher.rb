@@ -117,8 +117,9 @@ module Exlibris::Primo
         # Default genre to article if necessary
         record_genre = (record.at("addata/genre").nil?) ? "article" : record.at("addata/genre").inner_text
         # Don't process if passed in genre doesn't match the record genre unless the discrepancy is only b/w journals and articles
-        # If genre is nil, it means that we're working off id numbers, so we should be good to proceed
-        next unless @genre.nil? or @genre == record_genre or (@genre == "journal" and record_genre == "article")
+        # If we're working off id numbers, we should be good to proceed
+        next unless @primo_id or @isbn or @issn or 
+            @genre == record_genre or (@genre == "journal" and record_genre == "article")
         # Just take the first element for record level elements 
         # (should only be one, except sourceid which will be handled later)
         record_id = record.at("control/recordid").inner_text

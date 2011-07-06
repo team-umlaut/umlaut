@@ -746,4 +746,68 @@ primo_bafc_checked_out_rv4:
   normalized_value: "Founder of the Delta blues [sound recording]"
   metadata: true
   private_data: false
+  
+primo_tnsgi_available_rv1:
+  referent: primo_tnsgi_available_referent
+  key_name: "format"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_tnsgi_available_rv2:
+  referent: primo_tnsgi_available_referent
+  key_name: "genre"
+  value: "book"
+  normalized_value: "book"
+  metadata: true
+  private_data: false
+
+primo_tnsgi_available_rv3:
+  referent: primo_tnsgi_available_referent
+  key_name: "primo"
+  value: "nyu_aleph000278832"
+  normalized_value: "nyu_aleph000278832"
+  metadata: true
+  private_data: false
+
+primo_tnsgi_available_rv4:
+  referent: primo_tnsgi_available_referent
+  key_name: "title"
+  value: "Massive change : a manifesto for the future global design culture"
+  normalized_value: "Massive change : a manifesto for the future global design culture"
+  metadata: true
+  private_data: false
+
+primo_tnsgi_available_rv5:
+  referent: primo_tnsgi_available_referent
+  key_name: "isbn"
+  value: "0714844012"
+  normalized_value: "0714844012"
+  metadata: true
+  private_data: false
+  
+primo_bobst_problem1_rv1:
+  referent: primo_bobst_problem1_referent
+  key_name: "format"
+  value: "dissertation"
+  normalized_value: "dissertation"
+  metadata: true
+  private_data: false
+
+primo_bobst_problem1_rv2:
+  referent: primo_bobst_problem1_referent
+  key_name: "genre"
+  value: "dissertation"
+  normalized_value: "dissertation"
+  metadata: true
+  private_data: false
+
+primo_bobst_problem1_rv3:
+  referent: primo_bobst_problem1_referent
+  key_name: "primo"
+  value: "nyu_aleph000509288"
+  normalized_value: "nyu_aleph000509288"
+  metadata: true
+  private_data: false
 

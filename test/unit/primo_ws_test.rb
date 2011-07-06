@@ -10,6 +10,7 @@ class PrimoWSTest < ActiveSupport::TestCase
     @bogus_200_url = "http://library.nyu.edu"
     @primo_test_doc_id = "nyu_aleph000062856"
     @primo_invalid_doc_id = "thisIsNotAValidDocId"
+    @primo_test_problem_doc_id = "nyu_aleph000509288"
     @isbn_search_params = {:isbn => "0143039008"}
     @issn_search_params = {:issn => "0090-5720"}
     @title_search_params = {:title => "Travels with My Aunt"}
@@ -52,6 +53,15 @@ class PrimoWSTest < ActiveSupport::TestCase
     assert_instance_of( Hpricot::Doc, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
     assert_equal([], ws.error, "#{ws.class} encountered errors: #{ws.error}")
     assert_equal(@primo_test_doc_id, ws.response.at("//control/recordid").inner_text, "#{ws.class} returned an unexpected record: #{ws.response.to_original_html}")
+  end
+  
+  def test_get_genre_discrepancy
+    ws = Exlibris::PrimoWS::GetRecord.new(@primo_test_problem_doc_id, @base_url)
+    assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
+    assert_instance_of( Hpricot::Doc, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
+    assert_equal([], ws.error, "#{ws.class} encountered errors: #{ws.error}")
+    assert_equal(@primo_test_problem_doc_id, ws.response.at("//control/recordid").inner_text, "#{ws.class} returned an unexpected record: #{ws.response.to_original_html}")
+    assert_not_nil(ws.response.at("//display/availlibrary").inner_text, "#{ws.class} returned an unexpected record: #{ws.response.to_original_html}")
   end
   
   # Test GetRecord with invalid Primo doc id.
@@ -99,5 +109,5 @@ class PrimoWSTest < ActiveSupport::TestCase
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
     assert_instance_of( Hpricot::Doc, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
     assert_equal([], ws.error, "#{ws.class} encountered errors: #{ws.error}")
-  end
+  end 
 end
