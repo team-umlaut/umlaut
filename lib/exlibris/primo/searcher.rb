@@ -124,7 +124,7 @@ module Exlibris::Primo
         # (should only be one, except sourceid which will be handled later)
         record_id = record.at("control/recordid").inner_text
         display_type = record.at("display/type").inner_text
-        original_source_id = record.at("control/originalsourceid").inner_text
+        original_source_id = record.at("control/originalsourceid").inner_text unless record.at("control/originalsourceid").nil?
         original_source_ids = process_control_hash(record, "control/originalsourceid")
         source_id = record.at("control/sourceid").inner_text
         source_ids = process_control_hash(record, "control/sourceid")
