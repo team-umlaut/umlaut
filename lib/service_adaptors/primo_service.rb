@@ -208,9 +208,9 @@ class PrimoService < Service
     rescue Exception => e
       # Log error and return finished
       RAILS_DEFAULT_LOGGER.error(
-        "Error in #{self.class}. "+ 
-        "Returning 0 Primo services. "+ 
-        "#{primo_searcher.class} raised the following exception:\n#{e}")
+        "Error in Exlibris::Primo::Searcher. "+ 
+        "Returning 0 Primo services for search #{search_params.inspect}. "+ 
+        "Exlibris::Primo::Searcher raised the following exception:\n#{e}")
       return request.dispatched(self, true)
     end
     # Enhance the referent with metadata from Primo Searcher if primo id is present

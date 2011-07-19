@@ -7,6 +7,8 @@
 #     * We have a title AND an author AND a genre
 # If none of these criteria are met, Searcher.search
 # will raise a RuntimeException. 
+require "iconv"
+
 module Exlibris::Primo
   class Searcher
     #@required_setup = [ :base_url ]
@@ -23,6 +25,9 @@ module Exlibris::Primo
     # { :primo_id => "primo_1", :isbn => "ISBN", :issn => "ISSN", 
     #   :title => "=Title", :author => "Author", :genre => "Genre" }
     def initialize(setup, search_params)
+      @holdings = []
+      @rsrcs = []
+      @tocs = []
       @holding_attributes = Exlibris::Primo::Holding.base_attributes
       @base_url = setup[:base_url]
       raise_required_setup_parameter_error :base_url if @base_url.nil?
@@ -45,7 +50,9 @@ module Exlibris::Primo
     # Process URLs based on links/linktorsrc
     # Process TOCs based on links/linktotoc
     def search
-      raise "Insufficient search terms for #{self.class}. Please refer to #{self.class}'s documentation to determine how to structure a sufficient query." if insufficient_query?
+      RAILS_DEFAULT_LOGGER.warn("Insufficient search terms for #{self.class}. "+
+        "Please refer to #{self.class}'s documentation to determine how to structure "+
+        "a sufficient query.") and return if insufficient_query?
       # Call Primo Web Services
       unless @primo_id.nil? or @primo_id.empty?
         get_record = Exlibris::PrimoWS::GetRecord.new(@primo_id, @base_url) 
@@ -89,8 +96,10 @@ module Exlibris::Primo
       @count = response.at("//DOCSET")["TOTALHITS"] unless response.nil? or @count
       response.at("//addata").each_child do |addata_child|
         name = addata_child.pathname and value = addata_child.inner_text.chars.to_s if addata_child.elem?
+        next if value.nil?
         self.class.add_attr_reader name.to_sym unless name.nil?
-        instance_variable_set("@#{name}".to_sym, value) unless name.nil?
+        # instance_variable_set("@#{name}".to_sym, "#{convert_diacritics(value)}") unless name.nil?
+        instance_variable_set("@#{name}".to_sym, "#{value}") unless name.nil?
       end
       @cover_image = response.at("//addata/lad02").inner_text unless response.at("//addata/lad02").nil?
       @titles = []
@@ -109,9 +118,6 @@ module Exlibris::Primo
     # Process TOCs based on links/linktotoc
     def process_search_results
       @count = response.at("//sear:DOCSET")["TOTALHITS"] unless response.nil? or @count
-      @holdings = []
-      @rsrcs = []
-      @tocs = []
       # Loop through records to set metadata for holdings, urls and tocs
       response.search("//record") do |record|
         # Default genre to article if necessary
@@ -255,5 +261,11 @@ module Exlibris::Primo
     def raise_required_setup_parameter_error(parameter)
       raise "Initialization error in #{self.class}. Missing required setup parameter: #{parameter}."
     end
+    
+    # def convert_diacritics(string)
+    #   converter = Iconv.new('UTF-8', 'UTF-8')
+    #   # Convert value to UTF-8
+    #   return converter.iconv(string) unless string.nil?
+    # end
   end
 end
