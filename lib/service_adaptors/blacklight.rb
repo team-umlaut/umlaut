@@ -153,7 +153,8 @@ class Blacklight < Service
 
   end
 
-  # Send a CQL request, for an atom response with embedded marc21 please
+  # Send a CQL request for any identifiers present. 
+  # Ask for for an atom response with embedded marc21 back. 
   def blacklight_precise_search_url(request, format = "marc")
     # Add search clauses for our identifiers, if we have them and have a configured search field for them. 
     clauses = []
@@ -186,21 +187,25 @@ class Blacklight < Service
     return base_url + "?search_field=#{@cql_search_field}&content_format=#{format}&q=#{CGI.escape(cql)}"             
   end
 
+  # Construct a CQL search against blacklight for author and title,
+  # possibly with serial limit. Ask for Atom with embedded MARC back. 
   def blacklight_keyword_search_url(request, options = {})
     options[:format] ||= "atom"
     options[:content_format] ||= "marc"
     
     clauses = []
 
-    # phrase search for title, just raw dismax for author
+    # We need both title and author to search keyword style, or
+    # we get too many false positives. 
     title = get_search_title(request.referent)
-    return nil unless title
+    author = get_top_level_creator(request.referent)
+    return nil unless title && author
+    # phrase search for title, just raw dismax for author
     # Embed quotes inside the quoted value, need to backslash-quote for CQL,
     # and backslash the backslashes for ruby literal. 
-    clauses.push("#{@bl_fields["title"]} = \"\\\"#{title}\\\"\"")
-    if (author = get_top_level_creator(request.referent))
-      clauses.push("#{@bl_fields["author"]} = \"#{author}\"")
-    end
+    clauses.push("#{@bl_fields["title"]} = \"\\\"#{title}\\\"\"")    
+    clauses.push("#{@bl_fields["author"]} = \"#{author}\"")
+    
 
     
     url = base_url + "?search_field=#{@cql_search_field}&content_format=#{options[:content_format]}&q=#{CGI.escape(clauses.join(" AND "))}"
