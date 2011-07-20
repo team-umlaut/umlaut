@@ -1,9 +1,12 @@
 <%
+  
+  #debugger
    all_responses = fulltext
    
    (title_level_fulltxt, fulltxt) = 
       all_responses.partition {|i| i.view_data[:coverage_checked] == false || i.view_data[:can_link_to_article] == false}      
-      
+   # order em with full fulltxt before title_level_fulltxt
+   all_responses = fulltxt + title_level_fulltxt   
 %>
 
 <div class="umlaut_section fulltext <%= unless fulltxt.blank? && title_level_fulltxt.blank?; 'highlighted_section' ; end %>">
