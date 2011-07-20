@@ -196,15 +196,16 @@ class Blacklight < Service
     clauses = []
 
     # We need both title and author to search keyword style, or
-    # we get too many false positives. 
+    # we get too many false positives. Except serials we'll do
+    # title only. sigh, logic tree. 
     title = get_search_title(request.referent)
     author = get_top_level_creator(request.referent)
-    return nil unless title && author
+    return nil unless title && (author || (@bl_fields["serials_limit_clause"] && title_is_serial?(request.referent)))
     # phrase search for title, just raw dismax for author
     # Embed quotes inside the quoted value, need to backslash-quote for CQL,
     # and backslash the backslashes for ruby literal. 
     clauses.push("#{@bl_fields["title"]} = \"\\\"#{title}\\\"\"")    
-    clauses.push("#{@bl_fields["author"]} = \"#{author}\"")
+    clauses.push("#{@bl_fields["author"]} = \"#{author}\"") if author
     
 
     
