@@ -89,7 +89,7 @@ module Exlibris::PrimoWS
     end
 
     def issn_query_term(issn)
-      return query_term(issn, "issn", "exact")
+      return query_term(issn, "isbn", "exact")
     end
 
     def title_query_term(title)

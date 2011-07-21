@@ -182,7 +182,7 @@ class PrimoService < Service
   # Overwrites Service#handle.
   def handle(request)
     @identifier = request.referrer.identifier if request.referrer and request.referrer.identifier
-    primo_id = @identifier.match(/primo-(.+)/)[1] if primo_identifier?
+    primo_id = @identifier.match(/primo-(.+)/)[1] if primo_identifier? unless @identifier.nil? or @identifier.match(/primo-(.+)/).nil?
     # DEPRECATED
     # Extend OpenURL standard to take Primo Doc Id
     primo_id = request.referent.metadata['primo'] unless request.referent.metadata['primo'].nil?
@@ -383,6 +383,6 @@ class PrimoService < Service
 
   def primo_identifier?
     return false if @identifier.nil?
-    return (@identifier.match('info:sid/primo.exlibrisgroup.com').nil?) ? false : true
+    return @identifier.start_with?('info:sid/primo.exlibrisgroup.com')
   end
 end

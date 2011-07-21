@@ -117,7 +117,10 @@ module Exlibris::Primo
     # Process URLs based on links/linktorsrc
     # Process TOCs based on links/linktotoc
     def process_search_results
-      @count = response.at("//sear:DOCSET")["TOTALHITS"] unless response.nil? or @count
+      @count = (response.at("//DOCSET").nil?) ? 
+        (response.at("//sear:DOCSET")["TOTALHITS"].nil?) ? 0 : 
+          response.at("//sear:DOCSET")["TOTALHITS"] : 
+            response.at("//DOCSET")["TOTALHITS"] unless response.nil? or @count
       # Loop through records to set metadata for holdings, urls and tocs
       response.search("//record") do |record|
         # Default genre to article if necessary
