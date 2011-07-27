@@ -80,7 +80,6 @@ class Scopus < Service
   end
 
   def handle(request)
-    
     scopus_search = scopus_search(request)
 
     # we can't make a good query, nevermind. 
@@ -94,6 +93,7 @@ class Scopus < Service
     # Make the call.
     headers = {}
     headers["Referer"] = @registered_referer if @registered_referer 
+
     response = open(url, headers).read    
     
     # Okay, Scopus insists on using a jsonp technique to embed the json array in
@@ -161,13 +161,13 @@ class Scopus < Service
   def scopus_search(request)
     
     if (doi = get_doi(request.referent))
-      return CGI.escape( "DOI(#{doi})" )
+      return CGI.escape( "DOI(#{phrase(doi)})" )
     elsif (pmid = get_pmid(request.referent))
-      return CGI.escape( "PMID(#{pmid})" )
+      return CGI.escape( "PMID(#{phrase(pmid)})" )
     elsif (isbn = get_isbn(request.referent))
       # I don't think scopus has a lot of ISBN-holding citations, but
       # it allows search so we might as well try. 
-      return CGI.escape( "ISBN(#{isbn})" )
+      return CGI.escape( "ISBN(#{phrase(isbn)})" )
     else            
       # Okay, we're going to try to do it on issn/vol/issue/page.
       # If we don't have issn, we'll reluctantly use journal title
@@ -178,16 +178,22 @@ class Scopus < Service
            ! metadata['volume'].blank? &&
            ! metadata['issue'].blank? &&
            ! metadata['spage'].blank? )
-        query = "VOLUME(#{CGI.escape(metadata['volume'])}) AND ISSUE(#{CGI.escape(metadata['issue'])}) AND PAGEFIRST(#{CGI.escape(metadata['spage'])}) "
+        query = "VOLUME(#{phrase(metadata['volume'])}) AND ISSUE(#{phrase(metadata['issue'])}) AND PAGEFIRST(#{phrase(metadata['spage'])}) "
         if ( issn )
-          query += " AND (ISSN(#{CGI.escape(issn)}) OR EISSN(#{CGI.escape(issn)}))"
+          query += " AND (ISSN(#{phrase(issn)}) OR EISSN(#{phrase(issn)}))"
         else
-          query += " AND EXACTSRCTITLE(\"#{CGI.escape(metadata['jtitle'])}\")"
+          query += " AND EXACTSRCTITLE(#{phrase(metadata['jtitle'])})"
         end
         return CGI.escape(query)
       end
       
     end
+  end
+  
+  # backslash escapes any double quotes, and embeds string in scopus
+  # phrase search double quotes. Does NOT uri-escape. 
+  def phrase(str)
+    '"' + str.gsub('"', '\\"') + '"'
   end
 
   # Input is a ruby hash that came from the scopus JSON, representing
