@@ -18,79 +18,81 @@ module MarcHelper
     marc_records.each do |marc_xml|
     
       marc_xml.find_all {|f| '856' === f.tag}.each do |field|
-        url = field['u']
-
-        # No u field? Forget it.
-        next if url.nil?
-
-        # Already got it from another catalog record?
-        next if urls_seen.include?(url)
-
-        # Trying to avoid duplicates with SFX/link resolver. 
-        next if  should_skip_856_link?(request, marc_xml, url)
-        
-        urls_seen.push(url)
-        
-        
-        display_name = nil
-        if field['y']
-          display_name = field['y']
-        else
-          # okay let's try taking just the domain from the url
-          begin
-            u_obj = URI::parse( url )
-            display_name = u_obj.host
-          rescue Exception
-          end
-          # Okay, can't parse out a domain, whole url then.
-          display_name = url if display_name.nil?
-        end
-        # But if we've got a $3, the closest MARC comes to a field
-        # that explains what this actually IS, use that too please.
-        display_name = field['3'] + ' from ' + display_name if field['3']
-
-        # Build the response. 
-        
-        response_params = {:service=>self, :display_text=>display_name, :url=>url}
-        # get all those $z subfields and put em in notes.      
-        response_params[:url] = url
+        # Might have more than one $u, in which case we want to
+        # possibly add each of them. Might have 0 $u in which case
+        # we skip. 
+        field.subfields.find_all {|sf| sf.code == 'u'}.each do |sf|        
+          url = sf.value 
+          
+          # Already got it from another catalog record?
+          next if urls_seen.include?(url)
   
-        # subfield 3 is being used for OCA records loaded in our catalog.
-        response_params[:notes] =
-        field.subfields.collect {|f| f.value if (f.code == 'z') }.compact.join('; ')
-
-        is_journal = (marc_xml.leader[7,1] == 's')
-        unless ( field['3'] || ! is_journal ) # subfield 3 is in fact some kind of coverage note, usually 
-          response_params[:notes] += "; " unless response_params[:notes].blank? 
-          response_params[:notes] += "Dates of coverage unknown."
+          # Trying to avoid duplicates with SFX/link resolver. 
+          next if  should_skip_856_link?(request, marc_xml, url)
+          
+          urls_seen.push(url)
+          
+          
+          display_name = nil
+          if field['y']
+            display_name = field['y']
+          else
+            # okay let's try taking just the domain from the url
+            begin
+              u_obj = URI::parse( url )
+              display_name = u_obj.host
+            rescue Exception
+            end
+            # Okay, can't parse out a domain, whole url then.
+            display_name = url if display_name.nil?
+          end
+          # But if we've got a $3, the closest MARC comes to a field
+          # that explains what this actually IS, use that too please.
+          display_name = field['3'] + ' from ' + display_name if field['3']
+  
+          # Build the response. 
+          
+          response_params = {:service=>self, :display_text=>display_name, :url=>url}
+          # get all those $z subfields and put em in notes.      
+          response_params[:url] = url
+    
+          # subfield 3 is being used for OCA records loaded in our catalog.
+          response_params[:notes] =
+          field.subfields.collect {|f| f.value if (f.code == 'z') }.compact.join('; ')
+  
+          is_journal = (marc_xml.leader[7,1] == 's')
+          unless ( field['3'] || ! is_journal ) # subfield 3 is in fact some kind of coverage note, usually 
+            response_params[:notes] += "; " unless response_params[:notes].blank? 
+            response_params[:notes] += "Dates of coverage unknown."
+          end
+  
+          
+          unless ( options[:match_reliability] == ServiceResponse::MatchExact )
+            response_params[:match_reliability] = options[:match_reliability]
+  
+            response_params[:edition_str] = edition_statement(marc_xml)
+          end
+  
+          # Figure out the right service type value for this, fulltext, ToC,
+          # whatever.
+          service_type_value = service_type_for_856( field, options ) 
+  
+          # fulltext urls from MARC are always marked as specially stupid.
+          response_params[:coverage_checked] = false
+          response_params[:can_link_to_article] = false
+  
+          # Some debugging info, add the 001 bibID if we have one.
+          
+          response_params[:debug_info] = "BibID: #{marc_xml['001'].value}" if marc_xml['001']
+  
+          
+          # Add the response
+          response = request.add_service_response(response_params, 
+              [ service_type_value  ])
+          
+          responses_added[service_type_value] ||= Array.new
+          responses_added[service_type_value].push(response)
         end
-
-        
-        unless ( options[:match_reliability] == ServiceResponse::MatchExact )
-          response_params[:match_reliability] = options[:match_reliability]
-
-          response_params[:edition_str] = edition_statement(marc_xml)
-        end
-
-        # Figure out the right service type value for this, fulltext, ToC,
-        # whatever.
-        service_type_value = service_type_for_856( field, options ) 
-
-        # fulltext urls from MARC are always marked as specially stupid.
-        response_params[:coverage_checked] = false
-        response_params[:can_link_to_article] = false
-
-        # Some debugging info, add the 001 bibID if we have one.
-        
-        response_params[:debug_info] = "BibID: #{marc_xml['001'].value}" if marc_xml['001']
-
-        
-        # Add the response
-        response = request.add_service_response(response_params, 
-            [ service_type_value  ])
-        
-        responses_added[service_type_value] ||= Array.new
-        responses_added[service_type_value].push(response)
       end
     end
     return responses_added
