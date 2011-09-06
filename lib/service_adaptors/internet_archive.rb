@@ -81,6 +81,7 @@ class InternetArchive < Service
     # IA does index apostrophes, although not generally other puncutation. Need to keep em.
     search_terms = {:title => get_search_title(request.referent ,:keep_apostrophes=>true),
     :creator => get_search_creator(request.referent)}
+    
 
     
     # We need both title and author to continue
@@ -106,9 +107,15 @@ class InternetArchive < Service
     rescue Exception => e
       # Log more info for exception, and then just forward exception on,
       # we don't have any way to handle it. 
-      RAILS_DEFAULT_LOGGER.error("InternetArchive exception, for url[[#{link}]] , Exception #{e.class}")
+      Rails.logger.error("InternetArchive exception, for url[[#{link}]] , Exception #{e.class}")
       raise e
     end
+    
+    if response.blank?
+      Rails.logger.warn("InternetArchive returned empty response for #{link}")
+      return nil
+    end
+    
     
     doc = JSON.parse(response)
     results = doc['response']['docs']
@@ -215,12 +222,13 @@ class InternetArchive < Service
     # Downcase params to avoid weird misconfiguration in IA's SOLR
     # installation, where it's interpreting uppercase words as
     # commands even within quotes. Also take out any parens in input.
-    title = search_terms[:title].downcase
+    # Also IA does not semi-colons in input?!?
+    title = search_terms[:title].downcase.gsub(";", " ")
     title.delete!("()")
     
     params = 'title:' << CGI.escape('"' << title << '"')
     if (! search_terms[:creator].blank?)
-      creator = search_terms[:creator].downcase
+      creator = search_terms[:creator].downcase.gsub(";", " ")
       creator.delete!("()")
       params << '+AND+creator:' << CGI.escape('(' << creator << ')')       
     end
