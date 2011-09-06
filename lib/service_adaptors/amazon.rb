@@ -39,17 +39,12 @@ class Amazon < Service
 
   def initialize(config)
     # defaults
-    @url = 'http://webservices.amazon.com/onca/xml'
-    # This was somehow reverse engineered to get the full-page (non-lightbox)
-    # reader url, which we prefer. Not sure if this will keep working forever,
-    # don't entirely understand what's going on. 
-    @reader_base_url = 'http://www.amazon.com/gp/sitbv3/reader/'
-    # Ordinarly reader url, which often returns the weird 'lightboxed' version.
-    #
-    # @reader_base_url = "http://www.amazon.com/gp/reader/";
+    @url = 'http://webservices.amazon.com/onca/xml'     
+    @reader_base_url = 'http://www.amazon.com/gp/reader/'
+    # Old version non-lightboxed, whcih doesn't work very well anymore.     
+    # @reader_base_url = 'http://www.amazon.com/gp/sitbv3/reader/'
     @display_name = "Amazon.com"
     @display_text = "Amazon's page"
-    @excerpts_display_text = "Excerpts"
     @service_types = ["abstract", "highlighted_link", "cover_image", "search_inside", "referent_enhance", "excerpts"]
     @make_aws_call = true
     @http_timeout = 5
@@ -287,13 +282,14 @@ class Amazon < Service
 
         # This regexp only suitable for screen-scraping the old-style "sitbv3"
         # reader page screen
-        if ( response =~ /\<option[^>]*\>Inside this Book\<\/option\>/ )
-          # search_inside implies look_inside too. 
+        if (response.include?("<div class='sitb-pop-search'>"))
+          # then we have search_inside. I think this always includes 'look', but
+          # we'll test seperate for that. 
           search_inside= true
-          look_inside = true
-        elsif (not (response =~ /book is temporarily unavailable/))
-          # No search inside, but I think we have look inside.
-          # Provide a "see also" link direct to look inside
+        end
+        
+        if (response.include?('<a href="/gp/reader/'))
+          # then we have look inside, not neccesarily search.  
           look_inside = true
         end
       end
@@ -355,3 +351,26 @@ class Amazon < Service
 
   
 end
+
+# Example of no look or search:
+# www.amazon.com/gp/reader/0794521789
+
+# Example of look and search:
+# http://www.amazon.com/gp/reader/1851960511
+
+# Example of 'look inside' with no search:
+# http://www.amazon.com/gp/reader/0140441115/
+
+# Scraping /gp/reader page. 
+
+# Only look inside (preview) if link like:
+# <a href="/gp/reader/1851960511/ref=sib_dp_pop_sup?ie=UTF8&amp;p=random#reader-link
+# OR:
+# <a href="/gp/reader/0140441115/ref=sib_dp_kd#reader-link" onclick="if (typeof(SitbReader) != 'undefined')
+
+
+# Only search inside if:
+
+# '<td class="tinypopup">Search Inside This Book:</td>'
+# OR: <div class='sitb-pop-search'> 
+
