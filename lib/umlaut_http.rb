@@ -72,12 +72,12 @@ module UmlautHttp
   def http_fetch(uri, options = {})
     options[:max_redirects] ||= 8
     options[:redirects_left] ||= options[:max_redirects]
-    options[:raise_on_http_error_code] ||= true
+    options[:raise_on_http_error_code] = true unless options.has_key?(:raise_on_http_error_code)
 
       uri = URI.parse(uri) unless uri.kind_of?(URI)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true if uri.scheme == "https"
-      headers = {}
+      headers = options[:headers] || {}
       headers["Cookie"] = options[:cookies] if options[:cookies]
 
       response = http.request_get(uri.request_uri, headers)
