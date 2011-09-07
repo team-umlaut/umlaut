@@ -223,9 +223,25 @@ class GoogleBookSearch < Service
     # we used to prepare a comma seperated list in x-forwarded-for if
     # we had multiple requests, as per the x-forwarded-for spec, but I
     # think Google doesn't like it. 
-    return {'X-Forwarded-For' =>  original_forwarded_for ?
+    
+    ip_address = (original_forwarded_for ?
         original_forwarded_for  :
-        request.client_ip_addr.to_s}    
+        request.client_ip_addr.to_s)
+    
+    # If all we have is an internal/private IP from the internal network,
+    # do NOT send that to Google, or Google will give you a 503 error
+    # and refuse to process your request, as of 7 sep 2011. sigh.
+    # If it doens't look like a numeric IP address at all, we'll also
+    # refuse to send it. 
+    
+    if ((! ip_address =~ /\d+\.\d+\.\d+\/\d/) || 
+       ip_address.start_with?("10.") || 
+       ip_address.start_with?("172.16") || 
+       ip_address.start_with?("192.168"))
+       return {}
+    else    
+      return {'X-Forwarded-For' => ip_address }
+    end
   end
   
   def find_entries(gbs_response, viewabilities)
