@@ -204,7 +204,7 @@ class GoogleBookSearch < Service
     data = JSON.parse(response.body)
     
     if (! response.kind_of?(Net::HTTPSuccess)) || data["error"]      
-      Rails.logger.error("GoogleBookSearch error: '#{link}' #{response.inspect}\n    #{data.inspect}")
+      Rails.logger.error("GoogleBookSearch error: '#{link}' headers: #{headers.inspect} #{response.inspect}\n    #{data.inspect}")
     end
         
     return data
