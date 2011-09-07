@@ -228,13 +228,19 @@ class GoogleBookSearch < Service
         original_forwarded_for  :
         request.client_ip_addr.to_s)
     
+    return {} if ip_address.blank?
+
+    # If we've got a comma-seperated list from an X-Forwarded-For, we
+    # can't send it on to google, google won't accept that, just take
+    # the first one in the list, which is actually the ultimate client
+    # IP. split returns the whole string if seperator isn't found, convenient.
+    ip_address = ip_address.split(",").first
+    
     # If all we have is an internal/private IP from the internal network,
     # do NOT send that to Google, or Google will give you a 503 error
     # and refuse to process your request, as of 7 sep 2011. sigh.
-    # If it doens't look like a numeric IP address at all, we'll also
-    # refuse to send it. 
-    
-    if ((! ip_address =~ /\d+\.\d+\.\d+\/\d/) || 
+    # Also if it doesn't look like an IP at all, forget it, don't send it.     
+    if ((! ip_address =~ /^\d+\.\d+\.\d+\/\d$/) || 
        ip_address.start_with?("10.") || 
        ip_address.start_with?("172.16") || 
        ip_address.start_with?("192.168"))
