@@ -1,43 +1,39 @@
-# Service that searches Google Book Search to determine viewability.
-# It searches by ISBN, OCLCNUM and/or LCCN. 
 #
-# Uses Google Books API, http://code.google.com/apis/books/docs/v1/getting_started.html 
-# http://code.google.com/apis/books/docs/v1/using.html
+#  WARNING: the google api used by this adapter is going away Oct 1 2011,
+#  see GoogleBookSearch instead. 
+#
+
+# Service that searches Google Book Search to determine viewability.
+# It searches by ISBN, OCLCNUM and LCCN. If all of these identifiers are 
+# available it searches by all of them.
+#
+# Uses Google Books Data API, http://code.google.com/apis/books/docs/gdata/developers_guide_protocol.html
 # 
 # If a full view is available it returns a fulltext service response.
-# If partial view is available, return as "limited experts". 
-# If no view at all, still includes a link in highlighted_links, to pay
-#   lip service to google branding requirements. 
-# Unfortunately there is no way tell which of the noview 
-# books provide search, although some do -- search is advertised if full or 
-# partial view is available. 
+# If there is only a partial view or noview it presents an appropriate 
+# highlighted_link. Unfortunately there is no way tell which of the noview 
+# books provide a snippet view. GBS really needs a 4th 'preview' response
+# 'snippet.' 
 # 
 # If a thumbnail_url is returned in the responses, a cover image is displayed.
-#
-# = Google API Key
-# 
-# Setting an api key in :api_key STRONGLY recommended, or you'll
-# probably get rate limited (not clear what the limit is with no api
-# key supplied). You may have to ask for higher rate limit for your api
-# key than the default 1000/day, which you can do through the google 
-# api console:
-# https://code.google.com/apis/console
-#
-# I requested 50k with this message, and was quickly approved with no questions
-# "Services for academic library (Johns Hopkins Libraries) web applications  to match Google Books availability to items presented by our catalog, OpenURL link resolver,  and other software. "
-#
-# Recommend setting your 'per user limit' to something crazy high, as well
-# as requesting more quota. 
-class GoogleBookSearch < Service
+# To get the size we want some manipulation of the thumbnail_url is 
+# necessary. 
+
+class OldGoogleBookSearch < Service
   # Identifiers used in API response to indicate viewability level
-  ViewFullValue = 'ALL_PAGES'
-  ViewPartialValue = 'PARTIAL'
+  ViewFullUri = 'http://schemas.google.com/books/2008#view_all_pages'
+  ViewPartialUri = 'http://schemas.google.com/books/2008#view_partial'
   # None might also be 'snippet', but Google doesn't want to distinguish
-  ViewNoneValue = 'NO_PAGES'
-  ViewUnknownValue = 'UNKNOWN'
-      
-  require 'json'
+  ViewNoneUri = 'http://schemas.google.com/books/2008#view_no_pages'
+  ViewUnknownUri = 'http://schemas.google.com/books/2008#view_unknown'
+  LinkPreviewUri = 'http://schemas.google.com/books/2008/preview'
+  LinkInfoUri = 'http://schemas.google.com/books/2008/info'
+  LinkThumbnailUri = 'http://schemas.google.com/books/2008/thumbnail'
   
+  require 'open-uri'
+  require 'zlib'
+  require 'json'
+  require 'hpricot'
   include MetadataHelper
   include UmlautHttp
   
@@ -57,17 +53,14 @@ class GoogleBookSearch < Service
     return types
   end
   
-  def initialize(config)    
-    @url = 'https://www.googleapis.com/books/v1/volumes?q='
-    
-    @display_name = 'Google Books'
+  def initialize(config)
+    # we include a callback in the url because it is expected that there will be one.
+    @url = 'http://books.google.com/books/feeds/volumes?q='
+    @display_name = 'Google Book Search'
     # number of full views to show
     @num_full_views = 1
-    # default on, to enhance our metadata with stuff from google
-    @referent_enhance = true
-    # google api key strongly recommended, otherwise you'll
-    # probably get rate limited. 
-    @api_key = nil
+    # default off for now
+    @referent_enhance = false
     super(config)
   end
   
@@ -76,21 +69,12 @@ class GoogleBookSearch < Service
     bibkeys = get_bibkeys(request.referent)
     return request.dispatched(self, true) if bibkeys.nil?
     data = do_query(bibkeys, request)
-    
-    
-    if data.blank? || data["error"]
-      # fail fatal
-      return request.dispatched(self, false)
-    end
-    
-    # 0 hits, return. 
-    return request.dispatched(self, true) if data["totalItems"] == 0
-    
+
     enhance_referent(request, data) if @referent_enhance
     
     #return full views first
     full_views_shown = create_fulltext_service_response(request, data)
-    
+
     # Add search_inside link if appropriate
     add_search_inside(request, data)
     
@@ -110,54 +94,36 @@ class GoogleBookSearch < Service
   # Take the FIRST hit from google, and use it's values to enhance
   # our metadata. Will NOT overwrite existing data. 
   def enhance_referent(request, data)
-    
-    entry = data["items"].first
-    
+ 
+    entry = data.at('/*/entry')
 
-    if (volumeInfo = entry["volumeInfo"])
-      
-      title = volumeInfo["title"]
-      title += ": #{volumeInfo["subtitle"]}" if (title && volumeInfo["subtitle"])
-      
-      element_enhance(request, "title", title)
-      element_enhance(request, "au", volumeInfo["authors"].first) if volumeInfo["authors"]
-      element_enhance(request, "pub", volumeInfo["publisher"])
-      
-      element_enhance(request, "tpages", volumeInfo["pageCount"])
-      
-      if (date = volumeInfo["publishedDate"] && date =~ /^(\d\d\d\d)/)
-        element_enhance(request, "date", $1)
-      end
-      
-      # LCCN is only rarely included, but is sometimes, eg:
-      # "industryIdentifiers"=>[{"type"=>"OTHER", "identifier"=>"LCCN:72627172"}],          
-      # Also "LCCN:76630875"
-      #
-      # And sometimes OCLC number like:
-      # "industryIdentifiers"=>[{"type"=>"OTHER", "identifier"=>"OCLC:12345678"}],
-      #        
-      (volumeInfo["industryIdentifiers"] || []).each do |hash|
+    element_enhance(request, "title", entry.at("dc:title"))
+    element_enhance(request, "au", entry.at("dc:creator"))
+    element_enhance(request, "pub", entry.at("dc:publisher"))
+    element_enhance(request, "date", entry.at("dc:date"))
+
+    # While the GBS docs suggest we can get an OCLCnum or LCCN
+    # here, in fact that seems not to be so. But we can get an ISBN,
+    # useful if we looked up by LCCN or OCLCnum in GBS and don't have
+    # one already.
+    unless ( request.referent.isbn  )      
+      # Usually provides an ISBN-10 and a -13. We don't care, either
+      # is fine for us, just take the first one present.  
+      if (  isbn_element = entry.search("dc:identifier").find {|el| el.inner_html =~ /^ISBN\:/} )
+
+        # Just get the whole thing starting at position 5 please. 
+        isbn = isbn_element.inner_html[5, 1000]
         
-        if hash["type"] == "ISBN_13"
-          element_enhance(request, "isbn", hash["identifier"])
-          
-        elsif hash["type"] == "OTHER" && hash["identifier"].starts_with?("LCCN:")
-          lccn = normalize_lccn(  hash["identifier"].slice(5, hash["identifier"].length)  )
-          request.referent.add_identifier("info:lccn/#{lccn}")
-          
-        elsif hash["type"] == "OTHER" && hash["identifier"].starts_with?("OCLC:")
-          oclcnum = normalize_lccn(  hash["identifier"].slice(5, hash["identifier"].length)  )
-          request.referent.add_identifier("info:oclcnum/#{oclcnum}")
-        end
-      
-      end              
-    end            
+        request.referent.add_identifier( "urn:isbn:#{isbn}")
+      end
+    end
+    
   end
 
   # Will not over-write existing referent values. 
-  def element_enhance(request, rft_key, value)
-    if (value)
-      request.referent.enhance_referent(rft_key, value.to_s, true, false, :overwrite => false)
+  def element_enhance(request, rft_key, hpricot_el)
+    if (hpricot_el)
+      request.referent.enhance_referent(rft_key, hpricot_el.inner_html, true, false, :overwrite => false)
     end
   end
 
@@ -171,18 +137,12 @@ class GoogleBookSearch < Service
     oclcnum = get_identifier(:info, "oclcnum", rft)
     lccn = get_lccn(rft)
 
-    # Google doesn't officially support oclc/lccn search, but does
-    # index as token with prefix smashed up right with identifier
-    # eg http://books.google.com/books/feeds/volumes?q=OCLC32012617
-    #
-    # Except turns out doing it as a phrase search is important! Or
-    # google's normalization/tokenization does odd things. 
+    # Google oddly seems to want prefix mashed right up
+    # with identifier, eg http://books.google.com/books/feeds/volumes?q=OCLC32012617 
     keys = []
-    keys << ('isbn:' + isbn) if isbn
-    keys << ('"' + "OCLC" + oclcnum + '"') if oclcnum
-    # Only use LCCN if we've got nothing else, it returns many
-    # false positives. 
-    keys << ('"' + 'LCCN' + lccn + '"') if lccn && keys.length == 0
+    keys << 'isbn:' + isbn if isbn
+    keys << 'OCLC' + oclcnum if oclcnum
+    keys << 'LCCN' + lccn if lccn && keys.length == 0
     
     return nil if keys.empty?
     keys = CGI.escape( keys.join(' OR ') )
@@ -192,22 +152,16 @@ class GoogleBookSearch < Service
   def do_query(bibkeys, request)    
     headers = build_headers(request)
     link = @url + bibkeys
-    if @api_key
-      link += "&key=#{@api_key}"
-    end
-    
-    # Add on limit to only request books, not magazines. 
-    link += "&printType=books"
 
-    Rails.logger.debug("GoogleBookSearch requesting: #{link}")        
-    response = http_fetch(link, :headers => headers, :raise_on_http_error_code => false)        
-    data = JSON.parse(response.body)
     
-    if (! response.kind_of?(Net::HTTPSuccess)) || data["error"]      
-      Rails.logger.error("GoogleBookSearch error: '#{link}' #{response.inspect}\n    #{data.inspect}")
-    end
+    response = open(link, 'rb', headers)
+    xml = response.read
+
+    
+    #return REXML::Document.new(xml)
+    return Hpricot.XML(xml)
+    
         
-    return data
   end
   
   # We don't need to fake a proxy request anymore, but we still
@@ -233,32 +187,38 @@ class GoogleBookSearch < Service
       viewabilities = [viewabilities]
     end
 
-    entries = gbs_response["items"].find_all do |entry|
-      viewability = entry["accessInfo"]["viewability"]
-      (viewability && viewabilities.include?(viewability))           
+    entries = gbs_response.search("/*/entry").find_all do |entry|
+      viewability = entry.at("gbs:viewability")
+      (viewability && viewabilities.include?(viewability["value"]))           
     end
 
     return entries
   end
   
+  # HPricot element, and a value of the rel attribute on the <link> you are
+  # interested in. 
+  def extract_link(entry, rel_type)
+    entry.at("link[@rel='#{rel_type}']")["href"]
+  end
   
   # We only create a fulltext service response if we have a full view.
   # We create only as many full views as are specified in config.
   def create_fulltext_service_response(request, data)
     display_name = @display_name
 
-    full_views = find_entries(data, ViewFullValue)
-    return nil if full_views.empty?
+    full_views = find_entries(data, ViewFullUri)
     
+    return nil if full_views.empty?
     count = 0
     full_views.each do |fv|
-      
-      uri = fv["volumeInfo"]["previewLink"]
-          
+      uri = extract_link(fv, LinkPreviewUri)
+    
+      #note = fv['bib_key'].gsub(':', ': ') #get_search_title(request.referent)
       request.add_service_response(
         {:service=>self, 
           :display_text=>display_name, 
-          :url=>remove_query_context(uri) },           
+          :url=>uri}, 
+          #:notes=>note}, 
         [ :fulltext ]) 
       count += 1
       break if count == @num_full_views
@@ -268,15 +228,15 @@ class GoogleBookSearch < Service
 
   def add_search_inside(request, data)
     # Just take the first one we find, if multiple
-    searchable_view = find_entries(data, [ViewFullValue, ViewPartialValue])[0]        
+    searchable_view = find_entries(data, [ViewFullUri, ViewPartialUri])[0]        
     
     if ( searchable_view )
-      url = searchable_view["volumeInfo"]["infoLink"]
+      url = extract_link(searchable_view, LinkInfoUri)
       
       request.add_service_response( 
         {:service => self,
         :display_text=>@display_name,
-        :url=> remove_query_context(url)},
+        :url=> url},
         [:search_inside]
        )                  
     end
@@ -289,12 +249,12 @@ class GoogleBookSearch < Service
   def do_web_links(request, data)
 
     # some noview items will have a snippet view, but we have no way to tell
-    info_views = find_entries(data, ViewPartialValue)
-    viewability = ViewPartialValue
+    info_views = find_entries(data, ViewPartialUri)
+    viewability = ViewPartialUri
     
     if info_views.blank?
-      info_views = find_entries(data, ViewNoneValue)
-      viewability = ViewNoneValue  
+      info_views = find_entries(data, ViewNoneUri)
+      viewability = ViewNoneUri  
     end
     
     # Shouldn't ever get to this point, but just in case
@@ -303,18 +263,18 @@ class GoogleBookSearch < Service
     url = ''
     iv = info_views.first
     type = nil
-    if (viewability == ViewPartialValue && 
-        url = iv["volumeInfo"]["previewLink"])
+    if (viewability == ViewPartialUri && 
+        url = extract_link(iv, LinkPreviewUri))
       display_text = @display_name
       type = ServiceTypeValue[:excerpts]
     else
-      url = url = iv["volumeInfo"]["infoLink"]
+      url = extract_link(iv, LinkInfoUri)
       display_text = "Book Information"
       type = ServiceTypeValue[:highlighted_link]
     end
     request.add_service_response( { 
         :service=>self,    
-        :url=> remove_query_context(url),
+        :url=>url,
         :display_text=>display_text},
           [type]    
        )
@@ -325,8 +285,9 @@ class GoogleBookSearch < Service
  
   # Not all responses have a thumbnail_url. We look for them and return the 1st.
   def find_thumbnail_url(data)
-    entries = data["items"].collect do |entry|      
-      entry["volumeInfo"]["imageLinks"]["thumbnail"] if entry["volumeInfo"] && entry["volumeInfo"]["imageLinks"]      
+    entries = data.search("/*/entry").collect do |entry|
+      thumb_entry = entry.at("link[@rel='#{LinkThumbnailUri}']")
+      thumb_entry ? thumb_entry['href'] : nil                 
     end
     
     # removenill values
@@ -338,29 +299,25 @@ class GoogleBookSearch < Service
   
 
   def add_cover_image(request, url)
-    zoom_url = url.clone
-    
-    # if we're sent to a page other than the frontcover then strip out the
-    # page number and insert front cover
-    zoom_url.sub!(/&pg=.*?&/, '&printsec=frontcover&')
-    
-    # hack out the 'curl' if we can
-    zoom_url.sub!('&edge=curl', '')
-    
-    request.add_service_response({
-        :service=>self, 
-        :display_text => 'Cover Image',
-        :url => zoom_url, 
-        :size => "medium"
-      },
-      [ServiceTypeValue[:cover_image]])
-  end
-  
-  # Google gives us URL to the book that contains a 'dq' param
-  # with the original query, which for us is an ISSN/LCCN/OCLCnum query,
-  # which we don't actually want to leave in there. 
-  def remove_query_context(url)
-    url.sub(/&dq=[^&]+/, '')    
+    # We do like in Amazon service and return three sizes of images. 
+    # it seems only size 1 = large and 5 = small work so medium and large 
+    # are the same
+    [["small", '5'],["medium", '1'], ["large", '1']].each do | size, zoom_size |
+      zoom_url = url.sub('zoom=5', "zoom=#{zoom_size}")
+      
+      # if we're sent to a page other than the frontcover then strip out the
+      # page number and insert front cover
+      zoom_url.sub!(/&pg=.*?&/, '&printsec=frontcover&')
+      
+      request.add_service_response({
+          :service=>self, 
+          :display_text => 'Cover Image',
+          :key=> size, 
+          :url => zoom_url, 
+          :service_data => { :size => size }
+        },
+        [ServiceTypeValue[:cover_image]])
+    end
   end
 
   # Catch url_for call for search_inside, because we're going to redirect
@@ -384,7 +341,6 @@ class GoogleBookSearch < Service
   
 end
 
-# Important to quote search, see: "OCLC1246014"
 
 # Test WorldCat links
 # FIXME: This produces two 'noview' links because the ids don't match.
@@ -395,4 +351,3 @@ end
 # Snippet view returns noview through the API
 # http://localhost:3000/resolve?rft.isbn=0155374656
 #
-# full view example, LCCN 07020699  ; OCLC: 1246014
