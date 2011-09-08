@@ -54,8 +54,12 @@ class Ezproxy < Service
   # Returns a proxied url if it should be proxied, or nil if the url
   # can not or does not need to be proxied. 
   def link_out_filter(orig_url, service_type, other_args = {})
-    # bad uri? Forget it.
+    # remove trailing or leading whitespace from url, it makes it
+    # an illegal URL anyway, but maybe we can rescue it? Marc 856's
+    # sometimes have accidental trailing whitespace. 
+    orig_url = orig_url.strip
     
+    # bad uri? Forget it.    
     return nil unless valid_url?( orig_url )
     
     # If it's already proxied, leave it alone.
