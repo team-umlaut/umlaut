@@ -259,7 +259,7 @@ class InternetArchive < Service
     # (could be
     # escaping instead? Not worth it, we don't want to search
     # on these anyway. Remove ALL punctuation? Not sure.)
-    output.gsub!(/[)(\]\[;"]/, ' ')
+    output.gsub!(/[)(\]\[;"\=]/, ' ')
     
     return output
   end
