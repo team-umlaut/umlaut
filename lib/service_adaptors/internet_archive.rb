@@ -223,13 +223,12 @@ class InternetArchive < Service
     # installation, where it's interpreting uppercase words as
     # commands even within quotes. Also take out any parens in input.
     # Also IA does not semi-colons in input?!?
-    title = search_terms[:title].downcase.gsub(";", " ")
-    title.delete!("()")
+    title = safe_argument(search_terms[:title])
+    
     
     params = 'title:' << CGI.escape('"' << title << '"')
     if (! search_terms[:creator].blank?)
-      creator = search_terms[:creator].downcase.gsub(";", " ")
-      creator.delete!("()")
+      creator = safe_argument(search_terms[:creator])      
       params << '+AND+creator:' << CGI.escape('(' << creator << ')')       
     end
     mt = []
@@ -243,6 +242,26 @@ class InternetArchive < Service
       params << mt.join('+OR+') 
     end
     params << ')' #closing the mediatypes with a paren
+  end
+  
+  # used on what will be values stuck into a URL as search terms, 
+  # does NOT cgi escape, but does safe-ify them in other ways for IA. 
+  def safe_argument(string)
+    # Downcase params to avoid weird misconfiguration in IA's SOLR
+    # installation, where it's interpreting uppercase words as
+    # commands even within quotes. 
+    output = string.downcase
+    
+    # Remove parens, semi-colons, and brackets -- they all mess
+    # up IA, which thinks they are special chars. Remove double quote,
+    # special char, which sometimes we want to use ourselves. Replace
+    # all with spaces to avoid accidentally conjoining words. 
+    # (could be
+    # escaping instead? Not worth it, we don't want to search
+    # on these anyway. Remove ALL punctuation? Not sure.)
+    output.gsub!(/[)(\]\[;"]/, ' ')
+    
+    return output
   end
 
   
