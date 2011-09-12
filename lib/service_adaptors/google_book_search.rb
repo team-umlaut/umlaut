@@ -203,6 +203,19 @@ class GoogleBookSearch < Service
     response = http_fetch(link, :headers => headers, :raise_on_http_error_code => false)        
     data = JSON.parse(response.body)
     
+    # If Google gives us an error cause it says it can't geo-locate, 
+    # remove the IP, log warning, and try again. 
+    
+    if (data["error"] && data["error"]["errors"] &&
+        data["error"]["errors"].find {|h| h["reason"] == "unknownLocation"} )
+      Rails.logger.warn("GoogleBookSearch: geo-locate error, retrying without X-Forwarded-For: '#{link}' headers: #{headers.inspect} #{response.inspect}\n    #{data.inspect}")
+      
+      response = http_fetch(link, :raise_on_http_error_code => false)        
+      data = JSON.parse(response.body)
+        
+    end
+    
+    
     if (! response.kind_of?(Net::HTTPSuccess)) || data["error"]      
       Rails.logger.error("GoogleBookSearch error: '#{link}' headers: #{headers.inspect} #{response.inspect}\n    #{data.inspect}")
     end
