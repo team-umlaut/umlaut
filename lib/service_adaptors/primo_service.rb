@@ -285,17 +285,19 @@ class PrimoService < Service
       # Let's find any URLs, and add full text responses for those.
       urls_seen = [] # for de-duplicating urls from catalog.
       primo_searcher.rsrcs.each do |rsrc|
+        # No url? Forget it.
+        next if rsrc.url.nil?
+        # Next if duplicate.
         next if urls_seen.include?(rsrc.url)
-        # Don't add the URL if it matches our SFXUrl finder, because
+        # Don't add the URL if it matches our SFXUrl finder (unless fulltext is empty, 
+        # [assuming something is better than nothing]), because
         # that means we think this is an SFX controlled URL.
-        # Handle EZProxy if hardcoded.
         next if SfxUrl.sfx_controls_url?(handle_ezproxy(rsrc.url)) and 
-          request.referent.metadata['genre'] != "book"
+          request.referent.metadata['genre'] != "book" and 
+            !request.get_service_type("fulltext", { :refresh => true }).empty?
         # We have our own list of URLs to suppress, array of strings
         # or regexps.
         next if @suppress_urls.find {|suppress| suppress === rsrc.url}
-        # No url? Forget it.
-        next if rsrc.url.nil?
         urls_seen.push(rsrc.url)
         service_data = {}
         @rsrc_attributes.each do |attr|
