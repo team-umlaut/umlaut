@@ -106,7 +106,7 @@ module Exlibris::Primo::Source::Local
           aleph_status_code = aleph_config_status_code and
               break if (aleph_config_status.instance_of?(Array) and 
                 aleph_config_status.include?(@aleph_item_circulation_status))
-        } unless aleph_config.nil?
+        } unless aleph_config.nil? or aleph_config["statuses"].nil?
         if (aleph_status_code.nil?)
           # Set Aleph web text as Aleph status if we haven't already gotten the Aleph status
           aleph_status = @aleph_helper.item_web_text(
@@ -123,10 +123,8 @@ module Exlibris::Primo::Source::Local
         # Set status.
         @status = (aleph_status.nil?) ? 
           decode(:status, {:address => "statuses"}, true) : aleph_status
-        if requestable?
-          # Aleph doesn't work right so we have to push the patron to the Aleph holdings page!
-          @request_url = url
-        end
+        # Aleph doesn't work right so we have to push the patron to the Aleph holdings page!
+        @request_url = url if requestable?
         # We're through a second time, so we should be alright to 
         # to our ajax request stuff. We don't need to put this in
         # requestable, since ILL doesn't need a request URL.
@@ -134,11 +132,7 @@ module Exlibris::Primo::Source::Local
         # Likely "Billed as Lost" and other circ statuses.
         @request_link_supports_ajax_call = true
         @source_data[:illiad_url] = aleph_config["illiad_url"]
-        # Merge the rest of the source data based on class array.
-        source_data = {} and self.class.source_data_elements.each { |element, instance_variable_name|
-          source_data[element] = instance_variable_get("@#{instance_variable_name}")
-        }
-        @source_data.merge!(source_data)
+        @source_data.merge!(item_source_data)
       end
     end
     
@@ -157,18 +151,22 @@ module Exlibris::Primo::Source::Local
 
     private
     def requestable?
-      aleph_item_permissions = @aleph_helper.item_permissions(
-        :adm_library_code => @aleph_item_adm_library.downcase,
-        :sub_library_code => @aleph_item_sub_library_code,
-        :item_status_code => @aleph_item_status_code,
-        :item_process_status_code => @aleph_item_process_status_code
-      ) unless @aleph_helper.nil? or @aleph_item_adm_library.nil?
-      return super if aleph_item_permissions.nil?
-      # Check tab 15 requestable item statuses and requestable circ statuses
-      return false if ((["N"].include?(aleph_item_permissions[:hold_request]) and 
-        ["N"].include?(aleph_item_permissions[:photocopy_request])) or 
-        ["Reshelving"].include?(@aleph_item_circulation_status))
-      return true
+      # If this is called by the super class, the item data hasn't been set yet
+      # so we should just call the super class.
+      return super if @aleph_item_adm_library.nil?
+      return RequestHelper.item_requestable?({ :source_data => item_source_data })
+    end
+    
+    def item_source_data
+      @item_source_data ||= get_item_source_data
+    end
+    
+    def get_item_source_data
+      # Get the new source data based on class array.
+      source_data = {} and self.class.source_data_elements.each { |element, instance_variable_name|
+        source_data[element] = instance_variable_get("@#{instance_variable_name}")
+      }
+      return source_data
     end
 
     def get_coverage(aleph_record)
