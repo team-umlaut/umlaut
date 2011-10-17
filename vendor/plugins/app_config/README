@@ -1,26 +1,24 @@
 Copyright (c) 2006 Daniel Owsianski  (daniel-at-jarmark-d0t-org)
+Changes by Nate Walker 2008 (kiwinewt-at-gmail-d0t-com)
 
-Rails framework default configuration way is, as we all know, 
-flexible and simple at the same time. Troubles begins when Your 
-application starts to grow - some form of app specific configuration 
+Rails framework default configuration way is, as we all know,
+flexible and simple at the same time. Troubles begins when Your
+application starts to grow - some form of app specific configuration
 is then required to keep all as DRY as possible.
 
-AppConfig plugin provides a convenient way for configuration 
-application wide settings. Extra custom files in config/ or other 
-unusual configuration hacks are no longer needed. AppConfig extends 
+AppConfig plugin provides a convenient way for configuration
+application wide settings. Extra custom files in config/ or other
+unusual configuration hacks are no longer needed. AppConfig extends
 Rails configuration process in a way that allows to setup application
 specific options within default configuration block.
 
 == Installation:
-It’s been posted on the Rails Plugin wiki page, so theoretically 
-You could install it with:
+You can install directly from the repository:
 
-	$ script/plugin discover
-	$ script/plugin install app_config
+  $ script/plugin install git://github.com/kiwinewt/app_config.git
 
-Otherwise You can install directly from the repository:
-
-	$ script/plugin install http://svn.jarmark.org/rails/app_config
+Note: This plugin was originally obtained from:
+	$ http://svn.jarmark.org/rails/app_config
 
 *NOTE*: because AppConfig modifies Rails configuration internals,
 must be included *before* Rails::Initializer#run.
@@ -32,7 +30,7 @@ and 'Rails::Initializer.run')
 
 == Usage
 You can specify app-wide settings in configuration file(s)
-using ’app_config’ prefix e.g. environment.rb:
+using 'app_config' prefix e.g. environment.rb:
 	Rails::Initializer.run do |config|
 	...
 	   # --- My killer-app specific settings:
@@ -47,7 +45,7 @@ but also in e.g. environment/development.rb
 	config.app_config.default_message = "I'm now in development mode..."
 	...
 
-Access to previously configured settings from within application 
+Access to previously configured settings from within application
 code is also dead easy:
 
 	AppConfig.my_key
@@ -59,11 +57,16 @@ code is also dead easy:
 	AppConfig.param(:my_key)do
 	 ... #executed when my_key is nil
 	end
+	
+ safe parameter testing
+   AppConfig.has_param?(:mail_from_address)
+   AppConfig.has_param?('mail_from_address')
 
 Happy (re)configurations!
 
 Author:: Daniel Owsianski, (daniel-at-jarmark-d0t-org)
+Author:: Nate Walker 2008 (kiwinewt-at-gmail-d0t-com)
 Version:: 0.1
-Home page:: http://jarmark.org/projects/app-config/
+Home page:: http://github.com/kiwinewt/app_config/tree
 License::  Copyright (c) 2006 Daniel Owsiañski.
            Released under MIT-LICENCE (included).

@@ -1,41 +1,7 @@
-# Application wide config parameters container.
-#
-# Assume that there is a following line in environment.rb:
-#
-#   Rails::Initializer.run do |config|
-#       ...
-#       config.app_config.mail_from_address = 'sender@address.com'
-#       ...
-#   end
-#
-# Access to above value in run time:
-# * accessor method:
-#    AppConfig.mail_from_address
-#    AppConfig.mail_from_address
-#
-# * hash like methods (keys either as symbol or string):
-#    AppConfig[:mail_from_address]
-#    AppConfig['mail_from_address']
-#
-# * param() method with optional default value (which
-#   is returned if parameter is nil)
-#    AppConfig.param(:mail_from_address, 'default@address.com')
-#    AppConfig.param('mail_from_address', 'default@address.com')
-#
-# * param() method with block executed when parameter is nil
-#    AppConfig.param(:mail_from_address) do |conf|
-#       raise StandardError, "Mail address is not poperly configured."
-#    end
-# NOTE: use either default value argument OR block
-#
-# * safe parameter testing
-#    AppConfig.has_param?(:mail_from_address)
-#    AppConfig.has_param?('mail_from_address')
-#
-# NOTE: if config.app_config.my_param=nil then AppConfig.has_param?(:my_param)
-# will returns true. Parameter 'my_param' exists and has value nil.
-#
 # Author:: Daniel Owsianski (daniel-at-jarmark-dot-org)
+# Edited by:: Nate Walker (kiwinewt-at-gmail-got-com)
+# License::   MIT Licence, see application root.
+
 module AppConfig
     # Name 'Base' for this class is required by
     # Initializer#initialize_framework_settings method.
@@ -72,6 +38,12 @@ module AppConfig
         end
 
         value.nil? ? default : value
+    end
+    
+    # Added to allow a parameter to be set/updated in real time.
+    # This overwrites the current value but allows dynamically changing settings.
+    def self.set_param(name, value=nil)
+        Base.parameters[name] = value
     end
 
     # Returns true if a given parameter name exists internal parameters storage.
