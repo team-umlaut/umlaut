@@ -101,7 +101,7 @@ class InternetArchive < Service
     # doesn't give us access to the IA http status code response though.
     begin
       response = nil
-      timeout(@http_timeout) {
+      timeout(@http_timeout.to_i) {
         response = open(link).read
       }
     rescue Exception => e
