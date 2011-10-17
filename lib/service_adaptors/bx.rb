@@ -29,9 +29,9 @@ class Bx < Service
     format = "rss"
     bx_url = "#{@base_url}?res_dat=format%3D#{format}%26source%3D#{@source}%26token%3D#{@token}%26maxRecords%3D#{@max_records}%26threshold%3D#{@threshold}%26baseUrl%3D#{@openurl_base}&#{request.to_context_object.kev}"
     response = open(bx_url)
-    RAILS_DEFAULT_LOGGER.info("bX URL #{bx_url.inspect}")
+    Rails.logger.info("bX URL #{bx_url.inspect}")
     response_xml_str = response.read
-    RAILS_DEFAULT_LOGGER.info("bX Response #{response_xml_str.inspect}")
+    Rails.logger.info("bX Response #{response_xml_str.inspect}")
     response_xml = Hpricot.XML(response_xml_str)
     response_xml.search("//item") do |item|
       title = item.at("title").inner_text

@@ -155,7 +155,7 @@ class PrimoService < Service
     old_to_new_mappings.each do |old_param, new_param|
       unless config["#{old_param}"].nil?
         config["#{new_param}"] = config["#{old_param}"] if config["#{new_param}"].nil?
-        RAILS_DEFAULT_LOGGER.warn("Parameter '#{old_param}' is deprecated.  Please use '#{new_param}' instead.")
+        Rails.logger.warn("Parameter '#{old_param}' is deprecated.  Please use '#{new_param}' instead.")
       end
     end # End backward compatibility maintenance
     super(config)
@@ -163,7 +163,7 @@ class PrimoService < Service
     # Set holding_search_institution to vid and print warning in the logs.
     if @service_types.include?("holding_search") and @holding_search_institution.nil?
       @holding_search_institution = @vid
-      RAILS_DEFAULT_LOGGER.warn("Required parameter 'holding_search_institution' was not set.  Please set the appropriate value in services.yml.  Defaulting institution to view id, #{@vid}.")
+      Rails.logger.warn("Required parameter 'holding_search_institution' was not set.  Please set the appropriate value in services.yml.  Defaulting institution to view id, #{@vid}.")
     end # End backward compatibility maintenance
     raise ArgumentError.new(
       "Missing Service configuration parameter. Service type #{self.class} (id: #{self.id}) requires a config parameter named 'holding_search_institution'. Check your config/umlaut_config/services.yml file."
@@ -186,7 +186,7 @@ class PrimoService < Service
     # DEPRECATED
     # Extend OpenURL standard to take Primo Doc Id
     primo_id = request.referent.metadata['primo'] unless request.referent.metadata['primo'].nil?
-    RAILS_DEFAULT_LOGGER.warn("Use of 'rft.primo' is deprecated.  Please use the identifier instead.") unless request.referent.metadata['primo'].nil?
+    Rails.logger.warn("Use of 'rft.primo' is deprecated.  Please use the identifier instead.") unless request.referent.metadata['primo'].nil?
     # End DEPRECATED
     searcher_setup = {
       :base_url => @base_url, :vid => @vid,
@@ -207,7 +207,7 @@ class PrimoService < Service
        primo_searcher = Exlibris::Primo::Searcher.new(searcher_setup, search_params)
     rescue Exception => e
       # Log error and return finished
-      RAILS_DEFAULT_LOGGER.error(
+      Rails.logger.error(
         "Error in Exlibris::Primo::Searcher. "+ 
         "Returning 0 Primo services for search #{search_params.inspect}. "+ 
         "Exlibris::Primo::Searcher raised the following exception:\n#{e}")
@@ -358,7 +358,7 @@ class PrimoService < Service
   def primo_config
     default_file = "#{RAILS_ROOT}/config/umlaut_config/primo.yml"
     config_file = @primo_config.nil? ? default_file : "#{RAILS_ROOT}/config/umlaut_config/"+ @primo_config
-    RAILS_DEFAULT_LOGGER.warn("Primo config file not found: #{config_file}.") and return {} unless File.exists?(config_file)
+    Rails.logger.warn("Primo config file not found: #{config_file}.") and return {} unless File.exists?(config_file)
     config_hash = YAML.load_file(config_file)
     return (config_hash.nil?) ? {} : config_hash
   end

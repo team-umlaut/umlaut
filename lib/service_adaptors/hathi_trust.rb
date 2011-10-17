@@ -77,7 +77,7 @@ class HathiTrust < Service
     
     # Only add fulltext if we're not skipping due to GBS
     if ( preempted_by(request, "fulltext"))
-      RAILS_DEFAULT_LOGGER.debug("#{self.class}: Skipping due to pre-emption")
+      Rails.logger.debug("#{self.class}: Skipping due to pre-emption")
     else
       full_views_shown = create_fulltext_service_response(request, items)
     end

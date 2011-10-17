@@ -70,7 +70,7 @@ class WorldcatIdentities < Service
     # We'll search with oclcnum if we have it, but not require it, we'll search
     # fuzzily on various parts of the name if neccesary.
     if ( oclcnum.blank? && ( metadata['aulast'].blank? || metadata['aufirst'].blank? ) && metadata['au'].blank? && metadata['aucorp'].blank?  ) or (oclcnum.blank? && @require_identifier) 
-      RAILS_DEFAULT_LOGGER.debug("Worldcat Identities Service Adaptor: Skipped: Insufficient metadata for lookup")      
+      Rails.logger.debug("Worldcat Identities Service Adaptor: Skipped: Insufficient metadata for lookup")      
       return nil
     end
     

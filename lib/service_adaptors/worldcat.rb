@@ -61,8 +61,8 @@ class Worldcat < Service
     begin
       worldcat_uri = URI.parse(uri_str)
     rescue Exception => e
-      RAILS_DEFAULT_LOGGER.error("Bad worldcat uri string constructed?")
-      RAILS_DEFAULT_LOGGER.error(e)
+      Rails.logger.error("Bad worldcat uri string constructed?")
+      Rails.logger.error(e)
       return request.dispatched(self, DispatchedService::FailedFatal)
     end
 

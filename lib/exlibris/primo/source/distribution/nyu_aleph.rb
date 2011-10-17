@@ -65,7 +65,7 @@ module Exlibris::Primo::Source::Local
           # Don't need to exclude JOURNALS explicitly since we handled them above.
           @getting_aleph_holdings ||= !(@aleph_items.empty? or @aleph_items.size > @max_holdings)
         rescue Exception => e
-          RAILS_DEFAULT_LOGGER.error("Error getting data from Aleph REST APIs. #{e.message}")
+          Rails.logger.error("Error getting data from Aleph REST APIs. #{e.message}")
           @aleph_items = []
           @coverage = []
           # TODO: Figure out if setting the URL to Primo is the right thing to do.
@@ -272,7 +272,7 @@ module Exlibris::Primo::Source::Local
         }
         aleph_holdings.push(self.class.new(aleph_item_parameters))
       end
-      RAILS_DEFAULT_LOGGER.warn(
+      Rails.logger.warn(
         "No holdings processed from Aleph items in #{self.class}: #{self.record_id}."
       ) if aleph_holdings.empty? and getting_aleph_holdings?
       return aleph_holdings
@@ -315,7 +315,7 @@ module Exlibris::Primo::Source::Local
     
     # TODO: Implement to send mail.
     def alert_the_authorities(error)
-      RAILS_DEFAULT_LOGGER.error("Error in #{self.class}. Something is amiss with Aleph. #{error}")
+      Rails.logger.error("Error in #{self.class}. Something is amiss with Aleph. #{error}")
       puts "Something is amiss with Aleph. #{error}"
     end
   end

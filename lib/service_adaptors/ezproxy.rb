@@ -83,7 +83,7 @@ class Ezproxy < Service
       URI.parse( url )
       return true
     rescue Exception => e
-      RAILS_DEFAULT_LOGGER.error("Bad uri sent to ezproxy service. Can not parse. url: <#{url}>")
+      Rails.logger.error("Bad uri sent to ezproxy service. Can not parse. url: <#{url}>")
       return false
     end
   end
@@ -130,16 +130,16 @@ class Ezproxy < Service
       resp = Net::HTTP.post_form(URI.parse('http://' + @proxy_server+@proxy_url_path), {"xml"=>url_doc.to_s})    
       proxy_doc = REXML::Document.new resp.body
     rescue Timeout::Error
-      RAILS_DEFAULT_LOGGER.error "Timed out connecting to EZProxy"
+      Rails.logger.error "Timed out connecting to EZProxy"
       return proxy_links
     rescue Exception => e
-      RAILS_DEFAULT_LOGGER.error "EZProxy error, NOT proxying URL + #{e}"
+      Rails.logger.error "EZProxy error, NOT proxying URL + #{e}"
     end
   
     return_hash = {}
     REXML::XPath.each(proxy_doc, "/proxy_url_response/proxy_urls/url") { | u |
       unless (u && u.get_text) # if u is empty... weird, but skip it.
-        RAILS_DEFAULT_LOGGER.error "EZProxy response seems to be missing some pieces.\n   Urls requested: #{urls.join(',')}\n   EZProxy api request xml: #{url_doc.to_s}\n   EZProxy response: #{proxy_doc.to_s}"
+        Rails.logger.error "EZProxy response seems to be missing some pieces.\n   Urls requested: #{urls.join(',')}\n   EZProxy api request xml: #{url_doc.to_s}\n   EZProxy response: #{proxy_doc.to_s}"
       end
       orig_url = u.get_text.value
       return_hash[orig_url] = nil

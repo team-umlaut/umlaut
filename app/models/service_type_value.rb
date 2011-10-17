@@ -99,6 +99,6 @@ class ServiceTypeValue < ActiveRecord::Base
       end
       ServiceTypeValue.enumeration_model_updates_permitted = false
 
-      RAILS_DEFAULT_LOGGER.info("ServiceTypeValues loaded from config file.")
+      Rails.logger.info("ServiceTypeValues loaded from config file.")
   end
 end

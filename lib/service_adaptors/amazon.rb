@@ -54,7 +54,7 @@ class Amazon < Service
     # Need the secret_key after 15 aug 09.
     unless (@secret_key || ! @make_aws_call)
       if ( Time.now < Time.gm(2009, 8, 15))
-        RAILS_DEFAULT_LOGGER.warn("Amazon service will require a secret_key after 15 August 2009 to make Amazon API calls.")
+        Rails.logger.warn("Amazon service will require a secret_key after 15 August 2009 to make Amazon API calls.")
       else
         raise Exception.new("Amazon API now requires a secret_key. The Amazon service can only be used with make_aws_call=false unless you have an Amazon secret key configured.")
       end

@@ -27,7 +27,7 @@ module UmlautHttp
   def proxy_like_headers(request, host = nil)
     orig_env = request.http_env
     if (request.http_env.nil? || ! request.http_env.kind_of?(Hash))
-      RAILS_DEFAULT_LOGGER.warn("proxy_like_headers: orig_env arg is missing, proxy-like headers will be flawed. request id: #{request.id}. ")
+      Rails.logger.warn("proxy_like_headers: orig_env arg is missing, proxy-like headers will be flawed. request id: #{request.id}. ")
       orig_env = {}
     end
 

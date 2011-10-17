@@ -151,7 +151,7 @@ class Sfx < Service
     # Catch an SFX error message (in HTML) that's not an XML
     # document at all.
     unless doc.at('/ctx_obj_set')
-      RAILS_DEFAULT_LOGGER.error("sfx.rb: SFX did not return expected response. SFX response: #{resolver_response}")
+      Rails.logger.error("sfx.rb: SFX did not return expected response. SFX response: #{resolver_response}")
       raise "SFX did not return expected response."
     end
 
@@ -475,9 +475,9 @@ class Sfx < Service
       #perl_data = Iconv.new('Latin1', 'UTF-8').iconv(perl_data)
     rescue Iconv::IllegalSequence => e
       # Hmm, for some reason we can't undo our double encoding. 
-      RAILS_DEFAULT_LOGGER.error("Error: Could not convert SFX perl_data data to sane char encoding: #{e}")
+      Rails.logger.error("Error: Could not convert SFX perl_data data to sane char encoding: #{e}")
       # Don't need the whole backtrace. 
-      RAILS_DEFAULT_LOGGER.error( e.backtrace[0..3].join("\n") )
+      Rails.logger.error( e.backtrace[0..3].join("\n") )
     end
       
     doc = Hpricot.XML(perl_data)

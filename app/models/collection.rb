@@ -33,7 +33,7 @@ class Collection
     # Calculate our collection data
     calculate_collection_data
 
-    RAILS_DEFAULT_LOGGER.debug("Collection initialize time: #{Time.now - start_t}")
+    Rails.logger.debug("Collection initialize time: #{Time.now - start_t}")
   end
 
 

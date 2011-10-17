@@ -148,8 +148,8 @@ module Exlibris::Primo
       rescue Exception => e
         # !!!!!!!!!!REMOVE NEXT LINE (raise e) WHEN GOING TO PRODUCTION!!!!!!!!!
         raise e
-        RAILS_DEFAULT_LOGGER.error("#{e.message}")
-        RAILS_DEFAULT_LOGGER.error("Class #{@source_class} can't be found in either 
+        Rails.logger.error("#{e.message}")
+        Rails.logger.error("Class #{@source_class} can't be found in either 
           Exlibris::Primo::Source or Exlibris::Primo::Source::Local.  
           Please check primo.yml to ensure the class_name is defined correctly.  
           Not converting to source.")

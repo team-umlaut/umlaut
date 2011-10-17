@@ -21,7 +21,7 @@ class ServiceBundle
     return if (@services.nil? || @services.empty?)
 
     bundle_start = Time.now
-    RAILS_DEFAULT_LOGGER.info("Launching servicelevel #{@priority_level}, request #{request.id}") if @log_timing
+    Rails.logger.info("Launching servicelevel #{@priority_level}, request #{request.id}") if @log_timing
 
     
     threads = []
@@ -44,7 +44,7 @@ class ServiceBundle
               # and actually execute it
               local_service.handle_wrapper(local_request)
             else
-              RAILS_DEFAULT_LOGGER.info("NOT launching service #{local_service.service_id},  level #{@priority_level}, request #{local_request.id}: not in runnable state") if @log_timing
+              Rails.logger.info("NOT launching service #{local_service.service_id},  level #{@priority_level}, request #{local_request.id}: not in runnable state") if @log_timing
             end
             
            
@@ -55,11 +55,11 @@ class ServiceBundle
             # the exception in case we want it later!
             local_request.dispatched(service, DispatchedService::FailedFatal, e)
             # Log it too
-            RAILS_DEFAULT_LOGGER.error("Threaded service raised exception. Service: #{service.service_id}, #{e}, #{e.backtrace.join("\n")}")
+            Rails.logger.error("Threaded service raised exception. Service: #{service.service_id}, #{e}, #{e.backtrace.join("\n")}")
             # And stick it in a thread variable too
             Thread.current[:exception] = e
           ensure
-            RAILS_DEFAULT_LOGGER.info("Completed service #{local_service.service_id},  level #{@priority_level}, request #{local_request.id}: in #{Time.now - service_start}.") if @log_timing
+            Rails.logger.info("Completed service #{local_service.service_id},  level #{@priority_level}, request #{local_request.id}: in #{Time.now - service_start}.") if @log_timing
           end
         end
         
@@ -94,7 +94,7 @@ class ServiceBundle
     # close connections associated with finished threads, hooray!
     ActiveRecord::Base.verify_active_connections!()
 
-    RAILS_DEFAULT_LOGGER.info("Completed services level #{@priority_level}, request #{request.id}: in #{Time.now - bundle_start}") if some_service_executed && @log_timing
+    Rails.logger.info("Completed services level #{@priority_level}, request #{request.id}: in #{Time.now - bundle_start}") if some_service_executed && @log_timing
   end
 
   def forward_exceptions?

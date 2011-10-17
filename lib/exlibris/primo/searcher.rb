@@ -50,7 +50,7 @@ module Exlibris::Primo
     # Process URLs based on links/linktorsrc
     # Process TOCs based on links/linktotoc
     def search
-      RAILS_DEFAULT_LOGGER.warn("Insufficient search terms for #{self.class}. "+
+      Rails.logger.warn("Insufficient search terms for #{self.class}. "+
         "Please refer to #{self.class}'s documentation to determine how to structure "+
         "a sufficient query.") and return if insufficient_query?
       # Call Primo Web Services

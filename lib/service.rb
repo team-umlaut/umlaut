@@ -92,7 +92,7 @@ class Service
       return handle(request)
     else
       # Pre-empted, log and close dispatch record as 'succesful'.
-      RAILS_DEFAULT_LOGGER.debug("Service #{service_id} was pre-empted and not run.")
+      Rails.logger.debug("Service #{service_id} was pre-empted and not run.")
       return request.dispatched(self, true)
     end
   end

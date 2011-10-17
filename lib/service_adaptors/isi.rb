@@ -62,11 +62,11 @@ class Isi < Service
       metadata = request.referent.metadata
       if ( (metadata["title"] && metadata["title"].include?('&')) ||
            (metadata["jtitle"] && metadata['jtitle'].include?('&')))
-        RAILS_DEFAULT_LOGGER.warn("ISI LAMR still exhibiting ampersand problems: #{e.message} ; OpenURL: ?#{request.to_context_object.kev}")
+        Rails.logger.warn("ISI LAMR still exhibiting ampersand problems: #{e.message} ; OpenURL: ?#{request.to_context_object.kev}")
         return request.dispatched(self, true)
       else    
         # Log the error, return exception condition. 
-        RAILS_DEFAULT_LOGGER.error("#{e.message} ; OpenURL: ?#{request.to_context_object.kev}")
+        Rails.logger.error("#{e.message} ; OpenURL: ?#{request.to_context_object.kev}")
         return request.dispatched(self, false, e)
       end
     end
@@ -204,7 +204,7 @@ class Isi < Service
       error_message << "\n ISI XML request:\n#{gen_lamr_request(request)}\n"
       error_message << "\n ISI http response status: #{isi_response.code}\n"
       error_message << "\n ISI http response body:\n#{isi_response.body}\n"
-      RAILS_DEFAULT_LOGGER.error(error_message)
+      Rails.logger.error(error_message)
     end
 
     

@@ -34,7 +34,7 @@ class OpenLibraryCover < Service
       uri = cover_uri(type, ids[type] )
       s_time = Time.now
       response = Net::HTTP.get_response(URI.parse(uri))
-      RAILS_DEFAULT_LOGGER.debug("#{@id}: #{Time.now - s_time}s to lookup #{uri}")
+      Rails.logger.debug("#{@id}: #{Time.now - s_time}s to lookup #{uri}")
       
       if response.kind_of?( Net::HTTPNotFound  )
         # OL has no cover      
@@ -43,7 +43,7 @@ class OpenLibraryCover < Service
 
       unless response.kind_of?( Net::HTTPSuccess  )
         # unexpected response
-        RAILS_DEFAULT_LOGGER.error("#{@id}: Error in HTTP response when requesting #{uri},  #{response.inspect}")
+        Rails.logger.error("#{@id}: Error in HTTP response when requesting #{uri},  #{response.inspect}")
       end
 
       # Got this far, we've got a response.

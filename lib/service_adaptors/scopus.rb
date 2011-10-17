@@ -107,7 +107,7 @@ class Scopus < Service
     results = JSON.parse(response)
 
     if ( results["ERROR"])
-      RAILS_DEFAULT_LOGGER.error("Error from Scopus API: #{results["ERROR"].inspect}   openurl: ?#{request.referent.to_context_object.kev}")
+      Rails.logger.error("Error from Scopus API: #{results["ERROR"].inspect}   openurl: ?#{request.referent.to_context_object.kev}")
       return request.dispatched(self, false)
     end
 

@@ -150,5 +150,5 @@
     AppConfig::Base.error_div = { :div_id => 'service_errors',
                                   :partial => 'service_errors'}
 rescue ActiveRecord::ActiveRecordError => e
-  RAILS_DEFAULT_LOGGER.warn("Couldn't initiailize resolve_views. Database schema not created yet? #{e.inspect}")
+  Rails.logger.warn("Couldn't initiailize resolve_views. Database schema not created yet? #{e.inspect}")
 end
