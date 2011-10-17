@@ -21,7 +21,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 # We really ought to update/test this to use a modern ruby json gem instead.
 $LOAD_PATH.unshift "#{RAILS_ROOT}/vendor/plugins/ruby-json-1.1.2"
 
-#require 'plugins/app_config/lib/configuration'
+require 'app_config'
 
 Rails::Initializer.run do |config|
 
