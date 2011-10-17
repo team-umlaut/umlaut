@@ -46,7 +46,7 @@ class SfxBackchannelRecord < Service
   # Does everything in a background thread to avoid slowing down the user. 
   def make_backchannel_request(service_type)
 
-    spawn(:method => :thread) do
+    Thread.new do
       begin
         direct_sfx_url = Sfx.pass_through_url(service_type.service_response.data_values)
         # now we call that url through a back channel just to record it
@@ -62,8 +62,8 @@ class SfxBackchannelRecord < Service
                sfx_response.value
         end                
       rescue Exception => e
-        RAILS_DEFAULT_LOGGER.error("Could not record sfx backchannel click for service_type id #{service_type.id} ; sfx backchannel url attempted: #{direct_sfx_url} ; problem: #{e}")
-        RAILS_DEFAULT_LOGGER.error( e.backtrace.join("\n"))
+        Rails.logger.error("Could not record sfx backchannel click for service_type id #{service_type.id} ; sfx backchannel url attempted: #{direct_sfx_url} ; problem: #{e}")
+        Rails.logger.error( e.backtrace.join("\n"))
       end
     end
   end
