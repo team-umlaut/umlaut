@@ -37,6 +37,10 @@ class ResolveController < ApplicationController
   
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
+    # intentionally trigger creation of session if it didn't already exist
+    # because we need to track session ID for caching. 
+    session 
+    
     options = {}
     if (  @@no_create_request_actions.include?(params[:action])  )
       options[:allow_create] = false

@@ -420,7 +420,7 @@ class Request < ActiveRecord::Base
 
     # Create the Request
     req = Request.new
-    req.session_id = session.session_id
+    req.session_id = a_rails_request.session_options[:id]
     req.contextobj_fingerprint = contextobj_fingerprint
     # Don't do this! It is a performance problem.
     # rft.requests << req
