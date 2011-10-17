@@ -13,10 +13,8 @@
 # with this step if SFX is being slow. 
 require 'uri'
 require 'net/http'
-require 'spawn'
 
 class SfxBackchannelRecord < Service
-   include Spawn
 
    def initialize(config)
      super(config)
