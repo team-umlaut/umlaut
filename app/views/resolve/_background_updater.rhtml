@@ -14,7 +14,7 @@
 <script type="text/javascript">
 //<![CDATA[
 jQuery(document).ready( function($) {
-  var updater = new Umlaut.HtmlUpdater("<%= request.protocol + request.host + request.port_string + request.relative_url_root %>"  ,  "umlaut.request_id=<%= @user_request.id %>"  );
+  var updater = new Umlaut.HtmlUpdater("<%= request.protocol + request.host + request.port_string + (controller.relative_url_root || "") %>"  ,  "umlaut.request_id=<%= @user_request.id %>"  );
 
   <% SectionRenderer.bg_update_sections.collect do |section| %>
     updater.add_section_target({ umlaut_section_id: "<%= section[:div_id]  %>"  });    
