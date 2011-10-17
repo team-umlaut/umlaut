@@ -11,7 +11,7 @@
 # Specifies gem version of Rails to use when vendor/rails is not present
 # Umlaut was originally developed/tested with 1.2.1, but we've succesfully
 # moved to 2.1.1.  2.2.2 coming soon. 
-RAILS_GEM_VERSION = '2.1.2' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.14' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -21,7 +21,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 # We really ought to update/test this to use a modern ruby json gem instead.
 $LOAD_PATH.unshift "#{RAILS_ROOT}/vendor/plugins/ruby-json-1.1.2"
 
-require 'plugins/app_config/lib/configuration'
+#require 'plugins/app_config/lib/configuration'
 
 Rails::Initializer.run do |config|
 
