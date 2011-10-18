@@ -95,8 +95,8 @@ Rails::Initializer.run do |config|
   # config.plugins = %W( exception_notification ssl_requirement )
 
   # Umlaut adds additional load paths for certain custom dirs 
-  config.load_paths += %W( #{RAILS_ROOT}/lib/referent_filters )
-  config.load_paths += %W( #{RAILS_ROOT}/lib/service_adaptors )
+  config.autoload_paths += %W( #{RAILS_ROOT}/lib/referent_filters )
+  config.autoload_paths += %W( #{RAILS_ROOT}/lib/service_adaptors )
   
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)
