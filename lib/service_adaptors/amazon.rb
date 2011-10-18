@@ -15,6 +15,9 @@
 #   services.yml params:
 #   api_key:    required. AWS "access key". 
 #   secret_key:  required unless make_aws_call==false. AWS "secret access key". 
+#   associate_tag: required unless make_aws_call==false. Now required by Amazon API. 
+#                  sign up for an associates_id at: https://affiliate-program.amazon.com/
+#                  it's the same thing as your 'associate id'. 
 #   service_types: Optional. Array of strings of service type values to be
 #                  loaded, to over-ride defaults.
 #   make_aws_call:  default true.   If false, then either uses an ASIN stored
@@ -37,7 +40,7 @@ class Amazon < Service
   
   include MetadataHelper
   
-  required_config_params :url, :api_key
+  required_config_params :url, :api_key, :associate_tag
   attr_reader :url
 
   def initialize(config)
@@ -138,6 +141,7 @@ class Amazon < Service
     query_params = {
       "Service"=>"AWSECommerceService",
       "AWSAccessKeyId"=>@api_key,
+      "AssociateTag"=>@associate_tag,
       "Operation"=>"ItemLookup",
       "ResponseGroup"=>"Large",
       "ItemId"=>isbn }
