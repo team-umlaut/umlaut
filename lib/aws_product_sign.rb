@@ -1,8 +1,7 @@
   require 'rubygems'
   require 'cgi'
   require 'time'
-  require 'hmac'
-  require 'hmac-sha2'
+  require 'openssl'
   require 'base64'  
   
 # Code to sign a request to Amazon Product Advertising API (formerly known as
@@ -83,12 +82,12 @@ class AwsProductSign
     query_string = canonical_querystring(params)
 
     string_to_sign = string_to_sign(query_string)
-
-    hmac = HMAC::SHA256.new( secret_key )
-    hmac.update( string_to_sign )
+    
     # chomp is important!  the base64 encoded version will have a newline at the end
-    signature = Base64.encode64(hmac.digest).chomp 
-
+    # which amazon does not want. 
+    digest  = OpenSSL::Digest::Digest.new('sha256')
+    signature = Base64.encode64(OpenSSL::HMAC.digest(digest, secret_key, string_to_sign)).chomp
+    
     params["Signature"] = signature
 
     #order doesn't matter for the actual request, we return the hash
