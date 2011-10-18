@@ -1,5 +1,5 @@
 require 'open-uri'
-require 'json'
+require 'multi_json'
 require 'cgi'
 
 # Service that searches HathiTrust from the University of Michigan
@@ -130,7 +130,7 @@ class HathiTrust < Service
   # conducts query and parses the JSON
   def do_query(params)    
     link = @api_url + "/brief/json/" + params
-    return JSON.parse( open(link).read )
+    return MultiJson.decode( open(link).read )
   end
   
     

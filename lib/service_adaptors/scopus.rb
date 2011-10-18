@@ -32,7 +32,7 @@
 #
 class Scopus < Service
   require  'open-uri'
-  require 'json'
+  require 'multi_json'
   include MetadataHelper
   include UmlautHttp
   
@@ -104,7 +104,7 @@ class Scopus < Service
     
     # Take the first hit from scopus's results, hope they relevancy ranked it
     # well. For DOI/pmid search, there should ordinarly be only one hit!
-    results = JSON.parse(response)
+    results = MultiJson.decode(response)
 
     if ( results["ERROR"])
       Rails.logger.error("Error from Scopus API: #{results["ERROR"].inspect}   openurl: ?#{request.referent.to_context_object.kev}")

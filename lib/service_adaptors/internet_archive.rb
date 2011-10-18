@@ -22,7 +22,7 @@
 class InternetArchive < Service
   require 'open-uri' #
   require 'cgi'
-  require 'json' #we ask IA for json
+  require 'multi_json' #we ask IA for json
   require 'timeout' # used to timeout our requests
   include MetadataHelper
   
@@ -117,7 +117,7 @@ class InternetArchive < Service
     end
     
     
-    doc = JSON.parse(response)
+    doc = MultiJson.decode(response)
     results = doc['response']['docs']
     
     @mediatypes.each do |type|

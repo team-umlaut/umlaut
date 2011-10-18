@@ -18,7 +18,6 @@
 # to request a change. 
 class Jcr < Service
   require  'open-uri'
-  require 'json'
   require 'hpricot'
   require 'net/http'
   

@@ -21,7 +21,6 @@
 # instead of an 'error', since it's a known problem. 
 class Isi < Service
   require  'open-uri'
-  require 'json'
   require 'hpricot'
   require 'net/http'
   

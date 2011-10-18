@@ -29,6 +29,9 @@
 # Recommend setting your 'per user limit' to something crazy high, as well
 # as requesting more quota. 
 class GoogleBookSearch < Service
+  require 'multi_json'
+  
+  
   # Identifiers used in API response to indicate viewability level
   ViewFullValue = 'ALL_PAGES'
   ViewPartialValue = 'PARTIAL'
@@ -36,7 +39,7 @@ class GoogleBookSearch < Service
   ViewNoneValue = 'NO_PAGES'
   ViewUnknownValue = 'UNKNOWN'
       
-  require 'json'
+  
   
   include MetadataHelper
   include UmlautHttp
@@ -201,7 +204,7 @@ class GoogleBookSearch < Service
 
     Rails.logger.debug("GoogleBookSearch requesting: #{link}")        
     response = http_fetch(link, :headers => headers, :raise_on_http_error_code => false)        
-    data = JSON.parse(response.body)
+    data = MultiJson.decode(response.body)
     
     # If Google gives us an error cause it says it can't geo-locate, 
     # remove the IP, log warning, and try again. 
@@ -211,7 +214,7 @@ class GoogleBookSearch < Service
       Rails.logger.warn("GoogleBookSearch: geo-locate error, retrying without X-Forwarded-For: '#{link}' headers: #{headers.inspect} #{response.inspect}\n    #{data.inspect}")
       
       response = http_fetch(link, :raise_on_http_error_code => false)        
-      data = JSON.parse(response.body)
+      data = MultiJson.decode(response.body)
         
     end
     
