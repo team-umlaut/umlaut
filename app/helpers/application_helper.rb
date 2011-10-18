@@ -6,9 +6,32 @@ module ApplicationHelper
   # to work properly. Just set @generate_url_with_host = true
   # in your controller, and urls will be generated with hostnames
   # for the remainder of that action. 
-  def url_for(options={})
-    options[:only_path] = false if @generate_urls_with_host && options[:only_path].nil?
-    super(options)          
+  def url_for(argument = {})    
+    if @generate_urls_with_host
+      case argument
+      when Hash
+        # Force only_path = false if not already set
+        argument[:only_path] = false if argument[:only_path].nil?
+        return super(argument)
+      when String
+        # We already have a straight string, if it looks relative, 
+        # absolutize it. 
+        if argument.starts_with?("/")
+          return request.scheme + "://" + request.host_with_port + (@controller.relative_url_root || "") + argument
+        else
+          return super(argument)
+        end
+      when :back
+        return super(argument)
+      else 
+        # polymorphic, we want to force polymorphic_url instead
+        # of default polymorphic_path         
+        return polymorphic_url(argument)
+      end    
+    else
+      # @generate_urls_with_host not set, just super
+      super(argument)
+    end    
   end
 
   # over-ride image_path to generate complete urls with hostname and everything
