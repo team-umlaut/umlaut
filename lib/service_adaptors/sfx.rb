@@ -38,6 +38,8 @@
 #          Defaults to 8.
 class Sfx < Service
   require 'uri'
+  require 'htmlentities'
+
   #require 'open_url'
 
   required_config_params :base_url
@@ -455,7 +457,6 @@ class Sfx < Service
   # Class method to parse a perl_data block as XML in String
   # into a ContextObject. Argument is _string_ containing
   # XML!
-  require 'htmlentities'
   def self.parse_perl_data(perl_data)
     # Okay, the perl_data string comes from SFX as corrupt
     # double-encoded char encoding. Near as I can tell, SFX
