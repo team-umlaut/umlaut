@@ -32,6 +32,9 @@
 class Amazon < Service
   require 'open-uri'
   require 'hpricot'
+  require 'isbn'
+  
+  
   include MetadataHelper
   
   required_config_params :url, :api_key
@@ -127,11 +130,10 @@ class Amazon < Service
     # assumption, but works enough of the time and there's no easy
     # alternative.
     # Convert 13 to 10 if neccesary. 
-    require 'isbn/tools'    
-    if ( ISBN_Tools.is_valid_isbn13?( isbn ) )
-      # got to try converting to 10. An ISBN-13 is never an ASIN. 
-      isbn = ISBN_Tools.isbn13_to_isbn10(isbn)   
-    end  
+    
+    # got to try converting to 10. An ISBN-13 is never an ASIN.    
+    isbn = ISBN.ten( isbn )
+              
 
     query_params = {
       "Service"=>"AWSECommerceService",

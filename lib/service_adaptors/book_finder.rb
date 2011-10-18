@@ -3,7 +3,7 @@
 # Does not a pre-check, just generates the link blind, but I think almost any
 # ISBN will get results on BookFinder.
 class BookFinder < Service
-  require 'isbn/tools'
+  require 'isbn'
   
   def initialize(config)
     @display_text = "Compare online prices"
@@ -22,7 +22,7 @@ class BookFinder < Service
     isbn = umlaut_request.referent.isbn
 
     # Unless we have a valid isbn, give up
-    return request.dispatched(self, true) unless isbn && ISBN_Tools.is_valid?(isbn)
+    return request.dispatched(self, true) unless isbn && ISBN.valid?(isbn)
 
     # Okay, make a link
     url = @url_template.sub('%s', isbn)
