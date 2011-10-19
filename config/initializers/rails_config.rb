@@ -2,7 +2,5 @@
   orig_logger = ActiveRecord::Base.logger 
   ActiveRecord::Base.logger = nil
 
-  ActiveRecord::Base.allow_concurrency = true
-
   ActiveRecord::Base.logger = orig_logger
 

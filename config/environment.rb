@@ -56,14 +56,7 @@ Rails::Initializer.run do |config|
     ActionController::Base.session_options[:session_key] = '_u2_session_id'
 
   
-    # Turning on ActiveRecord concurrency is neccesary because we use threading
-    # for Umlaut
-    # In >1.2.1, this needs to be in an after_initialize block.
-    # See http://toolmantim.com/article/2006/12/27/environments_and_the_rails_initialisation_process
-    # Concurrency no longer needed once we go to Rails 2.2, but instead we need to make 
-    # sure The AR connection pool size is big enough for us. 
-    # 
-    ActiveRecord::Base.allow_concurrency = true
+    
     # Connection pool has to be at least as large as all threads we need.
     # It's hard to know exactly how big we need this to be, with all our bg
     # threads, but it should be pretty big, probably around as big as
