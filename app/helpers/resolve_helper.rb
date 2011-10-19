@@ -106,9 +106,7 @@ module ResolveHelper
   #      this will be hidden and shown
   #  <% end %>
   def expand_contract_section(arg_heading, id, options={}, &block)
-
-    # ugh, when we call this inside another partial with block, we need to pass the block.binding that we can give to concat
-    options[:out_binding] ||= block.binding 
+ 
     
     # Set up proper stuff for current state.  
     expanded = (params["umlaut.show_#{id}"] == "true") || options[:initial_expand] || false
@@ -123,7 +121,7 @@ module ResolveHelper
 
 
     
-    concat('<div class="expand_contract_section">', options[:out_binding])
+    concat('<div class="expand_contract_section">')
 
     action = params["action"]
     # Make sure a self-referencing link from partial_html_sections
@@ -135,12 +133,12 @@ module ResolveHelper
                       "umlaut.show_#{id}" => (! expanded).to_s,
                       :anchor => fragment, :action => action}),
                       :id => fragment,
-                      :class => "expand_contract_toggle"), options[:out_binding])
+                      :class => "expand_contract_toggle"))
 
-    concat("<div id=\"#{id}\" class=\"expand_contract_content\" style=\"#{initial_hide}\">",options[:out_binding])      
+    concat("<div id=\"#{id}\" class=\"expand_contract_content\" style=\"#{initial_hide}\">")      
     yield()      
-    concat("</div><!--exc-->", options[:out_binding] )
-    concat("</div><!--exc-->", options[:out_binding])
+    concat("</div><!--exc-->" )
+    concat("</div><!--exc-->" )
     
   end
   
@@ -179,7 +177,7 @@ module ResolveHelper
 
     return if list.empty?
 
-    concat("<ul class=\"#{options[:ul_class]}\">", block.binding)
+    concat("<ul class=\"#{options[:ul_class]}\">")
 
   
     list.each_index do |index|
@@ -191,23 +189,20 @@ module ResolveHelper
     end
     
     if (list.length > options[:limit] )
+      
+      concat("</ul>")
 
-      # passing out_binding in is neccesary for this partial with block
-      # inside a partial with block, bah. 
+      expand_contract_section("#{list.length - options[:limit] + 1} more", id) do
 
-      concat("</ul>", block.binding)
-
-      expand_contract_section("#{list.length - options[:limit] + 1} more", id, :out_binding => block.binding) do
-
-        concat("<ul class=\"#{options[:ul_class]}\">", block.binding)
+        concat("<ul class=\"#{options[:ul_class]}\">")
         (options[:limit]-1).upto(list.length-1) do |index|
           item = list[index]
           yield(item, index)
         end
-        concat("</ul>", block.binding)      
+        concat("</ul>")      
       end      
     else
-      concat("</ul>", block.binding)
+      concat("</ul>")
     end
   end
 
