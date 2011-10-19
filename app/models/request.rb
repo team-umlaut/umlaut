@@ -58,7 +58,7 @@ class Request < ActiveRecord::Base
       # Here we do require same session, since we don't have an explicit
       # request_id given. 
 
-      req = Request.find(:first, :conditions => ["session_id = ? and contextobj_fingerprint = ? and client_ip_addr = ?", session.session_id, param_fingerprint, client_ip ] ) unless param_fingerprint.blank?
+      req = Request.find(:first, :conditions => ["session_id = ? and contextobj_fingerprint = ? and client_ip_addr = ?", a_rails_request.session_options[:id], param_fingerprint, client_ip ] ) unless param_fingerprint.blank?
     end
     
     # Okay, if we found a req, it might NOT have a referent, it might

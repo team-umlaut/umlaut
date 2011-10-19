@@ -471,7 +471,7 @@ class ResolveController < ApplicationController
       next if services_to_run.empty?
       
       bundle = ServiceBundle.new(services_to_run , priority)
-      bundle.handle(@user_request, session.session_id)            
+      bundle.handle(@user_request, request.session_options[:id])            
     end
 
     
@@ -512,7 +512,7 @@ class ResolveController < ApplicationController
           next if services_to_run.empty?
       
           bundle = ServiceBundle.new(services_to_run , priority)
-          bundle.handle(t_request, session.session_id)
+          bundle.handle(t_request, request.session_options[:id])
 
           # Got to reload cached associations that we need, that the services
           # may have changed in another thread, sorry.  
