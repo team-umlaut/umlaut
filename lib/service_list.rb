@@ -2,7 +2,7 @@ require 'singleton'
 # This guy is a singleton, get one with ServiceList.instance
 class ServiceList
   include Singleton # call ServiceList.instance to get the singleton instance.
-  @@services_yaml_path = RAILS_ROOT+"/config/umlaut_config/services.yml"
+  @@services_yaml_path = Rails.root + "config/umlaut_config/services.yml"
 
   def initialize
     @services = nil

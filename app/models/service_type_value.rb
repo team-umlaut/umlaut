@@ -23,8 +23,8 @@ class ServiceTypeValue < ActiveRecord::Base
     return self.display_name_plural || self.display_name.pluralize
   end
 
-  @@distro_conf_file = File.join(RAILS_ROOT, "db", "orig_fixed_data", "service_type_values.yml")
-  @@local_conf_file = File.join(RAILS_ROOT, "config", "umlaut_config", "local_service_type_values.yml")
+  @@distro_conf_file = File.join(Rails.root, "db", "orig_fixed_data", "service_type_values.yml")
+  @@local_conf_file = File.join(Rails.root, "config", "umlaut_config", "local_service_type_values.yml")
   
   # Syncs db with db/orig_fixed_data/service_type_values.yml, only if
   # the db is out of date with file modified timestamp. 

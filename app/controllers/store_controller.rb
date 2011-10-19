@@ -30,7 +30,7 @@ class StoreController < ApplicationController
       
       Rails.logger.error("Permalink request could not be resolved. Returning 404. Permalink id: #{params[:id]}")
       
-      render :file=>File.join(RAILS_ROOT,"public/404.html"), :layout=>false, :status=>404
+      error_404
       return
     end
     

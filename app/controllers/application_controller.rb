@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   # Just returns a generic 404 page. Other people can redirect here if desired.
   # Uses generic 404 page already stored in public/404.html as rails convention.    
   def error_404    
-    render :file=>File.join(RAILS_ROOT,"public/404.html"), :layout=>false, :status=>404
+    render :file=>File.join(Rails.root ,"public/404.html"), :layout=>false, :status=>404
   end
 
   # Over-ride the log processing method to include referrer logging,useful

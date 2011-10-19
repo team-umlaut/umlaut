@@ -25,7 +25,7 @@ class UmlautLocalGenerator < Rails::Generator::Base
       # works. 
       distro_rel_path = File.join( "../../../../config/initializers/umlaut".split("/"))
 
-      Dir.foreach( File.join(RAILS_ROOT, "config", "initializers", "umlaut" )) do |file_name|
+      Dir.foreach( File.join(Rails.root, "config", "initializers", "umlaut" )) do |file_name|
         # skip files begining with a period, such as ".svn", "." and ".."
         # skip files beginnning "#" too, vi temp files
         next if file_name[0..0] == '.'

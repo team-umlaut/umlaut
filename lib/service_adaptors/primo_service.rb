@@ -356,8 +356,8 @@ class PrimoService < Service
   
   private
   def primo_config
-    default_file = "#{RAILS_ROOT}/config/umlaut_config/primo.yml"
-    config_file = @primo_config.nil? ? default_file : "#{RAILS_ROOT}/config/umlaut_config/"+ @primo_config
+    default_file = "#{Rails.root}/config/umlaut_config/primo.yml"
+    config_file = @primo_config.nil? ? default_file : "#{Rails.root}/config/umlaut_config/"+ @primo_config
     Rails.logger.warn("Primo config file not found: #{config_file}.") and return {} unless File.exists?(config_file)
     config_hash = YAML.load_file(config_file)
     return (config_hash.nil?) ? {} : config_hash

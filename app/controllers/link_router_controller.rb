@@ -20,8 +20,7 @@ class LinkRouterController < ApplicationController
       
       logger.warn("LinkRouter/index not found exception!: #{exception}\nReferrer: #{request.referer}\nUser-Agent:#{request.user_agent}\nClient IP:#{request.remote_addr}\n\n")
 
-      # Give em a generic 404. One is saved in public as part of standard Rails.
-      render :file=>File.join(RAILS_ROOT,"public/404.html"), :layout=>false, :status=>404
+      error_404
       return            
     end
 
