@@ -112,11 +112,7 @@ class Collection
     end
     
     # Get any institutions that the user has associated with themself
-    get_user_institutions
-
-    # Check if they are eligible for other services/institutions
-    # based on their physical location. Commented out till we fix it. 
-    #get_institutions_for_ip(@client_ip, @rails_session)      
+    get_user_institutions   
 
     # We've added institutions, now add all the services belonging to those institutions.
     gather_services()
@@ -163,39 +159,6 @@ class Collection
     #user.institutions.each do | uinst |
     #  @institutions << uinst unless @institutions.index(uinst) 
     #end
-  end
-
-  # Experimental, not in use. 
-  # Queries the OCLC Resolver Registry for any services
-  # associated with user's IP Address.
-  # Not currently working. Do not use until fixed and tested.
-  # Not even sure what this is supposed to do, since an Institution
-  # doesn't neccesarily exist for the registry entry. Create one? Needs
-  # to be rethunk. 
-  def get_institutions_for_ip(ip, session)
-    require 'resolver_registry'
-
-    client = ResolverRegistry::Client.new
-    client.lookup_all(ip).each do | inst |
-      # If we already have an institution matching this guy, skip it. 
-      next if worldcat_institution_in_collection?(inst, :check_resolver_url => true)
-          
-      # If we can possibly have an SFX resolver, check for it.
-      if ( (! inst.resolver.base_url.nil?) &&
-           (inst.resolver.vendor.nil? ||
-            inst.resolver.vendor.downcase == 'sfx' ||
-            inst.resolver.vendor.downcase == 'other') &&
-           check_supported_resolver(inst.resolver.base_url))
-
-           # We checked for it, it's good
-           sfx = Sfx.new({"service_id"=>"#{inst.oclc_inst_symbol}_#{inst.institution_id}_SFX", "priority"=>2, "display_name"=>inst.name, "base_url"=>inst.resolver.base_url})
-           service_level(2) << sfx unless service_level(2).index(sfx)
-           
-      elsif (! inst.resolver.base_url.nil?)
-        # Okay, no SFX, but we can still do coins! 
-        enable_session_coins(inst.resolver.base_url, inst.resolver.link_icon, inst.name, session)
-      end
-    end 		
   end
 
   # Experimental, not in use. 
