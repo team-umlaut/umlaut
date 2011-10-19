@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090604141711) do
+ActiveRecord::Schema.define(:version => 20111019184258) do
 
   create_table "categories", :force => true do |t|
     t.string "category",    :limit => 100, :default => "", :null => false
@@ -31,9 +31,9 @@ ActiveRecord::Schema.define(:version => 20090604141711) do
     t.datetime "created_at",                         :null => false
   end
 
+  add_index "clickthroughs", ["created_at"], :name => "click_created_idx"
   add_index "clickthroughs", ["request_id"], :name => "click_req_id"
   add_index "clickthroughs", ["service_response_id"], :name => "click_serv_resp_idx"
-  add_index "clickthroughs", ["created_at"], :name => "click_created_idx"
 
   create_table "coverages", :force => true do |t|
     t.integer "journal_id", :default => 0,  :null => false
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(:version => 20090604141711) do
     t.string   "service_id",     :default => "0", :null => false
     t.datetime "updated_at",                      :null => false
     t.text     "exception_info"
-    t.string   "status",         :default => "",  :null => false
+    t.string   "status",                          :null => false
     t.datetime "created_at"
   end
 
@@ -68,12 +68,6 @@ ActiveRecord::Schema.define(:version => 20090604141711) do
   end
 
   add_index "institutions_users", ["institution_id", "user_id", "priority"], :name => "instuserpri_id"
-
-  create_table "irrelevant_sites", :force => true do |t|
-    t.string "hostname", :default => "", :null => false
-  end
-
-  add_index "irrelevant_sites", ["hostname"], :name => "irrev_hostname"
 
   create_table "journal_titles", :force => true do |t|
     t.string  "title",      :default => "", :null => false
@@ -93,11 +87,11 @@ ActiveRecord::Schema.define(:version => 20090604141711) do
     t.datetime "updated_at"
   end
 
-  add_index "journals", ["object_id"], :name => "j_object_id"
-  add_index "journals", ["normalized_title", "page"], :name => "jrnl_norm_title"
-  add_index "journals", ["title_source_id"], :name => "jrnl_title_source_id"
-  add_index "journals", ["title"], :name => "jrnl_title_idx"
   add_index "journals", ["issn", "eissn"], :name => "jrnl_issn_idx"
+  add_index "journals", ["normalized_title", "page"], :name => "jrnl_norm_title"
+  add_index "journals", ["object_id"], :name => "j_object_id"
+  add_index "journals", ["title"], :name => "jrnl_title_idx"
+  add_index "journals", ["title_source_id"], :name => "jrnl_title_source_id"
   add_index "journals", ["updated_at"], :name => "jrnl_tstamp_idx"
 
   create_table "keywords", :force => true do |t|
@@ -126,8 +120,8 @@ ActiveRecord::Schema.define(:version => 20090604141711) do
     t.datetime "created_at"
   end
 
-  add_index "referent_values", ["referent_id", "key_name", "normalized_value"], :name => "rft_val_referent_idx"
   add_index "referent_values", ["key_name", "normalized_value"], :name => "by_name_and_normal_val"
+  add_index "referent_values", ["referent_id", "key_name", "normalized_value"], :name => "rft_val_referent_idx"
 
   create_table "referents", :force => true do |t|
     t.string   "atitle"
@@ -140,24 +134,17 @@ ActiveRecord::Schema.define(:version => 20090604141711) do
   end
 
   add_index "referents", ["atitle", "title", "issn", "isbn", "year", "volume"], :name => "rft_shortcut_idx"
-  add_index "referents", ["title"], :name => "index_referents_on_title"
-  add_index "referents", ["issn", "year", "volume"], :name => "by_issn"
   add_index "referents", ["isbn"], :name => "index_referents_on_isbn"
-  add_index "referents", ["year", "volume"], :name => "by_year"
+  add_index "referents", ["issn", "year", "volume"], :name => "by_issn"
+  add_index "referents", ["title"], :name => "index_referents_on_title"
   add_index "referents", ["volume"], :name => "index_referents_on_volume"
+  add_index "referents", ["year", "volume"], :name => "by_year"
 
   create_table "referrers", :force => true do |t|
     t.string "identifier", :default => "", :null => false
   end
 
   add_index "referrers", ["identifier"], :name => "rfr_id_idx"
-
-  create_table "relevant_sites", :force => true do |t|
-    t.string "hostname",               :default => "", :null => false
-    t.string "type",     :limit => 25
-  end
-
-  add_index "relevant_sites", ["hostname"], :name => "rel_hostname"
 
   create_table "requests", :force => true do |t|
     t.string   "session_id",             :limit => 100,  :default => "", :null => false
@@ -170,14 +157,14 @@ ActiveRecord::Schema.define(:version => 20090604141711) do
     t.string   "http_env",               :limit => 2048
   end
 
-  add_index "requests", ["referent_id", "referrer_id"], :name => "context_object_idx"
-  add_index "requests", ["session_id"], :name => "req_sess_idx"
-  add_index "requests", ["created_at"], :name => "req_created_at"
   add_index "requests", ["client_ip_addr"], :name => "index_requests_on_client_ip_addr"
   add_index "requests", ["contextobj_fingerprint"], :name => "index_requests_on_contextobj_fingerprint"
+  add_index "requests", ["created_at"], :name => "req_created_at"
+  add_index "requests", ["referent_id", "referrer_id"], :name => "context_object_idx"
+  add_index "requests", ["session_id"], :name => "req_sess_idx"
 
   create_table "service_responses", :force => true do |t|
-    t.string   "service_id",       :limit => 25,   :default => "", :null => false
+    t.string   "service_id",       :limit => 25,                   :null => false
     t.string   "response_key",                     :default => ""
     t.string   "value_string"
     t.string   "value_alt_string"
@@ -205,7 +192,6 @@ ActiveRecord::Schema.define(:version => 20090604141711) do
   end
 
   add_index "service_types", ["request_id", "service_response_id"], :name => "svc_type_idx"
-  add_index "service_types", ["service_type_value_id"], :name => "index_service_types_on_service_type_value_id"
   add_index "service_types", ["service_response_id"], :name => "index_service_types_on_service_response_id"
 
   create_table "sessions", :force => true do |t|

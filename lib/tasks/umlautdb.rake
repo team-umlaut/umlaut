@@ -2,30 +2,6 @@
 namespace :umlaut do
     desc "Perform nightly maintenance. Set up in cron."
     task :nightly_maintenance => [:load_sfx_urls, :expire_sessions, :expire_old_data]
-
-    desc "Loads in initial set of irrelvant_sites and relevant_sites"
-    task :load_sites => :environment do
-      require 'active_record/fixtures'
-      
-      # Load a starting set of relevant_sites and irrelevant_sites
-      # Magic from Rails book to load a fixture in a migration
-      fixed_data_dir = File.join(RAILS_ROOT, "db", "orig_fixed_data")
-    
-    
-      if ( RelevantSite.find(:first).nil? )
-        puts "Loading a suggested starting list of relevant_sites."
-        Fixtures.create_fixtures(fixed_data_dir, "relevant_sites")
-      else
-        puts "relevant_sites is not empty, so not loading initial data set."
-      end
-        
-      if ( IrrelevantSite.find(:first).nil? )
-        puts "Loading a suggested starting list of irrelevant_sites."
-        Fixtures.create_fixtures(fixed_data_dir, "irrelevant_sites")
-      else
-        puts "irrelevant_sites is not empty, so not loading initial data set."
-      end
-    end
   
     desc "Loads in standard Rails service_type_values."
     task :load_service_type_values => :environment do            
@@ -33,7 +9,7 @@ namespace :umlaut do
     end
     
     desc "Loads in all initial fixed data for an umlaut installation."
-    task :load_initial_data => [:load_sites, :load_service_type_values] 
+    task :load_initial_data => [:load_service_type_values] 
   
 
       desc "Loads sfx_urls from SFX installation. SFX mysql login needs to be set in config."
