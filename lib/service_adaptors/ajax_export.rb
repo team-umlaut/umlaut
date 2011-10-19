@@ -1,3 +1,5 @@
+# This is an abstract superclass other services over-ride to get
+# extra ajaxy windows upon click on link. 
 class AjaxExport < Service
   required_config_params :ajax_id, :controller
 
