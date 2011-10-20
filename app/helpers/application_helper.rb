@@ -17,7 +17,7 @@ module ApplicationHelper
         # We already have a straight string, if it looks relative, 
         # absolutize it. 
         if argument.starts_with?("/")
-          return request.scheme + "://" + request.host_with_port + (@controller.relative_url_root || "") + argument
+          return root_url.chomp("/") + argument
         else
           return super(argument)
         end
