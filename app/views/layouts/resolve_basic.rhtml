@@ -22,7 +22,7 @@
         </div>
        </div>
     
-       <%= @content_for_layout %>
+       <%= yield %>
         
        <!-- even with nothing in it, footer neccesary for CSS clear=both -->
        <div id="footer" class="footer"> <%= link_to_toggle_debug_info %> </div>
