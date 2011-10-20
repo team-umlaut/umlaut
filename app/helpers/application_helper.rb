@@ -213,7 +213,7 @@ module ApplicationHelper
     results << "\n"
     results << javascript_tag("jQuery.noConflict();") if options.include?(:jquery)
 
-    return results
+    return results.html_safe
   end
 
   
