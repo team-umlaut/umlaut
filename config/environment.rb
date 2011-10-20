@@ -20,28 +20,6 @@ Umlaut::Application.initialize!
 
 Rails::Initializer.run do |config|
 
-    # Set custom logging format, which we need our custom logger to
-    # do.
-    # for some reason manual require of active_support is neccesary to have
-    # this work in ./script/console mode. I don't know why. 
-    require 'active_support' 
-    
-    require_dependency 'umlaut_logger'
-    severity_level = ActiveSupport::BufferedLogger.const_get(config.log_level.to_s.upcase)
-    log_file = File.join(RAILS_ROOT, "log", "#{RAILS_ENV}.log")
-    
-    our_logger = UmlautLogger.new(log_file, severity_level)
-    #our_logger.formatter
-    our_logger.formatter = lambda do |severity_label, msg| 
-      time_fmtd = Time.now.strftime("%d %b %H:%M:%S")
-      preface = "[#{time_fmtd}] (pid:#{$$}) #{severity_label}: "
-      # stick our preface AFTER any initial newlines                            
-      msg =~ /^(\n+)[^\n]/
-      index = $1 ? $1.length : 0
-      return msg.insert(index, preface)
-    end
-    config.logger = our_logger
-
 
   
 
