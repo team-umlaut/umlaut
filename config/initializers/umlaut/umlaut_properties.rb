@@ -35,8 +35,24 @@
   # it's too small for umlaut. So we resize in js, if these config params
   # are given. Set to 0 to disable. 
   AppConfig::Base.minimum_window_width = 820
-  #AppConfig::Base.minimum_window_height = 0
+  AppConfig::Base.minimum_window_height = 0
 
   # Use your own custom search view? Stick in app/views/local and refer
   # to it here. 
   #AppConfig::Base.search_view = "local/my_search"
+  
+  
+  
+  
+  # Expire service responses. Service responses are only re-used by the same
+  # session that generated them. But sometimes even that's too much, we
+  # want to expire them eventually, say every 24 hours. 
+  # You can do this in two ways.
+  #
+  # A Number of seconds in an interval, eg:
+  # AppConfig.response_expire_interval = 1.day
+  #
+  # Or, sometimes it's convenient to synchronize this with some other
+  # process that runs on crontab. Say, expire at midnight every night:
+  # AppConfig.response_expire_crontab_format = "00 00 * * *"
+

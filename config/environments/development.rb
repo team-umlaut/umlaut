@@ -1,39 +1,28 @@
-# Settings specified here will take precedence over those in config/environment.rb
+Umlaut::Application.configure do
+  # Settings specified here will take precedence over those in config/application.rb
 
-# In the development environment your application's code is reloaded on
-# every request.  This slows down response time but is perfect for development
-# since you don't have to restart the webserver when you make code changes.
-#config.cache_classes = false
+  
+  # umlaut needs cache classes even in development for threading. 
+  config.cache_classes = true
 
+  # Log error messages when you accidentally call methods on nil.
+  config.whiny_nils = true
 
-  ar_logger = config.logger.clone
-  ar_logger.level = Logger::INFO
-  ActiveRecord::Base.logger = ar_logger
+  # Show full error reports and disable caching
+  config.consider_all_requests_local       = true
+  config.action_view.debug_rjs             = true
+  config.action_controller.perform_caching = false
 
-# For umlaut, this messed up our threaded code, I'm afraid, so we have to turn
-# off. 
-config.cache_classes = true
+  # Don't care if the mailer can't send
+  config.action_mailer.raise_delivery_errors = false
 
+  # Print deprecation notices to the Rails logger
+  config.active_support.deprecation = :log
 
-# Log error messages when you accidentally call methods on nil.
-config.whiny_nils = true
+  # Only use best-standards-support built into browsers
+  config.action_dispatch.best_standards_support = :builtin
+  
 
-# Show full error reports and disable caching
-config.action_controller.consider_all_requests_local = true
-config.action_controller.perform_caching             = false
-config.action_view.debug_rjs                         = true
-
-# Don't care if the mailer can't send
-config.action_mailer.raise_delivery_errors = false
-
-# turn off AR logging
-# ActiveRecord::Base.logger =  Logger.new("/dev/null")
-
-# Umlaut:
-# Call particular environment-specific local umlaut environment-like file. 
-path = File.join(RAILS_ROOT, "config", "umlaut_config", "environments", "development.rb")
-if File.exists?( path )
-    load path 
-    umlaut_configuration( config )  if methods.find {|m| m == "umlaut_configuration"}
+  
 end
 

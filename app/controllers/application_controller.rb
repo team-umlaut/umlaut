@@ -1,9 +1,11 @@
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 
-class ApplicationController < ActionController::Base
+class ApplicationController < ActionController::Base  
   require 'openurl'
 
+  protect_from_forgery
+  
   
   before_filter :app_before_filter
 
@@ -214,6 +216,7 @@ class ApplicationController < ActionController::Base
   end
 
 
+  
      
 end
 

@@ -1,3 +1,10 @@
+require 'app_config'
+require File.expand_path('../application', __FILE__)
+
+# Initialize the rails application
+Umlaut::Application.initialize!
+
+
 # Umlaut implementors: You should not need to modify this file for local
 # implementation. Local configuration goes in 
 # config/umlaut_config/environment.rb instead.
@@ -8,20 +15,8 @@
 # You can over-ride anything here over in your local config. 
 
 
-# Specifies gem version of Rails to use when vendor/rails is not present
-# Umlaut was originally developed/tested with 1.2.1, but we've succesfully
-# moved to 2.1.1.  2.2.2 coming soon. 
-RAILS_GEM_VERSION = '2.3.14' unless defined? RAILS_GEM_VERSION
 
-# Bootstrap the Rails environment, frameworks, and default configuration
-require File.join(File.dirname(__FILE__), 'boot')
 
-# We are using an old-school json library, including it in plugins.
-# It uses non-conventional path, so we need to manually include it.
-# We really ought to update/test this to use a modern ruby json gem instead.
-$LOAD_PATH.unshift "#{RAILS_ROOT}/vendor/plugins/ruby-json-1.1.2"
-
-require 'app_config'
 
 Rails::Initializer.run do |config|
 
@@ -80,9 +75,7 @@ Rails::Initializer.run do |config|
   # Only load the plugins named here, by default all plugins in vendor/plugins are loaded
   # config.plugins = %W( exception_notification ssl_requirement )
 
-  # Umlaut adds additional load paths for certain custom dirs 
-  config.autoload_paths += %W( #{RAILS_ROOT}/lib/referent_filters )
-  config.autoload_paths += %W( #{RAILS_ROOT}/lib/service_adaptors )
+
   
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)
@@ -125,16 +118,7 @@ Rails::Initializer.run do |config|
   #}
 
 
-  # Call local environment-like file for main environment  
-  
-  path =  File.join(RAILS_ROOT, "config", "umlaut_config", "environment.rb")
-  if File.exists?( path )
-    
-    
-    load path
 
-    umlaut_configuration( config ) #if methods.find {|m| m == "umlaut_configuration"}
-  end
 
 end
 

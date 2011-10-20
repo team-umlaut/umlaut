@@ -74,3 +74,25 @@
   #    %r{^http://([^\.]\.)*pubmedcentral\.com}
   #  ]
   AppConfig::Base.additional_sfx_controlled_urls = []
+  
+  
+  # "web.archive.org" is listed in SFX, but that causes suppression
+  # of MARC 856 tags from our catalog pointing to archive.org, which are
+  # being used for some digitized books. We'd like to ignore that archive.org
+  # is in SFX. Same for netlibrary.
+  AppConfig.sfx_load_ignore_hosts = [/.*\.archive\.org/, /www\.netlibrary\.com/, 'www.loc.gov']
+  
+  
+  
+  # Custom logic as to whether the ILL (doc_del) section of the resolve
+  # menu should be shown. This sample logic is, I think, copied from rsinger's
+  # original, not sure what motivates it. 
+  # AppConfig.resolve_display_ill = lambda do |umlaut_request|
+  #     return true if (umlaut_request.get_service_type('fulltext').empty? &&
+  #                     umlaut_request.get_service_type('holding').empty?) ||
+  #                     ( @umlaut_request.referent.format != 'journal' ) ||
+  #                     ( ! @umlaut.request.referent.metadata['atitle'].empty? )
+  #     return false
+  #  end
+  # Or just always display it, if it's supplied by SFX. 
+  AppConfig.resolve_display_ill = lambda {|umlaut_request| return true}
