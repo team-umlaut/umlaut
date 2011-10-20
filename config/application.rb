@@ -8,6 +8,18 @@ Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 module Umlaut
   class Application < Rails::Application
+    
+    config.after_initialize do
+
+      # Call local umlaut intializers
+      Dir["#{RAILS_ROOT}/config/umlaut_config/initializers/**/*.rb"].sort.each do |initializer|
+          load(initializer)
+      end
+  
+      # Reset all our DependentConfigs. Cool!
+      DependentConfig.permanently_reset_all
+    end
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
