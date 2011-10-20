@@ -166,8 +166,8 @@ class ResolveController < ApplicationController
       redirect_to url
     else
       # Render configed view, if configed, or "index" view if not. 
-      view = AppConfig.param("resolve_view", "resolve/index")
-      render :template => view
+      view = AppConfig.param("resolve_view", "resolve/index")      
+      render view
     end
 
   end
