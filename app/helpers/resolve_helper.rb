@@ -105,10 +105,7 @@ module ResolveHelper
   #  <% expand_contract_section("My Content", "div_id_to_use") do %>
   #      this will be hidden and shown
   #  <% end %>
-  def expand_contract_section(arg_heading, id, options={}, &block)
- 
-    
-    # Set up proper stuff for current state.  
+  def expand_contract_section(arg_heading, id, options={}, &block)         
     expanded = (params["umlaut.show_#{id}"] == "true") || options[:initial_expand] || false
 
     icon = image_tag( ( expanded ? "list_open.png" : "list_closed.png"),
@@ -116,30 +113,27 @@ module ResolveHelper
                        :class => "toggle_icon",
                        :border => "0")
     heading = content_tag(:span,( expanded ? "Hide " : "Show "), :class=>'expand_contract_action_label') + arg_heading
-    initial_hide = ( expanded ? "" : "display: none;")
-    fragment = "#{id}_toggle_link"
-
 
     
-    concat('<div class="expand_contract_section">')
-
-    action = params["action"]
+    link_params = params.merge('umlaut.request_id' => @user_request.id,
+      "umlaut_show_#{id}" => (! expanded).to_s )
+      
     # Make sure a self-referencing link from partial_html_sections
-    # really goes to full HTML view. 
-    action = "index" if action == "partial_html_sections"
+    # really goes to full HTML view.
+    link_params[:action] = "index" if link_params[:action] == "partial_html_sections"
     
-    concat( link_to( icon + heading, 
-                    params.merge({'umlaut.request_id' => @user_request.id,
-                      "umlaut.show_#{id}" => (! expanded).to_s,
-                      :anchor => fragment, :action => action}),
-                      :id => fragment,
-                      :class => "expand_contract_toggle"))
-
-    concat("<div id=\"#{id}\" class=\"expand_contract_content\" style=\"#{initial_hide}\">")      
-    yield()      
-    concat("</div><!--exc-->" )
-    concat("</div><!--exc-->" )
     
+    
+    return content_tag(:div, :class => "expand_contract_section") do
+      link_to( icon + heading, link_params, 
+            :anchor =>  "#{id}_toggle_link", 
+            :id => "#{id}_toggle_link", 
+            :class => "expand_contract_toggle" ) + "\n" +
+        content_tag(:div, :id => id, 
+                    :class => "expand_contract_content", 
+                    :style => ("display: none;" if expanded), 
+                    &block)
+    end         
   end
   
   
@@ -170,40 +164,37 @@ module ResolveHelper
   # <% end %>
   def list_with_limit(id, list, options = {}, &block)
     
+    
+    
     # backwards compatible to when third argument was just a number
     # for limit. 
     options = {:limit => options} unless options.kind_of?(Hash)  
     options[:limit] ||= 5
 
-    return if list.empty?
+    return "" if list.empty?
+            
 
-    concat("<ul class=\"#{options[:ul_class]}\">")
-
-  
-    list.each_index do |index|
-      item = list[index]
-
-      yield(item, index)
-      
-      break if list.length > options[:limit] && index >= options[:limit]-2  
+    content = "".html_safe
+    
+    content <<
+    content_tag(:ul, :class => ("" || options[:ul_class])) do        
+      list.enum_with_index.collect do |item, index|      
+        capture(item, index, &block) unless  list.length > options[:limit] && index >= options[:limit]-2        
+      end.join(" \n    ").html_safe
+    end    
+    
+    if (list.length > options[:limit] )      
+      content << 
+      expand_contract_section("#{list.length - options[:limit] + 1} more", id) do
+        content_tag(:ul, :class=>options[:ul_class]) do        
+          list.slice(options[:limit]-1..list.length-1).enum_with_index do |item, index|            
+            yield(item, index)
+          end.join(" \n    ").html_safe              
+        end          
+      end
     end
     
-    if (list.length > options[:limit] )
-      
-      concat("</ul>")
-
-      expand_contract_section("#{list.length - options[:limit] + 1} more", id) do
-
-        concat("<ul class=\"#{options[:ul_class]}\">")
-        (options[:limit]-1).upto(list.length-1) do |index|
-          item = list[index]
-          yield(item, index)
-        end
-        concat("</ul>")      
-      end      
-    else
-      concat("</ul>")
-    end
+    return content
   end
 
 
