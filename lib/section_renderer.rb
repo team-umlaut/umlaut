@@ -234,7 +234,7 @@
 # itself, you can do so with \:show_partial_only => true
 #    {:div_id => "search_inside", :partial => "search_inside", :show_partial_only => true}
 class SectionRenderer
-  
+  include ActionView::Helpers::TagHelper
   @@bg_update_sections = @@partial_update_sections = nil
 
   # First argument is the current umlaut Request object.
@@ -331,14 +331,16 @@ class SectionRenderer
   end
   
   def render_heading
+    content_tag(:div, :class=>"section_heading") 
+    
     output = ''
 
       output <<= '<div class="section_heading">' 
-      (output <<= '<h3>' << section_title << '</h3>') if section_title      
-      (output <<= '<p class="section_prompt">' << section_prompt << '</p>') if section_prompt      
+      (output <<= '<h3>' << CGI::escapeHTML(section_title) << '</h3>') if section_title      
+      (output <<= '<p class="section_prompt">' << CGI::escapeHTML(section_prompt) << '</p>') if section_prompt      
       output <<= '</div>'
-    
-    output
+      
+    output.html_safe
   end
 
   def show_spinner?
