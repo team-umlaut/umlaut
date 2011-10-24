@@ -57,9 +57,8 @@
     <tr>
       <td colspan="4">
             
-            <%
-              hidden_div_id = "copies_#{p.id}"
-              list_with_limit(hidden_div_id, target[:coverage_str_array]) do |item, index|
+            <%=              
+              list_with_limit("copies_#{p.id}", target[:coverage_str_array]) do |item, index|
             %>
               <li><%= item %></li>
             <% end %>
