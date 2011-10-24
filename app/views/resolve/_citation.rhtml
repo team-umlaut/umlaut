@@ -8,9 +8,9 @@ cite = @user_request.referent.to_citation
 %>
 
     <tr>
-      <td class="largeTextb" width="90" valign="TOP"><div align="right"><%= h(cite[:title_label]) %>:</div></td> 
+      <td class="largeTextb" width="90" valign="TOP"><div align="right"><%= cite[:title_label] %>:</div></td> 
       
-      <td class="largeText"><%= h(cite[:title]) %></td>
+      <td class="largeText"><%= cite[:title] %></td>
    </tr>
 <% # Try to warn if this could be a typo. If we have an rft.object_id, then
    # SFX recognized it as an actually existing journal. If not, then it
@@ -29,14 +29,14 @@ if cite[:author]
 %>
 <tr>
   <td width="90" class="largeTextb"><div align="right">Author:</div></td>
-  <td class="largeText"><%= h(cite[:author]) %></td>
+  <td class="largeText"><%= cite[:author] %></td>
  </tr>
 <% 
 end
 if cite[:subtitle] %>
  <tr>
- <td width="90"><div align="right" class="smallTextb"><strong><%= h(cite[:subtitle_label]) %>:</strong></div></td>
- <td><span class="smallText"><%= h(cite[:subtitle]) %></span></td>
+ <td width="90"><div align="right" class="smallTextb"><strong><%= cite[:subtitle_label] %>:</strong></div></td>
+ <td><span class="smallText"><%= cite[:subtitle] %></span></td>
  </tr>
 <%
 end
@@ -44,7 +44,7 @@ end
 if (cite[:issn] && ! cite[:issn].empty?)  %>
 <tr>
   <td><div align="right" class="smallTextb"><strong>ISSN:</strong></div></td>
-  <td><span class="smallText"><%=h(cite[:issn]) %></span></td>
+  <td><span class="smallText"><%= cite[:issn] %></span></td>
 </tr>
 <%
 end
@@ -52,7 +52,7 @@ end
 if (cite[:isbn] && ! cite[:isbn].empty? ) %>
 <tr>
   <td><div align="right" class="smallTextb">ISBN:</strong></div></td>
-  <td><span class="smallText"><%=h(cite[:isbn]) %></span></td>
+  <td><span class="smallText"><%= cite[:isbn] %></span></td>
 </tr>
 <%
 end %>
@@ -60,20 +60,20 @@ end %>
 <% unless cite[:pub].blank?  %>
 <tr>
   <td><div align="right" class="smallTextb">Publisher:</div></td>
-  <td><span class="smallText"><%= h(cite[:pub]) %> <td></tr>
+  <td><span class="smallText"><%= cite[:pub] %> <td></tr>
 <% end %>
 
 <%
 pub = []
 pub << date_format(cite[:date]) unless cite[:date].blank?	
-pub << 'Volume:&nbsp;&nbsp;'+h(cite[:volume]) unless cite[:volume].blank?
-pub << 'Issue:&nbsp;&nbsp;'+h(cite[:issue]) unless cite[:issue].blank?	
-pub << 'Page:&nbsp;&nbsp;'+h(cite[:page]) unless cite[:page].blank?
+pub << 'Volume:&nbsp;&nbsp;'.html_safe + html_escape(cite[:volume]) unless cite[:volume].blank?
+pub << 'Issue:&nbsp;&nbsp;'.html_safe + html_escape(cite[:issue]) unless cite[:issue].blank?	
+pub << 'Page:&nbsp;&nbsp;'.html_safe + html_escape(cite[:page]) unless cite[:page].blank?
 if pub.length > 0
 %>
  <tr> 
   <td><div align="right" class="smallTextb">Published:</div></td>
-  <td><span class="smallText"><%= pub.join('&nbsp;&nbsp;')%></span></td>
+  <td><span class="smallText"><%= pub.join('&nbsp;&nbsp;').html_safe %></span></td>
  </tr>
 <% end %>
 </table>
