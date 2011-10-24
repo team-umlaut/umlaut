@@ -107,7 +107,7 @@ module ResolveHelper
   #  <% end %>
   def expand_contract_section(arg_heading, id, options={}, &block)         
     expanded = (params["umlaut.show_#{id}"] == "true") || options[:initial_expand] || false
-
+    
     icon = image_tag( ( expanded ? "list_open.png" : "list_closed.png"),
                        :alt => "",
                        :class => "toggle_icon",
@@ -131,7 +131,7 @@ module ResolveHelper
             :class => "expand_contract_toggle" ) + "\n" +
         content_tag(:div, :id => id, 
                     :class => "expand_contract_content", 
-                    :style => ("display: none;" if expanded), 
+                    :style => ("display: none;" unless expanded), 
                     &block)
     end         
   end
