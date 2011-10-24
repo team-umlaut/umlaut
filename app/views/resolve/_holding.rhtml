@@ -87,23 +87,5 @@ if (holdings.blank? && searches.blank? && ! service_types_in_progress?(['holding
 <%
 end %>
 
-<% if session[:coins] %>
-  <p>&nbsp;</p>
-
-  <p><strong>Check for holdings:</strong></p>
-<p><ul>
-<%    session[:coins].each { | coins |
-        unless coins[:text]
-          label = image_tag(coins[:icon], :border=>0)
-        else
-          label = coins[:text]
-        end
-    %>
-    <li><a href="<%= coins[:host]%>?<%= @user_request.referent.to_context_object.kev %>" target="_blank"><%= label %></a></li>
-    
-    <%}%>
-    </ul></p>
-<%   end
-%>
 
 </div>
