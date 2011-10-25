@@ -427,8 +427,11 @@ class ResolveController < ApplicationController
      elsif ( format == 'json' || format == "jsonp")
         # get the xml in a string
         xml_str = render_to_string(:layout=>false)
-        # convert to hash
-        data_as_hash = Hash.from_xml( xml_str )
+        # convert to hash. For some reason the ActionView::OutputBuffer
+        # we actually have (which looks like a String but isn't exactly)
+        # can't be converted to a hash, we need to really force String
+        # with #to_str
+        data_as_hash = Hash.from_xml( xml_str.to_str )
         # And conver to json. Ta-da!
         json_str = data_as_hash.to_json
   
