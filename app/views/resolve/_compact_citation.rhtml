@@ -11,7 +11,7 @@ if cite[:author]
 %><span class="smallText"><%= h(cite[:author].chomp) -%>.</span>
 <% end %>
 
-<span class="smallText">"<%= h(truncate(cite[:title],70,'...')) %>"
+<span class="smallText">"<%= h(truncate(cite[:title], :length => 70, :seperator => '...')) %>"
 
 
 
