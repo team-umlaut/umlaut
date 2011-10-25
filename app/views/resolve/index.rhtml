@@ -17,7 +17,7 @@
             <div class="resource_info_sections">
               <% SectionRenderer.html_sections(:resource_info).each do |section|
               %>
-                <% content_tag "div", :id => section[:div_id] do %>
+                <%= content_tag "div", :id => section[:div_id] do %>
                   <%= render_section(section) %>
                 <% end %>
               <% end %>
@@ -38,7 +38,7 @@
     <div class="main_response_list">
       <% SectionRenderer.html_sections(:main).each do |section|
       %>
-        <% content_tag "div", :id => section[:div_id] do %>
+        <%= content_tag "div", :id => section[:div_id] do %>
           <%= render_section(section) %>
         <% end %>
       <% end %>
@@ -51,7 +51,7 @@
   
       <% SectionRenderer.html_sections(:sidebar).each do |section|
       %>
-        <% content_tag "div", :id => section[:div_id] do %>
+        <%= content_tag "div", :id => section[:div_id] do %>
           <%= render_section(section) %>
         <% end %>
       <% end %>
