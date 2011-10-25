@@ -492,11 +492,6 @@ hr {
 
 .largeText { font-size:12px;}
 .largeTextb { font-size:12px; font-weight:bold;}
-.exlargeText {
-	font-size:14px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-weight: bold;
-}
 .smallText { font-size:10px;}
 .smallTextb { font-size:10px; font-weight:bold;}
 .smallTextlink { font-size:10px; color:#0066CC} 
@@ -570,6 +565,53 @@ div.auto_complete ul strong.highlight {
 	line-height:18px;
 }
 .journalList a {color: #0066CC; }
+
+/* search results */
+
+ul.citation {
+  width: 80%;
+  float: left;
+  clear: both;
+  position: relative;
+}
+
+ul.citation li {
+  padding-bottom: 0.66em;
+  float: left;
+}
+
+.citation .label {
+  display: block;
+  text-align: right;
+  width: 100px; 
+  font-weight: bold;
+  float: left;
+  clear: left;
+}
+
+.citation .value {
+  display: block;  
+  float: left;  
+  width: 400px;
+  margin-left: 20px;
+}
+
+.citation .issn, .citation .isbn, .citation .cite, .citation .pub {
+  font-size: 80%;
+}
+.citation .cite {
+  margin-left: 120px; 
+  clear: left;
+  
+}
+
+.citation_link {
+  float: left;
+  width: 18%;
+}
+
+
+
   
 /***************************************************************/
 /*  Banner page                                                */

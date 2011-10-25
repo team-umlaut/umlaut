@@ -3,106 +3,90 @@
   ref_meta = @current_context_object.referent.metadata  
   labels = referent_labels
 %>
-    <table width="100%" cellpadding="3" cellspacing="0">
-      <tr><td>
-        <table width="100%" cellpadding="3" cellspacing="0">
+  <ul class="citation">
+
           <% if ! ref_meta["atitle"].blank? %>
-            <tr>
-              <td class="largeTextb" width="90" valign="TOP"><div align="right">
-                <%= labels.atitle %>:</div>
-               </td> 
-              <td class="largeText">
-                <%= ref_meta["atitle"] %>               
-              </td>
-            </tr>
+            <li class="atitle">
+                <span class="label"><%= labels.atitle %>:</span>
+                <span class="value"><%= ref_meta["atitle"] %></span>               
+            </li>              
          <% end %>
+         
          <% unless ref_meta["au"].nil? and ref_meta['aulast'].nil? %>
-           <tr>
-            <td width="90" class="largeTextb">
-              <div align="right">Author:</div>
-            </td>
-            <td class="largeText">
+           <li class="au">
+            <span class="label">Author:</span>
+            <span class="value">
               <%= ref_meta["au"] || ref_meta["aulast"] %>         
               <% if ref_meta["aufirst"] || ref_meta["auinit"] || ref_meta["auinit1"]%>
               ,	<%= ref_meta["aufirst"] || ref_meta["auinit"] || ref_meta["auinit1"] %>
               <% end %>
-            </td>
-          </tr>
+            </span>
+          </li>
         <% end %>
-     <% if ref_meta.has_key?("jtitle")  or ref_meta.has_key?("title") or ref_meta.has_key?("btitle") %>
-        <tr>
-          <td width="90" style="vertical-align: top;">
-            <div align="right" class="<%= ref_meta["atitle"] ? 'largeText' : 'smallText' %>">
-            <strong><%= labels.title %></strong>
-          </td>
-          <td>
-            <span class="<%= ref_meta["atitle"] ? 'largeText' : 'smallText' %>">     
+        
+        <% if ref_meta.has_key?("jtitle")  or ref_meta.has_key?("title") or ref_meta.has_key?("btitle") %>
+          <li class="title">
+            <span class="label">            
+              <%= labels.title %>:
+            </span>
+            <span class="value">                 
               <%= link_to(ref_meta["title"] || ref_meta["btitle"] || ref_meta["jtitle"], 
                 url_for_with_co({:controller => 'resolve'}, @current_context_object), 
                 {:target => search_result_target_window}) 
                %>
             </span>
-          </td>
-        </tr>
-     <% end %>
+           </li>
+         <% end %>
      
-     <% if ref_meta.has_key?("issn") %>
-        <tr>
-        <td>
-          <div align="right" class="smallTextb">ISSN:</div>
-        </td>
-        <td>
-          <span class="smallText"><%=ref_meta["issn"] %></span>
-        </td>
-      </tr>
-    <% end %>
+        <% if ref_meta.has_key?("issn") %>
+          <li class="issn">
+            <span class="label">ISSN:</span>
+            <span class="value"><%=ref_meta["issn"] %></span>
+          </li>      
+        <% end %>
     
-    <% if ref_meta.has_key?("isbn") %>
-      <tr>
-        <td><div align="right" class="smallTextb">ISBN:</div></td>
-        <td><span class="smallText"><%=ref_meta["isbn"] %></span></td>
-      </tr>
-    <% end %>
+        <% if ref_meta.has_key?("isbn") %>
+          <ul class="isbn">
+            <span class="label">ISBN:</span>
+            <span class="value"><%=ref_meta["isbn"] %></span>
+          </ul>      
+        <% end %>
     
     
-<% if ( ref_meta.has_key?("date") || ref_meta.has_key?("volume") || ref_meta.has_key?("issue") || ref_meta.has_key?("spage")) %>
-  <tr><td>
-    <%=  date_format(ref_meta["date"].to_s) %>
-    
-    <% if ref_meta.has_key?("volume") %> 
-      Volume:&nbsp;&nbsp;' <%= ref_meta["volume"] %>&nbsp;&nbsp;
-    <% end %>
-    
-    <% if ref_meta.has_key?("issue") %>
-      Issue:&nbsp;&nbsp; <%= ref_meta["issue"]  %>&nbsp;&nbsp;
-    <% end %>
-    
-    <% if ref_meta.has_key?("spage") %> 
-      Page:&nbsp;&nbsp; <%= ref_meta["spage"] %>&nbsp;&nbsp;
-    <% end %>
-    
-    <% if ref_meta.has_key?("epage") %>
-      -  <%= ref_meta["epage"] %>
-    <% end %>
-  </td></tr>
-<% end %>
+        <% if ( ref_meta.has_key?("date") || ref_meta.has_key?("volume") || ref_meta.has_key?("issue") || ref_meta.has_key?("spage")) %>
+          <li class="cite">
+            <%=  date_format(ref_meta["date"].to_s) %>    
+            <% if ref_meta.has_key?("volume") %> 
+              Volume:&nbsp;&nbsp; <%= ref_meta["volume"] %>&nbsp;&nbsp;
+            <% end %>    
+            <% if ref_meta.has_key?("issue") %>
+              Issue:&nbsp;&nbsp; <%= ref_meta["issue"]  %>&nbsp;&nbsp;
+            <% end %>    
+            <% if ref_meta.has_key?("spage") %> 
+              Page:&nbsp;&nbsp; <%= ref_meta["spage"] %>&nbsp;&nbsp;
+            <% end %>    
+            <% if ref_meta.has_key?("epage") %>
+              -  <%= ref_meta["epage"] %>
+            <% end %>
+          </li>
+        <% end %>
 
-<% unless ref_meta['pub'].blank? && ref_meta['place'].blank? %>
- <tr> 
-   <td style="vertical-align: top;"><div align="right" class="smallTextb" >Publisher:</div></td>
-   <td><span class="smallText">
-     <% unless ref_meta['place'].blank?  %>
-        <%= ref_meta['place'] %> :
-     <% end %>
-     <%= ref_meta['pub'] %>
-     </span>
-   </td>
- </tr>
-<% end %>
+        <% unless ref_meta['pub'].blank? && ref_meta['place'].blank? %>
+          <li class="pub">
+            <span class="label" >Publisher:</span>
+            <span class="value">
+              <% unless ref_meta['place'].blank?  %>
+                <%= ref_meta['place'] %> :
+              <% end %>
+              <%= ref_meta['pub'] %>
+            </span>
+          </li>
+         <% end %>
+   </ul>
 
-</table>
-
-</td><td width="10%" align='right'><%= resolver_link(@current_context_object, {:target => search_result_target_window}) %></td></tr></table>
+<div class="citation_link">
+  <%= resolver_link(@current_context_object, {:target => search_result_target_window}) %>
+</div>
 
 
 
