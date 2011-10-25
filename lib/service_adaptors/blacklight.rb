@@ -70,7 +70,7 @@ class Blacklight < Service
   def handle(request)
     ids_processed = []
     holdings_added = 0
-    debugger
+
     if (@identifier_search && url = blacklight_precise_search_url(request) )
       doc = Nokogiri::XML( http_fetch(url).body )
       
