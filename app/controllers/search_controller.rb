@@ -261,7 +261,7 @@ class SearchController < ApplicationController
       params_c = params.clone  
   
       # Take out the weird ones that aren't really part of the OpenURL
-      ignored_keys = [:journal, "__year", "__month", "__day", "action", "controller", "Generate_OpenURL2", "rft_id_type", "rft_id_value"]
+      ignored_keys = [:journal, "utf8", "__year", "__month", "__day", "action", "controller", "Generate_OpenURL2", "rft_id_type", "rft_id_value"]
       ignored_keys.each { |k| params_c.delete(k) }
       
       # Normalize ISSN to have dash
