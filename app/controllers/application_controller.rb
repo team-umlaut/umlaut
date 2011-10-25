@@ -215,7 +215,21 @@ class ApplicationController < ActionController::Base
         
   end
 
-
+  # Let you render templates or partials in a different format
+  # than current request format. 
+  #     with_format("xml") do
+  #        render 
+  #     end
+  def with_format(format, &block)
+    old_formats = formats
+    begin
+      self.formats = [format]
+      return block.call
+    ensure
+      self.formats = old_formats
+    end
+  end
+  helper_method :with_format
   
      
 end

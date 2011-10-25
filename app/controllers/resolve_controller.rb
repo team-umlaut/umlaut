@@ -429,13 +429,16 @@ class ResolveController < ApplicationController
         
     
     respond_to do |format|
-      format.xml do 
+      format.xml do         
         render(:layout => false)
       end
       
-      format.any("json") do        
+      format.json do        
         # get the xml in a string
-        xml_str = render_to_string(:layout=>false)
+        xml_str = 
+          with_format(:xml) do
+            render_to_string(:layout=>false)
+          end
         # convert to hash. For some reason the ActionView::OutputBuffer
         # we actually have (which looks like a String but isn't exactly)
         # can't be converted to a hash, we need to really force String

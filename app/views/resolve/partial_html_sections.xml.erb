@@ -15,7 +15,9 @@
     <service_load_complete value="<%= ! renderer.services_in_progress?  %>" />
     <response_count value="<%= renderer.responses_list.length %>" />
     <html_content>
-      <%=  escape_xml(  render_section(renderer) ).html_safe %> 
+      <%=  with_format("html") do 
+        escape_xml(  render_section(renderer) ).html_safe 
+      end %> 
     </html_content>    
   </html_section>
 <% end %>
@@ -26,7 +28,9 @@
      %>
      <html_section id="ERRORS">
        <html_content>
-        <%= escape_xml( render(:partial => error_div_info[:partial].to_s)).html_safe %>
+        <%= with_format("html") do 
+          escape_xml( render(:partial => error_div_info[:partial].to_s)).html_safe 
+        end %>
        </html_content>
      </html_section>
      <% end %>
