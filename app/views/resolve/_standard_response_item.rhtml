@@ -53,7 +53,11 @@
 <% end
 %>
 <% unless view_data[:notes].blank? %>
-  <div class="response_notes"><%= view_data[:notes] %></div>
+  <%-
+    # legacy, the 'notes' field can take raw html, we need to leave it that way for
+    #now, but it's not great.
+    -%>
+  <div class="response_notes"><%= view_data[:notes].html_safe %></div>
 <% end %>
 <% unless view_data[:authentication].blank? %>
   <div class="response_authentication_instructions"><strong>Authentication:</strong> <%= view_data[:authentication] %></div>
