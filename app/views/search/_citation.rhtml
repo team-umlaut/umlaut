@@ -1,189 +1,106 @@
-<%
+<% 
   # save the conversion to hash on every call!
-  ref_meta = @current_context_object.referent.metadata
+  ref_meta = @current_context_object.referent.metadata  
+  labels = referent_labels
 %>
     <table width="100%" cellpadding="3" cellspacing="0">
-
-
-<tr><td><table width="100%" cellpadding="3" cellspacing="0">
-<%
-atitle_label = nil
-title_label = nil
-if ! ref_meta["atitle"].blank? %>
+      <tr><td>
+        <table width="100%" cellpadding="3" cellspacing="0">
+          <% if ! ref_meta["atitle"].blank? %>
+            <tr>
+              <td class="largeTextb" width="90" valign="TOP"><div align="right">
+                <%= labels.atitle %>:</div>
+               </td> 
+              <td class="largeText">
+                <%= ref_meta["atitle"] %>               
+              </td>
+            </tr>
+         <% end %>
+         <% unless ref_meta["au"].nil? and ref_meta['aulast'].nil? %>
+           <tr>
+            <td width="90" class="largeTextb">
+              <div align="right">Author:</div>
+            </td>
+            <td class="largeText">
+              <%= ref_meta["au"] || ref_meta["aulast"] %>         
+              <% if ref_meta["aufirst"] || ref_meta["auinit"] || ref_meta["auinit1"]%>
+              ,	<%= ref_meta["aufirst"] || ref_meta["auinit"] || ref_meta["auinit1"] %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+     <% if ref_meta.has_key?("jtitle")  or ref_meta.has_key?("title") or ref_meta.has_key?("btitle") %>
         <tr>
-          <td class="largeTextb" width="90" valign="TOP"><div align="right">
-<% 
-unless ref_meta['genre'].blank?
-	case ref_meta["genre"]
-		when /article|journal|issue/
-			atitle_label = 'Article Title'
-			title_label = 'Journal Title'
-		when /bookitem|book/
-			atitle_label = 'Chapter/Part Title'
-			title_label = 'Book Title'
-		when /proceeding|conference/
-			atitle_label = 'Proceeding Title'
-			title_label = 'Conference Name'
-		when 'report'
-			atitle_label = 'Report Title'
-			title_label = 'Report'
-	end
-else 
-	if @current_context_object.referent.format == 'book'
-		atitle_label = 'Chapter/Part Title'
-	elsif @current_context_object.referent.format == 'journal'
-		atitle_label = 'Article Title'
-	end
-	title_label = 'Title'
-end
+          <td width="90" style="vertical-align: top;">
+            <div align="right" class="<%= ref_meta["atitle"] ? 'largeText' : 'smallText' %>">
+            <strong><%= labels.title %></strong>
+          </td>
+          <td>
+            <span class="<%= ref_meta["atitle"] ? 'largeText' : 'smallText' %>">     
+              <%= link_to(ref_meta["title"] || ref_meta["btitle"] || ref_meta["jtitle"], 
+                url_for_with_co({:controller => 'resolve'}, @current_context_object), 
+                {:target => search_result_target_window}) 
+               %>
+            </span>
+          </td>
+        </tr>
+     <% end %>
+     
+     <% if ref_meta.has_key?("issn") %>
+        <tr>
+        <td>
+          <div align="right" class="smallTextb">ISSN:</div>
+        </td>
+        <td>
+          <span class="smallText"><%=ref_meta["issn"] %></span>
+        </td>
+      </tr>
+    <% end %>
+    
+    <% if ref_meta.has_key?("isbn") %>
+      <tr>
+        <td><div align="right" class="smallTextb">ISBN:</div></td>
+        <td><span class="smallText"><%=ref_meta["isbn"] %></span></td>
+      </tr>
+    <% end %>
+    
+    
+<% if ( ref_meta.has_key?("date") || ref_meta.has_key?("volume") || ref_meta.has_key?("issue") || ref_meta.has_key?("spage")) %>
+  <tr><td>
+    <%=  date_format(ref_meta["date"].to_s) %>
+    
+    <% if ref_meta.has_key?("volume") %> 
+      Volume:&nbsp;&nbsp;' <%= ref_meta["volume"] %>&nbsp;&nbsp;
+    <% end %>
+    
+    <% if ref_meta.has_key?("issue") %>
+      Issue:&nbsp;&nbsp; <%= ref_meta["issue"]  %>&nbsp;&nbsp;
+    <% end %>
+    
+    <% if ref_meta.has_key?("spage") %> 
+      Page:&nbsp;&nbsp; <%= ref_meta["spage"] %>&nbsp;&nbsp;
+    <% end %>
+    
+    <% if ref_meta.has_key?("epage") %>
+      -  <%= ref_meta["epage"] %>
+    <% end %>
+  </td></tr>
+<% end %>
 
-%>
-
-<%= atitle_label %>:</div></td> <td class="largeText">
-
-<%= ref_meta["atitle"] %>
-
-<% unless @context_object.nil? or ref_meta["atitle"] == @context_object.referent.metadata["atitle"]%>
-	<%= 
-  link_to( image_tag('http://sfx.galib.uga.edu/sfx_git1/sfx.gif', :border=>0), url_for_with_co( {:controller=>'resolve'}, @current_context_object)) %>
-<% end%>
-</td>
-</tr>
-<%
-@page_title = ref_meta["atitle"]
-end
-author_row = ''
-title_row = ''
-unless ref_meta["au"].nil? and ref_meta['aulast'].nil?
-author_row = '<tr><td width="90" class="largeTextb"><div align="right">Author:</div></td><td class="largeText">' 
-	unless ref_meta["au"].nil?
-		author_row += ref_meta["au"]
-	else 
-	author_row += ref_meta["aulast"]
-	unless ref_meta["aufirst"].nil?
-		author_row += ',	'+ref_meta["aufirst"]
-	else
-		unless ref_meta["auinit"].nil?
-			author_row += ',	'+ref_meta["auinit"]
-		else
-			unless ref_meta["auinit1"].nil?
-				author_row += ',	'+ref_meta["auinit1"]
-			end
-			unless ref_meta["auinitm"].nil?
-				author_row += ref_meta["auinitm"]
-			end
-		end
-	end
-	end
-	author_row += '</td></tr>'
-end 
- if ref_meta.has_key?("jtitle")  or ref_meta.has_key?("title") or ref_meta.has_key?("btitle")
-    @co = OpenURL::ContextObject.new
-    @co.import_context_object(@current_context_object)
-    #@co.referent.metadata["atitle"] = nil
-    #@co.referent.metadata["volume"] = nil
-    #@co.referent.metadata["spage"] = nil
-    #@co.referent.metadata["epage"] = nil
-    #@co.referent.metadata["issue"] = nil
-    #@co.referent.metadata["date"] = nil
-    #@co.referent.metadata["aulast"] = nil
-    #@co.referent.metadata["au"] = nil
-    #@co.referent.metadata["auinit"] = nil
-    #@co.referent.metadata["auinit1"] = nil
-    # @co.referent.set_identifier(nil) 
-    if ! @co.referent.metadata["title"].blank?
-      title = @co.referent.metadata["title"]
-    elsif ! @co.referent.metadata["btitle"].blank?
-      title = @co.referent.metadata["btitle"]
-    elsif ! @co.referent.metadata["jtitle"].blank?
-      title = @co.referent.metadata["jtitle"]
-    end
-		if title_label.nil?
-			unless ref_meta['genre'].blank?
-				case ref_meta["genre"]
-					when /article|journal|issue/
-						title_label = 'Journal Title'
-					when /bookitem|book/
-						title_label = 'Book Title'
-					when /proceeding|conference/
-						title_label = 'Conference Name'
-					when 'report'
-						title_label = 'Report Title'
-				end
-			else 
-				title_label = 'Title'
-			end		
-		end	
-
-style = 'largeText'
-unless ref_meta['atitle'].nil?
-	style = 'smallText'
-end
-title_row = '<tr><td width="90" style="vertical-align: top;"><div align="right" class="'+style+'"><strong>'+title_label+':</strong></td><td><span class="'+style+'">'
-
-title_row += link_to(title, url_for_with_co({:controller => 'resolve'}, @co), {:target => search_result_target_window})
-
-title_row += '</span></td></tr>'
-  unless @page_title
-   @page_title = title
-  end
-end
-unless ref_meta['atitle'].blank? %>
-<%= author_row.to_s + title_row.to_s %>
-<% else %>
-<%= title_row.to_s+author_row.to_s %>
-<%
-end
-if ref_meta.has_key?("issn") %>
-<tr>
-  <td><div align="right" class="smallTextb">ISSN:
-</strong></div></td>
-<td><span class="smallText"><%=ref_meta["issn"] %></span></td>
-</tr>
-<%
-end
-
-if ref_meta.has_key?("isbn") %>
-<tr>
-  <td><div align="right" class="smallTextb">ISBN:
-</strong></div></td>
-<td><span class="smallText">  
-<%=ref_meta["isbn"] %></span></td></tr>
-<%
-end
-pub = []
-if ref_meta.has_key?("date")
-	pub << date_format(ref_meta["date"].to_s)
-end
-if ref_meta.has_key?("volume") 
-	pub << 'Volume:&nbsp;&nbsp;'+ref_meta["volume"].to_s
-end
-if ref_meta.has_key?("issue")
-	pub << 'Issue:&nbsp;&nbsp;'+ref_meta["issue"].to_s
-end
-
-if ref_meta.has_key?("spage") 
-	pub << 'Page:&nbsp;&nbsp;'+ref_meta["spage"].to_s
-end
-if ref_meta.has_key?("epage")
-	pub << '-  '+ref_meta["epage"].to_s
-end
-%>
-
-<%
- unless ref_meta['pub'].blank? &&
-        ref_meta['place'].blank? %>
- <tr> <td style="vertical-align: top;"><div align="right" class="smallTextb" >Publisher:</div></td>
-  <td><span class="smallText">
-  <% unless ref_meta['place'].blank?  %>
-      <%= ref_meta['place'] %> :
-  <% end %>
-  <%= ref_meta['pub'] %>
-</span></td>
+<% unless ref_meta['pub'].blank? && ref_meta['place'].blank? %>
+ <tr> 
+   <td style="vertical-align: top;"><div align="right" class="smallTextb" >Publisher:</div></td>
+   <td><span class="smallText">
+     <% unless ref_meta['place'].blank?  %>
+        <%= ref_meta['place'] %> :
+     <% end %>
+     <%= ref_meta['pub'] %>
+     </span>
+   </td>
  </tr>
 <% end %>
 
-      </table>
+</table>
 
 </td><td width="10%" align='right'><%= resolver_link(@current_context_object, {:target => search_result_target_window}) %></td></tr></table>
 
