@@ -53,7 +53,7 @@
     links.unshift(link_to('Previous', args.merge({'page' => @page -1 }))) if @page > 1
     links.push(link_to('Next', args.merge({'page' => @page + 1}))) if @page < total_pages
 %>
-<%= content_tag :div, links.join(' ') %>
+<%= content_tag :div, links.join(' ').html_safe %>
 <%
   end
 %>
