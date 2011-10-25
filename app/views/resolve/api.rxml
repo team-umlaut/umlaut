@@ -24,7 +24,7 @@ xml.umlaut do
         end
         xml.service_types_generated do         
           dispatched.service.service_types_generated.each do |type|
-            xml.type(type.name )
+            xml.name(type.name )
           end
         end
       end
