@@ -4,8 +4,9 @@
 %>
 
 
-  <%
-      list_with_limit('umlaut_cited_by', cited_by, :ul_class => "related_items response_list") do |item, index |  %>           
+  <%= list_with_limit('umlaut_cited_by', 
+          cited_by, 
+          :ul_class => "related_items response_list") do |item, index |  %>           
         <%= render(:partial => "standard_response_item", :object=> item, :locals => { :show_source => true, :li_class => "related_item"}) %>
   <%    end %> 
     
@@ -15,8 +16,9 @@
     <br class="seperator"/>
   <% end %>
 
-  <%
-      list_with_limit('umlaut_similar_items', similar, :ul_class =>"related_items response_list") do |item, index |  %>           
+  <%=  list_with_limit('umlaut_similar_items', 
+          similar, 
+          :ul_class =>"related_items response_list") do |item, index |  %>           
         <%= render(:partial => "standard_response_item", :object=> item, :locals => { :show_source => true}) %>
   <%    end %>
   
