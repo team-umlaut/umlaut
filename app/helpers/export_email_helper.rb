@@ -29,17 +29,6 @@ module ExportEmailHelper
   end
 
 
-  # We override form_remote_tag to add a paramter :remote which if
-  # set to false will generate an ordinary form instead of a remote form.
-  def form_remote_tag(options = {}, &block)        
-    if ( options[:remote] != false)
-      super(options, &block)
-    else
-      new_options = options[:html]
-      url = new_options.delete(:action)
-      form_tag(url, new_options, &block)
-    end
-  end
 
   
 end
