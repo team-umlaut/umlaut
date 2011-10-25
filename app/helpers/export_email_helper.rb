@@ -12,18 +12,19 @@ module ExportEmailHelper
   end
 
   def formatted_html_holding_status(view_data)
-    output = ""
+    output = "".html_safe
 
-    output << ('<span class="collection">' +
-                view_data[:collection_str] +
-                '</span') if view_data[:collection_str]
-    output << (' ' + '<span class="call_no">' + ' ' +
-                view_data[:call_number] +
-               '</span') if view_data[:call_number]
-    output << (' ' + '<span class="status">' + ' ' +
-               view_data[:status] +
-               '</span>') if view_data[:status]
     
+    if view_data[:collection_str]
+      output << content_tag("span", view_data[:collection_str], :class => "collection") 
+    end
+    if view_data[:call_number]
+      output << " ".html_safe << content_tag("span", view_data[:call_number], :class => "call_no")
+    end
+    if view_data[:status]
+      output << " ".html_safe << content_tag("span", view_data[:status], :class => "status")
+    end
+      
     return output
   end
 
