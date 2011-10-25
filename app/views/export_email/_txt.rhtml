@@ -52,7 +52,6 @@ unless @user_request.nil?
     <p class="smallText"><em>Note: charges may apply if your service plan does not cover unlimited texting</em></p>
   
     <%= submit_tag 'Send!' %>
-    <%= link_to_remote 'Cancel', :url => {:controller => "export_email", :action => "reset", :id => @svc_type.id}, :html => {:class => "cancel"}%>
     
 
   </div>

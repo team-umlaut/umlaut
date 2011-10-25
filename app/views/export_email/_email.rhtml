@@ -15,8 +15,7 @@ cite = @user_request.referent.to_citation %>
     <%= text_field_tag 'email', params[:email] %>
   </div>
   <div class="section">
-    <%= submit_tag 'Send!' %>
-    <%= link_to_remote 'Cancel', :url => {:controller => "export_email", :action => "reset", :id => @svc_type.id}, :html => {:class => "cancel"}%>
+    <%= submit_tag 'Send!' %>    
   </div>
 <%
 end 
