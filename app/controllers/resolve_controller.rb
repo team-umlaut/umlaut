@@ -417,14 +417,23 @@ class ResolveController < ApplicationController
   # XML or JSON(p).  Is called from an action that has a standardly rendered
   # Rails template that delivers XML.  Will convert that standardly rendered
   # template output to json using built in converters if needed.  
-  def api_render
+  def api_render    
     # Format?
-    format = (params["umlaut.response_format"]) || "xml"
+    request.format = "xml" if request.format.html? # weird hack to support legacy behavior, with xml as default
+    if params["umlaut.response_format"] == "jsonp"
+      request.format = "json"
+      params["umlaut.jsonp"] ||= "umlautLoaded" 
+    elsif params["umlaut.response_format"]
+      request.format = params["umlaut.response_format"]
+    end
+        
     
-     if ( format == "xml" )      
-        # The standard Rails template is assumed to return xml
-        render(:content_type => "application/xml", :layout => false)
-     elsif ( format == 'json' || format == "jsonp")
+    respond_to do |format|
+      format.xml do 
+        render(:layout => false)
+      end
+      
+      format.any("json") do        
         # get the xml in a string
         xml_str = render_to_string(:layout=>false)
         # convert to hash. For some reason the ActionView::OutputBuffer
@@ -437,14 +446,9 @@ class ResolveController < ApplicationController
   
         # Handle jsonp, deliver JSON inside a javascript function call,
         # with function name specified in parameters. 
-        if ( format == "jsonp" || params["umlaut.jsonp"])
-          procname = params["umlaut.jsonp"] || "umlautLoaded"          
-          json_str = procname + "( " + json_str + " );"
-        end  
-        render(:text => json_str, :content_type=> "application/json",:layout=>false )
-      else
-        raise ArgumentError.new("format requested (#{format}) not understood by action #{params[:controller]} / #{params[:action]}")
+        render(:json => json_str, :callback => params["umlaut.jsonp"] )      
       end    
+    end
   end
 
   def service_dispatch()
