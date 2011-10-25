@@ -471,7 +471,8 @@ hr {
 .line {
 	width: 100%;
 	border-bottom: 1px solid #e9e9e9;
-	margin: 4px 0px 0px;}
+	margin: 4px 0px 0px;
+}
 	
 .line2 {
 	width: 100%;
@@ -480,6 +481,7 @@ hr {
 
   ul.smallText li.fulltextlink {
   padding-top: 2px;
+  clear: both;
 }
 
 .small_indent {
@@ -568,11 +570,19 @@ div.auto_complete ul strong.highlight {
 
 /* search results */
 
+.search_citation {
+ 	border-bottom: 1px solid #e9e9e9;
+  padding: 10px;
+  position: relative;
+  overflow: auto;
+  clear: both;
+}
+
 ul.citation {
   width: 80%;
   float: left;
   clear: both;
-  position: relative;
+  position: relative;	
 }
 
 ul.citation li {
@@ -608,6 +618,7 @@ ul.citation li {
 .citation_link {
   float: left;
   width: 18%;
+  text-align: right;
 }
 
 

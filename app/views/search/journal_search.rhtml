@@ -68,15 +68,15 @@ end
   <%= render :partial=>'pager' %>
 </div>
 
-
+<div class="list">
 <% @display_results.each do | co | 
 @current_context_object = co
 %>
   <% partial_name = @citation_partial || 'citation' %>
   <%= render :partial=>partial_name %>
  
-  <div class='line'></div>
 <% end %>
+</div>
 
 <div class='pagination'>
   <%= render :partial=>'pager' %>

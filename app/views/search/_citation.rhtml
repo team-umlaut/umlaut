@@ -3,6 +3,7 @@
   ref_meta = @current_context_object.referent.metadata  
   labels = referent_labels
 %>
+<div class="search_citation">
   <ul class="citation">
 
           <% if ! ref_meta["atitle"].blank? %>
@@ -84,10 +85,10 @@
          <% end %>
    </ul>
 
-<div class="citation_link">
-  <%= resolver_link(@current_context_object, {:target => search_result_target_window}) %>
+  <div class="citation_link">
+    <%= resolver_link(@current_context_object, {:target => search_result_target_window}) %>
+  </div>
 </div>
-
 
 
 
