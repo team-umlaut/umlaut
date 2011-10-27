@@ -178,7 +178,7 @@ module ResolveHelper
     
     content <<
     content_tag(:ul, :class => ("" || options[:ul_class])) do        
-      list.enum_with_index.collect do |item, index|      
+      list.enum_for(:each_with_index).collect do |item, index|      
         capture(item, index, &block) unless  list.length > options[:limit] && index >= options[:limit]-2        
       end.join(" \n    ").html_safe
     end    
@@ -187,7 +187,7 @@ module ResolveHelper
       content << 
       expand_contract_section("#{list.length - options[:limit] + 1} more", id) do
         content_tag(:ul, :class=>options[:ul_class]) do        
-          list.slice(options[:limit]-1..list.length-1).enum_with_index do |item, index|            
+          list.slice(options[:limit]-1..list.length-1).enum_for(:each_with_index).each do |item, index|            
             yield(item, index)
           end.join(" \n    ").html_safe              
         end          
