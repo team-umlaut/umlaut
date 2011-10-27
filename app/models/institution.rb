@@ -28,7 +28,7 @@ class Institution < Struct.new(:postal_code, :worldcat_registry_id, :default_ins
   # not actual Services!
   def initialize(h={})
     members.each {|m|
-        self.send( (m.to_s + '=') , (h[m.to_sym] || h[m]))
+        self.send( (m.to_s + '=') , (h[m.to_s] || h[m.to_sym]))
     }  
   end
 
