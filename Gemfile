@@ -15,7 +15,7 @@ gem "htmlentities" # used by sfx adapter, at least
 gem "multi_json" # Remember to generate a faster json adapter into app gemfile, rather than just multi_json lowest common denominator.
 
 group :development, :test do 
- gem "ruby-debug"
+ gem "ruby-debug", :platforms => :mri_18
 end
 
 # Use unicorn as the web server
