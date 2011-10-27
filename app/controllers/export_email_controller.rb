@@ -32,7 +32,7 @@ class ExportEmailController < ApplicationController
     @holdings = @user_request.get_service_type('holding', { :refresh=>true })
     
       if valid_email?
-        Emailer.deliver_citation(@email, @user_request, @fulltexts, @holdings) 
+        Emailer.citation(@email, @user_request, @fulltexts, @holdings).deliver 
         respond_to do |format|
           format.html {  render }
         end
@@ -57,7 +57,7 @@ class ExportEmailController < ApplicationController
     @holding_id = params[:holding]
     
       if valid_txt_number? && valid_txt_holding?
-        Emailer.deliver_short_citation(@email, @user_request, location(@holding_id), call_number(@holding_id)) 
+        Emailer.short_citation(@email, @user_request, location(@holding_id), call_number(@holding_id)).deliver 
 
         render # send_txt.rhtml       
       else        
