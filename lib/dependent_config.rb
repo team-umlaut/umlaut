@@ -35,6 +35,10 @@ class DependentConfig < Delegator
   def __getobj__
     @_result ||= @_my_closure.call
   end
+  
+  def __setobj__(v)
+    @_result = v
+  end
     
   def __reset_closure__
     raise Exception.new("Can't reset, has been permanently reset or is missing closure for other reason") unless @_my_closure
