@@ -184,8 +184,8 @@ module MetadataHelper
     raise Exception.new("type must be :urn or :info") unless type == :urn or type == :info
 
     prefix = case type
-               when :info : "info:#{sub_scheme}/"
-               when :urn : "urn:#{sub_scheme}:"
+               when :info then "info:#{sub_scheme}/"
+               when :urn  then "urn:#{sub_scheme}:"
              end
     
     bare_identifier = nil
