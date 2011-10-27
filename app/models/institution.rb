@@ -27,7 +27,9 @@ class Institution < Struct.new(:postal_code, :worldcat_registry_id, :default_ins
   # of an ordered array. :services=>[] is an array of service ids,
   # not actual Services!
   def initialize(h={})
-    members.each {|m| self.send( (m+'=').to_sym , (h[m.to_sym] || h[m])) }   
+    members.each {|m|
+        self.send( (m.to_s + '=') , (h[m.to_sym] || h[m]))
+    }  
   end
 
   # Instantiates a new copy of all services included in this institution,
