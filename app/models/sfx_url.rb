@@ -11,23 +11,25 @@ class SfxUrl < ActiveRecord::Base
   # Checking entire URL won't work. 
   # Lots of things in SFX could create false negatives. 
   def self.sfx_controls_url?(url)
-    # Does it match any of our supplementary configged strings or regexps?
-    AppConfig.param("additional_sfx_controlled_urls", []).each do |test|
-      '===' # will match a regexp or equality on a string
-      return true if test === url
+    ActiveRecord::Base.connection_pool.with_connection do
+      # Does it match any of our supplementary configged strings or regexps?
+      AppConfig.param("additional_sfx_controlled_urls", []).each do |test|
+        '===' # will match a regexp or equality on a string
+        return true if test === url
+      end
+      
+      begin
+        uri = URI.parse(url)
+      rescue
+        # Bad uri in catalog? Fine, we don't know SFX controls it. 
+        return false;
+      end
+      host = uri.host    
+      
+      # If URI was malformed, just punt and say no.
+      return false unless host    
+      
+      return SfxUrl.find(:all, :conditions => ["url = ?", host]).length > 0
     end
-    
-    begin
-      uri = URI.parse(url)
-    rescue
-      # Bad uri in catalog? Fine, we don't know SFX controls it. 
-      return false;
-    end
-    host = uri.host    
-    
-    # If URI was malformed, just punt and say no.
-    return false unless host    
-    
-    SfxUrl.find(:all, :conditions => ["url = ?", host]).length > 0
   end
 end

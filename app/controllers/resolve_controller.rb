@@ -72,12 +72,11 @@ class ResolveController < ApplicationController
     return @user_request
   end
 
+  require 'CronTab'
   # Expire expired service_responses if neccesary.
   # See app config params 'response_expire_interval' and
-  # 'response_expire_crontab_format'. 
-    
+  # 'response_expire_crontab_format'.     
   def expire_old_responses
-    require 'CronTab'
     
     expire_interval = AppConfig.param('response_expire_interval')
     crontab_format = AppConfig.param('response_expire_crontab_format')
@@ -87,7 +86,6 @@ class ResolveController < ApplicationController
       return nil
     end
     
-    responses_expired = 0
     @user_request.dispatched_services.each do |ds|
 
       now = Time.now
@@ -109,7 +107,6 @@ class ResolveController < ApplicationController
             
             if st.service_response.service.service_id == serv_id
               @user_request.service_types.delete(st)
-              responses_expired += 1
               st.service_response.destroy
               st.destroy
             end
@@ -483,13 +480,6 @@ class ResolveController < ApplicationController
       bundle = ServiceBundle.new(services_to_run , priority)
       bundle.handle(@user_request, request.session_options[:id])            
     end
-
-    
-    # Got to reload cached associations that we need, that the services
-    # may have changed in another thread. 
-    @user_request.referent.referent_values.reset
-    @user_request.dispatched_services.reset
-    @user_request.service_types.reset
     
 
     # Now we run background services. 
@@ -523,13 +513,6 @@ class ResolveController < ApplicationController
       
           bundle = ServiceBundle.new(services_to_run , priority)
           bundle.handle(t_request, request.session_options[:id])
-
-          # Got to reload cached associations that we need, that the services
-          # may have changed in another thread, sorry.  
-          @user_request.referent.referent_values.reset
-          @user_request.dispatched_services.reset
-          @user_request.service_types.reset
-          
         end        
      rescue Exception => e
         # We are divorced from any request at this point, not much
@@ -537,10 +520,10 @@ class ResolveController < ApplicationController
         # db, and clean up after any dispatched services that need cleaning up.
         # If we're catching an exception here, service processing was
         # probably interrupted, which is bad. You should not intentionally
-        # raise exceptions to be caught here. 
+        # raise exceptions to be caught here.
         Thread.current[:exception] = e
         logger.error("Background Service execution exception: #{e}")
-        logger.error( e.backtrace.join("\n") )
+        logger.error( e.backtrace.join("\n") )        
      end
     end
   end

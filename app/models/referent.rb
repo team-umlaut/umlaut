@@ -438,34 +438,36 @@ class Referent < ActiveRecord::Base
 
   # options => { :overwrite => false } to only enhance if not already there
   def enhance_referent(key, value, metadata=true, private_data=false, options = {})
-    return if value.nil?
-
-    matches = self.referent_values.to_a.find_all do |rv| 
-      (rv.key_name == key) && (rv.metadata == metadata) && (rv.private_data == private_data) 
-    end
-    
-    matches.each do |rv|
-      unless (options[:overwrite] == false || rv.value == value)
-        rv.value = value
-        rv.save!
+    ActiveRecord::Base.connection_pool.with_connection do
+      return if value.nil?
+  
+      matches = self.referent_values.to_a.find_all do |rv| 
+        (rv.key_name == key) && (rv.metadata == metadata) && (rv.private_data == private_data) 
       end
-    end
-    
-    if (matches.length == 0)
-      val = self.referent_values.create(:key_name => key, :value => value, :normalized_value => ReferentValue.normalize(value), :metadata => metadata, :private_data => private_data)
-      val.save!
-    end
-    
-    if key.match((/(^[ajb]?title$)|(^is[sb]n$)|(^volume$)|(^date$)/))
-      case key
-        when 'date' then self.year = ReferentValue.normalize(value)
-        when 'volume' then self.volume = ReferentValue.normalize(value)
-        when 'issn' then self.issn = ReferentValue.normalize(value)
-        when 'isbn' then self.isbn = ReferentValue.normalize(value)
-        when 'atitle' then self.atitle = ReferentValue.normalize(value)
-        else self.title = ReferentValue.normalize(value)
+      
+      matches.each do |rv|
+        unless (options[:overwrite] == false || rv.value == value)
+          rv.value = value
+          rv.save!
+        end
       end
-      self.save!
+      
+      if (matches.length == 0)
+        val = self.referent_values.create(:key_name => key, :value => value, :normalized_value => ReferentValue.normalize(value), :metadata => metadata, :private_data => private_data)
+        val.save!
+      end
+      
+      if key.match((/(^[ajb]?title$)|(^is[sb]n$)|(^volume$)|(^date$)/))
+        case key
+          when 'date' then self.year = ReferentValue.normalize(value)
+          when 'volume' then self.volume = ReferentValue.normalize(value)
+          when 'issn' then self.issn = ReferentValue.normalize(value)
+          when 'isbn' then self.isbn = ReferentValue.normalize(value)
+          when 'atitle' then self.atitle = ReferentValue.normalize(value)
+          else self.title = ReferentValue.normalize(value)
+        end
+        self.save!
+      end
     end
   end  
 end

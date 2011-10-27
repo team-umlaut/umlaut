@@ -559,37 +559,38 @@ class Sfx < Service
   # There are weird encoding issues in metadata from SFX. 
   # I THINK I've fixed them in #parse_perl_data
   def enhance_referent(request, perl_data)
-    metadata = request.referent.metadata
-
-    sfx_co = Sfx.parse_perl_data(perl_data.to_s)
-    
-    sfx_metadata = sfx_co.referent.metadata
-    # Do NOT enhance for metadata type 'BOOK', unreliable matching from
-    # SFX!
-    return if sfx_metadata["object_type"] == "BOOK" || sfx_metadata["genre"] == "book"
-    
-    # If we already had metadata for journal title and the SFX one
-    # differs, we want to over-write it. This is good for ambiguous
-    # incoming OpenURLs, among other things.
-    
-    if request.referent.format == 'journal'
-        request.referent.enhance_referent("jtitle", sfx_metadata['jtitle'])
-    end
-    # And ISSN
-    if request.referent.format == 'journal' && ! sfx_metadata['issn'].blank?
-      request.referent.enhance_referent('issn', sfx_metadata['issn'])
-    end
-
-
-    # The rest,  we write only if blank, we don't over-write
-    sfx_metadata.each do |key, value|
-      if (metadata[key].blank?)
-        
-        # watch out for SFX's weird array values. 
-          request.referent.enhance_referent(key, value)
+    ActiveRecord::Base.connection_pool.with_connection do
+      metadata = request.referent.metadata
+  
+      sfx_co = Sfx.parse_perl_data(perl_data.to_s)
+      
+      sfx_metadata = sfx_co.referent.metadata
+      # Do NOT enhance for metadata type 'BOOK', unreliable matching from
+      # SFX!
+      return if sfx_metadata["object_type"] == "BOOK" || sfx_metadata["genre"] == "book"
+      
+      # If we already had metadata for journal title and the SFX one
+      # differs, we want to over-write it. This is good for ambiguous
+      # incoming OpenURLs, among other things.
+      
+      if request.referent.format == 'journal'
+          request.referent.enhance_referent("jtitle", sfx_metadata['jtitle'])
       end
-    end
-                        
+      # And ISSN
+      if request.referent.format == 'journal' && ! sfx_metadata['issn'].blank?
+        request.referent.enhance_referent('issn', sfx_metadata['issn'])
+      end
+  
+  
+      # The rest,  we write only if blank, we don't over-write
+      sfx_metadata.each do |key, value|
+        if (metadata[key].blank?)
+          
+          # watch out for SFX's weird array values. 
+            request.referent.enhance_referent(key, value)
+        end
+      end
+    end                        
   end
 
 
