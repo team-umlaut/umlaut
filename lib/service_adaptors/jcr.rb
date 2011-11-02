@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 # Link to Thomson JCR impact report for journal title. 
 #
 #
