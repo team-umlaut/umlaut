@@ -1,14 +1,14 @@
 class ExportEmailController < ApplicationController
   filter_parameter_logging :email
   before_filter :load_objects
-  layout (proc do |controller|         
+  layout Proc.new { |controller|         
      if (controller.request.xhr? ||
          controller.params["X-Requested-With"] == "XmlHttpRequest")
        nil
      else
        AppConfig.param("search_layout", "search_basic").to_s
      end
-  end)
+  }
 
   def load_objects
     @svc_type = ServiceType.find(params[:id])
