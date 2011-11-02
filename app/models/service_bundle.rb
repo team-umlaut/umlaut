@@ -35,7 +35,6 @@ class ServiceBundle
   end
 
   def handle(request, session_id)
-    
     return if (@services.nil? || @services.empty?)
 
     bundle_start = Time.now
@@ -88,6 +87,7 @@ class ServiceBundle
             # Tell our AR extension not to allow implicit checkouts
             ActiveRecord::Base.forbid_implicit_checkout_for_thread! 
             
+            Thread.current[:debug_name] = t_service.class.name
             
             t_request = ActiveRecord::Base.connection_pool.with_connection do
               # pre-load all relationships so no ActiveRecord activity will be
@@ -111,6 +111,7 @@ class ServiceBundle
 
     # Wait for all the threads to complete, if any. 
     threads.each { |aThread|
+      
       aThread.join
       debugger if aThread[:exception]
 
