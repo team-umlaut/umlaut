@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 # Uses ISI Web of Knowledge to generates links to "cited by" and "similar"
 # articles.
 #
