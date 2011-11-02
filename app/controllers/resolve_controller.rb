@@ -162,8 +162,8 @@ class ResolveController < ApplicationController
       end
       redirect_to url
     else
-      # Render configed view, if configed, or "index" view if not. 
-      view = AppConfig.param("resolve_view", "resolve/index")      
+      # Render configed view, if configed, or default view if not. 
+      view = AppConfig.param("resolve_view", nil)      
       render view
     end
 
@@ -452,7 +452,7 @@ class ResolveController < ApplicationController
   end
 
   def service_dispatch()
-    expire_old_responses();
+    expire_old_responses()
 
     # Register ALL bg/fg services as 'queued' in part to make
     # sure we don't run them twice as a result of a browser refresh
