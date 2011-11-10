@@ -12,7 +12,7 @@ module Umlaut
     config.after_initialize do
 
       # Call local umlaut intializers
-      Dir["#{RAILS_ROOT}/config/umlaut_config/initializers/**/*.rb"].sort.each do |initializer|
+      Dir["#{Rails.root}/config/umlaut_config/initializers/**/*.rb"].sort.each do |initializer|
           load(initializer)
       end
   

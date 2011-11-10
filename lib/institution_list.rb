@@ -18,7 +18,7 @@
 #institution). This architecture has room for expansion.
 class InstitutionList
   include Singleton # get the instance with InstitutionList.instance
-  @@institutions_yaml_path = RAILS_ROOT+"/config/umlaut_config/institutions.yml"
+  @@institutions_yaml_path = RAILS.root +"/config/umlaut_config/institutions.yml"
   
   def initialize
     @institutions = nil
