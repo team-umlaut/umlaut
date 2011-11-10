@@ -488,42 +488,49 @@ class ResolveController < ApplicationController
     # we're going to let it keep doing it's thing in the background after
     # we return a response to the browser
     backgroundThread = Thread.new(@collection, @user_request) do | t_collection,  t_request|
-      begin
-        # Deal with ruby's brain dead thread scheduling by setting
-        # bg threads to a lower priority so they don't interfere with fg
-        # threads.
-        Thread.current.priority = -1
+      # Tell our AR extension not to allow implicit checkouts
+      ActiveRecord::Base.forbid_implicit_checkout_for_thread! if ActiveRecord::Base.respond_to?("forbid_implicit_checkout_for_thread!")
+      
+      # got to reserve an AR connection for our main 'background traffic director'
+      # thread, so it has a connection to use to mark services as failed, at least. 
+      ActiveRecord::Base.connection_pool.with_connection do
+        begin
+          # Deal with ruby's brain dead thread scheduling by setting
+          # bg threads to a lower priority so they don't interfere with fg
+          # threads.
+          Thread.current.priority = -1
+          
         
-      
-        ('a'..'z').each do | priority |
-          # Only run the services that are runnable, that have their ids listed
-          services = t_collection.instantiate_services!(:level => priority)
-          services_to_run = services.find_all { |s|
-            queued_service_ids.include?(s.service_id)  
-          }
-          excluded_services = services.find_all {|s| 
-            ! queued_service_ids.include?(s.service_id)  
-          }
-
-          
-          logger.debug("Skipping services already queued for priority #{priority}: #{excluded_services.collect {|s|s.service_id}.inspect}") unless excluded_services.blank?
-          
+          ('a'..'z').each do | priority |
+            # Only run the services that are runnable, that have their ids listed
+            services = t_collection.instantiate_services!(:level => priority)
+            services_to_run = services.find_all { |s|
+              queued_service_ids.include?(s.service_id)  
+            }
+            excluded_services = services.find_all {|s| 
+              ! queued_service_ids.include?(s.service_id)  
+            }
+  
             
-          next if services_to_run.empty?
-      
-          bundle = ServiceBundle.new(services_to_run , priority)
-          bundle.handle(t_request, request.session_options[:id])
-        end        
-     rescue Exception => e
-        # We are divorced from any request at this point, not much
-        # we can do except log it. Actually, we'll also store it in the
-        # db, and clean up after any dispatched services that need cleaning up.
-        # If we're catching an exception here, service processing was
-        # probably interrupted, which is bad. You should not intentionally
-        # raise exceptions to be caught here.
-        Thread.current[:exception] = e
-        logger.error("Background Service execution exception: #{e}")
-        logger.error( e.backtrace.join("\n") )        
+            logger.debug("Skipping services already queued for priority #{priority}: #{excluded_services.collect {|s|s.service_id}.inspect}") unless excluded_services.blank?
+            
+              
+            next if services_to_run.empty?
+        
+            bundle = ServiceBundle.new(services_to_run , priority)
+            bundle.handle(t_request, request.session_options[:id])
+          end        
+       rescue Exception => e
+         #debugger
+          # We are divorced from any request at this point, not much
+          # we can do except log it. Actually, we'll also store it in the
+          # db, and clean up after any dispatched services that need cleaning up.
+          # If we're catching an exception here, service processing was
+          # probably interrupted, which is bad. You should not intentionally
+          # raise exceptions to be caught here.
+          Thread.current[:exception] = e
+          logger.error("Background Service execution exception1: #{e}\n\n   " + clean_backtrace(e).join("\n"))                
+       end
      end
     end
   end
