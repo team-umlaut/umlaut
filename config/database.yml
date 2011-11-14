@@ -9,19 +9,19 @@
 # Have to have these dummy ones here to avoid confusing rails. 
 
 development:
-  adapter: mysql 
+  adapter: mysql2
   database:  
   username: 
   password: 
   
 test:
-  adapter: mysql
+  adapter: mysql2
   database: 
   username: 
   password: 
 
 production:
-  adapter: mysql 
+  adapter: mysql2
   database:  
   username: 
   password: 
@@ -33,7 +33,7 @@ production:
 <%= 
   # Load database config from the umlaut_config/database.yml local 
   # database config file, so it doesn't need to be in umlaut svn
-  local_file_path = RAILS_ROOT + "/config/umlaut_config/database.yml"
+  local_file_path = Rails.root + "/config/umlaut_config/database.yml"
   lines = []    
   if ( File.exist?( local_file_path ))  
     IO.foreach(local_file_path) {|l| lines << l}
