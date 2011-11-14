@@ -4,6 +4,10 @@ Umlaut::Application.configure do
   
   # umlaut needs cache classes even in development for threading. 
   config.cache_classes = true
+  # other things for thread-safety
+  #config.dependency_loading = false
+  #config.preload_frameworks = true
+  
 
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
@@ -22,6 +26,11 @@ Umlaut::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
   
+  # turn off SQL traces for now
+  config.after_initialize do
+    ActiveRecord::Base.logger = Rails.logger.clone
+    ActiveRecord::Base.logger.level = Logger::INFO
+  end
 
   
 end
