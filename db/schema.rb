@@ -10,21 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111115185554) do
-
-  create_table "categories", :force => true do |t|
-    t.string "category",    :limit => 100, :default => "", :null => false
-    t.string "subcategory", :limit => 100
-  end
-
-  add_index "categories", ["subcategory"], :name => "subcat_idx"
-
-  create_table "categories_journals", :id => false, :force => true do |t|
-    t.integer "journal_id",  :default => 0, :null => false
-    t.integer "category_id", :default => 0, :null => false
-  end
-
-  add_index "categories_journals", ["journal_id", "category_id"], :name => "journ_cat_idx"
+ActiveRecord::Schema.define(:version => 20111115191651) do
 
   create_table "clickthroughs", :force => true do |t|
     t.integer  "request_id",          :default => 0, :null => false
