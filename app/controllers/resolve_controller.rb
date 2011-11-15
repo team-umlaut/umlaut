@@ -129,8 +129,8 @@ class ResolveController < ApplicationController
     unless ( @service_type_join )
        
       @service_type_join = 
-        @user_request.service_types.find_by_service_type_value_id(
-      ServiceTypeValue[:fulltext].id )
+      @user_request.service_types.find_by_service_type_value_name(
+        ServiceTypeValue[:fulltext].name )
     end
 
     
@@ -346,7 +346,7 @@ class ResolveController < ApplicationController
 
         candidates = 
         @user_request.service_types.find(:all, 
-          :conditions => ["service_type_value_id = ?", service.id])
+          :conditions => ["service_type_value_name = ?", service.name])
         # Make sure we don't redirect to any known frame escapers!
         candidates.each do |st|
 

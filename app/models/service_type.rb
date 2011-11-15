@@ -1,5 +1,4 @@
-# using has_enumerated :service_type_value
-# so: st.service_type_value = ServiceTypeValue[:fulltext]
+# st.service_type_value = ServiceTypeValue[:fulltext]
 #   same thing as
 #     st.service_type_value = 'fulltext'
 #   either way:
@@ -7,9 +6,7 @@
 class ServiceType < ActiveRecord::Base
   belongs_to :request
   belongs_to :service_response
-  # Special relationship to our acts_as_enumerated ServiceTypeValue
-  has_enumerated :service_type_value
-
+  
   # convenience method to skip accross relationships to
   # Service#view_data_from_service_type, since
   # if often must be done. Returns a hash or hash-like object with
@@ -19,13 +16,13 @@ class ServiceType < ActiveRecord::Base
   end
   alias  :view_data_from_service_type :view_data
 
-  # Should take a ServiceTypeValue object, but for backwards compatibilty
-  # if it's a string or symbol, we'll magically convert it the right
-  # ServiceTypeValue. acts_as_enumerated is neat!
-  def service_type=(value)
-    # pass it on to the new one
-    self.service_type_value = value
-    # plus do it the old way
-    write_attribute(:service_type, value)
+  # Should take a ServiceTypeValue object, or symbol name of
+  # ServiceTypeValue object. 
+  def service_type_value=(value)
+    value = ServiceTypeValue[value] unless value.kind_of?(ServiceTypeValue)        
+    self.service_type_value_name = value.name   
+  end
+  def service_type_value
+    ServiceTypeValue[self.service_type_value_name]
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111019184258) do
+ActiveRecord::Schema.define(:version => 20111115185554) do
 
   create_table "categories", :force => true do |t|
     t.string "category",    :limit => 100, :default => "", :null => false
@@ -171,17 +171,10 @@ ActiveRecord::Schema.define(:version => 20111019184258) do
 
   add_index "service_responses", ["service_id", "response_key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"
 
-  create_table "service_type_values", :force => true do |t|
-    t.string   "name"
-    t.string   "display_name"
-    t.string   "display_name_plural"
-    t.datetime "updated_at"
-  end
-
   create_table "service_types", :force => true do |t|
-    t.integer "request_id",            :default => 0, :null => false
-    t.integer "service_response_id",   :default => 0, :null => false
-    t.integer "service_type_value_id",                :null => false
+    t.integer "request_id",              :default => 0, :null => false
+    t.integer "service_response_id",     :default => 0, :null => false
+    t.string  "service_type_value_name"
   end
 
   add_index "service_types", ["request_id", "service_response_id"], :name => "svc_type_idx"

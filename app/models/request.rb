@@ -245,7 +245,7 @@ class Request < ActiveRecord::Base
       # And add the actual ServiceType join objects based on our
       # collected_style_values.
       collected_stype_values.each do | st |      
-        stype = ServiceType.new(:request => self, :service_response => svc_resp, :service_type_value => st)
+          stype = ServiceType.new(:request => self, :service_response => svc_resp, :service_type_value => st)
         stype.save!
       end
     end
@@ -386,8 +386,8 @@ class Request < ActiveRecord::Base
       ActiveRecord::Base.connection_pool.with_connection do
         return self.service_types.find(:all,
                                 :conditions =>
-                                   ["service_type_value_id = ?",
-                                   svc_type_obj.id ],
+                                  ["service_type_value_name = ?",
+                                  svc_type_obj.name ],
                                 :include => [:service_response]   
                                 )
       end
@@ -395,7 +395,7 @@ class Request < ActiveRecord::Base
       # find on an assoc will go to db, unless we convert it to a plain
       # old array first.
       return self.service_types.to_a.find_all { |st|  
-       st.service_type_value == svc_type_obj }      
+        st.service_type_value == svc_type_obj }      
     end
   end
   
