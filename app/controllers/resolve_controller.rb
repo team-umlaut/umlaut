@@ -13,7 +13,7 @@ class ResolveController < ApplicationController
   
   # Take layout from config, default to resolve_basic.rhtml layout. 
   layout AppConfig.param("resolve_layout", "resolve_basic").to_s, 
-         :except => [:banner_menu, :bannered_link_frameset, :partial_html_sections]
+         :except => [:partial_html_sections]
   #require 'json/lexer'
 
   # If a background service was started more than 30 seconds
@@ -117,30 +117,6 @@ class ResolveController < ApplicationController
     end
   end
 
-  def setup_banner_link
-    # We keep the id of the ServiceType join object in param 'umlaut.id' for
-    # banner frameset link type actions. Take it out and stick the object
-    # in a var if available.    
-    joinID = params['umlaut.id'.to_sym]
-    
-    @service_type_join = @user_request.service_types.find_all_by_id(joinID).first if joinID
-    
-    # default?    
-    unless ( @service_type_join )
-       
-      @service_type_join = 
-      @user_request.service_types.find_by_service_type_value_name(
-        ServiceTypeValue[:fulltext].name )
-    end
-
-    
-
-    unless @service_type_join 
-       raise "No service_type_join found!. params[umlaut.id] == #{params['umlaut.id'.to_sym]}"
-    end
-    
-  end
-
   def save_request
     @user_request.save!
   end
@@ -148,19 +124,13 @@ class ResolveController < ApplicationController
   def index
     self.service_dispatch()
 
-    # link is a ServiceType object
+    # check for menu skipping configuration. link is a ServiceType object
     link = should_skip_menu
-    if ( ! link.nil? )
-      if (params["umlaut.link_with_frameset"] !=  "false")
-        url = frameset_action_url( link, {'umlaut.skipped_menu' => 'true'})
-      else        
-        new_params = { :controller => "link_router",
-                   :action => "index",
-                   :id => link.id }
+    if ( ! link.nil? )                   
       
-        url = url_for(new_params)
-      end
-      redirect_to url
+      redirect_to url_for(:controller => "link_router",
+                   :action => "index",
+                   :id => link.id )            
     else
       # Render configed view, if configed, or default view if not. 
       view = AppConfig.param("resolve_view", nil)      
@@ -198,32 +168,6 @@ class ResolveController < ApplicationController
 
   end
   
-  # Show a link to something in a frameset with a mini menu in a banner. 
-  def bannered_link_frameset
-  
-      # Normally we should already have loaded the request in the index method,
-      # and our before filter should have found the already loaded request
-      # for us. But just in case, we can load it here too if there was a
-      # real open url. This might happen on re-loads (after a long time or
-      # cookie expire!) or in other weird cases.
-      # If it's not neccesary, no services will be dispatched,
-      # service_dispatch catches that. 
-      self.service_dispatch()
-      @user_request.save!
-      
-      self.setup_banner_link()
-
-      # Use our new view with iframe instead of frameset.
-      # Comment this out to go back to bannered_link_frameset
-      # view with actual frameset. 
-      render(:template => "resolve/bannered_link_iframe")
-  end
-
-  # The mini-menu itself. 
-  def banner_menu
-     self.setup_banner_link()
-  end
-
   
 
   # Action called by AJAXy thing to update resolve menu with
@@ -347,18 +291,9 @@ class ResolveController < ApplicationController
         candidates = 
         @user_request.service_types.find(:all, 
           :conditions => ["service_type_value_name = ?", service.name])
-        # Make sure we don't redirect to any known frame escapers!
-        candidates.each do |st|
-
-          # Don't use it for direct link unless we know it can
-          # handle frameset, or we've overridden that check. 
-          # TODO: Or, if we've chosen not to link with frameset feature anyway,
-          # using other configuration. Tricky. 
-          if (params['umlaut.link_with_frameset'] == "false" || ! known_frame_escaper?(st) ) 
-            return_value = st
-            break;
-          end
-        end
+        
+        return_value = candidates.first 
+        
       end
 
       # But wait, make sure it's included in :services if present.
@@ -376,37 +311,6 @@ class ResolveController < ApplicationController
     return return_value;    
   end
 
-  # Param is a ServiceType join object. Tries to identify when it's a 
-  # target which refuses to be put in a frameset, which we take into account
-  # when trying to put it a frameset for our frame menu!
-  # At the moment this is just hard-coded in for certain SFX targets only,
-  # that is works for SFX targets only. We should make this configurable
-  # with a lambda config.
-  helper_method 'known_frame_escaper?'.to_sym
-  def known_frame_escaper?(service_type)
-
-    bad_target_regexps = AppConfig.param('frameset_problem_targets')[:sfx_targets]
-        
-    bad_url_regexps = AppConfig.param('frameset_problem_targets')[:urls]
-    
-    response = service_type.service_response
-    
-    # We only work for SFX ones right now. 
-    unless response.service.kind_of?(Sfx)      
-      # Can't say it is, nope. 
-      return false;
-    end
-    
-    sfx_target_name = response.service_data[:sfx_target_name]
-    url = response.url
-    
-    # Does our target name match any of our regexps?
-    bad_target =  bad_target_regexps.find_all {|re| re === sfx_target_name  }.length > 0
-    
-    return bad_target if bad_target
-    # Now check url if neccesary
-    return bad_url_regexps.find_all {|re| re === url  }.length > 0    
-  end
   
 
 
