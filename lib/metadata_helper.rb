@@ -66,11 +66,8 @@ module MetadataHelper
     
     # There seems to be some catoging/metadata disagreement about when to
     # use ';' for a subtitle instead of ':'. Normalize to ':'.
-    # also normalize the first period, to a ':', even though it's kind of
-    # different, still seperates the 'main' title from other parts. 
-    title.sub!(/[\;\.]/, ':') if options[:subtitle_on_semicolon]
+    title.sub!(/[\;]/, ':') if options[:subtitle_on_semicolon]
 
-    
     title.sub!(/\:(.*)$/, '') if options[:remove_subtitle]
     
     # Change ampersands to 'and' for consistency, we see it both ways.
