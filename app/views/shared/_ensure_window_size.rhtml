@@ -6,19 +6,19 @@
      
 <script language="javascript" type="text/javascript">
 
-min_width = <%= AppConfig.param('minimum_window_width', 0)%>;
-min_height = <%= AppConfig.param('minimum_window_height', 0)%>;
+min_width = <%= umlaut_config.lookup!('minimum_window_width', 0) %>;
+min_height = <%= umlaut_config.lookup!('minimum_window_height', 0)%>;
 
 // Default to something huge, so if we fail in getting dimensions,
 // we won't resize. 
 orig_width = 100000; 
 orig_height = 100000;
 
-// Prototype 1.6.0, document.viewport. 
-if (document.viewport) {
-  orig_width = document.viewport.getWidth();
-  orig_height = document.viewport.getHeight();
-}
+// JQuery document viewport width/height 
+
+orig_width = $(document).width();
+orig_height = $(document).height();
+
 
 
 width_diff = min_width - orig_width;

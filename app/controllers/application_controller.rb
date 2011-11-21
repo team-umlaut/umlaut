@@ -27,8 +27,7 @@ class ApplicationController < ActionController::Base
         @not_found_error = true
     end
 
-    # search error works.
-    render :template => "error/search_error", :status=>status, :layout=>AppConfig.param("search_layout","search_basic")
+    render :template => "error/search_error", :status=>status
   end
 
   # Over-ride to keep routing error backtraces out of our logs, and
@@ -49,7 +48,6 @@ class ApplicationController < ActionController::Base
   
   def app_before_filter
     
-    @use_umlaut_journal_index = AppConfig.param("use_umlaut_journal_index", true)
 
     # We have an apache redir workaround to fix EBSCO illegal URLs.
     # But it ends up turning all "&" to "&amp;" as seperators in 

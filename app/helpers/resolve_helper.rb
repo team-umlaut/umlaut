@@ -38,7 +38,7 @@ module ResolveHelper
 
   
   def app_name
-    return AppConfig.param("app_name", 'Find It')
+    return umlaut_config.app_name
   end
 
 
@@ -87,15 +87,14 @@ module ResolveHelper
     return false unless uml_request && uml_request.referrer
     
     id = uml_request.referrer.identifier
-    return id == 'info:sid/sfxit.com:citation' || id == AppConfig.param('rfr_ids')[:citation] || id == AppConfig.param('rfr_ids')[:opensearch]
+    return id == 'info:sid/sfxit.com:citation' || id == umlaut_config.lookup("rfr_ids.citation") || id == umlaut_config.lookup('rfr_ids.opensearch')
   end
 
   def display_not_found_warning?(uml_request)
     metadata = uml_request.referent.metadata
-    display_manually_entered_typo_warning = AppConfig.param("display_manually_entered_typo_warning", true)
-    
-  
-    return (metadata['genre'] != 'book' && metadata['object_id'].blank? && user_entered_citation?(@user_request) && display_manually_entered_typo_warning) ? true : false
+    display_manually_entered_typo_warning = umlaut_config.lookup!("entry_not_in_kb_warning", false)
+      
+    return (metadata['genre'] != 'book' && metadata['object_id'].blank? && user_entered_citation?(@user_request) && display_manually_entered_typo_warning) 
   end
 
 
@@ -204,6 +203,50 @@ module ResolveHelper
     return link_to_function(name, javascript, options)  
   end
     
+  ## 
+  # Methods to grab SectionRenderer definitions from config. Caching in
+  # class-level variables. 
+  #
+  @@bg_update_sections = nil
+  @@partial_update_sections = nil
   
+  # Called by background updater to get a list of all sections configured
+  # in application config parameter resolve_sections to be included in
+  # background updates. 
+  def bg_update_sections
+    unless (@@bg_update_sections)
+      @@bg_update_sections = umlaut_config.lookup!("resolve_sections", []).find_all do |section|
+        section[:bg_update] != false
+      end
+    end
+    @@bg_update_sections
+  end
+
+  # Called by partial_html_sections action to get a list of all sections
+  # that should be included in the partial_html_sections api response. 
+  def partial_html_sections
+    unless (@@partial_update_sections)
+      @@partial_update_sections = umlaut_config.lookup!("resolve_sections", []).find_all do |section|
+        section[:partial_html_api] != false
+      end
+    end
+    @@partial_update_sections
+  end
+
+  # Called by resolve/index view to find sections configured
+  # in application config resolve_sections list for a specific
+  # part of the page. :main, :sidebar, or :resource_info. 
+  def html_sections(area)
+    umlaut_config.lookup!("resolve_sections", []).find_all do |section|
+      section[:html_area] == area
+    end
+  end
+  
+  def html_section_by_div_id(div_id)
+    umlaut_config.lookup!("resolve_sections", []).find do |defn|
+      defn[:div_id] == div_id
+    end
+  end
+ 
   
 end

@@ -4,6 +4,9 @@
 # umlaut request (that presumably was an OpenURL). 
 
 class ResolveController < ApplicationController
+  include UmlautConfigurable
+  
+  
   before_filter :init_processing
   # Init processing will look at this list, and for actions mentioned,
   # will not create a @user_request if an existing one can't be found.
@@ -12,7 +15,7 @@ class ResolveController < ApplicationController
   after_filter :save_request
   
   # Take layout from config, default to resolve_basic.rhtml layout. 
-  layout AppConfig.param("resolve_layout", "resolve_basic").to_s, 
+  layout umlaut_config.resolve_layout,  
          :except => [:partial_html_sections]
   #require 'json/lexer'
 
@@ -21,7 +24,7 @@ class ResolveController < ApplicationController
   # can be set in app config variable background_service_timeout.
 
   class << self; attr_accessor :background_service_timeout end
-  @background_service_timeout = AppConfig.param("background_service_timeout", 30.seconds)
+  @background_service_timeout = umlaut_config.lookup!("background_service_timeout", 30.seconds)
 
   
   # If a service has status FailedTemporary, and it's older than a
@@ -31,7 +34,7 @@ class ResolveController < ApplicationController
   # If you set it too low, you can wind up with a request that never completes,
   # as it constantly re-queues a service which constantly fails.
   class << self; attr_accessor :requeue_failedtemporary_services end
-  @requeue_failedtemporary_services = AppConfig.param("requeue_failedtemporary_services", background_service_timeout * 10)
+  @requeue_failedtemporary_services = umlaut_config.lookup!("requeue_failedtemporary_services", background_service_timeout * 10)
   
   
   
@@ -78,8 +81,8 @@ class ResolveController < ApplicationController
   # 'response_expire_crontab_format'.     
   def expire_old_responses
     
-    expire_interval = AppConfig.param('response_expire_interval')
-    crontab_format = AppConfig.param('response_expire_crontab_format')
+    expire_interval = umlaut_config.response_expire_interval
+    crontab_format = umlaut_config.response_expire_crontab_format
 
     unless (expire_interval || crontab_format)      
       # Not needed, nothing to expire
@@ -132,9 +135,8 @@ class ResolveController < ApplicationController
                    :action => "index",
                    :id => link.id )            
     else
-      # Render configed view, if configed, or default view if not. 
-      view = AppConfig.param("resolve_view", nil)      
-      render view
+      # Render configed view, if configed, or default view if not.             
+      render umlaut_config.resolve_view
     end
 
   end
@@ -166,17 +168,6 @@ class ResolveController < ApplicationController
   # or search/books?umlaut.display_coins=true
   def display_coins
 
-  end
-  
-  
-
-  # Action called by AJAXy thing to update resolve menu with
-  # new stuff that got done in the background. 
-  def background_update
-    unless (@user_request)
-      # Couldn't find an existing request? We can do nothing.
-      raise Exception.new("background_update could not find an existing request to pull updates from, umlaut.request_id #{params["umlaut.request_id"]}")
-    end
   end
 
   # Display a non-javascript background service status page--or
@@ -225,9 +216,7 @@ class ResolveController < ApplicationController
     # Mark that we're doing a partial generation, because it might
     # matter later. 
     @generating_embed_partials = true
-    
-    @partial_html_sections = SectionRenderer.partial_html_sections.clone    
-    
+        
     # Run the request if neccesary. 
     self.service_dispatch()
     @user_request.save!
@@ -249,7 +238,7 @@ class ResolveController < ApplicationController
 
     
   def rescue_action_in_public(exception)  
-    render(:template => "error/resolve_error", :status => 500, :layout => AppConfig.param("resolve_layout", "resolve_basic")) 
+    render(:template => "error/resolve_error", :status => 500 ) 
   end  
 
   protected
@@ -268,7 +257,7 @@ class ResolveController < ApplicationController
     end
     
     # Otherwise if not from url, load from app config
-    skip  ||= AppConfig.param('skip_resolve_menu', false) if skip.nil?
+    skip  ||= umlaut_config.skip_resolve_menu  if skip.nil?
 
     
 
@@ -304,7 +293,7 @@ class ResolveController < ApplicationController
       return_value = skip.call( :request => @user_request )
       
     else
-      logger.error( "Unexpected value in app config 'skip_resolve_menu'; assuming false." )
+      logger.error( "Unexpected value in config 'skip_resolve_menu'; assuming false." )
     end
 
     
@@ -384,6 +373,9 @@ class ResolveController < ApplicationController
       bundle = ServiceBundle.new(services_to_run , priority)
       bundle.handle(@user_request, request.session_options[:id])            
     end
+    # Need to reload the request from db, so it gets changes
+    # made by services in threads. 
+    @user_request.reload
     
 
     # Now we run background services. 

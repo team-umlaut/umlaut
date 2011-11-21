@@ -12,13 +12,13 @@
             <li>Sometimes it helps to just try again: <%= link_to "Try again", {:action=>'index'}.merge(params) -%></li>
           <% end %>
             
-          <% if AppConfig.param('main_sfx_base_url') %>
+          <% if umlaut_config.lookup!("sfx.sfx_base_url") %>
             <li>If that doesn't work: <%= 
-            link_to("Try your request against SFX", AppConfig.param('main_sfx_base_url')+'?'+(request.env["QUERY_STRING"] || '') +'&sfx.ignore_date_threshold=1') -%> </li>          
+            link_to("Try your request against backup link resolver", umlaut_config.sfx.sfx_base_url+'?'+(request.env["QUERY_STRING"] || '') +'&sfx.ignore_date_threshold=1') -%> </li>          
           <% end %>
           
-          <% if help_url = AppConfig.param('help_url') %>
-            <li>If you're really stuck: <%= link_to("Contact us for help", help_url)%></li>
+          <% if umlaut_config.help_url %>
+            <li>If you're really stuck: <%= link_to("Contact us for help", umlaut_config.help_url)%></li>
           <% end %>
         </ol>
     </td>

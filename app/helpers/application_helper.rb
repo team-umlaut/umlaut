@@ -72,17 +72,14 @@ module ApplicationHelper
   
   # pass in an OpenURL::ContextObject, outputs a link.
   def resolver_link(context_object, params={})
-    #,'http://sfx.galib.uga.edu/sfx_git1/sfx.gif'
-    resolver_img_url = AppConfig.param('link_img_url');
-    app_name = AppConfig.param('app_name', 'Find It')
-
+    
     # Content of the link. 
-    if ( resolver_img_url && params[:text].blank? )
-      link_content = image_tag(resolver_img_url, :border=>0, :alt=>app_name)
+    if ( umlaut_config.link_img_url && params[:text].blank? )
+      link_content = image_tag(umlaut_config.link_img_url, :border=>0, :alt=>umlaut_config.app_name)
     elsif ! params[:text].blank?
       link_content = params[:text]
     else
-      link_content = app_name
+      link_content = umlaut_config.app_name
     end
 
     # url of the link. 

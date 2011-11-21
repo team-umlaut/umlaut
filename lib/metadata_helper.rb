@@ -111,6 +111,8 @@ module MetadataHelper
       title = metadata['btitle']
     elsif metadata['title']
       title = metadata['title']
+    elsif metadata['jtitle']
+      title = metadata['jtitle']
     end
     return title
   end

@@ -1,4 +1,9 @@
 class Emailer < ActionMailer::Base
+  class_attribute :umlaut_config
+  
+  self.umlaut_config = UmlautConfig.config
+  
+  
  helper :application
  # make note of the headers, content type, and time sent
  # these help prevent your email from being flagged as spam
@@ -10,9 +15,9 @@ class Emailer < ActionMailer::Base
     @user_request = user_request
     
     mail(:to => recipient, 
-         :from => AppConfig.param("from_email_addr"), 
-         :'Reply-to' => AppConfig.param("from_email_addr"),
-         :subject => "#{AppConfig.param("app_name")} result: #{find_good_title(user_request.referent)}")
+         :from => umlaut_config.from_email_addr, 
+         :'Reply-to' => umlaut_config.from_email_addr,
+         :subject => "#{umlaut_config.app_name} result: #{find_good_title(user_request.referent)}")
   end
   
   def short_citation(recipient, user_request, location, call_number)
@@ -24,9 +29,9 @@ class Emailer < ActionMailer::Base
     @user_request = user_request
     
     mail(:to => recipient, 
-         :from => AppConfig.param("from_email_addr"),
-         :'Reply-to' => AppConfig.param("from_email_addr"), 
-         :subject => "#{AppConfig.param("app_name")} result")
+         :from => umlaut_config.from_email_addr,
+         :'Reply-to' => umlaut_config.from_email_addr, 
+         :subject => "#{umlaut_config.app_name} result")
 
   end
 

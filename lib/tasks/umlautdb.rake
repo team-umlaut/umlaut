@@ -33,7 +33,7 @@ namespace :umlaut do
             urls = SearchMethods::Sfx4.fetch_sfx_urls
           end
           
-          ignore_urls = AppConfig.param("sfx_load_ignore_hosts", []);
+          ignore_urls = UmlautConfig.config.lookup!("sfx.sfx_load_ignore_hosts", [])
           
           # We only want the hostnames
           hosts = urls.collect do |u|
@@ -60,7 +60,7 @@ namespace :umlaut do
         # Assume sessions are in db. 
         # Don't know good way to get the connection associated with sessions,
         # since there is no model. Assume Request is in the same db.
-        expire_seconds = AppConfig.param("session_expire_seconds", 1.day)
+        expire_seconds = UmlautConfig.config.lookup!("session_expire_seconds", 1.day)
         puts "Expiring sessions older than #{expire_seconds} seconds (set with config session_expire_seconds)."
         Request.connection.execute("delete from sessions where now() - updated_at > #{expire_seconds}")
       end
@@ -133,8 +133,8 @@ namespace :umlaut do
         # Turns out we need to get rid of old referents and referentvalues
         # too. There are just too many. Permalinks have been updated to
         # store their own info and not depend on Referent existing. 
-        referent_expire = Time.now - AppConfig.param("referent_expire_seconds", 20.days)
-        puts "Deleting Referents/ReferentValues older than 20 days or config.referent_expires_seconds."
+        referent_expire = Time.now - UmlautConfig.config.lookup!("referent_expire_seconds", 20.days)
+        puts "Deleting Referents/ReferentValues older than #{refernet_expire.inspect}"
         begin_time = Time.now
         # May be MySQL dependent. 
         Referent.connection.execute("DELETE referents, referent_values FROM referents, referent_values where referents.id = referent_values.referent_id AND referents.created_at < '#{referent_expire.to_formatted_s(:db)}'" )

@@ -18,7 +18,7 @@ cite = @user_request.referent.to_citation
  
    if display_not_found_warning?(@user_request)
 %>   
-  <tr><td class="largeTextb notice"><div align="right">(!) Warning:</div></td><td class="largeText notice"><%= AppConfig.param('app_name') %> does not know about a <%= (@user_request.referent.format).downcase %> with this name. Please check your entry.</td></tr>
+  <tr><td class="largeTextb notice"><div align="right">(!) Warning:</div></td><td class="largeText notice"><%= umlaut_config.app_name %> does not know about a <%= (@user_request.referent.format).downcase %> with this name. Please check your entry.</td></tr>
 
 <%   end %>
   

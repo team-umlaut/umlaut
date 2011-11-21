@@ -3,7 +3,7 @@ require 'ostruct'
 module SearchHelper
 
   def search_result_target_window
-     AppConfig.param("search_result_target_window","")
+    umlaut_config.lookup!("search.result_link_target","")
   end
 
   # pass in an openurl context obj.
@@ -41,6 +41,10 @@ module SearchHelper
     return result    
   end
   
+  # A-Z buttons in search page
+  def group_list
+    group_list ||= ('A'..'Z').to_a.push('0-9').push('Other')  
+  end
   
 
 end

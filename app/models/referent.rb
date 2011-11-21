@@ -114,7 +114,8 @@ class Referent < ActiveRecord::Base
       # Apply referent filters
       rfr_id = referrer ? referrer.identifier : ''
       rfr_id = '' if rfr_id.nil?
-      AppConfig.param("referent_filters").each do |regexp, filter|
+      
+      UmlautConfig.config.lookup!("referent_filters", []).each do |regexp, filter|
         if (regexp =~ rfr_id)
           filter.filter(rft) if filter.respond_to?(:filter)
         end
@@ -340,7 +341,7 @@ class Referent < ActiveRecord::Base
     my_metadata = self.metadata
     
     
-    if my_metadata['atitle']
+    if my_metadata['atitle'] && ! my_metadata['atitle'].blank?
       citation[:title] = my_metadata['atitle']
       citation[:title_label], citation[:subtitle_label] = 
         case my_metadata['genre']

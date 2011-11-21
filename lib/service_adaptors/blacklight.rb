@@ -275,7 +275,6 @@ class Blacklight < Service
   def filter_keyword_entries(atom_entries, options = {})
     options[:exclude_ids] ||= []
     options[:remove_subtitle] ||= true
-  
     request_title_forms = [
         raw_search_title(request.referent).downcase,        
         normalize_title( raw_search_title(request.referent) )

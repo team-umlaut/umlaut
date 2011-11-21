@@ -1,4 +1,7 @@
 class ExportEmailController < ApplicationController
+  include UmlautConfigurable
+
+  
   filter_parameter_logging :email
   before_filter :load_objects
   layout Proc.new { |controller|         
@@ -6,7 +9,7 @@ class ExportEmailController < ApplicationController
          controller.params["X-Requested-With"] == "XmlHttpRequest")
        nil
      else
-       AppConfig.param("search_layout", "search_basic").to_s
+       config.layout
      end
   }
 

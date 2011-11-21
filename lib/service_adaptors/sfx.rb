@@ -10,8 +10,8 @@
 #     link filter service instead. 
 #     When set to true, Umlaut will send all SFX clicks
 #     through SFX, for SFX to capture statistics. This is currently done
-#     using a backdoor into the SFX sfxresolve.cgi script. Defaults to false,
-#     or the app_config.default_sfx_click_passthrough config if set. Note that
+#     using a backdoor into the SFX sfxresolve.cgi script. Defaults to false. 
+#     Note that
 #     after SFX requests have been removed in the nightly job, the
 #     click passthrough will cause an error! Set sfx_requests_expire_crontab
 #     with the crontab pattern you use for requests to expire, and we won't
@@ -85,7 +85,6 @@ class Sfx < Service
   end
   
   def handle(request)
-    
     client = self.initialize_client(request)
     begin
       response = self.do_request(client)
@@ -142,12 +141,7 @@ class Sfx < Service
   def parse_response(resolver_response, request)
     require 'hpricot'
     require 'cgi'
-    
-    #journal_index_on = AppConfig.param("use_umlaut_journal_index", true)
-    # Bug in appconfig
-    journal_index_on = AppConfig["use_umlaut_journal_index"]
-    journal_index_on = false if journal_index_on.nil?
-    
+        
     doc = Hpricot(resolver_response)     
 
     # Catch an SFX error message (in HTML) that's not an XML
@@ -214,18 +208,7 @@ class Sfx < Service
       # If journal index is on, load categories. Not sure this works or does
       # anything at present.
       metadata = request.referent.metadata
-      if ( journal_index_on )
-        if object_id
-          journal = Journal.find_by_object_id(object_id)
-        elsif metadata['issn']
-          journal = Journal.find_by_issn_or_eissn(metadata['issn'], metadata['eissn'])
-        end  
-        if journal
-          journal.categories.each do | category |
-            request.add_service_response({:service=>self,:key=>'SFX',:value_string=>category.category,:value_text=>category.subcategory},['subject'])
-          end
-        end
-      end
+      
       
       # For each target delivered by SFX
       sfx_obj.search("/ctx_obj_targets/target").each_with_index do|target, target_index|  
@@ -390,9 +373,8 @@ class Sfx < Service
 
    
   def sfx_click_passthrough
-    # From config, or if not that, from app default, or if not that, default
-    # to false. 
-    return @click_passthrough || AppConfig.default_sfx_click_passthrough || false;
+    # From config, or default to false. 
+    return @click_passthrough  || false;
   end
 
   # Using the value of sfx_request_expire_crontab, determine if the
@@ -457,30 +439,7 @@ class Sfx < Service
   # Class method to parse a perl_data block as XML in String
   # into a ContextObject. Argument is _string_ containing
   # XML!
-  def self.parse_perl_data(perl_data)
-    # Okay, the perl_data string comes from SFX as corrupt
-    # double-encoded char encoding. Near as I can tell, SFX
-    # took valid UTF-8, and decided it was really Latin1 (kind of guessing
-    # Latin1), and then encoded it into UTF-8---resulting in binary content
-    # that's just a mess. This double encoding isn't too surprising
-    # what with the wacky way that SFX delivers this 'perl_data' to us.
-    #
-    # But if we're right about the wrong Latin1 assumption, we can fix
-    # it to valid UTF-8, convert from UTF-8 'to' Latin-1, and then just
-    # assume our output is actually UTF-8 after all. (You don't want
-    # to know how long it took me to figure this out).
-    #
-    # Oops, looks like this started being actually in ordinary non-corrupted
-    # UTF-8. no longer neccesary. I think. 4 Feb 08 jrochkind.  
-    begin
-      #perl_data = Iconv.new('Latin1', 'UTF-8').iconv(perl_data)
-    rescue Iconv::IllegalSequence => e
-      # Hmm, for some reason we can't undo our double encoding. 
-      Rails.logger.error("Error: Could not convert SFX perl_data data to sane char encoding: #{e}")
-      # Don't need the whole backtrace. 
-      Rails.logger.error( e.backtrace[0..3].join("\n") )
-    end
-      
+  def self.parse_perl_data(perl_data)    
     doc = Hpricot.XML(perl_data)
 
     co = OpenURL::ContextObject.new

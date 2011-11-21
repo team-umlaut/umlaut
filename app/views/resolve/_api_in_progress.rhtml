@@ -9,7 +9,7 @@ if any_services_in_progress? %>
     url_for(params.merge( :'umlaut.request_id' => @user_request.id, :only_path => false ) ) %></refresh_url>    
     <refresh_url_path><%=  url_for(params.merge( :'umlaut.request_id' => @user_request.id, :only_path => true ) ) %></refresh_url_path>
     <refresh_url_partial_path><%=  url_for(params.merge( :'umlaut.request_id' => @user_request.id, :only_path => true, :skip_relative_url_root => true ) ) %></refresh_url_partial_path>
-    <requested_wait_seconds><%= AppConfig.param("poll_wait_seconds", 4)%></requested_wait_seconds>
+    <requested_wait_seconds><%= umlaut_config.lookup!("poll_wait_seconds", 4)%></requested_wait_seconds>
     <services_in_progress>
       <% @user_request.services_in_progress.collect { |s| s.service_types_generated}.flatten.uniq.each do |type| %> 
           <service name="<%= type.name %>" />  

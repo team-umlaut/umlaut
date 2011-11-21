@@ -39,21 +39,6 @@
 # the partial.
 #
 #
-# == Creating a new SectionRenderer from a config'ed section. 
-#
-# A SectionRender can simply be passed an id matching a section defined
-# in config, it will then look up it's actual arguments from the config. 
-# For example:
-#
-#   [SectionRenderer.new(:id => "holding")]
-#      looks up actual initialization params from the hash in the config
-#      resolve_sections list that has a :div_id => "holding".
-#
-# This can be used with ResolveHelper#render_section if you want to
-# display a section with a known div_id, simply:
-#
-#   render_section( :id => "holding")
-#
 # == Section Options
 #
 # Section options are typically configured in hashes in the application
@@ -67,7 +52,7 @@
 # As is common in ruby, SectionRenderer will make a lot of conventional
 # assumptions, allowing you to be very concise for the basic simple case:
 #
-#     { :div_id => "fulltext" }
+#     { :div_id => "fulltext", :html_area => :main }
 #
 # This means that:
 # * this section is assumed to be contained within a <div id="fulltext">. The
@@ -265,16 +250,14 @@ class SectionRenderer
   # * [show_partial_only] Display custom partial without any of the usual
   #                       standardized wrapping HTML. Custom partial will
   #                       take care of it itself. 
-  def initialize(a_umlaut_request, a_arguments = {})
-    # template so we can call helper methods if we want em.
-    # http://media.railscasts.com/videos/101_refactoring_complex_helpers.mov
+  def initialize(a_umlaut_request, section_def = {})
     @umlaut_request = a_umlaut_request
     
-    @section_id = a_arguments[:id] || a_arguments[:div_id]
+    @section_id = section_def[:id] || section_def[:div_id]
     raise Exception.new("SectionRenderer needs an :id passed in arguments hash") unless @section_id
 
     # Merge in default arguments for this section from config. 
-    construct_options(a_arguments)
+    construct_options(section_def)
 
   end
 
@@ -374,7 +357,7 @@ class SectionRenderer
   # for ResolveHelper#render_section instead. 
   def content_render_hash        
     if custom_partial?
-      {:partial => @options[:partial],
+      {:partial => @options[:partial].to_s,
        :object => responses_list,
        :locals => @options[:partial_locals].merge(
             {:responses_by_type => responses,
@@ -382,7 +365,7 @@ class SectionRenderer
              :umlaut_request => request,
              :renderer => self})}
     else
-      {:partial => @options[:item_partial], 
+      {:partial => @options[:item_partial].to_s, 
        :collection => responses_list,
        :locals => @options[:partial_locals].clone}
     end
@@ -466,61 +449,17 @@ class SectionRenderer
     return nil
   end
   
-  # Called by background updater to get a list of all sections configured
-  # in application config parameter resolve_sections to be included in
-  # background updates. 
-  def self.bg_update_sections
-    unless (@@bg_update_sections)
-      @@bg_update_sections = AppConfig.param("resolve_sections", []).find_all do |section|
-        section[:bg_update] != false
-      end
-    end
-    @@bg_update_sections
-  end
-
-  # Called by partial_html_sections action to get a list of all sections
-  # that should be included in the partial_html_sections api response. 
-  def self.partial_html_sections
-    unless (@@partial_update_sections)
-      @@partial_update_sections = AppConfig.param("resolve_sections", []).find_all do |section|
-        section[:partial_html_api] != false
-      end
-    end
-    @@partial_update_sections
-  end
-
-  # Called by resolve/index view to find sections configured
-  # in application config resolve_sections list for a specific
-  # part of the page. :main, :sidebar, or :resource_info. 
-  def self.html_sections(area)
-    AppConfig.param("resolve_sections", []).find_all do |section|
-      section[:html_area] == area
-    end
-  end
-  
 
   protected
 
   def construct_options(arguments)
-    
-    @options = {}
-
-
-    default_options = AppConfig.param("resolve_sections", []).find do |defn|
-      defn[:div_id] == @section_id
-    end
-    @options.merge!(default_options) if default_options
-    # Over-ride em with anything passed in
-    @options.merge!(arguments)
-
-
     
     # Fill in static defaults
     @options = {:show_spinner => true,
                 :show_heading =>  true,
                 :visibility => true,
                 :show_partial_only => false,
-                :partial_locals =>  {}}.merge(@options)
+                :partial_locals =>  {}}.merge!(arguments)
     
 
     # service type value default to same name as section_id
@@ -534,7 +473,7 @@ class SectionRenderer
                   }.merge(@options)
     end
 
-    # Partials to display. Default to _standard_resposne_item item partial.
+    # Partials to display. Default to _standard_response_item item partial.
     if ( @options[:partial] == true)
       @options[:partial] = @section_id
     end

@@ -1,9 +1,11 @@
 <partial_html_sections>
 
   <%= render(:partial => "api_in_progress", :layout => false) %>
-
-<% @partial_html_sections.each do |section| 
+  
+<% partial_html_sections.each do |section|
+    
     renderer = SectionRenderer.new(@user_request, section) 
+    
 
 %>
   <html_section id="<%= section[:div_id] %>">
@@ -21,20 +23,6 @@
     </html_content>    
   </html_section>
 <% end %>
-    <% #special one for errors
-      error_div_info = AppConfig.param("error_div")
-      if ( (!error_div_info.nil?) &&
-           @user_request.failed_service_dispatches.length > 0)
-     %>
-     <html_section id="ERRORS">
-       <html_content>
-        <%= with_format("html") do 
-          escape_xml( render(:partial => error_div_info[:partial].to_s)).html_safe 
-        end %>
-       </html_content>
-     </html_section>
-     <% end %>
-    
     
 </partial_html_sections>
 

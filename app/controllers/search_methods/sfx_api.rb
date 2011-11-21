@@ -14,7 +14,7 @@ module SearchMethods
         ctx = context_object_from_params
         search_results = []
   
-        sfx_url = AppConfig.param("search_sfx_base_url")
+        sfx_url = umlaut_config.sfx_base_url
         unless (sfx_url)      
           # try to guess it from our institutions
           instutitions = Institution.find_all_by_default_institution(true)

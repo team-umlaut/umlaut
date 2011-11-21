@@ -1,0 +1,12 @@
+class TestingController < ApplicationController
+  layout "foo"
+
+  layout "resolve_basic"
+  
+  layout true
+
+  
+  def index
+  end
+end
+

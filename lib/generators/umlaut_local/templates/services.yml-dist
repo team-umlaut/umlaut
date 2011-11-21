@@ -19,8 +19,7 @@
 #Priority defines what order the services will be run in. 1-9 are foreground 
 #services ordinarily executed before a response is returned to the user.  a-z 
 #are background services run after a response is returned to the user. Two 
-#services sharing the same priority will be run concurrently (but see the 
-#config.app_config.threaded_services config param). 
+#services sharing the same priority will be run concurrently.
 #
 #Services defined in services.yml may have other service-specific parameters 
 #too, for instance commonly a password or api_key giving you access to the 

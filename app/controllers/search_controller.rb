@@ -26,13 +26,14 @@
 #     As in #find_by_title, return two element array, first elememt is array
 #     of OpenURL::ContextObject, second element is total hit count. 
 class SearchController < ApplicationController
+  include UmlautConfigurable
   include SearchMethods::Sfx4
 
   @@search_batch_size = 20
   @@az_batch_size = 20
   @@autocomplete_limit = 15
   
-  layout AppConfig.param("search_layout","search_basic"), :except => [ :opensearch, :opensearch_description ]
+  layout umlaut_config.search_layout, :except => [ :opensearch, :opensearch_description ]
 
   before_filter :normalize_params
   
@@ -48,12 +49,10 @@ class SearchController < ApplicationController
   end  
   
   def journals
-    #fall through to view
     @submit_hash = params["umlaut.display_coins"] ? {:controller=>'resolve', :action=>'display_coins'} : {:controller=>'search', :action=>'journal_search'}
 
-    # Render configed view, if configed, or default 
-    view = AppConfig.param("search_view", "search/journals")
-    render :template => view
+    # Render configed view, if configed, or default     
+    render umlaut_config.lookup!("search_view", "journals")
   end
 
   # Not sure if this action actually works or does anything at present. 
@@ -286,13 +285,13 @@ class SearchController < ApplicationController
   end
 
   def search_method_module
-    return AppConfig.param("az_search_method") || SearchMethods::Sfx4
+    umlaut_config.lookup!("az_search_method", SearchMethods::Sfx4)
   end
   
   # sfx a-z profile as defined in config, used for direct db connections
   # to sfx. 
   def sfx_az_profile
-    AppConfig.param("sfx_az_profile", "default")
+    umlaut_config.lookup!("sfx_az_profile", "default")
   end
   helper_method :sfx_az_profile
   

@@ -15,7 +15,7 @@
             <%= render :partial=>'citation' %>
   
             <div class="resource_info_sections">
-              <% SectionRenderer.html_sections(:resource_info).each do |section|
+              <% html_sections(:resource_info).each do |section|
               %>
                 <%= content_tag "div", :id => section[:div_id] do %>
                   <%= render_section(section) %>
@@ -27,7 +27,7 @@
           
           <td align='right'>
             <div id="cover_image">
-              <%= render_section(:id => "cover_image") %>
+              <%= render_section(html_section_by_div_id("cover_image")) %>
             </div>
           </td>
         </tr>
@@ -36,7 +36,7 @@
     
     
     <div class="main_response_list">
-      <% SectionRenderer.html_sections(:main).each do |section|
+      <% html_sections(:main).each do |section|
       %>
         <%= content_tag "div", :id => section[:div_id] do %>
           <%= render_section(section) %>
@@ -49,7 +49,7 @@
   
   <div id="rightColumn" class="sidebar">
   
-      <% SectionRenderer.html_sections(:sidebar).each do |section|
+      <% html_sections(:sidebar).each do |section|
       %>
         <%= content_tag "div", :id => section[:div_id] do %>
           <%= render_section(section) %>
@@ -58,7 +58,9 @@
   
     <!-- service errors -->
     <div id="service_errors">
-       <%= render :partial => 'service_errors' %>          
+      <% html_sections(:service_errors).each do |section| %>
+        <%= render_section(section) %>
+      <% end %>
     </div>
     
   </div>

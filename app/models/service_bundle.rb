@@ -7,7 +7,7 @@ class ServiceBundle
     @services = service_objects
     @priority_level = priority_level
 
-    @log_timing = AppConfig.param("log_service_timing", true)
+    @log_timing = UmlautConfig.config.lookup!("log_service_timing", false)
 
     # Don't forward exceptions, that'll interrupt other service processing.
     # Catch the exception, record it in the dispatch table, done. May want
