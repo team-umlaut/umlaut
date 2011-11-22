@@ -17,27 +17,35 @@ class ResolveController < ApplicationController
   # Take layout from config, default to resolve_basic.rhtml layout. 
   layout umlaut_config.resolve_layout,  
          :except => [:partial_html_sections]
-  #require 'json/lexer'
-
-  # If a background service was started more than 30 seconds
-  # ago and isn't finished, we assume it died. This value
-  # can be set in app config variable background_service_timeout.
-
-  class << self; attr_accessor :background_service_timeout end
-  @background_service_timeout = umlaut_config.lookup!("background_service_timeout", 30.seconds)
-
-  
-  # If a service has status FailedTemporary, and it's older than a
-  # certain value, it will be re-queued in #serviceDispatch.
-  # This value defaults to 10 times background_service_timeout,
-  # but can be set in app config variable requeue_failedtemporary_services
-  # If you set it too low, you can wind up with a request that never completes,
-  # as it constantly re-queues a service which constantly fails.
-  class << self; attr_accessor :requeue_failedtemporary_services end
-  @requeue_failedtemporary_services = umlaut_config.lookup!("requeue_failedtemporary_services", background_service_timeout * 10)
   
   
-  
+  # Must return a Hash where each key is a unique service name, and
+  # each value a hash that defines a service. Like the hash in services.yml
+  # under default/services.  By default, this method in fact just loads
+  # and returns that hash, but can be over-ridden with local logic for
+  # determining proper list of services for current request.
+  #
+  # Local over-ride could even in theory return a custom subclass of Collection, 
+  # with customized dispatch behavior. Probably not a great idea though.  
+  def create_collection
+    # cache hash loaded from YAML, ensure it has the keys we expect. 
+    unless defined? @@services_config_list
+      yaml_path = File.expand_path("config/services.yml", Rails.root)
+      if File.exists? yaml_path
+        @@services_config_list = YAML::load(File.open( yaml_path ))        
+      else
+        @@services_config_list = {}
+      end
+      @@services_config_list["default"] ||= {}
+      @@services_config_list["default"]["services"] ||= {}
+    end
+    
+    # trim out ones with disabled:true
+    services = @@services_config_list["default"]["services"].reject {|id, hash| hash["disabled"] == true}
+            
+    return Collection.new(@user_request, services)
+  end
+    
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
   def init_processing
     # intentionally trigger creation of session if it didn't already exist
@@ -45,6 +53,8 @@ class ResolveController < ApplicationController
     # way to force session creation without setting a value in session,
     # so we do this weird one. 
     session[nil] = nil
+    
+    # Create an UmlautRequest object. 
     options = {}
     if (  @@no_create_request_actions.include?(params[:action])  )
       options[:allow_create] = false
@@ -54,25 +64,9 @@ class ResolveController < ApplicationController
     # If we chose not to create a request and still don't have one, bale out.
     return unless @user_request
     
-    # Ip may be simulated with req.ip in context object, or may be
-    # actual, request figured it out for us. 
-    @collection = Collection.new(@user_request, session, params["umlaut.institution"])      
     @user_request.save!
-    # Set 'timed out' background services to dead if neccesary. 
-    @user_request.dispatched_services.each do | ds |
-        if ( (ds.status == DispatchedService::InProgress ||
-              ds.status == DispatchedService::Queued ) &&
-              (Time.now - ds.updated_at) > self.class.background_service_timeout)
-
-              ds.store_exception( Exception.new("background service timed out (took longer than #{self.class.background_service_timeout} to run); thread assumed dead.")) unless ds.exception_info
-              # Fail it temporary, it'll be run again. 
-              ds.status = DispatchedService::FailedTemporary
-              ds.save!
-              logger.warn("Background service timed out, thread assumed dead. #{@user_request.id} / #{ds.service.service_id}")
-        end
-    end
-    
-    return @user_request
+     
+    @collection = create_collection      
   end
 
   require 'CronTab'
@@ -257,9 +251,7 @@ class ResolveController < ApplicationController
     end
     
     # Otherwise if not from url, load from app config
-    skip  ||= umlaut_config.skip_resolve_menu  if skip.nil?
-
-    
+    skip  ||= umlaut_config.skip_resolve_menu  if skip.nil?    
 
     if (skip.kind_of?( FalseClass ))
       # nope
@@ -295,7 +287,6 @@ class ResolveController < ApplicationController
     else
       logger.error( "Unexpected value in config 'skip_resolve_menu'; assuming false." )
     end
-
     
     return return_value;    
   end
@@ -345,90 +336,7 @@ class ResolveController < ApplicationController
   end
 
   def service_dispatch()
-    expire_old_responses()
-
-    # Register ALL bg/fg services as 'queued' in part to make
-    # sure we don't run them twice as a result of a browser refresh
-    # or AJAX request. We want to make sure anything ALREADY
-    # marked as 'queued' is not re-run, and anything we're about to run
-    # gets marked as queued.        
-    queued_service_ids = @user_request.queue_all_regular_services(@collection, :requeue_temp_fails => true).collect {|s| s.service_id }
-    
-    # Foreground services
-    (0..9).each do | priority |      
-      services = @collection.instantiate_services!(:level => priority)
-
-      # We can only really run ones that were succesfully queued          
-      services_to_run = services.find_all { |s|
-        queued_service_ids.include?(s.service_id)  
-      }
-      excluded_services = services.find_all {|s| 
-        ! queued_service_ids.include?(s.service_id)  
-      }
-
-      logger.debug("Skipping services already queued for priority #{priority}: #{excluded_services.collect {|s|s.service_id}.inspect}") unless excluded_services.blank?
-        
-      next if services_to_run.empty?
-      
-      bundle = ServiceBundle.new(services_to_run , priority)
-      bundle.handle(@user_request, request.session_options[:id])            
-    end
-    # Need to reload the request from db, so it gets changes
-    # made by services in threads. 
-    @user_request.reload
-    
-
-    # Now we run background services. 
-    # Now we do some crazy magic, start a Thread to run our background
-    # services. We are NOT going to wait for this thread to join,
-    # we're going to let it keep doing it's thing in the background after
-    # we return a response to the browser
-    backgroundThread = Thread.new(@collection, @user_request) do | t_collection,  t_request|
-      # Tell our AR extension not to allow implicit checkouts
-      ActiveRecord::Base.forbid_implicit_checkout_for_thread! if ActiveRecord::Base.respond_to?("forbid_implicit_checkout_for_thread!")
-      
-      # got to reserve an AR connection for our main 'background traffic director'
-      # thread, so it has a connection to use to mark services as failed, at least. 
-      ActiveRecord::Base.connection_pool.with_connection do
-        begin
-          # Deal with ruby's brain dead thread scheduling by setting
-          # bg threads to a lower priority so they don't interfere with fg
-          # threads.
-          Thread.current.priority = -1
-          
-        
-          ('a'..'z').each do | priority |
-            # Only run the services that are runnable, that have their ids listed
-            services = t_collection.instantiate_services!(:level => priority)
-            services_to_run = services.find_all { |s|
-              queued_service_ids.include?(s.service_id)  
-            }
-            excluded_services = services.find_all {|s| 
-              ! queued_service_ids.include?(s.service_id)  
-            }
-  
-            
-            logger.debug("Skipping services already queued for priority #{priority}: #{excluded_services.collect {|s|s.service_id}.inspect}") unless excluded_services.blank?
-            
-              
-            next if services_to_run.empty?
-        
-            bundle = ServiceBundle.new(services_to_run , priority)
-            bundle.handle(t_request, request.session_options[:id])
-          end        
-       rescue Exception => e
-         #debugger
-          # We are divorced from any request at this point, not much
-          # we can do except log it. Actually, we'll also store it in the
-          # db, and clean up after any dispatched services that need cleaning up.
-          # If we're catching an exception here, service processing was
-          # probably interrupted, which is bad. You should not intentionally
-          # raise exceptions to be caught here.
-          Thread.current[:exception] = e
-          logger.error("Background Service execution exception1: #{e}\n\n   " + clean_backtrace(e).join("\n"))                
-       end
-     end
-    end
+    @collection.dispatch_services!
   end
 
 

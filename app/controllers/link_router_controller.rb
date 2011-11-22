@@ -20,7 +20,7 @@ class LinkRouterController < ApplicationController
     end
 
 
-    @collection = Collection.new(svc_type.request, session)          
+    @collection = Collection.new(svc_type.request)          
 
     clickthrough = Clickthrough.new
     clickthrough.request_id = svc_type.request_id

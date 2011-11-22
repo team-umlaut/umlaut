@@ -298,50 +298,6 @@ class Request < ActiveRecord::Base
     return services_in_progress.length > 0
   end
 
-  # Marks all foreground or background services as 'queued' in dispatched
-  # services. Among other reasons, this is to make sure we don't accidentally
-  # start them twice on browser refresh or AJAX request.
-  # If a service is already dispatched, it can't be queued.
-  # Returns an array of services that were succesfully queued. 
-  def queue_all_regular_services(collection, options = {})
-    options[:requeue_temp_fails] ||= false
-    
-    # Let's make sure to get a fresh copy of the dispatched_services please.
-    # We're going to fetch the whole assoc in, and then do an in-memory
-    # select against it.
-    self.dispatched_services.reset
-    
-    queued = Array.new
-    unable_to_queue = Array.new
-
-    services = collection.all_regular_services
-
-    
-    services.each do |service|
-      # in-memory select, don't go to the db for each service! 
-      if ( found = self.dispatched_services.to_a.find {|s| s.service_id == service.service_id  } )
-        # Okay, if it failed temporary, and it's after our resurrection
-        # wait time, go ahead and requeue it. 
-        if ( options[:requeue_temp_fails] &&
-           found.status == DispatchedService::FailedTemporary  &&
-           (Time.now - found.updated_at) > ResolveController.requeue_failedtemporary_services) 
-           
-           # requeue it!
-           found.status = DispatchedService::Queued
-           found.exception_info = nil
-           found.save!                   
-           queued.push( service )        
-        else        
-          unable_to_queue.push( service )
-        end
-      else
-        self.new_dispatch_object!(service, DispatchedService::Queued).save!        
-        queued.push( service )        
-      end            
-    end
-    return queued
-  end
-
   def to_context_object
     #Mostly just the referent
     context_object = self.referent.to_context_object
@@ -397,6 +353,24 @@ class Request < ActiveRecord::Base
       return self.service_types.to_a.find_all { |st|  
         st.service_type_value == svc_type_obj }      
     end
+  end
+  
+  
+  # Warning, doesn't check for existing object first. Use carefully, usually
+  # paired with find_dispatch_object. Doesn't actually call save though,
+  # caller must do that (in case caller wants to further initialize first). 
+  def new_dispatch_object!(service, status)
+    service_id = if service.kind_of?(Service)
+      service.service_id
+    else
+      service.to_s
+    end
+    
+    ds = DispatchedService.new
+    ds.service_id = service_id
+    ds.status = status
+    self.dispatched_services << ds
+    return ds
   end
   
   protected
@@ -456,16 +430,6 @@ class Request < ActiveRecord::Base
 
   def find_dispatch_object(service)
     return self.dispatched_services.find(:first, :conditions=>{:service_id => service.service_id})
-  end
-  # Warning, doesn't check for existing object first. Use carefully, usually
-  # paired with find_dispatch_object. Doesn't actually call save though,
-  # caller must do that (in case caller wants to further initialize first). 
-  def new_dispatch_object!(service, status)
-    ds = DispatchedService.new
-    ds.service_id = service.service_id
-    ds.status = status
-    self.dispatched_services << ds
-    return ds
   end
 
   # Input is a CGI::parse style of HTTP params (array values)

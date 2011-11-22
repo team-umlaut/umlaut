@@ -1,3 +1,6 @@
+# ServiceBundle is basically responsible for multi-threaded execution of
+# a list of services, all in the same priority. 
+#
 class ServiceBundle
   attr_accessor :services
   attr_accessor :priority_level
@@ -7,7 +10,7 @@ class ServiceBundle
     @services = service_objects
     @priority_level = priority_level
 
-    @log_timing = UmlautConfig.config.lookup!("log_service_timing", false)
+    @log_timing = UmlautConfig.config.lookup!("log_service_timing", true)
 
     # Don't forward exceptions, that'll interrupt other service processing.
     # Catch the exception, record it in the dispatch table, done. May want
@@ -76,7 +79,6 @@ class ServiceBundle
           
          
         rescue Exception => e
-          debugger
           # We may not be able to access ActiveRecord because it may
           # have been an AR connection error, perhaps out of connections
           # in the pool. So log and record in non-AR ways. 
@@ -126,7 +128,6 @@ class ServiceBundle
     # Clean up any leftover connections left open by threads.
     #ActiveRecord::Base.clear_active_connections!
     ActiveRecord::Base.connection_pool.clear_stale_cached_connections!
-
     Rails.logger.info("Completed services level #{@priority_level}, request #{request.id}: in #{Time.now - bundle_start}") if some_service_executed && @log_timing
   end
 

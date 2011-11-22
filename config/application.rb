@@ -12,12 +12,10 @@ module Umlaut
     config.after_initialize do
 
       # Call local umlaut intializers
-      Dir["#{Rails.root}/config/umlaut_config/initializers/**/*.rb"].sort.each do |initializer|
-          load(initializer)
-      end
-  
-      # Reset all our DependentConfigs. Cool!
-      DependentConfig.permanently_reset_all
+      #Dir["#{Rails.root}/config/umlaut_config/initializers/**/*.rb"].sort.each do |initializer|
+      #    load(initializer)
+      #end
+        
     end
     
     # Settings in config/environments/* take precedence over those specified here.
