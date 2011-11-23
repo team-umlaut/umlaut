@@ -315,7 +315,7 @@ class Service
           ( other_type == "*" || other_type == "+" ||
             st.service_type_value.name == other_type)  &&
           ( service == "*" ||
-            st.service_response.service.service_id == service)         
+            st.service_response.service_id == service)         
         end
       end
       break if preemption

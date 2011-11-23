@@ -99,10 +99,10 @@ class ResolveController < ApplicationController
           # the DispatchedService record, and service will be automatically
           # run again. 
           
-          serv_id = ds.service.service_id
+          serv_id = ds.service_id
           expired_responses = @user_request.service_types.each do |st|
             
-            if st.service_response.service.service_id == serv_id
+            if st.service_response.service_id == serv_id
               @user_request.service_types.delete(st)
               st.service_response.destroy
               st.destroy
@@ -279,7 +279,7 @@ class ResolveController < ApplicationController
 
       # But wait, make sure it's included in :services if present.
       if (return_value && skip[:services] )
-        return_value = nil unless skip[:services].include?( return_value.service_response.service.service_id )
+        return_value = nil unless skip[:services].include?( return_value.service_response.service_id )
       end
     elsif (skip.kind_of?(Proc ))
       return_value = skip.call( :request => @user_request )

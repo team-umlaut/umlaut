@@ -66,7 +66,7 @@ class Collection
               # Fail it temporary, it'll be run again. 
               ds.status = DispatchedService::FailedTemporary
               ds.save!
-              logger.warn("Background service timed out, thread assumed dead. #{umlaut_request.id} / #{ds.service.service_id}")
+              logger.warn("Background service timed out, thread assumed dead. #{umlaut_request.id} / #{ds.service_id}")
          end
          
         # go through dispatched_services and delete:
@@ -83,10 +83,10 @@ class Collection
           # Need to expire. Delete all the service responses, and
           # the DispatchedService record, and service will be automatically
           # run again.
-          serv_id = ds.service.service_id
+          serv_id = ds.service_id
           
           umlaut_request.service_types.each do |st|            
-            if st.service_response.service.service_id == serv_id
+            if st.service_response.service_id == serv_id
               umlaut_request.service_types.delete(st)
               st.service_response.destroy
               st.destroy
