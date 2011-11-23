@@ -402,12 +402,12 @@ class GoogleBookSearch < Service
   end
 
   # Catch url_for call for search_inside, because we're going to redirect
-  def response_url(service_type, submitted_params)
-    if ( ! (service_type.service_type_value.name == "search_inside" ))
-      return super(service_type, submitted_params)
+  def response_url(service_response, submitted_params)
+    if ( ! (service_response.service_type_value.name == "search_inside" ))
+      return super(service_response, submitted_params)
     else
       # search inside!
-      base = service_type.service_response[:url]
+      base = service_response[:url]
       query = CGI.escape(submitted_params["query"] || "")
       # attempting to reverse engineer a bit to get 'snippet'
       # style results instead of 'onepage' style results. 
