@@ -25,12 +25,12 @@ class AjaxExport < Service
     return request.dispatched(self, true)
   end
 
-  def response_url(svc_type, params)
+  def response_url(service_response, params)
     # Hash that caller will pass to url_for to create an internally
     # facing link.
     return {:controller=>@form_controller, 
      :action=>@form_action, 
-     :id => svc_type, 
+     :id => service_response.id, 
      :format => params[:format]}
   end
   
