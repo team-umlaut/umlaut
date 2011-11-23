@@ -314,7 +314,7 @@ module UmlautConfig
       section_title "See also"
       html_area :sidebar
       visibility :in_progress
-      partial_locals ( :show_source => true )
+      partial_locals( :show_source => true )
     end
     
     add_resolve_sections! do
