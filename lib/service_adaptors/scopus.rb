@@ -67,12 +67,11 @@ class Scopus < Service
     @link_salt_key = nil
     @scopus_release = "R6.0.0"
 
-    # Scopus offers to algorithms for finding similar items.
+    # Scopus offers two algorithms for finding similar items.
     # This variable can be:
     # "key" => keyword based similarity 
     # "ref" => reference based similiarity (cites similar refs?) Seems to offer 0 hits quite often, so we use keyword instead. 
-    # "aut" => author. More docs by same authors. Incorporate this latter as
-    # an additional link?
+    # "aut" => author. More docs by same authors. Incorporated as seperate link usually. 
     @more_like_this_type = "key"
     @inward_more_like_url = "http://www.scopus.com/scopus/inward/mlt.url"
     
