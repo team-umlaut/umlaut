@@ -24,7 +24,7 @@ class DispatchedService < ActiveRecord::Base
   # instantiates a new service object that represents the service
   # that dispatched. 
   def service
-    return ServiceList.instance.instantiate!( self.service_id, request )
+    @service ||= ServiceStore.instantiate_service!( self.service_id, request )
   end
 
   # For old-time's sake, true can be used for Succesful

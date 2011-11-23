@@ -153,11 +153,8 @@ class ApplicationController < ActionController::Base
   # depends on submitted HTTP params.
   #
   # Used from LinkController's index,
-  # also potentially used from banner-frame pages to calculate
-  # what url to put in content frame.
-  helper_method :calculate_url_for_response
   def calculate_url_for_response(svc_type)
-      svc = ServiceList.instance.instantiate!(svc_type.service_response.service_id, @user_request)
+      svc = ServiceStore.instantiate_service!(svc_type.service_response.service_id, @user_request)
       
       destination =  svc.response_url(svc_type, params)
 

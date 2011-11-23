@@ -197,19 +197,10 @@ class Collection
   # :ids => list of id's, only those. 
   def instantiate_services!(options ={})
     get_service_definitions(options).collect do |svc_def|
-      instantiate_service!(svc_def)
+      ServiceStore.instantiate_service!(svc_def, umlaut_request)
     end
   end
-  
-  def instantiate_service!(svc_def)
-    klassName = svc_def["type"] || svc_def["service_id"]
-    klassConst = Kernel.const_get(klassName)
-    service = klassConst.new( svc_def )
-    service.request = self.umlaut_request
       
-    return service            
-  end
-  
 
   # Deprecated, use #instantiate_services! with :task => Service::LinkOutFilter.
   def link_out_service_level(level)

@@ -95,7 +95,7 @@ class ServiceResponse < ActiveRecord::Base
 
   # Instantiates and returns a new Service associated with this response.
   def service
-    return ServiceList.instance.instantiate!( self.service_id, nil )
+    @service ||= ServiceStore.instantiate_service!( self.service_id, nil )
   end
 
   def take_key_values(hash)    

@@ -27,21 +27,9 @@ class ResolveController < ApplicationController
   #
   # Local over-ride could even in theory return a custom subclass of Collection, 
   # with customized dispatch behavior. Probably not a great idea though.  
-  def create_collection
-    # cache hash loaded from YAML, ensure it has the keys we expect. 
-    unless defined? @@services_config_list
-      yaml_path = File.expand_path("config/services.yml", Rails.root)
-      if File.exists? yaml_path
-        @@services_config_list = YAML::load(File.open( yaml_path ))        
-      else
-        @@services_config_list = {}
-      end
-      @@services_config_list["default"] ||= {}
-      @@services_config_list["default"]["services"] ||= {}
-    end
-    
+  def create_collection    
     # trim out ones with disabled:true
-    services = @@services_config_list["default"]["services"].reject {|id, hash| hash["disabled"] == true}
+    services = ServiceStore.config["default"]["services"].reject {|id, hash| hash["disabled"] == true}
             
     return Collection.new(@user_request, services)
   end
