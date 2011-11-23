@@ -250,7 +250,7 @@ module UmlautConfig
       div_id "document_delivery"
       section_title "Request a copy from Inter-Library Loan"
       html_area :main
-      visibilty :responses_exist
+      visibility :responses_exist
       bg_update false
     end
     
@@ -263,7 +263,7 @@ module UmlautConfig
     add_resolve_sections! do
       div_id "abstract"
       html_area :main
-      visiblity :responses_exist
+      visibility :responses_exist
     end
     
     add_resolve_sections! do
