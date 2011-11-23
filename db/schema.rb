@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111115191651) do
+ActiveRecord::Schema.define(:version => 20111123183311) do
 
   create_table "clickthroughs", :force => true do |t|
     t.integer  "request_id",          :default => 0, :null => false
@@ -143,28 +144,21 @@ ActiveRecord::Schema.define(:version => 20111115191651) do
   add_index "requests", ["session_id"], :name => "req_sess_idx"
 
   create_table "service_responses", :force => true do |t|
-    t.string   "service_id",       :limit => 25,                   :null => false
-    t.string   "response_key",                     :default => ""
+    t.string   "service_id",              :limit => 25,                   :null => false
+    t.string   "response_key",                            :default => ""
     t.string   "value_string"
     t.string   "value_alt_string"
     t.text     "value_text"
     t.string   "display_text"
-    t.string   "url",              :limit => 1024
+    t.string   "url",                     :limit => 1024
     t.text     "notes"
     t.text     "service_data"
     t.datetime "created_at"
+    t.string   "service_type_value_name"
+    t.integer  "request_id"
   end
 
   add_index "service_responses", ["service_id", "response_key", "value_string", "value_alt_string"], :name => "svc_resp_service_id"
-
-  create_table "service_types", :force => true do |t|
-    t.integer "request_id",              :default => 0, :null => false
-    t.integer "service_response_id",     :default => 0, :null => false
-    t.string  "service_type_value_name"
-  end
-
-  add_index "service_types", ["request_id", "service_response_id"], :name => "svc_type_idx"
-  add_index "service_types", ["service_response_id"], :name => "index_service_types_on_service_response_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id"

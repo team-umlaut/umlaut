@@ -32,18 +32,14 @@ xml.umlaut do
   end
 
   xml.responses do   
-    @user_request.service_types.collect {|st| st.service_type_value}.uniq.each do | type |
+    @user_request.service_responses.collect {|response| response.service_type_value}.uniq.each do | type |
       xml.type_group(:name => type.name ) do      
         xml.display_name( type.display_name )
         xml.display_name_plural(type.display_name_pluralize) 
         xml.complete(! @user_request.service_type_in_progress?(type) ) 
         
-        @user_request.get_service_type( type ).each do |st| 
-          response = st.service_response
-          # note that "id" is really the ServiceType id, that is more useful
-          # as a unique identifier. The ServiceType vs. ServiceResponse is
-          # indeed confusing.
-          xml.response( :id => st.id ) do
+        @user_request.get_service_type( type ).each do |response| 
+          xml.response( :id => response.id ) do
             
             xml.service( response.service.service_id )
             xml.comment!("Attributes really vary depending on particular service, this makes it kind of tricky to deal with in an API. See documentation in ServiceResponse for conventions. Reccommend that you use umlaut_passthrough_url for url. Final destination url isis calculated on-demand by umlaut.") 
@@ -67,7 +63,7 @@ xml.umlaut do
               end
             end
             
-            xml.umlaut_passthrough_url(url_for(:controller=>'link_router', :action => "index", :id=>st.id, :only_path => false))                          
+            xml.umlaut_passthrough_url(url_for(:controller=>'link_router', :action => "index", :id=>response.id, :only_path => false))                          
           end
         end
       end

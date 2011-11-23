@@ -23,7 +23,7 @@ unless @user_request.nil?
   <div class="section">
     <%= label_tag('provider', 'Select your provider:') %>
     <%
-      providers = @svc_type.service_response.service.instance_variable_get("@providers")
+      providers = @svc_response.service.instance_variable_get("@providers")
     %>
     <%= select_tag "provider", options_for_select(providers.sort, params[:provider]) %>
   </div>

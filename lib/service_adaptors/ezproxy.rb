@@ -53,7 +53,7 @@ class Ezproxy < Service
   # Hook method called by Umlaut. 
   # Returns a proxied url if it should be proxied, or nil if the url
   # can not or does not need to be proxied. 
-  def link_out_filter(orig_url, service_type, other_args = {})
+  def link_out_filter(orig_url, service_response, other_args = {})
     # remove trailing or leading whitespace from url, it makes it
     # an illegal URL anyway, but maybe we can rescue it? Marc 856's
     # sometimes have accidental trailing whitespace. 

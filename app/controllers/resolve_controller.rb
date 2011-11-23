@@ -88,12 +88,11 @@ class ResolveController < ApplicationController
           # run again. 
           
           serv_id = ds.service_id
-          expired_responses = @user_request.service_types.each do |st|
+          expired_responses = @user_request.service_responses.each do |response|
             
-            if st.service_response.service_id == serv_id
-              @user_request.service_types.delete(st)
-              st.service_response.destroy
-              st.destroy
+            if response.service_id == serv_id
+              @user_request.service_responses.delete(response)              
+              response.destroy
             end
           end
           @user_request.dispatched_services.delete(ds)
@@ -258,7 +257,7 @@ class ResolveController < ApplicationController
         service = ServiceTypeValue[service] unless service.kind_of?(ServiceTypeValue)  
 
         candidates = 
-        @user_request.service_types.find(:all, 
+        @user_request.service_responses.find(:all, 
           :conditions => ["service_type_value_name = ?", service.name])
         
         return_value = candidates.first 
@@ -267,7 +266,7 @@ class ResolveController < ApplicationController
 
       # But wait, make sure it's included in :services if present.
       if (return_value && skip[:services] )
-        return_value = nil unless skip[:services].include?( return_value.service_response.service_id )
+        return_value = nil unless skip[:services].include?( return_value.service_id )
       end
     elsif (skip.kind_of?(Proc ))
       return_value = skip.call( :request => @user_request )

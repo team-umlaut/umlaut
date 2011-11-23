@@ -10,11 +10,13 @@ class Request < ActiveRecord::Base
   
   
   has_many :dispatched_services
-  # Order service_type joins (ie, service_responses) by id, so the first
+  # Order service_responses by id, so the first
   # added to the db comes first. Less confusing to have a consistent order.
   # Also lets installation be sure services run first will have their
-  # responses show up first. 
-  has_many :service_types, :order=>'service_types.id ASC', :include=>:service_response
+  # responses show up first
+  has_many :service_responses, :order => 'id ASC' 
+  #has_many :service_types, :order=>'service_types.id ASC', :include=>:service_response
+
   belongs_to :referent, :include => :referent_values
   belongs_to :referrer
   # holds a hash representing submitted http params
@@ -225,6 +227,8 @@ class Request < ActiveRecord::Base
         # Remove it. 
         response_data.delete(:service_type_value)
       end
+      #TODO: only one service type value supported now!
+      svc_resp.service_type_value = collected_stype_values.first
   
       # Legacy code may include arbitrary key/value pairs in
       # response_data[:service_data] or just in response_data
@@ -238,16 +242,10 @@ class Request < ActiveRecord::Base
       # response_data now includes actual key/values for the ServiceResponse
       # send em.
       svc_resp.take_key_values( response_data )
+      
+      svc_resp.request = self
             
-      svc_resp.save!
-    
-  
-      # And add the actual ServiceType join objects based on our
-      # collected_style_values.
-      collected_stype_values.each do | st |      
-          stype = ServiceType.new(:request => self, :service_response => svc_resp, :service_type_value => st)
-        stype.save!
-      end
+      svc_resp.save!    
     end
       
     return svc_resp
@@ -332,7 +330,7 @@ class Request < ActiveRecord::Base
   end
 
   # pass in a ServiceTypeValue (or string name of such), get back list of
-  # ServiceType objects with that value belonging to this request.
+  # ServiceResponse objects with that value belonging to this request.
   # :refresh=>true will force a trip to the db to get latest values.
   # otherwise, association is used.  
   def get_service_type(svc_type, options = {})    
@@ -340,18 +338,18 @@ class Request < ActiveRecord::Base
 
     if ( options[:refresh])
       ActiveRecord::Base.connection_pool.with_connection do
-        return self.service_types.find(:all,
+        return self.service_responses.find(:all,
                                 :conditions =>
                                   ["service_type_value_name = ?",
-                                  svc_type_obj.name ],
-                                :include => [:service_response]   
+                                  svc_type_obj.name ]   
                                 )
       end
     else
       # find on an assoc will go to db, unless we convert it to a plain
       # old array first.
-      return self.service_types.to_a.find_all { |st|  
-        st.service_type_value == svc_type_obj }      
+      
+      return self.service_responses.to_a.find_all { |response|
+        response.service_type_value == svc_type_obj }      
     end
   end
   

@@ -506,11 +506,11 @@ class Sfx < Service
   end
 
   # Custom url generation for the weird case 
-  def response_url(service_type, submitted_params)
-    if (related_object =  service_type.service_response.data_values[:related_object_hash])
+  def response_url(service_response, submitted_params)
+    if (related_object =  service_response.data_values[:related_object_hash])
       {:controller => 'resolve', "rft.issn" => related_object[:issn], "rft.title" => related_object[:title], "rft.object_id" => related_object[:sfx_object_id] }
     else
-      service_type.service_response['url']
+      service_response['url']
     end        
   end
   

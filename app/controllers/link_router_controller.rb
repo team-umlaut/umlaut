@@ -8,7 +8,7 @@ class LinkRouterController < ApplicationController
 
     # Capture mysterious exception for better error reporting. 
     begin
-      svc_type = ServiceType.find(params[:id])
+      svc_response = ServiceResponse.find(params[:id])
     rescue ActiveRecord::RecordNotFound => exception
       # Usually this happens when it's a spider trying an old link. "go" links
       # don't stay good forever! Bad spider, ignoring our robots.txt.
@@ -23,12 +23,12 @@ class LinkRouterController < ApplicationController
     @collection = self.create_collection         
 
     clickthrough = Clickthrough.new
-    clickthrough.request_id = svc_type.request_id
-    clickthrough.service_response_id = svc_type.service_response_id
+    clickthrough.request_id = svc_response.request_id
+    clickthrough.service_response_id = svc_response.id
     clickthrough.save
 
 
-    redirect_to calculate_url_for_response(svc_type)
+    redirect_to calculate_url_for_response(svc_response)
   end
   
   protected
@@ -59,10 +59,10 @@ class LinkRouterController < ApplicationController
   # depends on submitted HTTP params.
   #
   # Used from LinkController's index,
-  def calculate_url_for_response(svc_type)
-      svc = ServiceStore.instantiate_service!(svc_type.service_response.service_id, nil)
+  def calculate_url_for_response(svc_response)
+      svc = ServiceStore.instantiate_service!(svc_response.service_id, nil)
       
-      destination =  svc.response_url(svc_type, params)
+      destination =  svc.response_url(svc_response, params)
 
       # if response_url returned a string, it's an external url and we're
       # done. If it's something else, usually a hash, then pass it to
@@ -74,7 +74,7 @@ class LinkRouterController < ApplicationController
         # These are services listed as  task: link_out_filter  in services.yml
         (1..9).each do |priority|
           @collection.link_out_service_level( priority ).each do |filter|
-            filtered_url = filter.link_out_filter(url, svc_type)
+            filtered_url = filter.link_out_filter(url, svc_response)
             url = filtered_url if filtered_url
           end
         end

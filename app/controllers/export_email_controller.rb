@@ -14,8 +14,8 @@ class ExportEmailController < ApplicationController
   }
 
   def load_objects
-    @svc_type = ServiceType.find(params[:id])
-    @user_request = @svc_type.request if @svc_type
+    @svc_response = ServiceResponse.find(params[:id])
+    @user_request = @svc_response.request if @svc_response
   end
   
   def email    
@@ -25,10 +25,7 @@ class ExportEmailController < ApplicationController
   def txt    
 
   end
-  
-  def reset
-  end
-
+    
   def send_email
     @email = params[:email]
     @fulltexts = @user_request.get_service_type('fulltext', { :refresh=>true })
@@ -111,7 +108,7 @@ class ExportEmailController < ApplicationController
   end
 
   def holding(id)
-    return ServiceType.find(id) unless id.nil?
+    return ServiceResponse.find(id) unless id.nil?
   end
   
   def location(id)

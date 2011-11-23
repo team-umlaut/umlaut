@@ -85,11 +85,10 @@ class Collection
           # run again.
           serv_id = ds.service_id
           
-          umlaut_request.service_types.each do |st|            
-            if st.service_response.service_id == serv_id
-              umlaut_request.service_types.delete(st)
-              st.service_response.destroy
-              st.destroy
+          umlaut_request.service_responses.each do |response|            
+            if response.service_id == serv_id
+              umlaut_request.service_responses.delete(response)              
+              response.destroy
             end
           end
           

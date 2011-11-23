@@ -30,24 +30,23 @@ class SfxBackchannelRecord < Service
   # Hook method called by Umlaut. 
   # We always return nil because we aren't interested in modifying the url,
   # just using the callback to record the click with SFX. 
-  def link_out_filter(orig_url, service_type, other_args = {})
-    debugger
+  def link_out_filter(orig_url, service_response, other_args = {})
     # Only work on responses that came from SFX.
-    unless (service_type.service_response.service.class.to_s == "Sfx")
+    unless (service_response.service.class.to_s == "Sfx")
        return nil
     end
-    make_backchannel_request( service_type )
+    make_backchannel_request( service_response )
     
     
     return nil
   end
 
   # Does everything in a background thread to avoid slowing down the user. 
-  def make_backchannel_request(service_type)
+  def make_backchannel_request(service_response)
 
     Thread.new do
       begin
-        direct_sfx_url = Sfx.pass_through_url(service_type.service_response.data_values)
+        direct_sfx_url = Sfx.pass_through_url(service_response.data_values)
         # now we call that url through a back channel just to record it
         # with SFX.
         
@@ -61,7 +60,7 @@ class SfxBackchannelRecord < Service
                sfx_response.value
         end                
       rescue Exception => e
-        Rails.logger.error("Could not record sfx backchannel click for service_type id #{service_type.id} ; sfx backchannel url attempted: #{direct_sfx_url} ; problem: #{e}")
+        Rails.logger.error("Could not record sfx backchannel click for service_response id #{service_response.id} ; sfx backchannel url attempted: #{direct_sfx_url} ; problem: #{e}")
         Rails.logger.error( e.backtrace.join("\n"))
       end
     end

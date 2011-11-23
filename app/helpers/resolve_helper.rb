@@ -46,8 +46,8 @@ module ResolveHelper
   # returns a ServiceResponse  object, or nil. 
   def cover_image_response(size='medium')
     cover_images = get_service_type('cover_image')
-    cover_images.each do |st|
-      return st if st.service_response.service_data[:size] == size 
+    cover_images.each do |service_response|
+      return service_response if service_response.service_data[:size] == size 
     end
     return nil
   end

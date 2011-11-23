@@ -67,7 +67,7 @@ class ServiceBundle
           local_request = ActiveRecord::Base.connection_pool.with_connection do
             # pre-load all relationships so no ActiveRecord activity will be
             # needed later to see em. 
-            Request.includes(:referrer, :referent, :service_types, :dispatched_services).find(request_id)
+            Request.includes(:referrer, :referent, :service_responses, :dispatched_services).find(request_id)
           end
           
 
@@ -88,7 +88,7 @@ class ServiceBundle
           
           # Log it too, although experience shows it may never make it to the 
           # log for mysterious reasons. 
-          Rails.logger.error("Threaded service raised exception. Service: #{service.service_id}, #{e}, #{clean_backtrace(e).join("\n")}")
+          Rails.logger.error("Threaded service raised exception. Service: #{service.service_id}, #{e}\n  #{clean_backtrace(e).join("\n  ")}")
           
           # And stick it in a thread variable too
           Thread.current[:exception] = e                      

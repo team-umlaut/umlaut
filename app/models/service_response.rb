@@ -75,7 +75,7 @@ These are applicable only when the incoming OpenURL is an article-level citation
 =end
 class ServiceResponse < ActiveRecord::Base  
   @@built_in_fields = [:display_text, :url, :notes, :response_key, :value_string, :value_alt_string, :value_text]
-  has_many :service_types
+  belongs_to :request
   serialize :service_data  
   # This value is not stored in db, but is set temporarily so
   # the http request params can easily be passed around with a response
@@ -97,6 +97,23 @@ class ServiceResponse < ActiveRecord::Base
   def service
     @service ||= ServiceStore.instantiate_service!( self.service_id, nil )
   end
+  
+  # Returns a hash or hash-like object with properties for the service response. 
+  def view_data
+    self.service.view_data_from_service_type(self)
+  end
+  
+    # Should take a ServiceTypeValue object, or symbol name of
+  # ServiceTypeValue object. 
+  def service_type_value=(value)
+    value = ServiceTypeValue[value] unless value.kind_of?(ServiceTypeValue)        
+    self.service_type_value_name = value.name   
+  end
+  def service_type_value
+    ServiceTypeValue[self.service_type_value_name]
+  end
+  
+  
 
   def take_key_values(hash)    
     # copy it, cause we're gonna modify it

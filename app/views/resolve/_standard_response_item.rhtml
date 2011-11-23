@@ -7,9 +7,9 @@
    #    :show_source => default false, if true display the source of the link
    show_source ||= false
    
-   service_type = standard_response_item # passed in via :object or :collection
+   service_response = standard_response_item # passed in via :object or :collection
    # passed in in :object or :collection 
-   view_data = service_type.view_data
+   view_data = service_response.view_data
 %>
 
 <li class="response_item"> 
@@ -22,14 +22,14 @@
   %>
       <%= link_to(view_data[:display_text], 
               {:controller=>'link_router', 
-              :id=>service_type.id},
-              {:id => "svctype_link_#{service_type.id}",                
+              :id=>service_response.id},
+              {:id => "svctype_link_#{service_response.id}",                
               :target => "_blank",
               :class => "ajax_window"}) %>
   <% elsif (view_data[:content] ) 
      #collapsible content on page
   %>
-    <% expand_contract_section(view_data[:display_text], "svc_id_#{service_type.id}") do %>
+    <% expand_contract_section(view_data[:display_text], "svc_id_#{service_response.id}") do %>
       <div class="section_content_indent">
         <%= view_data[:content] %>
       </div>
@@ -39,11 +39,11 @@
   <% else 
     # Ordinary href link. 
   %>      
-    <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>service_type.id}, 'target'=>"_blank", 'id' => "svctype_link_#{service_type.id}" %>
+    <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>service_response.id}, 'target'=>"_blank", 'id' => "svctype_link_#{service_response.id}" %>
   <% end %>
 
 <% if show_source %>
-  <div class="link_source">from <%= view_data[:source] || service_type.service_response.service.display_name %></div>
+  <div class="link_source">from <%= view_data[:source] || service_response.service.display_name %></div>
 <% end %>
 
 <% unless view_data[:coverage].blank? %>
@@ -77,7 +77,7 @@
 
 <!-- debug info, hidden with CSS, can be made visible with javascript. -->
 <div class="debug_info" style="display:none">
-  <b>Debug info:</b> <%= service_type.service_response.service.service_id %>
+  <b>Debug info:</b> <%= service_response.service.service_id %>
   
   <% unless view_data[:debug_info].blank? %>
     ; <%= view_data[:debug_info] %>

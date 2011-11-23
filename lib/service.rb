@@ -113,7 +113,7 @@ class Service
   # orig_url is the current url umlaut is planning on sending the user to.
   # service_type is the ServiceType object responsible for this url.
   # the third argument is reserved for future use an options hash. 
-  def link_out_filter(orig_url, service_type, other_args = {})
+  def link_out_filter(orig_url, service_response, other_args = {})
       raise Exception.new("#link_out_filter must be implemented by Service concrete sub-class with task link_out_filter!")
   end
 
@@ -125,16 +125,16 @@ class Service
   end
 
 
-  # Pass this method a ServiceType object, it will return a hash-like object of 
+  # Pass this method a ServiceResponse object, it will return a hash-like object of 
   # display values, for the view. Implementation is usually in sub-class, by
   # means of a set of methods "to_[service type name]" implemented in sub-class
   #. parseResponse will find those. Subclasses will not generally override
   # view_data_from_service_type, although they can for complete custom
   # handling. Make sure to return a Hash or hash-like (duck-typed) object.
-  def view_data_from_service_type(service_type_obj)
+  def view_data_from_service_type(service_response)
   
-    service_type_code = service_type_obj.service_type_value.name
-    service_response = service_type_obj.service_response
+    service_type_code = service_response.service_type_value.name
+    
     begin
       # try to call a method named "to_#{service_type_code}", implemented by sub-class
       self.send("to_#{service_type_code}", service_response)
@@ -247,8 +247,8 @@ class Service
  # by the client, used for service types that take form submissions (eg
  # search_inside). 
  # Should return a String url.
- def response_url(service_type, submitted_params )
-   url = service_type.service_response[:url]
+ def response_url(service_response, submitted_params )
+   url = service_response[:url]
    raise "No url provided by service response" if url.nil? || url.empty?
    return url
  end
@@ -309,13 +309,13 @@ class Service
             (disp.status ==  DispatchedService.Succesful ))
         end
       else
-        # Check service types
+        # Check service responses
         preemption = 
-        uml_request.service_types.to_a.find do |st|
+          uml_request.service_responses.to_a.find do |response|
           ( other_type == "*" || other_type == "+" ||
-            st.service_type_value.name == other_type)  &&
+            response.service_type_value.name == other_type)  &&
           ( service == "*" ||
-            st.service_response.service_id == service)         
+            response.service_id == service)         
         end
       end
       break if preemption
