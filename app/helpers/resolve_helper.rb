@@ -52,33 +52,6 @@ module ResolveHelper
     return nil
   end
 
-  # pass in a ServiceType object, usually for fulltext.
-  # Returns a string URL that will take the user directly to
-  # that resource. No longer using umlaut redirect, look up
-  # the direct url through umlaut mechanisms first.
-  # If you want to log direct link clickthroughs, you need to
-  # hook in here. 
-  def direct_url_for(service_type)                 
-    return calculate_url_for_response(service_type)                                   
-  end
-
-  # Used by banner menu pages. 
-  # pass in a service_type object, get a link (<a>) to display it in a frameset
-  # page. Takes account of known_frame_escapers to send them to a new non-framed
-  # window.
-  def frameset_link_to(service_type, url_params={})
-    if ( known_frame_escaper?(service_type))
-      link_to(service_type.view_data[:display_text],
-              direct_url_for(service_type),
-              'target'=>'_blank')
-    else
-      url = frameset_action_url( service_type, url_params )
-      link_to(service_type.view_data[:display_text],
-               url,
-              'target'=> '_top')
-    end
-  end
-  
 
 
   # Did this come from citation linker style entry?
