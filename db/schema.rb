@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111128202254) do
+ActiveRecord::Schema.define(:version => 20111128203553) do
 
   create_table "clickthroughs", :force => true do |t|
     t.integer  "request_id",          :default => 0, :null => false
@@ -127,12 +127,6 @@ ActiveRecord::Schema.define(:version => 20111128202254) do
   end
 
   add_index "sfx_urls", ["url"], :name => "index_sfx_urls_on_url"
-
-  create_table "title_sources", :force => true do |t|
-    t.string "name",     :limit => 50, :default => "", :null => false
-    t.text   "location",                               :null => false
-    t.text   "filename",                               :null => false
-  end
 
   create_table "users", :force => true do |t|
     t.string "username",  :limit => 50,  :default => "", :null => false
