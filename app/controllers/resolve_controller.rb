@@ -18,49 +18,7 @@ class ResolveController < ApplicationController
   layout umlaut_config.resolve_layout,  
          :except => [:partial_html_sections]
   
-  
-  # Must return a Hash where each key is a unique service name, and
-  # each value a hash that defines a service. Like the hash in services.yml
-  # under default/services.  By default, this method in fact just loads
-  # and returns that hash, but can be over-ridden with local logic for
-  # determining proper list of services for current request.
-  #
-  # Local over-ride could even in theory return a custom subclass of Collection, 
-  # with customized dispatch behavior. Probably not a great idea though.  
-  def create_collection    
-    # trim out ones with disabled:true
-    services = ServiceStore.config["default"]["services"].reject {|id, hash| hash["disabled"] == true}
-            
-    return Collection.new(@user_request, services)
-  end
-    
-  # Retrives or sets up the relevant Umlaut Request, and returns it. 
-  def init_processing
-    # intentionally trigger creation of session if it didn't already exist
-    # because we need to track session ID for caching. Can't find any
-    # way to force session creation without setting a value in session,
-    # so we do this weird one. 
-    session[nil] = nil
-    
-    # Create an UmlautRequest object. 
-    options = {}
-    if (  @@no_create_request_actions.include?(params[:action])  )
-      options[:allow_create] = false
-    end
-    @user_request ||= Request.new_request(params, session, request, options )
-
-    # If we chose not to create a request and still don't have one, bale out.
-    return unless @user_request
-    
-    @user_request.save!
-     
-    @collection = create_collection      
-  end
-
-  def save_request
-    @user_request.save!
-  end
- 		
+  	
   def index
     self.service_dispatch()
 
@@ -179,6 +137,50 @@ class ResolveController < ApplicationController
   end  
 
   protected
+  
+  
+  # Must return a Hash where each key is a unique service name, and
+  # each value a hash that defines a service. Like the hash in services.yml
+  # under default/services.  By default, this method in fact just loads
+  # and returns that hash, but can be over-ridden with local logic for
+  # determining proper list of services for current request.
+  #
+  # Local over-ride could even in theory return a custom subclass of Collection, 
+  # with customized dispatch behavior. Probably not a great idea though.  
+  def create_collection    
+    # trim out ones with disabled:true
+    services = ServiceStore.config["default"]["services"].reject {|id, hash| hash["disabled"] == true}
+            
+    return Collection.new(@user_request, services)
+  end
+    
+  # Retrives or sets up the relevant Umlaut Request, and returns it. 
+  def init_processing
+    # intentionally trigger creation of session if it didn't already exist
+    # because we need to track session ID for caching. Can't find any
+    # way to force session creation without setting a value in session,
+    # so we do this weird one. 
+    session[nil] = nil
+    
+    # Create an UmlautRequest object. 
+    options = {}
+    if (  @@no_create_request_actions.include?(params[:action])  )
+      options[:allow_create] = false
+    end
+    @user_request ||= Request.new_request(params, session, request, options )
+
+    # If we chose not to create a request and still don't have one, bale out.
+    return unless @user_request
+    
+    @user_request.save!
+     
+    @collection = create_collection      
+  end
+
+  def save_request
+    @user_request.save!
+  end
+ 	
 
   # Based on app config and context, should we skip the resolve
   # menu and deliver a 'direct' link? Returns nil if menu
