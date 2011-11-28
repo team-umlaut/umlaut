@@ -29,7 +29,7 @@
   <% elsif (view_data[:content] ) 
      #collapsible content on page
   %>
-    <% expand_contract_section(view_data[:display_text], "svc_id_#{service_response.id}") do %>
+    <%= expand_contract_section(view_data[:display_text], "svc_id_#{service_response.id}") do %>
       <div class="section_content_indent">
         <%= view_data[:content] %>
       </div>
