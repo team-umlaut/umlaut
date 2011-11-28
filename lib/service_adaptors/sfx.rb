@@ -107,13 +107,6 @@ class Sfx < Service
       
     @get_coverage = false    
     
-    if ( request.referrer && 
-         request.referrer.identifier ==
-         "info:sid/umlaut.code4lib.org:citation_lookup")
-         # show availability info
-         @get_coverage = true
-    end
-
     metadata = request.referent.metadata    
     if ( metadata['date'].blank? &&
          metadata['year'].blank? &&
