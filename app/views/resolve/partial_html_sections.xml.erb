@@ -1,6 +1,7 @@
 <partial_html_sections>
-
-  <%= render(:partial => "api_in_progress", :layout => false) %>
+  <%= with_format(:html) do %>
+    <%= render(:partial => "api_in_progress", :layout => false) %>
+  <% end %>
   
 <% partial_html_sections.each do |section|
     
