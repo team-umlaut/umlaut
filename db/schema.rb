@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111123183311) do
+ActiveRecord::Schema.define(:version => 20111128181553) do
 
   create_table "clickthroughs", :force => true do |t|
     t.integer  "request_id",          :default => 0, :null => false
@@ -73,13 +72,6 @@ ActiveRecord::Schema.define(:version => 20111123183311) do
   add_index "journals", ["title"], :name => "jrnl_title_idx"
   add_index "journals", ["title_source_id"], :name => "jrnl_title_source_id"
   add_index "journals", ["updated_at"], :name => "jrnl_tstamp_idx"
-
-  create_table "keywords", :force => true do |t|
-    t.string "term",         :default => "", :null => false
-    t.string "keyword_type", :default => "", :null => false
-  end
-
-  add_index "keywords", ["term", "keyword_type"], :name => "kwd_term_idx"
 
   create_table "permalinks", :force => true do |t|
     t.integer "referent_id",                           :default => 0
