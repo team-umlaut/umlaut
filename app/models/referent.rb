@@ -68,7 +68,7 @@ class Referent < ActiveRecord::Base
   # But see caveats at #find_by_context_object . Most of the time
   # this ends up creating a new Referent.
   # pass in referrer for source-specific referent munging. 
-  def self.find_or_create_by_context_object(co, referrer)
+  def self.find_or_create_by_context_object(co)
     # Okay, we need to do some pre-processing on weird context objects
     # sent by, for example, firstSearch.
     self.clean_up_context_object(co)
@@ -76,7 +76,7 @@ class Referent < ActiveRecord::Base
     if rft = Referent.find_by_context_object(co) 
       return rft
     else
-      rft = Referent.create_by_context_object(co, referrer)
+      rft = Referent.create_by_context_object(co)
       return rft
     end
   end
@@ -84,7 +84,7 @@ class Referent < ActiveRecord::Base
   # Does call save! on referent created.
   # :permalink => false if you already have a permalink and don't
   # need to create one. Caller should attach that permalink to this referent!
-  def self.create_by_context_object(co, referrer, options = {})    
+  def self.create_by_context_object(co, options = {})    
     
     self.clean_up_context_object(co)    
     rft = Referent.new
@@ -97,7 +97,7 @@ class Referent < ActiveRecord::Base
       rft.set_values_from_context_object(co)
 
       unless ( options[:permalink] == false)
-        permalink = Permalink.new_with_values!(rft, referrer)            
+        permalink = Permalink.new_with_values!(rft, co.referrer.identifier)            
       end
   
       # Add shortcuts.
@@ -112,9 +112,8 @@ class Referent < ActiveRecord::Base
       rft.save!
 
       # Apply referent filters
-      rfr_id = referrer ? referrer.identifier : ''
-      rfr_id = '' if rfr_id.nil?
-      
+      rfr_id = ""
+      rfr_id = co.referrer.identifier if (co.referrer && ! co.referrer.identifier.blank?)
       UmlautConfig.config.lookup!("referent_filters", []).each do |regexp, filter|
         if (regexp =~ rfr_id)
           filter.filter(rft) if filter.respond_to?(:filter)

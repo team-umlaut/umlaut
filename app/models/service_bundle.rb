@@ -67,7 +67,7 @@ class ServiceBundle
           local_request = ActiveRecord::Base.connection_pool.with_connection do
             # pre-load all relationships so no ActiveRecord activity will be
             # needed later to see em. 
-            Request.includes(:referrer, :referent, :service_responses, :dispatched_services).find(request_id)
+            Request.includes(:referent, :service_responses, :dispatched_services).find(request_id)
           end
           
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111128181553) do
+ActiveRecord::Schema.define(:version => 20111128201559) do
 
   create_table "clickthroughs", :force => true do |t|
     t.integer  "request_id",          :default => 0, :null => false
@@ -112,16 +112,10 @@ ActiveRecord::Schema.define(:version => 20111128181553) do
   add_index "referents", ["volume"], :name => "index_referents_on_volume"
   add_index "referents", ["year", "volume"], :name => "by_year"
 
-  create_table "referrers", :force => true do |t|
-    t.string "identifier", :default => "", :null => false
-  end
-
-  add_index "referrers", ["identifier"], :name => "rfr_id_idx"
-
   create_table "requests", :force => true do |t|
     t.string   "session_id",             :limit => 100,  :default => "", :null => false
     t.integer  "referent_id",                            :default => 0,  :null => false
-    t.integer  "referrer_id"
+    t.string   "referrer_id"
     t.datetime "created_at",                                             :null => false
     t.string   "client_ip_addr"
     t.boolean  "client_ip_is_simulated"

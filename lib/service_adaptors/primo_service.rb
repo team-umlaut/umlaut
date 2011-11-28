@@ -181,7 +181,7 @@ class PrimoService < Service
   
   # Overwrites Service#handle.
   def handle(request)
-    @identifier = request.referrer.identifier if request.referrer and request.referrer.identifier
+    @identifier = request.referrer_id 
     primo_id = @identifier.match(/primo-(.+)/)[1] if primo_identifier? unless @identifier.nil? or @identifier.match(/primo-(.+)/).nil?
     # DEPRECATED
     # Extend OpenURL standard to take Primo Doc Id

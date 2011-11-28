@@ -7,12 +7,11 @@ class Permalink < ActiveRecord::Base
 
   # You should create Permalinks with this. Pass in a referent and referrer
   #. Will save  permalink to db
-  def self.new_with_values!(rft, rfr)
-    permalink = Permalink.new
-    
-    permalink.referent = rft
+  def self.new_with_values!(rft, rfr_id)
+    permalink = Permalink.new        
 
-    permalink.orig_rfr_id = rfr.identifier if rfr
+    permalink.referent = rft
+    permalink.orig_rfr_id = rfr_id
     
     permalink.context_obj_serialized = permalink.referent.to_context_object.xml
 

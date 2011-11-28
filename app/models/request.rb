@@ -6,19 +6,14 @@
 #
 # Constituent openurl data is stored in Referent and Referrer. 
 class Request < ActiveRecord::Base
-   
-  
-  
   has_many :dispatched_services
   # Order service_responses by id, so the first
   # added to the db comes first. Less confusing to have a consistent order.
   # Also lets installation be sure services run first will have their
   # responses show up first
   has_many :service_responses, :order => 'id ASC' 
-  #has_many :service_types, :order=>'service_types.id ASC', :include=>:service_response
 
   belongs_to :referent, :include => :referent_values
-  belongs_to :referrer
   # holds a hash representing submitted http params
   serialize :http_env
 
@@ -277,7 +272,7 @@ class Request < ActiveRecord::Base
     context_object = self.referent.to_context_object
 
     #But a few more things
-    context_object.referrer.add_identifier(self.referrer.identifier) if self.referrer
+    context_object.referrer.add_identifier(self.referrer_id) if self.referrer_id
 
     context_object.requestor.set_metadata('ip', self.client_ip_addr) if self.client_ip_addr
 
@@ -368,14 +363,10 @@ class Request < ActiveRecord::Base
        rft = Referent.find(:first, :conditions => {:id => params['umlaut.referent_id']})
     end
 
-
-    # Find or create a referrer, if we have a referrer in our OpenURL
-    rfr = nil
-    rfr = Referrer.find_or_create_by_identifier(context_object.referrer.identifier) unless context_object.referrer.empty? || context_object.referrer.identifier.empty?
-
+   
     # No id given, or no object found? Create it. 
     unless (rft )
-      rft = Referent.find_or_create_by_context_object(context_object, rfr)
+      rft = Referent.find_or_create_by_context_object(context_object)
     end
 
     # Create the Request
@@ -387,7 +378,7 @@ class Request < ActiveRecord::Base
     # (rfr.requests << req) if rfr
     # Instead, say it like this:
     req.referent = rft
-    req.referrer = rfr
+    req.referrer_id = context_object.referrer.identifier unless context_object.referrer.empty? || context_object.referrer.identifier.empty?
 
     # Save client ip
     req.client_ip_addr = params['req.ip'] || a_rails_request.remote_ip()

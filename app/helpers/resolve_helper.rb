@@ -57,9 +57,9 @@ module ResolveHelper
   # Did this come from citation linker style entry?
   # We check the referrer. 
   def user_entered_citation?(uml_request)
-    return false unless uml_request && uml_request.referrer
+    return false unless uml_request && uml_request.referrer_id
     
-    id = uml_request.referrer.identifier
+    id = uml_request.referrer_id
     return id == 'info:sid/sfxit.com:citation' || id == umlaut_config.lookup("rfr_ids.citation") || id == umlaut_config.lookup('rfr_ids.opensearch')
   end
 
