@@ -57,50 +57,6 @@ class ResolveController < ApplicationController
     @collection = create_collection      
   end
 
-  require 'CronTab'
-  # Expire expired service_responses if neccesary.
-  # See app config params 'response_expire_interval' and
-  # 'response_expire_crontab_format'.     
-  def expire_old_responses
-    
-    expire_interval = umlaut_config.response_expire_interval
-    crontab_format = umlaut_config.response_expire_crontab_format
-
-    unless (expire_interval || crontab_format)      
-      # Not needed, nothing to expire
-      return nil
-    end
-    
-    @user_request.dispatched_services.each do |ds|
-
-      now = Time.now
-      
-      expired_interval = expire_interval && 
-        (now - ds.created_at > expire_interval)
-      expired_crontab = crontab_format && 
-        (now > CronTab.new(crontab_format).nexttime(ds.created_at))
-      
-      # Only expire completed ones, don't expire in-progress ones! 
-      if (ds.completed && ( expired_interval || expired_crontab ))
-          
-          # Need to expire. Delete all the service responses, and
-          # the DispatchedService record, and service will be automatically
-          # run again. 
-          
-          serv_id = ds.service_id
-          expired_responses = @user_request.service_responses.each do |response|
-            
-            if response.service_id == serv_id
-              @user_request.service_responses.delete(response)              
-              response.destroy
-            end
-          end
-          @user_request.dispatched_services.delete(ds)
-          ds.destroy
-      end
-    end
-  end
-
   def save_request
     @user_request.save!
   end
