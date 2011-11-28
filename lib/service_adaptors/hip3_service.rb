@@ -77,9 +77,10 @@ class Hip3Service < Service
       
         next if holding.dummy?
   
-        url = holding.bib.http_url
+        
         
         service_data = {}
+        service_data[:url] = holding.bib.http_url
         service_data[:source_name] = holding.collection_str unless holding.collection_str.nil?
         service_data[:call_number] = holding.call_no
         service_data[:status] = holding.status_str
@@ -89,7 +90,6 @@ class Hip3Service < Service
         service_data[:coverage_str] = holding.coverage_str
         service_data[:coverage_str_array] = holding.coverage_str_to_a 
         service_data[:notes] = holding.notes
-        service_data[:url] = url
         # If it's not a serial copy, we can add a direct request url.
         unless ( holding.kind_of?(Hip3::SerialCopy) )
           service_data[:request_url] = self.base_path + "?profile=#{@profile}&menu=request&aspect=none&bibkey=#{holding.bib.bibNum}&itemkey=#{holding.id}"
@@ -113,7 +113,11 @@ class Hip3Service < Service
         display_text << holding.notes unless holding.notes.nil?
         service_data[:display_text] = display_text
         
-        response = request.add_service_response( {:service=>self, :display_text => display_text, :notes=>service_data[:notes], :url=> url, :service_data=>service_data }, ['holding']  )
+        response = request.add_service_response(
+          service_data.merge(
+            :service=>self, 
+            :service_type_value => 'holding'  )
+          )
   
         responses_added['holding'] ||= Array.new
         responses_added['holding'].push( response )

@@ -29,7 +29,7 @@ class UlrichsCover < Service
     # does it exist?
     if ( url_resolves(check_url)   )
        request.add_service_response(:service => self,
-                                    :service_type_value => ServiceTypeValue[:cover_image] ,
+                                    :service_type_value => :cover_image ,
                                     :url => check_url, 
                                     :size => "medium" )
     end   

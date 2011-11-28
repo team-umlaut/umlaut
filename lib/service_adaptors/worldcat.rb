@@ -1,3 +1,6 @@
+# Link to worldcat.org that relies on screen scraping to see if it's gotten
+# a hit. 
+#
 # Warning, worldcat can be awfully slow to respond. 
 # optional search_zip_code param.
 # Optional base_url param, but I don't know why you'd want to change it.
@@ -96,10 +99,12 @@ class Worldcat < Service
       end
     end
     
-    request.add_service_response( {:service=>self, 
-    :url=>worldcat_uri.to_s,
-    :display_text=>@display_text}, 
-    [ServiceTypeValue[:highlighted_link]]    )
+    request.add_service_response(
+      :service=>self, 
+      :url=>worldcat_uri.to_s,
+      :display_text=>@display_text, 
+      :service_type_value => :highlighted_link
+      )
     
     return request.dispatched(self, true)
   end

@@ -243,12 +243,12 @@ class WorldcatIdentities < Service
   end
   
   def create_service_response(request, display_name, url, extracted_notes)
-    request.add_service_response( { 
+    request.add_service_response( 
         :service=>self,    
         :url=>url,
         :display_text=>display_name,
-        :service_data => {:notes => extracted_notes}},
-      [ServiceTypeValue[:highlighted_link]]    )
+        :notes => extracted_notes,
+        :service_type_value => :highlighted_link)
   end
   
   def create_wikipedia_link(request, xml)
@@ -257,12 +257,13 @@ class WorldcatIdentities < Service
     name = name_element.inner_text
     # This is the base link that worldcat identities uses so we use the same
     link = "http://en.wikipedia.org/wiki/Special:Search?search=" << name
-    request.add_service_response( { 
+    request.add_service_response( 
         :service=>self,    
         :url=>link,
         :display_text=> "About " + name.titlecase,
-        :service_data => {:notes => '', :source => 'Wikipedia' }},
-      [ServiceTypeValue[:highlighted_link]]    )
+        :notes => '', 
+        :source => 'Wikipedia',
+        :service_type_value => :highlighted_link)
   end
   
   def create_openurl_widely_held(request, xml)
@@ -272,12 +273,12 @@ class WorldcatIdentities < Service
     
     openurl = create_openurl(request, widely_held) 
     
-    request.add_service_response( { 
+    request.add_service_response( 
         :service=>self,    
         :url=>openurl,
         :display_text=> widely_held['title'],
-        :service_data => {:notes => "Find It: This author's most widely held work." }},
-      [ServiceTypeValue[:highlighted_link]] ) 
+        :notes => "This author's most widely held work.",
+        :service_type_value => :highlighted_link) 
   end
   
   def circular_link?(request, citation_info)
@@ -328,12 +329,12 @@ class WorldcatIdentities < Service
       display_text = title
     end
     
-    request.add_service_response( { 
+    request.add_service_response( 
         :service=>self,    
         :url=>link,
         :display_text=> display_text,
-        :service_data => {:notes => notes}},
-      [ServiceTypeValue[:highlighted_link]] ) 
+        :notes => notes,
+        :service_type_value => :highlighted_link) 
   end
   
   def get_widely_held_info(xml)

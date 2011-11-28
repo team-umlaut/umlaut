@@ -200,8 +200,14 @@ class Amazon < Service
       # collect cover art urls
       ["small","medium","large"].each do | size |
         if (img = aws.at("/ItemLookupResponse/Items/Item/"+size.capitalize+"Image/URL"))
-          request.add_service_response({:service=>self, :display_text => 'Cover Image',:key=>size, :url => img.inner_html, :service_data => {:asin => asin, :size => size }},[ServiceTypeValue[:cover_image]])
-          # :value_string=>asin,
+          request.add_service_response(
+            :service=>self, 
+            :display_text => 'Cover Image',
+            :key=>size, 
+            :url => img.inner_html, 
+            :asin => asin, 
+            :size => size,
+            :service_type_value => :cover_image)          
         end
       end
       
@@ -221,7 +227,14 @@ class Amazon < Service
       desc_text = CGI.unescapeHTML( desc.inner_text )
 
       unless ( desc_text.blank? )
-        request.add_service_response({:service=>self, :display_text => "Description from Amazon.com", :url => item_url, :key=>'abstract', :value_string=>asin, :service_data => {:content=>desc_text }},['abstract'])
+        request.add_service_response(
+          :service=>self, 
+          :display_text => "Description from Amazon.com", 
+          :url => item_url, 
+          :key=>'abstract', 
+          :value_string=>asin, 
+          :content=>desc_text ,
+          :service_type_value => 'abstract')
       end
     end
     
@@ -229,7 +242,12 @@ class Amazon < Service
     if ( @service_types.include?("similar_item"))
       # Get Amazon's 'similar products' to help recommend other useful items
       (aws/"/ItemLookupResponse/Items/Item/SimilarProducts/SimilarProduct").each do |similar|
-        request.add_service_response({:service=>self,:key=>'book', :value_string=>(similar.at("/ASIN")).inner_text, :value_alt_string=>(similar.at("/Title")).inner_text},['similar_item'])
+        request.add_service_response(
+          :service=>self,
+          :key=>'book', 
+          :value_string=>(similar.at("/ASIN")).inner_text, 
+          :value_alt_string=>(similar.at("/Title")).inner_text,
+          :service_type_value => 'similar_item')
       end
 
    end
@@ -302,10 +320,10 @@ class Amazon < Service
 
       if ( @service_types.include?("search_inside") && search_inside )
         request.add_service_response( 
-          {:service => self,
+          :service => self,
           :display_text=>@display_name,
-          :url=> inside_base},
-          [:search_inside]
+          :url=> inside_base,
+          :service_type_value => :search_inside
          )   
       end
 
@@ -314,20 +332,29 @@ class Amazon < Service
 
       if (@service_types.include?("excerpts") &&
           ( search_inside || look_inside ))
-        service_data = { :url => inside_base, :asin=>asin,
-           :display_text => @display_name }
+        
                          
-         request.add_service_response({:service=>self, :service_data=>service_data}, [ServiceTypeValue['excerpts']])
+         request.add_service_response(
+            :service=>self,
+            :url => inside_base, 
+            :asin=>asin,
+            :display_text => @display_name,            
+            :service_type_value => 'excerpts')
+         
       elsif ( @service_types.include?("highlighted_link"))
           # Just link to Amazon page if we can. If we did the AWS request
           # before, afraid we didn't store the item url, just the
           # asin, reconstruct a valid one, even if not the one given to us
           # by AWS. 
           amazon_page = item_url || ("http://www.amazon.com/o/ASIN/" + asin)
-          service_data = { :url => amazon_page, :asin=>asin,
-                         :display_text => @display_text }
+          
                          
-          request.add_service_response({:service=>self, :service_data=>service_data}, [ServiceTypeValue['highlighted_link']])
+          request.add_service_response(
+            :service=>self,
+            :url => amazon_page, 
+            :asin=>asin,
+            :display_text => @display_text,            
+            :service_type_value => 'highlighted_link')
       end
       
     end

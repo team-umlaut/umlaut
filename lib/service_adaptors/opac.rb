@@ -62,8 +62,7 @@ class Opac < Service
         else
           @record_attributes[id][:conference] = false
         end
-        self.parse_for_fulltext_links(rec, request)      
-        self.collect_subjects(rec, request)
+        self.parse_for_fulltext_links(rec, request)              
         self.enhance_referent(rec, request, client.accuracy)
       end    
     end
@@ -81,7 +80,12 @@ class Opac < Service
       next if link.indicator2.match(/[28]/)
       next if link['u'].match(/(sfx\.galib\.uga\.edu)|(findit\.library\.gatech\.edu)/)
       label = (link['z']||'Electronic Access')
-      request.add_service_response({:service=>self,:key=>label,:value_string=>link['u']},['fulltext'])
+      request.add_service_response(
+        :service=>self,
+        :key=>label,
+        :value_string=>link['u'],
+        :service_type_value => 'fulltext'
+        )
     end 
   end   
   
@@ -114,11 +118,11 @@ class Opac < Service
               end
             end
             if copy_match == true
-              request.add_service_response({:service=>self,:key=>holding.identifier.to_s,:value_string=>location.name,:value_alt_string=>item.call_number,:value_text=>item.status.to_s},['holding'])         
+              request.add_service_response(:service=>self,:key=>holding.identifier.to_s,:value_string=>location.name,:value_alt_string=>item.call_number,:value_text=>item.status.to_s, :service_type_value => 'holding')         
               break
             end   	                            		
           else  
-            request.add_service_response({:service=>self,:key=>holding.identifier.to_s,:value_string=>location.name,:value_alt_string=>item.call_number,:value_text=>item.status.to_s},['holding'])
+            request.add_service_response(:service=>self,:key=>holding.identifier.to_s,:value_string=>location.name,:value_alt_string=>item.call_number,:value_text=>item.status.to_s,:service_type_value=>'holding')
           end  	         			
         end
       end
@@ -178,21 +182,7 @@ class Opac < Service
     return {:display_text=>response.value_string,:call_number=>response.value_alt_string,:status=>response.value_text,:source_name=>self.display_name}
   end 
   
-  # Gathers the subject headings from the MARC 6xx fields and creates service types
-  def collect_subjects(marc, request)
-    marc.find_all {|f| ('600'..'699') === f.tag}.each do | subject |
-      subj = ''
-      subj << subject['a']
-      unless subject['x'].blank?
-        subj << ' ' unless subj.blank?
-        subj << subject['x']
-      end
-      
-      # This may need to be modified to handle DDC, MeSH, etc.
-      request.add_service_response({:service=>self,:key=>'LCSH',:value_string=>subj},['subject']) \
-      unless subj.blank?        
-    end         
-  end
+  
   
   # When given a MARC record, this method fills in any missing
   # pieces of the Request.referent.  'accuracy' is a 3 point scale

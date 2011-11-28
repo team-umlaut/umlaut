@@ -29,7 +29,11 @@ class UlrichsLink < Service
 
       url = url_for_issn( request.referent.issn )
       
-      request.add_service_response({:service=>self, :url=>url, :display_text=>display_text }, [ServiceTypeValue[:highlighted_link]])
+      request.add_service_response(
+        :service=>self, 
+        :url=>url, 
+        :display_text=>display_text,
+        :service_type_value => :highlighted_link)
     end
 
     return request.dispatched(self, true)

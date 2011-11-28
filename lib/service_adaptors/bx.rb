@@ -38,7 +38,11 @@ class Bx < Service
       author = item.at("author").inner_text
       display_text = (author.nil?)? "#{title}" : "#{author}; #{title}"
       url = item.at("link").inner_text
-      request.add_service_response( :service=>self, :display_text => display_text, :url => url, :service_type_value => :similar)          
+      request.add_service_response( 
+         :service=>self, 
+         :display_text => display_text, 
+         :url => url, 
+         :service_type_value => :similar)          
     end
     return request.dispatched(self, true)
   end

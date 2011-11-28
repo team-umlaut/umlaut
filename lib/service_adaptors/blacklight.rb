@@ -132,15 +132,13 @@ class Blacklight < Service
           html_result_url = doc.at_xpath("atom:feed/atom:link[@rel='alternate'][@type='text/html']/attribute::href", xml_ns).to_s
 
           if hit_count > 0          
-            request.add_service_response( 
-            { 
+            request.add_service_response(             
               :service => self,
               :source_name => @display_name,
               :count => hit_count,
               :display_text => "#{hit_count} possible #{case; when hit_count > 1 ; 'matches' ; else; 'match' ; end} in #{@display_name}", 
-              :url => html_result_url
-            },
-            [ServiceTypeValue[:holding_search]])
+              :url => html_result_url,
+              :service_type_value => :holding_search )
           end
         end
     end
@@ -266,7 +264,7 @@ class Blacklight < Service
     end
     
     service_data.each do |data|
-      request.add_service_response(data.merge(:service => self), ["holding"])
+      request.add_service_response(data.merge(:service => self, :service_type_value =>"holding"))
     end
 
     return service_data.length

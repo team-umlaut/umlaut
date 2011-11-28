@@ -294,10 +294,11 @@ class GoogleBookSearch < Service
       uri = fv["volumeInfo"]["previewLink"]
           
       request.add_service_response(
-        {:service=>self, 
-          :display_text=>display_name, 
-          :url=>remove_query_context(uri) },           
-        [ :fulltext ]) 
+          :service => self, 
+          :display_text => display_name, 
+          :url => remove_query_context(uri),           
+          :service_type_value =>  :fulltext  
+      )
       count += 1
       break if count == @num_full_views
     end   
@@ -312,10 +313,10 @@ class GoogleBookSearch < Service
       url = searchable_view["volumeInfo"]["infoLink"]
       
       request.add_service_response( 
-        {:service => self,
+        :service => self,
         :display_text=>@display_name,
-        :url=> remove_query_context(url)},
-        [:search_inside]
+        :url=> remove_query_context(url),
+        :service_type_value => :search_inside
        )                  
     end
     
@@ -350,12 +351,12 @@ class GoogleBookSearch < Service
       display_text = "Book Information"
       type = ServiceTypeValue[:highlighted_link]
     end
-    request.add_service_response( { 
+    request.add_service_response( 
         :service=>self,    
         :url=> remove_query_context(url),
-        :display_text=>display_text},
-          [type]    
-       )
+        :display_text=>display_text,
+        :service_type_value => type    
+     )
   end
   
 
@@ -385,13 +386,13 @@ class GoogleBookSearch < Service
     # hack out the 'curl' if we can
     zoom_url.sub!('&edge=curl', '')
     
-    request.add_service_response({
+    request.add_service_response(
         :service=>self, 
         :display_text => 'Cover Image',
         :url => zoom_url, 
-        :size => "medium"
-      },
-      [ServiceTypeValue[:cover_image]])
+        :size => "medium",
+        :service_type_value => :cover_image
+    )     
   end
   
   # Google gives us URL to the book that contains a 'dq' param

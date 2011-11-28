@@ -43,14 +43,14 @@ class CoverThing < Service
       Rails.logger.debug("CoverThing: Null response for #{uri}, status #{response.class}")
     end
     unless (response.nil? || response.content_length.nil? || response.content_length < 50)
-      request.add_service_response({
+      request.add_service_response(
         :service=>self, 
         :display_text => 'Cover Image',
         :key=> 'medium', 
         :url => image_url, 
-        :service_data => {:size => 'medium' }
-      },
-      [ServiceTypeValue[:cover_image]])
+        :size => 'medium',
+        :service_type_value => :cover_image
+        )
     end
 
     return request.dispatched(self, true)    

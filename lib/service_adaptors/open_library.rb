@@ -162,11 +162,11 @@ class OpenLibrary < Service
       title = ed['title']
       url = @fulltext_base_url + '/' +ed['ocaid']
       request.add_service_response(
-        {:service=>self, 
+          :service=>self, 
           :display_text=>@display_name, 
           :url=>url, 
-          :notes=>title}, 
-        [ :fulltext ]) 
+          :notes=>title, 
+          :service_type_value =>  :fulltext ) 
       
       count += 1
       break if count == @num_full_views
@@ -194,12 +194,11 @@ class OpenLibrary < Service
 
     
     request.add_service_response(
-        {:service=>self, 
+          :service=>self, 
           :display_text=>"Download: " << ed['title'], 
           :url=>url, 
-          :notes=> ("%.1f" %  note) + " MB"
-        }, 
-        [ :highlighted_link ]) 
+          :notes=> ("%.1f" %  note) + " MB",
+          :service_type_value => :highlighted_link ) 
   end
   
   # they redirect so we actually have to do two HEAD requests to get the
@@ -236,14 +235,13 @@ class OpenLibrary < Service
     #FIXME need to add other sizes
     #FIXME correct @urls and use one of those
     url = "http://openlibrary.org" + cover_image
-    request.add_service_response({
+    request.add_service_response(
           :service=>self, 
           :display_text => 'Cover Image',
           :key=> 'medium', 
           :url => url, 
-          :service_data => {:size => 'medium' }
-        },
-        [ServiceTypeValue[:cover_image]])
+          :size => 'medium',
+          :service_type_value => :cover_image)
   end
   
   # pick the first of the coverimages found

@@ -45,29 +45,16 @@ class Pubmed < Service
     doc = Hpricot(body)
     return unless cite = (doc/"/PubmedArticleSet/PubmedArticle/MedlineCitation") # Nothing of interest here
     
-    # Get the MeSH subject headings
-    @subjects = {}
-    (cite/'/MeshHeadingList/MeshHeading').each do | mesh |
-      @subjects["mesh"] = [] unless @subjects["mesh"]
-      subjects = []
-      major = ''
-      if dn = (mesh/'/DescriptorName').first
-        subjects << dn.inner_html
-        major = '*' if dn.attributes['majortopicyn'] == "Y"                              
-      end
-      if qn = (mesh/'/QualifierName').first
-        subjects << qn.inner_html
-        major = '*' if qn.attributes['majortopicyn'] == "Y"                      
-      end  
-      @subjects["mesh"] << subjects.join("/")+major 
-      request.add_service_response({:service=>self,:key=>'subject',:value_string=>subjects.join("/")+major,:value_alt_string=>'mesh'}, ['subject'])             
-    end
-    
     return unless article = (cite/"/Article").first # No more useful metadata   
     if abstract = (article/"/Abstract/AbstractText").first
       @description = abstract.inner_html 
     end
-    request.add_service_response({:service=>self,:key=>'abstract',:value_text=>@description}, ['abstract']) unless @description.blank?
+    request.add_service_response(
+      :service=>self,
+      :key=>'abstract',
+      :value_text=>@description,
+      :service_type_value => 'abstract') unless @description.blank?
+    
     if journal = (article/"/journal").first
       if issn = (journal/'/ISSN').first
         if issn.attributes['issntype']=="Print"                  

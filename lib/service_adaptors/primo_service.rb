@@ -228,13 +228,13 @@ class PrimoService < Service
     if primo_id and @service_types.include?("referent_enhance")
       cover_image = primo_searcher.cover_image
       unless cover_image.nil?
-        request.add_service_response({
+        request.add_service_response(
           :service => self, 
           :display_text => 'Cover Image',
           :key => 'medium', 
           :url => cover_image, 
-          :service_data => {:size => 'medium' }
-        }, [ServiceTypeValue[:cover_image]])
+          :size => 'medium',
+          :service_type_value => :cover_image)
       end
     end
     # Get holdings from Primo Searcher
@@ -255,10 +255,11 @@ class PrimoService < Service
           :coverage_str => holding.coverage.join("<br />"), 
           :coverage_str_array => holding.coverage }) if service_type.eql? "holding"
         request.add_service_response(
-          { :service => self,
-            :notes => service_data[:notes],
-            :url => service_data[:url],
-            :service_data => service_data }, [ service_type ] )
+          service_data.merge(
+            :service => self,
+            :service_type_value => service_type
+          )
+        )
       end
       # Provide title search functionality in the absence of available holdings.
       if @service_types.include?("holding_search")
@@ -270,12 +271,12 @@ class PrimoService < Service
           service_data[:display_text] = (@holding_search_text.nil?) ? "Search for this title." : @holding_search_text
           service_data[:note] = ""
           service_data[:url] = @base_url+"/primo_library/libweb/action/dlSearch.do?institution=#{@holding_search_institution}&vid=#{@vid}&onCampus=false&query=#{CGI::escape("title,exact,"+title)}&indx=1&bulkSize=10&group=GUEST"
-          request.add_service_response({
-            :service => self,
-            :display_text => service_data[:display_text],
-            :notes =>service_data[:notes],
-            :url => service_data[:url],
-            :service_data => service_data }, ['holding_search'] )
+          request.add_service_response(
+            service_data.merge(
+              :service => self,
+              :service_type_value => 'holding_search'
+            )
+          )
         end
       end
     end
@@ -306,12 +307,12 @@ class PrimoService < Service
         # Default display text to URL.
         service_data[:display_text] = (service_data[:display].nil?) ? service_data[:url] : service_data[:display]
         # Add the response
-        request.add_service_response({
-          :service => self,
-          :display_text => service_data[:display_text],
-          :url => service_data[:url],
-          :notes => service_data[:notes],
-          :service_data => service_data }, ['fulltext'] )
+        request.add_service_response(
+          service_data.merge(
+            :service => self,
+            :service_type_value => 'fulltext'
+          )
+        )
       end
     end
     # Get TOCs
@@ -334,12 +335,12 @@ class PrimoService < Service
         # Default display text to URL.
         service_data[:display_text] = (service_data[:display].nil?) ? service_data[:url] : service_data[:display]
         # Add the response
-        request.add_service_response({ 
-          :service => self,
-          :display_text => service_data[:display_text],
-          :url => service_data[:url],
-          :notes => service_data[:notes],
-          :service_data => service_data }, ['table_of_contents'] )
+        request.add_service_response(
+          service_data.merge(
+            :service => self,
+            :service_type_value => 'table_of_contents'
+          )
+        )
       end
     end
     return request.dispatched(self, true)

@@ -212,7 +212,7 @@ class Sfx < Service
       
       # For each target delivered by SFX
       sfx_obj.search("/ctx_obj_targets/target").each_with_index do|target, target_index|  
-        value_text = {}
+        response_data = {}
   
         # First check @extra_targets_of_interest
         sfx_target_name = target.at('target_name').inner_html
@@ -298,54 +298,55 @@ class Sfx < Service
             value_string = (target/"/target_service_id").inner_html          
           end
   
-          value_text[:url] = CGI.unescapeHTML((target/"/target_url").inner_html)
-          value_text[:notes] = related_note.to_s + CGI.unescapeHTML((target/"/note").inner_html)
-          value_text[:authentication] = CGI.unescapeHTML((target/"/authentication").inner_html)
-          value_text[:source] = source
-          value_text[:coverage] = coverage if coverage
+          response_data[:url] = CGI.unescapeHTML((target/"/target_url").inner_html)
+          response_data[:notes] = related_note.to_s + CGI.unescapeHTML((target/"/note").inner_html)
+          response_data[:authentication] = CGI.unescapeHTML((target/"/authentication").inner_html)
+          response_data[:source] = source
+          response_data[:coverage] = coverage if coverage
   
           # Sfx metadata we want
-          value_text[:sfx_base_url] = @base_url
-          value_text[:sfx_obj_index] = sfx_obj_index + 1 # sfx is 1 indexed
-          value_text[:sfx_target_index] = target_index + 1 
-          value_text[:sfx_request_id] = (perl_data/"//hash/item[@key='sfx.request_id']").first.inner_html
-          value_text[:sfx_target_service_id] = target_service_id
-          value_text[:sfx_target_name] = sfx_target_name
+          response_data[:sfx_base_url] = @base_url
+          response_data[:sfx_obj_index] = sfx_obj_index + 1 # sfx is 1 indexed
+          response_data[:sfx_target_index] = target_index + 1 
+          response_data[:sfx_request_id] = (perl_data/"//hash/item[@key='sfx.request_id']").first.inner_html
+          response_data[:sfx_target_service_id] = target_service_id
+          response_data[:sfx_target_name] = sfx_target_name
           # At url-generation time, the request isn't available to us anymore,
           # so we better store this citation info here now, since we need it
           # for sfx click passthrough
           
           # Oops, need to take this from SFX delivered metadata.
           
-          value_text[:citation_year] = sfx_metadata['rft.date'].to_s[0,4] if sfx_metadata['rft.date'] 
-          value_text[:citation_volume] = sfx_metadata['rft.volume'];
-          value_text[:citation_issue] = sfx_metadata['rft.issue']
-          value_text[:citation_spage] = sfx_metadata['rft.spage']
+          response_data[:citation_year] = sfx_metadata['rft.date'].to_s[0,4] if sfx_metadata['rft.date'] 
+          response_data[:citation_volume] = sfx_metadata['rft.volume'];
+          response_data[:citation_issue] = sfx_metadata['rft.issue']
+          response_data[:citation_spage] = sfx_metadata['rft.spage']
 
           # Some debug info
-          value_text[:debug_info] =" Target: #{sfx_target_name} ; SFX object ID: #{object_id}"
+          response_data[:debug_info] =" Target: #{sfx_target_name} ; SFX object ID: #{object_id}"
           
-          display_text = (target/"/target_public_name").inner_html
+          response_data[:display_text] = (target/"/target_public_name").inner_html
     
-          initHash = {:service=>self,
-          #:value_text=>value_text.to_yaml,
-          :service_data=>value_text, :display_text=>display_text,
-          :notes=>value_text[:notes]}
-                    
-          request.add_service_response(initHash , [umlaut_service])
+          request.add_service_response(
+            response_data.merge(
+              :service => self,              
+              :service_type_value => umlaut_service
+           ))
+            
+              
+                              
         end
       end
     end
 
     # Add in links to our related titles
     related_titles.each_pair do |issn, hash|
-      request.add_service_response(
-        {
+      request.add_service_response(        
          :service => self,
          :display_text => "#{sfx_relationship_display(hash[:relationship])}: #{hash[:title]}",
          :notes => "#{ServiceTypeValue['fulltext'].display_name} available",
-         :related_object_hash => hash 
-        }, ["highlighted_link"])
+         :related_object_hash => hash, 
+         :service_type_value => "highlighted_link")
     end
     # only enhance for journal type metadata. For book type
     # metadata SFX will return something, but it may not be the manifestation

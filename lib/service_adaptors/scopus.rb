@@ -134,7 +134,11 @@ class Scopus < Service
         url = more_like_this_url(first_hit)
         # Pre-checking for actual hits not currently working, disabled.
         if (true || ( hits = check_for_hits(url) ) > 0 )
-          request.add_service_response( :service=>self, :display_text => "#{hits} #{ServiceTypeValue[:similar].display_name_pluralize.downcase.capitalize}", :url => url, :service_type_value => :similar)          
+          request.add_service_response( 
+            :service=>self, 
+            :display_text => "#{hits} #{ServiceTypeValue[:similar].display_name_pluralize.downcase.capitalize}", 
+            :url => url, 
+            :service_type_value => :similar)          
         end                
       end
 
@@ -142,7 +146,11 @@ class Scopus < Service
         url = more_like_this_url(first_hit, :type => "aut")
         # Pre-checking for actual hits not currently working, disabled. 
         if (true || ( hits = check_for_hits(url) ) > 0 )
-          request.add_service_response( :service=>self, :display_text => "#{hits} More from these authors", :url => url, :service_type_value => :similar)          
+          request.add_service_response( 
+            :service=>self, 
+            :display_text => "#{hits} More from these authors", 
+            :url => url, 
+            :service_type_value => :similar)          
         end        
       end
 
@@ -222,7 +230,12 @@ class Scopus < Service
 
     return if first_hit["abstract"].blank?
     
-    request.add_service_response( :service=>self, :display_text => "Abstract from #{@display_name}", :content => first_hit["abstract"], :url => detail_url(first_hit), :service_type_value => :abstract)
+    request.add_service_response( 
+      :service=>self, 
+      :display_text => "Abstract from #{@display_name}", 
+      :content => first_hit["abstract"], 
+      :url => detail_url(first_hit), 
+      :service_type_value => :abstract)
   end
 
   def detail_url(hash)

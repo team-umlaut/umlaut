@@ -169,15 +169,14 @@ class HipHoldingSearch < Hip3Service
       end
       
       if (bibs.length > 0 && (! responses_added['holding']))
-        # process as holdings_search
-        service_data = {:service=>self}
-        service_data[:source_name] = @display_name
-        service_data[:count] = bibs.length
-        service_data[:display_text] = "#{bibs.length} possible #{case; when bibs.length > 1 ; 'matches' ; else; 'match' ; end} in #{display_name}"
-
-        service_data[:url] = bib_searcher.search_url
-
-        request.add_service_response(service_data, [ServiceTypeValue[:holding_search]])
+        # process as holdings_search      
+        request.add_service_response(
+          :service => self,
+          :source_name => @display_name,
+          :count => bibs.length,
+          :display_text => "#{bibs.length} possible #{case; when bibs.length > 1 ; 'matches' ; else; 'match' ; end} in #{display_name}",
+          :url => bib_searcher.search_url,
+          :service_type_value => :holding_search)
       end      
     end
     return request.dispatched(self, true)

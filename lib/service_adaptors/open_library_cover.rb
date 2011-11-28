@@ -51,7 +51,8 @@ class OpenLibraryCover < Service
         :service => self,
         :display_text => "Cover Image",
         :size => "medium",
-        :url => uri
+        :url => uri,
+        :service_type_value => :cover_image
       )
       break
     end

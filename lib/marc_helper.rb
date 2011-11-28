@@ -75,7 +75,7 @@ module MarcHelper
   
           # Figure out the right service type value for this, fulltext, ToC,
           # whatever.
-          service_type_value = service_type_for_856( field, options ) 
+          response_params[:service_type_value] = service_type_for_856( field, options ) 
   
           # fulltext urls from MARC are always marked as specially stupid.
           response_params[:coverage_checked] = false
@@ -87,11 +87,10 @@ module MarcHelper
   
           
           # Add the response
-          response = request.add_service_response(response_params, 
-              [ service_type_value  ])
+          response = request.add_service_response(response_params)
           
-          responses_added[service_type_value] ||= Array.new
-          responses_added[service_type_value].push(response)
+          responses_added[response_params[:service_type_value]] ||= Array.new
+          responses_added[response_params[:service_type_value]].push(response)
         end
       end
     end

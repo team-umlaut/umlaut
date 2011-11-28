@@ -177,13 +177,17 @@ class Request < ActiveRecord::Base
 
   # Create a ServiceResponse and it's associated ServiceType(s) object,
   # attached to this request.
-  # First arg is a hash of key/values. Keys MUST include :service, with the
-  # value being the actual Service object, not just the ID. Key may include
-  # :service_type_value => the ServiceTypeValue object (or string name) for
+  # Arg is a hash of key/values. Keys MUST include:
+  # * :service, with the value being the actual Service object, not just the ID.
+  # * :service_type_value =>  the ServiceTypeValue object (or string name) for
   # the the 'type' of response this is. 
   # 
   # Other keys are as conventional for the service. See documentation of
   # conventional keys in ServiceResponse
+  #
+  # Some keys end up stored in columns in the db directly, others
+  # end up serialized in a hash in a 'text' column, caller doesn't have
+  # to worry about that, just pass em all in. 
   #
   # Eg, called from a service adapter plugin:
   #   request.add_service_response(:service=>self, 
@@ -192,15 +196,12 @@ class Request < ActiveRecord::Base
   #               :url => img.inner_html, 
   #               :asin => asin, 
   #               :size => size)
-  # 
-  # second arg (optional, use :service_type_value key in first arg instead)
-  # is an array of ServiceTypeValue objects, or
-  # an array of 'names' of ServiceTypeValue objects. Ie,
-  # ServiceTypeValue[:fulltext], or "fulltext" both work. A ServiceResponse
-  # can be registered as being of more than one type, is why this is an array.
   #
   # Safe to call in thread, uses connection pool checkout. 
-  def add_service_response(response_data,service_type=[])
+  def add_service_response(response_data)
+    raise ArgumentError.new("missing required `:service` key") unless response_data[:service].kind_of?(Service)
+    raise ArgumentError.new("missing required `:service_type_value` key") unless response_data[:service_type_value]
+    
     svc_resp = nil
     ActiveRecord::Base.connection_pool.with_connection do
       svc_resp = ServiceResponse.new
@@ -209,41 +210,16 @@ class Request < ActiveRecord::Base
       svc_resp.service_id = response_data[:service].service_id
       response_data.delete(:service)
   
-      # fix 'key' to be legacy 'response_key'
-      if ( response_data[:key])
-        response_data[:response_key] = response_data.delete(:key)
-      end
+      type_value =  response_data.delete(:service_type_value)
+      type_value = ServiceTypeValue[type_value.to_s] unless type_value.kind_of?(ServiceTypeValue)      
+      svc_resp.service_type_value = type_value
   
-      # Accumluate our list of service_response_value's from the several
-      # places they can be.
-      collected_stype_values = service_type
-      if ( response_data[:service_type_value])
-        # Can be ServiceTypeValue or string/symbol
-        if response_data[:service_type_value].kind_of?(ServiceTypeValue)
-          collected_stype_values.push(  response_data[:service_type_value])
-        else
-          collected_stype_values.push( ServiceTypeValue[ response_data[:service_type_value]  ])
-        end
-        # Remove it. 
-        response_data.delete(:service_type_value)
-      end
-      #TODO: only one service type value supported now!
-      svc_resp.service_type_value = collected_stype_values.first
-  
-      # Legacy code may include arbitrary key/value pairs in
-      # response_data[:service_data] or just in response_data
-      # itself. Merge in service_data to that overall hash.
-      if ( response_data[:service_data])
-        response_data.merge!( response_data[:service_data])
-        # And take out the service_data sub-hash. 
-        response_data.delete(:service_data)
-      end
+      svc_resp.request = self
       
       # response_data now includes actual key/values for the ServiceResponse
-      # send em.
+      # send em, take_key_values takes care of deciding which go directly
+      # in columns, and which in serialized hash. 
       svc_resp.take_key_values( response_data )
-      
-      svc_resp.request = self
             
       svc_resp.save!    
     end

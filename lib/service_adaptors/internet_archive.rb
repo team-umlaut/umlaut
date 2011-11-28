@@ -148,10 +148,10 @@ class InternetArchive < Service
         if response.code == "200"
           # search inside!
           request.add_service_response(
-            {:service => self,
+            :service => self,
             :display_text=> @display_name,
-            :url => direct_url.to_s},
-            [:search_inside]
+            :url => direct_url.to_s,
+            :service_type_value => :search_inside
           )
         end        
       end
@@ -172,12 +172,12 @@ class InternetArchive < Service
 
         service_type = SERVICE_TYPE_MAP[type]
         request.add_service_response(
-          {:service=>self, 
+            :service=>self, 
             :display_text=>display_name, 
             :url=>create_result_url(result),
             :match_reliability => ServiceResponse::MatchUnsure,
-            :edition_str => edition_str(result)
-          }, [ service_type ])
+            :edition_str => edition_str(result),
+            :service_type_value => service_type )
       end  
     end
   end
@@ -203,11 +203,12 @@ class InternetArchive < Service
 
     
     url = create_web_link_url(search_terms, type)
-    request.add_service_response( { 
+    request.add_service_response(  
         :service=>self,    
         :url=>url,
-        :display_text=>display_text}, 
-      [ServiceTypeValue[:highlighted_link]]    )
+        :display_text=>display_text, 
+        :service_type_value => :highlighted_link   
+     )
   end
   
   def create_web_link_url(search_terms, type)

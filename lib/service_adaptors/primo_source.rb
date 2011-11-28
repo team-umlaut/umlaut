@@ -66,10 +66,11 @@ class PrimoSource < PrimoService
           :latest => true
         })
         request.add_service_response(
-          { :service=>self,
-            :notes=>service_data[:notes],
-            :url=> service_data[:url],
-            :service_data=>service_data }, [ "holding" ]  )
+          service_data.merge(
+            :service=>self,
+            :service_type_value => "holding" 
+          )
+        )
       end
     end
     return request.dispatched(self, true)

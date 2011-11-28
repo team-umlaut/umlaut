@@ -27,7 +27,12 @@ class BookFinder < Service
     # Okay, make a link
     url = @url_template.sub('%s', isbn)
 
-    umlaut_request.add_service_response({:service=>self, :url=> url, :display_text=> @display_text, :service_type_value => :highlighted_link})
+    umlaut_request.add_service_response(
+      :service=>self, 
+      :url=> url, 
+      :display_text=> @display_text, 
+      :service_type_value => :highlighted_link
+     )
 
     return request.dispatched(self, true)    
   end

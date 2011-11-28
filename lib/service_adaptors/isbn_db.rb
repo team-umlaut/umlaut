@@ -44,7 +44,12 @@ class IsbnDb < Service
     
     prices_link = get_prices_link( book_xml )
     
-    umlaut_request.add_service_response( {:service=>self, :url=> prices_link, :display_text=> @display_text}, [ServiceTypeValue[:highlighted_link]])
+    umlaut_request.add_service_response(
+      :service=>self, 
+      :url=> prices_link, 
+      :display_text=> @display_text,
+      :service_type_value => ServiceTypeValue[:highlighted_link]
+      )
 
     return umlaut_request.dispatched(self, true)
   end

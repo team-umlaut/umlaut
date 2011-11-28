@@ -147,11 +147,12 @@ class HathiTrust < Service
       next unless full_view?(item)
       
       request.add_service_response(
-        {:service=>self, 
+          :service=>self, 
           :display_text=>display_name,           
           :url=> direct_url_to(item), 
-          :notes=> note_for(item)}, 
-        [ :fulltext ]) 
+          :notes=> note_for(item), 
+          :service_type_value => :fulltext 
+      )
       count += 1
       break if count == @num_full_views
     end   
@@ -172,12 +173,12 @@ class HathiTrust < Service
       next unless record && record["recordURL"]
         
       request.add_service_response(
-        {:service=>self, 
+          :service=>self, 
           :display_text=>@display_name,           
           :url=> record["recordURL"],
-          :notes => excerpt_note_for(record)
-        }, 
-        [ :excerpts ])       
+          :notes => excerpt_note_for(record),
+          :service_type_value => :excerpts
+      )
     end
     
     if full_ids.empty?
@@ -190,11 +191,10 @@ class HathiTrust < Service
         next unless record && record["recordURL"]
         
         request.add_service_response(
-          {:service=>self, 
+            :service=>self, 
             :display_text=>"Search inside some volumes",           
-            :url=> record["recordURL"]
-          }, 
-          [ :highlighted_link ]
+            :url=> record["recordURL"],
+            :service_type_value => :highlighted_link             
         )   
 
       end
@@ -218,10 +218,10 @@ class HathiTrust < Service
     return unless direct_url
 
     request.add_service_response( 
-        {:service => self,
+        :service => self,
         :display_text=>@display_name,
-        :url=> direct_url},
-        [:search_inside]
+        :url=> direct_url,
+        :service_type_value => :search_inside
        )
   end
   
