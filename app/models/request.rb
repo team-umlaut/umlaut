@@ -17,12 +17,11 @@ class Request < ActiveRecord::Base
   # holds a hash representing submitted http params
   serialize :http_env
 
-  # Somewhat mis-named, because it doesn't always create a new request.
   # Either creates a new Request, or recovers an already created Request from
   # the db--in either case return a Request matching the OpenURL.
   # options[:allow_create] => false, will not create a new request, return
   # nil if no existing request can be found. 
-  def self.new_request(params, session, a_rails_request, options = {} )
+  def self.find_or_create(params, session, a_rails_request, options = {} )
     # Pull out the http params that are for the context object,
     # returning a CGI::parse style hash, customized for what
     # ContextObject.new_from_form_vars wants. 
@@ -344,7 +343,7 @@ class Request < ActiveRecord::Base
   
   protected
 
-  # Called by self.new_request, if a new request _really_ needs to be created.
+  # Called by self.find_or_create, if a new request _really_ needs to be created.
   def self.create_new_request!( args )
 
     # all of these are required

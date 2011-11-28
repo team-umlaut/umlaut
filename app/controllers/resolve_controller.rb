@@ -167,7 +167,7 @@ class ResolveController < ApplicationController
     if (  @@no_create_request_actions.include?(params[:action])  )
       options[:allow_create] = false
     end
-    @user_request ||= Request.new_request(params, session, request, options )
+    @user_request ||= Request.find_or_create(params, session, request, options )
 
     # If we chose not to create a request and still don't have one, bale out.
     return unless @user_request
