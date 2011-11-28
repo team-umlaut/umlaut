@@ -125,7 +125,7 @@ class Collection
     (0..9).each do | priority |      
       services_to_run = self.instantiate_services!(:level => priority, :ids => queued_service_ids)
       next if services_to_run.empty?      
-      ServiceBundle.new(services_to_run , priority).handle(umlaut_request, umlaut_request.session_id)
+      ServiceWave.new(services_to_run , priority).handle(umlaut_request, umlaut_request.session_id)
     end
     
     # Need to reload the request from db, so it gets changes
@@ -153,7 +153,7 @@ class Collection
           ('a'..'z').each do | priority |
             services_to_run = self.instantiate_services!(:level => priority, :ids => queued_service_ids)        
             next if services_to_run.empty?      
-            ServiceBundle.new(services_to_run , priority).handle(umlaut_request, umlaut_request.session_id)                               
+            ServiceWave.new(services_to_run , priority).handle(umlaut_request, umlaut_request.session_id)                               
           end        
        rescue Exception => e
          #debugger

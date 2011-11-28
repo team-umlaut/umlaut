@@ -1,7 +1,8 @@
-# ServiceBundle is basically responsible for multi-threaded execution of
-# a list of services, all in the same priority. 
+# ServiceWave is basically responsible for multi-threaded execution of
+# a list of services, all in the same priority. Generally it's only
+# called by Collection, nobody else needs it directly. 
 #
-class ServiceBundle
+class ServiceWave
   attr_accessor :services
   attr_accessor :priority_level
 
