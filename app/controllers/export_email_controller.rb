@@ -1,8 +1,6 @@
 class ExportEmailController < ApplicationController
   include UmlautConfigurable
-
   
-  filter_parameter_logging :email
   before_filter :load_objects
   layout Proc.new { |controller|         
      if (controller.request.xhr? ||
