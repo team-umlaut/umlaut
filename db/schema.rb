@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111128203553) do
+ActiveRecord::Schema.define(:version => 20111128203741) do
 
   create_table "clickthroughs", :force => true do |t|
     t.integer  "request_id",          :default => 0, :null => false
@@ -127,14 +127,5 @@ ActiveRecord::Schema.define(:version => 20111128203553) do
   end
 
   add_index "sfx_urls", ["url"], :name => "index_sfx_urls_on_url"
-
-  create_table "users", :force => true do |t|
-    t.string "username",  :limit => 50,  :default => "", :null => false
-    t.string "firstname", :limit => 100
-    t.string "lastname",  :limit => 100
-    t.string "email"
-  end
-
-  add_index "users", ["username"], :name => "user_username_idx"
 
 end
