@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111128201559) do
+ActiveRecord::Schema.define(:version => 20111128202254) do
 
   create_table "clickthroughs", :force => true do |t|
     t.integer  "request_id",          :default => 0, :null => false
@@ -21,14 +21,6 @@ ActiveRecord::Schema.define(:version => 20111128201559) do
   add_index "clickthroughs", ["created_at"], :name => "click_created_idx"
   add_index "clickthroughs", ["request_id"], :name => "click_req_id"
   add_index "clickthroughs", ["service_response_id"], :name => "click_serv_resp_idx"
-
-  create_table "coverages", :force => true do |t|
-    t.integer "journal_id", :default => 0,  :null => false
-    t.string  "provider",   :default => "", :null => false
-    t.text    "coverage"
-  end
-
-  add_index "coverages", ["journal_id"], :name => "cvg_jrnl_id_idx"
 
   create_table "crossref_lookups", :force => true do |t|
     t.string   "doi",        :limit => 100, :default => "", :null => false
@@ -47,31 +39,6 @@ ActiveRecord::Schema.define(:version => 20111128201559) do
   end
 
   add_index "dispatched_services", ["request_id", "service_id"], :name => "dptch_request_id"
-
-  create_table "journal_titles", :force => true do |t|
-    t.string  "title",      :default => "", :null => false
-    t.integer "journal_id", :default => 0,  :null => false
-  end
-
-  add_index "journal_titles", ["title", "journal_id"], :name => "jtitle_title_objects"
-
-  create_table "journals", :force => true do |t|
-    t.string   "object_id",        :limit => 20, :default => "", :null => false
-    t.string   "title",                          :default => "", :null => false
-    t.string   "normalized_title",               :default => "", :null => false
-    t.string   "page",             :limit => 1,  :default => "", :null => false
-    t.string   "issn",             :limit => 10
-    t.string   "eissn",            :limit => 10
-    t.integer  "title_source_id",                :default => 0,  :null => false
-    t.datetime "updated_at"
-  end
-
-  add_index "journals", ["issn", "eissn"], :name => "jrnl_issn_idx"
-  add_index "journals", ["normalized_title", "page"], :name => "jrnl_norm_title"
-  add_index "journals", ["object_id"], :name => "j_object_id"
-  add_index "journals", ["title"], :name => "jrnl_title_idx"
-  add_index "journals", ["title_source_id"], :name => "jrnl_title_source_id"
-  add_index "journals", ["updated_at"], :name => "jrnl_tstamp_idx"
 
   create_table "permalinks", :force => true do |t|
     t.integer "referent_id",                           :default => 0
