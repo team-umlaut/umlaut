@@ -272,9 +272,9 @@ class Scopus < Service
   
     response = http_fetch(url).body
 
-    hpricot = Hpricot(response)
+    response_html = Nokogiri::HTML(response)
 
-    title = hpricot.at('title').inner_text
+    title = response_xml.at('title').inner_text
     # title is "X documents" (or 'Documents') if there are hits.
     # It's annoyingly "Search Error" if there are either 0 hits, or
     # if there was an actual error. So we can't easily log actual
