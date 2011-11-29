@@ -34,7 +34,7 @@
 #
 class Amazon < Service
   require 'open-uri'
-  require 'hpricot'
+  require 'nokogiri'
   require 'isbn'
   
   
@@ -170,12 +170,13 @@ class Amazon < Service
   def add_aws_service_responses(request, aws_response)
     return_hash = Hash.new
     
-    aws = Hpricot(aws_response.body)
+    aws_hp = Hpricot(aws_response.body)
+    aws = Nokogiri::XML(aws_response.body)
     # extract and collect info from the xml    
     
     # if we get an error from Amazon, return now. 
-    err = (aws/"/ItemLookupResponse/Items/Request/Errors/Error")
-    err = (aws/"/ItemLookupErrorResponse") if err.blank?
+    err = (aws.at("ItemLookupResponse/Items/Request/Errors/Error"))
+    err = (aws.at("ItemLookupErrorResponse")) if err.blank?
     
     unless (err.blank?)
       if (err.at('code').inner_text == 'AWS.InvalidParameterValue')
@@ -188,7 +189,7 @@ class Amazon < Service
       end
     end
 
-    asin = (aws/"/ItemLookupResponse/Items/Item/ASIN").inner_text
+    asin = (aws.at("ItemLookupResponse/Items/Item/ASIN")).inner_text
 
     # Store the asin in the referent as non-metadata private data, so
     # a future background service can use it. Store as a urn identifier.
@@ -199,12 +200,12 @@ class Amazon < Service
     if ( @service_types.include?("cover_image") )
       # collect cover art urls
       ["small","medium","large"].each do | size |
-        if (img = aws.at("/ItemLookupResponse/Items/Item/"+size.capitalize+"Image/URL"))
+        if (img = aws.at("ItemLookupResponse/Items/Item/"+size.capitalize+"Image/URL"))
           request.add_service_response(
             :service=>self, 
             :display_text => 'Cover Image',
             :key=>size, 
-            :url => img.inner_html, 
+            :url => img.inner_text, 
             :asin => asin, 
             :size => size,
             :service_type_value => :cover_image)          
@@ -213,7 +214,7 @@ class Amazon < Service
       
     end
 
-    item_url = (aws.at("/ItemLookupResponse/Items/Item/DetailPageURL")).inner_html
+    item_url = (aws.at("ItemLookupResponse/Items/Item/DetailPageURL")).inner_text
     # Store to return to caller
     return_hash[:item_url] = item_url
 
@@ -221,7 +222,7 @@ class Amazon < Service
     # get description
     if (  @service_types.include?("abstract") &&
          desc =
-         (aws.at("/ItemLookupResponse/Items/Item/EditorialReviews/EditorialReview/Content")))
+         (aws.at("ItemLookupResponse/Items/Item/EditorialReviews/EditorialReview/Content")))
 
       # For some reason we need to un-escape the desc. Don't entirely get it.
       desc_text = CGI.unescapeHTML( desc.inner_text )
@@ -241,43 +242,42 @@ class Amazon < Service
 
     if ( @service_types.include?("similar_item"))
       # Get Amazon's 'similar products' to help recommend other useful items
-      (aws/"/ItemLookupResponse/Items/Item/SimilarProducts/SimilarProduct").each do |similar|
+      (aws.search("ItemLookupResponse/Items/Item/SimilarProducts/SimilarProduct")).each do |similar|
         request.add_service_response(
           :service=>self,
           :key=>'book', 
-          :value_string=>(similar.at("/ASIN")).inner_text, 
-          :value_alt_string=>(similar.at("/Title")).inner_text,
+          :value_string=>(similar.at("ASIN")).inner_text, 
+          :value_alt_string=>(similar.at("Title")).inner_text,
           :service_type_value => 'similar_item')
       end
 
    end
 
-
     if ( @service_types.include?("referent_enhance"))
-      item_attributes = aws.at("/itemlookupresponse/items/item/itemattributes")
+      item_attributes = aws.at("ItemLookupResponse/Items/Item/ItemAttributes")
       
       request.referent.enhance_referent('format', 'book', false) unless request.referent.format == 'book'
       metadata = request.referent.metadata
       unless (metadata['btitle'] || metadata['title'])
-        if title = (item_attributes.at("/title"))
+        if title = (item_attributes.at("Title"))
           request.referent.enhance_referent('btitle', normalize_aws_title(title.inner_text))
         end
 
       end
 			# Enhance with full author name string even if aulast is already present, because full string may be useful for worldcat identities. 
       unless (metadata['au'] )
-        if author = (item_attributes.at("/author"))
+        if author = (item_attributes.at("Author"))
           request.referent.enhance_referent('au', author.inner_text)
         end
       end
 
       unless metadata['pub']
-        if pub = (item_attributes.at("/publisher"))
+        if pub = (item_attributes.at("Publisher"))
           request.referent.enhance_referent('pub', pub.inner_text)
         end
       end      
       unless metadata['tpages']
-        if tpages = (item_attributes.at("/numberofpages"))
+        if tpages = (item_attributes.at("NumberOfPages"))
           request.referent.enhance_referent('tpages', tpages.inner_text)
         end
       end
