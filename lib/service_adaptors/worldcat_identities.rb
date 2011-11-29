@@ -9,10 +9,13 @@
 # 
 # Creates a highlighted_link
 # Even though the WorldCat Identities API is built on top of SRU we use 
-# open-uri. SRU was too slow and was timing out the background service.
+# open-uri to simply fetch the "html" page (which is really XML with a stylesheet)
+# and look at the XML directly. 
+
+#. SRU was too slow and was timing out the background service.
 # (because SRU parses the response with REXML? we don't want to have anything
 #  to do with REXML! Even still retrieving the large XML file and traversing
-#  it with Hpricot is still rather slow. The suggestion is to enable few
+#  it with Hpricot (what we used to use) was still rather slow. The suggestion is to enable few
 #  note_types and then constrain the number shown. The defaults are hopefully 
 #  sane in this regard. note_types can be set to false to turn them off.
 #  
@@ -24,7 +27,7 @@
 
 class WorldcatIdentities < Service
   require 'open-uri' # SRU is too slow even though we use an SRU-like link
-  require 'hpricot'
+  require 'nokogiri'
   include MetadataHelper
   
   attr_reader :url, :note_types, :display_name, :wikipedia_link, :openurl_base,
@@ -126,10 +129,17 @@ class WorldcatIdentities < Service
     # since we're only doing exact matching with last name and OCLCnum
     # we only request 1 record to hopefully speed things up.
     link = @url + index + '?query=' +query + "&maximumRecords=1"
-    
+
     result = open(link).read
-    xml = Hpricot.XML(result)
-    return nil if (xml/"numberOfRecords").inner_text == '0'
+    xml = Nokogiri::XML(result)
+    
+    # Identities namespaces are all over the place, it's too hard
+    # to interrogate with namespaces, ask nokogiri to remove them all
+    # instead. 
+    xml.remove_namespaces!
+    
+    
+    return nil if xml.at("numberOfRecords").inner_text == '0'
     create_link(request, xml)
     create_wikipedia_link(request, xml) if @wikipedia_link
     create_openurl_widely_held(request, xml) if @openurl_widely_held
@@ -158,9 +168,9 @@ class WorldcatIdentities < Service
   
   def extract_display_name(doc)
     name = []    
-    rawname = (doc/"nameInfo/rawName")
+    rawname = doc.at("nameInfo/rawName")
     return nil unless rawname
-    rawname[0].each_child do |name_part|
+    rawname.children.each do |name_part|
       name << name_part.inner_text      
     end
     return nil if name.blank?
@@ -169,7 +179,7 @@ class WorldcatIdentities < Service
     
   def extract_subject_headings(doc)
     subject_headings = []
-    (doc/"biogSH").each_with_index do |sh, i|
+    (doc.search("biogSH")).each_with_index do |sh, i|
       subject_headings << sh.inner_text
       break if @num_of_subject_headings == i + 1
     end
@@ -179,7 +189,7 @@ class WorldcatIdentities < Service
   
   def extract_roles(doc)
     codes = []
-    (doc/"relators/relator").each_with_index do |relate, i|
+    (doc.search("relators/relator")).each_with_index do |relate, i|
       codes << relate.attributes['code']
       break if @num_of_roles == i + 1
     end
@@ -193,7 +203,7 @@ class WorldcatIdentities < Service
   # subject headings. This might be able to be used for enhancing metadata.
   def extract_works(doc)
     works = []
-    (doc/"by/citation/title").each_with_index do |t, i|
+    doc.search("by/citation/title").each_with_index do |t, i|
       works << t.inner_text
       break if @num_of_works == i + 1
     end
@@ -203,7 +213,7 @@ class WorldcatIdentities < Service
   
   def extract_genres(doc)
     genres = []
-    (doc/"genres/genre").each_with_index do |g, i|
+    doc.search("genres/genre").each_with_index do |g, i|
       genres << g.inner_text
       break if @num_of_genres == i + 1
     end
@@ -220,21 +230,21 @@ class WorldcatIdentities < Service
   end
   
   def extract_work_count(doc)
-    work_count = (doc/"workCount").inner_html
+    work_count = doc.at("workCount").inner_text
     return insert_commas(work_count)  << " works"
   end
   
   def extract_holdings_count(doc)
-    total_holdings = (doc/"totalHoldings").inner_html
+    total_holdings = doc.at("totalHoldings").inner_text
     return insert_commas(total_holdings) << " total holdings in WorldCat"
   end
   
   def extract_publications_count(doc)
-    return insert_commas( (doc/"recordCount").inner_html ) << " publications"
+    return insert_commas( doc.at("recordCount").inner_text ) << " publications"
   end
   
   def extract_url(doc)
-    pnkey = (doc/"pnkey").inner_text
+    pnkey = doc.at("pnkey").inner_text
     return 'http://worldcat.org/identities/' << pnkey
   end
   
@@ -252,8 +262,8 @@ class WorldcatIdentities < Service
   end
   
   def create_wikipedia_link(request, xml)
-    name_element =  (xml/"wikiLink")
-    return nil if name_element.empty?
+    name_element =  xml.at("wikiLink")
+    return nil unless name_element
     name = name_element.inner_text
     # This is the base link that worldcat identities uses so we use the same
     link = "http://en.wikipedia.org/wiki/Special:Search?search=" << name
@@ -339,15 +349,15 @@ class WorldcatIdentities < Service
   
   def get_widely_held_info(xml)
     h = {}
-    h['most'] = most = (xml/"by/citation")[0]
-    h['oclcnum'] = clean_oclcnum((most/"oclcnum").inner_text)
-    h['title'] = (most/"title").inner_text
-    h['record_type'] = (most/'recordType').inner_text
+    h['most'] = most = xml.at("by/citation")
+    h['oclcnum'] = clean_oclcnum(most.at("oclcnum").inner_text)
+    h['title'] = most.at("title").inner_text
+    h['record_type'] = most.at('recordType').inner_text
     h
   end
   
   def extract_cover_image_link(request, citation)
-    cover = (citation/"cover")[0]
+    cover = citation.at("cover")
     return nil unless cover
     # we try not to show a cover if we already probably have the same cover 
     # showing.
