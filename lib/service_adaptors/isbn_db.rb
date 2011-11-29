@@ -70,7 +70,7 @@ class IsbnDb < Service
     return response  
   end
 
-  # Pass in hpricot object representing the <BookData> element.
+  # Pass in nokogiri object representing the <BookData> element.
   # passes back string url of isbndb prices/availability page
   def get_prices_link( book_data )
     book_id = book_data.attributes['book_id']
