@@ -20,7 +20,7 @@
 # to request a change. 
 class Jcr < Service
   require  'open-uri'
-  require 'hpricot'
+  require 'nokogiri'
   require 'net/http'
   
   include MetadataHelper
@@ -114,15 +114,15 @@ class Jcr < Service
     # raise if it's an HTTP error code
     isi_response.value
     
-    hpricot = Hpricot.XML(isi_response.body)
+    nokogiri = Nokogiri::XML(isi_response.body)
 
     # Check for errors.
-    if (error = (hpricot.at('val[@name = "error"]') || hpricot.at('error') || hpricot.at('null[@name = "error"]')))
+    if (error = (nokogiri.at('val[@name = "error"]') || nokogiri.at('error') || nokogiri.at('null[@name = "error"]')))
       raise Exception.new("Third party service error: #{error.inner_text}")
     end
 
 
-    results = hpricot.at('map[@name ="cite_id"] map[@name="JCR"]')
+    results = nokogiri.at('map[@name ="cite_id"] map[@name="JCR"]')
 
     impact_url = results.at('val[@name ="impactGraphURL"]')
     
