@@ -146,9 +146,22 @@ class Sfx < Service
     # SFX click-through generating et alia
     sfx_objs = doc.search('/ctx_obj_set/ctx_obj')
 
-    # We need to keep track of which ones we find full text in,
-    # for metadata enhancing. We'll do that here:
-    fulltext_seen_in_index = {}
+    # As we go through the possibly multiple SFX context objects,
+    # we need to keep track of which one, if any, we want to use
+    # to enhance the Umlaut referent metadata.
+    #
+    # We only enhance for journal type metadata. For book type
+    # metadata SFX will return something, but it may not be the manifestation
+    # we want. With journal titles, less of an issue. 
+    #
+    # In case of multiple SFX hits, enhance metadata only from the
+    # one that actually had fulltext. If more than one had fulltext, forget it,
+    # too error prone. If none had full text, just pick the first. 
+    #
+    # We'll use these variables to keep track of our 'best fit' as
+    # we loop through em.     
+    best_fulltext_ctx = nil
+    best_nofulltext_ctx = nil
 
     # We're going to keep our @really_distant_relationship stuff here. 
     related_titles = {}
@@ -212,8 +225,16 @@ class Sfx < Service
                umlaut_service == 'help'))
             next
         end
-        if ( umlaut_service == 'fulltext')
-          fulltext_seen_in_index[sfx_obj_index] = true
+        
+        
+        # Okay, keep track of best fit ctx for metadata enhancement
+        if request.referent.format == "journal"
+          if ( umlaut_service == 'fulltext')
+            best_fulltext_ctx = perl_data
+            best_nofulltext_ctx = nil
+          elsif best_nofulltext_ctx == nil
+            best_nofulltext_ctx = perl_data
+          end
         end
         
         if ( umlaut_service ) # Okay, it's in services or targets of interest
@@ -326,28 +347,14 @@ class Sfx < Service
          :related_object_hash => hash, 
          :service_type_value => "highlighted_link")
     end
-    # only enhance for journal type metadata. For book type
-    # metadata SFX will return something, but it may not be the manifestation
-    # we want. With journal titles, less of an issue. 
-    if ( request.referent.format == "journal")
-      # In case of multiple SFX hits, enhance metadata only from the
-      # one that actually had fulltext. If more than one did, forget it.    
-      ctx_obj_atts = nil
-      if ( sfx_objs.length > 0 && fulltext_seen_in_index.keys.length == 0)
-        # No fulltext, just take the first
-       ctx_obj_atts = 
-           CGI.unescapeHTML( sfx_objs[0].at('./ctx_obj_attributes').inner_html)
-      elsif (fulltext_seen_in_index.keys.length == 1)
-        i = fulltext_seen_in_index.keys[0]
-        ctx_obj_atts = 
-           CGI.unescapeHTML( sfx_objs[i].at('./ctx_obj_attributes').inner_html)
-      end
-      
-      if ( ctx_obj_atts )
-        perl_data = Nokogiri::XML( ctx_obj_atts )
-        enhance_referent( request, perl_data )
-      end
+    
+    # Did we find a ctx best fit for enhancement?
+    if best_fulltext_ctx
+      enhance_referent(request, best_fulltext_ctx)
+    elsif best_nofulltext_ctx
+      enhance_referent(request, best_nofulltext_ctx)
     end
+    
   end
 
    
