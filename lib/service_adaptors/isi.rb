@@ -23,7 +23,7 @@
 # instead of an 'error', since it's a known problem. 
 class Isi < Service
   require  'open-uri'
-  require 'hpricot'
+  require 'nokogiri'
   require 'net/http'
   
   include MetadataHelper
@@ -191,14 +191,14 @@ class Isi < Service
     #raise if it's an error HTTP response
     isi_response.value
     
-    hpricot = Hpricot.XML(isi_response.body)
+    response_xml = Nokogiri::XML(isi_response.body)
     
     # Check for errors.
-    if (error = (hpricot.at('val[@name = "error"]') || hpricot.at("error") || hpricot.at('null[@name = "error"]')))
+    if (error = (response_xml.at('val[@name = "error"]') || response_xml.at("error") || response_xml.at('null[@name = "error"]')))
      raise IsiResponseException.new("ISI service reported error: #{error.inner_text}")      
     end
     
-    results = hpricot.at('map[@name ="cite_id"] map[@name="WOS"]')
+    results = response_xml.at('map[@name ="cite_id"] map[@name="WOS"]')
     unless (results)
       error_message = "#{self.id}: "
       error_message << 'Unexpected ISI response. The ISI response was not reported as an error, but did not contain a <map name="WOS"> inside a <map name="cite_id"> as we expected it to:'
