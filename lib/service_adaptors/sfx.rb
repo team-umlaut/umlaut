@@ -39,6 +39,8 @@
 class Sfx < Service
   require 'uri'
   require 'htmlentities'
+  require 'cgi'
+  require 'nokogiri'
 
   #require 'open_url'
 
@@ -130,10 +132,7 @@ class Sfx < Service
   end
   
   def parse_response(resolver_response, request)
-    require 'hpricot'
-    require 'cgi'
-        
-    doc = Hpricot(resolver_response)     
+    doc = Nokogiri::XML(resolver_response)     
 
     # Catch an SFX error message (in HTML) that's not an XML
     # document at all.
@@ -154,64 +153,53 @@ class Sfx < Service
     # We're going to keep our @really_distant_relationship stuff here. 
     related_titles = {}
     
-
-    # Multiple context objs are _very_messy_.  Just skip the whole thing
-    # if more than 5 context objects exist (currently not implemented)
-    # return if sfx_objs.length > 5
-    
     0.upto(sfx_objs.length - 1 ) do |sfx_obj_index|
     
       sfx_obj = sfx_objs[sfx_obj_index]
 
       # Get out the "perl_data" section, with our actual OpenURL style
-      # context object information. Weird double-escaping, sorry.
-
+      # context object information. This was XML escaped as a String (actually
+      # double-escaped, weirdly), so
+      # we need to extract the string, unescape it, and then feed it to Nokogiri
+      # again. 
       ctx_obj_atts = 
-         CGI.unescapeHTML( sfx_obj.at('/ctx_obj_attributes').inner_html)
-      perl_data = Hpricot( ctx_obj_atts )
+         CGI.unescapeHTML( sfx_obj.at('./ctx_obj_attributes').inner_html)
+
+      perl_data = Nokogiri::XML( ctx_obj_atts )
       # parse it into an OpenURL, we might need it like that. 
-      sfx_co = Sfx.parse_perl_data(perl_data.to_s)
+      sfx_co = Sfx.parse_perl_data(perl_data)
       sfx_metadata = sfx_co.to_hash 
-      # Pull out related items
-      # not currently used for anything. 
-      #related_items = []
-      #(perl_data/"//hash/item[@key='@sfx.related_object_ids']").each { | rel | 
-      #  (rel/'/array/item').each { | item | 
-      #    related_items << item.inner_html
-      #  } 
-      #}
 
       
       # get SFX objectID
       object_id_node =
-        perl_data.at("/perldata/hash/item[@key='rft.object_id']")
+        perl_data.at("./perldata/hash/item[@key='rft.object_id']")
       object_id = object_id_node ? object_id_node.inner_html : nil
 
       # Get SFX requestID
        request_id_node = 
-         perl_data.at("/perldata/hash/item[@key='sfx.request_id']")
+         perl_data.at("./perldata/hash/item[@key='sfx.request_id']")
        request_id = request_id_node ? request_id_node.inner_html : nil
       
       # Get targets service ids
       sfx_target_service_ids =
-        sfx_obj.search('/ctx_obj_targets/target/target_service_id').collect {|e| e.inner_html}
+        sfx_obj.search('ctx_obj_targets/target/target_service_id').collect {|e| e.inner_html}
 
-      # If journal index is on, load categories. Not sure this works or does
-      # anything at present.
+
+      
       metadata = request.referent.metadata
       
-      
       # For each target delivered by SFX
-      sfx_obj.search("/ctx_obj_targets/target").each_with_index do|target, target_index|  
+      sfx_obj.search("./ctx_obj_targets/target").each_with_index do|target, target_index|  
         response_data = {}
   
         # First check @extra_targets_of_interest
-        sfx_target_name = target.at('target_name').inner_html
+        sfx_target_name = target.at('./target_name').inner_html
         umlaut_service = @extra_targets_of_interest[sfx_target_name]
   
         # If not found, look for it in services_of_interest
         unless ( umlaut_service )
-          sfx_service_type = target.at("/service_type").inner_html
+          sfx_service_type = target.at("./service_type").inner_html
           umlaut_service = @services_of_interest[sfx_service_type]
         end
 
@@ -229,26 +217,25 @@ class Sfx < Service
         end
         
         if ( umlaut_service ) # Okay, it's in services or targets of interest
-  
-          if (target/"/displayer")
-            source = "SFX/"+(target/"/displayer").inner_html
+          if (target/"./displayer")
+            source = "SFX/"+(target/"./displayer").inner_html
           else
             source = "SFX"+URI.parse(self.url).path
           end
   
-          target_service_id = (target/"target_service_id").inner_html
+          target_service_id = (target/"./target_service_id").inner_html
           
           coverage = nil
           if ( @get_coverage )
             # Make sure you turn on "Include availability info in text format"
             # in the SFX Admin API configuration.             
             thresholds_str = ""
-            target.search('/coverage/coverage_text/threshold_text/coverage_statement').each do | threshold |
+            target.search('coverage/coverage_text/threshold_text/coverage_statement').each do | threshold |
               thresholds_str += threshold.inner_html.to_s + ".\n";              
             end
 
             embargoes_str = "";
-            target.search('/coverage/coverage_text/embargo_text/embargo_statement').each do |embargo |
+            target.search('coverage/coverage_text/embargo_text/embargo_statement').each do |embargo |
               embargoes_str += embargo.inner_html.to_s + ".\n";
             end
             
@@ -261,14 +248,14 @@ class Sfx < Service
           related_note = ""
           # If this is from a related object, add that on as a note too...
           # And maybe skip this entirely! 
-          if (related_node = target.at('/related_service_info'))
-            relationship = related_node.at('/relation_type').inner_text
-            issn = related_node.at('/related_object_issn').inner_text
-            sfx_object_id = related_node.at('/related_object_id').inner_text
-            title = related_node.at('/related_object_title').inner_text
+          if (related_node = target.at('./related_service_info'))
+            relationship = related_node.at('./relation_type').inner_text
+            issn = related_node.at('./related_object_issn').inner_text
+            sfx_object_id = related_node.at('./related_object_id').inner_text
+            title = related_node.at('./related_object_title').inner_text
             
             if @really_distant_relationships.include?(
-              related_node.at('/relation_type').inner_text)
+              related_node.at('./relation_type').inner_text)
               # Show title-level link in see-also instead of full text.
               related_titles[issn] = {
                 :sfx_object_id => sfx_object_id,
@@ -286,12 +273,12 @@ class Sfx < Service
           if ( sfx_service_type == 'getDocumentDelivery' )
             value_string = request_id
           else
-            value_string = (target/"/target_service_id").inner_html          
+            value_string = (target/"./target_service_id").inner_html          
           end
   
-          response_data[:url] = CGI.unescapeHTML((target/"/target_url").inner_html)
-          response_data[:notes] = related_note.to_s + CGI.unescapeHTML((target/"/note").inner_html)
-          response_data[:authentication] = CGI.unescapeHTML((target/"/authentication").inner_html)
+          response_data[:url] = CGI.unescapeHTML((target/"./target_url").inner_html)
+          response_data[:notes] = related_note.to_s + CGI.unescapeHTML((target/"./note").inner_html)
+          response_data[:authentication] = CGI.unescapeHTML((target/"./authentication").inner_html)
           response_data[:source] = source
           response_data[:coverage] = coverage if coverage
   
@@ -316,7 +303,7 @@ class Sfx < Service
           # Some debug info
           response_data[:debug_info] =" Target: #{sfx_target_name} ; SFX object ID: #{object_id}"
           
-          response_data[:display_text] = (target/"/target_public_name").inner_html
+          response_data[:display_text] = (target/"./target_public_name").inner_html
     
           request.add_service_response(
             response_data.merge(
@@ -349,15 +336,15 @@ class Sfx < Service
       if ( sfx_objs.length > 0 && fulltext_seen_in_index.keys.length == 0)
         # No fulltext, just take the first
        ctx_obj_atts = 
-           CGI.unescapeHTML( sfx_objs[0].at('/ctx_obj_attributes').inner_html)
+           CGI.unescapeHTML( sfx_objs[0].at('./ctx_obj_attributes').inner_html)
       elsif (fulltext_seen_in_index.keys.length == 1)
         i = fulltext_seen_in_index.keys[0]
         ctx_obj_atts = 
-           CGI.unescapeHTML( sfx_objs[i].at('/ctx_obj_attributes').inner_html)
+           CGI.unescapeHTML( sfx_objs[i].at('./ctx_obj_attributes').inner_html)
       end
       
       if ( ctx_obj_atts )
-        perl_data = Hpricot( ctx_obj_atts )
+        perl_data = Nokogiri::XML( ctx_obj_atts )
         enhance_referent( request, perl_data )
       end
     end
@@ -429,17 +416,16 @@ class Sfx < Service
   end
 
   # Class method to parse a perl_data block as XML in String
-  # into a ContextObject. Argument is _string_ containing
-  # XML!
-  def self.parse_perl_data(perl_data)    
-    doc = Hpricot.XML(perl_data)
+  # into a ContextObject. Argument is Nokogiri doc containing
+  # the SFX <perldata> element and children. 
+  def self.parse_perl_data(doc)        
 
     co = OpenURL::ContextObject.new
     co.referent.set_format('journal') # default
 
     html_ent_coder = HTMLEntities.new 
     
-    doc.search('/perldata/hash/item').each do |item|
+    doc.search('perldata/hash/item').each do |item|
       key = item['key'].to_s
       value = item.inner_html
       # But this still has HTML entities in it sometimes. Now we've
@@ -507,13 +493,13 @@ class Sfx < Service
   end
   
   protected
-  # There are weird encoding issues in metadata from SFX. 
-  # I THINK I've fixed them in #parse_perl_data
+  # Second argument is a Nokogiri element representing the <perldata>
+  # tag and children. 
   def enhance_referent(request, perl_data)
     ActiveRecord::Base.connection_pool.with_connection do
       metadata = request.referent.metadata
   
-      sfx_co = Sfx.parse_perl_data(perl_data.to_s)
+      sfx_co = Sfx.parse_perl_data(perl_data)
       
       sfx_metadata = sfx_co.referent.metadata
       # Do NOT enhance for metadata type 'BOOK', unreliable matching from
