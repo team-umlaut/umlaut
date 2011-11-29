@@ -13,7 +13,7 @@
 #  timeout:  (Optional) seconds to wait for response
 #  display_name: (Optional) what to call the service in display
 class IsbnDb < Service
-  require 'hpricot'
+  require 'nokogiri'
   
   required_config_params :access_key
   
@@ -36,8 +36,8 @@ class IsbnDb < Service
     return umlaut_request.dispatched(self, true) if isbn.blank?
     
     response = do_request(isbn)
-    xml = Hpricot.XML( response.body )
-    book_xml = xml.at('/ISBNdb/BookList/BookData')
+    xml = Nokogiri::XML( response.body )
+    book_xml = xml.at('ISBNdb/BookList/BookData')
 
     # No hits?
     return umlaut_request.dispatched(self, true) if book_xml.blank?
