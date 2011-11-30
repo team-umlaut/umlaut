@@ -8,11 +8,12 @@
 #   source - values "local"|"global"; default "global"
 class Bx < Service
   require  'open-uri'
-  require 'hpricot'
+  require 'nokogiri'
 
   required_config_params :token
 
   def initialize(config)
+    @display_name = "Bx"
     @base_url = "http://recommender.service.exlibrisgroup.com/service/recommender/openurl"
     @max_records = "5"
     @threshold = "50"
@@ -29,10 +30,10 @@ class Bx < Service
     format = "rss"
     bx_url = "#{@base_url}?res_dat=format%3D#{format}%26source%3D#{@source}%26token%3D#{@token}%26maxRecords%3D#{@max_records}%26threshold%3D#{@threshold}%26baseUrl%3D#{@openurl_base}&#{request.to_context_object.kev}"
     response = open(bx_url)
-    Rails.logger.info("bX URL #{bx_url.inspect}")
+    Rails.logger.debug("bX URL #{bx_url.inspect}")
     response_xml_str = response.read
-    Rails.logger.info("bX Response #{response_xml_str.inspect}")
-    response_xml = Hpricot.XML(response_xml_str)
+    Rails.logger.debug("bX Response #{response_xml_str.inspect}")
+    response_xml = Nokogiri::XML(response_xml_str)
     response_xml.search("//item") do |item|
       title = item.at("title").inner_text
       author = item.at("author").inner_text
