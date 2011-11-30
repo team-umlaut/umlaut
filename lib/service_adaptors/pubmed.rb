@@ -1,35 +1,39 @@
 # FIXME This service is not working
 # For starters it needs the method service_types_generated()
 
-class Pubmed < Service
-  # This model will query the Pubmed eutils service to enhance the request
-  # metadata
+# This model will query the Pubmed eutils service to enhance the request
+# metadata
+class Pubmed < Service  
   require 'uri'
   require 'net/http'
-  attr_reader :description,:subjects,:issn,:eissn,:volume,:issue,:date,:jtitle,:stitle,:atitle,:pages,:aulast,:aufirst,:auinit
+  require 'nokogiri'
+  
+  include MetadataHelper
+  
+  def initialize(config)
+    @display_name = "PubMed"
+    @url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi'
+    super(config)
+  end
   
   def handle(request)
-    return request.dispatched(self, true) unless id = self.can_resolve?(request)
-    unless request.dispatched?(self)
-      return request.dispatched(self, false) unless response = self.fetch_record(id)
-      self.parse_record(response, request)
-      return request.dispatched(self, true)
-    end
+    return request.dispatched(self, true) unless pmid = get_pmid(request.referent)
+        
+    return request.dispatched(self, false) unless response = self.fetch_record(pmid)
+    
+    self.enhance_referent(response, request)
+    
+    return request.dispatched(self, true)    
   end
   
-  # Only request for things with PMIDs
-  def can_resolve?(req)    
-    req.referent.referent_values.find(:all, :conditions=>['key_name = ?', 'identifier']).each do | val |
-      # PMIDs can come in with either of these prefixes
-      return val.value if val.value.match(/^(info:pmid\/)|(pmid:)/)          
-    end    
-    return false
+  def service_types_generated
+    @service_types ||= [ServiceTypeValue["referent_enhance"]]
   end
+    
   
   # Do the request.  Takes the PMID as inputs 
-  def fetch_record(id)    
-    id.sub!(/^(info:pmid\/)|(pmid:)/, "")
-    pmid_url = self.url + "?db=pubmed&retmode=xml&rettype=full&id="+id
+  def fetch_record(pmid)  
+    pmid_url = self.url + "?db=pubmed&retmode=xml&rettype=full&id="+pmid
     begin
       response = Net::HTTP.get_response(URI.parse(pmid_url))
     rescue
@@ -40,70 +44,70 @@ class Pubmed < Service
   end    
   
   # Pull everything useful out of the Pubmed record
-  def parse_record(body, request)   
-    require 'hpricot'
-    doc = Hpricot(body)
-    return unless cite = (doc/"/PubmedArticleSet/PubmedArticle/MedlineCitation") # Nothing of interest here
+  def enhance_referent(body, request)   
+    doc = Nokogiri::XML(body)
+    return unless cite = doc.at("PubmedArticleSet/PubmedArticle/MedlineCitation") # Nothing of interest here
     
-    return unless article = (cite/"/Article").first # No more useful metadata   
-    if abstract = (article/"/Abstract/AbstractText").first
-      @description = abstract.inner_html 
-    end
-    request.add_service_response(
+    return unless article = cite.at("Article") # No more useful metadata   
+    if abstract = article.at("Abstract/AbstractText")
+      request.add_service_response(        
       :service=>self,
-      :key=>'abstract',
-      :value_text=>@description,
-      :service_type_value => 'abstract') unless @description.blank?
+      :display_text => "Abstract from #{@display_name}",
+      :content => abstract.inner_text,
+      :service_type_value => 'abstract') unless abstract.inner_text.blank?      
+    end
     
-    if journal = (article/"/journal").first
-      if issn = (journal/'/ISSN').first
+    if journal = article.at("Journal")
+      if issn = journal.at('ISSN')
         if issn.attributes['issntype']=="Print"                  
-          request.referent.enhance_referent('issn', issn.inner_html, true, false)
+          request.referent.enhance_referent('issn', issn.inner_html)
         else 
-          request.referent.enhance_referent('eissn', issn.inner_html, true, false)        
+          request.referent.enhance_referent('eissn', issn.inner_html)        
         end
       end
-      if jrnlissue = (journal/'/JournalIssue').first
-        if (jrnlissue/'/Volume').first
-          request.referent.enhance_referent('volume', (jrnlissue/'/Volume').first.inner_html, true, false)
+      if jrnlissue = journal.at('JournalIssue')
+        if volume = jrnlissue.at('Volume')
+          request.referent.enhance_referent('volume', volume.inner_text)
         end
-        if (jrnlissue/'/Issue').first
-          request.referent.enhance_referent('issue', (jrnlissue/'/Issue').first.inner_html, true, false)
+        if issue = jrnlissue.at('Issue')
+          request.referent.enhance_referent('issue', issue.inner_text)
         end   
-        if (jrnlissue/'/PubDate').first
-          if (jrnlissue/'/PubDate/Year').first
-            request.referent.enhance_referent('date', (jrnlissue/'/PubDate/Year').first.inner_html, true, false)
-          end
+        if date = jrnlissue.at('PubDate')          
+          request.referent.enhance_referent('date', date.inner_text)
+          
         end              
       end
       
-      if (journal/'/Title').first
-        request.referent.enhance_referent('jtitle', (journal/'/Title').first.inner_html, true, false)          
+      if jtitle = journal.at('Title')
+        request.referent.enhance_referent('jtitle', jtitle.inner_text)          
       end
-      if (journal/'/ISOAbbreviation').first
-        request.referent.enhance_referent('stitle', (journal/'/ISOAbbreviation').first.inner_html, true, false)
-      end         
-      if (journal/'/ArticleTitle').first
-        request.referent.enhance_referent('atitle', (journal/'/ArticleTitle').first.inner_html, true, false)
+      if stitle = journal.at('ISOAbbreviation')
+        request.referent.enhance_referent('stitle', stitle.inner_text)
+      end       
+      
+      if atitle = article.at('ArticleTitle')
+        request.referent.enhance_referent('atitle', atitle.inner_text)
       end   
       
-      if (article/'/Pagination/MedlinePgn').first
-        request.referent.enhance_referent('pages', (article/'/Pagination/MedlinePgn').first.inner_html, true, false)        
+      if pages = article.at('Pagination/MedlinePgn')
+        page_str = pages.inner_text
+        request.referent.enhance_referent('pages', page_str)
+        if spage = page_str.split("-")[0]
+          request.referent.enhance_referent('spage', spage.strip)
+        end
       end                
 
-      if (article/'/AuthorList/Author').first
-        if (article/'/AuthorList/Author/LastName').first
-          request.referent.enhance_referent('aulast', (article/'/AuthorList/Author/LastName').first.inner_html, true, false)
+      if author = article.at('AuthorList/Author')
+        if last_name = author.at('LastName')
+          request.referent.enhance_referent('aulast', last_name.inner_text)
         end
-        if (article/'/AuthorList/Author/ForeName').first
-          request.referent.enhance_referent('aufirst', (article/'/AuthorList/Author/ForeName').first.inner_html, true, false)
+        if first_name = author.at('ForeName')
+          request.referent.enhance_referent('aufirst', first_name.inner_text)
         end          
-        if (article/'AuthorList/Author/Initials').first
-          request.referent.enhance_referent('auinit', (article/'AuthorList/Author/Initials').first.inner_html, true, false)
+        if initials = author.at('Initials')
+          request.referent.enhance_referent('auinit', initials.inner_text)
         end          
-      end   
-      request.referent.save
-      request.save     
+      end              
     end      
   
   end
