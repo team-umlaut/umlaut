@@ -1,8 +1,6 @@
-# FIXME This service is not working
-# For starters it needs the method service_types_generated()
-
-# This model will query the Pubmed eutils service to enhance the request
-# metadata
+# Looks up pmid from NLM api, and enhances referent with citation data. 
+#
+# If you use SFX, you prob don't need/want this, as SFX does this already. 
 class Pubmed < Service  
   require 'uri'
   require 'net/http'
@@ -72,8 +70,9 @@ class Pubmed < Service
         if issue = jrnlissue.at('Issue')
           request.referent.enhance_referent('issue', issue.inner_text)
         end   
-        if date = jrnlissue.at('PubDate')          
-          request.referent.enhance_referent('date', date.inner_text)
+        if date = jrnlissue.at('PubDate')    
+          
+          request.referent.enhance_referent('date', openurl_date(date))
           
         end              
       end
@@ -96,7 +95,7 @@ class Pubmed < Service
           request.referent.enhance_referent('spage', spage.strip)
         end
       end                
-
+      
       if author = article.at('AuthorList/Author')
         if last_name = author.at('LastName')
           request.referent.enhance_referent('aulast', last_name.inner_text)
@@ -110,6 +109,25 @@ class Pubmed < Service
       end              
     end      
   
+  end
+  
+  # input a PubMed <PubDate> element, return
+  # a string usable as rft.date yyyymmdd
+  def openurl_date(date_xml)
+    date = ""
+    
+    if y = date_xml.at("Year")
+      date << ("%04d" % y.inner_text.strip[0,4].to_i )
+      if m = date_xml.at("Month")
+        # Month name to number
+        date << ( "%02d" % DateTime.parse(m.inner_text.strip).month )
+        if d = date_xml.at("Day")
+          date << ("%02d" % d.inner_text.strip[0,2].to_i)
+        end
+      end
+    end
+            
+    return date             
   end
 
 end
