@@ -190,7 +190,7 @@ module MetadataHelper
     bare_identifier = nil
     identifiers = referent.identifiers.collect {|id| $1 if id =~ /^#{prefix}(.*)/}.compact
 
-    if ( identifiers.blank? &&  ['lccn', 'oclcnum', 'isbn', 'issn'].include?(sub_scheme) )
+    if ( identifiers.blank? &&  ['lccn', 'oclcnum', 'isbn', 'issn', 'doi', 'pmid'].include?(sub_scheme) )
       # try the referent metadata
       from_rft = referent.metadata[sub_scheme]
       identifiers = [from_rft] unless from_rft.blank?
