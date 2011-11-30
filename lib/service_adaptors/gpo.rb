@@ -4,7 +4,7 @@
 # item.
 class Gpo < Service
   include MetadataHelper
-  require 'hpricot'
+  require 'nokogiri'
   require 'open-uri' 
   
   
@@ -23,7 +23,6 @@ class Gpo < Service
   end
 
   def handle(request)
-    
     
     if ( @gpo_item_find )
       items = analyze_gpo_items(  get_gpo_item_nums(request.referent)  )
@@ -86,11 +85,11 @@ class Gpo < Service
     
     response = open( gpo_sudoc_find_url(sudoc)  ).read
 
-    hpricot = Hpricot(response)
+    response_dom = Nokogiri::HTML(response)
     
     # Find each tr with class tr1, holding a td => The sixth td in there =>
     # one or more 'a' tags in there. These are links to fulltext. 
-    links = hpricot.search('//tr[@class = "tr1"][td]/td:eq(6)/a')
+    links = response_dom.search('//tr[@class = "tr1"][td]/td[7]/a')
 
     urls_seen = []
     
