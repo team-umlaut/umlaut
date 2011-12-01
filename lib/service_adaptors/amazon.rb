@@ -169,8 +169,7 @@ class Amazon < Service
   
   def add_aws_service_responses(request, aws_response)
     return_hash = Hash.new
-    
-    aws_hp = Hpricot(aws_response.body)
+        
     aws = Nokogiri::XML(aws_response.body)
     # extract and collect info from the xml    
     
