@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.10'
+gem 'rails', '~> 3.0.0'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -10,7 +10,6 @@ gem "mysql2", "< 0.3.0"
 gem "nokogiri"
 gem "openurl"
 gem "marc"
-gem "hpricot" # really ought to be eliminated in all code for nokogiri instead
 gem "isbn" # used  by amazon among others
 gem "htmlentities" # used by sfx adapter, at least
 gem "multi_json" # Remember to generate a faster json adapter into app gemfile, rather than just multi_json lowest common denominator.
@@ -19,7 +18,8 @@ gem "confstruct", :git => 'git://github.com/mbklein/confstruct.git'
 
 
 group :development, :test do 
- gem "ruby-debug", :platforms => :mri_18
+  gem "ruby-debug", :platforms => :mri_18
+  gem 'ruby-debug19', :platforms => :mri_19
 end
 
 # Use unicorn as the web server
