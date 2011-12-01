@@ -3,7 +3,7 @@
 # * Be sure to configure the Primo Back Office with the relevant IPs to enable interaction via the Web Services
 # * This module does not parse the response but instead stores it as an Hpricot::Doc for the calling classes to parse
 module Exlibris::PrimoWS
-  require 'hpricot'
+  require 'nokogiri'
 
   # PrimoWebService is the base class for all PrimoWebServices
   # It can be extended but is not intended for use by itself
@@ -18,7 +18,7 @@ module Exlibris::PrimoWS
       endpoint_url = base_url + "/PrimoWebServices/services/primo/" + service
       soap_client = SOAP::RPC::Driver.new(endpoint_url, "http://www.exlibris.com/primo/xsd/wsRequest", "")
       soap_client.add_method(method_name, param_name) unless (respond_to? method_name)
-      @response = Hpricot.XML(soap_client.method(method_name).call(input.to_s))
+      @response = Nokogiri::XML(soap_client.method(method_name).call(input.to_s))
       raise "Error making call to Primo web service.  Response from web service is #{@response}." if @response.nil?
       @error = []
       response.search("ERROR").each do |e|
