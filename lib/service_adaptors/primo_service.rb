@@ -47,6 +47,7 @@
 # base_url:: _required_ host and port of Primo server; used for Primo web services, deep links and holding_search
 # base_path:: *DEPRECATED* previous name of base_url
 # vid:: _required_ view id for Primo deep links and holding_search.
+# institution:: _required_ institution id for Primo institution; used for Primo web services
 # base_view_id:: *DEPRECATED* previous name of vid
 # holding_search_institution:: _required if service types include holding_search_ institution to be used for the holding_search
 # holding_search_text:: _optional_ text to display for the holding_search
@@ -118,7 +119,7 @@
 #       PrimoService Default Config:   3.420000   0.050000   3.470000 (  3.990271)
 
 class PrimoService < Service
-  required_config_params :base_url, :vid
+  required_config_params :base_url, :vid, :institution
 
   # Overwrites Service#new.
   def initialize(config)
@@ -162,7 +163,7 @@ class PrimoService < Service
     # For backward compatibility, handle the special case where holding_search_institution was not included.
     # Set holding_search_institution to vid and print warning in the logs.
     if @service_types.include?("holding_search") and @holding_search_institution.nil?
-      @holding_search_institution = @vid
+      @holding_search_institution = @institution
       RAILS_DEFAULT_LOGGER.warn("Required parameter 'holding_search_institution' was not set.  Please set the appropriate value in services.yml.  Defaulting institution to view id, #{@vid}.")
     end # End backward compatibility maintenance
     raise ArgumentError.new(
@@ -189,7 +190,7 @@ class PrimoService < Service
     RAILS_DEFAULT_LOGGER.warn("Use of 'rft.primo' is deprecated.  Please use the identifier instead.") unless request.referent.metadata['primo'].nil?
     # End DEPRECATED
     searcher_setup = {
-      :base_url => @base_url, :vid => @vid,
+      :base_url => @base_url, :vid => @vid, :institution => @institution,
       :config => primo_config
     }
     # don't send mal-formed issn

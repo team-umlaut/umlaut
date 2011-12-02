@@ -121,7 +121,9 @@ module Exlibris::PrimoWS
   # Invalid params will raise an exception
   class SearchBrief < Search
     def initialize(search_params, base_url, options={})
-      super("searchBrief", "searchBriefRequest", "searchRequest", primo_search_request(search_params), [], base_url, options)
+      additional_input=[]
+      additional_input.push(tag!("institution", options.delete(:institution))) if options.has_key?(:institution)
+      super("searchBrief", "searchBriefRequest", "searchRequest", primo_search_request(search_params), additional_input, base_url, options)
     end
   end
 
@@ -129,7 +131,10 @@ module Exlibris::PrimoWS
   # Not all options are currently supported
   class GetRecord < Search
     def initialize(doc_id, base_url, options={})
-      super("getRecord", "getRecordRequest", "fullViewRequest", primo_search_request, [tag!("docId", doc_id)], base_url, options)
+      additional_input=[]
+      additional_input.push(tag!("docId", doc_id))
+      additional_input.push(tag!("institution", options.delete(:institution))) if options.has_key?(:institution)
+      super("getRecord", "getRecordRequest", "fullViewRequest", primo_search_request, additional_input, base_url, options)
     end
   end
 end

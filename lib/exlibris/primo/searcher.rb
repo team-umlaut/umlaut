@@ -31,6 +31,8 @@ module Exlibris::Primo
       @holding_attributes = Exlibris::Primo::Holding.base_attributes
       @base_url = setup[:base_url]
       raise_required_setup_parameter_error :base_url if @base_url.nil?
+      @institution = setup[:institution]
+      raise_required_setup_parameter_error :institution if @institution.nil?
       @vid = setup.fetch(:vid, "DEFAULT")
       raise_required_setup_parameter_error :vid if @vid.nil?
       @config = setup.fetch(:config, {})
@@ -55,11 +57,11 @@ module Exlibris::Primo
         "a sufficient query.") and return if insufficient_query?
       # Call Primo Web Services
       unless @primo_id.nil? or @primo_id.empty?
-        get_record = Exlibris::PrimoWS::GetRecord.new(@primo_id, @base_url) 
+        get_record = Exlibris::PrimoWS::GetRecord.new(@primo_id, @base_url, {:institution => @institution}) 
         @response = get_record.response
         process_record and process_search_results #since this is a search in addition to being a record call
       else
-        brief_search = Exlibris::PrimoWS::SearchBrief.new(search_params, @base_url)
+        brief_search = Exlibris::PrimoWS::SearchBrief.new(search_params, @base_url, {:institution => @institution})
         @response = brief_search.response
         process_search_results
       end
@@ -156,7 +158,7 @@ module Exlibris::Primo
             :library_code => library_code, :id_one => id_one, :id_two => id_two, 
             :status_code => status_code, :origin => origin, :display_type => display_type, :notes => "",
             :match_reliability => 
-              (reliable_match?(:title => record.at("display/title"), :author => record.at("display/creator"))) ? 
+              (reliable_match?(:title => record.at("display/title").inner_text, :author => record.at("display/creator").inner_text)) ? 
                 ServiceResponse::MatchExact : ServiceResponse::MatchUnsure 
           }
           holding = Exlibris::Primo::Holding.new(holding_parameters)
@@ -211,7 +213,7 @@ module Exlibris::Primo
       return true unless (@issn.nil? or @issn.empty?) and (@isbn.nil? or @isbn.empty?)
       return false if (record_metadata.nil? or record_metadata.empty? or record_metadata[:title].nil? or record_metadata[:title].empty?)
       # Titles must be equal
-      return false unless record_metadata[:title].downcase.eql?(title.downcase)
+      return false unless record_metadata[:title].downcase.eql?(@title.downcase)
       # Compare record metadata with metadata that was passed in.  
       # Only check if the record metadata value contains the input value since we can't be too strict.
       record_metadata.each { |type, value| return false if value.downcase.match("#{self.method(type).call}".downcase).nil?}
