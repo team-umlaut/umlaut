@@ -87,6 +87,7 @@ NYU_Primo:
   status: active
   base_url: http://bobcatdev.library.nyu.edu
   vid: NYU
+  institution: NYU
   holding_search_institution: NYU
   holding_search_text: Search for this title in BobCat.
   suppress_holdings: [ !ruby/regexp '/\$\$LBWEB/', !ruby/regexp '/\$\$LNWEB/', !ruby/regexp '/\$\$LTWEB/', !ruby/regexp '/\$\$LWEB/', !ruby/regexp '/\$\$1Restricted Internet Resources/' ]
