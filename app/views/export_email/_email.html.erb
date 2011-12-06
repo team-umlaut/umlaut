@@ -1,8 +1,9 @@
-<% 
+<%
 unless @user_request.nil?
 cite = @user_request.referent.to_citation %>
+
 <div class="inner_modal_dialog">
-<% form_tag({:controller => "export_email", :action => "send_email", :id => params[:id]}, :class => "modal_dialog_form" ) do  %>
+<%= form_tag({:controller => "export_email", :action => "send_email", :id => params[:id]}, :class => "modal_dialog_form" ) do  %>
   <h2>Email the title and locations</h2>
   
   <div class="formError">

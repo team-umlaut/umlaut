@@ -3,7 +3,7 @@ unless @user_request.nil?
 %>
 
 <div class="inner_modal_dialog send_to_txt">
-<% form_tag( {:controller => "export_email", :action => "send_txt", :id => params[:id]}, :class => "modal_dialog_form" ) do %>
+<%= form_tag( {:controller => "export_email", :action => "send_txt", :id => params[:id]}, :class => "modal_dialog_form" ) do %>
   <h2>Send the title and location of an item to your mobile phone</h2>
   
   <div class="formError">
