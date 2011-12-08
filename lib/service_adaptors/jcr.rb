@@ -22,6 +22,7 @@ class Jcr < Service
   require  'open-uri'
   require 'nokogiri'
   require 'net/http'
+  require 'builder'
   
   include MetadataHelper
   
