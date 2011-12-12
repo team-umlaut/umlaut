@@ -6,7 +6,7 @@
   <tr><th>Source</th><th>Content type</th></tr>
     <% @user_request.services_in_progress.each do |service|  %>
        <tr><td style="padding-right: 10px; vertical-align: top;"><strong><%= service.display_name %></strong></td>
-           <td> <%= service.service_types_generated.collect {|st| st.display_name_pluralize}.join('<br/>') %> </td>
+           <td> <%= service.service_types_generated.collect {|st| html_escape(st.display_name_pluralize) }.join('<br/>').html_safe %> </td>
        </tr>
     <% end %>
   </table>
