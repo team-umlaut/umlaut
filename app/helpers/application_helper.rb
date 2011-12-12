@@ -214,12 +214,21 @@ module ApplicationHelper
   # if requested by presence of @meta_refresh_self ivar. 
   # this method usually called in a layout. 
   def render_meta_refresh
-    tag( "meta",
-      "http-equiv" => "refresh",
-      "content" => @meta_refresh_self
-      ) if @meta_refresh_self    
+     if @meta_refresh_self    
+      tag( "meta",
+        "http-equiv" => "refresh",
+        "content" => @meta_refresh_self
+        )
+      else
+        ""
+      end
   end
   
-  
+  # standard umlaut head content, may later include more
+  # stuff, local/custom layouts should call this in HEAD
+  # to get forwards-compatible umlaut standard head content
+  def render_umlaut_head_content
+    render_opensearch_link + render_meta_refresh
+  end
   
 end
