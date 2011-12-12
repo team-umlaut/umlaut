@@ -191,6 +191,15 @@ module ApplicationHelper
     end
   end
   
+  # If you have a config.test_resolve_base configured,
+  # will output a [T] link, usually for footer, for staff
+  # debugging. 
+  def link_to_test_resolve
+    if (test_base = umlaut_config.lookup!("test_resolve_base")) && @user_request
+      link_to "[T]", test_base.chomp("?") + "?" + @user_request.to_context_object.kev
+    end
+  end
+  
   
   
 end

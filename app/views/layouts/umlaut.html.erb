@@ -61,7 +61,9 @@
    
       <!-- even with nothing in it, footer neccesary for CSS clear=both -->
      <div id="footer" class="footer">
-       <%= render_service_credits %>
+        <%= render_service_credits %>
+        <!-- links to aid in debugging openurls gone wrong when in production -->
+        <%= link_to_test_resolve %>
         <%= link_to_direct_sfx %>
         <%= link_to_toggle_debug_info %> 
      </div>

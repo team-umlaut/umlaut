@@ -50,6 +50,12 @@ module UmlautConfig
       azlist      'info:sid/umlaut.code4lib.org:azlist'
     end
     
+    # If you have a test umlaut set up at another location to stage/test
+    # new features, link to it here, and a helper method in default
+    # layout will provide a subtle debugging link to it in footer,
+    # for current OpenURL. 
+    # test_resolve_base "http://app01.mse.jhu.edu/umlaut_dev"
+    
     opensearch do
       short_name deferred! {|c| "Find Journals with #{c.app_name}" }
       description deferred! {|c| "Search #{c.app_name} for journal names containing your term"}
