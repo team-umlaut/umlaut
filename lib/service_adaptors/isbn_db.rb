@@ -25,6 +25,11 @@ class IsbnDb < Service
     @timeout = 7
     @display_text = "Compare online prices"
     @display_name = "ISBNdb.com"
+    
+    @credits = {
+      "ISBNdb" => "http://isbndb.com/"
+    }
+    
     super(config)
   end
 

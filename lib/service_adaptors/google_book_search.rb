@@ -71,6 +71,11 @@ class GoogleBookSearch < Service
     # google api key strongly recommended, otherwise you'll
     # probably get rate limited. 
     @api_key = nil
+    
+    @credits = {
+      "Google Books" => "http://books.google.com/"
+    }
+    
     super(config)
   end
   

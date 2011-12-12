@@ -75,6 +75,10 @@ class Scopus < Service
     @more_like_this_type = "key"
     @inward_more_like_url = "http://www.scopus.com/scopus/inward/mlt.url"
     
+    @credits = {
+      @display_name => "http://www.scopus.com/home.url"
+    }
+    
     super(config)
   end
 

@@ -81,7 +81,7 @@ class Service
   # Example for a service that only generates fulltext: 
   #    return [ ServiceTypeValue[:fulltext] ]
   def service_types_generated
-    raise Exception.new("service_types_generated() must be implemented by Service concrete sub-class!")
+    raise Exception.new("#{self.class}: service_types_generated() must be implemented by Service concrete sub-class!")
   end
 
 
@@ -100,7 +100,7 @@ class Service
   # Implemented by sub-class. Standard response-generating services implement
   # this method to do their work, generate responses and/or metadata. 
   def handle(request)
-    raise Exception.new("handle() must be implemented by Service concrete sub-class, for standard services!")
+    raise Exception.new("#{self.class}: handle() must be implemented by Service concrete sub-class, for standard services!")
   end
 
   # This method is implemented by a concrete sub-class meant to
@@ -114,7 +114,7 @@ class Service
   # service_type is the ServiceType object responsible for this url.
   # the third argument is reserved for future use an options hash. 
   def link_out_filter(orig_url, service_response, other_args = {})
-      raise Exception.new("#link_out_filter must be implemented by Service concrete sub-class with task link_out_filter!")
+    raise Exception.new("#{self.class}: #link_out_filter must be implemented by Service concrete sub-class with task link_out_filter!")
   end
 
   
@@ -321,6 +321,15 @@ class Service
       break if preemption
    end
    return (! preemption.nil? )
+ end
+ 
+ # used by render_service_credits helper method, returns
+ # a hash with keys being a human-displayable name of a third party
+ # to give 'credit' to, and value being a URL (or nil) to link the
+ # name to. 
+ # computed from @credits config variable, or returns empty hash. 
+ def credits
+   @credits || {}
  end
 
   

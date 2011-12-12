@@ -52,6 +52,11 @@ class WorldcatIdentities < Service
     @openurl_widely_held = true
     @worldcat_widely_held = false
     @openurl_base  = '/resolve'
+    
+    @credits = {
+      "WorldCat Identities" => "http://www.worldcat.org/identities/"
+    }
+    
     super(config)
   end
   

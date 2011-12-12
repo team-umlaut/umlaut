@@ -68,13 +68,6 @@ class Sfx < Service
     @sfx_timeout = 8
 
     @really_distant_relationships = ["CONTINUES_IN_PART", "CONTINUED_IN_PART_BY", "ABSORBED_IN_PART", "ABSORBED_BY"]
-    
-    # Include a CrossRef credit, becuase SFX uses CrossRef api internally,
-    # and CrossRef ToS may require us to give credit. 
-    @credits = {
-      "SFX" => "http://www.exlibrisgroup.com/sfx.htm",
-      "CrossRef" => "http://www.crossref.org/"
-    }
                                   
     super(config)                              
   end
@@ -441,8 +434,10 @@ class Sfx < Service
     
     doc.search('perldata/hash/item').each do |item|
       key = item['key'].to_s
-            
       value = item.inner_html
+      # But this still has HTML entities in it sometimes. Now we've
+      # got to decode THAT.
+      value = html_ent_coder.decode(value)
 
       # Some normalization. SFX uses rft.year, which is not actually
       # legal. Stick it in rft.date instead.
@@ -468,10 +463,6 @@ class Sfx < Service
         prefix = prefix.slice(1, prefix.length)
         value = array_i ? array_i.inner_html : nil   
       end
-      
-      # But this still has HTML entities in it sometimes. Now we've
-      # got to decode THAT.
-      value = html_ent_coder.decode(value)
 
       # object_type? Fix that to be the right way.
       if (prefix=='rft') && (key=='object_type')

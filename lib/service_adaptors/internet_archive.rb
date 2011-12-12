@@ -60,6 +60,11 @@ class InternetArchive < Service
     @display_name = "the Internet Archive"
     @http_timeout = 5.seconds
     @include_search_inside = false
+    
+    @credits = {
+      "The Internet Archive" => "http://archive.org/"
+    }
+    
     super(config)
     @num_results_for_types ||= {}
     @mediatypes.each do |type|

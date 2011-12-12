@@ -13,6 +13,11 @@ class OpenLibraryCover < Service
   def initialize(config)
     @base_url = "http://covers.openlibrary.org/b/"    
     @size = "medium" # "small", "medium" or "large"
+    
+    @credits = {
+      "OpenLibrary" => "http://openlibrary.org/"
+    }
+    
     super(config)
   end
 

@@ -55,6 +55,10 @@ class Amazon < Service
     @make_aws_call = true
     @http_timeout = 5
     
+    @credits = {
+      "Amazon" => "http://www.amazon.com/"
+    }
+    
     super(config)
 
     # Need the secret_key after 15 aug 09.

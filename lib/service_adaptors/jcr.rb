@@ -38,6 +38,11 @@ class Jcr < Service
     @link_text = "Journal impact factor"
     @api_url = "https://ws.isiknowledge.com/cps/xrpc"
     @include_for_article_level = true
+    
+    @credits = {
+      @display_name => "http://thomsonreuters.com/products_services/science/science_products/a-z/journal_citation_reports/"
+    }
+    
     super(config)
   end
 

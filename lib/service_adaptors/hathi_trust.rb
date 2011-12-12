@@ -58,6 +58,11 @@ class HathiTrust < Service
     @note =  '' #'Fulltext books from the University of Michigan'
     @show_search_inside = true
     @show_multi_volume = true
+    
+    @credits = {
+      "HathiTrust" => "http://www.hathitrust.org"
+    }
+    
     super(config)
   end
   

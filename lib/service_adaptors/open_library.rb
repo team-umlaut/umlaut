@@ -50,6 +50,11 @@ class OpenLibrary < Service
     # openlibrary goes straight to the flipbook; archive.org to main page
     @fulltext_base_url = 'http://archive.org/details' #'http://openlibrary.org/details'
     @download_link = true
+    
+    @credits = {
+      "OpenLibrary" => "http://openlibrary.org/"
+    }
+    
     super(config)
   end
   

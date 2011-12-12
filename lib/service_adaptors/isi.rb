@@ -37,10 +37,15 @@ class Isi < Service
   def initialize(config)
     #defaults
     @wos_app_name = "Umlaut"
-    @display_name = "Web of Science\xc2\xae" # trademark symbol
+    @display_name = "Web of Knowledge\xc2\xae" # trademark symbol
     @api_url = "https://ws.isiknowledge.com/cps/xrpc"
     @include_cited_by = true
     @include_similar = true
+    
+    @credits = {
+      @display_name => "http://apps.webofknowledge.com"
+    }
+    
     super(config)
   end
 

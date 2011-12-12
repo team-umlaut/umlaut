@@ -60,7 +60,11 @@
       <%= yield %>
    
       <!-- even with nothing in it, footer neccesary for CSS clear=both -->
-     <div id="footer" class="footer"> <%= link_to_toggle_debug_info %> </div
+     <div id="footer" class="footer">
+       <%= render_service_credits %>
+     
+        <%= link_to_toggle_debug_info %> 
+     </div>
   
   </div>
 

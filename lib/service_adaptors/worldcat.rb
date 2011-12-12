@@ -17,6 +17,11 @@ class Worldcat < Service
     @base_url = 'http://www.worldcat.org/'
     @display_text = 'Find in other libraries'
     @display_name = 'OCLC WorldCat.org'
+    
+    @credits = {
+      "OCLC WorldCat.org" => "http://www.worldcat.org/"
+    }
+    
     super(config)
   end
 

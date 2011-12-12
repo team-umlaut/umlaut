@@ -15,6 +15,11 @@ class CoverThing < Service
     # http://covers.librarything.com/devkey/KEY/medium/isbn/0545010225
     @base_url = 'http://covers.librarything.com/devkey/';
     @lt404url = 'http://www.librarything.com/coverthing404.php'
+    
+    @credits = {
+      "LibraryThing" => "http://www.librarything.com/"
+    }
+    
     super(config)
   end
   

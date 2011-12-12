@@ -141,7 +141,43 @@ module ApplicationHelper
     return list.join(seperator)
   end
 
-
+  # Renders list of external services used by currently configured Umlaut, 
+  # with URLs. In some cases ToS of third party services may require this.
+  # Gets list from "credits" config in Service plugins. 
+  # Requires @collection ivar in controller holding an umlaut Collection
+  # object, as there will be in ResolveController. 
+  def render_service_credits
+    if @collection
+      content = "".html_safe
+            
+      content << "Powered by ".html_safe + link_to("Umlaut", "http://github.com/team_umlaut/umlaut") + ". ".html_safe
+      
+      credit_segments = []
+      
+      services = @collection.instantiate_services!
+      
+      # put em all in one hash to eliminate exact-name dups
+      credits = {}
+      services.each {|s|  credits.merge! s.credits } 
+      
+      credits.keys.sort.each do |name|
+        if credits[name].blank?
+          credit_segments << html_escape(name)
+        else
+          credit_segments << link_to(name, credits[name])
+        end
+      end
+      
+      
+      if credit_segments.length > 0
+        content << "Using services from ".html_safe
+        content << credit_segments.join(", ").html_safe
+        content << " and others.".html_safe
+      end
+      
+      return content
+    end
+  end
   
   
   
