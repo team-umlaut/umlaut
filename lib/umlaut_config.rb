@@ -25,9 +25,9 @@ module UmlautConfig
     
     # Sometimes Umlaut sends out email, what email addr should it be from?
     from_email_addr 'no_reply@umlaut.example.com'
-    
-    layout "search_basic"
-    resolve_layout "resolve_basic" # deferred! {|c| c.layout}
+        
+    layout "umlaut"
+    resolve_layout deferred! {|c| c.layout}    
     search_layout deferred! {|c| c.layout}
     
     # help url used on error page and a few other places.
@@ -36,9 +36,11 @@ module UmlautConfig
     # Minimum height and width of browser window. We have little control over
     # what size a content provider generates a window for a link resolver. Often
     # it's too small for umlaut. So we resize in js, if these config params
-    # are given. Set to 0 to disable. 
+    # are given. Set to 0 to disable.
+    # Sadly, only some browsers let us resize the browser window, so this
+    # feature only works in some browsers. 
     minimum_window_width    820
-    minimum_window_height   0
+    minimum_window_height   400
     
     
     # rfr_ids used for umlaut generated pages.

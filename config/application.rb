@@ -2,12 +2,18 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-# If you have a Gemfile, require the gems listed there, including any gems
-# you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env) if defined?(Bundler)
+if defined?(Bundler)
+  # If you precompile assets before deploying to production,
+  #  use this line
+  #Bundler.require *Rails.groups(:assets => %w(development test))
+  # If you want your assets lazily compiled in production,
+  #  use this line
+   Bundler.require(:default, :assets, Rails.env)
+end
 
 module Umlaut
   class Application < Rails::Application
+    
     
     config.after_initialize do
 
@@ -29,6 +35,10 @@ module Umlaut
     config.autoload_paths += %W( #{config.root}/lib )
     config.autoload_paths += %W( #{config.root}/lib/referent_filters )
     config.autoload_paths += %W( #{config.root}/lib/service_adaptors )
+    # Neccesary to keep threading weirdness from happening since we use
+    # these services in threads. 
+    #config.eager_load_paths += %W( #{config.root}/lib/service_adaptors )
+    
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -53,5 +63,9 @@ module Umlaut
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+
+    config.assets.enabled = true
+    config.assets.version = '1.0'
   end
 end

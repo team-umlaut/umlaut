@@ -1,0 +1,11 @@
+// This is a manifest file that'll be compiled into including all
+// umlaut files. It can be included in a rails application.js manifest
+// as:
+//         require 'umlaut'
+// to include all umlaut js.  
+
+// Require all js files inside the 'umlaut' subdir next to this file.  
+
+//= require_tree './umlaut'
+
+

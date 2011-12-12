@@ -1,0 +1,34 @@
+// Some code to re-size our window to config defined minimum height/width
+//     We have little control over what size a content provider generates a
+//     window for a link resolver. Often it's too small. So we resize in
+//     js.
+
+// Some browsers won't let us resize the window though. Oh well, we try. 
+// Those that wont' let us just silently no-op. 
+
+jQuery(document).ready(function($) {    
+  var min_width = <%= UmlautConfig.config.lookup!('minimum_window_width', 0).to_i %>;
+  var min_height = <%= UmlautConfig.config.lookup!('minimum_window_height', 0).to_i %>;
+
+  // Default to something huge, so if we fail in getting dimensions,
+  // we won't resize. 
+  var orig_width = 100000; 
+  var orig_height = 100000;
+  
+  // JQuery document viewport width/height 
+  
+  orig_width = $(window).width();
+  orig_height = $(window).height();
+  
+  
+  
+  width_diff = min_width - orig_width;
+  height_diff = min_height - orig_height;
+  
+  if (width_diff < 0) { width_diff = 0 }
+  if (height_diff < 0) { height_diff = 0 }
+  
+  if (width_diff >0 || height_diff > 0) {
+    window.resizeBy(width_diff, height_diff)
+  }
+});

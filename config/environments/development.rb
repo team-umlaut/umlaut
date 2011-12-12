@@ -24,6 +24,12 @@ Umlaut::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+
+  # do not compress assets
+  config.assets.compress = false
+  # expands the lines which load the assets
+  config.assets.debug = true
+
   
   # turn off SQL traces for now
   config.after_initialize do
