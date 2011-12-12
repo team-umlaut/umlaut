@@ -200,6 +200,16 @@ module ApplicationHelper
     end
   end
   
+  # usually called in layout, render a link tag with opensearch auto-discovery
+  def render_opensearch_link
+    tag("link", 
+        :rel => "search", 
+        :type => "application/opensearchdescription+xml", 
+        :title =>  umlaut_config.opensearch_short_name,
+        :href => url_for(:controller=>'open_search', :only_path=>false)
+        )
+  end
+  
   
   
 end

@@ -56,10 +56,9 @@ module UmlautConfig
     # for current OpenURL. 
     # test_resolve_base "http://app01.mse.jhu.edu/umlaut_dev"
     
-    opensearch do
-      short_name deferred! {|c| "Find Journals with #{c.app_name}" }
-      description deferred! {|c| "Search #{c.app_name} for journal names containing your term"}
-    end
+    opensearch_short_name deferred! {|c| "Find Journals with #{c.app_name}" }
+    opensearch_description deferred! {|c| "Search #{c.app_name} for journal names containing your term"}
+    
     
     
     # Referent filters. Sort of like SFX source parsers.

@@ -32,10 +32,7 @@
 %>
 
 <!-- open search auto-discovery -->
-<link rel="search"
-     type="application/opensearchdescription+xml"
-    title="<%= umlaut_config.opensearch_short_name %>"
-     href="<%= url_for(:controller=>'open_search', :only_path=>false) %>" ></link>
+<%= render_opensearch_link %>
 
 </head>
 <body>

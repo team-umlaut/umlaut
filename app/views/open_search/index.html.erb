@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-     <ShortName><%= umlaut_config.lookup!("opensearch.short_name", "Find Journals") %></ShortName>
-     <Description><%= umlaut_config.lookup!("opensearch.description") %></Description>
+     <ShortName><%= umlaut_config.lookup!("opensearch_short_name", "Find Journals") %></ShortName>
+     <Description><%= umlaut_config.lookup!("opensearch_description") %></Description>
      <InputEncoding>UTF-8</InputEncoding>
      <Url type="text/html"
      template="<%= opensearch_template_url %>" />
