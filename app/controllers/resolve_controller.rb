@@ -88,7 +88,7 @@ class ResolveController < ApplicationController
       # meta-refresh update on progress of background services.
       # Your layout should respect this instance var--it will if it uses
       # the resolve_head_content partial, which it should.
-      @meta_refresh_self = 5  
+      @meta_refresh_self = umlaut_config.lookup!("poll_wait_seconds", 4)
     end
   end
 
