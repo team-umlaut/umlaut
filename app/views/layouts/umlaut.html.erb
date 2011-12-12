@@ -22,17 +22,17 @@
     <%= umlaut_config.app_name %> <%= "| #{@page_title}" if @page_title %>    
   </title>
 
-  <% if ( @meta_refresh_self ) %>
-    <meta http-equiv="refresh" content="<%= @meta_refresh_self %>">
-  <% end %>
+  <!-- will refresh the page if requested by controller -->
+  <%= render_meta_refresh %>
 
+  <!-- open search auto-discovery -->
+  <%= render_opensearch_link %>
  
 
 <%= #render(:partial => 'shared/ensure_window_size') 
 %>
 
-<!-- open search auto-discovery -->
-<%= render_opensearch_link %>
+
 
 </head>
 <body>

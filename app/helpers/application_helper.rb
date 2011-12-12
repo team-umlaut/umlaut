@@ -210,6 +210,16 @@ module ApplicationHelper
         )
   end
   
+  # used on non-js progress page, we need to refresh the page
+  # if requested by presence of @meta_refresh_self ivar. 
+  # this method usually called in a layout. 
+  def render_meta_refresh
+    tag( "meta",
+      "http-equiv" => "refresh",
+      "content" => @meta_refresh_self
+      ) if @meta_refresh_self    
+  end
+  
   
   
 end
