@@ -2,21 +2,13 @@
 <html lang="EN">
 <head>
   <meta charset="utf-8">
+
+  <%= csrf_meta_tags %>
   
   <%= stylesheet_link_tag 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css'%>
   <%= stylesheet_link_tag 'umlaut' %> 
-  <%= #stylesheet_link_tag "jquery-ui/jquery-ui-1.8.custom.css" 
-  %>
 
   <%= javascript_include_tag 'application' %>
-  
-  <%= #javascript_include_tag "jquery/jquery-1.4.2.min.js", "jquery/jquery-ui-1.8.custom.min.js" 
-  %>
-  <%= #javascript_include_tag "umlaut" 
-  %>
-  
-  <%= csrf_meta_tags %>
-
 
   <title>
     <%= umlaut_config.app_name %> <%= "| #{@page_title}" if @page_title %>    
@@ -28,12 +20,6 @@
   <!-- open search auto-discovery -->
   <%= render_opensearch_link %>
  
-
-<%= #render(:partial => 'shared/ensure_window_size') 
-%>
-
-
-
 </head>
 <body>
 
