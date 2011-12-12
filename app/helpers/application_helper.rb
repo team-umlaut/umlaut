@@ -179,6 +179,18 @@ module ApplicationHelper
     end
   end
   
+  # tiny [S] link directly to SFX, in footer. For debugging.
+  # Only if sfx.sfx_base_url is configured. 
+  def link_to_direct_sfx
+    if (base = umlaut_config.lookup!("sfx.sfx_base_url")) && @user_request
+      url = base.chomp("?") + "?"
+      url += @user_request.to_context_object.kev
+      url += "&sfx.ignore_date_threshold=1" if respond_to?(:title_level_request) && title_level_request?
+      
+      link_to "[S]", url
+    end
+  end
+  
   
   
 end
