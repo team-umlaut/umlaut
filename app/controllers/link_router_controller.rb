@@ -3,20 +3,18 @@
 # as well as special behavior (like EZProxy redirection, or showing in a
 # bannered frameset). 
 require 'cgi'
-class LinkRouterController < ApplicationController
+class LinkRouterController < UmlautController
   def index
 
     # Capture mysterious exception for better error reporting. 
     begin
       svc_response = ServiceResponse.find(params[:id])
-    rescue ActiveRecord::RecordNotFound => exception
+    rescue ActiveRecord::RecordNotFound => exception 
       # Usually this happens when it's a spider trying an old link. "go" links
       # don't stay good forever! Bad spider, ignoring our robots.txt.
-      
-      logger.warn("LinkRouter/index not found exception!: #{exception}\nReferrer: #{request.referer}\nUser-Agent:#{request.user_agent}\nClient IP:#{request.remote_addr}\n\n")
+      log_error_with_context(exception, :warn)      
 
-      error_404
-      return            
+      raise exception# will be caught by top level rescue_from            
     end
 
 

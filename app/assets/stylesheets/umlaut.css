@@ -286,6 +286,10 @@ img.toggle_icon {
   background-color: #FCF1D4;
 }
 
+.heading img {
+  float: left;
+}
+
 
 /****************************************/
 /* Special looks for particular sections */

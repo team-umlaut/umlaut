@@ -1,4 +1,4 @@
-class StoreController < ApplicationController
+class StoreController < UmlautController
   #require 'open_url'
   require 'openurl'
   def index
@@ -28,10 +28,7 @@ class StoreController < ApplicationController
       # object to send the user to the request. We can not resolve
       # this permalink!
       
-      Rails.logger.error("Permalink request could not be resolved. Returning 404. Permalink id: #{params[:id]}")
-      
-      error_404
-      return
+      raise NotFound.new("Permalink request could not be resolved. Returning 404. Permalink id: #{params[:id]}")            
     end
     
     # Whether it was an already existing one, or a newly created one
@@ -61,4 +58,7 @@ class StoreController < ApplicationController
 
     redirect_to( url_for_with_co( new_params, co) )
   end
+  
+  class NotFound < Exception ; end
+  
 end

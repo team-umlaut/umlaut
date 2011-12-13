@@ -1,0 +1,5 @@
+This ./app/views/umlaut directory belongs to the UmlautController,
+superclass of all Umlaut controllers. So views in here are available
+to all Umlaut controllers, but can be 'over-ridden' in a sub-class
+controller, simply by providing a view in subclass view dir with
+same name.

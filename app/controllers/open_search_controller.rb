@@ -1,5 +1,4 @@
-class OpenSearchController < ApplicationController
-  include UmlautConfigurable
+class OpenSearchController < UmlautController
   
   layout false
   

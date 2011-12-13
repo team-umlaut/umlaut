@@ -1,5 +1,4 @@
-class ExportEmailController < ApplicationController
-  include UmlautConfigurable
+class ExportEmailController < UmlautController
   
   before_filter :load_objects
   layout Proc.new { |controller|         

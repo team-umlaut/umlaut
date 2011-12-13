@@ -25,7 +25,7 @@
 #     link clicked on in params[:id].  Use #batch_size and #page for paging.
 #     As in #find_by_title, return two element array, first elememt is array
 #     of OpenURL::ContextObject, second element is total hit count. 
-class SearchController < ApplicationController
+class SearchController < UmlautController
   include UmlautConfigurable
   include SearchMethods::Sfx4
 

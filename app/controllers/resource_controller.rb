@@ -5,7 +5,7 @@
 # It does NOT take URL in request parameters, but instead takes a response ID.
 # it will only proxy urls already stored in umlaut responses, so this is not
 # an open proxy with the security problems that would cause. 
-class ResourceController < ApplicationController
+class ResourceController < UmlautController
   require 'open-uri'
 
   # We really ought to _stream_ the remote response to our client, but I

@@ -3,9 +3,7 @@
 # parameter umlaut.request_id=[some id] to hook up to a pre-existing
 # umlaut request (that presumably was an OpenURL). 
 
-class ResolveController < ApplicationController
-  include UmlautConfigurable
-  
+class ResolveController < UmlautController
   
   before_filter :init_processing
   # Init processing will look at this list, and for actions mentioned,
