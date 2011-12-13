@@ -7,8 +7,8 @@
 // Those that wont' let us just silently no-op. 
 
 jQuery(document).ready(function($) {    
-  var min_width = <%= UmlautConfig.config.lookup!('minimum_window_width', 0).to_i %>;
-  var min_height = <%= UmlautConfig.config.lookup!('minimum_window_height', 0).to_i %>;
+  var min_width = <%= UmlautController.umlaut_config.lookup!('minimum_window_width', 0).to_i %>;
+  var min_height = <%= UmlautController.umlaut_config.lookup!('minimum_window_height', 0).to_i %>;
 
   // Default to something huge, so if we fail in getting dimensions,
   // we won't resize. 

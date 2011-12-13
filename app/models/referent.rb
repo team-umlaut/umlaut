@@ -114,7 +114,7 @@ class Referent < ActiveRecord::Base
       # Apply referent filters
       rfr_id = ""
       rfr_id = co.referrer.identifier if (co.referrer && ! co.referrer.identifier.blank?)
-      UmlautConfig.config.lookup!("referent_filters", []).each do |regexp, filter|
+      UmlautController.umlaut_config.lookup!("referent_filters", []).each do |regexp, filter|
         if (regexp =~ rfr_id)
           filter.filter(rft) if filter.respond_to?(:filter)
         end

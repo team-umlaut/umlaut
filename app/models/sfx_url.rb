@@ -13,7 +13,7 @@ class SfxUrl < ActiveRecord::Base
   def self.sfx_controls_url?(url)
     ActiveRecord::Base.connection_pool.with_connection do
       # Does it match any of our supplementary configged strings or regexps?
-      UmlautConfig.config.lookup!("sfx.additional_sfx_controlled_urls", []).each do |test|
+      UmlautController.umlaut_config.lookup!("sfx.additional_sfx_controlled_urls", []).each do |test|
         '===' # will match a regexp or equality on a string
         return true if test === url
       end

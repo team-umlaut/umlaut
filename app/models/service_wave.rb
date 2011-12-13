@@ -7,11 +7,11 @@ class ServiceWave
   attr_accessor :priority_level
 
   # Priority level is purely information, used for debug output. 
-  def initialize(service_objects, priority_level = nil)
+  def initialize(service_objects, priority_level = nil, config = UmlautController.umlaut_config)
     @services = service_objects
     @priority_level = priority_level
 
-    @log_timing = UmlautConfig.config.lookup!("log_service_timing", true)
+    @log_timing = config.lookup!("log_service_timing", true)
 
     # Don't forward exceptions, that'll interrupt other service processing.
     # Catch the exception, record it in the dispatch table, done. May want

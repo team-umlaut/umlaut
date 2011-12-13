@@ -10,7 +10,7 @@ module UmlautConfigurable
   included do
     class_attribute :umlaut_config
     helper_method :umlaut_config
-    self.umlaut_config = UmlautConfig.config
+    self.umlaut_config = Confstruct::Configuration.new
   end
   
 end

@@ -1,7 +1,7 @@
 class Emailer < ActionMailer::Base
   class_attribute :umlaut_config
   
-  self.umlaut_config = UmlautConfig.config
+  self.umlaut_config = UmlautController.config
   
   
  helper :application

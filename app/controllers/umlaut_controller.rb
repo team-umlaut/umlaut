@@ -1,3 +1,6 @@
+require 'umlaut'
+
+
 # Superclass for all Umlaut controllers, to hold default behavior,
 # also hold global configuration. It's a superclass rather than a module,
 # so we can use Rails 3 hieararchical superclass view lookup too if we want,
@@ -9,5 +12,6 @@ class UmlautController < ApplicationController
     include Umlaut::ControllerLogic
     
     helper Umlaut::Helper
+    Umlaut.set_default_configuration!( umlaut_config )
 
 end

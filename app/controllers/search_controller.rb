@@ -26,9 +26,6 @@
 #     As in #find_by_title, return two element array, first elememt is array
 #     of OpenURL::ContextObject, second element is total hit count. 
 class SearchController < UmlautController
-  include UmlautConfigurable
-  include SearchMethods::Sfx4
-
   @@search_batch_size = 20
   @@az_batch_size = 20
   @@autocomplete_limit = 15
