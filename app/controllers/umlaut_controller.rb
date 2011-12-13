@@ -6,5 +6,6 @@
 class UmlautController < ApplicationController
     include UmlautConfigurable
     include Umlaut::ErrorHandling
+    include Umlaut::ControllerLogic
 
 end
