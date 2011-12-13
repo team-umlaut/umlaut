@@ -2,13 +2,73 @@ require File.dirname(__FILE__) + '/../test_helper'
 class PrimoServiceTest < ActiveSupport::TestCase
   fixtures :requests, :referents, :referent_values, :sfx_urls
   def setup
-    ServiceTypeValue.load_values!
-    ServiceList.yaml_path =  RAILS_ROOT+"/lib/generators/umlaut_local/templates/services.yml-dist"
-    @primo_definition = ServiceList.instance.definition("NYU_Primo")
+    @primo_definition = YAML.load( %{      
+        type: PrimoService
+        priority: 2 # After SFX, to get SFX metadata enhancement
+        status: active
+        base_url: http://bobcatdev.library.nyu.edu
+        vid: NYU
+        institution: NYU
+        holding_search_institution: NYU
+        holding_search_text: Search for this title in BobCat.
+        suppress_holdings: [ !ruby/regexp '/\$\$LBWEB/', !ruby/regexp '/\$\$LNWEB/', !ruby/regexp '/\$\$LTWEB/', !ruby/regexp '/\$\$LWEB/', !ruby/regexp '/\$\$1Restricted Internet Resources/' ]
+        ez_proxy: !ruby/regexp '/https\:\/\/ezproxy\.library\.nyu\.edu\/login\?url=/'
+        service_types:
+          - primo_source
+          - holding_search
+          - fulltext
+          - table_of_contents
+          - referent_enhance
+          - cover_image
+      })
+
     @base_url = @primo_definition["base_url"]
     @vid = @primo_definition["vid"]
-    @primo_default = ServiceList.instance.instantiate!("NYU_Primo", nil)
-    @primo_tns = ServiceList.instance.instantiate!("TNS_Primo", nil)
+    
+    @primo_default = ServiceStore.instantiate_service!(
+      YAML.load(%{
+        type: PrimoService
+        priority: 2 # After SFX, to get SFX metadata enhancement
+        status: active
+        base_url: http://bobcatdev.library.nyu.edu
+        vid: NYU
+        institution: NYU
+        holding_search_institution: NYU
+        holding_search_text: Search for this title in BobCat.
+        suppress_holdings: [ !ruby/regexp '/\$\$LBWEB/', !ruby/regexp '/\$\$LNWEB/', !ruby/regexp '/\$\$LTWEB/', !ruby/regexp '/\$\$LWEB/', !ruby/regexp '/\$\$1Restricted Internet Resources/' ]
+        ez_proxy: !ruby/regexp '/https\:\/\/ezproxy\.library\.nyu\.edu\/login\?url=/'
+        service_types:
+          - primo_source
+          - holding_search
+          - fulltext
+          - table_of_contents
+          - referent_enhance
+          - cover_image
+      }), nil)
+    
+    @primo_tns = ServiceStore.instantiate_service!(
+      YAML.load(%{
+        type: PrimoService
+        priority: 2 # After SFX, to get SFX metadata enhancement
+        status: active
+        base_url: http://bobcatdev.library.nyu.edu
+        vid: NS
+        holding_search_institution: NS
+        holding_search_text: Search for this title in BobCat.
+        suppress_holdings: [ !ruby/regexp '/\$\$LBWEB/', !ruby/regexp '/\$\$LNWEB/', !ruby/regexp '/\$\$LTWEB/', !ruby/regexp '/\$\$LWEB/', !ruby/regexp '/\$\$1Restricted Internet Resources/' ]
+        ez_proxy: !ruby/regexp '/https\:\/\/ezproxy\.library\.nyu\.edu\/login\?url=/'
+        primo_config: tns_primo.yml
+        service_types:
+          - primo_source
+          - holding_search
+          - fulltext
+          - table_of_contents
+          - referent_enhance
+          - cover_image
+        }), nil)      
+    
+    
+    
     @holding_search_institution = 
     @primo_minimum = PrimoService.new({
       "priority"=>1, "service_id" => "NYU_Primo", 

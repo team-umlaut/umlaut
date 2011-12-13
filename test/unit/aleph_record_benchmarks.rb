@@ -1,8 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 class AlephRecordBenchMarks < ActiveSupport::TestCase
   def setup
-    ServiceList.yaml_path =  RAILS_ROOT+"/lib/generators/umlaut_local/templates/services.yml-dist"
-    @primo_config = YAML.load_file("#{RAILS_ROOT}/config/umlaut_config/primo.yml")
+    @primo_config = YAML.load_file("#{Rails.root}/config/umlaut_config/primo.yml")
     @nyu_aleph_config = @primo_config["sources"]["nyu_aleph"]
     @rest_url = @nyu_aleph_config["rest_url"]
     @aleph_doc_library = "NYU01"

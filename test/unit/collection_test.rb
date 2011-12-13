@@ -1,13 +1,9 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class CollectionTest < Test::Unit::TestCase
-    fixtures :requests, :referents, :referent_values
-  
-    def setup      
-      # Tell the ServiceList to use our basic services.yml, not the live one.
-      ServiceList.yaml_path =  RAILS_ROOT+"/lib/generators/umlaut_local/templates/services.yml-dist"
-      InstitutionList.yaml_path = RAILS_ROOT+"/lib/generators/umlaut_local/templates/institutions.yml-dist"
+class CollectionTest < ActiveSupport::TestCase
+    fixtures :requests, :referents, :referent_values, :sfx_urls
 
+    def setup      
       # Make something that looks like a session hash type thing, so we
       # can init a collection with it. 
       @fake_session = Hash.new

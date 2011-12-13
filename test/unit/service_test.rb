@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ServiceTest < Test::Unit::TestCase
-  fixtures :requests, :referents, :referent_values, :sessions
   
       # A service that does nothing!
       class DummyService < Service

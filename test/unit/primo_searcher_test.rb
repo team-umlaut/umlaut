@@ -3,8 +3,26 @@ require "benchmark"
 require File.dirname(__FILE__) + '/../test_helper'
 class PrimoSearcherTest < ActiveSupport::TestCase
   def setup
-    ServiceList.yaml_path =  RAILS_ROOT+"/lib/generators/umlaut_local/templates/services.yml-dist"
-    @primo_definition = ServiceList.instance.definition("NYU_Primo")
+    @primo_definition = YAML.load( %{      
+        type: PrimoService
+        priority: 2 # After SFX, to get SFX metadata enhancement
+        status: active
+        base_url: http://bobcatdev.library.nyu.edu
+        vid: NYU
+        institution: NYU
+        holding_search_institution: NYU
+        holding_search_text: Search for this title in BobCat.
+        suppress_holdings: [ !ruby/regexp '/\$\$LBWEB/', !ruby/regexp '/\$\$LNWEB/', !ruby/regexp '/\$\$LTWEB/', !ruby/regexp '/\$\$LWEB/', !ruby/regexp '/\$\$1Restricted Internet Resources/' ]
+        ez_proxy: !ruby/regexp '/https\:\/\/ezproxy\.library\.nyu\.edu\/login\?url=/'
+        service_types:
+          - primo_source
+          - holding_search
+          - fulltext
+          - table_of_contents
+          - referent_enhance
+          - cover_image
+      })
+
     @base_url = @primo_definition["base_url"]
     @vid = @primo_definition["vid"]
     @primo_holdings_doc_id = "nyu_aleph000062856"
@@ -25,7 +43,7 @@ class PrimoSearcherTest < ActiveSupport::TestCase
     @primo_test_title = "Travels with My Aunt"
     @primo_test_author = "Graham Greene"
     @primo_test_genre = "Book"
-    @primo_config = YAML.load_file("#{RAILS_ROOT}/config/umlaut_config/primo.yml")
+    @primo_config = YAML.load_file("#{Rails.root}/config/umlaut_config/primo.yml")
     @searcher_setup = {
       :base_url => @base_url,
       :vid => @vid,

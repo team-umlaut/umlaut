@@ -7,7 +7,6 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 require 'test/unit'
 require 'rubygems'
-require 'hpricot'
 
 #require 'lib/service'
 #require 'lib/metadata_helper'
@@ -17,13 +16,10 @@ require 'yaml'
 
 class GoogleBookSearchTest < Test::Unit::TestCase
   
-  fixtures :requests, :referents, :referent_values
   
   
   def setup
     
-    # Tell the ServiceList to use our basic services.yml, not the live one.
-    ServiceList.yaml_path =  RAILS_ROOT+"/lib/generators/umlaut_local/templates/services.yml-dist"
     
     @gbs_default = ServiceList.instance.instantiate!("GoogleBookSearch", nil)
     @gbs_minimum = GoogleBookSearch.new({"priority"=>1})
