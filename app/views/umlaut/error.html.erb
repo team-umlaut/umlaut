@@ -19,6 +19,19 @@
             -%>. It may be a temporary problem which will be resolved if you come back later.</li>
           <% end %>
           
+          <% if ( umlaut_config.lookup!("sfx.sfx_base_url") && 
+                  params[:controller] == "resolve" && 
+                  params[:action] == "index")  %>
+            <li>If that doesn't work: <%= 
+                link_to("Try your request against backup link resolver", 
+                  umlaut_config.sfx.sfx_base_url.chomp("?") + '?' + 
+                  (request.fullpath.split("?")[1] || "") +
+                  '&sfx.ignore_date_threshold=1') %> 
+            </li>          
+          <% end %>
+        
+          
+          
           <% if umlaut_config.help_url %>
           <li>For more help, or to report a problem, please feel free to <%= 
             link_to "contact us for help", umlaut_config.help_url
