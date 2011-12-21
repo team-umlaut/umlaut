@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111128203741) do
+ActiveRecord::Schema.define(:version => 20111201190307) do
 
   create_table "clickthroughs", :force => true do |t|
     t.integer  "request_id",          :default => 0, :null => false
@@ -21,13 +21,6 @@ ActiveRecord::Schema.define(:version => 20111128203741) do
   add_index "clickthroughs", ["created_at"], :name => "click_created_idx"
   add_index "clickthroughs", ["request_id"], :name => "click_req_id"
   add_index "clickthroughs", ["service_response_id"], :name => "click_serv_resp_idx"
-
-  create_table "crossref_lookups", :force => true do |t|
-    t.string   "doi",        :limit => 100, :default => "", :null => false
-    t.datetime "created_on"
-  end
-
-  add_index "crossref_lookups", ["doi", "created_on"], :name => "xref_lookup_doi"
 
   create_table "dispatched_services", :force => true do |t|
     t.integer  "request_id",     :default => 0,   :null => false
