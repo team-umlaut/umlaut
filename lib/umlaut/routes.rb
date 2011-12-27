@@ -30,10 +30,17 @@ module Umlaut
     end
 
     def default_route_sets
-      [:permalinks, :a_z, :resolve, :open_search, :link_router, :export_email, :resources, :search]
+      [:root, :permalinks, :a_z, :resolve, :open_search, :link_router, :export_email, :resources, :search]
     end
 
     module RouteSets
+      # for now include root generation in Umlaut auto-generation
+      def root
+        add_routes do |options|
+          root :to => "resolve#index"
+        end
+      end
+      
       def permalinks
         add_routes do |options|
           match 'go/:id' => 'store#index'
