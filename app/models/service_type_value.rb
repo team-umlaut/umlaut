@@ -36,7 +36,6 @@ class ServiceTypeValue
   # Loads from config files, distro and local, into memory.   
   def self.load_values!
       # Load in starting set of ServiceTypeValue, merge in local defines. 
-      puts "Loading service type values from db/orig_fixed_data/service_type_values.yml and config/umlaut_config/local_service_type_values.yml"
       
       service_type_values = YAML.load_file( @@distro_conf_file )
       local_overrides = File.exists?( @@local_conf_file ) ?
