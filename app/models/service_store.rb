@@ -1,4 +1,4 @@
-# Loads Service definitions from services.yml
+# Loads Service definitions from Rails.root/config/umlaut_services.yml
 # instantiates services from definitions, by id.
 #
 # It's terrible we need to do this globally like this, but
@@ -9,7 +9,7 @@ class ServiceStore
   def self.config
     # cache hash loaded from YAML, ensure it has the keys we expect. 
     unless defined? @@services_config_list
-      yaml_path = File.expand_path("config/services.yml", Rails.root)
+      yaml_path = File.expand_path("config/umlaut_services.yml", Rails.root)
       if File.exists? yaml_path
         @@services_config_list = YAML::load(File.open( yaml_path ))        
       else
@@ -44,7 +44,7 @@ class ServiceStore
     definition = service.kind_of?(Hash) ? service : service_definition_for(service.to_s)
         
     if definition.nil?
-      raise "Service '#{service}'' does not exist in services.yml"
+      raise "Service '#{service}'' does not exist in umlaut-services.yml"
     end
     
     className = definition["type"] || definition["service_id"]

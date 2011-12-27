@@ -1,0 +1,236 @@
+
+  # Configure what service plugins are used by Umlaut. This skeleton file
+  # has been generated into your app to help you get started. 
+  #
+  # If a service has "disabled:true", it's currently turned off. 
+  #
+  # Some services require local api key or connection details as config.
+  # Most services take other options for custom configuration too, not
+  # all options are neccesarily listed as examples here, see source
+  # or source-generated docs for more info.   
+
+default:
+    services:
+      
+      # SFX has pubmed lookup built in, so this service not generally
+      # needed with SFX, but included here as an example of it's availability
+      Pubmed:
+        disabled: true
+        priority: 0
+      
+      # Priority 3
+      
+      SFX:
+        type: Sfx         
+        display_name: Find It @ JH      
+        base_url: YOUR_SFX_BASE_URL
+        priority: 3      
+      
+        
+      # First half of Amazon, run in foreground, get metadata and cover images.
+      Amazon:
+        disabled: true
+        display_name: Amazon.com
+        type: Amazon
+        url: http://webservices.amazon.com/onca/xml
+        api_key: "NEED_API_KEY"
+        secret_key: "NEED_SECRET_KEY"
+        associate_tag: "NEED_ASSOCIATE_ID"
+        priority: 3
+        service_types:
+          - abstract
+          - referent_enhance
+          - cover_image
+          
+      
+      # Priority c  : Background          
+      
+      # Second half of Amazon. It's Slow to lookup highlighted_link and search_inside
+      # availability, so we do it in a bg wave.  
+      Amazon_bg:
+        type: Amazon
+        disabled: true        
+        api_key: "NEED_API_KEY"
+        secret_key: "NEED_SECRET_KEY"
+        associate_tag: "NEED_ASSOCIATE_ID"
+        priority: c        
+        make_aws_call: false
+        service_types:
+          - highlighted_link
+          - search_inside
+          - excerpts
+          
+
+      
+      CoverThing:
+        type: CoverThing
+        disabled: true        
+        developer_key: YOUR_LT_KEY
+        priority: c
+        # Pre-empted by says if we already have a cover_image response
+        # from somewhere else that runs earlier, don't run this. 
+        preempted_by:
+          existing_type: cover_image
+          
+      ElsevierCover:
+        type: ElsevierCover
+        priority: c
+        
+      UlrichsCover:
+        type: UlrichsCover
+        priority: c      
+          
+      GoogleBookSearch:
+        type: GoogleBookSearch
+        disabled: true
+        priority: c        
+        api_key: 'YOUR_GBS_API_KEY'
+                
+      Ulrichs:
+        display_name: "Ulrich's Directory"
+        type: UlrichsLink
+        priority: c
+        
+      IsbnDb:
+        display_name: isbndb.com
+        disabled: true
+        type: IsbnDb
+        priority: c
+        access_key: YOUR_ISBNDB_ACCESS_KEY
+        
+      InternetArchive:
+        display_name: the Internet Archive
+        type: InternetArchive
+        priority: c
+        # disable audio results? uncomment:
+        #num_results_for_types:
+        #  audio: 0
+      
+      
+      # Priority d
+                
+      HathiTrust:
+        type: HathiTrust
+        priority: d
+        # Uncomment to link through this 'internal' URL instead
+        # of following permalinks. jrochkind does this to use
+        # a WAYFless shibboleth login with EZProxy. 
+        #direct_link_base: 'https://babel.hathitrust.org/shcgi/'
+        #
+        # This next says:
+        # Don't add HathiTrust fulltext if there's already a
+        # GoogleBookSearch fulltext. Still add other HT response
+        # types. 
+        preempted_by:
+          self_type: fulltext
+          existing_service: GoogleBookSearch
+          existing_type: fulltext
+          
+      EmailExport:
+        type: EmailExport
+        priority: d
+        
+      TxtHoldingExport:
+        type: TxtHoldingExport
+        priority: d
+      
+        
+      
+      ScopusCitations:
+        type: Scopus
+        disabled: true
+        priority: c
+        json_api_key: YOUR_SCOPUS_API_KEY
+        partner_id: YOUR_SCOPUS_PARTNER_ID
+        link_salt_key: "YOUR_SCOPUS_LINK_SALT_KEY"
+        
+      # Web of Knowledge API has no api key, but your
+      # IP needs to be registered with them. See source docs
+      # for how. 
+      IsiCitations:
+        type: Isi
+        disabled: true
+        priority: c
+        
+      # Thomson JCR LAMR api has no api key, but your
+      # IP needs to be registered with them. Same registraiton
+      # as for ISI WoK generally. 
+      Jcr:
+        type: Jcr
+        disabled: true
+        priority: c
+        
+      # Worldcat scraper can be quite slow, move it to wave 'd' to avoid
+      # holding up wave 'c'
+      Worldcat:
+        display_name: OCLC Worldcat.org
+        type: Worldcat
+        priority: d
+        # suppress_precheck says don't actually screen-scrape to
+        # see if the link is good, just link blindly. Mostly works
+        # for WorldCat, avoids the performance hit. 
+        suppress_precheck: true
+      
+      
+      WorldcatIdentities:
+        type: WorldcatIdentities
+        priority: d
+        # Turn off certain response types:
+        #note_types: false
+        #wikipedia_link: false
+        #openurl_widely_held: false
+        #require_identifier: true
+      
+      
+      # GPO is kind of experimental, it doesn't work great, but IF an 
+      # OpenURL includes a sudoc call number or other GPO identifiers,
+      # will try to link to full text via GPO catalog scrape. 
+      Gpo:
+        type: Gpo
+        disabled: true
+        priority: e
+        #preempted_by:
+        #  - existing_type: fulltext
+        #  - existing_type: fulltext_title_level
+
+
+      ####
+      # Link out filters: Effect what happens when a user clicks
+      # on an Umlaut link to a third party source. Link out filters
+      # can operate to change where link goes or execute side effects
+      # on click. 
+      ####
+
+      # Redirect outgoing links through EZProxy                
+      EZProxy:
+        type: Ezproxy
+        disabled: true
+        task: link_out_filter  
+        proxy_server:  HOSTNAME_OF_YOUR_EZPROXY
+        # By default, will pre-check with EZProxy api and
+        # only send links through EZProxy that are proxyable.
+        # requires proxy_password to be set. 
+        # optionally, set precheck_with_api false, and the EZProxy
+        # api won't be used, ALL links go through EZProxy. You may
+        # have EZProxy itself set to transparently redirect non-proxyable
+        # URLs back to non-proxied version.
+        #
+        #precheck_with_api: false
+        priority: 5
+        proxy_password: YOUR_EZPROXY_API_PWD
+        # Want to exclude certain hostnames from being directed through EZProxy?
+        # list them in array here:
+        #exclude: [ host.unversity.edu, otherhost.somewhere.com]
+        
+        
+      # Use of SFX api means that SFX can no longer keep statistics on
+      # clickthroughs. This link out filter will attempt to fake SFX into
+      # thinking a direct click happened when user clicks on an SFX link
+      # via Umlaut.  This is VERY fragile logic, required reverse engineering
+      # SFX and faking it out, still doesn't work all the time. But works
+      # much of the time. 
+      SFX_backchannel_record:
+        disabled: true
+        type: SfxBackchannelRecord
+        task: link_out_filter
+        priority: 6
