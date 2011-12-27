@@ -239,7 +239,9 @@ class Collection
   
   # Arrange services in hash according to task type and priority. 
   def gather_services
-    @service_definitions_flat.each_pair do | unique_id, svc_def |              
+    @service_definitions_flat.each_pair do | unique_id, svc_def |
+      next if svc_def.nil?
+    
       svc_def['service_id'] = unique_id
       task = svc_def['task'] || Service::StandardTask
       level = svc_def['priority'] || 3

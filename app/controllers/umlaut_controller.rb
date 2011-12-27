@@ -11,7 +11,11 @@ class UmlautController < ApplicationController
     include Umlaut::ErrorHandling
     include Umlaut::ControllerLogic
     
-    helper Umlaut::Helper
-    Umlaut.set_default_configuration!( umlaut_config )
+    
+    
+    helper Umlaut::Helper # global umlaut helpers
+        
+    UmlautConfigurable.set_default_configuration!( umlaut_config )
 
+    
 end

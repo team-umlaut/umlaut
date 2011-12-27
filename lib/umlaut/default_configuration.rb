@@ -1,0 +1,5 @@
+module Umlaut::DefaultConfiguration
+  
+  
+  
+end
