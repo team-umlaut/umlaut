@@ -1,4 +1,7 @@
 Dummy::Application.routes.draw do
+    
+  Umlaut::Routes.new(self).draw
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
