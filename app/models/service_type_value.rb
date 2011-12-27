@@ -28,9 +28,9 @@ class ServiceTypeValue
   def display_name_pluralize
     return self.display_name_plural || self.display_name.pluralize
   end
-
-  @@distro_conf_file = File.join(Rails.root, "db", "orig_fixed_data", "service_type_values.yml")
-  @@local_conf_file = File.join(Rails.root, "config", "umlaut_config", "local_service_type_values.yml")
+  
+  @@distro_conf_file = File.join(Umlaut::Engine.root, "db", "orig_fixed_data", "service_type_values.yml")
+  @@local_conf_file = File.join(Rails.root, "config", "umlaut_service_type_values.yml")
   
   
   # Loads from config files, distro and local, into memory.   
