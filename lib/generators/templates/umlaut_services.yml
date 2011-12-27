@@ -21,8 +21,9 @@ default:
       # Priority 3
       
       SFX:
-        type: Sfx         
-        display_name: Find It @ JH      
+        type: Sfx
+        disabled: true
+        display_name: Find It       
         base_url: YOUR_SFX_BASE_URL
         priority: 3      
       
