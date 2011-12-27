@@ -32,7 +32,7 @@ class Ezproxy < Service
 
   def initialize(config)
     @precheck_with_api = true
-
+    @display_name = "EZProxy"
     @proxy_login_path = "/login"
     
     super(config)

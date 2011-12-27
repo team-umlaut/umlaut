@@ -17,6 +17,7 @@ require 'net/http'
 class SfxBackchannelRecord < Service
 
    def initialize(config)
+     @display_name = "SFX Statistics"
      super(config)
      @timeout ||= 5
    end
