@@ -1,5 +1,9 @@
 require 'umlaut/routes'
 
+# not sure why including openurl gem doesn't do the require, but it
+# seems to need this. 
+require 'openurl'
+
 module Umlaut
   class Engine < Rails::Engine
     engine_name "umlaut"
