@@ -4,7 +4,9 @@ module SfxDb
     # class-load. Please define an sfx_db database in databases.yml!
     # Some utility methods are also located in this class. 
     begin
-      self.establish_connection :sfx_db
+      if SfxDb.connection_configured?
+        self.establish_connection :sfx_db
+      end
     rescue ActiveRecord::ActiveRecordError => e
       # Make it more descriptive for the newbies. 
       new_e = e.class.new(e.message + ": SfxDb classes require you to specify a database connection called sfx_db in your config/databases.yml.")
