@@ -13,6 +13,8 @@ module Umlaut
       
       rake("umlaut:install:migrations")
       
+      generate("umlaut:asset_hooks")
+      
       say("              Umlaut installed, now:", :yellow)
       $stdout.puts(
         "              " +

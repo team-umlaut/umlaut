@@ -4,8 +4,14 @@
 //         require 'umlaut'
 // to include all umlaut js.  
 
-// Require all js files inside the 'umlaut' subdir next to this file.  
 
+// jquery and jquery-ui are required for umlaut, it's okay
+// if the manifest chain ends up 'require'ing twice because
+// it's mentioned in local manifest, sprockets is smart enough. 
+//= require jquery
+//= require jquery-ui
+
+// Require all js files inside the 'umlaut' subdir next to this file.  
 //= require_tree './umlaut'
 
 

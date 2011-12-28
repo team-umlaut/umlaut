@@ -24,6 +24,21 @@ module Umlaut
       end
     end
     
+    def add_to_javascript_manifest
+      unless IO.read("app/assets/javascripts/application.js").include?('Umlaut')
+        prepend_to_file "app/assets/javascripts/application.js" do
+          %q{
+ // Umlaut javascript required for proper functionality. The 'umlaut' file
+ // also forces require of jquery and jquery-ui, dependencies. 
+ //= require 'umlaut'          
+          }           
+        end
+      else
+        say_status("skipped", "Your application.js already references Umlaut", :yellow)
+      end
+        
+    end
+    
     
   end  
 end
