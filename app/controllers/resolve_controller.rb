@@ -147,7 +147,7 @@ class ResolveController < UmlautController
   # with customized dispatch behavior. Probably not a great idea though.  
   def create_collection    
     # trim out ones with disabled:true
-    services = ServiceStore.config["default"]["services"].reject {|id, hash| hash["disabled"] == true}
+    services = ServiceStore.config["default"]["services"].reject {|id, hash| hash && hash["disabled"] == true}
             
     return Collection.new(@user_request, services)
   end
