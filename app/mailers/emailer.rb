@@ -1,12 +1,10 @@
 class Emailer < ActionMailer::Base
-  class_attribute :umlaut_config
+  include UmlautConfigurable
+    
+  self.umlaut_config = UmlautController.umlaut_config
   
-  self.umlaut_config = UmlautController.config
-  
-  
- helper :application
- # make note of the headers, content type, and time sent
- # these help prevent your email from being flagged as spam
+  helper :application
+
   
   def citation(recipient, user_request, fulltexts, holdings)
     @title  = find_good_title(user_request.referent)
