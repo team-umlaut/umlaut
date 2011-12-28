@@ -27,6 +27,31 @@ module Umlaut
       end
     end
     
+    def database_yml_hint
+      guarded(:database_yml_hint) do
+        insert_into_file("config/database.yml", :before => /^(\s*)development:/) do                     
+          <<-eos
+#
+# UMLAUT: mysql db with mysql2 adapter strongly recommended for Umlaut, in both 
+# production and development. sqlite3 has unclear semantics under threaded 
+# concurrency which umlaut uses, and in many cases simply does not work. 
+#
+# A high (connection) pool setting is also, sadly, generally
+# required at present. 
+#
+# development:
+#   adapter: mysql2
+#   host: 
+#   username:
+#   password:
+#   database:
+#   pool: 30
+
+          eos
+        end        
+      end
+    end
+    
   
     def routes
       guarded(:routes) do
