@@ -1,4 +1,4 @@
-== Umlaut
+# Umlaut
 
 This is Umlaut 3.0.0 _alpha_ software. Umlaut 3.0 is not yet in final release. 
 (For Umlaut 2.0, see http://wiki.code4lib.org/index.php/Umlaut . However, if 
@@ -15,7 +15,7 @@ specific-citation services, taking input as OpenURL, and providing both an
 HTML UI and an api suite for embedding Umlaut services in other products. 
 
 
-== Installation
+## Installation
 
 For installation instructions suitable for the neophyte, see 
 https://github.com/team-umlaut/umlaut/wiki/Installation. 
@@ -34,11 +34,11 @@ The Rails expert super concise summary is:
 
 * configuration in `./config/umlaut_services.yml` and `./app/controllers/umlaut_controller.rb` 
     
-== Source
+## Source
 
 https://github.com/team-umlaut/umlaut/
 
-== Listserv
+## Listserv
 
 You can join the umlaut listserv at:
 http://rubyforge.org/mail/?group_id=4382
