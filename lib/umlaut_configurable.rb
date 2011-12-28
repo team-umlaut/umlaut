@@ -285,7 +285,7 @@ module UmlautConfigurable
         partial "help"
         show_heading false
         show_spinner false
-        visiblity :responses_exist 
+        visibility :responses_exist 
       end
       
       add_resolve_sections! do
@@ -302,7 +302,7 @@ module UmlautConfigurable
       add_resolve_sections! do
         div_id "export_citation"
         html_area :sidebar
-        visiblity :in_progress
+        visibility :in_progress
         item_name_plural "Export tools"
       end
       
