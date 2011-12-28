@@ -8,6 +8,8 @@ gemspec
 # jquery-rails is used by the dummy application
 gem "jquery-rails"
 
+gem "sqlite3" # really ought to be neccesary, but takes care of some bootstrap issues
+
 gem "mysql2"
 gem "ruby-debug"
 # Declare any dependencies that are still in development here instead of in
