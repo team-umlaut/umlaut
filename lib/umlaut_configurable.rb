@@ -15,9 +15,7 @@ module UmlautConfigurable
     helper_method :umlaut_config
     self.umlaut_config = Confstruct::Configuration.new
   end
-  
-  
-  
+   
   
   
   # Call as UmlautConfigurable.set_default_configuration!(confstruct_obj)
@@ -151,7 +149,8 @@ module UmlautConfigurable
   
       end
       
-      
+      # Configuration for the 'search' functions -- A-Z lookup
+      # and citation entry. 
       search do
         # Is your SFX database connection, defined in database.yml under
         # sfx_db and used for A-Z searches, Sfx3 or Sfx4?  Other SearchMethods
@@ -197,8 +196,8 @@ module UmlautConfigurable
         # of MARC 856 tags from our catalog pointing to archive.org, which are
         # being used for some digitized books. We'd like to ignore that archive.org
         # is in SFX. Same for netlibrary.
-        sfx_load_ignore_hosts = [/.*\.archive\.org/, /www\.netlibrary\.com/, 'www.loc.gov']
-        
+        #sfx_load_ignore_hosts = [/.*\.archive\.org/, /www\.netlibrary\.com/, 'www.loc.gov']
+        sfx_load_ignore_hosts = []        
       end
     
       # Output timing of service execution to logs

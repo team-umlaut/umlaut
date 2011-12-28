@@ -15,6 +15,8 @@ module Umlaut
       
       generate("umlaut:asset_hooks")
       
+      generate("umlaut:umlaut_controller")
+      
       say("              Umlaut installed, now:", :yellow)
       $stdout.puts(
         "              " +
