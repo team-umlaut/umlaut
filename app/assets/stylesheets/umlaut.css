@@ -1,3 +1,9 @@
+/* TODO: Clean up this CSS a LOT to make it easier for local apps to
+ * selectively override. Quite likely turn it into one or more sass-ified .scss
+ * in ./umlaut, with "umlaut.css" being a manifest file that includes
+ * them in a way that can be over-ridden. See Blacklight. 
+ */
+
 /*********************/
 /* GENERAL RESET CSS */
 /*********************/
