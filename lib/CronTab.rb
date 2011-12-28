@@ -1,7 +1,9 @@
 # Extracted from dpklib, Ruby library released under same license as Ruby.
 
 
-class CronTab < Struct.new(:min, :hour, :mday, :mon, :wday, :command)
+class CronTab 
+    attr_accessor :min, :hour, :mday, :mon, :wday, :command
+  
     WDAY = %w(sun mon tue wed thu fri sat)
     FormatError = Class.new(StandardError)
 
@@ -40,7 +42,15 @@ class CronTab < Struct.new(:min, :hour, :mday, :mon, :wday, :command)
     end
     alias include? ===;
 
-    class NextSeeker < Struct.new(:scalar, :field, :lower_seeker)
+    class NextSeeker 
+      attr_accessor :scalar, :field, :lower_seeker
+      
+      def initialize(s, f, l)
+        self.scalar = s
+        self.field = f
+        self.lower_seeker = l
+      end
+      
       def succ
         if lower_seeker.nil? || lower_seeker.succ then
           self.scalar = field.nextof(scalar)
@@ -102,7 +112,14 @@ class CronTab < Struct.new(:min, :hour, :mday, :mon, :wday, :command)
       ]
     end
 
-    class Field < Struct.new(:range, :every)
+    class Field 
+      attr_accessor :range, :every
+      
+      def initialize(r, e)
+        self.range = r
+        self.every = e
+      end
+      
       def ===(rhs)
         b = true
         b = b && ( (rhs - range.first) % every == 0 )
@@ -120,7 +137,13 @@ class CronTab < Struct.new(:min, :hour, :mday, :mon, :wday, :command)
       end
     end
 
-    class FieldSet < Struct.new(:fields)
+    class FieldSet 
+      attr_accessor :fields
+      
+      def initialize(f)
+        self.fields = f
+      end
+      
       def ===(rhs)
         b = false
         fields.each { |field|
@@ -161,9 +184,9 @@ class CronTab < Struct.new(:min, :hour, :mday, :mon, :wday, :command)
       FieldSet.new(list)
     end
 
+    #alias parse new
+    #alias [] new
+    
   end #/CronTab
 
-  class << CronTab
-    alias parse new
-    alias [] new
-  end #/<< CronTab
+
