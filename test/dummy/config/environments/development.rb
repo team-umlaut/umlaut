@@ -4,7 +4,11 @@ Dummy::Application.configure do
   # In the development environment your application's code is reloaded on
   # every request.  This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
-  config.cache_classes = false
+  #
+  # UMLAUT: Umlaut's use of threading is not compatible with class
+  # reloading, even in development. Umlaut requires true here.
+  # Rails 3.2 _might_ let you get away with false when it comes out.
+  config.cache_classes = true
 
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
