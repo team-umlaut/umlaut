@@ -25,13 +25,14 @@ module Umlaut
     # I don't entirely understand what's going on. 
     #config.eager_load_paths << File.join(self.root, "lib")
     
-    # This makes our rake tasks visible.
-    rake_tasks do
-      Dir.chdir(File.expand_path(File.join(File.dirname(__FILE__), '..'))) do
-        Dir.glob(File.join('lib', 'tasks', '*.rake')).each do |railtie|
-          load railtie
-        end
-      end
-    end
+    # This makes our rake tasks visible. NOT NEEDED, tasks in lib/tasks
+    # are avail by default, this ends up doing a double load. 
+    #rake_tasks do
+    #  Dir.chdir(File.expand_path(File.join(File.dirname(__FILE__), '..'))) do
+    #    Dir.glob(File.join('lib', 'tasks', '*.rake')).each do |railtie|
+    #      load railtie
+    #    end
+    #  end
+    #end
   end
 end
