@@ -16,7 +16,8 @@ namespace :umlaut do
         raise Exception.new("You must have a connection for '#{old_connection_name}' configured in database.yml, pointing to the Umlaut 2.x source db.")
       end
             
-      puts "\nWARNING: We will delete all existing permalinks from the '#{Rails.env}' database:"     
+      puts "\nWARNING: We will delete all existing permalinks from the '#{Rails.env}' database:"   
+      puts "  " + {}.merge(Permalink.connection_config).inspect
       print "Sure you want to continue? (yes to continue) "
       continue = $stdin.gets
       raise Exception.new("Cancelled by user") unless continue.chomp == "yes" 
