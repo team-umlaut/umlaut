@@ -27,8 +27,8 @@ module Umlaut
       end
     end
     
-    def database_yml_hint
-      guarded(:database_yml_hint) do
+    def database_yml_hints
+      guarded(:database_yml_hints) do
         insert_into_file("config/database.yml", :before => /^(\s*)development:/) do                     
           <<-eos
 #
@@ -48,7 +48,29 @@ module Umlaut
 #   pool: 30
 
           eos
-        end        
+        end
+        append_to_file("config/database.yml") do
+          <<-eos
+          
+#
+# UMLAUT: for the 'search' functions (A-Z title lookup) to work, you need
+# a direct database connection to the SFX database, under 'sfx_db' key. 
+# You should manually set up a new read-only MySQL account in the SFX db
+# for this purpose, rather than use one of the full-access existing SFX
+# mysql accounts. 
+#
+#sfx_db:
+#  adapter: mysql2
+#  host: my_sfx_host.u.edu
+#  port: 3310 # 3310 is defualt SFX embedded mysql port
+#  database: sfxlcl41 # or other sfx instance db
+#  username:
+#  password:
+#  pool: 5
+#  encoding: utf8
+# 
+          eos
+        end
       end
     end
     
