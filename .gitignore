@@ -4,3 +4,7 @@ pkg/
 test/dummy/db/*.sqlite3
 test/dummy/log/*.log
 test/dummy/tmp/
+# as we need a mysql db, we can't distro a database.yml
+# for test dummy app that works out of box, so leave it
+# out of git so developers can use their own without trouble.
+test/dummy/config/database.yml
