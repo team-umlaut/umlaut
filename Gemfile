@@ -12,6 +12,9 @@ gem "sqlite3" # really ought to be neccesary, but takes care of some bootstrap i
 
 gem "mysql2"
 gem "ruby-debug"
+
+gem "activerecord-import"
+
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
 # Git. Remember to move these dependencies to your gemspec before releasing
