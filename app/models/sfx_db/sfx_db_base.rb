@@ -18,6 +18,10 @@ module SfxDb
     def readonly?() 
       return true
     end
+    
+    # ActiveRecord likes it when we tell it this is an abstract
+    # class only. 
+    self.abstract_class = true 
 
     # Atttempts to extract all URLs that SFX knows about from the db.
     # This process is not 100%, becuase of the way SFX calculates URLs
