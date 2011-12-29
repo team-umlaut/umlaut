@@ -111,7 +111,7 @@ module Umlaut
           "              " +
           word_wrap("After setting up your 'development' database in config/databases.yml, run `rake db:migrate`", :line_width => 60).
             split("\n").
-            join("\n              ")
+            join("\n              ") + "\n"
           )
         
     end
