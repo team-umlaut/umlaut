@@ -37,7 +37,7 @@ module Umlaut
       # for now include root generation in Umlaut auto-generation
       def root
         add_routes do |options|
-          root :to => "resolve#index"
+          root :to => "search#index"
         end
       end
       
