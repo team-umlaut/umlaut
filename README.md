@@ -22,10 +22,10 @@ config/customization/enhancement seperate from distro, not so much to let you
 
 ## Installation
 
-For installation instructions suitable for the neophyte, see 
+For complete step-by-step install instructions suitable even for the neophyte, see:
 https://github.com/team-umlaut/umlaut/wiki/Installation. 
 
-The Rails expert super concise summary is:
+The Rails/Umlaut super-concise expert summary is:
 
 * Rails 3.1+
 
@@ -38,6 +38,8 @@ The Rails expert super concise summary is:
 * mysql database strongly encouraged, sqlite3 probably won't work. 
 
 * configuration in `./config/umlaut_services.yml` and `./app/controllers/umlaut_controller.rb` 
+
+* Umlaut uses multi-threaded concurrency in a way incompatible with development-mode class reloading. You need cache_classes=false even in dev, the Umlaut install generator changes this for you. 
     
 ## Source
 
