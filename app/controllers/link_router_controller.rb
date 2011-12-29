@@ -31,20 +31,6 @@ class LinkRouterController < UmlautController
   
   protected
   
-  # Must return a Hash where each key is a unique service name, and
-  # each value a hash that defines a service. Like the hash in services.yml
-  # under default/services.  By default, this method in fact just loads
-  # and returns that hash, but can be over-ridden with local logic for
-  # determining proper list of services for current request.
-  #
-  # Local over-ride could even in theory return a custom subclass of Collection, 
-  # with customized dispatch behavior. Probably not a great idea though.  
-  def create_collection    
-    # trim out ones with disabled:true
-    services = ServiceStore.config["default"]["services"].reject {|id, hash| hash["disabled"] == true}
-            
-    return Collection.new(@user_request, services)
-  end
   
   
   # Used to calculate a destination/target url for an Umlaut response item.
