@@ -2,7 +2,7 @@ namespace :umlaut do
     
     desc "Migrate permalinks from an umlaut 2.x installation"
     task :migrate_permalinks, [:connection] => [:environment] do |t,args|
-      old_connection_name = args[:connection] || "umlaut2_source" 
+      old_connection_name = args[:connection] || "umlaut2_source"            
       
       begin        
         require 'activerecord-import'        
@@ -10,6 +10,10 @@ namespace :umlaut do
       rescue LoadError
         ar_import = false
       end
+      
+      # Turn off all caching we can think of with AR, cause it's gonna
+      # take too much memory!
+      IdentityMap.enabled = false
       
       
       unless ActiveRecord::Base.configurations[old_connection_name]
