@@ -1,4 +1,3 @@
-
 namespace :umlaut do
     desc "Perform nightly maintenance. Set up in cron."
     task :nightly_maintenance => [:load_sfx_urls, :expire_sessions, :expire_old_data]
@@ -44,7 +43,7 @@ namespace :umlaut do
           hosts.each {|h| SfxUrl.new({:url => h}).save! unless ignore_urls.find {|ignore| ignore === h }}      
         end
       else
-        puts "Skipping load of SFXURLs via direct access to SFX db. No direct access is configured. Configure in config/umlaut_config/database.yml"
+        puts "Skipping load of SFXURLs via direct access to SFX db. No direct access is configured. Configure in config/database.yml sfx_db"
       end
     end
 
