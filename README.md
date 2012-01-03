@@ -13,6 +13,7 @@ knowledge base. But it's actually quite a bit more than that.
 It could also be described as: a just-in-time aggregator of  "last mile" 
 specific-citation services, taking input as OpenURL, and providing both an 
 HTML UI and an api suite for embedding Umlaut services in other products. 
+[What do you mean by this?](https://github.com/team-umlaut/umlaut/wiki/What-is-Umlaut-anyway)
 
 Umlaut is distributed as a ruby Rails engine gem. It's a very heavyweight engine,
 the point of distro'ing as a gem is to make it easy to keep local 
