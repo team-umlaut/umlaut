@@ -2,7 +2,6 @@ $:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
 require "umlaut/version"
-require 'rake'
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
@@ -15,7 +14,9 @@ Gem::Specification.new do |s|
   #s.description = "TODO: Description of Umlaut."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
-  s.test_files = Rake::FileList["./test/**/*"].exclude(%r{^test/dummy/log})
+  s.test_files = Dir["./test/**/*"].reject do |f| 
+    f =~ %r{^test/dummy/log}
+  end
 
   s.add_dependency "rails", "~> 3.1.3"
   s.add_dependency "jquery-rails"         # our built in JS uses jquery
