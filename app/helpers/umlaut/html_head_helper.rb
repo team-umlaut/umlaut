@@ -34,4 +34,9 @@ module Umlaut::HtmlHeadHelper
     render_opensearch_link + render_meta_refresh
   end
   
+  # String meant for use in <title>
+  def umlaut_title_text
+    umlaut_config.app_name + (@page_title ? " | #{@page_title}" : "")
+  end
+  
 end
