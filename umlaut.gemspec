@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["./test/**/*"].reject do |f| 
-    f =~ %r{^test/dummy/log}
+    f =~ %r{^(\./)?test/dummy/log}
   end
 
   s.add_dependency "rails", "~> 3.1.3"
