@@ -24,12 +24,10 @@
      </div>
   
   
-    <% if permalink = current_permalink_url() %>
-         <div class="headerStatusBar">
-          <div align="right"  class="largeText">URL:             
-            <%= link_to current_permalink_url, current_permalink_url %>
-          </div>
-         </div>
+     <% if permalink = current_permalink_url() %>
+       <div class="permalink_bar">
+         URL: <%= link_to current_permalink_url, current_permalink_url %>          
+       </div>
      <% end %>
   
   

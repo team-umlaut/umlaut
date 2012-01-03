@@ -105,10 +105,11 @@ h4 {
   border: 1px solid #FCF1D4;
 }
 
-.headerStatusBar {
+.permalink_bar {
   border-bottom: 1px solid #eeb211;
   background-color: #FCF1D4;
-  padding: .25em; 
+  padding: .25em;
+  text-align: right;
 }
 .header {
   background-color: #FFFDEA;
