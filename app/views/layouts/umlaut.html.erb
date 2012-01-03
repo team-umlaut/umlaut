@@ -27,7 +27,7 @@
     <% if @user_request %>
          <div class="headerStatusBar">
           <div align="right"  class="largeText">URL: 
-            <% url = permalink_url(request, @user_request) %>
+            <% url = current_permalink_url() %>
             <%= link_to url, url %>
           </div>
          </div>

@@ -6,7 +6,7 @@ module Umlaut::ControllerLogic
   extend ActiveSupport::Concern
   
   included do
-      helper_method :escape_xml, :url_for_with_co, :permalink_url, :with_format
+    helper_method :escape_xml, :url_for_with_co, :current_permalink_url, :with_format
   end
   
   protected
@@ -62,7 +62,7 @@ module Umlaut::ControllerLogic
   # helper method we need available in controllers too
   # Absolute URL for permalink for given request.
   # Have to supply rails request and umlaut request.  
-  def permalink_url(rails_request, umlaut_request, options = {})
+  def current_permalink_url(rails_request=request, umlaut_request=@user_request, options = {})
     # if we don't have everything, we can't make a permalink. 
     unless (umlaut_request && umlaut_request.referent &&
             umlaut_request.referent.permalinks &&

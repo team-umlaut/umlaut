@@ -48,7 +48,7 @@ class ResolveController < UmlautController
     # to view actual response. 
     headers["x-umlaut-request_id"] = @user_request.id
     headers["x-umlaut-resolve_url"] = url_for( :controller => 'resolve', 'umlaut.request_id'.to_sym => @user_request.id )
-    headers["x-umlaut-permalink_url"] = permalink_url( request, @user_request )
+    headers["x-umlaut-permalink_url"] = current_permalink_url()
 
     # Return empty body. Once we have the xml response done,
     # this really ought to return an xml response, but with
