@@ -14,9 +14,12 @@ module UmlautConfigurable
     class_attribute :umlaut_config
     helper_method :umlaut_config
     self.umlaut_config = Confstruct::Configuration.new
+        
+    
   end
    
-  
+
+
   
   # Call as UmlautConfigurable.set_default_configuration!(confstruct_obj)
   # to initialize
@@ -211,6 +214,29 @@ module UmlautConfigurable
       #
       # Look in comments at top of SectionRenderer class for what the keys
       # in each entry mean. 
+      
+      
+      # We add a custom method into the resolve_sections array, 
+      # ensure_order!. 
+      resolve_sections [].extend Module.new do         
+        # Convenience method for re-ordering sections 
+        # Swaps elements if necessary to ensure they are in the specified order.
+        # For example, make sure holding comes before document_delivery:
+        # resolve_sections.ensure_order!("holding", "document_delivery")
+        # Maybe in the future we'll expand this to take variable arguments. 
+        def self.ensure_order!(first, second)
+      
+          list = self
+      
+          index1 = list.index {|s| s[:div_id].to_s == first.to_s}
+          index2 = list.index {|s| s[:div_id].to_s == second.to_s}
+      
+          (list[index1], list[index2] = list[index2], list[index1]) if index1 && index2 && (index1 > index2)
+      
+          list
+        end
+      end
+      
       add_resolve_sections! do
         div_id "cover_image"
         partial "cover_image"
@@ -250,7 +276,7 @@ module UmlautConfigurable
       end
       
       add_resolve_sections! do
-        div_id :holding
+        div_id "holding"
         section_title ServiceTypeValue[:holding].display_name_pluralize
         html_area :main
         partial 'holding'

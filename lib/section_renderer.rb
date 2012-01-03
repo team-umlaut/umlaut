@@ -422,34 +422,6 @@ class SectionRenderer
   end
 
 
-  # Convenience method for re-ordering sections in local resolve_views
-  # initializer.
-  # Swaps elements if necessary to ensure they are in the specified order.
-  # For example, make sure holding comes before document_delivery:
-  # SectionRenderer.ensureOrder("holding", "document_delivery")
-  # Maybe in the future we'll expand this to take variable arguments. 
-  def self.swap_if_needed!(first, second)
-
-    list = AppConfig.param("resolve_sections")
-    return unless list
-
-    index1 = find_index(list) {|s| s[:div_id] == first}
-    index2 = find_index(list) {|s| s[:div_id] == second}
-
-    (list[index1], list[index2] = list[index2], list[index1]) if index1 && index2 && (index1 > index2)
-
-    list
-  end
-
-  # helper for swap_if_needed! and ensure_order!
-  def self.find_index(array, &block)
-    array.each_with_index do |value, index|
-      return index if block.call(value)
-    end
-    return nil
-  end
-  
-
   protected
 
   def construct_options(arguments)
