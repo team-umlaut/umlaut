@@ -8,10 +8,9 @@ gemspec
 # jquery-rails is used by the dummy application
 gem "jquery-rails"
 
-gem "sqlite3" # really ought to be neccesary, but takes care of some bootstrap issues
 
 gem "mysql2"
-gem "ruby-debug"
+gem "ruby-debug", :platform => :mri_18
 
 gem "activerecord-import"
 
