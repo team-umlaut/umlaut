@@ -170,11 +170,7 @@ module ResolveHelper
   end
 
 
-  def link_to_toggle_debug_info(name = "[D]", options = {})
-    javascript = " jQuery('.debug_info').toggle();"  
-  
-    return link_to_function(name, javascript, options)  
-  end
+
     
   ## 
   # Methods to grab SectionRenderer definitions from config. Caching in

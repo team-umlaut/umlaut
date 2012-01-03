@@ -48,7 +48,7 @@ module Umlaut::FooterHelper
       url += @user_request.to_context_object.kev
       url += "&sfx.ignore_date_threshold=1" if respond_to?(:title_level_request) && title_level_request?
       
-      link_to "[S]", url
+      link_to "[S]", url, :title => "View in SFX"
     end
   end
   
@@ -57,8 +57,17 @@ module Umlaut::FooterHelper
   # debugging. 
   def link_to_test_resolve
     if (test_base = umlaut_config.lookup!("test_resolve_base")) && @user_request
-      link_to "[T]", test_base.chomp("?") + "?" + @user_request.to_context_object.kev
+      link_to "[T]", test_base.chomp("?") + "?" + @user_request.to_context_object.kev, :title => "View in Test #{umlaut_config.app_name}"
     end
+  end
+  
+  def link_to_toggle_debug_info(options = {})
+    options = {:text => "[D]", :title => "Toggle on-screen debug info"}.merge(options)
+    
+    text = options.delete(:text)
+    javascript = " jQuery('.debug_info').toggle();"  
+  
+    return link_to_function(text, javascript, options)  
   end
 
 end
