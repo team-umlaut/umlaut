@@ -25,14 +25,16 @@ module Umlaut
     # I don't entirely understand what's going on. 
     #config.eager_load_paths << File.join(self.root, "lib")
     
-    # This makes our rake tasks visible. NOT NEEDED, tasks in lib/tasks
-    # are avail by default, this ends up doing a double load. 
-    #rake_tasks do
-    #  Dir.chdir(File.expand_path(File.join(File.dirname(__FILE__), '..'))) do
-    #    Dir.glob(File.join('lib', 'tasks', '*.rake')).each do |railtie|
-    #      load railtie
-    #    end
-    #  end
-    #end
+    # We need the update_html.js script to be available as it's own
+    # JS file too, not just compiled into application.js, so we can
+    # deliver it to external apps using it (JQuery Content Utility).
+    # It will now be available from path /assets/umlaut/update_html.js
+    # in production mode with precompiled assets, also in dev mode, 
+    # whatevers.     
+    initializer "#{engine_name}.asset_pipeline" do |app|
+      app.config.assets.precompile << 'umlaut/update_html.js'
+    end
+    
+    
   end
 end
