@@ -46,21 +46,17 @@ xml.umlaut do
             ["display_text", "url", "notes"].each do |att|
               xml.tag!(att, response.attributes[att])
             end
-            response.service_data.keys.each do |key|
-              
-              xml.tag!(key) do
-                value = nil
-                # try calling to_xml, for instance for hashes
-                begin
-                  value = response.service_data[key].to_xml(:root => "records", :skip_instruct => true)
-                  xml<< value
-                rescue
-                  # oh well, no to_xml in there
-                  value = response.service_data[key]
-                  xml.text!(value.to_s) unless value.blank?
+            
+            response.service_data.keys.each do |key|       
+              value = response.service_data[key]
+              # If it's a complex obj with a :to_xml, like a hash, use it. 
+              if value.respond_to?(:to_xml)
+                xml.tag!(key) do
+                  xml << value.to_xml(:root => "records", :skip_instruct => true)
                 end
-                
-              end
+              else
+                xml.tag!(key, value.to_s.strip)
+              end              
             end
             
             xml.umlaut_passthrough_url(url_for(:controller=>'link_router', :action => "index", :id=>response.id, :only_path => false))                          
