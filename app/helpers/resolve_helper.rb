@@ -77,7 +77,7 @@ module ResolveHelper
   #  <% expand_contract_section("My Content", "div_id_to_use") do %>
   #      this will be hidden and shown
   #  <% end %>
-  def expand_contract_section(arg_heading, id, options={}, &block)         
+  def expand_contract_section(arg_heading, id, options={}, &block)      
     expanded = (params["umlaut.show_#{id}"] == "true") || options[:initial_expand] || false
     
     icon = image_tag( ( expanded ? "list_open.png" : "list_closed.png"),
@@ -87,7 +87,7 @@ module ResolveHelper
     heading = content_tag(:span,( expanded ? "Hide " : "Show "), :class=>'expand_contract_action_label') + arg_heading
 
     link_params = params.merge('umlaut.request_id' => @user_request.id,
-      "umlaut_show_#{id}" => (! expanded).to_s ,
+      "umlaut.show_#{id}" => (! expanded).to_s ,
       
       # Need to zero out format-related params for when we're coming
       # from a partial html api request, so the link we generate
