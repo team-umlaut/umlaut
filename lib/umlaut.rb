@@ -33,6 +33,7 @@ module Umlaut
     # whatevers.     
     initializer "#{engine_name}.asset_pipeline" do |app|
       app.config.assets.precompile << 'umlaut/update_html.js'
+      app.config.assets.precompile << "umlaut_ui.js"
     end
     
     
