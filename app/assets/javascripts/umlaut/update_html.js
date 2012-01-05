@@ -148,5 +148,26 @@
     window.Umlaut = new Object();
   window.Umlaut.HtmlUpdater = HtmlUpdater; 
   
+  /* LEGACY Loader was recommended for loading Umlaut JS behaviors
+     in an external page, for JQuery Content Utility. 
+     
+     var loader = new Umlaut.Loader();
+     loader.load();
+     
+     We will provide just enough code to keep that from
+     error'ing (and halting js execution), although at present it does not 
+     actually load the JS behaviors using new style, app wont' have
+     JS behaviors. */
+        
+    window.Umlaut.Loader = function() {
+      this.load = function(option_list) {
+        // log problem in browsers that support it. 
+        if (typeof console != "undefined" && typeof console.log != "undefined") {
+          console.log("WARN: Umlaut.Loader no longer supported in Umlaut 3.x, you have not loaded Umlaut JS Behaviors. See Umlaut documentation for new way.");            
+        }                 
+      }
+    }
+  
+  
 })(jQuery);
 

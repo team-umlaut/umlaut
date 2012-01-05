@@ -30,7 +30,7 @@ module Umlaut
     end
 
     def default_route_sets
-      [:root, :permalinks, :a_z, :resolve, :open_search, :link_router, :export_email, :resources, :search]
+      [:root, :permalinks, :a_z, :resolve, :open_search, :link_router, :export_email, :resources, :search, :javascript]
     end
 
     module RouteSets
@@ -127,6 +127,19 @@ module Umlaut
           # Note: This route will make all actions in this controller accessible via GET requests.
           
           match 'search(/:action(/:id(.:format)))' => "search"
+        end
+      end
+      
+      def javascript
+        add_routes do |options|
+          # Legacy location for update_html.js used by JQuery Content Utility
+          # to embed JS on external sites. Redirect to new location. 
+          # Intentionally non-fingerprinted, most efficient thing
+          # we can do in this case is let the web server take care
+          # of Last-modified-by etc headers. 
+          match 'javascripts/jquery/umlaut/update_html.js' => redirect("/assets/umlaut/update_html.js", :status => 301)
+          
+          match 'images/spinner.gif' => redirect("/assets/spinner.gif")
         end
       end
    
