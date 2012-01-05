@@ -16,8 +16,10 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["./test/**/*"].reject do |f| 
     f =~ %r{^(\./)?test/dummy/log}
+  end.reject do |f|
+    f =~ %r{^(\./)?test/dummy/config/database[^ ]*\.yml}
   end
-
+  
   s.add_dependency "rails", "~> 3.1.3"
   s.add_dependency "jquery-rails"         # our built in JS uses jquery
   
