@@ -94,7 +94,12 @@ module ResolveHelper
       # is not to format json/xml/etc.       
       :format => nil, 
       'umlaut.response_format' => nil,
-      'umlaut.jsonp'=>nil)
+      'umlaut.jsonp'=>nil,
+      
+      # In Rails3, an :anchor param will actually be used for #fragmentIdentifier
+      # on end of url
+      :anchor => "#{id}_toggle_link"
+      )
       
     # Make sure a self-referencing link from partial_html_sections
     # really goes to full HTML view.
@@ -104,7 +109,6 @@ module ResolveHelper
     
     return content_tag(:div, :class => "expand_contract_section") do
       link_to( icon + heading, link_params, 
-            :anchor =>  "#{id}_toggle_link", 
             :id => "#{id}_toggle_link", 
             :class => "expand_contract_toggle" ) + "\n" +
         content_tag(:div, :id => id, 
