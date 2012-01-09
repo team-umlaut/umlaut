@@ -1,3 +1,5 @@
+require 'digest/md5'
+
 # An ActiveRecord which represents a parsed OpenURL resolve service request,
 # and other persistent state related to Umlaut's handling of that OpenURL 
 # request) should not be confused with the Rails ActionController::Request 
@@ -409,7 +411,11 @@ class Request < ActiveRecord::Base
   # Returns nil if there aren't any params to include in the fingerprint.
   def self.co_params_fingerprint(params)
     # Don't use ctx_time, consider two co's equal if they are equal but for ctx_tim. 
-    excluded_keys = ["action", "controller", "page",  "rft.action", "rft.controller", "ctx_tim"]
+    # exclude cache-busting "_" key that JQuery adds. Fine to bust HTTP cache, but
+    # don't want to it to force new Umlaut processing. 
+    # exclude umlaut.jsonp and umlaut.response_format, those shouldn't effect cache
+    # lookup. 
+    excluded_keys = ["action", "controller", "page",  "rft.action", "rft.controller", "ctx_tim", "_", "umlaut.jsonp", "umlaut.response_format", "format"]
     # "url_ctx_val", "request_xml"
     
     # Hash.sort will do a first run through of canonicalization for us
@@ -431,7 +437,9 @@ class Request < ActiveRecord::Base
           pair[1].sort! if (pair[1] && pair[1].respond_to?("sort!"))
       end
     end
+    
 
+    
     return nil if params.blank?
     
     # And YAML-ize for a serliazation
@@ -440,7 +448,6 @@ class Request < ActiveRecord::Base
     
     # And make an MD5 hash/digest. Why store the whole thing if all we need to
     # do is look it up? hash/digest works well for this.
-    require 'digest/md5'
     return Digest::MD5.hexdigest( serialized )    
   end
 
