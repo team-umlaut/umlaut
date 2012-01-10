@@ -15,8 +15,8 @@ class ResourceController < UmlautController
   # the whole image in memory for a second while it delivers it, oh well.
   # doesn't seem to effect speed much, even though it's not optimal. 
   def proxy
-    svc_type = ServiceType.find(params[:id])      
-    url_str =  svc_type.view_data[:url]
+    svc_resp = ServiceResponse.find(params[:id])      
+    url_str =  svc_resp.view_data[:url]
     uri = nil
     begin
       uri = URI(url_str)
