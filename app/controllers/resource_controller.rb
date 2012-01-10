@@ -27,9 +27,11 @@ class ResourceController < UmlautController
     proxied_headers = proxy_headers( request, uri.host )
     remote_response = open(uri, 'rb', proxied_headers)
 
-    # copy certain headers to our proxied response
-    ["content-type", "cache-control", "expires", "content-length", "last-modified", "etag", "date"].each do |key|
-      response.headers[key] = remote_response.meta[key]
+    # copy certain headers to our proxied response    
+    ["Content-Type", "Cache-Control", "Expires", "Content-Length", "Last-Modified", "Etag", "Date"].each do |key|
+      value = remote_response.meta[key.downcase] # for some reason open-uri lowercases em
+      # rack doens't like it if we set a nil value here. 
+      response.headers[key] = value unless value.blank?
     end
     response.headers["X-Original-Url"] = url_str
     
