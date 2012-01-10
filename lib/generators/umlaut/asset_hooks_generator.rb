@@ -16,7 +16,7 @@ module Umlaut
           
   /* Umlaut needs a jquery-ui theme CSS. Here's an easy way to get one,
      you can replace with another theme. */
-  @import url(http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css);
+  @import url(//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css);
           }
         end
       else
