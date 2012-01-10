@@ -4,12 +4,21 @@ module Umlaut
   class AssetHooks < Rails::Generators::Base
     
     def add_to_stylesheet_manifest
-      unless IO.read("app/assets/stylesheets/application.css").include?('Umlaut')
-        insert_into_file "app/assets/stylesheets/application.css", :after => "/*" do
+      existing = IO.read("app/assets/stylesheets/application.css")
+      unless existing.include?('Umlaut')
+        after = 
+          if existing.include?("require_self")
+            "require_self"
+          else
+            "/*"
+          end
+          
+        insert_into_file "app/assets/stylesheets/application.css", :after => after do
           %q{ 
+ *         
  * The base Umlaut styles:
- *= require 'umlaut'         
-          }
+ *= require 'umlaut'
+ *}
         end
         append_to_file("app/assets/stylesheets/application.css") do
           %q{
