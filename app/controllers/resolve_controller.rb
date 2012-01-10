@@ -20,7 +20,7 @@ class ResolveController < UmlautController
   def index
     self.service_dispatch()
 
-    # check for menu skipping configuration. link is a ServiceType object
+    # check for menu skipping configuration. link is a ServiceResponse
     link = should_skip_menu
     if ( ! link.nil? )                   
       
