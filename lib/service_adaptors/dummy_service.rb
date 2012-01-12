@@ -33,13 +33,11 @@ class DummyService < Service
     ::Kernel.sleep( self.sleep ) if self.sleep
     
     responses.each do |response|   
-      debugger
       request.add_service_response( { :service => self }.merge(response.symbolize_keys ) )
     end
     
-    return true
+    return request.dispatched(self, true)
   end
-  
   
   
 end
