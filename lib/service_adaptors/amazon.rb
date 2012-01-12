@@ -181,8 +181,9 @@ class Amazon < Service
     err = (aws.at("ItemLookupResponse/Items/Request/Errors/Error"))
     err = (aws.at("ItemLookupErrorResponse")) if err.blank?
     
+    debugger
     unless (err.blank?)
-      if (err.at('code').inner_text == 'AWS.InvalidParameterValue')
+      if (err.at('Code').text == 'AWS.InvalidParameterValue')
         # Indicates an ISBN that Amazon doesn't know about, or that
         # was mal-formed. We can't tell the difference, so either
         # way let's silently ignore. 
