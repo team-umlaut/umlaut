@@ -96,7 +96,7 @@ module UmlautConfigurable
     
       # A pretty typical direct-linking setup, excludes queries that come
       # from citation linker/azlist/opensearch from direct linking. 
-      # AppConfig::Base.skip_resolve_menu = {:service_types => ['fulltext'],
+      # skip_resolve_menu  {:service_types => ['fulltext'],
       #:services=>['JH_SFX'], :excluded_rfr_ids => ["info:sid/sfxit.com:citation",
       #'info:sid/umlaut.code4lib.org:citation',
       #'info:sid/umlaut.code4lib.org:azlist',  
@@ -167,7 +167,7 @@ module UmlautConfigurable
         sfx_az_profile "default"    
         
         # Use your own custom search view? mention it here.   
-        #search_view = "my_search"
+        #search_view  "my_search"
         
         # can set to "_blank" etc. 
         result_link_target nil
@@ -190,17 +190,17 @@ module UmlautConfigurable
         # urls with urls from catalog. But sometimes it misses some, or
         # alternate hostnames for some. Regexps matching against
         # urls can be included here. Eg,
-        # AppConfig::Base.additional_sfx_controlled_urls = [
+        # additional_sfx_controlled_urls  [
         #    %r{^http://([^\.]\.)*pubmedcentral\.com}
         #  ]    
-        additional_sfx_controlled_urls = []
+        additional_sfx_controlled_urls  []
         
         # "web.archive.org" is listed in SFX, but that causes suppression
         # of MARC 856 tags from our catalog pointing to archive.org, which are
         # being used for some digitized books. We'd like to ignore that archive.org
         # is in SFX. Same for netlibrary.
-        #sfx_load_ignore_hosts = [/.*\.archive\.org/, /www\.netlibrary\.com/, 'www.loc.gov']
-        sfx_load_ignore_hosts = []        
+        #sfx_load_ignore_hosts  [/.*\.archive\.org/, /www\.netlibrary\.com/, 'www.loc.gov']
+        sfx_load_ignore_hosts  []        
       end
     
       # Output timing of service execution to logs
