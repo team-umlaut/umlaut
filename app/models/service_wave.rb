@@ -41,7 +41,7 @@ class ServiceWave
     return if (@services.nil? || @services.empty?)
 
     bundle_start = Time.now
-    
+    debugger
     Rails.logger.info(TermColor.color("Umlaut: Launching service wave #{@priority_level}", :yellow) + ", request #{request.id}") if @log_timing
 
     
@@ -130,7 +130,7 @@ class ServiceWave
     # Clean up any leftover connections left open by threads.
     #ActiveRecord::Base.clear_active_connections!
     ActiveRecord::Base.connection_pool.clear_stale_cached_connections!
-    Rails.logger.info(TermColor.color("Umalut: Completed service wave #{@priority_level}", :yellow) + ", request #{request.id}: in #{Time.now - bundle_start}") if some_service_executed && @log_timing
+    Rails.logger.info(TermColor.color("Umlaut: Completed service wave #{@priority_level}", :yellow) + ", request #{request.id}: in #{Time.now - bundle_start}") if some_service_executed && @log_timing
   end
 
   def forward_exceptions?
