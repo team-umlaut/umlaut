@@ -204,7 +204,7 @@ module UmlautConfigurable
       end
     
       # Output timing of service execution to logs
-      log_service_timing = true if Rails.env == "development"
+      log_service_timing = (Rails.env == "development")
       
       
       #####
