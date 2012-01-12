@@ -41,7 +41,8 @@ class ServiceWave
     return if (@services.nil? || @services.empty?)
 
     bundle_start = Time.now
-    Rails.logger.info("Launching servicelevel #{@priority_level}, request #{request.id}") if @log_timing
+    
+    Rails.logger.info(TermColor.color("Umlaut: Launching service wave #{@priority_level}", :yellow) + ", request #{request.id}") if @log_timing
 
     
     threads = []
@@ -89,12 +90,12 @@ class ServiceWave
           
           # Log it too, although experience shows it may never make it to the 
           # log for mysterious reasons. 
-          Rails.logger.error("Threaded service raised exception. Service: #{service.service_id}, #{e}\n  #{clean_backtrace(e).join("\n  ")}")
+          Rails.logger.error(TermColor.color("Umlaut: Threaded service raised exception.", :red, true) + "Service: #{service.service_id}, #{e}\n  #{clean_backtrace(e).join("\n  ")}")
           
           # And stick it in a thread variable too
           Thread.current[:exception] = e                      
         ensure
-          Rails.logger.info("Completed service #{local_service.service_id},  level #{@priority_level}, request #{local_request && local_request.id}: in #{Time.now - service_start}.") if @log_timing
+          Rails.logger.info(TermColor.color("Umlaut: Completed service #{local_service.service_id}", :yellow)+ ",  level #{@priority_level}, request #{local_request && local_request.id}: in #{Time.now - service_start}.") if @log_timing
         end
       end                    
     end
@@ -129,7 +130,7 @@ class ServiceWave
     # Clean up any leftover connections left open by threads.
     #ActiveRecord::Base.clear_active_connections!
     ActiveRecord::Base.connection_pool.clear_stale_cached_connections!
-    Rails.logger.info("Completed services level #{@priority_level}, request #{request.id}: in #{Time.now - bundle_start}") if some_service_executed && @log_timing
+    Rails.logger.info(TermColor.color("Umalut: Completed service wave #{@priority_level}", :yellow) + ", request #{request.id}: in #{Time.now - bundle_start}") if some_service_executed && @log_timing
   end
 
   def forward_exceptions?
