@@ -55,6 +55,8 @@ namespace :umlaut do
       }
       bulk_queue = []
       i = 0
+      
+      
       ActiveRecord::Base.uncached do 
         OldPermalink.find_each(:batch_size => 20000) do |old_p|
           i += 1
@@ -79,12 +81,16 @@ namespace :umlaut do
             end
           end
   
-          print(".") if i % 1000 == 0        
+          print(".") if i % 1000 == 0 
+          
+          #GC.start if i % 10000
           
           if ar_import && i % 10000 == 0
             print "+"
             Permalink.import(bulk_queue, :validate => false, :timestamps => false)
             bulk_queue.clear
+            GC.start
+            print "*"
           end
           
         end
