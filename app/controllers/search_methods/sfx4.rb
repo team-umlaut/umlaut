@@ -162,11 +162,16 @@ module SearchMethods
         
         issn = extra_info_xml.search("item[key=issn]").text
         isbn =  extra_info_xml.search("item[key=isbn]").text
-        lccn = extra_info_xml.search("item[key=lccn]").text
+        
+        # LCCN is stored corrupted in xml in SFX db, without prefix like "sn" that
+        # is a significant part of lccn. Our reverse engineering of SFX failed,
+        # apparently there's a workaround in SFX app code. Forget it, bail
+        # don't try to use lccn. 
+        #lccn = extra_info_xml.search("item[key=lccn]").text
         
         ctx.referent.set_metadata("issn", issn ) unless issn.blank?
         ctx.referent.set_metadata("isbn", isbn) unless isbn.blank?
-        ctx.referent.add_identifier("info:lccn/#{normalize_lccn(lccn)}") unless lccn.blank?      
+        #ctx.referent.add_identifier("info:lccn/#{normalize_lccn(lccn)}") unless lccn.blank?      
         
         ctx
       end
