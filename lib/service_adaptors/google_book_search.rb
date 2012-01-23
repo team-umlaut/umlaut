@@ -75,6 +75,11 @@ class GoogleBookSearch < Service
     @credits = {
       "Google Books" => "http://books.google.com/"
     }
+    # While you can theoretically look up by LCCN on Google Books,
+    # we have found FREQUENT false positives. There's no longer any
+    # way to even report these to Google. By default, don't lookup
+    # by LCCN. 
+    @lookup_by_lccn = false
     
     super(config)
   end
@@ -83,6 +88,7 @@ class GoogleBookSearch < Service
 
     bibkeys = get_bibkeys(request.referent)
     return request.dispatched(self, true) if bibkeys.nil?
+
     data = do_query(bibkeys, request)
     
     
@@ -188,9 +194,11 @@ class GoogleBookSearch < Service
     keys = []
     keys << ('isbn:' + isbn) if isbn
     keys << ('"' + "OCLC" + oclcnum + '"') if oclcnum
-    # Only use LCCN if we've got nothing else, it returns many
-    # false positives. 
-    keys << ('"' + 'LCCN' + lccn + '"') if lccn && keys.length == 0
+    # Only use LCCN if we've got nothing else, and we're allowing it. 
+    # it returns many false positives. 
+    if @lookup_by_lccn && lccn && keys.length == 0
+      keys << ('"' + 'LCCN' + lccn + '"')
+    end
     
     return nil if keys.empty?
     keys = CGI.escape( keys.join(' OR ') )
