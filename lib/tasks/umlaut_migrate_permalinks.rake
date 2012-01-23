@@ -2,7 +2,12 @@ namespace :umlaut do
     
     desc "Migrate permalinks from an umlaut 2.x installation"
     task :migrate_permalinks, [:connection] => [:environment] do |t,args|
-      old_connection_name = args[:connection] || "umlaut2_source"            
+      old_connection_name = args[:connection] || "umlaut2_source"    
+      from_id = ENV['FROM_ID']
+      
+      import_batch = ENV['IMPORT_BATCH'].to_i || 20000
+      export_batch = ENV['EXPORT_BATCH'].to_i || 20000
+      gc_batch = ENV['GC_BATCH'].to_i || 100000
       
       begin        
         require 'activerecord-import'        
@@ -20,13 +25,16 @@ namespace :umlaut do
         raise Exception.new("You must have a connection for '#{old_connection_name}' configured in database.yml, pointing to the Umlaut 2.x source db.")
       end
             
-      puts "\nWARNING: We will delete all existing permalinks from the '#{Rails.env}' database:"   
+      puts "\nWARNING: We will delete all existing permalinks " + (from_id ? "(id >= #{from_id})" : "") +  " from the '#{Rails.env}' database:"   
       puts "  " + {}.merge(Permalink.connection_config).inspect
-      print "Sure you want to continue? (yes to continue) "
+      print "\nSure you want to continue? (yes to continue) "
       continue = $stdin.gets
       raise Exception.new("Cancelled by user") unless continue.chomp == "yes" 
       
-      Permalink.delete_all
+      puts "\nDeleting...\n"
+      rel = Permalink
+      rel = rel.where("id >= #{from_id}") if from_id      
+      rel.delete_all
       
       # dynamically create a model for Permalinks in old
       # db, set up with connection info to old db. 
@@ -53,13 +61,19 @@ namespace :umlaut do
         :highest_id => 0,
         :latest_date => 0
       }
+      highest_id = 0
       bulk_queue = []
       i = 0
       
       
       ActiveRecord::Base.uncached do 
-        OldPermalink.find_each(:batch_size => 20000) do |old_p|
+        rel = OldPermalink
+        rel = rel.where("id >= #{from_id}") if from_id
+        
+        rel.find_each(:batch_size => import_batch) do |old_p|
           i += 1
+          
+          highest_id = [highest_id, old_p.id].max
           
           if old_p.context_obj_serialized.blank?
             could_not_migrate[:count] += 1
@@ -83,13 +97,12 @@ namespace :umlaut do
   
           print(".") if i % 1000 == 0 
           
-          #GC.start if i % 10000
+          GC.start if i % gc_batch == 0
           
-          if ar_import && i % 10000 == 0
-            print "+"
+          if ar_import && i % export_batch == 0
             Permalink.import(bulk_queue, :validate => false, :timestamps => false)
-            bulk_queue.clear
-            GC.start
+            print "+"
+            bulk_queue.clear            
             print "*"
           end
           
@@ -100,14 +113,14 @@ namespace :umlaut do
         print "+"
         Permalink.import(bulk_queue, :validate => false, :timestamps => false)
       end
-      
-      puts "\nDone."
-      
+                  
       if could_not_migrate[:count] > 0
         puts "\n\nCould not migrate #{could_not_migrate[:count]} permalinks"
         puts "   Ending at permalink #{could_not_migrate[:highest_id]}, "
         puts "   created at #{could_not_migrate[:latest_date]}"
       end
+      
+      puts "\nDone. Highest ID migrated: #{highest_id}"
       
     end
     
