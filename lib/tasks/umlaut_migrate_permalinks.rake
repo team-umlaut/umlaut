@@ -120,8 +120,11 @@ namespace :umlaut do
       end
       
       unless bulk_queue.empty?
+        print "-" 
+        Permalink.import( [:id, :created_on, :orig_rfr_id, :context_obj_serialized],                            
+          bulk_queue, :validate => false, :timestamps => false)
         print "+"
-        Permalink.import(bulk_queue, :validate => false, :timestamps => false)
+        bulk_queue.clear
       end
                   
       if could_not_migrate[:count] > 0
