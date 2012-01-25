@@ -7,7 +7,7 @@ namespace :umlaut do
       
       import_batch = (ENV['IMPORT_BATCH'] || 20000).to_i
       export_batch = (ENV['EXPORT_BATCH'] || 20000).to_i
-      gc_batch = (ENV['GC_BATCH'] || 100000).to_i
+      gc_batch = (ENV['GC_BATCH'] || 40000).to_i
       
       begin        
         require 'activerecord-import'        
@@ -79,34 +79,41 @@ namespace :umlaut do
             could_not_migrate[:count] += 1
             count_not_migrate[:highest_id] = [count_not_migrate[:highest_id], old_p.id].max
             could_not_migrate[:latest_date] = [could_not_migrate[:latest_date], old_p.created_on].max
-          else        
-            new_p = Permalink.new
-            new_p.id = old_p.id # keep the id the same!
-            new_p.created_on = old_p.created_on # why not keep it the same?
-            new_p.orig_rfr_id = old_p.orig_rfr_id # why not
-            
-            # the important thing to be able to actually resolve it
-            new_p.context_obj_serialized = old_p.context_obj_serialized
-            
+          else                    
             if ar_import
-              bulk_queue << new_p
+              values =  [ old_p.id,
+                          old_p.created_on,
+                          old_p.orig_rfr_id,
+                          old_p.context_obj_serialized
+                         ]
+                         
+              bulk_queue << values
+              
             else
+              new_p = Permalink.new
+              new_p.id = old_p.id # keep the id the same!
+              new_p.created_on = old_p.created_on # why not keep it the same?
+              new_p.orig_rfr_id = old_p.orig_rfr_id # why not            
+              # the important thing to be able to actually resolve it
+              new_p.context_obj_serialized = old_p.context_obj_serialized
+              
               new_p.save!
             end
           end
   
           print(".") if i % 1000 == 0 
+                    
+          if ar_import && i % export_batch == 0
+            print "-" 
+            Permalink.import( [:id, :created_on, :orig_rfr_id, :context_obj_serialized],                            
+              bulk_queue, :validate => false, :timestamps => false)
+            print "+"
+            bulk_queue.clear            
+          end
           
           if i % gc_batch == 0
             GC.start 
             print "*"
-          end
-          
-          if ar_import && i % export_batch == 0
-            print "-" 
-            Permalink.import(bulk_queue, :validate => false, :timestamps => false)
-            print "+"
-            bulk_queue.clear            
           end
           
         end
