@@ -5,9 +5,9 @@ namespace :umlaut do
       old_connection_name = args[:connection] || "umlaut2_source"    
       from_id = ENV['FROM_ID']
       
-      import_batch = ENV['IMPORT_BATCH'].to_i || 20000
-      export_batch = ENV['EXPORT_BATCH'].to_i || 20000
-      gc_batch = ENV['GC_BATCH'].to_i || 100000
+      import_batch = (ENV['IMPORT_BATCH'] || 20000).to_i
+      export_batch = (ENV['EXPORT_BATCH'] || 20000).to_i
+      gc_batch = (ENV['GC_BATCH'] || 100000).to_i
       
       begin        
         require 'activerecord-import'        
@@ -69,7 +69,7 @@ namespace :umlaut do
       ActiveRecord::Base.uncached do 
         rel = OldPermalink
         rel = rel.where("id >= #{from_id}") if from_id
-        
+
         rel.find_each(:batch_size => import_batch) do |old_p|
           i += 1
           
@@ -97,13 +97,16 @@ namespace :umlaut do
   
           print(".") if i % 1000 == 0 
           
-          GC.start if i % gc_batch == 0
+          if i % gc_batch == 0
+            GC.start 
+            print "*"
+          end
           
           if ar_import && i % export_batch == 0
+            print "-" 
             Permalink.import(bulk_queue, :validate => false, :timestamps => false)
             print "+"
             bulk_queue.clear            
-            print "*"
           end
           
         end
