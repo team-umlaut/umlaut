@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
     f =~ %r{^(\./)?test/dummy/config/database[^ ]*\.yml}
   end
   
-  s.add_dependency "rails", "~> 3.1.3"
+  s.add_dependency "rails", "~> 3.2.0"
   s.add_dependency "jquery-rails"         # our built in JS uses jquery
   
   s.add_dependency "nokogiri"             # for XML parsing

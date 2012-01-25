@@ -41,7 +41,6 @@ class ServiceWave
     return if (@services.nil? || @services.empty?)
 
     bundle_start = Time.now
-    debugger
     Rails.logger.info(TermColor.color("Umlaut: Launching service wave #{@priority_level}", :yellow) + ", request #{request.id}") if @log_timing
 
     
@@ -64,8 +63,7 @@ class ServiceWave
         # Tell our AR extension not to allow implicit checkouts
         ActiveRecord::Base.forbid_implicit_checkout_for_thread! if ActiveRecord::Base.respond_to?("forbid_implicit_checkout_for_thread!")
         begin
-          service_start = Time.now
-          
+          service_start = Time.now          
           local_request = ActiveRecord::Base.connection_pool.with_connection do
             # pre-load all relationships so no ActiveRecord activity will be
             # needed later to see em. 
@@ -129,7 +127,10 @@ class ServiceWave
     
     # Clean up any leftover connections left open by threads.
     #ActiveRecord::Base.clear_active_connections!
-    ActiveRecord::Base.connection_pool.clear_stale_cached_connections!
+    # Sadly, we aren't allowed/ought not to call this method manually
+    # anymore, just have to hope we haven't left any unclosed. 
+    # https://github.com/rails/rails/pull/1200
+    #ActiveRecord::Base.connection_pool.clear_stale_cached_connections!
     Rails.logger.info(TermColor.color("Umlaut: Completed service wave #{@priority_level}", :yellow) + ", request #{request.id}: in #{Time.now - bundle_start}") if some_service_executed && @log_timing
   end
 
