@@ -57,6 +57,11 @@ class UmlautController < ApplicationController
       # (see lib/referent_filters )        
       # add_referent_filters!( :match => /.*/, :filter => DissertationCatch.new ) 
     
+      # Turn off permalink-generation? If you don't want it at all, or
+      # don't want it temporarily because you are pointing at a database
+      # that won't last. 
+      # create_permalinks false
+      
       # How many seconds between updates of the background updater for background
       # services?
       # poll_wait_seconds 4

@@ -85,6 +85,9 @@ class Referent < ActiveRecord::Base
   # :permalink => false if you already have a permalink and don't
   # need to create one. Caller should attach that permalink to this referent!
   def self.create_by_context_object(co, options = {})    
+    options = { :permalink => UmlautController.umlaut_config.create_permalinks    
+    }.merge(options)
+    
     
     self.clean_up_context_object(co)    
     rft = Referent.new
