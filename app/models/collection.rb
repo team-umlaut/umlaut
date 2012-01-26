@@ -53,6 +53,95 @@ class Collection
   # Sets all services in collection to have a 'queued' status if appropriate.
   # Then actually executes the services that are dispatchable (queued).    
   def dispatch_services!
+    queued_service_ids = prepare_for_dispatch!
+    
+    dispatch_foreground!(queued_service_ids)
+        
+    dispatch_background!(queued_service_ids)        
+  end
+  
+  # Call prepare_for_dispatch! first, the return value from that call
+  # is suitable as argument for this call: queued_service_ids, list of
+  # service id's already identified as suitable for running, and
+  # marked queued in the DispatchedService table. 
+  #
+  # Will run such services in foreground priority waves. And then reload
+  # the UmlautRequest object in the current thread, to pick up any
+  # changes made in service threads. 
+  def dispatch_foreground!(queued_service_ids)
+    # Foreground services
+    (0..9).each do | priority |      
+      services_to_run = self.instantiate_services!(:level => priority, :ids => queued_service_ids)
+      next if services_to_run.empty?      
+      ServiceWave.new(services_to_run , priority).handle(umlaut_request, umlaut_request.session_id)
+    end
+    
+    # Need to reload the request from db, so it gets changes
+    # made by services in threads, so future code (such as view rendering)
+    # will see changes.     
+    umlaut_request.reload
+  end
+  
+  # Call prepare_for_dispatch! first, the return value from that call
+  # is suitable as argument for this call: queued_service_ids, list of
+  # service id's already identified as suitable for running, and
+  # marked queued in the DispatchedService table.
+  #
+  # Will run such services in background priority waves.   
+  def dispatch_background!(queued_service_ids)
+    # Now we do some crazy magic, start a Thread to run our background
+    # services. We are NOT going to wait for this thread to join,
+    # we're going to let it keep doing it's thing in the background after
+    # we return a response to the browser
+    backgroundThread = Thread.new(self, umlaut_request) do | t_collection,  t_request|
+      # Tell our AR extension not to allow implicit checkouts
+      ActiveRecord::Base.forbid_implicit_checkout_for_thread! if ActiveRecord::Base.respond_to?("forbid_implicit_checkout_for_thread!")
+      
+      # got to reserve an AR connection for our main 'background traffic director'
+      # thread, so it has a connection to use to mark services as failed, at least. 
+      ActiveRecord::Base.connection_pool.with_connection do
+        begin
+          # Deal with ruby's brain dead thread scheduling by setting
+          # bg threads to a lower priority so they don't interfere with fg
+          # threads.
+          Thread.current.priority = -1          
+        
+          ('a'..'z').each do | priority |
+            services_to_run = self.instantiate_services!(:level => priority, :ids => queued_service_ids)        
+            next if services_to_run.empty?      
+            ServiceWave.new(services_to_run , priority).handle(umlaut_request, umlaut_request.session_id)                               
+          end        
+       rescue Exception => e
+          # We are divorced from any HTTP request at this point, and may not
+          # have access to an ActiveRecord connection. Not much
+          # we can do except log it. 
+          # If we're catching an exception here, service processing was
+          # probably interrupted, which is bad. You should not intentionally
+          # raise exceptions to be caught here.
+          #
+          # Normally even unexpected exceptions were caught inside the ServiceWave,
+          # and logged to db as well as logfile if possible, only bugs in ServiceWave
+          # itself should wind up caught here. 
+          Thread.current[:exception] = e
+          logger.error("Background Service execution exception: #{e}\n\n   " + clean_backtrace(e).join("\n"))                
+       end
+     end
+    end
+  end
+  
+  
+  # Goes through all services and marks them with a DispatchedService
+  # record in 'queued' state. 
+  #
+  # Will time out any too-old services in a running state. 
+  #
+  # Will remove DispatchedService status for 
+  # any services marked failed that are old enough to re-run, or services
+  # that are too old to re-use.   Such services are then queuable. 
+  #
+  # Returns array of Service identifiers for services that are now
+  # queued and execable. 
+  def prepare_for_dispatch!
     # Go through currently dispatched services, looking for timed out
     # services -- services still in progress that have taken too long,
     # as well as service responses that are too old to be used.      
@@ -117,60 +206,7 @@ class Collection
       end        
     end
     
-
-    
-    # Now actually dispatch. 
-    
-    # Foreground services
-    (0..9).each do | priority |      
-      services_to_run = self.instantiate_services!(:level => priority, :ids => queued_service_ids)
-      next if services_to_run.empty?      
-      ServiceWave.new(services_to_run , priority).handle(umlaut_request, umlaut_request.session_id)
-    end
-    
-    # Need to reload the request from db, so it gets changes
-    # made by services in threads. 
-    umlaut_request.reload
-    
-    # Now we run background services.
-    # Now we do some crazy magic, start a Thread to run our background
-    # services. We are NOT going to wait for this thread to join,
-    # we're going to let it keep doing it's thing in the background after
-    # we return a response to the browser
-    backgroundThread = Thread.new(self, umlaut_request) do | t_collection,  t_request|
-      # Tell our AR extension not to allow implicit checkouts
-      ActiveRecord::Base.forbid_implicit_checkout_for_thread! if ActiveRecord::Base.respond_to?("forbid_implicit_checkout_for_thread!")
-      
-      # got to reserve an AR connection for our main 'background traffic director'
-      # thread, so it has a connection to use to mark services as failed, at least. 
-      ActiveRecord::Base.connection_pool.with_connection do
-        begin
-          # Deal with ruby's brain dead thread scheduling by setting
-          # bg threads to a lower priority so they don't interfere with fg
-          # threads.
-          Thread.current.priority = -1          
-        
-          ('a'..'z').each do | priority |
-            services_to_run = self.instantiate_services!(:level => priority, :ids => queued_service_ids)        
-            next if services_to_run.empty?      
-            ServiceWave.new(services_to_run , priority).handle(umlaut_request, umlaut_request.session_id)                               
-          end        
-       rescue Exception => e
-         #debugger
-          # We are divorced from any request at this point, not much
-          # we can do except log it. Actually, we'll also store it in the
-          # db, and clean up after any dispatched services that need cleaning up.
-          # If we're catching an exception here, service processing was
-          # probably interrupted, which is bad. You should not intentionally
-          # raise exceptions to be caught here.
-          Thread.current[:exception] = e
-          logger.error("Background Service execution exception1: #{e}\n\n   " + clean_backtrace(e).join("\n"))                
-       end
-     end
-    end
-
-    
-    
+    return queued_service_ids
   end
   
   def completed_dispatch_expired?(ds)
