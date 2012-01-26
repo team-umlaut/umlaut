@@ -3,8 +3,15 @@
 
 module TermColor
   mattr_accessor :colorize_logging
-  self.colorize_logging = Rails.application.config.colorize_logging
-  
+  # is nil in dev in rails 3.2, but supposed to default to true. okay. 
+  self.colorize_logging = if Rails.application.config.colorize_logging.nil?
+    # In Rails 3.2, somehow we can't count on config.colorize_logging being
+    # set, okay, as a default colorize in development only. 
+    Rails.env == "development"
+  else
+    Rails.application.config.colorize_logging
+  end
+
     # Embed in a String to clear all previous ANSI sequences.
     CLEAR   = "\e[0m"
     BOLD    = "\e[1m"
