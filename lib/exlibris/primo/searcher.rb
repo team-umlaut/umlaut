@@ -17,6 +17,8 @@ module Exlibris::Primo
     attr_reader :response, :count
     attr_reader :cover_image, :titles, :author
     attr_reader :holdings, :rsrcs, :tocs
+    PNX_NS = {'pnx' => 'http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib'}
+    SEARCH_NS = {'search' => 'http://www.exlibrisgroup.com/xsd/jaguar/search'}
     
     # Instantiates the object and performs the search for based on the input search criteria.
     # setup parameter requires { :base_url => http://primo.server.institution.edu }
@@ -95,22 +97,21 @@ module Exlibris::Primo
     
     # Process a single record
     def process_record
-      @count = response.at("//DOCSET")["TOTALHITS"] unless response.nil? or @count
-      response.at("//addata").each_child do |addata_child|
-        name = addata_child.pathname and value = addata_child.inner_text.chars.to_s if addata_child.elem?
+      @count = response.at("//search:DOCSET", SEARCH_NS)["TOTALHITS"] unless response.nil? or @count
+      response.at("//pnx:addata", PNX_NS).children.each do |addata_child|
+        name = addata_child.name and value = addata_child.inner_text if addata_child.elem?
         next if value.nil?
         self.class.add_attr_reader name.to_sym unless name.nil?
-        # instance_variable_set("@#{name}".to_sym, "#{convert_diacritics(value)}") unless name.nil?
         instance_variable_set("@#{name}".to_sym, "#{value}") unless name.nil?
       end
-      @cover_image = response.at("//addata/lad02").inner_text unless response.at("//addata/lad02").nil?
+      @cover_image = response.at("//pnx:addata/pnx:lad02", PNX_NS).inner_text unless response.at("//pnx:addata/pnx:lad02", PNX_NS).nil?
       @titles = []
-      response.search("//display/title") do |title|
-        @titles.push(title.inner_text.chars.to_s)
+      response.search("//pnx:display/pnx:title", PNX_NS).each do |title|
+        @titles.push(title.inner_text)
       end
       @authors = []
-      response.search("//display/creator") do |e|
-        @authors.push(e.inner_text.chars.to_s)
+      response.search("//pnx:display/pnx:creator", PNX_NS).each do |creator|
+        @authors.push(creator.inner_text)
       end
     end
  
@@ -119,30 +120,27 @@ module Exlibris::Primo
     # Process URLs based on links/linktorsrc
     # Process TOCs based on links/linktotoc
     def process_search_results
-      @count = (response.at("//DOCSET").nil?) ? 
-        (response.at("//sear:DOCSET")["TOTALHITS"].nil?) ? 0 : 
-          response.at("//sear:DOCSET")["TOTALHITS"] : 
-            response.at("//DOCSET")["TOTALHITS"] unless response.nil? or @count
+      @count = response.at("//search:DOCSET", SEARCH_NS)["TOTALHITS"] unless response.nil? or @count
       # Loop through records to set metadata for holdings, urls and tocs
-      response.search("//record") do |record|
+      response.search("//pnx:record", PNX_NS).each do |record|
         # Default genre to article if necessary
-        record_genre = (record.at("addata/genre").nil?) ? "article" : record.at("addata/genre").inner_text
+        record_genre = (record.xpath("pnx:addata/pnx:genre", PNX_NS).nil?) ? "article" : record.xpath("pnx:addata/pnx:genre", PNX_NS).inner_text
         # Don't process if passed in genre doesn't match the record genre unless the discrepancy is only b/w journals and articles
         # If we're working off id numbers, we should be good to proceed
         next unless @primo_id or @isbn or @issn or 
             @genre == record_genre or (@genre == "journal" and record_genre == "article")
         # Just take the first element for record level elements 
         # (should only be one, except sourceid which will be handled later)
-        record_id = record.at("control/recordid").inner_text
-        display_type = record.at("display/type").inner_text
-        original_source_id = record.at("control/originalsourceid").inner_text unless record.at("control/originalsourceid").nil?
-        original_source_ids = process_control_hash(record, "control/originalsourceid")
-        source_id = record.at("control/sourceid").inner_text
-        source_ids = process_control_hash(record, "control/sourceid")
-        source_record_id = record.at("control/sourcerecordid").inner_text
+        record_id = record.xpath("pnx:control/pnx:recordid", PNX_NS).inner_text
+        display_type = record.xpath("pnx:display/pnx:type", PNX_NS).inner_text
+        original_source_id = record.xpath("pnx:control/pnx:originalsourceid", PNX_NS).inner_text unless record.xpath("pnx:control/pnx:originalsourceid", PNX_NS).nil?
+        original_source_ids = process_control_hash(record, "pnx:control/pnx:originalsourceid", PNX_NS)
+        source_id = record.xpath("pnx:control/pnx:sourceid", PNX_NS).inner_text
+        source_ids = process_control_hash(record, "pnx:control/pnx:sourceid", PNX_NS)
+        source_record_id = record.xpath("pnx:control/pnx:sourcerecordid", PNX_NS).inner_text
         # Process holdings
-        source_record_ids = process_control_hash(record, "control/sourcerecordid")
-        record.search("display/availlibrary") do |availlibrary|
+        source_record_ids = process_control_hash(record, "pnx:control/pnx:sourcerecordid", PNX_NS)
+        record.xpath("pnx:display/pnx:availlibrary", PNX_NS).each do |availlibrary|
           availlibrary, institution_code, library_code, id_one, id_two, status_code, origin = process_availlibrary availlibrary
           holding_original_source_id = (origin.nil?) ? original_source_ids[record_id] : original_source_ids[origin] unless original_source_ids.empty?
           holding_original_source_id = original_source_id if holding_original_source_id.nil?
@@ -158,14 +156,15 @@ module Exlibris::Primo
             :library_code => library_code, :id_one => id_one, :id_two => id_two, 
             :status_code => status_code, :origin => origin, :display_type => display_type, :notes => "",
             :match_reliability => 
-              (reliable_match?(:title => record.at("display/title").inner_text, :author => record.at("display/creator").inner_text)) ? 
-                ServiceResponse::MatchExact : ServiceResponse::MatchUnsure 
+              (record.xpath("pnx:display/pnx:title", PNX_NS) and record.xpath("pnx:display/pnx:creator", PNX_NS)) ? 
+                (reliable_match?(:title => record.xpath("pnx:display/pnx:title", PNX_NS).inner_text, :author => record.xpath("pnx:display/pnx:creator", PNX_NS).inner_text)) ? 
+                  ServiceResponse::MatchExact : ServiceResponse::MatchUnsure : ServiceResponse::MatchExact
           }
           holding = Exlibris::Primo::Holding.new(holding_parameters)
           @holdings.push(holding) unless holding.nil?
         end
         # Process urls
-        record.search("links/linktorsrc") do |linktorsrc|
+        record.xpath("pnx:links/pnx:linktorsrc", PNX_NS).each do |linktorsrc|
           linktorsrc, v, url, display, institution_code, origin = process_linktorsrc linktorsrc
           rsrc = Exlibris::Primo::Rsrc.new({
             :record_id => record_id, :linktorsrc => linktorsrc, 
@@ -176,7 +175,7 @@ module Exlibris::Primo
           @rsrcs.push(rsrc) unless (rsrc.nil? or rsrc.url.nil?)
         end
         # Process tocs
-        record.search("links/linktotoc") do |linktotoc|
+        record.xpath("pnx:links/pnx:linktotoc", PNX_NS).each do |linktotoc|
           linktotoc, url, display = process_linktotoc linktotoc
           toc = Exlibris::Primo::Toc.new({
             :record_id => record_id, :linktotoc => linktotoc, 
@@ -188,9 +187,9 @@ module Exlibris::Primo
       end
     end
 
-    def process_control_hash(record, xpath)
+    def process_control_hash(record, xpath, ns)
       h = {}
-      record.search(xpath) do |e|
+      record.xpath(xpath, ns).each do |e|
         str = e.inner_text unless e.nil?
         a = str.split(/\$(?=\$)/) unless str.nil?
         v = nil

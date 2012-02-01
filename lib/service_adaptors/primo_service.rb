@@ -164,7 +164,7 @@ class PrimoService < Service
     # Set holding_search_institution to vid and print warning in the logs.
     if @service_types.include?("holding_search") and @holding_search_institution.nil?
       @holding_search_institution = @institution
-      RAILS_DEFAULT_LOGGER.warn("Required parameter 'holding_search_institution' was not set.  Please set the appropriate value in services.yml.  Defaulting institution to view id, #{@vid}.")
+      Rails.logger.warn("Required parameter 'holding_search_institution' was not set.  Please set the appropriate value in services.yml.  Defaulting institution to view id, #{@vid}.")
     end # End backward compatibility maintenance
     raise ArgumentError.new(
       "Missing Service configuration parameter. Service type #{self.class} (id: #{self.id}) requires a config parameter named 'holding_search_institution'. Check your config/umlaut_config/services.yml file."
@@ -211,7 +211,7 @@ class PrimoService < Service
       Rails.logger.error(
         "Error in Exlibris::Primo::Searcher. "+ 
         "Returning 0 Primo services for search #{search_params.inspect}. "+ 
-        "Exlibris::Primo::Searcher raised the following exception:\n#{e}")
+        "Exlibris::Primo::Searcher raised the following exception:\n#{e}\n#{e.backtrace.inspect}")
       return request.dispatched(self, true)
     end
     # Enhance the referent with metadata from Primo Searcher if primo id is present
@@ -358,8 +358,8 @@ class PrimoService < Service
   
   private
   def primo_config
-    default_file = "#{Rails.root}/config/umlaut_config/primo.yml"
-    config_file = @primo_config.nil? ? default_file : "#{Rails.root}/config/umlaut_config/"+ @primo_config
+    default_file = "#{Rails.root}/config/primo.yml"
+    config_file = @primo_config.nil? ? default_file : "#{Rails.root}/config/"+ @primo_config
     Rails.logger.warn("Primo config file not found: #{config_file}.") and return {} unless File.exists?(config_file)
     config_hash = YAML.load_file(config_file)
     return (config_hash.nil?) ? {} : config_hash
