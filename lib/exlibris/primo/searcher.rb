@@ -16,7 +16,7 @@ module Exlibris::Primo
 
     attr_reader :response, :count
     attr_reader :cover_image, :titles, :author
-    attr_reader :holdings, :rsrcs, :tocs
+    attr_reader :holdings, :rsrcs, :tocs, :related_links
     PNX_NS = {'pnx' => 'http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib'}
     SEARCH_NS = {'search' => 'http://www.exlibrisgroup.com/xsd/jaguar/search'}
     
@@ -30,6 +30,7 @@ module Exlibris::Primo
       @holdings = []
       @rsrcs = []
       @tocs = []
+      @related_links = []
       @holding_attributes = Exlibris::Primo::Holding.base_attributes
       @base_url = setup[:base_url]
       raise_required_setup_parameter_error :base_url if @base_url.nil?
@@ -184,6 +185,16 @@ module Exlibris::Primo
           }) unless linktotoc.nil?
           @tocs.push(toc) unless (toc.nil? or toc.url.nil?)
         end
+        # Process addlinks
+        record.xpath("pnx:links/pnx:addlink").each do |addlink|
+          addlink, url, display = process_addlink addlink
+          related_link = Exlibris::Primo::RelatedLink.new({
+            :record_id => record_id, :addlink => addlink, 
+            :url => url, :display => display, 
+            :notes => ""
+          }) unless addlink.nil?
+          @related_links.push(related_link) unless (related_link.nil? or related_link.url.nil?)
+        end
       end
     end
 
@@ -260,6 +271,17 @@ module Exlibris::Primo
         display = s.sub!(/^\$D/, "")  unless s.match(/^\$D/).nil?
       end
       return linktotoc, url, display
+    end
+
+    def process_addlink(input)
+      addlink, url, display, = nil, nil, nil
+      return addlink, url, display if input.nil? or input.inner_text.nil?
+      addlink = input.inner_text
+      addlink.split(/\$(?=\$)/).each do |s|
+        url = s.sub!(/^\$U/, "")  unless s.match(/^\$U/).nil?
+        display = s.sub!(/^\$D/, "")  unless s.match(/^\$D/).nil?
+      end
+      return addlink, url, display
     end
 
     def raise_required_setup_parameter_error(parameter)
