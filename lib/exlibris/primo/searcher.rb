@@ -186,7 +186,7 @@ module Exlibris::Primo
           @tocs.push(toc) unless (toc.nil? or toc.url.nil?)
         end
         # Process addlinks
-        record.xpath("pnx:links/pnx:addlink").each do |addlink|
+        record.xpath("pnx:links/pnx:addlink", PNX_NS).each do |addlink|
           addlink, url, display = process_addlink addlink
           related_link = Exlibris::Primo::RelatedLink.new({
             :record_id => record_id, :addlink => addlink, 
