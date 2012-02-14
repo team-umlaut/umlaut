@@ -186,7 +186,7 @@ module Exlibris::Primo::Source
       raise "Error getting bib from Aleph REST APIs. #{aleph_record.error}" unless aleph_record.error.nil?
       # Parse and process bib XML
       # First look at bib 866 and record sub_library and collection (through aleph config mappings)
-      Nokogiri.XML(aleph_bib).search("//datafield[@tag='866']").each do |bib_866|
+      Nokogiri::XML(aleph_bib).search("//datafield[@tag='866']").each do |bib_866|
         bib_866_l = bib_866.at(
           "subfield[@code='l']"
         ).inner_text unless bib_866.at("subfield[@code='l']").nil?
@@ -233,7 +233,7 @@ module Exlibris::Primo::Source
       # Parse and process holding XML
       # Now look at holding 866 and record sub_library and collection 
       # to see if there is anything we missed
-      Nokogiri.XML(aleph_holdings).search("//holding").each do |aleph_holding|
+      Nokogiri::XML(aleph_holdings).search("//holding").each do |aleph_holding|
         holding_sub_library_code = aleph_holding.at(
           "//datafield[@tag='852']/subfield[@code='b']"
         ).inner_text unless aleph_holding.at("//datafield[@tag='852']/subfield[@code='b']").nil?
