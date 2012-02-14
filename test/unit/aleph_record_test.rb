@@ -1,7 +1,7 @@
-require File.dirname(__FILE__) + '/../test_helper'
-class AlephRecordTest < ActiveSupport::TestCase
+require 'test_helper'
+class AlephRecordTest < Test::Unit::TestCase
   def setup
-    @primo_config = YAML.load_file("#{Rails.root}/config/umlaut_config/primo.yml")
+    @primo_config = YAML.load_file("#{Rails.root}/config/primo.yml")
     @nyu_aleph_config = @primo_config["sources"]["nyu_aleph"]
     @rest_url = @nyu_aleph_config["rest_url"]
     @aleph_doc_library = "NYU01"
@@ -14,7 +14,7 @@ class AlephRecordTest < ActiveSupport::TestCase
     aleph_record = Exlibris::Aleph::Record.new(@aleph_doc_library, @aleph_doc_number, @bogus_url)
     assert_raise(RuntimeError) { aleph_record.bib }
     assert_raise(RuntimeError) { aleph_record.holdings }
-    assert_raise(REXML::ParseException) { aleph_record.items }
+    assert_raise(MultiXml::ParseError) { aleph_record.items }
   end
 
   # Test search for a single Primo document.
