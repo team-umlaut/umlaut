@@ -3,7 +3,7 @@
 # This mechanism allows linking to original data sources and expanded holdings information
 # based on those sources and can be implemented per source.
 # To create a Primo source holding, you first must create a local class representing the source in
-# module Exlibris::Primo::Source::Local which extends Exlibris::Primo::Holding.
+# module Exlibris::Primo::Source which extends Exlibris::Primo::Holding.
 # Two methods are then available for overriding:
 #     :expand -   expand holdings that may have been collapsed into a single availlibrary element 
 #                 in Primo based on information from the source
