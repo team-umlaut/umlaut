@@ -412,7 +412,7 @@ class Referent < ActiveRecord::Base
       end
     elsif my_metadata["aucorp"]
       citation[:author] = my_metadata["aucorp"]
-   	end 
+    end 
    	if my_metadata['spage']
    	  citation[:page] = my_metadata['spage']
    	  citation[:page] += ' - ' + my_metadata['epage'] if ! my_metadata['epage'].blank?
