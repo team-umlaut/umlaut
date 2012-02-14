@@ -24,7 +24,7 @@
 # ==Examples
 # Two examples of customized sources are:
 # * Exlibris::Primo::Source::Aleph 
-# * Exlibris::Primo::Source::Local::NYUAleph 
+# * Exlibris::Primo::Source::NYUAleph 
 class PrimoSource < PrimoService
 
   # Overwrites PrimoService#new.
