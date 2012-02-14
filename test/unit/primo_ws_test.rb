@@ -1,13 +1,15 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class PrimoWSTest < ActiveSupport::TestCase
+class PrimoWSTest < Test::Unit::TestCase
+  PNX_NS = {'pnx' => 'http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib'}
+  SEARCH_NS = {'search' => 'http://www.exlibrisgroup.com/xsd/jaguar/search'}
   
   def setup
     @primo_definition = YAML.load( %{
         type: PrimoService
         priority: 2 # After SFX, to get SFX metadata enhancement
         status: active
-        base_url: http://bobcatdev.library.nyu.edu
+        base_url: http://bobcat.library.nyu.edu
         vid: NYU
         institution: NYU
         holding_search_institution: NYU
@@ -36,25 +38,26 @@ class PrimoWSTest < ActiveSupport::TestCase
     @title_author_genre_search_params = {:title => "Travels with My Aunt", :author => "Graham Greene", :genre => "Book"}
   end
   
-  def test_primo_ws_benchmarks
-    Benchmark.bmbm do |results|
-      results.report("PrimoWS::Get Record:") { 
-        (1..10).each {
-          get_record = Exlibris::PrimoWS::GetRecord.new(@primo_test_doc_id, @base_url) 
-        }
-      }
-      results.report("PrimoWS::SearchBrief by ISBN:") { 
-        (1..10).each {
-          get_record = Exlibris::PrimoWS::SearchBrief.new(@isbn_search_params, @base_url)
-        }
-      }
-      results.report("PrimoWS::SearchBrief by title:") { 
-        (1..10).each {
-          get_record = Exlibris::PrimoWS::SearchBrief.new(@title_search_params, @base_url)
-        }
-      }
-    end
-  end
+  # def test_primo_ws_benchmarks
+  #   Benchmark.bmbm do |results|
+  #     results.report("PrimoWS::Get Record:") { 
+  #       (1..10).each {
+  #         get_record = Exlibris::PrimoWS::GetRecord.new(@primo_test_doc_id, @base_url) 
+  #       }
+  #     }
+  #     results.report("PrimoWS::SearchBrief by ISBN:") { 
+  #       (1..10).each {
+  #         get_record = Exlibris::PrimoWS::SearchBrief.new(@isbn_search_params, @base_url)
+  #       }
+  #     }
+  #     results.report("PrimoWS::SearchBrief by title:") { 
+  #       (1..10).each {
+  #         get_record = Exlibris::PrimoWS::SearchBrief.new(@title_search_params, @base_url)
+  #       }
+  #     }
+  #   end
+  # end
+
   def test_bogus_response
     assert_raise(SOAP::HTTPStreamError) {
       ws = Exlibris::PrimoWS::GetRecord.new(@primo_test_doc_id, @bogus_404_url)
@@ -68,18 +71,28 @@ class PrimoWSTest < ActiveSupport::TestCase
   def test_get_record
     ws = Exlibris::PrimoWS::GetRecord.new(@primo_test_doc_id, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
-    assert_instance_of( Hpricot::Doc, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
+    assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
     assert_equal([], ws.error, "#{ws.class} encountered errors: #{ws.error}")
-    assert_equal(@primo_test_doc_id, ws.response.at("//control/recordid").inner_text, "#{ws.class} returned an unexpected record: #{ws.response.to_original_html}")
+    assert_equal(@primo_test_doc_id, ws.response.at("//pnx:control/pnx:recordid", PNX_NS).inner_text, "#{ws.class} returned an unexpected record: #{ws.response.to_xml(:indent => 5, :encoding => 'UTF-8')}")
+  end
+  
+  def test_count_get_record
+    ws = Exlibris::PrimoWS::GetRecord.new(@primo_test_doc_id, @base_url)
+    assert_equal("1", ws.response.at("//search:DOCSET", SEARCH_NS)["TOTALHITS"])
+  end
+  
+  def test_count_search_brief
+    ws = Exlibris::PrimoWS::SearchBrief.new(@isbn_search_params, @base_url)
+    assert_equal("1", ws.response.at("//search:DOCSET", SEARCH_NS)["TOTALHITS"])
   end
   
   def test_get_genre_discrepancy
     ws = Exlibris::PrimoWS::GetRecord.new(@primo_test_problem_doc_id, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
-    assert_instance_of( Hpricot::Doc, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
+    assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
     assert_equal([], ws.error, "#{ws.class} encountered errors: #{ws.error}")
-    assert_equal(@primo_test_problem_doc_id, ws.response.at("//control/recordid").inner_text, "#{ws.class} returned an unexpected record: #{ws.response.to_original_html}")
-    assert_not_nil(ws.response.at("//display/availlibrary").inner_text, "#{ws.class} returned an unexpected record: #{ws.response.to_original_html}")
+    assert_equal(@primo_test_problem_doc_id, ws.response.at("//pnx:control/pnx:recordid", PNX_NS).inner_text, "#{ws.class} returned an unexpected record: #{ws.response.to_xml(:indent => 5, :encoding => 'UTF-8')}")
+    assert_not_nil(ws.response.at("//pnx:display/pnx:availlibrary", PNX_NS).inner_text, "#{ws.class} returned an unexpected record: #{ws.response.to_xml(:indent => 5, :encoding => 'UTF-8')}")
   end
   
   # Test GetRecord with invalid Primo doc id.
@@ -93,7 +106,7 @@ class PrimoWSTest < ActiveSupport::TestCase
   def test_isbn_search
     ws = Exlibris::PrimoWS::SearchBrief.new(@isbn_search_params, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
-    assert_instance_of( Hpricot::Doc, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
+    assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
     assert_equal([], ws.error, "#{ws.class} encountered errors: #{ws.error}")
   end
   
@@ -101,7 +114,7 @@ class PrimoWSTest < ActiveSupport::TestCase
   def test_issn_search
     ws = Exlibris::PrimoWS::SearchBrief.new(@issn_search_params, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
-    assert_instance_of( Hpricot::Doc, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
+    assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
     assert_equal([], ws.error, "#{ws.class} encountered errors: #{ws.error}")
   end
   
@@ -109,7 +122,7 @@ class PrimoWSTest < ActiveSupport::TestCase
   def test_title_search
     ws = Exlibris::PrimoWS::SearchBrief.new(@title_search_params, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
-    assert_instance_of( Hpricot::Doc, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
+    assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
     assert_equal([], ws.error, "#{ws.class} encountered errors: #{ws.error}")
   end
   
@@ -117,7 +130,7 @@ class PrimoWSTest < ActiveSupport::TestCase
   def test_author_search
     ws = Exlibris::PrimoWS::SearchBrief.new(@author_search_params, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
-    assert_instance_of( Hpricot::Doc, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
+    assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
     assert_equal([], ws.error, "#{ws.class} encountered errors: #{ws.error}")
   end
   
@@ -125,7 +138,7 @@ class PrimoWSTest < ActiveSupport::TestCase
   def test_title_author_genre_search
     ws = Exlibris::PrimoWS::SearchBrief.new(@title_author_genre_search_params, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
-    assert_instance_of( Hpricot::Doc, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
+    assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
     assert_equal([], ws.error, "#{ws.class} encountered errors: #{ws.error}")
   end 
 end
