@@ -186,8 +186,10 @@ class Referent < ActiveRecord::Base
         rv.key_name = key_name
         rv.value = value
         rv.normalized_value = normalized_value
-
-        unless (key_name == "identifier" || key_name == "format")
+        
+        if key_name == "private_data"
+          rv.private_data = true
+        elsif key_name != "identifier" && key_name != "format"
           rv.metadata = true
         end
 
@@ -209,11 +211,19 @@ class Referent < ActiveRecord::Base
     if rft.format
       ensure_value!('format', rft.format)
     end
-                      
+    if rft.private_data
+      # this comes in as "pid" or "rft_dat", we store it in
+      # our database as "private_data", sorry, easiest way to
+      # fit this in at the moment. 
+      ensure_value!("private_data", rft.private_data)
+    end
+    
     rft.metadata.each { | key, value |
       next unless value
       ensure_value!( key, value)      
-    }    
+    }
+
+    
   end
 
   # pass in a Referent, or a ropenurl ContextObjectEntity that has a metadata
@@ -320,9 +330,8 @@ class Referent < ActiveRecord::Base
     co.referent = OpenURL::ContextObjectEntity.new_from_format( fmt_uri )
     rft = co.referent
     
-    # Now set all the values. 
+    # Now set all the values.
     self.referent_values.each do | val |
-      next if val.private_data?
       if val.metadata?
         rft.set_metadata(val.key_name, val.value)
         next
