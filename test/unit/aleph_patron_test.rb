@@ -1,7 +1,7 @@
-require File.dirname(__FILE__) + '/../test_helper'
-class AlephPatronTest < ActiveSupport::TestCase
+require 'test_helper'
+class AlephPatronTest < Test::Unit::TestCase
   def setup
-    @primo_config = YAML.load_file("#{Rails.root}/config/umlaut_config/primo.yml")
+    @primo_config = YAML.load_file("#{Rails.root}/config/primo.yml")
     @nyu_aleph_config = @primo_config["sources"]["nyu_aleph"]
     @rest_url = @nyu_aleph_config["rest_url"]
     @aleph_doc_library = "NYU01"
@@ -17,9 +17,9 @@ class AlephPatronTest < ActiveSupport::TestCase
   # Test exception handling for bogus response.
   def test_bogus_response
     patron = Exlibris::Aleph::Patron.new(@nyuidn, @bogus_url)
-    assert_raise(REXML::ParseException) { patron.loans }
-    assert_raise(REXML::ParseException) { patron.renew_loans() }
-    assert_raise(REXML::ParseException) { patron.renew_loans(@aleph_renew_item_id) }
+    assert_raise(MultiXml::ParseError) { patron.loans }
+    assert_raise(MultiXml::ParseError) { patron.renew_loans() }
+    assert_raise(MultiXml::ParseError) { patron.renew_loans(@aleph_renew_item_id) }
     assert_raise(RuntimeError) { patron.place_hold(@aleph_adm_library, @aleph_doc_library, @aleph_doc_number, @aleph_item_id, {:pickup_location => @pickup_location}) }
   end
 

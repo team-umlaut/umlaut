@@ -67,7 +67,7 @@ class Service
           # handle both cases.
           raise NameError if value.nil?          
       rescue NameError
-      raise ArgumentError.new("Missing Service configuration parameter. Service type #{self.class} (id: #{self.id}) requires a config parameter named '#{param}'. Check your config/umlaut_config/services.yml file.")
+      raise ArgumentError.new("Missing Service configuration parameter. Service type #{self.class} (id: #{self.service_id}) requires a config parameter named '#{param}'. Check your config/umlaut_config/services.yml file.")
       end      
     end    
   end

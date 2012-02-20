@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../test_helper'
-class AlephRecordBenchMarks < ActiveSupport::TestCase
+class AlephRecordBenchMarks < Test::Unit::TestCase
   def setup
     @primo_config = YAML.load_file("#{Rails.root}/config/umlaut_config/primo.yml")
     @nyu_aleph_config = @primo_config["sources"]["nyu_aleph"]

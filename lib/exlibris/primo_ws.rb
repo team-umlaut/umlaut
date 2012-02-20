@@ -1,7 +1,7 @@
 # Module for calling Primo Web Services
 # Please note the following:
 # * Be sure to configure the Primo Back Office with the relevant IPs to enable interaction via the Web Services
-# * This module does not parse the response but instead stores it as an Hpricot::Doc for the calling classes to parse
+# * This module does not parse the response but instead stores it as an Nokogiri::XML::Document for the calling classes to parse
 module Exlibris::PrimoWS
   require 'nokogiri'
 

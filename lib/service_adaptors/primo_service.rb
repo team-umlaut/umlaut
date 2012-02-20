@@ -24,6 +24,7 @@
 # * table_of_contents - parsed from links/linktotoc elements in the PNX record
 # * referent_enhance - metadata parsed from the addata section of the PNX record when the record was found by Primo id
 # * cover_image - parsed from first addata/lad02 element in the PNX record
+# * highlighted_link - parsed from links/addlink elements in the PNX record
 #
 # ==Available Parameters
 # Several configurations parameters are available to be set in services.yml, e.g.
@@ -44,6 +45,7 @@
 #       - table_of_contents
 #       - referent_enhance
 #       - cover_image
+#       - highlighted_link
 # base_url:: _required_ host and port of Primo server; used for Primo web services, deep links and holding_search
 # base_path:: *DEPRECATED* previous name of base_url
 # vid:: _required_ view id for Primo deep links and holding_search.
@@ -127,6 +129,7 @@ class PrimoService < Service
     @holding_attributes = Exlibris::Primo::Holding.base_attributes
     @rsrc_attributes = Exlibris::Primo::Rsrc.base_attributes
     @toc_attributes = Exlibris::Primo::Toc.base_attributes
+    @related_link_attributes = Exlibris::Primo::RelatedLink.base_attributes
     # TODO: Run these decisions by Bill M. to see if they make sense.
     @referent_enhancements = {
       # Prefer SFX journal titles to Primo journal titles
@@ -143,6 +146,7 @@ class PrimoService < Service
     }
     @suppress_urls = []
     @suppress_tocs = []
+    @suppress_related_links = []
     @suppress_holdings = []
     @service_types = [ "fulltext", "holding", "holding_search",
       "table_of_contents", "referent_enhance", "cover_image" ] if @service_types.nil?
@@ -164,7 +168,7 @@ class PrimoService < Service
     # Set holding_search_institution to vid and print warning in the logs.
     if @service_types.include?("holding_search") and @holding_search_institution.nil?
       @holding_search_institution = @institution
-      RAILS_DEFAULT_LOGGER.warn("Required parameter 'holding_search_institution' was not set.  Please set the appropriate value in services.yml.  Defaulting institution to view id, #{@vid}.")
+      Rails.logger.warn("Required parameter 'holding_search_institution' was not set.  Please set the appropriate value in services.yml.  Defaulting institution to view id, #{@vid}.")
     end # End backward compatibility maintenance
     raise ArgumentError.new(
       "Missing Service configuration parameter. Service type #{self.class} (id: #{self.id}) requires a config parameter named 'holding_search_institution'. Check your config/umlaut_config/services.yml file."
@@ -211,7 +215,7 @@ class PrimoService < Service
       Rails.logger.error(
         "Error in Exlibris::Primo::Searcher. "+ 
         "Returning 0 Primo services for search #{search_params.inspect}. "+ 
-        "Exlibris::Primo::Searcher raised the following exception:\n#{e}")
+        "Exlibris::Primo::Searcher raised the following exception:\n#{e}\n#{e.backtrace.inspect}")
       return request.dispatched(self, true)
     end
     # Enhance the referent with metadata from Primo Searcher if primo id is present
@@ -226,7 +230,9 @@ class PrimoService < Service
       end
     end
     # Get cover image only if primo_id is defined
-    if primo_id and @service_types.include?("referent_enhance")
+    # TODO: make cover image service smarter and only 
+    # include things that are actually URLs.
+    if primo_id and @service_types.include?("cover_image")
       cover_image = primo_searcher.cover_image
       unless cover_image.nil?
         request.add_service_response(
@@ -344,6 +350,33 @@ class PrimoService < Service
         )
       end
     end
+    if @service_types.include?("highlighted_link")
+      # Let's find any related links, and add highlighted link responses for those.
+      related_links_seen = [] # for de-duplicating urls from catalog.
+      primo_searcher.related_links.each do |related_link|
+        url = related_link.url # actual url
+        next if related_links_seen.include?(related_link.url)
+        # We have our own list of URLs to suppress, array of strings
+        # or regexps.
+        next if @suppress_related_links.find {|suppress| suppress === related_link.url}
+        # No url? Forget it.
+        next if related_link.url.nil?
+        related_links_seen.push(related_link.url)
+        service_data = {}
+        @related_link_attributes.each do |attr|
+          service_data[attr] = related_link.method(attr).call
+        end
+        # Default display text to URL.
+        service_data[:display_text] = (service_data[:display].nil?) ? service_data[:url] : service_data[:display]
+        # Add the response
+        request.add_service_response(
+          service_data.merge(
+            :service => self,
+            :service_type_value => 'highlighted_link'
+          )
+        )
+      end
+    end
     return request.dispatched(self, true)
   end
 
@@ -358,8 +391,8 @@ class PrimoService < Service
   
   private
   def primo_config
-    default_file = "#{Rails.root}/config/umlaut_config/primo.yml"
-    config_file = @primo_config.nil? ? default_file : "#{Rails.root}/config/umlaut_config/"+ @primo_config
+    default_file = "#{Rails.root}/config/primo.yml"
+    config_file = @primo_config.nil? ? default_file : "#{Rails.root}/config/"+ @primo_config
     Rails.logger.warn("Primo config file not found: #{config_file}.") and return {} unless File.exists?(config_file)
     config_hash = YAML.load_file(config_file)
     return (config_hash.nil?) ? {} : config_hash

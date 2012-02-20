@@ -350,8 +350,7 @@ class Referent < ActiveRecord::Base
     # call self.metadata once and use the array for efficiency, don't
     # keep calling it. profiling shows it DOES make a difference. 
     my_metadata = self.metadata
-    
-    
+
     if my_metadata['atitle'] && ! my_metadata['atitle'].blank?
       citation[:title] = my_metadata['atitle']
       citation[:title_label], citation[:subtitle_label] = 
@@ -404,23 +403,25 @@ class Referent < ActiveRecord::Base
     end
     if ! my_metadata["au"].blank?
       citation[:author] = my_metadata["au"]
-    elsif  my_metadata["aulast"]
+    elsif my_metadata["aulast"]
       citation[:author] = my_metadata["aulast"]
       if ! my_metadata["aufirst"].blank?
-   		citation[:author] += ',	'+my_metadata["aufirst"]
+        citation[:author] += ',	'+my_metadata["aufirst"]
       else
         if ! my_metadata["auinit"].blank?
           citation[:author] += ',	'+my_metadata["auinit"]
         else
-		  if ! my_metadata["auinit1"].blank?
+          if ! my_metadata["auinit1"].blank?
             citation[:author] += ',	'+my_metadata["auinit1"]
-   		  end
-       	  if ! my_metadata["auinitm"].blank?
+          end
+          if ! my_metadata["auinitm"].blank?
             citation[:author] += my_metadata["auinitm"]
-   		  end
-   	    end
-   	  end
-   	end 
+          end
+        end
+      end
+    elsif my_metadata["aucorp"]
+      citation[:author] = my_metadata["aucorp"]
+    end 
    	if my_metadata['spage']
    	  citation[:page] = my_metadata['spage']
    	  citation[:page] += ' - ' + my_metadata['epage'] if ! my_metadata['epage'].blank?

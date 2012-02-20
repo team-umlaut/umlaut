@@ -1,6 +1,4 @@
-require 'nokogiri'
-
-module Exlibris::Primo::Source::Local
+module Exlibris::Primo::Source
   # == Overview
   # NYUAleph is an Exlibris::Primo::Source::Aleph that expands Primo availlibrary
   # elements based on of Aleph items return from the Aleph REST APIs.
@@ -96,35 +94,7 @@ module Exlibris::Primo::Source::Local
             ) unless @aleph_helper.nil? or @aleph_item_adm_library.nil?
         @id_one = aleph_collection unless aleph_collection.nil?
         # Set status and status code.
-        aleph_status_code, aleph_status = nil, nil
-        # Loop through source config for statuses
-        aleph_config["statuses"].each { |aleph_config_status_code, aleph_config_status|
-          # Set checked out as Aleph status and code
-          aleph_status_code = aleph_config_status_code and 
-            aleph_status = "Due: " + @aleph_item_circulation_status and
-              break if (aleph_config_status_code == "checked_out" and 
-                aleph_config_status === @aleph_item_circulation_status)
-          # Set circulation statuses like On Shelf, Billed as Lost, as Aleph status and code
-          aleph_status_code = aleph_config_status_code and
-              break if (aleph_config_status.instance_of?(Array) and 
-                aleph_config_status.include?(@aleph_item_circulation_status))
-        } unless aleph_config.nil? or aleph_config["statuses"].nil?
-        if (aleph_status_code.nil?)
-          # Set Aleph web text as Aleph status if we haven't already gotten the Aleph status
-          aleph_status = @aleph_helper.item_web_text(
-            :adm_library_code => @aleph_item_adm_library.downcase,
-            :sub_library_code => @aleph_item_sub_library_code,
-            :item_status_code => @aleph_item_status_code,
-            :item_process_status_code => @aleph_item_process_status_code
-          ) unless @aleph_helper.nil? or @aleph_item_adm_library.nil?
-          # Set code as "overridden_by_nyu_aleph"
-          aleph_status_code = "overridden_by_nyu_aleph" unless aleph_status.nil?
-        end
-        # Set status code if we have it.
-        @status_code = aleph_status_code unless aleph_status_code.nil?
-        # Set status.
-        @status = (aleph_status.nil?) ? 
-          decode(:status, {:address => "statuses"}, true) : aleph_status
+        @status_code, @status = get_status
         # Aleph doesn't work right so we have to push the patron to the Aleph holdings page!
         @request_url = url if requestable?
         # We're through a second time, so we should be alright to 
@@ -171,7 +141,43 @@ module Exlibris::Primo::Source::Local
       return source_data
     end
 
-    def get_coverage(aleph_record)      
+    def get_status
+      # Initialize status and status code.
+      aleph_status_code, aleph_status = nil, nil
+      # Loop through source config for statuses
+      aleph_config["statuses"].each { |aleph_config_status_code, aleph_config_status|
+        # Set checked out as Aleph status and code
+        aleph_status_code = aleph_config_status_code and 
+          aleph_status = "Due: " + @aleph_item_circulation_status and
+            break if (aleph_config_status_code == "checked_out" and 
+              aleph_config_status === @aleph_item_circulation_status)
+        # Set circulation statuses like On Shelf, Billed as Lost, as Aleph status and code
+        aleph_status_code = aleph_config_status_code and
+            break if (aleph_config_status.instance_of?(Array) and 
+              aleph_config_status.include?(@aleph_item_circulation_status))
+      } unless aleph_config.nil? or aleph_config["statuses"].nil?
+      deferred_statuses = (aleph_config["deferred_statuses"].nil?) ? {} : aleph_config["deferred_statuses"]
+      if (aleph_status_code.nil? or deferred_statuses.include?(aleph_status_code))
+        # Set Aleph web text as Aleph status if we haven't already gotten the Aleph status
+        aleph_status = @aleph_helper.item_web_text(
+          :adm_library_code => @aleph_item_adm_library.downcase,
+          :sub_library_code => @aleph_item_sub_library_code,
+          :item_status_code => @aleph_item_status_code,
+          :item_process_status_code => @aleph_item_process_status_code
+        ) unless @aleph_helper.nil? or @aleph_item_adm_library.nil?
+        # Set code as "overridden_by_nyu_aleph"
+        aleph_status_code = "overridden_by_nyu_aleph" unless aleph_status.nil?
+      end
+      # Set status code if we have it.
+      status_code = aleph_status_code unless aleph_status_code.nil?
+      # Set status.
+      status = (aleph_status.nil?) ? 
+        decode(:status, {:address => "statuses"}, true) : aleph_status
+      return status_code, status
+    end
+
+    def get_coverage(aleph_record)
+      require 'nokogiri'
       locations_seen = []
       coverage = []
       return coverage unless display_type.upcase == "JOURNAL"
@@ -180,7 +186,7 @@ module Exlibris::Primo::Source::Local
       raise "Error getting bib from Aleph REST APIs. #{aleph_record.error}" unless aleph_record.error.nil?
       # Parse and process bib XML
       # First look at bib 866 and record sub_library and collection (through aleph config mappings)
-      Nokogiri::XML(aleph_bib).search("//datafield[@tag='866']") do |bib_866|
+      Nokogiri::XML(aleph_bib).search("//datafield[@tag='866']").each do |bib_866|
         bib_866_l = bib_866.at(
           "subfield[@code='l']"
         ).inner_text unless bib_866.at("subfield[@code='l']").nil?
@@ -203,9 +209,20 @@ module Exlibris::Primo::Source::Local
             :sub_library_code => bib_866_sub_library_code,
             :collection_code => bib_866_collection_code
           ) unless @aleph_helper.nil? or bib_866_adm_library.nil?
-          coverage.push(
-            "Available in #{bib_866_collection}: #{build_coverage_string(bib_866_j, bib_866_k)}".strip
-          ) unless bib_866_collection.nil? or bib_866_j.nil? and bib_866_k.nil?
+          unless bib_866_collection.nil?
+            unless bib_866_j.nil? and bib_866_k.nil?
+              coverage.push(
+                "Available in #{bib_866_collection}: #{build_coverage_string(bib_866_j, bib_866_k)}".strip
+              )
+            else
+              bib_866_i = bib_866.at(
+                "subfield[@code='i']"
+              ).inner_text unless bib_866.at("subfield[@code='i']").nil?
+              coverage.push(
+                "#{bib_866_i}".strip
+              ) unless bib_866_i.nil?
+            end
+          end
           locations_seen.push({
             :adm_library => bib_866_adm_library, 
             :sub_library_code => bib_866_sub_library_code })
@@ -216,7 +233,7 @@ module Exlibris::Primo::Source::Local
       # Parse and process holding XML
       # Now look at holding 866 and record sub_library and collection 
       # to see if there is anything we missed
-      Nokogiri::XML(aleph_holdings).search("//holding") do |aleph_holding|
+      Nokogiri::XML(aleph_holdings).search("//holding").each do |aleph_holding|
         holding_sub_library_code = aleph_holding.at(
           "//datafield[@tag='852']/subfield[@code='b']"
         ).inner_text unless aleph_holding.at("//datafield[@tag='852']/subfield[@code='b']").nil?
@@ -230,6 +247,10 @@ module Exlibris::Primo::Source::Local
           next if locations_seen.include?({
             :adm_library => holding_adm_library, 
             :sub_library_code => holding_sub_library_code })
+          holding_852_z = aleph_holding.at(
+            "//datafield[@tag='852']/subfield[@code='z']"
+          ).inner_text unless aleph_holding.at("//datafield[@tag='852']/subfield[@code='z']").nil?
+          coverage.push("Note: #{holding_852_z}") unless holding_852_z.nil?
           holding_collection = @aleph_helper.collection_text(
             :adm_library_code => holding_adm_library.downcase,
             :sub_library_code => holding_sub_library_code,

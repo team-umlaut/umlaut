@@ -36,7 +36,6 @@ module Exlibris::Primo
 # == Examples
 # Example of Primo source implementations are:
 # * Exlibris::Primo::Source::Aleph
-# * Exlibris::Primo::Source::Local::NYUAleph
   class Holding
     @base_attributes = [ :record_id, :source_id, :original_source_id, :source_record_id,
       :availlibrary, :institution_code, :institution, :library_code, :library,
@@ -141,16 +140,11 @@ module Exlibris::Primo
     def to_source
       return self if @source_class.nil?
       begin
-        # Check source class in source module, if not found, see if there is a local class
-         return (Exlibris::Primo::Source.const_defined?(@source_class)) ? 
-           Exlibris::Primo::Source.const_get(@source_class).new(:holding => self) : 
-           Exlibris::Primo::Source::Local.const_get(@source_class).new(:holding => self)
+        # Get source class in Primo::Source module
+         return Exlibris::Primo::Source.const_get(@source_class).new(:holding => self)
       rescue Exception => e
-        # !!!!!!!!!!REMOVE NEXT LINE (raise e) WHEN GOING TO PRODUCTION!!!!!!!!!
-        raise e
         Rails.logger.error("#{e.message}")
-        Rails.logger.error("Class #{@source_class} can't be found in either 
-          Exlibris::Primo::Source or Exlibris::Primo::Source::Local.  
+        Rails.logger.error("Class #{@source_class} can't be found in Exlibris::Primo::Source.  
           Please check primo.yml to ensure the class_name is defined correctly.  
           Not converting to source.")
         return self
