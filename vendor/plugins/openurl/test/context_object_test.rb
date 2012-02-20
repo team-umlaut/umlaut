@@ -358,6 +358,18 @@ class ContextObjectTest < Test::Unit::TestCase
       assert_equal("<AN>ED492558</AN>&<PY>2004</PY>&<AU>Hsu, Jeng-yih Tim</AU>", ctx.referent.private_data)
   end
   
+  def test_set_openurl_ver
+      # manually set 'illegal' openurl_ver is respected
+      kev = "sid=CSA:eric-set-c&pid=%3CAN%3EED492558%3C%2FAN%3E%26%3CPY%3E2004%3C%2FPY%3E%26%3CAU%3EHsu%2C%20Jeng-yih%20Tim%3C%2FAU%3E&date=2004&genre=proceeding&aulast=Hsu&aufirst=Jeng-yih&auinitm=T&title=Reading%20without%20Teachers%3A%20Literature%20Circles%20in%20an%20EFL%20Classroom"   
+      ctx = OpenURL::ContextObject.new_from_kev(kev)
+      
+      ctx.openurl_ver = "" # empty string!
+      
+      kev = ctx.kev
+      
+      assert_match(/url_ver=&/, kev)
+      assert_match(/ctx_ver=&/, kev)
+  end
   
   protected
   

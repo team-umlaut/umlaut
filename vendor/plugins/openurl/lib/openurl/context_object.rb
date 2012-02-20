@@ -37,7 +37,7 @@ module OpenURL
 
     attr_reader :admin, :referent, :referringEntity, :requestor, :referrer, 
       :serviceType, :resolver
-    attr_accessor :foreign_keys
+    attr_accessor :foreign_keys, :openurl_ver
     
     @@defined_entities = {"rft"=>"referent", "rfr"=>"referrer", "rfe"=>"referring-entity", "req"=>"requestor", "svc"=>"service-type", "res"=>"resolver"}
     
@@ -51,7 +51,17 @@ module OpenURL
       @serviceType = []
       @resolver = []
       @foreign_keys = {}
-      @admin = {"ctx_ver"=>{"label"=>"version", "value"=>"Z39.88-2004"}, "ctx_tim"=>{"label"=>"timestamp", "value"=>DateTime.now().to_s}, "ctx_id"=>{"label"=>"identifier", "value"=>""}, "ctx_enc"=>{"label"=>"encoding", "value"=>"info:ofi/enc:UTF-8"}}    
+      @openurl_ver = "Z39.88-2004"
+      @admin = {"ctx_ver"=>{"label"=>"version", "value"=>@openurl_ver}, "ctx_tim"=>{"label"=>"timestamp", "value"=>DateTime.now().to_s}, "ctx_id"=>{"label"=>"identifier", "value"=>""}, "ctx_enc"=>{"label"=>"encoding", "value"=>"info:ofi/enc:UTF-8"}}    
+    end
+    
+    # Any legal OpenURL 1.0 sends url_ver=Z39.88-2004, and usually 
+    # ctx_ver=Z39.88-2004 too. However, sometimes we need to send
+    # an illegal OpenURL with a different openurl ver string, to deal
+    # with weird agents, for instance to trick SFX into doing the right thing.     
+    def openurl_ver=(ver)
+      @openurl_ver = ver
+      @admin["ctx_ver"]["value"] = ver
     end
 
     def deep_copy
@@ -99,7 +109,7 @@ module OpenURL
     # true argument if you do not want the ctx_tim key included.
     
     def kev(no_date=false)
-      kevs = ["url_ver=Z39.88-2004", "url_ctx_fmt=#{CGI.escape("info:ofi/fmt:kev:mtx:ctx")}"]
+      kevs = ["url_ver=#{self.openurl_ver}", "url_ctx_fmt=#{CGI.escape("info:ofi/fmt:kev:mtx:ctx")}"]
       
       # Loop through the administrative metadata      
       @admin.each_key do |k|
@@ -127,7 +137,7 @@ module OpenURL
     # So this function is really deprecated, but here because we have so much 
     # code dependent on it.
     def to_hash            
-      co_hash = {"url_ver"=>"Z39.88-2004", "url_ctx_fmt"=>"info:ofi/fmt:kev:mtx:ctx"}           
+      co_hash = {"url_ver"=>self.openurl_ver, "url_ctx_fmt"=>"info:ofi/fmt:kev:mtx:ctx"}           
       
       @admin.each_key do |k|
         co_hash[k]=@admin[k]["value"] if @admin[k]["value"]
