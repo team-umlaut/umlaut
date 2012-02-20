@@ -109,6 +109,17 @@ class Sfx < Service
     transport = OpenURL::Transport.new(@base_url, nil, :open_timeout => @sfx_timeout, :read_timeout => @sfx_timeout)
     
     context_object = request.to_context_object
+    
+    ## SFX HACK WORKAROUND
+    # SFX will parse private_data/pid/rft_dat containing ERIC, when sid/rfr_id
+    # is CSA. But it only expects an OpenURL 0.1 to do this. We send it a
+    # 1.0. To get it to recognize it anyway, we need to send it a blank
+    # url_ver/ctx_ver
+    if ( context_object.referrer.identifiers.find {|i| i.start_with? "info:sid/CSA"} &&
+         context_object.referent.private_data != nil)
+      context_object.openurl_ver = ""
+    end
+    
     transport.add_context_object(context_object)
     transport.extra_args["sfx.response_type"]="multi_obj_xml"
       

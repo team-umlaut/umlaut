@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctx:context-objects xmlns:ctx="info:ofi/fmt:xml:xsd:ctx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:ofi/fmt:xml:xsd:ctx http://www.openurl.info/registry/docs/info:ofi/fmt:xml:xsd:ctx">
+  <ctx:context-object timestamp="2007-11-12T16:39:00Z" version="Z39.88-2004" identifier="301">
+    <ctx:referent>
+      <ctx:identifier>info:doi/10.1086/508789</ctx:identifier>
+      <ctx:metadata-by-val>
+        <ctx:format>info:ofi/fmt:xml:xsd:oai_dc</ctx:format>
+        <ctx:metadata>
+          <rft:dc xmlns:rft="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">         
+            <dc:title>Resurrection and Appropriation: Reputational Trajectories, Memory Work, and the Political Use of Historical Figures</dc:title>
+            <dc:creator>Robert S. Jansen</dc:creator>
+            <dc:publisher>The University of Chicago Press</dc:publisher>
+            <dc:date>2007-02-27T13:27:58Z</dc:date>         
+            <dc:rights>&copy; 2007 by The University of Chicago. All rights reserved.</dc:rights>          
+            <dc:description><P>The Zapatistas and Sandinistas both invoked historical figures in their rhetoric, but they did so in very different ways. This variation is explained by a model of path-dependent memory work that is sensitive to how previous memory struggles enable and constrain subsequent uses of historical figures. Specifically, previous struggles produce distinct reputational trajectories that condition the potential utility of different modes of memory work. The cases illustrate two reputational trajectories, which are situated within a broader field of mnemonic possibilities. This article offers a provisional baseline for comparing contested memory projects and supplies a framework for analyzing the opportunities and constraints by which reputational trajectories condition memory work. It builds on a recent processual emphasis in the collective memory literature and suggests that the contentious politics literature needs to historicize its conception of culture and take seriously the operation of constraints on symbolic work.</P></dc:description>
+            <dc:description>10.1086/508789</dc:description>
+            <dc:source>American Journal of Sociology, Volume 112 (2007), P. 953-1007</dc:source>          
+            <dc:identifier>http://www.journals.uchicago.edu/cgi-bin/resolve?id=doi:10.1086/508789</dc:identifier>
+            <dc:format>application/html/pdf</dc:format>
+            <dc:lang>English</dc:lang>
+            <dc:type>journal article</dc:type>
+          </rft:dc>
+        </ctx:metadata>
+      </ctx:metadata-by-val>
+    </ctx:referent>      
+  </ctx:context-object>
+</ctx:context-objects>
