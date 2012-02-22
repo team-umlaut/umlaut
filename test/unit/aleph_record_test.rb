@@ -11,6 +11,7 @@ class AlephRecordTest < Test::Unit::TestCase
 
   # Test exception handling for bogus response.
   def test_bogus_response
+    skip("Won't work outside NYU.");
     aleph_record = Exlibris::Aleph::Record.new(@aleph_doc_library, @aleph_doc_number, @bogus_url)
     assert_raise(RuntimeError) { aleph_record.bib }
     assert_raise(RuntimeError) { aleph_record.holdings }
@@ -19,6 +20,7 @@ class AlephRecordTest < Test::Unit::TestCase
 
   # Test search for a single Primo document.
   def test_record
+    skip("Won't work outside NYU.");
     aleph_record = Exlibris::Aleph::Record.new(@aleph_doc_library, @aleph_doc_number, @rest_url)
     bib = aleph_record.bib
     assert_nil(aleph_record.error, "Failure in #{aleph_record.class} while calling bib: #{aleph_record.error}")

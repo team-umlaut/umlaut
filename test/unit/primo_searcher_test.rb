@@ -84,6 +84,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
 
   # Test search for a single Primo document.
   def test_search_by_doc_id
+    skip("Won't work outside NYU.");
     searcher = Exlibris::Primo::Searcher.new(@searcher_setup, {:primo_id => @primo_holdings_doc_id})
     assert_not_nil(searcher, "#{searcher.class} returned nil when instantiated.")
     search_results = searcher.response
@@ -94,6 +95,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
 
   # Test search for a Primo problem record
   def test_search_by_genre_discrepancy
+    skip("Won't work outside NYU.");
     searcher = Exlibris::Primo::Searcher.new(@searcher_setup, {:primo_id => @primo_test_problem_doc_id})
     assert_not_nil(searcher, "#{searcher.class} returned nil when instantiated.")
     search_results = searcher.response
@@ -104,6 +106,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
   end
   
   def test_search_by_bug1361
+    skip("Won't work outside NYU.");
     searcher = Exlibris::Primo::Searcher.new(@searcher_setup, {:primo_id => @primo_test_bug1361_id})
     assert_not_nil(searcher, "#{searcher.class} returned nil when instantiated.")
     search_results = searcher.response
@@ -116,6 +119,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
 
   # Test search for an invalid Primo document.
   def test_search_by_invalid_doc_id
+    skip("Won't work outside NYU.");
     assert_raise(RuntimeError) { 
       searcher = Exlibris::Primo::Searcher.new(@searcher_setup, {:primo_id => @primo_invalid_doc_id})
     }
@@ -123,6 +127,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
   
   # Test invalid setup.
   def test_search_by_invalid_setup1
+    skip("Won't work outside NYU.");
     assert_raise(RuntimeError) {
       searcher = Exlibris::Primo::Searcher.new({}, {:primo_id => @primo_invalid_doc_id})
     }
@@ -130,6 +135,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
   
   # Test invalid setup.
   def test_search_by_invalid_setup2
+    skip("Won't work outside NYU.");
     assert_raise(RuntimeError) {
       searcher = Exlibris::Primo::Searcher.new({:base_url => @base_url, :config => nil}, {:primo_id => @primo_invalid_doc_id})
     }
@@ -137,6 +143,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
   
   # Test base setup search for a single Primo document.
   def test_search_base_setup_record_id
+    skip("Won't work outside NYU.");
     searcher = Exlibris::Primo::Searcher.new({:base_url => @base_url, :institution => @institution}, {:primo_id => @primo_holdings_doc_id})
     holdings = searcher.holdings
     assert_instance_of(Array, holdings, "#{searcher.class} holdings is an unexpected object: #{holdings.class}")
@@ -152,6 +159,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
   
   # Test search by isbn.
   def test_search_by_isbn
+    skip("Won't work outside NYU.");
     searcher = Exlibris::Primo::Searcher.new(@searcher_setup, {:isbn => @primo_test_isbn})
     assert_not_nil(searcher, "#{searcher.class} returned nil when instantiated.")
     search_results = searcher.response
@@ -164,6 +172,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
   
   # Test search by isbn.
   def test_search_by_issn
+    skip("Won't work outside NYU.");
     searcher = Exlibris::Primo::Searcher.new(@searcher_setup_without_config, {:issn => "0002-8614"})
     assert_not_nil(searcher, "#{searcher.class} returned nil when instantiated.")
     search_results = searcher.response
@@ -176,6 +185,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
   
   # Test search by title/author/genre.
   def test_search_by_title_author_genre
+    skip("Won't work outside NYU.");
     searcher = Exlibris::Primo::Searcher.new(@searcher_setup, {:title => @primo_test_title, :author => @primo_test_author, :genre => @primo_test_genre})
     assert_not_nil(searcher, "#{searcher.class} returned nil when instantiated.")
     search_results = searcher.response
@@ -188,6 +198,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
   
   # Test search for a single Primo document w/ holdings.
   def test_holdings
+    skip("Won't work outside NYU.");
     searcher = Exlibris::Primo::Searcher.new(@searcher_setup, {:primo_id => @primo_holdings_doc_id})
     holdings = searcher.holdings
     assert_instance_of(Array, holdings, 
@@ -233,6 +244,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
 
   # Test search for a single Primo document w/ rsrcs.
   def test_rsrcs
+    skip("Won't work outside NYU.");
     searcher = Exlibris::Primo::Searcher.new(
       @searcher_setup, 
       { :primo_id => @primo_rsrcs_doc_id })
@@ -264,6 +276,7 @@ class PrimoSearcherTest < Test::Unit::TestCase
 
   # Test search for a single Primo document w/ tocs.
   def test_tocs
+    skip("Won't work outside NYU.");
     searcher = Exlibris::Primo::Searcher.new(
       @searcher_setup, 
       { :primo_id => @primo_tocs_doc_id })
@@ -291,72 +304,73 @@ class PrimoSearcherTest < Test::Unit::TestCase
   end
   
   def test_dedupmrg
-      searcher = Exlibris::Primo::Searcher.new(
-        @searcher_setup, 
-        { :primo_id => @primo_dedupmrg_doc_id })
-      holdings = searcher.holdings
-      assert_instance_of(Array, holdings, 
-        "#{searcher.class} holdings is an unexpected object: #{holdings.class}")
-      assert_equal(6, holdings.count, 
-        "#{searcher.class} returned 0 holdings for doc id: #{@primo_dedupmrg_doc_id}.")
-      first_holding = holdings.first
-      assert_instance_of(
-        Exlibris::Primo::Holding, 
-        first_holding, 
-        "#{searcher.class} first holding is an unexpected object: #{first_holding.class}")
-      test_data = { 
-        :record_id => "dedupmrg17343091", 
-        :source_id => "nyu_aleph", 
-        :original_source_id => "NYU01", 
-        :source_record_id => "000932393",
-        :institution_code => "NYU", 
-        :institution => "NYU", 
-        :library_code => "BWEB",
-        :library => "NYU Restricted Internet",
-        :status_code => "check_holdings", 
-        :status => "Check Availability", 
-        :id_one => "Internet Resources", 
-        :id_two => "(Newspaper Electronic access )", 
-        :collection => "Internet Resources", 
-        :call_number => "(Newspaper Electronic access )", 
-        :origin => "nyu_aleph000932393", 
-        :display_type => "journal", 
-        :coverage => [], 
-        :notes => "",
-        :url => "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=dedupmrg17343091&institution=NYU&vid=#{@vid}", 
-        :request_url => nil, 
-        :match_reliability => ServiceResponse::MatchExact, 
-        :request_link_supports_ajax_call => false }
-      test_data.each { |key, value|
-        assert_equal(
-          value, 
-          first_holding.send(key), 
-          "#{searcher.class} first holding has an unexpected #{key}: #{first_holding.send(key)}")
-      }
-      rsrcs = searcher.rsrcs
-      assert_instance_of(Array, rsrcs,
-        "#{searcher.class} rsrcs is an unexpected object: #{rsrcs.class}")
-      assert_equal(8, rsrcs.count,
-        "#{searcher.class} returned an unexpected amount of rsrcs (#{rsrcs.count}) for doc id: #{@primo_rsrcs_doc_id}.")
-      first_rsrc = rsrcs.first
-      assert_instance_of(
-        Exlibris::Primo::Rsrc, 
-        first_rsrc,
-        "#{searcher.class} first rsrc is an unexpected object: #{first_rsrc.class}")
-      test_data = { 
-        :record_id => "dedupmrg17343091", 
-        :v => "", 
-        :url => "https://ezproxy.library.nyu.edu/login?url=http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=7818",
-        :display => "1995 - Current Access via Proquest",
-        :institution_code => "NYU", 
-        :origin => "nyu_aleph000932393", 
-        :notes => "" }
-      test_data.each { |key, value|
-        assert_equal(
-          value, 
-          first_rsrc.send(key), 
-          "#{searcher.class} first rsrc has an unexpected #{key}: #{first_rsrc.send(key)}")
-      }
+    skip("Won't work outside NYU.");
+    searcher = Exlibris::Primo::Searcher.new(
+      @searcher_setup, 
+      { :primo_id => @primo_dedupmrg_doc_id })
+    holdings = searcher.holdings
+    assert_instance_of(Array, holdings, 
+      "#{searcher.class} holdings is an unexpected object: #{holdings.class}")
+    assert_equal(6, holdings.count, 
+      "#{searcher.class} returned 0 holdings for doc id: #{@primo_dedupmrg_doc_id}.")
+    first_holding = holdings.first
+    assert_instance_of(
+      Exlibris::Primo::Holding, 
+      first_holding, 
+      "#{searcher.class} first holding is an unexpected object: #{first_holding.class}")
+    test_data = { 
+      :record_id => "dedupmrg17343091", 
+      :source_id => "nyu_aleph", 
+      :original_source_id => "NYU01", 
+      :source_record_id => "000932393",
+      :institution_code => "NYU", 
+      :institution => "NYU", 
+      :library_code => "BWEB",
+      :library => "NYU Restricted Internet",
+      :status_code => "check_holdings", 
+      :status => "Check Availability", 
+      :id_one => "Internet Resources", 
+      :id_two => "(Newspaper Electronic access )", 
+      :collection => "Internet Resources", 
+      :call_number => "(Newspaper Electronic access )", 
+      :origin => "nyu_aleph000932393", 
+      :display_type => "journal", 
+      :coverage => [], 
+      :notes => "",
+      :url => "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=dedupmrg17343091&institution=NYU&vid=#{@vid}", 
+      :request_url => nil, 
+      :match_reliability => ServiceResponse::MatchExact, 
+      :request_link_supports_ajax_call => false }
+    test_data.each { |key, value|
+      assert_equal(
+        value, 
+        first_holding.send(key), 
+        "#{searcher.class} first holding has an unexpected #{key}: #{first_holding.send(key)}")
+    }
+    rsrcs = searcher.rsrcs
+    assert_instance_of(Array, rsrcs,
+      "#{searcher.class} rsrcs is an unexpected object: #{rsrcs.class}")
+    assert_equal(8, rsrcs.count,
+      "#{searcher.class} returned an unexpected amount of rsrcs (#{rsrcs.count}) for doc id: #{@primo_rsrcs_doc_id}.")
+    first_rsrc = rsrcs.first
+    assert_instance_of(
+      Exlibris::Primo::Rsrc, 
+      first_rsrc,
+      "#{searcher.class} first rsrc is an unexpected object: #{first_rsrc.class}")
+    test_data = { 
+      :record_id => "dedupmrg17343091", 
+      :v => "", 
+      :url => "https://ezproxy.library.nyu.edu/login?url=http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=7818",
+      :display => "1995 - Current Access via Proquest",
+      :institution_code => "NYU", 
+      :origin => "nyu_aleph000932393", 
+      :notes => "" }
+    test_data.each { |key, value|
+      assert_equal(
+        value, 
+        first_rsrc.send(key), 
+        "#{searcher.class} first rsrc has an unexpected #{key}: #{first_rsrc.send(key)}")
+    }
   end
 
   # def test_holdings_diacritics1

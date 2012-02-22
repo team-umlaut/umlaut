@@ -16,6 +16,7 @@ class AlephPatronTest < Test::Unit::TestCase
 
   # Test exception handling for bogus response.
   def test_bogus_response
+    skip("Won't work outside NYU.");
     patron = Exlibris::Aleph::Patron.new(@nyuidn, @bogus_url)
     assert_raise(MultiXml::ParseError) { patron.loans }
     assert_raise(MultiXml::ParseError) { patron.renew_loans() }
@@ -25,6 +26,7 @@ class AlephPatronTest < Test::Unit::TestCase
 
   # Test search for a single Primo document.
   def test_patron
+    skip("Won't work outside NYU.");
     patron = Exlibris::Aleph::Patron.new(@nyuidn, @rest_url)
     loans = patron.loans
     assert_nil(patron.error, "Failure in #{patron.class} while getting loans: #{patron.error}")

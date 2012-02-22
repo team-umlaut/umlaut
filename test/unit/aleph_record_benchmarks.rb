@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 class AlephRecordBenchMarks < Test::Unit::TestCase
   def setup
-    @primo_config = YAML.load_file("#{Rails.root}/config/umlaut_config/primo.yml")
+    @primo_config = YAML.load_file("#{Rails.root}/config/primo.yml")
     @nyu_aleph_config = @primo_config["sources"]["nyu_aleph"]
     @rest_url = @nyu_aleph_config["rest_url"]
     @aleph_doc_library = "NYU01"
@@ -12,6 +12,7 @@ class AlephRecordBenchMarks < Test::Unit::TestCase
 
   # Get benchmarks for calls to the Aleph API.
   def test_benchmarks
+    skip("Won't work outside NYU.");
     # Display performance benchmarks.
     time = Benchmark.bmbm do |results|
       results.report("Aleph items:") { @TESTS.times { 

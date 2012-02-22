@@ -88,6 +88,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   end
   
   def test_primo_service_benchmarks
+    skip("Won't work outside NYU.");
     request = requests(:primo_id_request)
     Benchmark.bmbm do |results|
       results.report("PrimoService Minimum Config:") {
@@ -149,6 +150,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   # end
   
   def test_primo_service_minimum
+    skip("Won't work outside NYU.");
     request = requests(:primo_id_request)
     @primo_minimum.handle(request)
     request.referent.referent_values.reset
@@ -206,6 +208,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   end
   
   def test_primo_service_minimum_no_config
+    skip("Won't work outside NYU.");
     request = requests(:primo_id_request)
     @primo_minimum_no_config.handle(request)
     request.referent.referent_values.reset
@@ -263,6 +266,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   end
   
   def test_primo_service_legacy_settings_minimum
+    skip("Won't work outside NYU.");
     request = requests(:primo_id_request)
     @primo_old_minimum.handle(request)
     request.referent.referent_values.reset

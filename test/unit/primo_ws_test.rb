@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PrimoWSTest < Test::Unit::TestCase
+class PrimoWSTest < ActiveSupport::TestCase
   PNX_NS = {'pnx' => 'http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib'}
   SEARCH_NS = {'search' => 'http://www.exlibrisgroup.com/xsd/jaguar/search'}
   
@@ -59,6 +59,7 @@ class PrimoWSTest < Test::Unit::TestCase
   # end
 
   def test_bogus_response
+    skip("Won't work outside NYU.");
     assert_raise(SOAP::HTTPStreamError) {
       ws = Exlibris::PrimoWS::GetRecord.new(@primo_test_doc_id, @bogus_404_url)
     }
@@ -69,6 +70,7 @@ class PrimoWSTest < Test::Unit::TestCase
   
   # Test GetRecord for a single Primo document.
   def test_get_record
+    skip("Won't work outside NYU.");
     ws = Exlibris::PrimoWS::GetRecord.new(@primo_test_doc_id, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
     assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
@@ -77,16 +79,19 @@ class PrimoWSTest < Test::Unit::TestCase
   end
   
   def test_count_get_record
+    skip("Won't work outside NYU.");
     ws = Exlibris::PrimoWS::GetRecord.new(@primo_test_doc_id, @base_url)
     assert_equal("1", ws.response.at("//search:DOCSET", SEARCH_NS)["TOTALHITS"])
   end
   
   def test_count_search_brief
+    skip("Won't work outside NYU.");
     ws = Exlibris::PrimoWS::SearchBrief.new(@isbn_search_params, @base_url)
     assert_equal("1", ws.response.at("//search:DOCSET", SEARCH_NS)["TOTALHITS"])
   end
   
   def test_get_genre_discrepancy
+    skip("Won't work outside NYU.");
     ws = Exlibris::PrimoWS::GetRecord.new(@primo_test_problem_doc_id, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
     assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
@@ -97,6 +102,7 @@ class PrimoWSTest < Test::Unit::TestCase
   
   # Test GetRecord with invalid Primo doc id.
   def test_get_bogus_record
+    skip("Won't work outside NYU.");
     assert_raise(RuntimeError) {
       ws = Exlibris::PrimoWS::GetRecord.new(@primo_invalid_doc_id, @base_url)
     }
@@ -104,6 +110,7 @@ class PrimoWSTest < Test::Unit::TestCase
   
   # Test SearchBrief by isbn.
   def test_isbn_search
+    skip("Won't work outside NYU.");
     ws = Exlibris::PrimoWS::SearchBrief.new(@isbn_search_params, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
     assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
@@ -112,6 +119,7 @@ class PrimoWSTest < Test::Unit::TestCase
   
   # Test SearchBrief by issn.
   def test_issn_search
+    skip("Won't work outside NYU.");
     ws = Exlibris::PrimoWS::SearchBrief.new(@issn_search_params, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
     assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
@@ -120,6 +128,7 @@ class PrimoWSTest < Test::Unit::TestCase
   
   # Test SearchBrief by title.
   def test_title_search
+    skip("Won't work outside NYU.");
     ws = Exlibris::PrimoWS::SearchBrief.new(@title_search_params, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
     assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
@@ -128,6 +137,7 @@ class PrimoWSTest < Test::Unit::TestCase
   
   # Test SearchBrief by author.
   def test_author_search
+    skip("Won't work outside NYU.");
     ws = Exlibris::PrimoWS::SearchBrief.new(@author_search_params, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
     assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
@@ -136,6 +146,7 @@ class PrimoWSTest < Test::Unit::TestCase
   
   # Test SearchBrief by title/author/genre.
   def test_title_author_genre_search
+    skip("Won't work outside NYU.");
     ws = Exlibris::PrimoWS::SearchBrief.new(@title_author_genre_search_params, @base_url)
     assert_not_nil(ws, "#{ws.class} returned nil when instantiated.")
     assert_instance_of( Nokogiri::XML::Document, ws.response, "#{ws.class} response is an unexpected object: #{ws.response.class}")
