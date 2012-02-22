@@ -209,6 +209,12 @@ module UmlautConfigurable
       # Output timing of service execution to logs
       log_service_timing (Rails.env == "development")
       
+      # Execute service wave concurrently with threads?
+      # Set to false to execute serially one after the other with
+      # no threads instead. At this point, believed only useful
+      # for debugging and analysis. 
+      threaded_service_wave true
+      
       
       #####
       # Pieces of content on a Resolve page can be declaritively configured. 

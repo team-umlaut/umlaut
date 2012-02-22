@@ -5,12 +5,13 @@
 class ServiceWave
   attr_accessor :services
   attr_accessor :priority_level
+  attr_reader :config
 
   # Priority level is purely information, used for debug output. 
   def initialize(service_objects, priority_level = nil, config = UmlautController.umlaut_config)
     @services = service_objects
     @priority_level = priority_level
-
+    @config = config
     @log_timing = config.lookup!("log_service_timing", true)
 
     # Don't forward exceptions, that'll interrupt other service processing.
@@ -44,58 +45,75 @@ class ServiceWave
     Rails.logger.info(TermColor.color("Umlaut: Launching service wave #{@priority_level}", :yellow) + ", request #{request.id}") if @log_timing
 
     
+    
     threads = []
     some_service_executed = false
     @services.each do | service |
       some_service_executed = true
       local_request = nil
-        
-      threads << Thread.new(request.id, service.clone) do | request_id, local_service |
-        # Deal with ruby's brain dead thread scheduling by setting
-        # bg threads to a lower priority so they don't interfere with fg
-        # threads.
-        Thread.current.priority = -1
+      
+      service_start = Time.now          
 
-        # Save some things in thread local hash useful for debugging
-        Thread.current[:debug_name] = local_service.class.name
-        Thread.current[:service] = service
+      if config.lookup!("threaded_service_wave", true)
 
-        # Tell our AR extension not to allow implicit checkouts
-        ActiveRecord::Base.forbid_implicit_checkout_for_thread! if ActiveRecord::Base.respond_to?("forbid_implicit_checkout_for_thread!")
-        begin
-          service_start = Time.now          
-          local_request = ActiveRecord::Base.connection_pool.with_connection do
-            # pre-load all relationships so no ActiveRecord activity will be
-            # needed later to see em. 
-            Request.includes(:referent, :service_responses, :dispatched_services).find(request_id)
+      
+        threads << Thread.new(request.id, service.clone) do | request_id, local_service |
+          # Deal with ruby's brain dead thread scheduling by setting
+          # bg threads to a lower priority so they don't interfere with fg
+          # threads.
+          Thread.current.priority = -1
+  
+          # Save some things in thread local hash useful for debugging
+          Thread.current[:debug_name] = local_service.class.name
+          Thread.current[:service] = service
+  
+          # Tell our AR extension not to allow implicit checkouts
+          ActiveRecord::Base.forbid_implicit_checkout_for_thread! if ActiveRecord::Base.respond_to?("forbid_implicit_checkout_for_thread!")
+          begin
+            local_request = ActiveRecord::Base.connection_pool.with_connection do
+              # pre-load all relationships so no ActiveRecord activity will be
+              # needed later to see em. 
+              Request.includes(:referent, :service_responses, :dispatched_services).find(request_id)
+            end
+            
+  
+            if prepare_dispatch!(local_request, local_service, session_id)                          
+              local_service.handle_wrapper(local_request)
+            else
+              Rails.logger.info("NOT launching service #{local_service.service_id},  level #{@priority_level}, request #{local_request.id}: not in runnable state") if @log_timing
+            end
+            
+           
+          rescue Exception => e
+            # We may not be able to access ActiveRecord because it may
+            # have been an AR connection error, perhaps out of connections
+            # in the pool. So log and record in non-AR ways. 
+            # the code waiting on our thread will see exception
+            # reported in Thread local var, and log it AR if possible. 
+            
+            
+            # Log it too, although experience shows it may never make it to the 
+            # log for mysterious reasons. 
+            Rails.logger.error(TermColor.color("Umlaut: Threaded service raised exception.", :red, true) + "Service: #{service.service_id}, #{e}\n  #{clean_backtrace(e).join("\n  ")}")
+            
+            # And stick it in a thread variable too
+            Thread.current[:exception] = e                      
+          ensure
+            Rails.logger.info(TermColor.color("Umlaut: Completed service #{local_service.service_id}", :yellow)+ ",  level #{@priority_level}, request #{local_request && local_request.id}: in #{Time.now - service_start}.") if @log_timing
           end
-          
-
-          if prepare_dispatch!(local_request, local_service, session_id)                          
-            local_service.handle_wrapper(local_request)
-          else
-            Rails.logger.info("NOT launching service #{local_service.service_id},  level #{@priority_level}, request #{local_request.id}: not in runnable state") if @log_timing
-          end
-          
-         
-        rescue Exception => e
-          # We may not be able to access ActiveRecord because it may
-          # have been an AR connection error, perhaps out of connections
-          # in the pool. So log and record in non-AR ways. 
-          # the code waiting on our thread will see exception
-          # reported in Thread local var, and log it AR if possible. 
-          
-          
-          # Log it too, although experience shows it may never make it to the 
-          # log for mysterious reasons. 
-          Rails.logger.error(TermColor.color("Umlaut: Threaded service raised exception.", :red, true) + "Service: #{service.service_id}, #{e}\n  #{clean_backtrace(e).join("\n  ")}")
-          
-          # And stick it in a thread variable too
-          Thread.current[:exception] = e                      
-        ensure
-          Rails.logger.info(TermColor.color("Umlaut: Completed service #{local_service.service_id}", :yellow)+ ",  level #{@priority_level}, request #{local_request && local_request.id}: in #{Time.now - service_start}.") if @log_timing
         end
-      end                    
+      else # not threaded
+        begin
+          if prepare_dispatch!(request, service, session_id)                          
+              service.handle_wrapper(request)
+          else
+              Rails.logger.info("NOT launching service #{service.service_id},  level #{@priority_level}, request #{request.id}: not in runnable state") if @log_timing
+          end
+        ensure
+          Rails.logger.info(TermColor.color("Umlaut: Completed service #{service.service_id}", :yellow)+ ",  level #{@priority_level}, request #{request && request.id}: in #{Time.now - service_start}.") if @log_timing
+        end
+      end
+      
     end
 
     # Wait for all the threads to complete, if any. 

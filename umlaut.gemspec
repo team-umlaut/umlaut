@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency "jquery-rails"         # our built in JS uses jquery
   
   s.add_dependency "nokogiri"             # for XML parsing
-  s.add_dependency "openurl", ">= 0.2.0"  # for OpenURL parsing and creating
+  s.add_dependency "openurl", ">= 0.3.0"  # for OpenURL parsing and creating
   s.add_dependency "marc", "~> 0.4.3"     # for parsing Marc files in catalog/ils adaptors
   s.add_dependency "isbn"                 # used by amazon among others
   s.add_dependency "htmlentities"         # used by SFX adapter to unescape &ent;s
