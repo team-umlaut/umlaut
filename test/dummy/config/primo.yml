@@ -1,0 +1,271 @@
+libraries:
+  "BAFC": "NYU Bobst Avery Fisher Center"
+  "BARCH": "NYU Bobst University Archives"
+  "BCHIL": "NYU Bobst Children&#39;s Literature"
+  "BFALE": "NYU Bobst Fales"
+  "BHS": "Brooklyn Historical Society"
+  "BLCC": "NYU Bobst Library"
+  "BOBST": "NYU Bobst"
+  "BREF": "NYU Bobst Reference"
+  "BREF6": "NYU Bobst 6th Floor Reference"
+  "BTAM": "NYU Bobst Tamiment/Wagner Archives"
+  "BWEB": "NYU Restricted Internet"
+  "CARCH": "Cooper Union Archives"
+  "CCLOS": "Cooper Union Closed Stacks"
+  "CGEN": "Cooper Union General"
+  "CMEZZ": "Cooper Union Mezzanine"
+  "CMICRO": "Cooper Union Microform"
+  "COUR": "NYU Courant"
+  "CPER": "Cooper Union Periodicals"
+  "CREF": "Cooper Union Reference"
+  "CRES": "Cooper Union Reserves"
+  "CU": "Cooper Union"
+  "CWEB": "Cooper Union Restricted Internet Resources"
+  "IFA": "NYU Inst Fine Arts"
+  "IFAC": "NYU Inst Fine Arts Conservation"
+  "ISAW": "NYU Inst Study Ancient World"
+  "KEV": "NYU Kevorkian"
+  "LAPI": "NYU La Pietra (Italy)"
+  "NABUD": "NYU Abu Dhabi Library (UAE)"
+  "NOFFS": "NYU Offsite Storage"
+  "NSFO": "New School Fogelman Library"
+  "NSGI": "New School Gimbel Library"
+  "NSKE": "New School Kellen Archives Library"
+  "NSOS": "New School Offsite Storage"
+  "NSSC": "New School Scherman Library"
+  "NYHS": "New-York Historical Society"
+  "NYHSBR": "NYHS Broadsides"
+  "NYHSLAN": "NYHS Landauer"
+  "NYHSM": "New-York Historical Society"
+  "NYHSMAPS": "NYHS Maps"
+  "NYHSMSS": "NYHS Mss Collection"
+  "NYHSPAM": "NYHS Pamphlets"
+  "NYHSPR": "NYHS Print Room"
+  "NYHSREF": "NYHS Reference"
+  "NYSID": "New York School of Interior Design"
+  "REI": "NYU Real Estate"
+  "TWEB": "New School Restricted Internet"
+  "WEB": "Unrestricted Internet Access"
+aleph_sub_library_codes:
+  "BARCH": "BOBST"
+  "BCHIL": "BOBST"
+  "BHS": "KBHS"
+  "BREF": "BOBST"
+  "CARCH": "CU"
+  "CCLOS": "CU"
+  "CGEN": "CU"
+  "CMEZZ": "CU"
+  "CMICRO": "CU"
+  "COUR": "NCOUR"
+  "CPER": "CU"
+  "CREF": "CU"
+  "CRES": "CU"
+  "CWEB": "CU"
+  "IFA": "NIFA"
+  "IFAC": "NIFAC"
+  "ISAW": "NISAW"
+  "KEV": "NKEV"
+  "LAPI": "NLAPI"
+  "NSFO": "TNSFO"
+  "NSGI": "TNSGI"
+  "NSKE": "TNSKE"
+  "NSOS": "TNSOS"
+  "NSSC": "TNSSC"
+  "NYHSBR": "NYHS"
+  "NYHSLAN": "NYHS"
+  "NYHSM": "NYHS"
+  "NYHSMAPS": "NYHS"
+  "NYHSMSS": "NYHS"
+  "NYHSPAM": "NYHS"
+  "NYHSPR": "NYHS"
+  "NYHSREF": "NYHS"
+  "REI": "NREI"
+statuses:
+  "available": "Available"
+  "requested": "Requested"
+  "unavailable": "Check Availability"
+  "check_holdings": "Check Availability"
+  "request_ill": "Request ILL"
+  "billed_as_lost": "Request ILL"
+  "offsite": "Offsite Available"
+  "processing": "In Processing"
+  "in_transit": "In Processing"
+  "ask_afc": "Ask at Avery Fisher Center"
+  "ask_archives": "Ask at NYU Archives"
+  "ask_fales": "Ask at Fales"
+  "ask_reference": "Ask at Reference"
+  "ask_tam": "Ask at Tamiment"
+  "at_bindery": "At Bindery"
+  "on_order": "On Order"
+  "on_exhibit": "On Exhibit"
+  
+sources:
+  nyu_aleph:
+     base_url: "http://alephstage.library.nyu.edu"
+     rest_url: "http://alephstage.library.nyu.edu:1891/rest-dlf"
+     illiad_url: "http://illdev.library.nyu.edu"
+     type: aleph
+     class_name: NYUAleph
+     local_base: "PRIMOCOMMON"
+     "866$l_mappings": 
+       Bobst: 
+         sub_library: BOBST
+         collection: MAIN
+       NYHistSoc: 
+         sub_library: NYHS
+         collection: MAIN
+       Bobst Microform: 
+         sub_library: BOBST
+         collection: MFORM
+       Bobst Tamiment: 
+         sub_library: BTAM
+         collection: TAM
+       Bobst REF6: 
+         sub_library: BREF6
+         collection: RF6
+       Bobst REF6 IntlDocs: 
+         sub_library: BREF6
+         collection: RF6IN
+       Bobst SpecCol Downtown: 
+         sub_library: BFALE
+         collection: FDOWN
+       IFA: 
+         sub_library: NIFA
+         collection: MAIN
+       Cooper: 
+         sub_library: CU
+         collection: MAIN
+       Cooper Periodicals: 
+         sub_library: CU
+         collection: PERIO
+       Bobst SpecCol: 
+         sub_library: BFALE
+         collection: FALES
+       Bobst Tamiment Microfilm: 
+         sub_library: BTAM
+         collection: MAIN
+       Parsons: 
+         sub_library: TNSGI
+         collection: MAIN
+       NewSchool Reference: 
+         sub_library: TNSFO
+         collection: REF
+       NewSchool Periodicals: 
+         sub_library: TNSFO
+         collection: PERIO
+       Bobst REF1: 
+         sub_library: BOBST
+         collection: REF1
+       Courant: 
+         sub_library: NCOUR
+         collection: MAIN
+       NewSchool: 
+         sub_library: TNSFO
+         collection: MAIN
+       Courant Periodicals:
+         sub_library: NCOUR
+         collection: PERIO
+       RealEstate:
+         sub_library: NREI
+         collection: MAIN
+       ConservIFA: 
+         sub_library: NIFAC
+         collection: MAIN
+       Bobst REF9: 
+         sub_library: BOBST
+         collection: REF9
+       Cooper Reference: 
+         sub_library: CU
+         collection: REF
+       Bobst Offsite: 
+         sub_library: BOBST
+         collection: MAIN
+       NYIntDes: 
+         sub_library: NYSID
+         collection: MAIN
+       Cooper Mezzanine: 
+         sub_library: CU
+         collection: MEZZ
+       NYHistSoc Bella C. Landauer Collection of Business and Advertising Ephemera.: 
+         sub_library: NYHS
+         collection: LANDA
+       Bobst Tamiment Microform: 
+         sub_library: BTAM
+         collection: MAIN
+       Bobst Ref6: 
+         sub_library: BREF6
+         collection: RF6
+       Bobst Archives: 
+         sub_library: BOBST
+         collection: ARCH
+       Bobst REF6 IntlRef: 
+         sub_library: BREF6
+         collection: RF6IR
+       Brooklyn HistSoc Microform: 
+         sub_library: KBHS
+         collection: MFORM
+       IFA Periodicals: 
+         sub_library: NIFA
+         collection: PERIO
+       Parsons Reference: 
+         sub_library: TNSGI
+         collection: REF
+       N-YHistSoc Bella C. Landauer Collection of Business and Advertising Ephemera.: 
+         sub_library: NYHS
+         collection: LANDA
+       Mannes: 
+         sub_library: TNSSC
+         collection: MAIN
+       Bobst REF6 Index: 
+         sub_library: BREF6
+         collection: RF6I
+       Bobst REF6 Desk: 
+         sub_library: BREF6
+         collection: RF6DR
+       IFA Offsite: 
+         sub_library: NIFA
+         collection: OFFSI
+       Bobst REF6 USDocs: 
+         sub_library: BREF6
+         collection: RF6US
+       ConservIFA Periodicals: 
+         sub_library: NIFAC
+         collection: PERIO
+       Bobst REF6I Microform: ???
+       Bobst REF6 Microform: ???
+       Bobst REF6 Micro: ???
+     statuses:
+       available: ["On Shelf", "Available"]
+       requested: ["Requested"]
+       request_ill: ["Request ILL"]
+       billed_as_lost: ["Billed as Lost", "Claimed Returned"]
+       offsite: ["Offsite Available"]
+       checked_out: !ruby/regexp '/([0-9]{2}\/[0-9]{2}\/[0-9]{2})/'
+       unavailable: ["Unavailable"]
+       processing: ["In Processing", "In Transit"]
+       ask_afc: ["Ask at Avery Fisher Center"]
+       ask_archives: ["Ask at NYU Archives"]
+       ask_tam: ["Ask at Tamiment"]
+       ask_fales: ["Ask at Fales"]
+       ask_reference: ["Ask at Reference"]
+       on_exhibit: ["On Exhibit"]
+       #new_books: ["New Books Display", "New Books Display"]
+       #sorting: ["Sorting Shelves", "Sorting Shelves", "Sorting Shelves"]
+       #bound: "Bound"
+       #order_initiated: "Order initiated"
+     requestable_statuses: ["checked_out", "offsite", available_requestable, "Depository", "Offsite Available"]
+     requestable_collections: ["checked_out", "offsite", available_requestable, "Depository", "Offsite Available"]
+  COURSES:
+     base_url: "http://alephstage.library.nyu.edu"
+     rest_url: "http://alephstage.library.nyu.edu:1891/rest-dlf"
+     illiad_url: "http://illdev.library.nyu.edu"
+     type: aleph
+     class_name: NYUAleph
+     local_base: "PRIMOCOMMON"
+  ADCOURSES:
+     base_url: "http://alephstage.library.nyu.edu"
+     rest_url: "http://alephstage.library.nyu.edu:1891/rest-dlf"
+     illiad_url: "http://illdev.library.nyu.edu"
+     type: aleph
+     class_name: NYUAleph
+     local_base: "PRIMOCOMMON"
