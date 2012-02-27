@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ServiceTest < Test::Unit::TestCase
+class ServiceTest < ActiveSupport::TestCase
+  fixtures :requests
   
       # A service that does nothing!
       class DummyService < Service
