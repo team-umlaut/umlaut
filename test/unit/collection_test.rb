@@ -2,30 +2,29 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class CollectionTest < ActiveSupport::TestCase
     fixtures :requests, :referents, :referent_values, :sfx_urls
-
-    def setup      
-      # Make something that looks like a session hash type thing, so we
-      # can init a collection with it. 
-      @fake_session = Hash.new
-      class << @fake_session
-         def session_id ; "000001" ; end
-      end
-    end
-
      
+    def setup
+      # will get from ./config/services.yml. You want to test a different
+      # set of services? Have to set em in ServiceStore too, as in general
+      # things passed to new Collection are expected to be in ServiceStore
+      @services = ServiceStore.config["default"]["services"]
+      @request = requests(:simple_request)
+    end
+    
     def test_collection_instantiate
-      collection = Collection.new(requests(:simple_request) , @fake_session)
+      collection = Collection.new(@request , @services)
 
       new_services = collection.instantiate_services!
+
       assert_not_nil new_services
-      assert new_services.length > 0
+      assert new_services.length > 0, "no services returned"
       new_services.each do |s|
         assert_kind_of Service, s
       end
     end
 
     def test_instantiate_creates_new
-      collection = Collection.new(requests(:simple_request) , @fake_session)
+      collection = Collection.new(@request , @services)
       
       s1 = collection.instantiate_services!
       s2 = collection.instantiate_services!
@@ -35,7 +34,7 @@ class CollectionTest < ActiveSupport::TestCase
     end
 
     def test_service_level
-      collection = Collection.new(requests(:simple_request) , @fake_session)
+      collection = Collection.new(@request , @services)
 
       services = collection.instantiate_services!(:level => 'c')
       
@@ -43,7 +42,7 @@ class CollectionTest < ActiveSupport::TestCase
     end
 
     def test_requests_set
-      collection = Collection.new(requests(:simple_request) , @fake_session)
+      collection = Collection.new(@request , @services)
 
       services = collection.instantiate_services!(:level => 'c')
 
@@ -53,16 +52,16 @@ class CollectionTest < ActiveSupport::TestCase
     end
 
     def test_get_single_service
-      collection = Collection.new(requests(:simple_request) , @fake_session)
+      collection = Collection.new(@request , @services)
 
-      service = collection.instantiate_service!("UlrichsCover")
+      service = collection.instantiate_services!(:ids => ["UlrichsCover"]).first
 
       assert_not_nil service, "Service for UlrichsCover not returned"
       assert_not_nil service.request, "Service for UlrichsCover does not have request set."      
     end
 
     def test_get_nonexisting_task
-      collection = Collection.new(requests(:simple_request) , @fake_session)
+      collection = Collection.new(@request , @services)
 
       null_services = collection.instantiate_services!(:task => :no_such_task)
 
