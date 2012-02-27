@@ -29,6 +29,10 @@ class ServiceStore
       config.each_pair do |group_name, group|
         @@service_definitions.merge!(  group["services"]  ) if group["services"]
       end
+      # set service_id key in each based on hash key
+      @@service_definitions.each_pair do |key, hash|
+        hash["service_id"] =  key
+      end
     end
     return @@service_definitions
   end
