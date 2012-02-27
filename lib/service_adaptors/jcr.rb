@@ -10,7 +10,7 @@
 # You need to register for the  the Thomson 'Links Article Match Retrieval'
 # (LAMR) service api, which is used here (and also in the Isi plugin). To
 # register, see:
-# http://isiwebofknowledge.com/products_tools/products/related/trlinks/.
+# http://wokinfo.com/products_tools/products/related/amr/
 #
 # You register by IP address, so no API key is needed once your registration
 # goes through. 
