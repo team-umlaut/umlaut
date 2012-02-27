@@ -18,7 +18,13 @@ class Collection
   # configs
   attr_accessor :response_expire_interval, :response_expire_crontab_format, :background_service_timeout, :requeue_failedtemporary_services
   
-   
+  # a_umlaut_request is an UmlautRequest, representing a request for services for a context
+  # object. 
+  # service_hash is a hash of hashes with service definitions, as would 
+  # be in services.yml
+  # config is a Confstruct::Configuration associated with the current controller,
+  # has a few config options in it relevant to collection service exec; but
+  # don't pass in, we'll use a blank one with default values, no prob. 
   def initialize(a_umlaut_request, service_hash, config = Confstruct::Configuration.new)    
     self.umlaut_request = a_umlaut_request
     
