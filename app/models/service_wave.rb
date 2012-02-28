@@ -42,7 +42,7 @@ class ServiceWave
     return if (@services.nil? || @services.empty?)
 
     bundle_start = Time.now
-    Rails.logger.info(TermColor.color("Umlaut: Launching service wave #{@priority_level}", :yellow) + ", request #{request.id}") if @log_timing
+    Rails.logger.info(TermColor.color("Umlaut: Launching service wave #{@priority_level} #{'(non-threaded)' unless config.lookup!("threaded_service_wave", true) }", :yellow) + ", request #{request.id}") if @log_timing
 
     
     
