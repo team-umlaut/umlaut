@@ -388,11 +388,7 @@ class SectionRenderer
       when true, false
         @options[:visibility]
       when :any_services
-        # do any services exist which even potentially generate our types, even
-        # if they've completed without doing so?. 
-        nil != @umlaut_request.dispatched_services.to_a.find do |ds|
-          ! (service_type_values & ds.service.service_types_generated ).empty? 
-        end
+        any_services?
       when :in_progress
         # Do we have any of our types generated, or any services in progress
         # that might generate them?
@@ -406,6 +402,14 @@ class SectionRenderer
         # It's a lambda, which takes @umlaut_request as an arg
         @options[:visibility].call(self)
       else true        
+    end
+  end
+  
+  # do any services exist which even potentially generate our types, even
+  # if they've completed without doing so?.         
+  def any_services?
+    nil != @umlaut_request.dispatched_services.to_a.find do |ds|
+        ! (service_type_values & ds.service.service_types_generated ).empty? 
     end
   end
 
