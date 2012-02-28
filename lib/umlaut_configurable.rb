@@ -349,6 +349,7 @@ module UmlautConfigurable
         # custom visibility, show it for item-level cites,
         # or if we actually have some
         visibility(  lambda do |renderer|
+                        renderer.any_services? &&
                         (! renderer.request.title_level_citation?) ||
                         (! renderer.responses_empty?)
                       end )
