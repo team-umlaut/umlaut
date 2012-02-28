@@ -2,22 +2,10 @@ class Referent < ActiveRecord::Base
   # for shortcut metadata manipulations
   include MetadataHelper
   
-  # Shortcuts are really used as retrieval keys to 'shortcut' matching
-  # referent. They hold normalized value (use ReferentValue.normalize) or
-  # empty string. Never nil. 
-  @@shortcut_attributes = [:atitle, :title, :issn, :isbn, :volume, :year]
+
   has_many :requests
   has_many :referent_values
   has_many :permalinks
-
-  def before_validation_on_create
-    # shortcuts initialize to empty string, they should never be null.
-    @@shortcut_attributes.each do |key|
-      self[key] = "" if self[key].nil?
-    end
-  end
-  
-
 
   # Does call save! on referent created.
   # :permalink => false if you already have a permalink and don't
