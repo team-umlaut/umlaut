@@ -62,7 +62,7 @@ class Request < ActiveRecord::Base
     # Okay, if we found a req, it might NOT have a referent, it might
     # have been purged. If so, create a new one.
     if ( req && ! req.referent )
-      req.referent = Referent.find_or_create_by_context_object(context_object, req.referrer)
+      req.referent = Referent.create_by_context_object(context_object)
     end
 
     unless (req || options[:allow_create] == false)
@@ -367,7 +367,7 @@ class Request < ActiveRecord::Base
    
     # No id given, or no object found? Create it. 
     unless (rft )
-      rft = Referent.find_or_create_by_context_object(context_object)
+      rft = Referent.create_by_context_object(context_object)
     end
 
     # Create the Request

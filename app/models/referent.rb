@@ -17,69 +17,7 @@ class Referent < ActiveRecord::Base
     end
   end
   
-  # When provided an OpenURL::ContextObject, it will return a Referent object
-  # (if one exists). At least that's the intent. 
-  #This turns out to be a really
-  # tricky task, identifying when two citations that may not match exactly
-  # are the same citation. So this doesn't really work well--we err
-  # on the side of missing existing matches, better than finding
-  # a false match. So there are seldom matches found. A particular
-  # problem is that when the Referent is enhanced by a service,
-  # it will no longer match _itself_ as it came in! Oh well. 
-  def self.find_by_context_object(co)
-    
-    rft = co.referent
 
-        
-    # Try to find for re-use by special indexed shortcut values. Create hash
-    # of shortcuts. 
-    
-    # Preload values as empty, even if they aren't found in our
-    # incoming referent--we want to find a match with them empty too, then! 
-    shortcuts = {:atitle=>"", :title=>"", :issn=>"", :isbn=>"", :volume=>"", :year=>""}
-    
-    # Special handling of title
-    incoming_title = rft.metadata['jtitle'] || rft.metadata['btitle'] || rft.metadata['title']
-    # DC OpenURL is an array, not a single value. Grr. 
-    incoming_title = incoming_title[0] if incoming_title.kind_of?(Array)
-    shortcuts[:title] = ReferentValue.normalize(incoming_title) if incoming_title
-    # Special handling of date/year, since we use year instead of date for
-    # stored shortcut. 
-    # I don't know why.
-    shortcuts[:year] = rft.metadata['date'] if rft.metadata['date']
-
-    # Other four. 
-    [:atitle, :issn, :isbn, :volume].each do |att|
-      shortcuts[att] = ReferentValue.normalize( rft.metadata[att.to_s]) if rft.metadata[ att.to_s ]
-    end
-    # Don't look up by shortcuts if they're ALL blank. That doesn't do us well.
-    found_rft = nil
-    found_rft = Referent.find(:first, :conditions => shortcuts) if  shortcuts.values.find {|v| ! v.empty?}
-    if ( found_rft && found_rft.metadata_intersects?( rft ) )
-      return found_rft
-    end
-    
-    # found nothing?
-    return nil
-  end
-
-  # When provided an OpenURL::ContextObject, it will return a Referent object
-  # (creating one if doesn't already exist)  . At least that's the idea.
-  # But see caveats at #find_by_context_object . Most of the time
-  # this ends up creating a new Referent.
-  # pass in referrer for source-specific referent munging. 
-  def self.find_or_create_by_context_object(co)
-    # Okay, we need to do some pre-processing on weird context objects
-    # sent by, for example, firstSearch.
-    self.clean_up_context_object(co)
-    
-    if rft = Referent.find_by_context_object(co) 
-      return rft
-    else
-      rft = Referent.create_by_context_object(co)
-      return rft
-    end
-  end
 
   # Does call save! on referent created.
   # :permalink => false if you already have a permalink and don't
@@ -87,9 +25,9 @@ class Referent < ActiveRecord::Base
   def self.create_by_context_object(co, options = {})    
     options = { :permalink => UmlautController.umlaut_config.create_permalinks    
     }.merge(options)
-    
-    
+        
     self.clean_up_context_object(co)    
+    
     rft = Referent.new
 
     # Wrap everything in a transaction for better efficiency, at least
