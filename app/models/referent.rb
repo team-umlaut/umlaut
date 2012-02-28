@@ -1,3 +1,11 @@
+# Note: There are a few actual attributes stored as Columns in referent --
+# these were originally used for identifying a Referent identifying the
+# 'same thing' as an incoming OpenURL, to re-use it. But we don't re-use
+# cached referents anymore. So these attributes are NOT USED -- actual
+# values are over in ReferentValues. But the attributes are left for now
+# (and set) merely for making it easier to eyeball the database by hand:
+# atitle, title, issn, isbn, volume, year. (why no issue/page number? hell
+# if i know). 
 class Referent < ActiveRecord::Base
   # for shortcut metadata manipulations
   include MetadataHelper
