@@ -19,8 +19,13 @@ class StoreController < UmlautController
       # And a referrent, no referrer for now, we'll restore it later. 
       referent = Referent.create_by_context_object( stored_co, nil, :permalink => false )
       perm.referent = referent
-      perm.save!
     end
+
+    perm.last_access = Time.now # keep track of when permalink last actually retrieved
+
+    # will catch possible new referent to be saved, as well as
+    # update to last_access
+    perm.save!
     
 
     unless ( referent )
