@@ -22,10 +22,11 @@ class UmlautInit < ActiveRecord::Migration
     add_index "dispatched_services", ["request_id", "service_id"], :name => "dptch_request_id"
   
     create_table "permalinks" do |t|
-      t.integer "referent_id",                           :default => 0
-      t.date    "created_on",                                           :null => false
+      t.integer "referent_id",     :default => 0
+      t.date    "created_on",      :null => false
       t.text    "context_obj_serialized"
-      t.string  "orig_rfr_id",            :limit => 256
+      t.string  "orig_rfr_id",     :limit => 256
+      t.date    "last_access"
     end
   
     add_index "permalinks", ["referent_id"], :name => "plink_referent_idx"

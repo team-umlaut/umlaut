@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111228211210) do
+ActiveRecord::Schema.define(:version => 20120229192032) do
 
   create_table "clickthroughs", :force => true do |t|
     t.integer  "request_id",          :default => 0, :null => false
@@ -38,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20111228211210) do
     t.date    "created_on",                                           :null => false
     t.text    "context_obj_serialized"
     t.string  "orig_rfr_id",            :limit => 256
+    t.date    "last_access"
   end
 
   add_index "permalinks", ["referent_id"], :name => "plink_referent_idx"
