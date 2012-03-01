@@ -26,7 +26,8 @@ module Umlaut
     end
 
     def route_sets
-      (@options[:only] || default_route_sets) - (@options[:except] || [])
+      # :admin is not included by default, needs to be turned on. 
+      (@options[:only] || default_route_sets) - (@options[:except] || []) + (@options[:admin] == true ? [:admin] : [])
     end
 
     def default_route_sets
@@ -140,6 +141,14 @@ module Umlaut
           match 'javascripts/jquery/umlaut/update_html.js' => redirect("/assets/umlaut/update_html.js", :status => 301)
           
           match 'images/spinner.gif' => redirect("/assets/spinner.gif")
+        end
+      end
+      
+      def admin
+        add_routes do |options|
+          namespace "admin" do
+            match 'service_errors(/:service_id)' => "service_errors#index"
+          end
         end
       end
    
