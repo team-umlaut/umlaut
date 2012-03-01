@@ -25,7 +25,7 @@ module Umlaut::Helper
     if ( params[:params])
       link_to_arg = params[:params]
     else
-      link_params = {:controller=>'resolve'}
+      link_params = {:controller=>'/resolve', :action => "index"}
       link_params.merge!( params[:extra_params] ) if params[:extra_params]
       link_to_arg = url_for_with_co( link_params, context_object )      
     end
