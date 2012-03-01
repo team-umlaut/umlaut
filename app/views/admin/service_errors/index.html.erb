@@ -1,40 +1,45 @@
-<h1>Admin: Service Errors Report</h1>
-
-Reports on rows in dispatched_services table that have failed status.
-<ul>
-  <li>Can be caused by uncaught exception in service.</li>
-  <li>Can be caused by service intentionally reporting failure</li>
-  <li>Other kinds of unexpected failure conditions may occur in your app that are not caught here, check logs</li>
-  <li>Only can report on dispatched_services rows that haven't been purged yet. <b>Current oldest record: <%= @earliest_dispatch.to_s(:short) %></b>
-</ul>
-
-<% if params[:service_id] %>
-  <h2>Service: <%= params[:service_id] %></h2>
-  <%= link_to "[View All]", params.merge(:service_id => nil) %>
-<% else %>
-  <h2>By service</h2>
+<div class="admin">
+  
+  <h1>Admin: Service Errors Report</h1>
+  
+  <p>Reports on rows in dispatched_services table that have failed status.</p>
+  
+  <ul>
+    <li>Can be caused by uncaught exception in service.</li>
+    <li>Can be caused by service intentionally reporting failure</li>
+    <li>Other kinds of unexpected failure conditions may occur in your app that are not caught here, check logs</li>
+    <li>Only can report on dispatched_services rows that haven't been purged yet. <b>Current oldest record: <%= @earliest_dispatch.to_s(:short) %></b>
+  </ul>
+  
+  <% if params[:service_id] %>
+    <h2>Service: <%= params[:service_id] %></h2>
+    <%= link_to "[View All]", params.merge(:service_id => nil) %>
+  <% else %>
+    <h2>By service</h2>
+    
+    <table>
+    <% @failed_by_service.each_pair do |service_id, count| %>
+      <tr><td><%= link_to service_id, params.merge(:service_id => service_id) %></td><td><%= count %></td></tr>
+    <% end %>
+    </table>
+  <% end %>
+    
+  
+  <h2>Latest</h2>
+  
+  <form>
+    <%= label_tag "q", "Filter on exception_info" %>
+    <%= text_field_tag "q", params[:q] %>
+    <%= check_box_tag 'q_not',"1", params[:q_not] %>
+    <%= label_tag "q_not", "NOT having query term" %>
+    <%= submit_tag "Filter" %>
+  </form>
+  
+  <p>
+  <%= @offset + 1 %> - <%= [@offset + @limit, @dispatched_services_count].min  %> of <%= @dispatched_services_count %>. <%= link_to "[Next]", params.merge("offset" => @offset + @limit ) %>
   
   <table>
-  <% @failed_by_service.each_pair do |service_id, count| %>
-    <tr><td><%= link_to service_id, params.merge(:service_id => service_id) %></td><td><%= count %></td></tr>
-  <% end %>
+  <%= render  :partial => "dispatched_service", :collection => @dispatched_services %>  
   </table>
-<% end %>
   
-
-<h2>Latest</h2>
-
-<form>
-  <%= label_tag "q", "Filter on exception_info" %>
-  <%= text_field_tag "q", params[:q] %>
-  <%= check_box_tag 'q_not',"1", params[:q_not] %>
-  <%= label_tag "q_not", "NOT having query term" %>
-  <%= submit_tag "Filter" %>
-</form>
-
-<p>
-<%= @offset + 1 %> - <%= [@offset + @limit, @dispatched_services_count].min  %> of <%= @dispatched_services_count %>. <%= link_to "[Next]", params.merge("offset" => @offset + @limit ) %>
-
-<table>
-<%= render  :partial => "dispatched_service", :collection => @dispatched_services %>  
-</table>
+</div>
