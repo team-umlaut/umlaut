@@ -50,13 +50,18 @@ class Request < ActiveRecord::Base
     # up in the db to see if we've seen it before. 
     param_fingerprint = self.co_params_fingerprint( co_params )
     client_ip = params['req.ip'] || a_rails_request.remote_ip()
-    unless (req)
+    unless (req || params["umlaut.force_new_request"] == "true" || param_fingerprint.blank? )
       # If not found yet, then look for an existing request that had the same
       # openurl params as this one, in the same session. In which case, reuse.
       # Here we do require same session, since we don't have an explicit
-      # request_id given. 
-
-      req = Request.find(:first, :conditions => ["session_id = ? and contextobj_fingerprint = ? and client_ip_addr = ?", a_rails_request.session_options[:id], param_fingerprint, client_ip ] ) unless param_fingerprint.blank?
+      # request_id given.
+      
+      req = Request.where(
+                  :session_id => a_rails_request.session_options[:id],
+                  :contextobj_fingerprint => param_fingerprint, 
+                  :client_ip_addr => client_ip ).
+        order("created_at DESC").first
+                  
     end
     
     # Okay, if we found a req, it might NOT have a referent, it might
