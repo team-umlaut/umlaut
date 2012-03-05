@@ -63,7 +63,7 @@ class GoogleBookSearchTest < ActiveSupport::TestCase
     request = requests(:frankenstein)
     fulltext_shown = @gbs_default.create_fulltext_service_response(request, 
       @data_frankenstein)
-    assert(true, fulltext_shown)
+    assert(fulltext_shown)
   end
 
   def test_find_thumbnail_url
