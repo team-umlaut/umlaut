@@ -1,3 +1,3 @@
 module Umlaut
-  VERSION = "3.0.0alpha12"
+  VERSION = "3.0.0alpha13"
 end
