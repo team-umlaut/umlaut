@@ -105,7 +105,7 @@ default:
         type: GoogleBookSearch
         disabled: true
         priority: c        
-        api_key: 'YOUR_GBS_API_KEY'
+        #api_key: 'YOUR_GBS_API_KEY'
                 
       Ulrichs:
         display_name: "Ulrich's Directory"
