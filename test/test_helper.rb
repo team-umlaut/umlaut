@@ -11,6 +11,9 @@ Rails.backtrace_cleaner.remove_silencers!
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
+# Complete stack trace with deprecation warnings from rails
+ActiveSupport::Deprecation.debug = true
+
 # Custom method for NYU-only tests. We still have a bunch of tests for aleph/
 # primo that work against live nyu services and can only succeed if you are 
 # nyu. Oops. We provide this convenience function to wrap test_* class
@@ -44,3 +47,4 @@ def nyu_only_tests(test_name="Some")
     yield
   end
 end
+
