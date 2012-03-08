@@ -35,6 +35,8 @@ Gem::Specification.new do |s|
   s.add_dependency "httparty"             # for REST API calls
   s.add_dependency "ruby-prof"            # for testing
 
+  s.add_development_dependency "single_test", "~> 0.5.1"
+  
   # We don't actually use sqlite at all. 
   #s.add_development_dependency "sqlite3"
 end
