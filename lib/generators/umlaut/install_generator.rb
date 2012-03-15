@@ -36,8 +36,9 @@ module Umlaut
 # production and development. sqlite3 has unclear semantics under threaded 
 # concurrency which umlaut uses, and in many cases simply does not work. 
 #
-# A high (connection) pool setting is also, sadly, generally
-# required at present. 
+# A higher pool size than ordinary is recommended because of umlaut's
+# use of concurrency. Perhaps as large as the number of services
+# you have configured to run in the same wave, plus another few. 
 #
 # development:
 #   adapter: mysql2
@@ -45,7 +46,7 @@ module Umlaut
 #   username:
 #   password:
 #   database:
-#   pool: 30
+#   pool: 15 
 
           eos
         end
