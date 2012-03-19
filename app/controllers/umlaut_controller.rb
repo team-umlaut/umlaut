@@ -99,10 +99,10 @@ class UmlautController < ApplicationController
         # urls with urls from catalog. But sometimes it misses some, or
         # alternate hostnames for some. Regexps matching against
         # urls can be included here. Eg,
-        # AppConfig::Base.additional_sfx_controlled_urls = [
+        # additional_sfx_controlled_urls  [
         #    %r{^http://([^\.]\.)*pubmedcentral\.com}
         #  ]    
-        # additional_sfx_controlled_urls = []
+        # additional_sfx_controlled_urls []
         
         
       end
