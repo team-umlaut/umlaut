@@ -59,9 +59,7 @@ default:
         service_types:
           - highlighted_link
           - search_inside
-          - excerpts
-          
-
+          - excerpts          
       
       CoverThing:
         type: CoverThing
@@ -106,7 +104,33 @@ default:
         # disable audio results? uncomment:
         #num_results_for_types:
         #  audio: 0
+
       
+      ScopusCitations:
+        type: Scopus
+        disabled: true
+        priority: c
+        json_api_key: YOUR_SCOPUS_API_KEY
+        partner_id: YOUR_SCOPUS_PARTNER_ID
+        link_salt_key: "YOUR_SCOPUS_LINK_SALT_KEY"
+        
+      # Web of Knowledge API has no api key, but your
+      # IP needs to be registered with them. See source docs
+      # for how. 
+      IsiCitations:
+        type: Isi
+        disabled: true
+        priority: c
+        
+      # Thomson JCR LAMR api has no api key, but your
+      # IP needs to be registered with them. Same registraiton
+      # as for ISI WoK generally. 
+      Jcr:
+        type: Jcr
+        disabled: true
+        priority: c
+        
+
       
       # Priority d
                 
@@ -136,31 +160,7 @@ default:
         priority: d
       
         
-      
-      ScopusCitations:
-        type: Scopus
-        disabled: true
-        priority: c
-        json_api_key: YOUR_SCOPUS_API_KEY
-        partner_id: YOUR_SCOPUS_PARTNER_ID
-        link_salt_key: "YOUR_SCOPUS_LINK_SALT_KEY"
-        
-      # Web of Knowledge API has no api key, but your
-      # IP needs to be registered with them. See source docs
-      # for how. 
-      IsiCitations:
-        type: Isi
-        disabled: true
-        priority: c
-        
-      # Thomson JCR LAMR api has no api key, but your
-      # IP needs to be registered with them. Same registraiton
-      # as for ISI WoK generally. 
-      Jcr:
-        type: Jcr
-        disabled: true
-        priority: c
-        
+
       # Worldcat scraper can be quite slow, move it to wave 'd' to avoid
       # holding up wave 'c'
       Worldcat:
