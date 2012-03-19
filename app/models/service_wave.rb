@@ -25,7 +25,7 @@ class ServiceWave
   def prepare_dispatch!(request, service, session_id)
     can_dispatch = false
     
-    ActiveRecord::Base.connection_pool.with_connection do
+    Request.connection_pool.with_connection do
       if request.can_dispatch?( service)
         # Mark this service as in progress in the dispatch table.
         request.dispatched( service, DispatchedService::InProgress )
@@ -69,8 +69,9 @@ class ServiceWave
   
           # Tell our AR extension not to allow implicit checkouts
           ActiveRecord::Base.forbid_implicit_checkout_for_thread! if ActiveRecord::Base.respond_to?("forbid_implicit_checkout_for_thread!")
+          
           begin
-            local_request = ActiveRecord::Base.connection_pool.with_connection do
+            local_request = Request.connection_pool.with_connection do
               # pre-load all relationships so no ActiveRecord activity will be
               # needed later to see em. 
               Request.includes(:referent, :service_responses, :dispatched_services).find(request_id)
@@ -119,14 +120,9 @@ class ServiceWave
     # Wait for all the threads to complete, if any. 
     threads.each do |aThread|
       aThread.join
-      #aThread.kill # shouldn't be neccesary, but I'm paranoid
-      
-     
-      
+
       if aThread[:exception] 
         debugger
-        # mark it finished in the db, we should have a connection already, we're
-        # in main request thread. 
         begin
           request.dispatched(aThread[:service], DispatchedService::FailedFatal, aThread[:exception])
         rescue Exception => e
@@ -134,21 +130,16 @@ class ServiceWave
           raise e
         end
       end
-      
+
       # Okay, raise if exception, if desired.
       if ( aThread[:exception] && self.forward_exceptions? )        
         raise aThread[:exception]
       end
     end
-    
+
     threads.clear # more paranoia
-    
-    # Clean up any leftover connections left open by threads.
-    #ActiveRecord::Base.clear_active_connections!
-    # Sadly, we aren't allowed/ought not to call this method manually
-    # anymore, just have to hope we haven't left any unclosed. 
-    # https://github.com/rails/rails/pull/1200
-    #ActiveRecord::Base.connection_pool.clear_stale_cached_connections!
+
+
     Rails.logger.info(TermColor.color("Umlaut: Completed service wave #{@priority_level}", :yellow) + ", request #{request.id}: in #{Time.now - bundle_start}") if some_service_executed && @log_timing
   end
 
