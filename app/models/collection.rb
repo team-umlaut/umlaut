@@ -100,6 +100,7 @@ class Collection
     # we're going to let it keep doing it's thing in the background after
     # we return a response to the browser
     backgroundThread = Thread.new(self, umlaut_request) do | t_collection,  t_request|
+      
       # Tell our AR extension not to allow implicit checkouts
       ActiveRecord::Base.forbid_implicit_checkout_for_thread! if ActiveRecord::Base.respond_to?("forbid_implicit_checkout_for_thread!")
       
@@ -108,6 +109,11 @@ class Collection
         # actually have an effect in MRI, unclear, but can't hurt. 
         prior = Thread.current.priority
         Thread.current.priority = prior - 1          
+        
+        # Try to give the thread scheduler another hint, really, get
+        # other stuff done before this thread. 
+        Thread.pass
+        
         
         ('a'..'z').each do | priority |
             services_to_run = self.instantiate_services!(:level => priority, :ids => queued_service_ids)
