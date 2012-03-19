@@ -33,10 +33,12 @@ Gem::Specification.new do |s|
   s.add_dependency "confstruct", "~> 0.2" # used for our configuration object
   s.add_dependency "soap4r-ruby1.9"       # for Primo Web Service calls
   s.add_dependency "httparty"             # for REST API calls
-  s.add_dependency "ruby-prof"            # for testing
+
 
   s.add_development_dependency "single_test", "~> 0.5.1"
-  
+  s.add_development_dependency "uglifier"
+  s.add_development_dependency "therubyracer"
+
   # We don't actually use sqlite at all. 
   #s.add_development_dependency "sqlite3"
 end
