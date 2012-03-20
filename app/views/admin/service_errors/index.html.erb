@@ -8,7 +8,7 @@
     <li>Can be caused by uncaught exception in service.</li>
     <li>Can be caused by service intentionally reporting failure</li>
     <li>Other kinds of unexpected failure conditions may occur in your app that are not caught here, check logs</li>
-    <li>Only can report on dispatched_services rows that haven't been purged yet. <b>Current oldest record: <%= @earliest_dispatch.to_s(:short) %></b>
+    <li>Only can report on dispatched_services rows that haven't been purged yet. <b>Current oldest record: <%= @earliest_dispatch.localtime.to_s(:short) %></b>
   </ul>
   
   <% if params[:service_id] %>
