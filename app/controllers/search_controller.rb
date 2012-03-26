@@ -30,7 +30,7 @@ class SearchController < UmlautController
   @@az_batch_size = 20
   @@autocomplete_limit = 15
   
-  layout umlaut_config.search_layout, :except => [ :opensearch, :opensearch_description ]
+  layout :layout_name, :except => [ :opensearch, :opensearch_description ]
 
   before_filter :normalize_params
   
@@ -160,6 +160,12 @@ class SearchController < UmlautController
   end
 
   protected
+
+  # We intentionally use a method calculated at request-time for layout,
+  # so it can be changed in config at request-time. 
+  def layout_name
+    umlaut_config.search_layout
+  end
 
   def normalize_params
     # citation search params  

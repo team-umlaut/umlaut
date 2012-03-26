@@ -12,8 +12,7 @@ class ResolveController < UmlautController
   @@no_create_request_actions = ['background_update']
   after_filter :save_request
   
-  # Take layout from config, default to resolve_basic.rhtml layout. 
-  layout umlaut_config.resolve_layout,  
+  layout :layout_name,  
          :except => [:partial_html_sections]
   
   	
@@ -137,6 +136,11 @@ class ResolveController < UmlautController
   protected
   
   
+  # We intentionally use a method calculated at request-time for layout,
+  # so it can be changed in config at request-time. 
+  def layout_name
+    umlaut_config.resolve_layout
+  end
 
     
   # Retrives or sets up the relevant Umlaut Request, and returns it. 
