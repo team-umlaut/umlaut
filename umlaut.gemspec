@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "single_test", "~> 0.5.1"
   s.add_development_dependency "uglifier"
   s.add_development_dependency "therubyracer"
-
+  s.add_development_dependency "ruby-prof"
   # We don't actually use sqlite at all. 
   #s.add_development_dependency "sqlite3"
 end
