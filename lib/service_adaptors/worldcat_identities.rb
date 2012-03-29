@@ -127,7 +127,7 @@ class WorldcatIdentities < Service
     # we only request 1 record to hopefully speed things up.
     link = @url + index + '?query=' +query + "&maximumRecords=1"
     
-    result = open(link).read
+    result = open(link, "Accept"=>"text/xml").read
     xml = Hpricot.XML(result)
     return nil if (xml/"numberOfRecords").inner_text == '0'
     create_link(request, xml)
