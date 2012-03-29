@@ -3,12 +3,8 @@ class StoreController < UmlautController
   require 'openurl'
   def index
     
-    perm = Permalink.where(params[:id]).first
-    
-    unless perm
-      raise NotFound.new("Permalink request could not be resolved. Returning 404. Permalink id: #{params[:id]}")
-    end
-    
+    perm = Permalink.find(params[:id])
+        
     co = OpenURL::ContextObject.new
 
     # We might have a link to a Referent in our db, or we might
