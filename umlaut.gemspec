@@ -34,7 +34,6 @@ Gem::Specification.new do |s|
   s.add_dependency "multi_json"           # use best locally installed json gem for json parsing
   s.add_dependency "confstruct", "~> 0.2" # used for our configuration object
   s.add_dependency "exlibris-primo"       # for Primo Service
-  s.add_dependency "httparty"             # for REST API calls
 
 
   s.add_development_dependency "single_test", "~> 0.5.1"
