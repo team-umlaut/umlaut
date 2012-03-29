@@ -481,6 +481,8 @@ class Sfx < Service
       
       # But this still has HTML entities in it sometimes. Now we've
       # got to decode THAT.
+      # TODO: Are we sure we need to do this? We need an example
+      # from SFX result to test, it's potentially expensive. 
       value = html_ent_coder.decode(value)
 
       # object_type? Fix that to be the right way.
