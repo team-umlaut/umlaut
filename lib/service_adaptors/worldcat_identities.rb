@@ -135,7 +135,7 @@ class WorldcatIdentities < Service
     # we only request 1 record to hopefully speed things up.
     link = @url + index + '?query=' +query + "&maximumRecords=1"
 
-    result = open(link).read
+    result = open(link, "Accept" => "text/xml").read
     xml = Nokogiri::XML(result)
     
     # Identities namespaces are all over the place, it's too hard
@@ -143,8 +143,8 @@ class WorldcatIdentities < Service
     # instead. 
     xml.remove_namespaces!
     
-    
     return nil if xml.at("numberOfRecords").inner_text == '0'
+   
     create_link(request, xml)
     create_wikipedia_link(request, xml) if @wikipedia_link
     create_openurl_widely_held(request, xml) if @openurl_widely_held
