@@ -119,9 +119,12 @@
 #                                        user     system      total        real
 #       PrimoService Minimum Config:   3.470000   0.050000   3.520000 (  4.567797)
 #       PrimoService Default Config:   3.420000   0.050000   3.470000 (  3.990271)
-
 class PrimoService < Service
+  require 'exlibris-primo'
+  
   required_config_params :base_url, :vid, :institution
+  # For matching purposes.
+  attr_reader :title, :author
 
   # Overwrites Service#new.
   def initialize(config)
@@ -187,10 +190,10 @@ class PrimoService < Service
   # Overwrites Service#handle.
   def handle(request)
     @identifier = request.referrer_id 
-    primo_id = @identifier.match(/primo-(.+)/)[1] if primo_identifier? unless @identifier.nil? or @identifier.match(/primo-(.+)/).nil?
+    @primo_id = @identifier.match(/primo-(.+)/)[1] if primo_identifier? unless @identifier.nil? or @identifier.match(/primo-(.+)/).nil?
     # DEPRECATED
     # Extend OpenURL standard to take Primo Doc Id
-    primo_id = request.referent.metadata['primo'] unless request.referent.metadata['primo'].nil?
+    @primo_id = request.referent.metadata['primo'] unless request.referent.metadata['primo'].nil?
     Rails.logger.warn("Use of 'rft.primo' is deprecated.  Please use the identifier instead.") unless request.referent.metadata['primo'].nil?
     # End DEPRECATED
     searcher_setup = {
@@ -198,13 +201,14 @@ class PrimoService < Service
       :config => primo_config
     }
     # don't send mal-formed issn
-    issn = request.referent.metadata['issn'] if request.referent.metadata['issn'] =~ /\d{4}(-)?\d{3}(\d|X)/
-    title = title(request)
+    @issn = request.referent.metadata['issn'] if request.referent.metadata['issn'] =~ /\d{4}(-)?\d{3}(\d|X)/
+    @isbn = request.referent.metadata['isbn']
+    @title = title(request)
     search_params = {
-      :primo_id => primo_id,
-      :isbn => request.referent.metadata['isbn'], 
-      :issn => issn,
-      :title => title,
+      :primo_id => @primo_id,
+      :isbn => @isbn, 
+      :issn => @issn,
+      :title => @title,
       :author => author(request),
       :genre => request.referent.metadata['genre']
     }
@@ -220,7 +224,7 @@ class PrimoService < Service
     end
     # Enhance the referent with metadata from Primo Searcher if primo id is present
     # i.e. if we did our search with the Primo system number
-    if primo_id and @service_types.include?("referent_enhance")
+    if @primo_id and @service_types.include?("referent_enhance")
       @referent_enhancements.each do |key, options|
         value = (options[:value].nil?) ? key.to_sym : options[:value].to_sym
         request.referent.enhance_referent(
@@ -229,10 +233,10 @@ class PrimoService < Service
         ) if primo_searcher.respond_to? value and not primo_searcher.method(value).call.nil?
       end
     end
-    # Get cover image only if primo_id is defined
+    # Get cover image only if @primo_id is defined
     # TODO: make cover image service smarter and only 
     # include things that are actually URLs.
-    if primo_id and @service_types.include?("cover_image")
+    if @primo_id and @service_types.include?("cover_image")
       cover_image = primo_searcher.cover_image
       unless cover_image.nil?
         request.add_service_response(
@@ -253,6 +257,11 @@ class PrimoService < Service
         @holding_attributes.each do |attr|
           service_data[attr] = holding.method(attr).call
         end
+        # Umlaut specific attributes.
+        service_data[:match_reliability] = 
+          (reliable_match?(:title => holding.title, :author => holding.author)) ? 
+            ServiceResponse::MatchExact : ServiceResponse::MatchUnsure
+        service_data[:request_link_supports_ajax_call] = false
         # Only add one service type, either "primo_source" OR "holding", not both.
         service_type = (@service_types.include?("primo_source")) ? "primo_source" : "holding"
         # Add some other holding information for compatibility with default holding partial
@@ -272,12 +281,12 @@ class PrimoService < Service
       if @service_types.include?("holding_search")
         if holdings.empty? and
            not primo_identifier? and 
-           not title.nil?
+           not @title.nil?
           service_data = {}
           service_data[:type] = "link_to_search"
           service_data[:display_text] = (@holding_search_text.nil?) ? "Search for this title." : @holding_search_text
           service_data[:note] = ""
-          service_data[:url] = @base_url+"/primo_library/libweb/action/dlSearch.do?institution=#{@holding_search_institution}&vid=#{@vid}&onCampus=false&query=#{CGI::escape("title,exact,"+title)}&indx=1&bulkSize=10&group=GUEST"
+          service_data[:url] = @base_url+"/primo_library/libweb/action/dlSearch.do?institution=#{@holding_search_institution}&vid=#{@vid}&onCampus=false&query=#{CGI::escape("title,exact,"+@title)}&indx=1&bulkSize=10&group=GUEST"
           request.add_service_response(
             service_data.merge(
               :service => self,
@@ -390,6 +399,22 @@ class PrimoService < Service
   end
   
   private
+  # Determine how sure we are that this is a match.
+  # Dynamically compares record metadata to input values 
+  # based on the values passed in.
+  # Minimum requirement is to check title.
+  def reliable_match?(record_metadata)
+    return true unless (@primo_id.nil? or @primo_id.empty?)
+    return true unless (@issn.nil? or @issn.empty?) and (@isbn.nil? or @isbn.empty?)
+    return false if (record_metadata.nil? or record_metadata.empty? or record_metadata[:title].nil? or record_metadata[:title].empty?)
+    # Titles must be equal
+    return false unless record_metadata[:title].downcase.eql?(@title.downcase)
+    # Compare record metadata with metadata that was passed in.  
+    # Only check if the record metadata value contains the input value since we can't be too strict.
+    record_metadata.each { |type, value| return false if value.downcase.match("#{self.method(type).call}".downcase).nil?}
+    return true
+  end
+
   def primo_config
     default_file = "#{Rails.root}/config/primo.yml"
     config_file = @primo_config.nil? ? default_file : "#{Rails.root}/config/"+ @primo_config
