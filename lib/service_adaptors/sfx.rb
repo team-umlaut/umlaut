@@ -193,8 +193,7 @@ class Sfx < Service
       # double-escaped, weirdly), so
       # we need to extract the string, unescape it, and then feed it to Nokogiri
       # again. 
-      ctx_obj_atts = 
-         CGI.unescapeHTML( sfx_obj.at('./ctx_obj_attributes').inner_html)
+      ctx_obj_atts = sfx_obj.at('./ctx_obj_attributes').inner_text
 
       perl_data = Nokogiri::XML( ctx_obj_atts )
       # parse it into an OpenURL, we might need it like that. 
@@ -205,16 +204,16 @@ class Sfx < Service
       # get SFX objectID
       object_id_node =
         perl_data.at("./perldata/hash/item[@key='rft.object_id']")
-      object_id = object_id_node ? object_id_node.inner_html : nil
+      object_id = object_id_node ? object_id_node.inner_text : nil
 
       # Get SFX requestID
        request_id_node = 
          perl_data.at("./perldata/hash/item[@key='sfx.request_id']")
-       request_id = request_id_node ? request_id_node.inner_html : nil
+       request_id = request_id_node ? request_id_node.inner_text : nil
       
       # Get targets service ids
       sfx_target_service_ids =
-        sfx_obj.search('ctx_obj_targets/target/target_service_id').collect {|e| e.inner_html}
+        sfx_obj.search('ctx_obj_targets/target/target_service_id').collect {|e| e.inner_text}
 
 
       
@@ -225,12 +224,12 @@ class Sfx < Service
         response_data = {}
   
         # First check @extra_targets_of_interest
-        sfx_target_name = target.at('./target_name').inner_html
+        sfx_target_name = target.at('./target_name').inner_text
         umlaut_service = @extra_targets_of_interest[sfx_target_name]
   
         # If not found, look for it in services_of_interest
         unless ( umlaut_service )
-          sfx_service_type = target.at("./service_type").inner_html
+          sfx_service_type = target.at("./service_type").inner_text
           umlaut_service = @services_of_interest[sfx_service_type]
         end
 
@@ -257,12 +256,12 @@ class Sfx < Service
         
         if ( umlaut_service ) # Okay, it's in services or targets of interest
           if (target/"./displayer")
-            source = "SFX/"+(target/"./displayer").inner_html
+            source = "SFX/"+(target/"./displayer").inner_text
           else
             source = "SFX"+URI.parse(self.url).path
           end
   
-          target_service_id = (target/"./target_service_id").inner_html
+          target_service_id = (target/"./target_service_id").inner_text
           
           coverage = nil
           if ( @get_coverage )
@@ -270,12 +269,12 @@ class Sfx < Service
             # in the SFX Admin API configuration.             
             thresholds_str = ""
             target.search('coverage/coverage_text/threshold_text/coverage_statement').each do | threshold |
-              thresholds_str += threshold.inner_html.to_s + ".\n";              
+                thresholds_str += threshold.inner_text.to_s + ".\n";              
             end
 
             embargoes_str = "";
             target.search('coverage/coverage_text/embargo_text/embargo_statement').each do |embargo |
-              embargoes_str += embargo.inner_html.to_s + ".\n";
+                embargoes_str += embargo.inner_text.to_s + ".\n";
             end
             
             unless ( thresholds_str.blank? && embargoes_str.blank? )
@@ -312,12 +311,12 @@ class Sfx < Service
           if ( sfx_service_type == 'getDocumentDelivery' )
             value_string = request_id
           else
-            value_string = (target/"./target_service_id").inner_html          
+            value_string = (target/"./target_service_id").inner_text          
           end
-  
-          response_data[:url] = CGI.unescapeHTML((target/"./target_url").inner_html)
-          response_data[:notes] = related_note.to_s + CGI.unescapeHTML((target/"./note").inner_html)
-          response_data[:authentication] = CGI.unescapeHTML((target/"./authentication").inner_html)
+
+          response_data[:url] = CGI.unescapeHTML((target/"./target_url").inner_text)
+          response_data[:notes] = related_note.to_s + CGI.unescapeHTML((target/"./note").inner_text)
+          response_data[:authentication] = CGI.unescapeHTML((target/"./authentication").inner_text)
           response_data[:source] = source
           response_data[:coverage] = coverage if coverage
   
@@ -325,7 +324,7 @@ class Sfx < Service
           response_data[:sfx_base_url] = @base_url
           response_data[:sfx_obj_index] = sfx_obj_index + 1 # sfx is 1 indexed
           response_data[:sfx_target_index] = target_index + 1 
-          response_data[:sfx_request_id] = (perl_data/"//hash/item[@key='sfx.request_id']").first.inner_html
+          response_data[:sfx_request_id] = (perl_data/"//hash/item[@key='sfx.request_id']").first.inner_text
           response_data[:sfx_target_service_id] = target_service_id
           response_data[:sfx_target_name] = sfx_target_name
           # At url-generation time, the request isn't available to us anymore,
@@ -342,7 +341,7 @@ class Sfx < Service
           # Some debug info
           response_data[:debug_info] =" Target: #{sfx_target_name} ; SFX object ID: #{object_id}"
           
-          response_data[:display_text] = (target/"./target_public_name").inner_html
+          response_data[:display_text] = (target/"./target_public_name").inner_text
     
           request.add_service_response(
             response_data.merge(
@@ -453,7 +452,7 @@ class Sfx < Service
     doc.search('perldata/hash/item').each do |item|
       key = item['key'].to_s
             
-      value = item.inner_html
+      value = item.inner_text
 
       # Some normalization. SFX uses rft.year, which is not actually
       # legal. Stick it in rft.date instead.
@@ -477,11 +476,13 @@ class Sfx < Service
         array_i = array_items[0] unless array_items.blank?
         
         prefix = prefix.slice(1, prefix.length)
-        value = array_i ? array_i.inner_html : nil   
+        value = array_i ? array_i.inner_text : nil   
       end
       
       # But this still has HTML entities in it sometimes. Now we've
       # got to decode THAT.
+      # TODO: Are we sure we need to do this? We need an example
+      # from SFX result to test, it's potentially expensive. 
       value = html_ent_coder.decode(value)
 
       # object_type? Fix that to be the right way.
@@ -497,13 +498,13 @@ class Sfx < Service
       if (prefix=='@rft_id')
           identifiers = item.search('array/item')
           identifiers.each do |id|
-            co.referent.add_identifier(id.inner_html)
+            co.referent.add_identifier(id.inner_text)
           end
       end
       if (prefix=='@rfr_id')
           identifiers = item.search('array/item')
           identifiers.each do |id|
-            co.referrer.add_identifier(id.inner_html)
+            co.referrer.add_identifier(id.inner_text)
           end
       end
     end

@@ -39,8 +39,10 @@ module Umlaut::ErrorHandling
     message << "  User-Agent: #{request.user_agent}\n"
     message << "  Client IP: #{request.remote_addr}\n\n"
     
-    message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)        
-    message << "  " << Rails.backtrace_cleaner.clean(exception.backtrace).join("\n ")
+    message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)
+    # mysterious :noise param seems to match how default rails does it, so
+    # we actually get a backtrace. 
+    message << "  " << Rails.backtrace_cleaner.clean(exception.backtrace, :noise).join("\n  ")    
                     
     logger.send(severity, "#{message}\n\n")          
   end
