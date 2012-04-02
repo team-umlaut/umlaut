@@ -158,9 +158,7 @@ module ResolveHelper
   #     <li>Item Number: <%= index %>: <%= item.title %></li>
   # <% end %>
   def list_with_limit(id, list, options = {}, &block)
-    
-    
-    
+
     # backwards compatible to when third argument was just a number
     # for limit. 
     options = {:limit => options} unless options.kind_of?(Hash)  
@@ -172,17 +170,17 @@ module ResolveHelper
     content = "".html_safe
     content <<
     content_tag(:ul, :class => options[:ul_class]) do        
-      list.enum_for(:each_with_index).collect do |item, index|      
-        capture(item, index, &block) unless  list.length > options[:limit] && index >= options[:limit]-2        
+    list.slice(0, options[:limit]).enum_for(:each_with_index).collect do |item, index|      
+         yield(item, index)         
       end.join(" \n    ").html_safe
     end    
     
     if (list.length > options[:limit] )      
       content << 
-      expand_contract_section("#{list.length - options[:limit] + 1} more", id) do
+      expand_contract_section("#{list.length - options[:limit] } more", id) do
         content_tag(:ul, :class=>options[:ul_class]) do        
-          list.slice(options[:limit]-1..list.length-1).enum_for(:each_with_index).each do |item, index|            
-            yield(item, index)
+          list.slice(options[:limit]..list.length-1).enum_for(:each_with_index).each do |item, index|   
+            yield(item, index + options[:limit])
           end.join(" \n    ").html_safe              
         end          
       end
