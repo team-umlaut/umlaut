@@ -16,9 +16,8 @@ class StoreController < UmlautController
       referent = perm.referent
     elsif (perm && perm.context_obj_serialized)
       stored_co = perm.restore_context_object
-
       # And a referrent, no referrer for now, we'll restore it later. 
-      referent = Referent.create_by_context_object( stored_co, nil, :permalink => false )
+      referent = Referent.create_by_context_object( stored_co, :permalink => false )
       perm.referent = referent
     end
 
