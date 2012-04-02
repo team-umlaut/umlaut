@@ -137,7 +137,10 @@ module UmlautConfigurable
         # How old does a request have to be to be deleted by nightly_maintenance?
         # requests are only re-used within a session. Probably no reason to
         # change this.          
-        request_expire_seconds 1.day                        
+        request_expire_seconds 1.day
+        
+        # How long to keep FAILED DispatchServices, for viewing problems/troubleshooting
+        failed_dispatch_expire_seconds 4.weeks
   
       end
       

@@ -103,9 +103,12 @@ namespace :umlaut do
       # And get rid of DispatchedServices for 'dead' requests too. Don't
       # need em.
       puts "Deleting DispatchedServices for dead Requests..."
+      keep_failed = UmlautController.umlaut_config.lookup!("nightly_maintenance.failed_dispatch_expire_seconds", 4.weeks)
       begin_time = Time.now
       # DELETE FROM `dispatched_services` WHERE (NOT (EXISTS (SELECT `requests`.* FROM `requests` WHERE (dispatched_services.request_id = requests.id))))       
-      ds_delete  = DispatchedService.where(
+      ds_delete  = DispatchedService.where("status NOT IN (?) OR updated_at < ?", 
+        [DispatchedService::FailedFatal, DispatchedService::FailedTemporary], Time.now - keep_failed
+      ).where(
         Request.where("dispatched_services.request_id =  requests.id").exists.not 
       )        
       count = ds_delete.count
