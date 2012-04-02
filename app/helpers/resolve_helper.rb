@@ -170,9 +170,8 @@ module ResolveHelper
             
 
     content = "".html_safe
-    
     content <<
-    content_tag(:ul, :class => ("" || options[:ul_class])) do        
+    content_tag(:ul, :class => options[:ul_class]) do        
       list.enum_for(:each_with_index).collect do |item, index|      
         capture(item, index, &block) unless  list.length > options[:limit] && index >= options[:limit]-2        
       end.join(" \n    ").html_safe
