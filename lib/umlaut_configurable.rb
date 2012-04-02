@@ -29,6 +29,10 @@ module UmlautConfigurable
       # URL to image to use for link resolver, OR name of image asset in local app. 
       #link_img_url "http//something"
       
+      # string used in standard layout footer to identify your app.
+      # mark it html_safe if it includes html
+      # footer_credit "Find It service provided by <a href='http://www.university.edu/'>My University</a>".html_safe
+      
       # Sometimes Umlaut sends out email, what email addr should it be from?
       from_email_addr 'no_reply@umlaut.example.com'
           
