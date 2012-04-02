@@ -134,24 +134,10 @@ module UmlautConfigurable
       entry_not_in_kb_warning true
           
       nightly_maintenance do
-         # When nightly_maintenance will expire sessions. Default to
-         # 1 day. Over-ride locally if desired, but
-         # probably no reason to.
-        session_expire_seconds  1.day           
-        referent_expire_seconds deferred! {|c| c.session_expire_seconds }
-        
-        
-        # Expire service responses. Service responses are only re-used by the same
-        # session that generated them. But sometimes even that's too much, we
-        # want to expire them eventually, say every 24 hours. 
-        # You can do this in two ways.
-        #
-        # A Number of seconds in an interval, eg:
-        response_expire_interval  1.day
-        #
-        # Or, sometimes it's convenient to synchronize this with some other
-        # process that runs on crontab. Say, expire at midnight every night:
-        # response_expire_crontab_format  "00 00 * * *"
+        # How old does a request have to be to be deleted by nightly_maintenance?
+        # requests are only re-used within a session. Probably no reason to
+        # change this.          
+        request_expire_seconds 1.day                        
   
       end
       

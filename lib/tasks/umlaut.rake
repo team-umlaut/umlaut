@@ -1,6 +1,6 @@
 namespace :umlaut do
     desc "Perform nightly maintenance. Set up in cron."
-    task :nightly_maintenance => [:load_sfx_urls, :expire_sessions, :expire_old_data]
+    task :nightly_maintenance => [:load_sfx_urls, :expire_old_data]
   
   
 
@@ -47,44 +47,38 @@ namespace :umlaut do
       end
     end
 
-    desc "Expire sessions older than config.app_config.session_expire_seconds"
-    task :expire_sessions => :environment do
-      # Assume sessions are in db. 
-      # Don't know good way to get the connection associated with sessions,
-      # since there is no model. Assume Request is in the same db.
-      expire_seconds = UmlautController.umlaut_config.lookup!("session_expire_seconds", 1.day)
-      puts "Expiring sessions older than #{expire_seconds} seconds (set with config session_expire_seconds)."
-      Request.connection.execute("delete from sessions where now() - updated_at > #{expire_seconds}")
-    end
 
 
     desc "Cleanup of database for old data associated with expired sessions etc."
     task :expire_old_data => :environment do
       # There are requests, responses, and dispatched_service entries
       # hanging around for things that may be way old and no longer
-      # need to hang around. How do we know if they're too old?
-      # If they are no longer associated with any session, mainly.
+      # need to hang around. 
 
       # Deleting things as aggressively as we're doing here doesn't leave
       # us much for statistics, but we aren't currently gathering any
       # statistics anyway. If statistics are needed, more exploration
       # is needed of performance vs. leaving things around for statistics. 
 
-      # For efficiency, we delete with direct DB calls, so don't count
-      # on Rails business logic being triggered! Was just WAY too slow
-      # otherwise. Also, sorry, doing all this in a db efficient way (one db
-      # query) requires some tricky SQL, which be MySQL specific. 
+      # Current Umlaut never re-uses a request different between sessions, 
+      # and never uses Referents between requests. 
+      # Permalink architecture has been fixed to not rely on requests or 
+      # referents, permalinks (post new architecture) store their own context
+      # object.
+      
+      # To make efficient SQL queries to delete 'orphaned' records whose
+      # foreign keys are neccesary... is tricky, with or without AR, and
+      # may vary in different dbs -- this works for MySQL, it's possible
+      # it will have a problem with Postgres, hasn't been tested. 
 
-      # Current Umlaut never re-uses a request different between sessions, so
-      # if the session is dead, we can purge the Requests too. Permalink
-      # architecture has been fixed to not rely on requests or referents,
-      # permalinks (post new architecture) store their own context object.
-
-      puts "Deleting Requests no longer associated with a session."
       begin_time = Time.now
-      work_clause = " FROM requests LEFT OUTER JOIN sessions ON requests.session_id = sessions.session_id WHERE sessions.id is null "
-      count = Request.count_by_sql("SELECT count(*) " + work_clause)
-      Request.connection.execute("DELETE requests " + work_clause)
+      
+      rdelete_time = Time.now - UmlautController.umlaut_config.lookup!("nightly_maintenance.request_expire_seconds", 1.day)
+      puts "Deleting Requests older than #{rdelete_time}"
+      rdelete = Request.where("created_at < ?", rdelete_time) 
+                  
+      count = rdelete.count
+      rdelete.delete_all
       puts "  Deleted #{count} Requests in #{Time.now - begin_time}"
 
     
@@ -96,9 +90,13 @@ namespace :umlaut do
        
       puts "Deleting orphaned ServiceResponses...."
       begin_time = Time.now
-        work_clause = " FROM service_responses WHERE NOT EXISTS (SELECT * FROM requests WHERE service_responses.request_id =  requests.id)"
-      count = ServiceResponse.count_by_sql("SELECT count(*) " + work_clause)
-      ServiceResponse.connection.execute("DELETE " + work_clause)  
+      #  DELETE FROM `service_responses` WHERE (NOT (EXISTS (SELECT `requests`.* FROM `requests` WHERE (service_responses.request_id = requests.id))))
+      sr_delete = ServiceResponse.where(
+        Request.where("#{ServiceResponse.arel_table.name}.request_id = requests.id").exists.not 
+       )
+          
+      count = sr_delete.count
+      sr_delete.delete_all  
       puts "  Deleted #{count} ServiceResponses in #{Time.now - begin_time}"
 
       
@@ -106,28 +104,46 @@ namespace :umlaut do
       # need em.
       puts "Deleting DispatchedServices for dead Requests..."
       begin_time = Time.now
-      # Sorry, may be MySQL only. 
-      work_clause = " FROM (dispatched_services LEFT OUTER JOIN requests ON dispatched_services.request_id = requests.id)  WHERE requests.id IS NULL  "
-      count = DispatchedService.count_by_sql("SELECT count(*) " + work_clause)
-      DispatchedService.connection.execute("DELETE dispatched_services " + work_clause)
+      # DELETE FROM `dispatched_services` WHERE (NOT (EXISTS (SELECT `requests`.* FROM `requests` WHERE (dispatched_services.request_id = requests.id))))       
+      ds_delete  = DispatchedService.where(
+        Request.where("dispatched_services.request_id =  requests.id").exists.not 
+      )        
+      count = ds_delete.count
+      ds_delete.delete_all
       puts "  Deleted #{count} DispatchedServices in #{Time.now - begin_time}"
       
 
-      # Turns out we need to get rid of old referents and referentvalues
-      # too. There are just too many. Permalinks have been updated to
-      # store their own info and not depend on Referent existing. 
-      referent_expire = Time.now - UmlautController.umlaut_config.lookup!("referent_expire_seconds", 20.days)
-      puts "Deleting Referents/ReferentValues older than #{referent_expire.inspect}"
+
+
+      puts "Deleting orphaned Referents"
       begin_time = Time.now
-      # May be MySQL dependent. 
-      Referent.connection.execute("DELETE referents, referent_values FROM referents, referent_values where referents.id = referent_values.referent_id AND referents.created_at < '#{referent_expire.to_formatted_s(:db)}'" )
-      puts "  Deleted Referents in #{Time.now - begin_time}"
+      #  DELETE FROM `referents` WHERE (NOT (EXISTS (SELECT `requests`.* FROM `requests` WHERE (referents.id = requests.referent_id))))
+      ref_delete = Referent.where(
+        Request.where("referents.id = requests.referent_id").exists.not
+       )        
+      count = ref_delete.count
+      ref_delete.delete_all
+      puts "  Deleted #{count} Referents in #{Time.now - begin_time}"
+      
+      
+      puts "Deleting orphaned ReferentValues"
+      begin_time = Time.now
+      # DELETE FROM `referent_values` WHERE (NOT (EXISTS (SELECT `referents`.* FROM `referents` WHERE (referents.id = referent_values.referent_id))))
+      rv_delete = ReferentValue.where(
+        Referent.where("referents.id = referent_values.referent_id").exists.not
+       )               
+      
+      
+      
+      count = rv_delete.count
+      rv_delete.delete_all
+      puts "  Deleted #{count} ReferentValues in #{Time.now - begin_time}"
+      
       
       # And turns out we have all Clickthroughs being stored for no apparent
       # reason, let's just delete any older than 3 months ago. 
-      Clickthrough.destroy_all(['created_at < ?', 3.months.ago])
-      puts "Deleted Clickthroughs older than 3 months"
-              
+      Clickthrough.delete_all(['created_at < ?', 3.months.ago])
+      puts "Deleted Clickthroughs older than 3 months"              
     end
     
 end
