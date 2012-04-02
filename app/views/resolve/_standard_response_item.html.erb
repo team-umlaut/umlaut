@@ -26,12 +26,12 @@
               {:id => "svctype_link_#{service_response.id}",                
               :target => "_blank",
               :class => "ajax_window"}) %>
-  <% elsif (view_data[:content] ) 
+  <% elsif (content = response_content(view_data )) 
      #collapsible content on page
   %>
     <%= expand_contract_section(view_data[:display_text], "svc_id_#{service_response.id}") do %>
       <div class="section_content_indent">
-        <%= view_data[:content] %>
+        <%= content %>
       </div>
     <% end %>
   

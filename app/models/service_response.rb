@@ -70,7 +70,13 @@ These are applicable only when the incoming OpenURL is an article-level citation
 == Abstracts/Tocs:
    Can be a link to, or actual content. Either way, should be set
    up to link to source of content if possible. Basic set, plus:
-   [:content]           actual content, if available. 
+   [:content]           actual content, if available.
+   [:content_html_safe] Set to true if content includes html which should be
+                        passed through un-escaped. Service is responsible
+                        for making sure the HTML is safe from injection
+                        attacks (injection attacks from vendor API's? Why not?).
+                        ActionView::Helpers::SanitizeHelper's #sanitize
+                        method can convenient. 
 
 =end
 class ServiceResponse < ActiveRecord::Base  

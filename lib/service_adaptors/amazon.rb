@@ -39,6 +39,7 @@ class Amazon < Service
   
   
   include MetadataHelper
+  include ActionView::Helpers::SanitizeHelper
   
   required_config_params :url, :api_key, :associate_tag
   attr_reader :url
@@ -181,7 +182,6 @@ class Amazon < Service
     err = (aws.at("ItemLookupResponse/Items/Request/Errors/Error"))
     err = (aws.at("ItemLookupErrorResponse")) if err.blank?
     
-    debugger
     unless (err.blank?)
       if (err.at('Code').text == 'AWS.InvalidParameterValue')
         # Indicates an ISBN that Amazon doesn't know about, or that
@@ -227,9 +227,8 @@ class Amazon < Service
     if (  @service_types.include?("abstract") &&
          desc =
          (aws.at("ItemLookupResponse/Items/Item/EditorialReviews/EditorialReview/Content")))
-
-      # For some reason we need to un-escape the desc. Don't entirely get it.
-      desc_text = CGI.unescapeHTML( desc.inner_text )
+      
+      desc_text =  desc.inner_text
 
       unless ( desc_text.blank? )
         request.add_service_response(
@@ -238,7 +237,8 @@ class Amazon < Service
           :url => item_url, 
           :key=>'abstract', 
           :value_string=>asin, 
-          :content=>desc_text ,
+          :content=> sanitize(desc_text) ,
+          :content_html_safe => true,
           :service_type_value => 'abstract')
       end
     end

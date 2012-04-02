@@ -118,6 +118,19 @@ module ResolveHelper
     end         
   end
   
+  # If response has a :content key returns it -- and marks it html_safe
+  # if response has a :content_html_safe == true key. 
+  # returns false if no :content. 
+  def response_content(service_response)
+    content = service_response[:content]
+    return false unless content
+    
+    content = content.html_safe if service_response[:content_html_safe] == true
+    
+    return content
+  end
+    
+  
   
 
   # Code-generating helper to add a "More" link to a list, with a maximum
