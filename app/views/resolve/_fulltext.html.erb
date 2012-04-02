@@ -1,8 +1,8 @@
 <%
   
-  #debugger
    all_responses = fulltext
-   
+
+
    (title_level_fulltxt, fulltxt) = 
       all_responses.partition {|i| i.view_data[:coverage_checked] == false || i.view_data[:can_link_to_article] == false}      
    # order em with full fulltxt before title_level_fulltxt
@@ -15,7 +15,6 @@
 
   
 <div class="umlaut_section_content">
-  
   <%= list_with_limit('umlaut_fulltext', 
           all_responses, 
           :ul_class => "response_list", 
@@ -25,7 +24,7 @@
         # Display special warnign header if it's title-level only,
         # and it's an article or issue level link. Are we
         # at the beginning of title level display?
-        if ( index == fulltxt.length && 
+        if ( index == (fulltxt.length + 1) && 
              !title_level_request? )
            genre = @user_request.referent.metadata['genre']
            genre = "Journal" if genre && genre.downcase == 'article' %>
@@ -36,7 +35,6 @@
            </div>
             <ul class="response_list">
         <% end %>    
-      
         <%= render(:partial => "standard_response_item", :object=> item) %>
   <% end %> 
       
