@@ -58,7 +58,10 @@
     };
     
     //default no-op call-backs
-    this.complete = function() {};
+    this.complete = noop;
+    this.before_update = noop;
+    this.after_update = noop;
+    
     
     //Code for seeing if a URI is same origin or not borrowed from jQuery
     this.is_remote_url = function(url) {
@@ -98,6 +101,9 @@
 
                   
                   var should_continue = section_target.before_update(new_element, count, section_target);
+                  if (should_continue != false) {
+                    should_continue = myself.before_update(new_element, count, section_target);
+                  }
                                     
                   if (should_continue != false) {                    
                     existing_element.replaceWith(new_element);
@@ -106,7 +112,8 @@
 
                     new_element.show();
                   
-                    section_target.after_update(new_element, count, section_target)                                        
+                    section_target.after_update(new_element, count, section_target);
+                    myself.after_update(new_element, count, section_target);
                     
                   }
                }
