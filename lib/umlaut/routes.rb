@@ -140,6 +140,12 @@ module Umlaut
           # of Last-modified-by etc headers. 
           match 'javascripts/jquery/umlaut/update_html.js' => redirect("/assets/umlaut/update_html.js", :status => 301)
           
+          # The loader doens't work _exactly_ like the new umlaut-ui.js, but
+          # it's close enough that it'll work better redirecting than just
+          # 404'ing. 
+          match 'js_helper/loader' => redirect("/assets/umlaut_ui.js")
+          
+          
           match 'images/spinner.gif' => redirect("/assets/spinner.gif")
         end
       end

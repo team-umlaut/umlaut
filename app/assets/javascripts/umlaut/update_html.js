@@ -170,7 +170,8 @@
       this.load = function(option_list) {
         // log problem in browsers that support it. 
         if (typeof console != "undefined" && typeof console.log != "undefined") {
-          console.log("WARN: Umlaut.Loader no longer supported in Umlaut 3.x, you have not loaded Umlaut JS Behaviors. See Umlaut documentation for new way.");            
+          console.log("WARN: Umlaut.Loader no longer supported in Umlaut 3.x, you may have not loaded Umlaut JS Behaviors as desired. See Umlaut documentation for new way.");
+          
         }                 
       }
     }
