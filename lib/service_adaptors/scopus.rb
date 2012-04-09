@@ -33,6 +33,9 @@
 class Scopus < Service
   require  'open-uri'
   require 'multi_json'
+  
+  include ActionView::Helpers::SanitizeHelper
+  
   include MetadataHelper
   include UmlautHttp
   
@@ -237,7 +240,8 @@ class Scopus < Service
     request.add_service_response( 
       :service=>self, 
       :display_text => "Abstract from #{@display_name}", 
-      :content => first_hit["abstract"], 
+      :content => sanitize(first_hit["abstract"]), 
+      :content_html_safe => true,
       :url => detail_url(first_hit), 
       :service_type_value => :abstract)
   end
