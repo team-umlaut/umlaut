@@ -30,6 +30,7 @@ class PrimoSource < PrimoService
   # Overwrites PrimoService#new.
   def initialize(config)
     @service_types = ["holding"]
+    @source_attributes = []
     super(config)
   end
 
@@ -50,6 +51,9 @@ class PrimoSource < PrimoService
       source.expand.each do |holding|
         service_data = {}
         @holding_attributes.each do |attr|
+          service_data[attr] = holding.method(attr).call
+        end
+        @source_attributes.each do |attr|
           service_data[attr] = holding.method(attr).call
         end
         service_data.merge!({
