@@ -250,14 +250,14 @@ class InternetArchive < Service
     # commands even within quotes. 
     output = string.downcase
     
-    # Remove parens, semi-colons, and brackets -- they all mess
+    # Remove parens, semi-colons, brackets, hyphens -- they all mess
     # up IA, which thinks they are special chars. Remove double quote,
     # special char, which sometimes we want to use ourselves. Replace
     # all with spaces to avoid accidentally conjoining words. 
     # (could be
     # escaping instead? Not worth it, we don't want to search
     # on these anyway. Remove ALL punctuation? Not sure.)
-    output.gsub!(/[)(\]\[;"\=]/, ' ')
+    output.gsub!(/[)(\]\[;"\=\-]/, ' ')
     
     return output
   end
