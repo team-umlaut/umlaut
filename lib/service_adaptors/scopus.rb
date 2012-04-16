@@ -110,7 +110,7 @@ class Scopus < Service
     
     # Take the first hit from scopus's results, hope they relevancy ranked it
     # well. For DOI/pmid search, there should ordinarly be only one hit!
-    results = MultiJson.decode(response)
+    results = MultiJson.load(response)
 
     if ( results["ERROR"])
       Rails.logger.error("Error from Scopus API: #{results["ERROR"].inspect}   openurl: ?#{request.referent.to_context_object.kev}")

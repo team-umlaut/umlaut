@@ -217,7 +217,7 @@ class GoogleBookSearch < Service
 
     Rails.logger.debug("GoogleBookSearch requesting: #{link}")        
     response = http_fetch(link, :headers => headers, :raise_on_http_error_code => false)        
-    data = MultiJson.decode(response.body)
+    data = MultiJson.load(response.body)
     
     # If Google gives us an error cause it says it can't geo-locate, 
     # remove the IP, log warning, and try again. 
@@ -227,7 +227,7 @@ class GoogleBookSearch < Service
       Rails.logger.warn("GoogleBookSearch: geo-locate error, retrying without X-Forwarded-For: '#{link}' headers: #{headers.inspect} #{response.inspect}\n    #{data.inspect}")
       
       response = http_fetch(link, :raise_on_http_error_code => false)        
-      data = MultiJson.decode(response.body)
+      data = MultiJson.load(response.body)
         
     end
     

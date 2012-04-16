@@ -133,9 +133,9 @@ class HathiTrust < Service
   end
   
   # conducts query and parses the JSON
-  def do_query(params)    
+  def do_query(params)        
     link = @api_url + "/brief/json/" + params
-    return MultiJson.decode( open(link).read )
+    return MultiJson.load( open(link).read )
   end
   
     

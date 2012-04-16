@@ -114,7 +114,7 @@ class InternetArchive < Service
     end
     
     
-    doc = MultiJson.decode(response)
+    doc = MultiJson.load(response)
     results = doc['response']['docs']
     
     @mediatypes.each do |type|
