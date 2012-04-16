@@ -261,7 +261,9 @@ class PrimoService < Service
         service_data[:match_reliability] = 
           (reliable_match?(:title => holding.title, :author => holding.author)) ? 
             ServiceResponse::MatchExact : ServiceResponse::MatchUnsure
-        service_data[:request_link_supports_ajax_call] = false
+        service_data[:request_link_supports_ajax_call] = 
+          (holding.respond_to?(:request_link_supports_ajax_call)) ? 
+            holding.request_link_supports_ajax_call : false
         # Only add one service type, either "primo_source" OR "holding", not both.
         service_type = (@service_types.include?("primo_source")) ? "primo_source" : "holding"
         # Add some other holding information for compatibility with default holding partial
