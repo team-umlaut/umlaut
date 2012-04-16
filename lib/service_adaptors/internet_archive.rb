@@ -108,7 +108,6 @@ class InternetArchive < Service
     timeout(@http_timeout.to_i) {
       response = open(link).read
     }
-    debugger
     if response.blank?
       raise Exception.new("InternetArchive returned empty response for #{link}")      
     end
