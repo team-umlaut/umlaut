@@ -13,7 +13,7 @@
   
   <% if params[:service_id] %>
     <h2>Service: <%= params[:service_id] %></h2>
-    <%= link_to "[View All]", params.merge(:service_id => nil) %>
+    <%= link_to "[View All]", params.merge(:service_id => nil, :offset => nil) %>
   <% else %>
     <h2>By service</h2>
     
