@@ -94,8 +94,15 @@ class Amazon < Service
     isbn = request.referent.metadata['isbn']
     isbn = isbn.gsub(/[^0-9X]/,'') if isbn
     
-    return request.dispatched(self, true) if isbn.blank?
+    # does it look like a good ISBN?
+    return request.dispatched(self, true) if isbn.blank? || ! [10,13].include?(isbn.length)
 
+    # Make sure it's REALLY a good ISBN, and 
+    # Convert 13 to 10 if neccesary, cause we're using it as an ASIN.     
+    # An ISBN-13 is never an ASIN.    
+    isbn = ISBN.ten( isbn )
+    
+    
     begin
 
       selected_aws_vals = {}
@@ -137,10 +144,7 @@ class Amazon < Service
     # We're assuming the ISBN is the ASIN Amazon ID. Not neccesarily valid
     # assumption, but works enough of the time and there's no easy
     # alternative.
-    # Convert 13 to 10 if neccesary. 
-    
-    # got to try converting to 10. An ISBN-13 is never an ASIN.    
-    isbn = ISBN.ten( isbn )
+
               
 
     query_params = {
