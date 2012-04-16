@@ -125,9 +125,11 @@ class HathiTrust < Service
   # the parameters for the particular service
   # FIXME consider moving this into metadata_helper
   def get_bibkey_parameters(rft)
-    isbn = get_identifier(:urn, "isbn", rft)
-    oclcnum = get_identifier(:info, "oclcnum", rft)
-    lccn = get_lccn(rft)
+    # filter out special chars that ought not to be in there anyway,
+    # and that HathiTrust barfs on. 
+    isbn = get_identifier(:urn, "isbn", rft).gsub(/[\-\[\]]/, '')
+    oclcnum = get_identifier(:info, "oclcnum", rft).gsub(/[\-\[\]]/, '')
+    lccn = get_lccn(rft).gsub(/[\-\[\]]/, '')
         
     yield(isbn, lccn, oclcnum)    
   end
