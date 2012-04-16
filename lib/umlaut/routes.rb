@@ -53,7 +53,7 @@ module Umlaut
       def a_z
         add_routes do |options|
           # Special one for alpha list
-          match 'journal_list/:id/:page' => 'search#journal_list', :defaults => { :page => 1, :id => 'A' }
+          match 'journal_list(/:id(/:page))' => 'search#journal_list', :defaults => { :page => '1', :id => 'A' }
           
           
           # Catch redirected from SFX A-Z and citation linker urls
