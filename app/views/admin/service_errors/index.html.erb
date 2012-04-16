@@ -37,9 +37,14 @@
   
   <p>
   <%= @offset + 1 %> - <%= [@offset + @limit, @dispatched_services_count].min  %> of <%= @dispatched_services_count %>. <%= link_to "[Next]", params.merge("offset" => @offset + @limit ) %>
+  </p>
   
   <table>
   <%= render  :partial => "dispatched_service", :collection => @dispatched_services %>  
   </table>
+
+  <p>
+  <%= @offset + 1 %> - <%= [@offset + @limit, @dispatched_services_count].min  %> of <%= @dispatched_services_count %>. <%= link_to "[Next]", params.merge("offset" => @offset + @limit ) %>
+  </p>
   
 </div>
