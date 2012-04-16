@@ -104,21 +104,13 @@ class InternetArchive < Service
     
     # using open() conveniently follows the redirect for us. Alas, it
     # doesn't give us access to the IA http status code response though.
-    begin
-      response = nil
-      timeout(@http_timeout.to_i) {
-        response = open(link).read
-      }
-    rescue Exception => e
-      # Log more info for exception, and then just forward exception on,
-      # we don't have any way to handle it. 
-      Rails.logger.error("InternetArchive exception, for url[[#{link}]] , Exception #{e.class}")
-      raise e
-    end
-    
+    response = nil
+    timeout(@http_timeout.to_i) {
+      response = open(link).read
+    }
+    debugger
     if response.blank?
-      Rails.logger.warn("InternetArchive returned empty response for #{link}")
-      return nil
+      raise Exception.new("InternetArchive returned empty response for #{link}")      
     end
     
     
