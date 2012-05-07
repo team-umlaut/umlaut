@@ -10,8 +10,8 @@ gem "jquery-rails"
 
 
 gem "mysql2"
-gem "ruby-debug", :platform => :mri_18
-gem "ruby-debug19", :platform => :mri_19
+#gem "ruby-debug", :platform => :mri_18
+#gem "ruby-debug19", :platform => :mri_19
 
 gem "activerecord-import"
 
