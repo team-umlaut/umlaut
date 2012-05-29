@@ -131,7 +131,7 @@ class HathiTrust < Service
     isbn = isbn.gsub(/[\-\[\]]/, '') unless isbn.blank?
     
     oclcnum = get_identifier(:info, "oclcnum", rft)
-    oclcnum = oclnum.gsub(/[\-\[\]]/, '') unless oclcnum.blank?
+    oclcnum = oclcnum.gsub(/[\-\[\]]/, '') unless oclcnum.blank?
     
     lccn = get_lccn(rft)
     lccn = lccn.gsub(/[\-\[\]]/, '') unless lccn.blank?
