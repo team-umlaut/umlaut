@@ -39,7 +39,7 @@ namespace :umlaut do
       # dynamically create a model for Permalinks in old
       # db, set up with connection info to old db. 
       OldPermalink = Class.new(ActiveRecord::Base) do
-        self.set_table_name("permalinks")
+        self.table_name = "permalinks"
         # just to be safe
         def read_only?
           true
