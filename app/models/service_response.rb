@@ -109,6 +109,17 @@ class ServiceResponse < ActiveRecord::Base
     self.service.view_data_from_service_type(self)
   end
   
+  
+  def service_data
+    # Fix weird-ass char encoding bug with AR serialize and hashes.
+    # https://github.com/rails/rails/issues/6538
+    data = super
+    if data.kind_of? Hash
+      data.values.each {|v| v.force_encoding "UTF-8"  if v.respond_to? :force_encoding  }
+    end
+    return data
+  end
+  
     # Should take a ServiceTypeValue object, or symbol name of
   # ServiceTypeValue object. 
   def service_type_value=(value)
