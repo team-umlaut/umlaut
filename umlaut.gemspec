@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
     f =~ %r{^(\./)?test/dummy/config/database[^ ]*\.yml}
   end
   
-  s.add_dependency "rails", "~> 3.2.2"
+  s.add_dependency "rails", "~> 3.2.3"
   s.add_dependency "jquery-rails"         # our built in JS uses jquery
  
   # nokogiri sadly locked to 1.5.0 due to some regressions:
