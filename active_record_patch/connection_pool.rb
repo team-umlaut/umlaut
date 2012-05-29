@@ -105,6 +105,12 @@ unless ENV["NO_AR_PATCH"]
             end
           end
         end
+        
+        def num_available
+          synchronize do
+            @queue.size
+          end
+        end
 
         private
 
@@ -300,10 +306,25 @@ unless ENV["NO_AR_PATCH"]
         end
       end
 
-      def clear_stale_cached_connections! # :nodoc:
-        reap
+      # clear_stale_cached imp from Rails 3.2, still using Threads. 
+      # Yes, we've created a monster. 
+      # Return any checked-out connections back to the pool by threads that
+      # are no longer alive.
+      def clear_stale_cached_connections!
+        keys = @reserved_connections.keys - Thread.list.find_all { |t|
+          t.alive?
+        }.map { |thread| thread.object_id }
+        keys.each do |key|
+          conn = @reserved_connections[key]
+          ActiveSupport::Deprecation.warn(<<-eowarn) if conn.in_use?
+Database connections will not be closed automatically, please close your
+database connection at the end of the thread by calling `close` on your
+connection.  For example: ActiveRecord::Base.connection.close
+          eowarn
+          checkin conn
+          @reserved_connections.delete(key)
+        end
       end
-      deprecate :clear_stale_cached_connections! => "Please use #reap instead"
 
       # Check-out a database connection from the pool, indicating that you want
       # to use it. You should call #checkin when you no longer need this.
@@ -387,7 +408,11 @@ unless ENV["NO_AR_PATCH"]
         elsif @connections.size < @size
           checkout_new_connection
         else
+          
+          
           t0 = Time.now
+          
+          Rails.logger.info("POLLED_CHECKOUT: num avail: #{num_available}")
           begin
             @available.poll(@checkout_timeout)
           rescue ActiveRecord::ConnectionTimeoutError
