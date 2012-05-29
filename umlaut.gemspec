@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "For Libraries, a just-in-time last-mile service aggregator, taking OpenURL input"
   #s.description = "TODO: Description of Umlaut."
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib,active_record_patch}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["./test/**/*"].reject do |f| 
     f =~ %r{^(\./)?test/dummy/log}
   end.reject do |f|
