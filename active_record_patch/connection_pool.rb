@@ -150,7 +150,7 @@ unless ENV["NO_AR_PATCH"]
             return remove if any?
 
             elapsed = Time.now - t0
-            raise ConnectionTimeoutError if elapsed >= timeout
+            raise ActiveRecord::ConnectionTimeoutError if elapsed >= timeout
           end
         ensure
           @num_waiting -= 1
@@ -390,10 +390,10 @@ unless ENV["NO_AR_PATCH"]
           t0 = Time.now
           begin
             @available.poll(@checkout_timeout)
-          rescue ConnectionTimeoutError
+          rescue ActiveRecord::ConnectionTimeoutError
             msg = 'could not obtain a database connection within %0.3f seconds (waited %0.3f seconds)' %
               [@checkout_timeout, Time.now - t0]
-            raise PoolFullError, msg
+            raise ActiveRecord::ConnectionTimeoutError, msg
           end
         end
       end
