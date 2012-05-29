@@ -156,8 +156,8 @@ module SearchMethods
         
         extra_info_xml = Nokogiri::XML( sfx_obj["EXTRA_INFO_XML"] )
         
-        # Put SFX object id in rft.object_id, that's what SFX does. 
-        ctx.referent.set_metadata('object_id', sfx_obj["OBJECT_ID"])
+        # Put SFX object id in rft.object_id, that's what SFX does.
+        ctx.referent.set_metadata('object_id', sfx_obj["OBJECT_ID"].to_s )
         ctx.referent.set_metadata("jtitle", sfx_obj["TITLE_DISPLAY"] || "Unknown Title")
         
         issn = extra_info_xml.search("item[key=issn]").text
