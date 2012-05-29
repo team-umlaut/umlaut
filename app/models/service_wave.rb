@@ -122,11 +122,11 @@ class ServiceWave
       aThread.join
 
       if aThread[:exception] 
-        debugger
+        debugger if Rails.env.development?
         begin
           request.dispatched(aThread[:service], DispatchedService::FailedFatal, aThread[:exception])
         rescue Exception => e
-          debugger
+          debugger if Rails.env.development?
           raise e
         end
       end
