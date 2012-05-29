@@ -127,9 +127,14 @@ class HathiTrust < Service
   def get_bibkey_parameters(rft)
     # filter out special chars that ought not to be in there anyway,
     # and that HathiTrust barfs on. 
-    isbn = get_identifier(:urn, "isbn", rft).gsub(/[\-\[\]]/, '')
-    oclcnum = get_identifier(:info, "oclcnum", rft).gsub(/[\-\[\]]/, '')
-    lccn = get_lccn(rft).gsub(/[\-\[\]]/, '')
+    isbn = get_identifier(:urn, "isbn", rft)
+    isbn = isbn.gsub(/[\-\[\]]/, '') unless isbn.blank?
+    
+    oclcnum = get_identifier(:info, "oclcnum", rft)
+    oclcnum = oclnum.gsub(/[\-\[\]]/, '') unless oclcnum.blank?
+    
+    lccn = get_lccn(rft)
+    lccn = lccn.gsub(/[\-\[\]]/, '') unless lccn.blank?
         
     yield(isbn, lccn, oclcnum)    
   end
