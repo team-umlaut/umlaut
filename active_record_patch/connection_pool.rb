@@ -2,12 +2,14 @@
 #
 #  ActiveRecord's ConnectionPool in Rails 3.2.3 allows threads to 'steal'
 #  connections from each other, so some threads get starved out. 
-#  This monkey patch uses an implementation from https://github.com/rails/rails/pull/6492
-#  that ensures 'fair' queue in ConnectionPool. 
 #
-#  Can be removed if/when we are on an AR that incorporates above patch
-#  or equivalent. 
-# 
+#  This monkey patch uses an implementation from https://github.com/rails/rails/pull/6492
+#  that ensures 'fair' queue in ConnectionPool.
+#
+#  It's actually a weird hybrid which ALSO maintains the clear_stale_cached_connections!
+#  behavior to reclaim leaked orphaned connections, and calls that method
+#  in checkout when pool has no avail connections.
+#
 #  This file referenced from an initializer in our main engine
 #  class, that loads it to monkey patch AR.
 #
@@ -408,7 +410,7 @@ connection.  For example: ActiveRecord::Base.connection.close
         elsif @connections.size < @size
           checkout_new_connection
         else
-          
+          clear_stale_cached_connections!
           
           t0 = Time.now
           
