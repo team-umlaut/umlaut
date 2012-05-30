@@ -414,7 +414,7 @@ connection.  For example: ActiveRecord::Base.connection.close
           
           t0 = Time.now
           
-          Rails.logger.info("POLLED_CHECKOUT: num avail: #{num_available}")
+          Rails.logger.info("POLLED_CHECKOUT: num avail connections: #{@available.num_available}; total connections: #{@connections.size}")
           begin
             @available.poll(@checkout_timeout)
           rescue ActiveRecord::ConnectionTimeoutError
