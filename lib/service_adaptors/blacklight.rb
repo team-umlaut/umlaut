@@ -80,7 +80,7 @@ class Blacklight < Service
       # selector still easy, thanks nokogiri! Grab the marc from our
       # results. 
       marc_matches = doc.xpath("atom:feed/atom:entry/atom:content[@type='application/marc']", xml_ns).collect do |encoded_marc21|
-        MARC::Reader.decode( Base64.decode64(encoded_marc21.text) )        
+        MARC::Reader.decode( Base64.decode64(encoded_marc21.text).force_encoding("UTF-8") )        
       end
   
       add_856_links(request, marc_matches )
@@ -105,7 +105,7 @@ class Blacklight < Service
         # search, or we'll wind up matching parent elements not actually
         # included in our 'entries' list. 
         marc_matches = entries.xpath("atom:content[@type='application/marc']", xml_ns).collect do |encoded_marc21|
-          marc = MARC::Reader.decode( Base64.decode64(encoded_marc21.text) )
+          marc = MARC::Reader.decode( Base64.decode64(encoded_marc21.text).force_encoding("UTF-8") )
 
           marc_by_atom_id[ encoded_marc21.at_xpath("ancestor::atom:entry/atom:id/text()", xml_ns).to_s  ] = marc
           
