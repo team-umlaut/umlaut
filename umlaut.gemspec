@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   # https://github.com/tenderlove/nokogiri/issues/638 
   s.add_dependency "nokogiri", "1.5.0"    # for XML parsing
   s.add_dependency "openurl", ">= 0.3.0"  # for OpenURL parsing and creating
-  s.add_dependency "marc", ">= 0.4.3", "< 1.1"  # for parsing Marc files in catalog/ils adaptors
+  s.add_dependency "marc", ">= 0.5.0", "< 1.1"  # for parsing Marc files in catalog/ils adaptors
   s.add_dependency "isbn"                 # used by amazon among others
   s.add_dependency "htmlentities"         # used by SFX adapter to unescape &ent;s
   # Remember to generate a faster json adapter into app gemfile, rather than just multi_json lowest common denominator.
