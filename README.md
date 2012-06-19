@@ -1,10 +1,5 @@
 # Umlaut
 
-This is Umlaut 3.0.0 _alpha_ software. Umlaut 3.0 is not yet in final release. 
-(For Umlaut 2.0, see http://wiki.code4lib.org/index.php/Umlaut . However, if 
-you are just getting started checking out Umlaut, you probably should just
-start here with 3.0 even though it's alpha). 
-
 Umlaut is software for libraries (the kind with books). 
 
 It could be described as a front-end layer on top of an existing OpenURL 
