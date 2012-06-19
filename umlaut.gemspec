@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Umlaut::VERSION
   s.authors     = ["Jonathan Rochkind, et al"]
   s.email       = ["umlaut-general@rubyforge.org"]
-  s.homepage    = "https://github.com/team-umlaut/umlaut/tree/umlaut3dev"
+  s.homepage    = "https://github.com/team-umlaut/umlaut"
   s.summary     = "For Libraries, a just-in-time last-mile service aggregator, taking OpenURL input"
   #s.description = "TODO: Description of Umlaut."
 
