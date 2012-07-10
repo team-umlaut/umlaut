@@ -5,6 +5,9 @@
 
 class ResolveController < UmlautController
   
+  
+  
+  
   before_filter :init_processing
   # Init processing will look at this list, and for actions mentioned,
   # will not create a @user_request if an existing one can't be found.
@@ -150,6 +153,13 @@ class ResolveController < UmlautController
     # way to force session creation without setting a value in session,
     # so we do this weird one. 
     session[nil] = nil
+    
+    # We have to clean the params of bad char encoding bytes, or it causes
+    # no end of problems later. We can't just refuse to process, sources
+    # do send us bad bytes, I'm afraid. 
+    params.values.each do |v|
+      EnsureValidEncoding.ensure_valid_encoding!(v, :invalid => :replace)
+    end
     
     # Create an UmlautRequest object. 
     options = {}
