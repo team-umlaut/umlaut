@@ -384,8 +384,7 @@ class WorldcatIdentities < Service
   end
   
   def clean_oclcnum(num)
-    # got the follow from referent.rb ~152 and added ocn
-    if num =~ /(ocn0*|ocm0*|\(OCoLC\)|ocl70*|0+)(.*)$/
+    if num =~ /(ocn0*|ocm0*|on0*|\(OCoLC\)|ocl70*|0+)(.*)$/
       num = $2
     end
     return num
