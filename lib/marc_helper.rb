@@ -28,7 +28,8 @@ module MarcHelper
           next if urls_seen.include?(url)
   
           # Trying to avoid duplicates with SFX/link resolver. 
-          next if  should_skip_856_link?(request, marc_xml, url)
+           skip = should_skip_856_link?(request, marc_xml, url)
+           next if skip
           
           urls_seen.push(url)
           
@@ -120,13 +121,17 @@ module MarcHelper
   # still include. 
   def should_skip_856_link?(request, marc_record, url)
      is_journal = (marc_record.leader[7,1] == 's')
-
-     return (  is_journal && 
-               SfxUrl.sfx_controls_url?(url) && 
-                !(  request.title_level_citation? &&     
+     
+     sfx_controlled = SfxUrl.sfx_controls_url?(url)
+     
+     # Do NOT skip if it's a title-level citation with no
+     # existing full text entries. 
+     not_title_level_empty = !(  request.title_level_citation? &&     
                     request.get_service_type("fulltext").length == 0  
-                 )
-              )
+                 ) 
+
+     result = ( is_journal && sfx_controlled  && not_title_level_empty )
+     return result
   end
 
   # Take a ruby Marc Field object representing an 856 field,
