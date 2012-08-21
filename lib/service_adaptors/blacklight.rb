@@ -93,7 +93,7 @@ class Blacklight < Service
     #keyword search.    
     if (@keyword_search &&
         url = blacklight_keyword_search_url(request))
-        
+            
         doc = Nokogiri::XML( http_fetch(url).body )
         # filter out matches whose titles don't really match at all, or
         # which have already been seen in identifier search. 
