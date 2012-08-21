@@ -323,8 +323,11 @@ class Sfx < Service
           # Sfx metadata we want
           response_data[:sfx_base_url] = @base_url
           response_data[:sfx_obj_index] = sfx_obj_index + 1 # sfx is 1 indexed
-          response_data[:sfx_target_index] = target_index + 1 
-          response_data[:sfx_request_id] = (perl_data/"//hash/item[@key='sfx.request_id']").first.inner_text
+          response_data[:sfx_target_index] = target_index + 1
+          # sometimes the sfx.request_id is missing, go figure. 
+          if request_id = (perl_data/"//hash/item[@key='sfx.request_id']").first
+            response_data[:sfx_request_id] = request_id.inner_text
+          end
           response_data[:sfx_target_service_id] = target_service_id
           response_data[:sfx_target_name] = sfx_target_name
           # At url-generation time, the request isn't available to us anymore,
@@ -453,6 +456,12 @@ class Sfx < Service
       key = item['key'].to_s
             
       value = item.inner_text
+      
+      # SFX sometimes returns invalid UTF8 (is it really ISO 8859? Is it
+      # predictable? Who knows. If it's not valid, it'll cause all
+      # sorts of problems later. So if it's not valid, we're just
+      # going to ignore it, sorry. 
+      next unless value.valid_encoding?
 
       # Some normalization. SFX uses rft.year, which is not actually
       # legal. Stick it in rft.date instead.
@@ -482,7 +491,7 @@ class Sfx < Service
       # But this still has HTML entities in it sometimes. Now we've
       # got to decode THAT.
       # TODO: Are we sure we need to do this? We need an example
-      # from SFX result to test, it's potentially expensive. 
+      # from SFX result to test, it's potentially expensive.       
       value = html_ent_coder.decode(value)
 
       # object_type? Fix that to be the right way.
