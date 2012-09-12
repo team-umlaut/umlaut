@@ -3,15 +3,17 @@ module SfxDb
     self.table_name = 'AZ_TITLE_VER3'
     self.primary_key = 'AZ_TITLE_VER3_ID'
 
-    belongs_to :object,
-               :foreign_key => 'OBJECT_ID',
-               :class_name => "SfxDb::Object"
-
+    belongs_to  :object,
+                :foreign_key => 'OBJECT_ID',
+                :class_name => "SfxDb::Object"
+               
     has_many  :az_additional_titles,
-               :foreign_key => 'AZ_TITLE_VER3_ID'
-    has_many  :az_letter_groups,
-               :foreign_key => 'AZ_TITLE_VER3_ID'
+              :foreign_key => 'AZ_TITLE_VER3_ID',
+              :class_name => "SfxDb::AzAdditionalTitle"
 
+    has_many  :az_letter_groups,
+              :foreign_key => 'AZ_TITLE_VER3_ID',
+              :class_name => "SfxDb::AzLetterGroup"
 
     def to_context_object
       #require 'openurl'
