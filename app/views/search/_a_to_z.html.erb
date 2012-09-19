@@ -1,6 +1,5 @@
-  <p class="azNav">
-  <% group_list.each { | letter |%>
+<p class="azNav">
+  <% group_list.each do |letter| %>
   <%= link_to letter, :action=>"journal_list", :id=>letter%>
-  <%}%>
-  </p>
-
+  <% end %>
+</p>

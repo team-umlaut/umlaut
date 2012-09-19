@@ -1,167 +1,127 @@
-  
-  
-  <div class="oneColumn">
-  <h1>Journals</h1>
-    
-<%= render :partial=>"a_to_z" %>
-
-  <% if flash[:error] %>
-    <div id="error" class="notice citationLinker"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
-  <% end %>
-
-  <h2 class="cl_header">Looking for a specific journal or article</h2>
-
-
-                                  
-  <%= form_tag(@submit_hash, {:method=>'get', :class=>"OpenURL", :name=>'OpenURL', :id=>'OpenURL'})  %>
-  <div class="citationLinker">                                      
-
-      <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
-      <!-- <input type=hidden name="rfr_id" value="info:sid/umlaut"> -->
-
-      <table width="100%" border="0" cellspacing="0" cellpadding="5">
-        <tr>
-          <td colspan="3" valign="bottom"><strong>Enter
-              the journal title or the ISSN.
-              If you have both the journal
-              title
-      and ISSN, use the ISSN.</strong></td>
-        <input type="hidden" class="rft_title" name="rft.title">
-          <input type="hidden" class="rft_object_id" name="rft.object_id">
-          <input type="hidden" id="date" name="rft.date">
-        </tr>
-        <tr>
-
-                                            
-          <td width="89%">Journal Title:
-
-            <%= text_field :journal, :title, {:name=>'rft.jtitle', :autocomplete=>'off', :size=>'40', :class=>"title_search"} %>
-                    
-            
+<div class="row">
+  <div class="span12">
+    <h2>Journals</h2>
+    <%= render :partial=>"a_to_z" %>
+    <% if flash[:error] %>
+      <div id="error" class="notice citationLinker"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
+    <% end %>
+    <h3>Looking for a specific journal or article</h3>
+    <%= form_tag(@submit_hash, {:method => "get", :class => "OpenURL", :name => "OpenURL", :id=>"OpenURL"})  %>
+      <fieldset class="citationLinker">                                      
+        <legend>Enter the journal title or the ISSN. If you have both the journal title and ISSN, use the ISSN.</legend>
+        <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
+        <%= #hidden_field_tag "rfr_id", "nfo:sid/umlaut.code4lib.org:citation" %> 
+        <%= hidden_field_tag "rft.date", "" %> 
+        <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
+        <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
+        <div class="row">
+          <div class="span6">
+            <%= label :journal, :title, "Journal Title:" %>
+            <%= text_field :journal, :title, {:name=>'rft.jtitle', :class=>"title_search"} %>
+          </div>
+          <div class="span3">
             <select name="umlaut.title_search_type" class="sfx_title_search">
-              <option value="contains">contains</option>
-              <option value="begins">begins
-              with</option>
-              <option value="exact">exact match</option>
+              <%= options_for_select(["contains", ["begins", "begins with"], ["exact", "exact match"]], params["umlaut.title_search_type"])%>
             </select>
-            &nbsp;&nbsp;&nbsp;&nbsp;ISSN:
-            <input type=text name="rft.issn" size="10" maxlength="9">
-            
-           
-          </td>
-            
-        </tr>
-                                          
-    </table>
+          </div>
+          <div class="span3">
+            <%= label :journal, :isbn, "ISSN:" %>
+            <%= text_field :journal, :isbn, {:name=>'rft.issn', :max_length => "9", :class=>"issn"} %>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="citationLinker">
+        <legend>Optional information - Enter as much as you know of the following:</legend>
+        <div class="row">
+          <div class="span4">
+            <label for="date">Date:</label>
+            <select id="date" name="__year">
+              <option value="" selected>Year</option>
+              <% (-1*Time.now.year..-1*1950).each do |year| %>
+                <option value="<%= year.abs.to_s %>"><%= year.abs.to_s %></option>
+              <% end %>
+            </select>
+            <select name="__month">
+              <option value="" selected>Month</option>
+              <option value="01">Jan</option>
+              <option value="02">Feb</option>
+              <option value="03">Mar</option>
+              <option value="04">Apr</option>
+              <option value="05">May</option>
+              <option value="06">Jun</option>
+              <option value="07">Jul</option>
+              <option value="08">Aug</option>
+              <option value="09">Sep</option>
+              <option value="10">Oct</option>
+              <option value="11">Nov</option>
+              <option value="12">Dec</option>
+            </select>
+            <select name="__day">
+              <option value="" selected>Day</option>
+              <option value="01">01</option>
+              <option value="02">02</option>
+              <option value="03">03</option>
+              <option value="04">04</option>
+              <option value="05">05</option>
+              <option value="06">06</option>
+              <option value="07">07</option>
+              <option value="08">08</option>
+              <option value="09">09</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+              <option value="26">26</option>
+              <option value="27">27</option>
+              <option value="28">28</option>
+              <option value="29">29</option>
+              <option value="30">30</option>
+            </select>
+          </div>
+          <div class="span2">
+            <%= label :journal, :volume, "Volume:" %>
+            <%= text_field :journal, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume"} %>
+          </div>
+          <div class="span3">
+            <%= label :journal, :issue, "Issue:" %>
+            <%= text_field :journal, :issue, {:name=>'rft.issue', :class=>"issue"} %>
+          </div>
+          <div class="span2">
+            <%= label :journal, :spage, "Start page:" %>
+            <%= text_field :journal, :spage, {:name=>'rft.spage', :class=>"spage"} %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="span4">
+            <label for="rft_id_type">DOI or Pubmed Identifier:</label>
+            <select id="rft_id_type" name="rft_id_type">
+              <option value="doi">DOI:</option>
+              <option value="pmid">PMID:</option>
+            </select>
+            <input name="rft_id_value" type="text" value="">
+          </div>
+        </div>
+      </fieldset> 
+      <%= submit_tag "Search", {:name=>"Generate_OpenURL2"} %>
+    </form>
+    <h3><i class="icon-question-sign">?</i> Having Trouble?</h3>
+    <ul class="bullets">
+      <li>Try entering less information about your article. If one piece of information is wrong, it could be causing the problem.</li>
+      <% if umlaut_config.help_url %>
+        <li>For technical support, including access problems, please <a href="<%= umlaut_config.help_url %>">contact us</a>.</li>
+      <% end %>
+    </ul>
   </div>
-  <div class="citationLinker">
-    <table width="100%" border="0" cellspacing="0" cellpadding="5">
-      <tr>
-        <td><strong>Optional information - Enter as much as you know of the following: </strong></td>
-      </tr>
-      <tr>
-       
-        <td width="46%">Date: 
-          <select name="__year">
-
-          <option value="" selected>Year</option>
-            <% (-1*Time.now.year..-1*1950).each do |year| %>
-            <option value="<%= year.abs.to_s %>"><%= year.abs.to_s %></option>
-            <% end %>
-          </select>
-
-          <select name="__month">
-            <option value="" selected>Month
-            <option value="01">Jan
-            <option value="02">Feb
-            <option value="03">Mar
-            <option value="04">Apr
-            <option value="05">May
-            <option value="06">Jun
-            <option value="07">Jul
-            <option value="08">Aug
-            <option value="09">Sep
-            <option value="10">Oct
-            <option value="11">Nov
-            <option value="12">Dec
-          </select>
-
-          <select name="__day">
-            <option value="" selected>Day
-            <option value="01">01
-            <option value="02">02
-            <option value="03">03
-            <option value="04">04
-            <option value="05">05
-            <option value="06">06
-            <option value="07">07
-            <option value="08">08
-            <option value="09">09
-            <option value="10">10
-            <option value="11">11
-            <option value="12">12
-            <option value="13">13
-            <option value="14">14
-            <option value="15">15
-            <option value="16">16
-            <option value="17">17
-            <option value="18">18
-            <option value="19">19
-            <option value="20">20
-            <option value="21">21
-            <option value="22">22
-            <option value="23">23
-            <option value="24">24
-            <option value="25">25
-            <option value="26">26
-            <option value="27">27
-            <option value="28">28
-            <option value="29">29
-            <option value="30">30
-          </select>
-
-          &nbsp;&nbsp;&nbsp;Volume:
-          <input type=text name="rft.volume" size="5" maxlength="5" value="" class='volume'>&nbsp;&nbsp;&nbsp;Issue:
-          <input type=text name="rft.issue" size="5" value="" class="issue">
-          &nbsp;&nbsp;&nbsp;Start page:
-          <input type=text name="rft.spage" size="5" value="" class='spage'>
-</td>
-      
-      </tr>
-      <tr>
-        <td><strong>DOI or Pubmed Identifier: </strong></td>
-      </tr>
-      <tr>
-        <td>
-
-          <select name='rft_id_type'>
-            <option value='doi'>DOI:</option>
-            <option value='pmid'>PMID:</option>
-          </select>&nbsp;&nbsp;&nbsp;
-           <input name="rft_id_value" type=text value="" size=25>
-        </td>
-      </tr>      
-      <tr>      
-    </table>
-  </div> 
-    <p class="cl_submit">
-
-      <input type="submit" name="Generate_OpenURL2" value="Search">
-    </p>
-                                      </form>
-<div class="line2"></div>
-<p><strong><span id="helpicon">?</span> Having
-    Trouble?</strong></p>
-<p>&nbsp;</p>
-<ul class="bullets">
-  <li>Try entering less information
-    about your article. If one piece of information is wrong, it could be causing
-    the problem.</li>
-  <% if umlaut_config.help_url %>
-  <li>For technical support, including access problems, please <a href="<%= umlaut_config.help_url %>">contact us</a>.</li>
-  <% end %>
-  </ul>
-
-<p>&nbsp;</p>
-<!--close oneColumn-->
-  </div>
+</div>

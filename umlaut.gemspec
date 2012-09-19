@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   
   s.add_dependency "rails", "~> 3.2.5"
   s.add_dependency "jquery-rails"         # our built in JS uses jquery
+  s.add_dependency "bootstrap-sass"
  
   # nokogiri sadly locked to 1.5.0 due to some regressions:
   # https://github.com/tenderlove/nokogiri/issues/638 
