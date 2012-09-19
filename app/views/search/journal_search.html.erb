@@ -12,79 +12,64 @@ else
 end
 
 %>
-
-<div class="oneColumn">
-<h1><%= @page_title %>
-</h1>
-
-<div class="citationLinker" style="margin-bottom: 8px">                                                                        
-  <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'})  %>
-      <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
-      <!-- <input type=hidden name="rfr_id" value="info:sid/umlaut.code4lib.org:citation"> -->
-
-      <input type="hidden" class="rft_title" name="rft.title">
-      <input type="hidden" class="rft_object_id" name="rft.object_id">
-
-      <%-
-      # specific article fields from prior form may be present, if the user is now choosing from
-      # amongst serveral possible title matches. Preserve them on refinement of search terms.  
-      -%>
-      <% params.slice("rft.date", "__year", "__month", "__day", "rft.volume", "rft.issue", "rft.spage").each_pair do |key, value| %>
-        <%= hidden_field_tag key, value %>
+<div class="row">
+  <div class="span12">
+    <h2><%= @page_title %></h2>
+    <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'})  %>
+      <fieldset class="citationLinker">
+        <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
+        <%= #hidden_field_tag "rfr_id", "nfo:sid/umlaut.code4lib.org:citation" %> 
+        <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
+        <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
+        <%= hidden_field_tag "rft.issn", "" %> 
+        <%-
+        # specific article fields from prior form may be present, if the user is now choosing from
+        # amongst serveral possible title matches. Preserve them on refinement of search terms.  
+        -%>
+        <% params.slice("rft.date", "__year", "__month", "__day", "rft.volume", "rft.issue", "rft.spage").each_pair do |key, value| %>
+          <%= hidden_field_tag key, value %>
+        <% end %>
+        <div class="row">
+          <div class="span6">
+            <%= label :journal, :title, "Journal Title:" %>
+            <%= text_field :journal, :title, {:name=>'rft.jtitle', :value=>params['rft.jtitle'], :class=>"title_search"} %>
+          </div>
+          <div class="span3">
+            <select name="umlaut.title_search_type">
+              <%= options_for_select(["contains", ["begins", "begins with"], ["exact", "exact match"]], params["umlaut.title_search_type"])%>
+            </select>
+          </div>
+          <div class="span3">
+            <%= submit_tag "Search", {:name=>"Generate_OpenURL2"} %>
+            <%= link_to('More search options', :controller=>'search') %>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+    <% if params["action"] == "journal_list" %>
+      <%= render :partial=>"a_to_z" %>
+    <% end %>
+    <% unless @hits == 0%>
+      <h3>Showing results <%= @start_result_num %> through <%= @end_result_num %> of <%= @hits %></h3>
+    <% end %>
+    <% if params["rft.jtitle"] %>
+      <div class="note"><em><strong>Note:</strong> Alternate titles might have matched your search terms</em></div>
+    <% end %>
+    <div class='pagination'>
+      <%= render :partial=>'pager' %>
+    </div>
+    <div class="list">
+      <% @display_results.each do | co | 
+        @current_context_object = co
+        partial_name = @citation_partial || 'citation' %>
+        <%= render :partial=>partial_name %>
       <% end %>
-      
-          
-      Journal Title:
-      <%= text_field :journal, :title, {:name=>'rft.jtitle', :autocomplete=>'off', :size=>'40', :value=>params['rft.jtitle'], :class=>"title_search"}
-      %>
-                                                                             
-      <select name="umlaut.title_search_type" class="sfx_title_search">
-          <option value="contains" <%= "SELECTED" if params["umlaut.title_search_type"] == "contains" %>>contains</option>
-          <option value="begins" <%= "SELECTED" if params["umlaut.title_search_type"] == "begins" %> >begins
-          with</option>
-          <option value="exact">exact match</option>
-      </select>
-      
-      <input type=hidden name="rft.issn">
-      <input type="submit" name="Generate_OpenURL2" value="Search">
-      <%= link_to('More search options', :controller=>'search') %>
-  </form>
+    </div>
+    <div class='pagination'>
+      <%= render :partial=>'pager' %>
+    </div>
+    <% if params["action"] == "journal_list" %> 
+      <%= render :partial=>"a_to_z" %>
+    <% end %>
+  </div>
 </div>
-                                      
-<% if params["action"] == "journal_list" %> 
-  <%= render :partial=>"a_to_z" %>
-  <div class="line2"></div>
-<% end %>
-
-
-<% unless @hits == 0%>
-<h3>Showing results <%= @start_result_num %> through <%= @end_result_num %> of <%= @hits %></h3>
-<% end %>
-<% if params["rft.jtitle"] %>
-  <div class="note"><em><strong>Note:</strong> Alternate titles might have matched your search terms</em></div>
-<% end %>
-
-<div class='pagination'>
-  <%= render :partial=>'pager' %>
-</div>
-
-<div class="list">
-<% @display_results.each do | co | 
-@current_context_object = co
-%>
-  <% partial_name = @citation_partial || 'citation' %>
-  <%= render :partial=>partial_name %>
- 
-<% end %>
-</div>
-
-<div class='pagination'>
-  <%= render :partial=>'pager' %>
-</div>
-
-<% if params["action"] == "journal_list" %> 
-  <div class="line2"></div>
-  <%= render :partial=>"a_to_z" %>
-<% end %>
- <!--close oneColumn-->
-</div>  
