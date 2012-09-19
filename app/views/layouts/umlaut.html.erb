@@ -9,23 +9,25 @@
     <%= render_umlaut_head_content %>
   </head>
   <body>
-    <header id="header" class="header">
-      <h1><%= umlaut_config.app_name %></h1>
-    </header>
-    <div class="umlaut container-fluid">
-      <% if permalink = current_permalink_url() %>
-        <div class="permalink_bar">
-          URL: <%= link_to current_permalink_url, current_permalink_url %>          
-        </div>
-      <% end %>
-      <%#= yield %>
+    <div class="umlaut-container">
+      <header id="header" class="header">
+        <h1><%= umlaut_config.app_name %></h1>
+      </header>
+      <div class="container-fluid">
+        <% if permalink = current_permalink_url() %>
+          <div class="permalink_bar">
+            URL: <%= link_to current_permalink_url, current_permalink_url %>          
+          </div>
+        <% end %>
+        <%= yield %>
+      </div>
+      <footer id="footer" class="footer">
+        <%= render_service_credits %>
+        <!-- links to aid in debugging openurls gone wrong when in production -->
+        <%= link_to_test_resolve %>
+        <%= link_to_direct_sfx %>
+        <%= link_to_toggle_debug_info %> 
+      </footer>
     </div>
-    <footer id="footer" class="footer">
-      <%= render_service_credits %>
-      <!-- links to aid in debugging openurls gone wrong when in production -->
-      <%= link_to_test_resolve %>
-      <%= link_to_direct_sfx %>
-      <%= link_to_toggle_debug_info %> 
-    </footer>
   </body>
 </html>

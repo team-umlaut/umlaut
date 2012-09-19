@@ -15,36 +15,37 @@ end
 <div class="row">
   <div class="span12">
     <h2><%= @page_title %></h2>
-    <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL'})  %>
-      <fieldset class="citationLinker">
-        <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
-        <%= #hidden_field_tag "rfr_id", "nfo:sid/umlaut.code4lib.org:citation" %> 
-        <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
-        <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
-        <%= hidden_field_tag "rft.issn", "" %> 
-        <%-
-        # specific article fields from prior form may be present, if the user is now choosing from
-        # amongst serveral possible title matches. Preserve them on refinement of search terms.  
-        -%>
-        <% params.slice("rft.date", "__year", "__month", "__day", "rft.volume", "rft.issue", "rft.spage").each_pair do |key, value| %>
-          <%= hidden_field_tag key, value %>
-        <% end %>
-        <div class="row">
-          <div class="span6">
-            <%= label :journal, :title, "Journal Title:" %>
-            <%= text_field :journal, :title, {:name=>'rft.jtitle', :value=>params['rft.jtitle'], :class=>"title_search"} %>
+    <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL', :class => "form-search"})  %>
+      <div class="citationLinker">
+        <fieldset>
+          <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
+          <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
+          <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
+          <%= hidden_field_tag "rft.issn", "" %> 
+          <%-
+          # specific article fields from prior form may be present, if the user is now choosing from
+          # amongst serveral possible title matches. Preserve them on refinement of search terms.  
+          -%>
+          <% params.slice("rft.date", "__year", "__month", "__day", "rft.volume", "rft.issue", "rft.spage").each_pair do |key, value| %>
+            <%= hidden_field_tag key, value %>
+          <% end %>
+          <div class="row-fluid">
+            <div class="span6">
+              <%= label :journal, :title, "Journal Title:" %>
+              <%= text_field :journal, :title, {:name=>'rft.jtitle', :value=>params['rft.jtitle'], :class=>"title_search input-xlarge"} %>
+              <select name="umlaut.title_search_type" class="input-medium">
+                <%= options_for_select({"contains" => "contains", "begins with" => "begins", "exact match" => "exact"}, params["umlaut.title_search_type"])  %>
+              </select>
+            </div>
+            <div class="span1">
+              <%= submit_tag "Search", {:name=>"Generate_OpenURL2"} %>
+            </div>
+            <div class="span2">
+              <%= link_to('More search options', :controller=>'search') %>
+            </div>
           </div>
-          <div class="span3">
-            <select name="umlaut.title_search_type">
-              <%= options_for_select(["contains", ["begins", "begins with"], ["exact", "exact match"]], params["umlaut.title_search_type"])%>
-            </select>
-          </div>
-          <div class="span3">
-            <%= submit_tag "Search", {:name=>"Generate_OpenURL2"} %>
-            <%= link_to('More search options', :controller=>'search') %>
-          </div>
-        </div>
-      </fieldset>
+        </fieldset>
+      </div>
     </form>
     <% if params["action"] == "journal_list" %>
       <%= render :partial=>"a_to_z" %>

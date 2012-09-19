@@ -1,5 +1,7 @@
-<p class="azNav">
-  <% group_list.each do |letter| %>
-  <%= link_to letter, :action=>"journal_list", :id=>letter%>
-  <% end %>
-</p>
+<div class="row-fluid">
+  <div class="span12 azNav">
+    <% group_list.each do |letter| %>
+    <%= link_to letter, :action=>"journal_list", :id=>letter%>
+    <% end %>
+  </div>
+</div>
