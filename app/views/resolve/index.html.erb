@@ -19,7 +19,7 @@
     </div>
     <div class="row main_response_list">
       <% html_sections(:main).each do |section| %>
-        <%= content_tag "div", :id => section[:div_id] do %>
+        <%= content_tag "div", :id => section[:div_id], :class => "span7" do %>
           <%= render_section(section) %>
         <% end %>
       <% end %>
