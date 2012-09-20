@@ -288,13 +288,13 @@ class SearchController < UmlautController
   end
 
   def search_method_module
-    umlaut_config.lookup!("az_search_method", SearchMethods::Sfx4)
+    umlaut_config.lookup!("search.az_search_method", SearchMethods::Sfx4)
   end
   
   # sfx a-z profile as defined in config, used for direct db connections
   # to sfx. 
   def sfx_az_profile
-    umlaut_config.lookup!("sfx_az_profile", "default")
+    umlaut_config.lookup!("search.sfx_az_profile", "default")
   end
   helper_method :sfx_az_profile
   
