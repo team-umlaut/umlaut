@@ -45,3 +45,5 @@ https://github.com/team-umlaut/umlaut/
 
 You can join the umlaut listserv at:
 http://rubyforge.org/mail/?group_id=4382
+
+## Build Status [![Build Status](https://secure.travis-ci.org/team-umlaut/umlaut.png)](http://travis-ci.org/team-umlaut/umlaut)
