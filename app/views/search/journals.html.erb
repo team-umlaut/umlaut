@@ -1,76 +1,65 @@
-<div class="row">
-  <div class="span12">
-    <h2>Journals</h2>
-    <%= render :partial=>"a_to_z" %>
-    <% if flash[:error] %>
-      <div id="error" class="notice citationLinker"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
-    <% end %>
-    <h3>Looking for a specific journal or article</h3>
-    <%= form_tag(@submit_hash, {:method => "get", :class => "OpenURL form-search", :name => "OpenURL", :id=>"OpenURL"})  %>
-      <div class="citationLinker">
-        <fieldset>                                      
-          <legend>Enter the journal title or the ISSN. If you have both the journal title and ISSN, use the ISSN.</legend>
-          <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
-          <%= hidden_field_tag "rft.date", "" %> 
-          <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
-          <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
-          <div class="row-fluid">
-            <div class="span6">
-              <%= label :journal, :title, "Journal Title:" %>
-              <%= text_field :journal, :title, {:name=>'rft.jtitle', :class=>"title_search input-xlarge"} %>
-              <select name="umlaut.title_search_type" class="sfx_title_search input-medium">
-                <%= options_for_select({"contains" => "contains", "begins with" => "begins", "exact match" => "exact"}, params["umlaut.title_search_type"])  %>
-              </select>
-            </div>
-            <div class="span2">
-              <%= label :journal, :isbn, "ISSN:" %>
-              <%= text_field :journal, :isbn, {:name=>'rft.issn', :max_length => "9", :class=>"issn input-small"} %>
-            </div>
-          </div>
-        </fieldset>
+<h2>Journals</h2>
+<%= render :partial=>"a_to_z" %>
+<% if flash[:error] %>
+  <div id="error" class="notice citationLinker"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
+<% end %>
+<h3>Looking for a specific journal or article</h3>
+<%= form_tag(@submit_hash, {:method => "get", :class => "OpenURL form-inline", :name => "OpenURL", :id=>"OpenURL"})  %>
+  <div class="citationLinker">
+    <fieldset>                                      
+      <legend>Enter the journal title or the ISSN. If you have both the journal title and ISSN, use the ISSN.</legend>
+      <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
+      <%= hidden_field_tag "rft.date", "" %> 
+      <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
+      <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
+      <div class="control-group">
+        <%= label :journal, :title, "Journal Title:" %>
+        <%= text_field :journal, :title, {:name=>'rft.jtitle', :class=>"title_search input-xlarge"} %>
+        <select name="umlaut.title_search_type" class="sfx_title_search input-medium">
+          <%= options_for_select({"contains" => "contains", "begins with" => "begins", "exact match" => "exact"}, params["umlaut.title_search_type"])  %>
+        </select>
       </div>
-      <div class="citationLinker">
-        <fieldset>
-          <legend>Optional information - Enter as much as you know of the following:</legend>
-          <div class="row-fluid">
-            <div class="span4">
-              <label for="year">Date:</label>
-              <%= label :journal, :volume, "Volume:" %>
-              <%= date %>
-            </div>
-            <div class="span2">
-              <%= label :journal, :volume, "Volume:" %>
-              <%= text_field :journal, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume input-small"} %>
-            </div>
-            <div class="span2">
-              <%= label :journal, :issue, "Issue:" %>
-              <%= text_field :journal, :issue, {:name=>'rft.issue', :class=>"issue input-small"} %>
-            </div>
-            <div class="span2">
-              <%= label :journal, :spage, "Start page:" %>
-              <%= text_field :journal, :spage, {:name=>'rft.spage', :class=>"spage input-small"} %>
-            </div>
-          </div>
-          <div class="row-fluid">
-            <div class="span4">
-              <label for="rft_id_type">DOI or Pubmed Identifier:</label>
-              <select id="rft_id_type" name="rft_id_type" class="input-small">
-                <option value="doi">DOI:</option>
-                <option value="pmid">PMID:</option>
-              </select>
-              <input name="rft_id_value" class="input-small" type="text" value="">
-            </div>
-          </div>
-        </fieldset>
-      </div> 
-      <%= submit_tag "Search", {:name=>"Generate_OpenURL2"} %>
-    </form>
-    <h3 class="help-block separator"><i class="icon-question-sign"></i> Having Trouble?</h3>
-    <ul class="help-block">
-      <li>Try entering less information about your article. If one piece of information is wrong, it could be causing the problem.</li>
-      <% if umlaut_config.help_url %>
-        <li>For technical support, including access problems, please <a href="<%= umlaut_config.help_url %>">contact us</a>.</li>
-      <% end %>
-    </ul>
+      <div class="control-group">
+        <%= label :journal, :isbn, "ISSN:" %>
+        <%= text_field :journal, :isbn, {:name=>'rft.issn', :max_length => "9", :class=>"issn input-small"} %>
+      </div>
+    </fieldset>
   </div>
-</div>
+  <div class="citationLinker">
+    <fieldset>
+      <legend>Optional information - Enter as much as you know of the following:</legend>
+      <div class="control-group">
+        <label for="year">Date:</label>
+        <%= date %>
+      </div>
+      <div class="control-group">
+        <%= label :journal, :volume, "Volume:" %>
+        <%= text_field :journal, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume input-small"} %>
+      </div>
+      <div class="control-group">
+        <%= label :journal, :issue, "Issue:" %>
+        <%= text_field :journal, :issue, {:name=>'rft.issue', :class=>"issue input-small"} %>
+      </div>
+      <div class="control-group">
+        <%= label :journal, :spage, "Start page:" %>
+        <%= text_field :journal, :spage, {:name=>'rft.spage', :class=>"spage input-small"} %><br />
+      </div>
+      <div class="control-group">
+        <label for="rft_id_type">DOI or Pubmed Identifier:</label>
+        <select id="rft_id_type" name="rft_id_type" class="input-small">
+          <option value="doi">DOI:</option>
+          <option value="pmid">PMID:</option>
+        </select>
+        <input name="rft_id_value" class="input-small" type="text" value="">
+      </div>
+    </fieldset>
+  </div> 
+  <%= submit_tag "Search", {:name=>"Generate_OpenURL2"} %>
+</form>
+<h3 class="help-block separator"><i class="icon-question-sign"></i> <span>Having Trouble?</span></h3>
+<ul class="help-block unstyled">
+  <li>Try entering less information about your article. If one piece of information is wrong, it could be causing the problem.</li>
+  <% if umlaut_config.help_url %>
+    <li>For technical support, including access problems, please <a href="<%= umlaut_config.help_url %>">contact us</a>.</li>
+  <% end %>
+</ul>
