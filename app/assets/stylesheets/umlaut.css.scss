@@ -1,12 +1,15 @@
+// Bootstrap Variables
 $baseFontSize: 12px;
 $baseLineHeight: 12px;
 $linkColor: #0066CC;
-$azLinkColor: $linkColor;
-$azBorderColor: #bbb;
-$azBackground: #eee;
-$clBackground: $azBackground;
+// Umlaut Variables
+// General Styles
 $umlautBorderColor: #EEB211;
 $umlautBackgroundColor: #FFFDEA;
+// A-Z List
+$umlautAzLinkColor: $linkColor;
+$umlautAzBorderColor: #bbb;
+$umlautAzBackground: #eee;
 @import "bootstrap";
 @import "bootstrap-responsive";
 @mixin inner-padding {
@@ -45,6 +48,20 @@ legend {
   font: {
     weight: bold;
   }
+}
+
+label {
+  margin: {
+    left: 10px;
+    top: 10px;
+    bottom: 10px;
+  }
+}
+
+select {
+  height: auto; /* In IE7, the height of the select element cannot be changed by height, only font-size */
+  *margin-top: 4px; /* For IE7, add top margin to align select with labels */
+  line-height: auto;
 }
 
 .umlaut-container {
@@ -89,7 +106,7 @@ legend {
 	font-size:11px;
 	padding: 5px;
 	border: 1px solid #ebb211;
-	background-color: $azBackground;
+	background-color: $umlautAzBackground;
   margin-bottom: 12px;
   margin-top: 12px;
   a:link { 
@@ -107,12 +124,12 @@ legend {
     font-size: 1.1em;
     font-weight: bold;
     padding:.15em .3em .15em .3em;
-    border: 1px solid $azBorderColor;
+    border: 1px solid $umlautAzBorderColor;
     text-decoration: none;
-    color: $azLinkColor;
+    color: $umlautAzLinkColor;
     line-height: 2em;
     &:hover {
-      background-color: $azBackground;
+      background-color: $umlautAzBackground;
     }
   }
 }
@@ -144,8 +161,19 @@ dl.citation {
   text-align: right;
 }
 
+.form-inline {
+  .control-group {
+    display: inline;
+  }
+}
+
 @media (max-width: 767px) {
   .citation_link {
     text-align: left;
+  }
+  .form-inline {
+    .control-group {
+      display: block;
+    }
   }
 }
