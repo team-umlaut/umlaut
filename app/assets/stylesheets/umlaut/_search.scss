@@ -1,0 +1,20 @@
+.umlaut-search-container {
+}  
+
+.umlaut-search {
+	font-size:11px;
+	padding: 10px;
+	border: 1px solid $umlautSearchBorderColor;
+	background: {
+	  color: $umlautSearchBackgroundColor;
+	}
+
+  margin: {
+    top: 12px;
+    bottom: 12px;
+  }
+
+  .row-fluid {
+    margin-bottom: $baseLineHeight;
+  }
+}

@@ -52,14 +52,14 @@ module SearchHelper
   end
   
   def years
-    select_year(nil, {:prompt => true, :field_name => "__year", :start_year => Date.today.year, :end_year => 1950}, {:class=>"year input-small"})
+    select_year(nil, {:prompt => true, :start_year => Date.today.year, :end_year => 1950}, {:name => "__year", :class=>"year input-small"})
   end
   
   def months
-    select_month(nil, {:prompt => true, :field_name => "__month", :use_short_month => true}, {:class=>"month input-small"})
+    select_month(nil, {:prompt => true, :use_short_month => true}, {:name => "__month", :class=>"month input-small"})
   end
   
   def days
-    select_day(nil, {:prompt => true, :field_name => "__day"}, {:class=>"day input-small"})
+    select_day(nil, {:prompt => true}, {:name => "__day", :class=>"day input-small"})
   end
 end

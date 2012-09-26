@@ -3,65 +3,63 @@
   ref_meta = @current_context_object.referent.metadata  
   labels = referent_labels
 %>
-<div class="search_citation row-fluid">
-  <div class="span8">
-    <dl class="citation dl-horizontal">
-      <% if ! ref_meta["atitle"].blank? %>
-        <dt><%= labels.atitle %>:</dt>
-        <dd><%= ref_meta["atitle"] %></dd>               
-      <% end %>
-      <% unless ref_meta["au"].nil? and ref_meta['aulast'].nil? %>
-        <dt>Author:</dt>
-        <dd>
-          <%= ref_meta["au"] || ref_meta["aulast"] %>         
-          <% if ref_meta["aufirst"] || ref_meta["auinit"] || ref_meta["auinit1"]%>
-            ,	<%= ref_meta["aufirst"] || ref_meta["auinit"] || ref_meta["auinit1"] %>
-          <% end %>
-        </dd>
-      <% end %>
-      <% if ref_meta.has_key?("jtitle")  or ref_meta.has_key?("title") or ref_meta.has_key?("btitle") %>
-        <dt><%= labels.title %>:</dt>
-        <dd>                 
-          <%= link_to(ref_meta["title"] || ref_meta["btitle"] || ref_meta["jtitle"], 
-            url_for_with_co({:controller => 'resolve'}, @current_context_object), 
-              {:target => search_result_target_window}) %>
-        </dd>
-      <% end %>
-      <% if ref_meta.has_key?("issn") %>
-        <dt>ISSN:</dt>
-        <dd><%=ref_meta["issn"] %></dd>
-      <% end %>
-      <% if ref_meta.has_key?("isbn") %>
-        <dt>ISBN:</dt>
-        <dd><%=ref_meta["isbn"] %></dd>
-      <% end %>
-      <% if ( ref_meta.has_key?("date") || ref_meta.has_key?("volume") || ref_meta.has_key?("issue") || ref_meta.has_key?("spage")) %>
-          <%= date_format(ref_meta["date"].to_s) %>    
-          <% if ref_meta.has_key?("volume") %> 
-            Volume:&nbsp;&nbsp; <%= ref_meta["volume"] %>&nbsp;&nbsp;
-          <% end %>    
-          <% if ref_meta.has_key?("issue") %>
-            Issue:&nbsp;&nbsp; <%= ref_meta["issue"]  %>&nbsp;&nbsp;
-          <% end %>    
-          <% if ref_meta.has_key?("spage") %> 
-            Page:&nbsp;&nbsp; <%= ref_meta["spage"] %>&nbsp;&nbsp;
-          <% end %>    
-          <% if ref_meta.has_key?("epage") %>
-            -  <%= ref_meta["epage"] %>
-          <% end %>
-      <% end %>
-      <% unless ref_meta['pub'].blank? && ref_meta['place'].blank? %>
-        <dt>Publisher:</dt>
-        <dd>
-          <% unless ref_meta['place'].blank?  %>
-            <%= ref_meta['place'] %> :
-          <% end %>
-          <%= ref_meta['pub'] %>
-        </dd>
-      <% end %>
-    </dl>
-  </div>
-  <div class="citation_link span2">
+<div class="umlaut-citation row-fluid">
+  <dl class="dl-horizontal span8">
+    <% if ! ref_meta["atitle"].blank? %>
+      <dt><%= labels.atitle %>:</dt>
+      <dd><%= ref_meta["atitle"] %></dd>               
+    <% end %>
+    <% unless ref_meta["au"].nil? and ref_meta['aulast'].nil? %>
+      <dt>Author:</dt>
+      <dd>
+        <%= ref_meta["au"] || ref_meta["aulast"] %>         
+        <% if ref_meta["aufirst"] || ref_meta["auinit"] || ref_meta["auinit1"]%>
+          ,	<%= ref_meta["aufirst"] || ref_meta["auinit"] || ref_meta["auinit1"] %>
+        <% end %>
+      </dd>
+    <% end %>
+    <% if ref_meta.has_key?("jtitle")  or ref_meta.has_key?("title") or ref_meta.has_key?("btitle") %>
+      <dt><%= labels.title %>:</dt>
+      <dd>                 
+        <%= link_to(ref_meta["title"] || ref_meta["btitle"] || ref_meta["jtitle"], 
+          url_for_with_co({:controller => 'resolve'}, @current_context_object), 
+            {:target => search_result_target_window}) %>
+      </dd>
+    <% end %>
+    <% if ref_meta.has_key?("issn") %>
+      <dt>ISSN:</dt>
+      <dd><%=ref_meta["issn"] %></dd>
+    <% end %>
+    <% if ref_meta.has_key?("isbn") %>
+      <dt>ISBN:</dt>
+      <dd><%=ref_meta["isbn"] %></dd>
+    <% end %>
+    <% if ( ref_meta.has_key?("date") || ref_meta.has_key?("volume") || ref_meta.has_key?("issue") || ref_meta.has_key?("spage")) %>
+        <%= date_format(ref_meta["date"].to_s) %>    
+        <% if ref_meta.has_key?("volume") %> 
+          Volume:&nbsp;&nbsp; <%= ref_meta["volume"] %>&nbsp;&nbsp;
+        <% end %>    
+        <% if ref_meta.has_key?("issue") %>
+          Issue:&nbsp;&nbsp; <%= ref_meta["issue"]  %>&nbsp;&nbsp;
+        <% end %>    
+        <% if ref_meta.has_key?("spage") %> 
+          Page:&nbsp;&nbsp; <%= ref_meta["spage"] %>&nbsp;&nbsp;
+        <% end %>    
+        <% if ref_meta.has_key?("epage") %>
+          -  <%= ref_meta["epage"] %>
+        <% end %>
+    <% end %>
+    <% unless ref_meta['pub'].blank? && ref_meta['place'].blank? %>
+      <dt>Publisher:</dt>
+      <dd>
+        <% unless ref_meta['place'].blank?  %>
+          <%= ref_meta['place'] %> :
+        <% end %>
+        <%= ref_meta['pub'] %>
+      </dd>
+    <% end %>
+  </dl>
+  <div class="umlaut-citation-link span3">
     <%= resolver_link(@current_context_object, {:target => search_result_target_window}) %>
   </div>
 </div>

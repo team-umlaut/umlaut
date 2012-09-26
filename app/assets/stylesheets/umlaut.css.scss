@@ -1,179 +1,148 @@
-// Bootstrap Variables
-$baseFontSize: 12px;
-$baseLineHeight: 12px;
-$linkColor: #0066CC;
-// Umlaut Variables
-// General Styles
-$umlautBorderColor: #EEB211;
-$umlautBackgroundColor: #FFFDEA;
-// A-Z List
-$umlautAzLinkColor: $linkColor;
-$umlautAzBorderColor: #bbb;
-$umlautAzBackground: #eee;
+@import "umlaut/variables";
 @import "bootstrap";
 @import "bootstrap-responsive";
-@mixin inner-padding {
-  padding: {
-    left: 20px;
-    right: 20px;
-  }
-}
-
-body {
-  padding-left: 20px; 
-}
-
-h1 {
-  font: {
-    weight: bold;
-    size: $baseFontSize * 2;
-  }
-  line-height: $baseLineHeight * 3;
-}
-
-h2 {
-  @extend h1;
-  line-height: $baseLineHeight * 2;
-}
-
-h3 {
-  @extend h1;
-  font: {
-    size: $baseFontSize * 1.5;
-  }
-  line-height: $baseLineHeight * 1.5;
-}
-
-legend {
-  font: {
-    weight: bold;
-  }
-}
-
-label {
-  margin: {
-    left: 10px;
-    top: 10px;
-    bottom: 10px;
-  }
-}
-
-select {
-  height: auto; /* In IE7, the height of the select element cannot be changed by height, only font-size */
-  *margin-top: 4px; /* For IE7, add top margin to align select with labels */
-  line-height: auto;
-}
+@import "umlaut/mixins";
+@import "umlaut/reset";
+@import "umlaut/forms";
+@import "umlaut/misc";
+@import "umlaut/az";
+@import "umlaut/search";
+@import "umlaut/results";
+@import "umlaut/resolve";
+@import "umlaut/admin";
 
 .umlaut-container {
-  padding: 0px;
+  @extend .container;
   margin: {
-    left: 20px;
-    right: 20px;
     top: 10px;
     bottom: 10px;
   }
-  display: block;
   border: 1px solid $umlautBorderColor;
-  background-color: $umlautBackgroundColor;
-}
-
-.container-fluid {
-  @include inner-padding;
-}  
-
-.header {
-  @include inner-padding;
-  border: {
-    bottom: 1px solid $umlautBorderColor;
-  }
-}
-
-.footer {
-  @include inner-padding;
-  margin: {
-    top: 10px;
-  }
-  padding: {
-    top: 10px;
-    bottom: 10px;
-  }
-  border: {
-    top: 1px solid $umlautBorderColor;
-  }
-}
-
-.citationLinker {
-	font-size:11px;
-	padding: 5px;
-	border: 1px solid #ebb211;
-	background-color: $umlautAzBackground;
-  margin-bottom: 12px;
-  margin-top: 12px;
-  a:link { 
-    color : #666; 
-  }
-  .row-fluid {
-    margin-bottom: $baseLineHeight;
-  }
-}
-
-.azNav {
-  margin-top: $baseLineHeight;
-  margin-bottom: $baseLineHeight;
-  a {
-    font-size: 1.1em;
-    font-weight: bold;
-    padding:.15em .3em .15em .3em;
-    border: 1px solid $umlautAzBorderColor;
-    text-decoration: none;
-    color: $umlautAzLinkColor;
-    line-height: 2em;
-    &:hover {
-      background-color: $umlautAzBackground;
-    }
-  }
-}
-
-.separator {
-  border: {
-    top: 1px solid $umlautBorderColor;
-  }
-  padding: {
-    top: 15px;
-  }
-}
-
-.search_citation {
- 	border-bottom: 1px solid #e9e9e9;
-}
-
-dl.citation {
-  dt, dd {
-    padding: {
-      top: 5px;
-    }
-  }
-}
-.citation_link {
-  padding: {
-    top: 15px;
-  }
-  text-align: right;
-}
-
-.form-inline {
-  .control-group {
-    display: inline;
+  background: { 
+    color: $umlautBackgroundColor;
   }
 }
 
 @media (max-width: 767px) {
-  .citation_link {
-    text-align: left;
-  }
-  .form-inline {
-    .control-group {
-      display: block;
+  .umlaut-container {  
+    padding: {
+      left: 10px;
+      right: 10px;
     }
   }
+}
+
+
+
+/*******************************/
+/* Standard inteface devices      */
+/*******************************/
+
+.background_progress_spinner {
+  line-height: 1.5em;
+  color: gray;
+}
+
+.background_progress_spinner img {
+  vertical-align: bottom;
+}
+
+.main_response_list .background_progress_spinner {
+  padding-left: 18px; 
+}
+
+.sidebar .background_progress_spinner {
+  padding-left: 10px; 
+}
+
+.resource_info .background_progress_spinner { 
+  padding-left: 24px;
+  padding-top: 8px;
+}
+
+.expand_contract_toggle {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-left: -18px;
+}
+
+/* IE-only, IE doesn't like our negative margin
+   inside a table. Use that crazy '*' so only IE will see it. */
+table .expand_contract_toggle {
+  *margin-left: 0;
+}
+
+
+
+.section_subheading {
+  margin-top: .75em;
+  margin-bottom: .75em;
+}
+
+.expand_contract_content {
+  margin-top: 0.5em;
+}
+
+div.expand_contract_section {
+  margin-top: 0.25em;
+}
+
+li.expand_contract_section {
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+
+
+
+img.toggle_icon {
+  border: none;
+  vertical-align: middle;
+  margin-right: 2px;
+}
+
+.content {
+  font-size: 12px;
+  padding: 10px;
+}
+
+
+.holding_heading_row {
+  border-top: 1px solid #E9E9E9; 
+  padding-right: 18px;
+  padding-top: 4px;
+  padding-bottom: 0px;
+}
+.holding tr:first-child > td.holding_heading_row {
+  border-top: none;
+  padding-top: 0px;
+}
+
+
+/***********************/
+/* Autocomplete styles */
+/***********************/
+
+div.auto_complete {
+  width: 350px;
+  background: #fff;
+}
+div.auto_complete ul {
+  border:1px solid #888;
+  margin:0;
+  padding:0;
+  width:100%;
+  list-style-type:none;
+}
+div.auto_complete ul li {
+  margin:0;
+  padding:3px;
+}
+div.auto_complete ul li.selected {
+  background-color: #ffb;
+}
+div.auto_complete ul strong.highlight {
+  color: #800; 
+  margin:0;
+  padding:0;
 }

@@ -1,17 +1,13 @@
+<div><i class="icon-question-sign"></i> Question? Problem? Contact:</div>
+<ul class="umlaut-help-list">
+<% help.each do |help|
+  value_hash = help.view_data %>
+  <li> <%= link_to value_hash[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %>  
+  <% unless value_hash[:note].blank? %>
+    <br />
+    <%= value_hash[:note] %>
+  <% end %>
+  </li>    
+<% end %>
+</ul>
 
-
-
-        <span id="helpicon">?</span>
-        <span class="smallText">Question? Problem? Contact:</span>
-        <ul style="text-align: right">
-        <% help.each do |help|
-              value_hash = help.view_data %>
-              <li> <%= link_to value_hash[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %>  
-              <% unless value_hash[:note].blank? %>
-                <br />
-                <%= value_hash[:note] %>
-              <% end %>
-              </li>    
-        <% end %>
-        </ul>
-  

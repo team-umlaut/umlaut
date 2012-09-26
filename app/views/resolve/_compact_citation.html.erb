@@ -1,33 +1,15 @@
-<% # When you need a citation in a tiny amount of space, just the
-   # most important info, displayed compactly. 
-%>
-
-<% 
-cite = @user_request.referent.to_citation
-%>
-
 <%
-if cite[:author]
-%><span class="smallText"><%= h(cite[:author].chomp) -%>.</span>
-<% end %>
+  # When you need a citation in a tiny amount of space, just the
+  # most important info, displayed compactly.
+  cite = @user_request.referent.to_citation 
+  pub = []
+  pub << '.' << date_format(cite[:date]) unless cite[:date].blank?	
+  pub << '. Volume:&nbsp;'+cite[:volume] unless cite[:volume].blank?
+  pub << '. Issue:&nbsp;'+cite[:issue] unless cite[:issue].blank?	
+  pub << '. Page:&nbsp;'+cite[:page] unless cite[:page].blank? %>
+<%= content_tag(:span, h(cite[:author].chomp), :class => "text-small") if cite[:author] %>
+<%= content_tag(:span, h(truncate(cite[:title], :length => 70, :seperator => '...'), :class => "text-small") %>
+<%= content_tag(((@user_request.referent.format =~ /article|journal|issue|report/i) ? 'em' : 'span'), cite[:subtitle], :class => "text-small") if cite[:subtitle] %>
+<%= content_tag(:span, pub.join(' '), :class => "text-small") if pub.length > 0 %>
 
-<span class="smallText">"<%= h(truncate(cite[:title], :length => 70, :seperator => '...')) %>"
 
-
-
-<%
-if cite[:subtitle] %>
- <%= content_tag( ((@user_request.referent.format =~ /article|journal|issue|report/i) ? 'i' : 'span'), cite[:subtitle]) %>
-<% end %>
-<%
-pub = []
-pub << '.' << date_format(cite[:date]) unless cite[:date].blank?	
-pub << '. Volume:&nbsp;'+cite[:volume] unless cite[:volume].blank?
-pub << '. Issue:&nbsp;'+cite[:issue] unless cite[:issue].blank?	
-pub << '. Page:&nbsp;'+cite[:page] unless cite[:page].blank?
-if pub.length > 0
-%>
-<%= pub.join(' ')%>.
- 
-<% end %>
-</span>

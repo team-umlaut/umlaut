@@ -158,40 +158,31 @@ module ResolveHelper
   #     <li>Item Number: <%= index %>: <%= item.title %></li>
   # <% end %>
   def list_with_limit(id, list, options = {}, &block)
-
     # backwards compatible to when third argument was just a number
     # for limit. 
-    options = {:limit => options} unless options.kind_of?(Hash)  
+    options = {:limit => options} unless options.kind_of?(Hash)
     options[:limit] ||= 5
-
     return "" if list.empty?
-            
-
     content = "".html_safe
     content <<
-    content_tag(:ul, :class => options[:ul_class]) do        
-    list.slice(0, options[:limit]).enum_for(:each_with_index).collect do |item, index|      
-         yield(item, index)         
+    content_tag(:ul, :class => options[:ul_class]) do
+      list.slice(0, options[:limit]).enum_for(:each_with_index).collect do |item, index|
+        yield(item, index)
       end.join(" \n    ").html_safe
     end    
-    
-    if (list.length > options[:limit] )      
+    if (list.length > options[:limit])
       content << 
       expand_contract_section("#{list.length - options[:limit] } more", id) do
-        content_tag(:ul, :class=>options[:ul_class]) do        
-          list.slice(options[:limit]..list.length-1).enum_for(:each_with_index).each do |item, index|   
+        content_tag(:ul, :class=>options[:ul_class]) do
+          list.slice(options[:limit]..list.length-1).enum_for(:each_with_index).each do |item, index|
             yield(item, index + options[:limit])
-          end.join(" \n    ").html_safe              
-        end          
+          end.join(" \n    ").html_safe
+        end
       end
     end
-    
     return content
   end
 
-
-
-    
   ## 
   # Methods to grab SectionRenderer definitions from config. Caching in
   # class-level variables. 

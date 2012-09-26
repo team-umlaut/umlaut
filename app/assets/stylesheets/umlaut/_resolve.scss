@@ -1,0 +1,222 @@
+.umlaut-resolve-container {
+  padding: {
+    left: 0px;
+    right: 0px;
+  }
+}  
+
+.umlaut-permalink-bar {
+  border-bottom: 1px solid $umlautPermalinkBorderColor;
+  background-color: $umlautPermalinkBackgroundColor;
+  padding: .25em;
+  text-align: right;
+}
+
+.umlaut-main, .umlaut-sidebar {
+  ul {
+    @extend .unstyled;
+  }
+}
+
+.umlaut-main {
+  @include umlaut-container-padding;
+  background-color: $umlautMainBackgroundColor;
+}
+
+.umlaut-sidebar {
+  border: {
+    left: 1px solid $umlautBorderColor;
+  }
+  background-color: $umlautSidebarBackgroundColor;
+  .response_notes {
+    margin-left: 10px;
+  }
+
+  .umlaut-section {
+  	margin: .5em 1em .75em .5em;
+  	padding: 0.5em;
+    .response_list {
+      margin-left:10px;
+    }
+    &.help {
+      @extend .well;
+      @extend .well-small;
+      background-color: $umlautHelpBackgroundColor;
+      border: {
+        color: $umlautHelpBorderColor;
+      }
+    }
+  }
+
+  .umlaut-help-list {
+    margin: {
+      top: .5em;
+    }
+    text-align: right;
+  }
+}
+
+@media (max-width: 767px) {
+  .umlaut-sidebar {
+    @include umlaut-container-padding;
+    background-color: $umlautMainBackgroundColor;
+    border: none;
+    padding: {
+      top: 10px;
+    }
+
+    .umlaut-help-list {
+      text-align: left;
+    }
+  }
+
+  .umlaut-resolve-container {
+    background-color: $umlautMainBackgroundColor;
+  }  
+}
+
+// Styles for individual section boxes, 
+// and parent areas, on resolve screen.
+.main_response_list {
+  margin: 10px 0 10px 30px;
+  .umlaut-section {
+    padding: .125em .25em;
+    margin-top: 1.25em;
+    margin-bottom: .5em;
+  }
+}
+
+.resource_info {
+	font-size:11px;
+	padding: 2px;
+}	
+
+.resource_info_sections {
+  .umlaut-section {
+    margin-top: 12px;
+    margin-bottom: 4px;
+    padding-top: 6px;
+    padding-left: 4px;
+    margin-left: 8px;
+  }
+}
+
+.umlaut-section {
+  .response_list {
+    margin-left:20px;
+	  line-height:110%;
+	}
+
+  // Special looks for particular sections
+  &.fulltext .response_list {
+    margin-left: 4px;
+  }
+
+  &.fulltext .response_item  {
+    background: url(famfamfam/page_text.gif) no-repeat 0px 0px;
+    padding: 0px 18px 8px 22px;
+  }
+
+  &.fulltext .expand_contract_toggle,
+  &.audio .expand_contract_toggle,
+  &.excerpts .expand_contract_toggle {
+    margin-left: 8px; 
+  }
+
+  &.audio .response_item {
+    background: url(famfamfam/page_sound.gif) no-repeat 0px 0px;
+    padding: 0px 18px 8px 22px;
+  }
+
+  &.excerpts .response_item  {
+    background:  url(famfamfam/book_open.png) no-repeat 0px 0px;
+    padding: 0px 18px 8px 22px;
+  }
+
+  &.coins {
+    border: none; 
+  }
+}
+
+.response_list {
+  .response_item  {
+    padding-bottom: 5px;
+  }
+}
+
+// Little semantic pieces on resolve page
+.umlaut-content-indent {
+  margin-left: 20px;
+}
+
+.umlaut-section-highlighted {
+  @extend .well;
+  @extend .well-small;
+  background-color: $umlautHighlightedSectionBackgroundColor;
+  border: {
+    color: $umlautHighlightedSectionBorderColor;
+  }
+}
+
+.umlaut-link-source {
+  @extend .text-small;
+  padding-left: 10px;
+  margin-top: .25em;
+}
+
+.response_notes {
+   margin-top: .5em;
+}
+
+.available {
+	color: #00CC33;
+	font-style: italic;
+	font-size: 12px;
+}
+
+.umlaut-unavailable {
+	color: $umlautUnavailableColor;
+	font-style: italic;
+	font-size: $baseFontSize;
+}
+
+.section_prompt {
+  font-style: italic;
+  margin-left: 22px;
+  margin-bottom: 8px;
+}
+
+.response_coverage_statement {
+  margin-bottom: .5em;
+  margin-top: .25em;
+}
+
+.edition_warning {
+   color: gray;
+   margin-top: 6px;
+   margin-bottom: 6px;
+}
+
+.edition_warning > .label {
+  font-style: normal;
+  font-weight: bold;
+}
+
+.debug_info {
+  @extend .well;
+  @extend .well-small;
+  background-color: $umlautDebugInfoBackgroundColor;
+  border: {
+    color: $umlautDebugInfoBorderColor;
+  }
+}
+
+// Resolve Errors
+#service_errors_content {
+  @extend .well;
+  @extend .well-small;
+  background-color: $umlautResolveErrorBackgroundColor;
+  border: {
+    color: $umlautResolveErrorBorderColor;
+  }
+}

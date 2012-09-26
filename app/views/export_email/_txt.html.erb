@@ -17,7 +17,7 @@ unless @user_request.nil?
     <%= label_tag('number', 'Enter your mobile phone number:') %>
     
     <%= text_field_tag('number', params[:number], :size => 14) %>
-    <p class="smallText"><em>10 digit US cell phone number</em></p>
+    <small><em>10 digit US cell phone number</em></small>
   </div>
   
   <div class="section">
@@ -49,7 +49,7 @@ unless @user_request.nil?
 
 
   <div class="section">
-    <p class="smallText"><em>Note: charges may apply if your service plan does not cover unlimited texting</em></p>
+    <small><em>Note: charges may apply if your service plan does not cover unlimited texting</em></small>
   
     <%= submit_tag 'Send!' %>
     

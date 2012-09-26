@@ -8,7 +8,7 @@
 %>
 
 
-<div class="section_content_indent">
+<div class="umlaut-content-indent">
 <% holdings = get_service_type('holding') %>
 <% unless holdings.empty? %>  
   <table style="width: 100%">
@@ -36,7 +36,7 @@
     <% if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
       <tr>
         <td colspan="4">
-          <div class="section_content_indent edition_warning">
+          <div class="umlaut-content-indent edition_warning">
             <% unless target[:edition_str].blank? %>
               <em class="note label">Edition information</em> <%= target[:edition_str] %>
             <% else %>
@@ -49,7 +49,7 @@
     
     <% unless target[:notes].blank? %>
     <tr>
-    <td colspan="4"><div class="section_content_indent"><%= target[:notes] %></div> </td>
+    <td colspan="4"><div class="umlaut-content-indent"><%= target[:notes] %></div> </td>
     </tr>
     <% end %>
     
@@ -83,7 +83,7 @@ if holdings.empty?
 end
 if (holdings.blank? && searches.blank? && ! service_types_in_progress?(['holding', 'holding_search']))
 %>
-<p class="notAvailable">Not Available </p>
+<p class="umlaut-unavailable">Not Available </p>
 <%
 end %>
 
