@@ -54,7 +54,7 @@ class PrimoSource < PrimoService
           service_data[attr] = holding.method(attr).call
         end
         @source_attributes.each do |attr|
-          service_data[attr.to_sym] = holding.method(attr.to_sym).call
+          service_data[attr.to_sym] = holding.method(attr.to_sym).call if holding.respond_to?(attr.to_sym)
         end
         service_data.merge!({
           :call_number => holding.call_number, :collection => holding.collection,
