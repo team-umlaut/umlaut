@@ -16,18 +16,22 @@ $umlautAzHoverBackground:                   #EEEEEE !default;
 // Search                                   
 $umlautSearchBorderColor:                   $umlautBorderColor !default;
 $umlautSearchBackgroundColor:               #EEEEEE !default;
+// Auto Complete
+$umlautAutoCompleteBorderColor:             $umlautGrey !default;
+$umlautAutoCompleteBackgroundColor:         $umlautGrey !default;
 // Results                                  
-$umlautResultsBorderColor:                  whiteSmoke !default;
+$umlautResultsBorderColor:                  $umlautGrey !default;
 $umlautResultsBackgroundColor:              $umlautBackgroundColor !default;
 // Permalink                                   
 $umlautPermalinkBorderColor:                $umlautBorderColor !default;
 $umlautPermalinkBackgroundColor:            #FCF1D4 !default;
 // Resolve                                   
 $umlautMainBackgroundColor:                 $umlautBackgroundColor !default;
+$umlautSidebarBorderColor:                  $umlautBorderColor !default;
 $umlautSidebarBackgroundColor:              #FCF1D4 !default;
 // Resource Info                               
-$umlautResourceInfoBorderColor:             $umlautBorderColor !default;
-$umlautResourceInfoBackgroundColor:         $umlautBackgroundColor !default;
+$umlautResourceInfoBorderColor:             $umlautGrey !default;
+$umlautResourceInfoBackgroundColor:         white !default;
 // Help                                     
 $umlautHelpBorderColor:                     $umlautBorderColor !default;
 $umlautHelpBackgroundColor:                 $umlautBackgroundColor !default;

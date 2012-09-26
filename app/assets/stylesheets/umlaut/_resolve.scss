@@ -25,7 +25,8 @@
 
 .umlaut-sidebar {
   border: {
-    left: 1px solid $umlautBorderColor;
+    left: 1px solid $umlautSidebarBorderColor;
+    bottom: 1px solid $umlautSidebarBorderColor;
   }
   background-color: $umlautSidebarBackgroundColor;
   .response_notes {
@@ -86,20 +87,31 @@
   }
 }
 
-.resource_info {
-	font-size:11px;
-	padding: 2px;
-}	
-
-.resource_info_sections {
-  .umlaut-section {
-    margin-top: 12px;
-    margin-bottom: 4px;
-    padding-top: 6px;
-    padding-left: 4px;
-    margin-left: 8px;
+.umlaut-resource-info {
+  @extend .well;
+  @extend .well-small;
+  background-color: $umlautResourceInfoBackgroundColor;
+  border: {
+    color: $umlautResourceInfoBorderColor;
   }
-}
+  .resource_info_sections {
+    .umlaut-section {
+      margin-top: 12px;
+      margin-bottom: 4px;
+      padding-top: 6px;
+      padding-left: 4px;
+      margin-left: 8px;
+    }
+
+    dl {
+      dt, dd {
+        padding: {
+          top: 5px;
+        }
+      }
+    }
+  }
+}	
 
 .umlaut-section {
   .response_list {
@@ -159,6 +171,7 @@
 }
 
 .umlaut-link-source {
+  @extend .muted;
   @extend .text-small;
   padding-left: 10px;
   margin-top: .25em;

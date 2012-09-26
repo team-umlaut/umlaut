@@ -2,24 +2,26 @@
 <div class="row-fluid">
   <div class="span8 umlaut-main"> 
     <h2>Find <%=@user_request.referent.type_of_thing.titlecase %></h2>
-    <div class="resource_info">
-      <div>
+    <div class="umlaut-resource-info">
+      <div class="container-fluid">
+        <div class="row-fluid">
+      <div class="resource_info_sections span10">
         <%= render :partial=>'citation' %>
-        <div class="resource_info_sections">
-          <% html_sections(:resource_info).each do |section| %>
-            <%= content_tag "div", :id => section[:div_id] do %>
-              <%= render_section(section) %>
-            <% end %>
+        <% html_sections(:resource_info).each do |section| %>
+          <%= content_tag "div", :id => section[:div_id] do %>
+            <%= render_section(section) %>
           <% end %>
-        </div>
+        <% end %>
       </div>
-      <div id="cover_image">
+      <div id="cover_image" class="span2">
         <%= render_section(html_section_by_div_id("cover_image")) %>
-      </div>  
+      </div>
+    </div>
+  </div>
     </div>
     <div class="main_response_list">
       <% html_sections(:main).each do |section| %>
-        <%= content_tag "div", :id => section[:div_id], :class => "" do %>
+        <%= content_tag "div", :id => section[:div_id] do %>
           <%= render_section(section) %>
         <% end %>
       <% end %>

@@ -2,7 +2,7 @@
 failed_dispatches = failed_service_dispatches()
 unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
   <div id="service_errors_content" class="small_right_box">
-    <i class="icon-warning-sign"></i><span class="warning">Some content may not be included due to errors:</span>
+    <i class="icon-warning-sign"></i> <span class="warning">Some content may not be included due to errors:</span>
     <ul>
       <% failed_dispatches.each do | dispatch | %>
         <li class="text-small">           
@@ -11,11 +11,11 @@ unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
           from <a class="simple_visible_toggle"><strong><%= dispatch.service.display_name %></strong></a>
           <% exception_info = dispatch.exception_info %>
           <div style="display: none;">
-            technical error information
-            <ul>
-              <li> <%= exception_info[:class_name] if exception_info %> </li>
-              <li> <%= exception_info[:message] if exception_info %> </li>
-              <li> dispatched service id: <%= dispatch.id %>  </li>                    
+            <ul class="nav nav-list">
+              <li class="nav-header">Technical Error Information</li>
+              <li><pre><%= exception_info[:class_name] if exception_info %></pre></li>
+              <li><pre><%= exception_info[:message] if exception_info %></pre></li>
+              <li><pre>dispatched service id: <%= dispatch.id %></pre></li>
             </ul>
           </div>
         </li>
