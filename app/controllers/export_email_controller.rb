@@ -6,7 +6,7 @@ class ExportEmailController < UmlautController
          controller.params["X-Requested-With"] == "XmlHttpRequest")
        nil
      else
-       config.layout
+       umlaut_config.layout
      end
   }
 
