@@ -7,7 +7,7 @@ unless @user_request.nil?
   <h2>Send the title and location of an item to your mobile phone</h2>
   
   <div class="formError">
-    <%= @error || flash[:error] %>
+    <%= validation_error( @error || flash[:error]) if ( @error || flash[:error]) %>
   </div>
   
   <h3><strong>Title:</strong> 
