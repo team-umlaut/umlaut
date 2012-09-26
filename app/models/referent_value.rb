@@ -1,4 +1,5 @@
 class ReferentValue < ActiveRecord::Base
+  attr_accessible :key_name, :value, :normalized_value, :metadata, :private_data
   belongs_to :referent, :include => :referent_values
 
   # Class method to normalize a string for normalized_value attribute. 
