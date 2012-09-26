@@ -23,17 +23,6 @@
   }
 }
 
-@media (max-width: 767px) {
-  .umlaut-container {  
-    padding: {
-      left: 10px;
-      right: 10px;
-    }
-  }
-}
-
-
-
 /*******************************/
 /* Standard inteface devices      */
 /*******************************/
@@ -55,7 +44,7 @@
   padding-left: 10px; 
 }
 
-.resource_info .background_progress_spinner { 
+.umlaut-resource-info .background_progress_spinner { 
   padding-left: 24px;
   padding-top: 8px;
 }
@@ -71,8 +60,6 @@
 table .expand_contract_toggle {
   *margin-left: 0;
 }
-
-
 
 .section_subheading {
   margin-top: .75em;
@@ -93,8 +80,6 @@ li.expand_contract_section {
   background: none;
 }
 
-
-
 img.toggle_icon {
   border: none;
   vertical-align: middle;
@@ -105,7 +90,6 @@ img.toggle_icon {
   font-size: 12px;
   padding: 10px;
 }
-
 
 .holding_heading_row {
   border-top: 1px solid #E9E9E9; 
@@ -119,30 +103,3 @@ img.toggle_icon {
 }
 
 
-/***********************/
-/* Autocomplete styles */
-/***********************/
-
-div.auto_complete {
-  width: 350px;
-  background: #fff;
-}
-div.auto_complete ul {
-  border:1px solid #888;
-  margin:0;
-  padding:0;
-  width:100%;
-  list-style-type:none;
-}
-div.auto_complete ul li {
-  margin:0;
-  padding:3px;
-}
-div.auto_complete ul li.selected {
-  background-color: #ffb;
-}
-div.auto_complete ul strong.highlight {
-  color: #800; 
-  margin:0;
-  padding:0;
-}

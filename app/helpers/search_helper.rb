@@ -10,9 +10,7 @@ module SearchHelper
   # return an OpenStruct with atitle_label, title_label
   def referent_labels(context_obj = @current_context_object)
     ref_meta = context_obj.referent.metadata
-    
     result = OpenStruct.new
-    
     if ref_meta['genre'].blank?
       case @current_context_object.referent.format 
       when  'book'
@@ -37,7 +35,6 @@ module SearchHelper
         result.title = 'Report'
       end
     end
-
     return result    
   end
   

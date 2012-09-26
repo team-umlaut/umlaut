@@ -8,34 +8,6 @@ cite = @user_request.referent.to_citation
   # SFX recognized it as an actually existing journal. If not, then it
   # might be a typo. If it came from a manually entered citation, warn them.
   content_tag(:div, content_tag(:i, "", :class => "icon-warning-sign") +
-    "Warning: #{umlaut_config.app_name} does not know about a #{@user_request.referent.format.downcase} with this name. Please check your entry.",
-      :class=>"warning") if display_not_found_warning?(@user_request) %>
-<dl>
-<%=
-  content_tag(:dt, "#{cite[:title_label]}:", :class => "strong text-large") + content_tag(:dt, cite[:title], :class => "text-large") %>
-<%=
-  content_tag(:dt, "Author:", :class => "strong text-large") + content_tag(:dt, cite[:author], :class => "text-large") if cite[:author] %>
-<%=
-  content_tag(:dt, "#{cite[:subtitle_label]}:", :class => "strong text-small") + content_tag(:dt, cite[:subtitle], :class => "text-small") if cite[:subtitle] %>
-  <%=
-    content_tag(:dt, "ISSN:", :class => "strong text-small") + content_tag(:dt, cite[:issn], :class => "text-small") if (cite[:issn] && ! cite[:issn].empty?) %>
-<%=
-  content_tag(:dt, "ISBN:", :class => "strong text-small") + content_tag(:dt, cite[:isbn], :class => "text-small") if (cite[:isbn] && ! cite[:isbn].empty?) %>
-<%=
-  content_tag(:dt, "Publisher:", :class => "text-small") + content_tag(:dt, cite[:pub], :class => "text-small") unless cite[:pub].blank? %>
-<% unless cite[:date].blank? && cite[:volume].blank? && cite[:issue].blank? && cite[:page].blank? %>
-  <dt class="text-small">Published:</div></dt>
-  <dd class="text-small">
-    <%= date_format(cite[:date]) %>&nbsp;&nbsp;
-    <% unless cite[:volume].blank? %>
-      Volume:&nbsp;&nbsp;<%= cite[:volume] %>&nbsp;&nbsp;
-    <% end %>
-    <% unless cite[:issue].blank? %>
-      Issue:&nbsp;&nbsp;<%= cite[:issue] %>&nbsp;&nbsp;
-    <% end %>
-    <% unless cite[:page].blank? %>
-      Page:&nbsp;&nbsp;<%= cite[:page] %>&nbsp;&nbsp;
-    <% end %>  
-  </dd>
-<% end %>
-</dl>
+    " Warning: #{umlaut_config.app_name} does not know about a #{@user_request.referent.format.downcase} with this name. Please check your entry.",
+      :class=>"alert alert-error") if display_not_found_warning?(@user_request) %>
+<%= citation(cite) %>

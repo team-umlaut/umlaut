@@ -24,23 +24,14 @@ module ResolveHelper
   # For documentation of possible values in the section descripton hash,
   # see SectionRenderer. 
   def render_section(arguments = {})
-    if arguments.kind_of?( SectionRenderer )
-      presenter = arguments
-    else
-      presenter = SectionRenderer.new(@user_request, arguments  )
-    end
-    
- 
-    render(:partial => "section_display",
-           :locals => 
-            {:presenter => presenter }   )
+    presenter = (arguments.kind_of?( SectionRenderer )) ? 
+      arguments : SectionRenderer.new(@user_request, arguments  )
+    render(:partial => "section_display", :locals => {:presenter => presenter })
   end
 
-  
   def app_name
     return umlaut_config.app_name
   end
-
 
   # size can be 'small', 'medium', or 'large.
   # returns a ServiceResponse  object, or nil. 
@@ -52,13 +43,43 @@ module ResolveHelper
     return nil
   end
 
-
+  # Generate the citation
+  def citation(cite)
+    return content_tag(:dl, :class => "dl-horizontal") do
+      # Title
+      citations = citation_element(cite[:title_label], cite[:title], ["strong", "text-large"], ["text-large"])
+      # Author
+      citations << citation_element("Author", cite[:author], ["strong", "text-large"], ["text-large"]) if cite[:author]
+      # Subtitle
+      citations << citation_element(cite[:subtitle_label], cite[:subtitle], ["strong", "text-small"]) if cite[:subtitle]
+      # ISSN
+      citations << citation_element("ISSN", cite[:issn], ["strong", "text-small"]) unless (cite[:issn].nil? or cite[:issn].empty?)
+      # ISBN
+      citations << citation_element("ISBN", cite[:isbn], ["strong", "text-small"]) unless (cite[:isbn].nil? or cite[:isbn].empty?)
+      # Publisher
+      citations << citation_element("Publisher", cite[:pub]) unless (cite[:pub].nil? or cite[:pub].empty?)
+      # Publishing info, etc.
+      unless cite[:date].blank? && cite[:volume].blank? && cite[:issue].blank? && cite[:page].blank?
+        citations << citation_element("Published", date_format(cite[:date])) unless (cite[:date].nil? or cite[:date].empty?)
+        citations << citation_element("Volume", cite[:volume]) unless (cite[:volume].nil? or cite[:volume].empty?)
+        citations << citation_element("Issue", cite[:issue]) unless (cite[:issue].nil? or cite[:issue].empty?)
+        citations << citation_element("Page", cite[:page]) unless (cite[:page].nil? or cite[:page].empty?)
+      end
+      citations
+    end
+  end
+    
+  def citation_element(label, content, label_class=[], content_class=[])
+    label_class.push("text-small") if label_class.empty?
+    content_class.push("text-small") if content_class.empty?
+    return (content_tag(:dt, "#{label}:", :class => label_class.push("umlaut-citation-label")) + 
+      content_tag(:dd, content, :class => label_class.push("umlaut-citation-content")))
+  end
 
   # Did this come from citation linker style entry?
   # We check the referrer. 
   def user_entered_citation?(uml_request)
     return false unless uml_request && uml_request.referrer_id
-    
     id = uml_request.referrer_id
     return id == 'info:sid/sfxit.com:citation' || id == umlaut_config.lookup("rfr_ids.citation") || id == umlaut_config.lookup('rfr_ids.opensearch')
   end
@@ -66,10 +87,8 @@ module ResolveHelper
   def display_not_found_warning?(uml_request)
     metadata = uml_request.referent.metadata
     display_manually_entered_typo_warning = umlaut_config.lookup!("entry_not_in_kb_warning", false)
-      
     return (metadata['genre'] != 'book' && metadata['object_id'].blank? && user_entered_citation?(@user_request) && display_manually_entered_typo_warning) 
   end
-
 
   # Generate content in an expand-contract block, with a heading that
   # you can click on to show/hide it. Actual content in block.
@@ -79,59 +98,41 @@ module ResolveHelper
   #  <% end %>
   def expand_contract_section(arg_heading, id, options={}, &block)      
     expanded = (params["umlaut.show_#{id}"] == "true") || options[:initial_expand] || false
-    
     icon = image_tag( ( expanded ? "list_open.png" : "list_closed.png"),
                        :alt => "",
                        :class => "toggle_icon",
                        :border => "0")
     heading = content_tag(:span,( expanded ? "Hide " : "Show "), :class=>'expand_contract_action_label') + arg_heading
-
     link_params = params.merge('umlaut.request_id' => @user_request.id,
-      "umlaut.show_#{id}" => (! expanded).to_s ,
-      
+      "umlaut.show_#{id}" => (! expanded).to_s,
       # Need to zero out format-related params for when we're coming
       # from a partial html api request, so the link we generate
       # is not to format json/xml/etc.       
       :format => nil, 
       'umlaut.response_format' => nil,
       'umlaut.jsonp'=>nil,
-      
       # In Rails3, an :anchor param will actually be used for #fragmentIdentifier
       # on end of url
       :anchor => "#{id}_toggle_link"
       )
-      
     # Make sure a self-referencing link from partial_html_sections
     # really goes to full HTML view.
     link_params[:action] = "index" if link_params[:action] == "partial_html_sections"
-    
-    
-    
     return content_tag(:div, :class => "expand_contract_section") do
-      link_to( icon + heading, link_params, 
-            :id => "#{id}_toggle_link", 
-            :class => "expand_contract_toggle" ) + "\n" +
-        content_tag(:div, :id => id, 
-                    :class => "expand_contract_content", 
-                    :style => ("display: none;" unless expanded), 
-                    &block)
+      link_to(icon + heading, link_params, :id => "#{id}_toggle_link", :class => "expand_contract_toggle") + "\n" +
+        content_tag(:div, :id => id, :class => "expand_contract_content", :style => ("display: none;" unless expanded), &block)
     end         
   end
-  
+
   # If response has a :content key returns it -- and marks it html_safe
   # if response has a :content_html_safe == true key. 
   # returns false if no :content. 
   def response_content(service_response)
     content = service_response[:content]
     return false unless content
-    
     content = content.html_safe if service_response[:content_html_safe] == true
-    
     return content
   end
-    
-  
-  
 
   # Code-generating helper to add a "More" link to a list, with a maximum
   # number of items to show before 'more'. AJAXy show, with unobtrusive
@@ -227,6 +228,4 @@ module ResolveHelper
       defn[:div_id] == div_id
     end
   end
- 
-  
 end
