@@ -1,0 +1,43 @@
+// ADMIN SCREENS
+// Most of admin screen CSS is about _undoing_ general customizations
+// umlaut css (or over-eager reset.css we're using, bah) 
+// did to all HTML elements, oops. 
+ 
+.admin {
+  padding: 1em;
+  h1 {
+    margin: {
+      top: .67em;
+      bottom: .67em;
+    }
+  }
+
+  h2 {
+    margin: {
+      top: 1em;
+      bottom: .5em;
+    }
+  }
+  
+  ul {
+    list-style-type: disc;
+    padding-left: 40px;
+  }
+  
+  form {
+    margin-bottom: 1em;
+  }
+
+  table {
+    margin-top: 2em;
+    border-spacing: 0;
+  }
+
+  td {
+    padding: 6px 8px;
+  }
+
+  tr.dispatch_line td {
+      border-top: 1px grey solid;
+  }
+}

@@ -1,0 +1,16 @@
+.form-inline {
+  .control-group {
+    display: inline;
+  }
+}
+
+@media (max-width: 767px) {
+  .umlaut-citation-link {
+    text-align: left;
+  }
+  .form-inline {
+    .control-group {
+      display: block;
+    }
+  }
+}

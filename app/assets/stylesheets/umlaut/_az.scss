@@ -1,0 +1,16 @@
+.umlaut-az {
+  margin-top: $baseLineHeight;
+  margin-bottom: $baseLineHeight;
+  a {
+    font-size: 125%;
+    font-weight: bold;
+    padding:.15em .3em .15em .3em;
+    border: 1px solid $umlautAzBorderColor;
+    text-decoration: none;
+    color: $umlautAzLinkColor;
+    line-height: 2em;
+    &:hover {
+      background-color: $umlautAzHoverBackground;
+    }
+  }
+}

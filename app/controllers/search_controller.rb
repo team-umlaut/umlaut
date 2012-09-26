@@ -127,6 +127,19 @@ class SearchController < UmlautController
     if @end_result_num > @hits
       @end_result_num = @hits
     end
+
+    # TODO: Make page titles configurable
+    if (params["action"] == "journal_list")
+      @page_title = "Browse by Journal Title: #{params['id']}"
+    else
+      @page_title = 'Journal titles that '
+
+      @page_title +=
+      (params["umlaut.title_search_type"] == "begins") ?
+      'begin with ' : 'contain '
+
+      @page_title += "'" + params['rft.jtitle'] + "'"
+    end
     
     # Use our ordinary search displayer to display
     # It'll notice the action and do just a bit of special stuff.

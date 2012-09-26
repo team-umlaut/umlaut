@@ -2,6 +2,7 @@
 <html lang="EN">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag 'application' %> 
     <%= javascript_include_tag 'application' %>
@@ -13,12 +14,12 @@
       <header id="header" class="header">
         <h1><%= umlaut_config.app_name %></h1>
       </header>
-      <div class="container-fluid">
-        <% if permalink = current_permalink_url() %>
-          <div class="permalink_bar">
-            URL: <%= link_to current_permalink_url, current_permalink_url %>          
-          </div>
-        <% end %>
+      <% if permalink = current_permalink_url() %>
+        <div class="umlaut-permalink-bar">
+          URL: <%= link_to current_permalink_url, current_permalink_url %>          
+        </div>
+      <% end %>
+      <div class="container-fluid <%= "umlaut-#{params[:controller]}-container" %>">
         <%= yield %>
       </div>
       <footer id="footer" class="footer">
