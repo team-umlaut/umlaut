@@ -5,19 +5,24 @@ source "http://rubygems.org"
 # development dependencies will be added by default to the :development group.
 gemspec
 
-# jquery-rails is used by the dummy application
-gem "jquery-rails"
+# jquery is used by the dummy application
+group :development, :test do
+  platforms :jruby do
+    gem 'activerecord-jdbc-adapter', :require => false
+    gem 'jdbc-mysql'
+    gem 'jruby-rack'
+    gem 'therubyrhino'
+    gem "jruby-prof"
+  end
 
-platforms :jruby do
-  gem 'activerecord-jdbc-adapter', :require => false
-  gem 'jdbc-mysql'
+  platforms :ruby do
+    gem 'therubyracer'
+    gem "ruby-prof"
+  end
+
+  gem 'jquery-rails'
+  gem "activerecord-import"
 end
-
-platforms :ruby do
-  gem 'mysql2'
-end
-
-gem "activerecord-import"
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
