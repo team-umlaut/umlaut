@@ -148,6 +148,39 @@
   &.coins {
     border: none; 
   }
+  
+  &.holding {
+    .umlaut-holdings {
+      .umlaut-holding {
+        padding: {
+          top: .75em;
+          bottom: 0px;
+          left: .25em;
+          right: .25em;
+        }
+        border: {
+          top: 1px solid $umlautHoldingBorderColor;
+        }
+        &:first-child {
+          border: {
+            top: none
+          }
+        }
+        &:nth-child(odd) {
+          background-color: $umlautHoldingHighlightBackgroundColor;
+        }
+        // &:hover {
+        //   background-color: $umlautHoldingHighlightBackgroundColor;
+        // }
+        a.btn {
+          display:block;
+          margin: {
+            bottom: .25em;
+          }
+        }
+      }
+    }
+  }
 }
 
 .response_list {
@@ -184,7 +217,6 @@
 .available {
 	color: #00CC33;
 	font-style: italic;
-	font-size: 12px;
 }
 
 .umlaut-unavailable {
@@ -231,5 +263,22 @@
   background-color: $umlautResolveErrorBackgroundColor;
   border: {
     color: $umlautResolveErrorBorderColor;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) { 
+  .umlaut-section {
+    &.holding {
+      .umlaut-holdings {
+        .umlaut-holding {
+          a.btn {
+            padding: {
+              left: 3px;
+              right: 3px;
+            }
+          }
+        }
+      }
+    }
   }
 }
