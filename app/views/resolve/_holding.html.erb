@@ -20,9 +20,9 @@ unless holdings.empty? %>
         <div class="span3 <%= status_class %>"><%= target[:status] %></div>
         <div class="span2">
           <%= link_to("More Info", {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"btn btn-success") %>
-          <% # if target[:request_url] %>
+          <% if target[:request_url] %>
             <%= link_to("Request", target[:request_url], :target => "_blank", :class=>"btn btn-primary") %><br />
-          <% # end %>
+          <% end %>
         </div>
       </div><% 
       # Display edition info
