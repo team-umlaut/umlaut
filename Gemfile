@@ -8,10 +8,14 @@ gemspec
 # jquery-rails is used by the dummy application
 gem "jquery-rails"
 
+platforms :jruby do
+  gem 'activerecord-jdbc-adapter', :require => false
+  gem 'jdbc-mysql'
+end
 
-gem "mysql2"
-#gem "ruby-debug", :platform => :mri_18
-#gem "ruby-debug19", :platform => :mri_19
+platforms :ruby do
+  gem 'mysql2'
+end
 
 gem "activerecord-import"
 
