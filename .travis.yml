@@ -10,3 +10,6 @@ before_script:
   - mysql -e 'create database umlaut3_test;'
   - mysql -e 'create database sfxlcl41;'
   - mysql -e 'create database sfxglb41;'
+  - cd test/dummy && RAILS_ENV=test bundle exec rake --trace db:migrate
+script:
+  - RAILS_ENV=test bundle exec rake --trace test
