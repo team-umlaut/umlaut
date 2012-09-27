@@ -9,16 +9,17 @@ gemspec
 group :development, :test do
   platforms :jruby do
     gem 'activerecord-jdbc-adapter', :require => false
-    gem 'jdbc-mysql'
+    gem 'jdbc-mysql', :require => false
     gem 'jruby-rack'
     gem 'therubyrhino'
-    gem "jruby-prof"
+    gem 'jruby-prof'
+    gem 'jruby-openssl'
   end
 
   platforms :ruby do
     gem 'mysql2'
     gem 'therubyracer'
-    gem "ruby-prof"
+    gem 'ruby-prof'
   end
 
   gem 'jquery-rails'
