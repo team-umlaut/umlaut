@@ -62,7 +62,7 @@ production:
 sfx_db:
  adapter: mysql2
  database: sfxlcl41 # or other sfx instance db
- username: 
+ username: root
  password: 
  pool: 5
  encoding: utf8
@@ -70,7 +70,7 @@ sfx_db:
 sfx_global:
   adapter: mysql2
   database: sfxglb41
-  username: 
+  username: root
   password: 
   pool: 5
   encoding: utf8
