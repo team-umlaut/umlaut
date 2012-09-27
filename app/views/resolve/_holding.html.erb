@@ -5,87 +5,71 @@
   our Horizon. In tabular format. Customized for JH's needs, but should
   be usable by anyone. 
 =end
-%>
-
-
-<div class="umlaut-content-indent">
-<% holdings = get_service_type('holding') %>
-<% unless holdings.empty? %>  
-  <table style="width: 100%">
-  <%
-  holdings.each do |p|
-    target = p.view_data
-  %>
-    <tr><td class="holding_heading_row"><h4><%= target[:collection_str] %></h4></td>
-        <td class="holding_heading_row"><span style="white-space: nowrap;"><%= target[:call_number]%></span></td>
-        
-        <% status_class = (target[:status] == "Not Charged" or target[:status] == "Available") ? 'available' : '' %> 
-        
-        <td class="holding_heading_row"><span class="<%= status_class %>"><%= target[:status]   %></span></td>
-        
-        <td class="holding_heading_row"><%= link_to(image_tag("more_info.gif", "border" => 0, "alt" => 'more info'), {:controller=>"link_router", :id=>p.id}, "target" => "_blank") %>
-        
-        <% if target[:request_url] %>
-          <br />       
-          <%= link_to( image_tag("request.gif", "border" => "0", "alt" => "request"),  target[:request_url], "target" => "_blank" ) %>      
-        <% end %>
-        
-        </td>
-    </tr>    
-    
-    <% if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
-      <tr>
-        <td colspan="4">
-          <div class="umlaut-content-indent edition_warning">
-            <% unless target[:edition_str].blank? %>
-              <em class="note label">Edition information</em> <%= target[:edition_str] %>
-            <% else %>
-              <em class="note label">May be alternate edition.</em>
-            <% end %>
-          <div>
-        </td>
-      </tr>
-    <% end %>
-    
-    <% unless target[:notes].blank? %>
-    <tr>
-    <td colspan="4"><div class="umlaut-content-indent"><%= target[:notes] %></div> </td>
-    </tr>
-    <% end %>
-    
-    <% unless target[:coverage_str_array].blank? %>
-    <tr>
-      <td colspan="4">
-            
-            <%=              
-              list_with_limit("copies_#{p.id}", target[:coverage_str_array]) do |item, index|
-            %>
-              <li><%= item %></li>
-            <% end %>
-            
-      </td>
-    </tr>
-    <% end %>
-  <%
-  end %>
-  </table>
-<% end %>
-
-
-<% 
-if holdings.empty?
-   searches = get_service_type('holding_search')
+# Display holdings
+holdings = get_service_type('holding')
+unless holdings.empty? %>  
+  <div class="container-fluid umlaut-holdings"><%
+    # Process each holding.
+    holdings.each do |p|
+      target = p.view_data %>
+      <div class="row-fluid umlaut-holding">
+        <div class="span3"><%= target[:collection_str] %></div>
+        <div class="span4"><%= target[:call_number]%></div><%
+        # Set status class based on configured available statuses
+        status_class = umlaut_config.holdings.available_statuses.include?(target[:status]) ? 'available' : '' %> 
+        <div class="span3 <%= status_class %>"><%= target[:status] %></div>
+        <div class="span2">
+          <%= link_to("More Info", {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"btn btn-success") %>
+          <% # if target[:request_url] %>
+            <%= link_to("Request", target[:request_url], :target => "_blank", :class=>"btn btn-primary") %><br />
+          <% # end %>
+        </div>
+      </div><% 
+      # Display edition info
+      if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
+        <div class="row-fluid">
+          <div class="span12">
+            <div class="umlaut-content-indent edition_warning">
+              <% unless target[:edition_str].blank? %>
+                <em class="note">Edition information</em> <%= target[:edition_str] %>
+              <% else %>
+                <em class="note">May be alternate edition.</em>
+              <% end %>
+            <div>
+          </div>
+        </div><%
+      end 
+      # Display notes
+      unless target[:notes].blank? %>
+        <div class="row-fluid">
+          <div class="span12 umlaut-content-indent"><%= target[:notes] %></div>
+        </div><%
+      end
+      # Display coverage
+      unless target[:coverage_str_array].blank? %>
+        <div class="row-fluid">
+          <div class="span12"><%=              
+            list_with_limit("copies_#{p.id}", target[:coverage_str_array]) do |item, index| %>
+              <li><%= item %></li><% 
+            end %>
+          </div>
+        </div><%
+      end
+    end %>
+  </div><%
+end
+# Process the case where holdings are empty
+if holdings.empty? %>
+  <div class="umlaut-content-indent"><%
+    # Display holding searches
+    searches = get_service_type('holding_search')
     searches.each do | result_st |
       response = result_st.view_data %>
-      <p><%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %> </p>
-<% 
-   end
-end
-if (holdings.blank? && searches.blank? && ! service_types_in_progress?(['holding', 'holding_search']))
-%>
-<p class="umlaut-unavailable">Not Available </p>
-<%
+      <p><%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %></p><% 
+    end 
+    # Display "Not Available" if we've completed our service run and both holdings and holding searches are empty
+    if (holdings.blank? and searches.blank? and (not service_types_in_progress?(['holding', 'holding_search']))) %>
+      <p class="umlaut-unavailable">Not Available</p><%
+    end %>
+  </div><%
 end %>
-
-
-</div>

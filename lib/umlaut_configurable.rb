@@ -198,6 +198,12 @@ module UmlautConfigurable
         #sfx_load_ignore_hosts  [/.*\.archive\.org/, /www\.netlibrary\.com/, 'www.loc.gov']
         sfx_load_ignore_hosts  []        
       end
+      
+      # config only relevant to holdings display
+      holdings do
+        # Holding statuses that should be styled as "Available"
+        available_statuses ["Not Charged", "Available"]
+      end
     
       # Output timing of service execution to logs
       log_service_timing (Rails.env == "development")
