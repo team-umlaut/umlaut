@@ -16,6 +16,7 @@ group :development, :test do
   end
 
   platforms :ruby do
+    gem 'mysql2'
     gem 'therubyracer'
     gem "ruby-prof"
   end
