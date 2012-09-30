@@ -36,8 +36,10 @@ Gem::Specification.new do |s|
   s.add_dependency "confstruct", "~> 0.2" # used for our configuration object
   s.add_dependency "exlibris-primo", "~> 0.1.0" # for Primo Service
   s.add_dependency "ensure_valid_encoding"      # used for correcting bad char enc bytes in input
-  s.add_dependency "sunspot_rails"        # add sunspot support 
+  s.add_dependency "sunspot_rails"        # add sunspot support
     
   s.add_development_dependency "single_test", "~> 0.5.1"
   s.add_development_dependency "uglifier"
+  s.add_development_dependency "vcr"
+  s.add_development_dependency "webmock"
 end

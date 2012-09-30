@@ -1,0 +1,33 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:8981/solr/select?wt=ruby
+    body:
+      encoding: US-ASCII
+      string: fq=type%3ASfx4%5C%3A%5C%3ALocal%5C%3A%5C%3AAzTitle&fq=title_exact_sm%3AAccount%2A&sort=title_sort_s+asc&start=0&rows=20&q=%2A%3A%2A
+    headers:
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/plain; charset=utf-8
+      Content-Length:
+      - '581'
+      Server:
+      - Jetty(6.1.3)
+    body:
+      encoding: US-ASCII
+      string: ! '{''responseHeader''=>{''status''=>0,''QTime''=>1,''params''=>{''sort''=>''title_sort_s
+        asc'',''start''=>''0'',''q''=>''*:*'',''wt''=>''ruby'',''fq''=>[''type:Sfx4\\:\\:Local\\:\\:AzTitle'',''title_exact_sm:Account*''],''rows''=>''20''}},''response''=>{''numFound''=>3,''start''=>0,''docs''=>[{''id''=>''Sfx4::Local::AzTitle
+        95098'',''object_id_ss''=>''2147483647'',''title_display_ss''=>''Accountancy''},{''id''=>''Sfx4::Local::AzTitle
+        73030'',''object_id_ss''=>''2147483647'',''title_display_ss''=>''Accountancy
+        Ireland''},{''id''=>''Sfx4::Local::AzTitle 60707'',''object_id_ss''=>''2147483647'',''title_display_ss''=>''Accounting
+        and business research''}]}}'
+    http_version: 
+  recorded_at: Sat, 29 Sep 2012 23:41:19 GMT
+recorded_with: VCR 2.2.5
