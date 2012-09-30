@@ -59,19 +59,29 @@ production:
 # for this purpose, rather than use one of the full-access existing SFX
 # mysql accounts. 
 #
-sfx_db:
- adapter: mysql2
- database: sfxlcl41 # or other sfx instance db
- username: root
- password: 
- pool: 5
- encoding: utf8
-
-sfx_global:
+sfx4_db:
   adapter: mysql2
-  database: sfxglb41
+  database: sfxlcl41 # or other sfx instance db
   username: root
   password: 
   pool: 5
   encoding: utf8
+
+sfx4_local:
+  adapter: mysql2
+  database: sfxlcl41_test
+  username: root
+  password: 
+  pool: 5
+  encoding: utf8
+  travis: true
+
+sfx4_global:
+  adapter: mysql2
+  database: sfxglb41_test
+  username: root
+  password: 
+  pool: 5
+  encoding: utf8
+  travis: true
 

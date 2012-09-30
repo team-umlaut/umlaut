@@ -1,0 +1,34 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:8981/solr/select?wt=ruby
+    body:
+      encoding: US-ASCII
+      string: fq=type%3ASfx4%5C%3A%5C%3ALocal%5C%3A%5C%3AAzTitle&sort=title_sort_s+asc&q=Air&fl=%2A+score&qf=title_text&defType=dismax&start=0&rows=20
+    headers:
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/plain; charset=utf-8
+      Content-Length:
+      - '710'
+      Server:
+      - Jetty(6.1.3)
+    body:
+      encoding: US-ASCII
+      string: ! '{''responseHeader''=>{''status''=>0,''QTime''=>0,''params''=>{''sort''=>''title_sort_s
+        asc'',''fl''=>''* score'',''start''=>''0'',''q''=>''Air'',''qf''=>''title_text'',''wt''=>''ruby'',''fq''=>''type:Sfx4\\:\\:Local\\:\\:AzTitle'',''defType''=>''dismax'',''rows''=>''20''}},''response''=>{''numFound''=>3,''start''=>0,''maxScore''=>1.5147808,''docs''=>[{''id''=>''Sfx4::Local::AzTitle
+        29075'',''object_id_ss''=>''2147483647'',''title_display_ss''=>''Air Conditioning,
+        Heating & Refrigeration News'',''score''=>1.2368133},{''id''=>''Sfx4::Local::AzTitle
+        20375'',''object_id_ss''=>''2147483647'',''title_display_ss''=>''Air Force
+        Comptroller'',''score''=>1.5147808},{''id''=>''Sfx4::Local::AzTitle 77052'',''object_id_ss''=>''2147483647'',''title_display_ss''=>''Air
+        transport world'',''score''=>1.428149}]}}'
+    http_version: 
+  recorded_at: Sat, 29 Sep 2012 23:41:19 GMT
+recorded_with: VCR 2.2.5
