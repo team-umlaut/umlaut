@@ -42,4 +42,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "uglifier"
   s.add_development_dependency "vcr"
   s.add_development_dependency "webmock"
+  s.add_development_dependency "sunspot_solr"
 end
