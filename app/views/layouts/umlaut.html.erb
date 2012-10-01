@@ -15,9 +15,9 @@
         <h1><%= umlaut_config.app_name %></h1>
       </header>
       <% if permalink = current_permalink_url() %>
-        <div class="umlaut-permalink-bar">
+        <nav class="umlaut-resolve-nav">
           URL: <%= link_to current_permalink_url, current_permalink_url %>          
-        </div>
+        </nav>
       <% end %>
       <div class="container-fluid <%= "umlaut-#{params[:controller]}-container" %>">
         <%= yield %>
