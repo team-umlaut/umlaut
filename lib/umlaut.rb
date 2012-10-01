@@ -4,6 +4,7 @@ require 'umlaut/routes'
 # seems to need this. 
 require 'openurl'
 require 'sunspot_rails'
+require 'bootstrap-sass'
 
 module Umlaut
   class Engine < Rails::Engine
