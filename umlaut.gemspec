@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   
   s.add_dependency "rails", "~> 3.2.5"
   s.add_dependency "jquery-rails"         # our built in JS uses jquery
-  s.add_dependency "bootstrap-sass"
  
   # nokogiri sadly locked to 1.5.0 due to some regressions:
   # https://github.com/tenderlove/nokogiri/issues/638 
@@ -36,6 +35,8 @@ Gem::Specification.new do |s|
   s.add_dependency "confstruct", "~> 0.2" # used for our configuration object
   s.add_dependency "exlibris-primo", "~> 0.1.0" # for Primo Service
   s.add_dependency "ensure_valid_encoding"      # used for correcting bad char enc bytes in input
+  s.add_dependency "sass-rails"
+  s.add_dependency "bootstrap-sass"
     
   s.add_development_dependency "single_test", "~> 0.5.1"
   s.add_development_dependency "uglifier"
