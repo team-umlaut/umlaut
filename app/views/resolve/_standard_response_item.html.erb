@@ -37,8 +37,8 @@
         :class => "response_authentication_instructions") unless view_data[:authentication].blank? %>
   <%= (content_tag(:div, :class => "edition_warning") {
         (return content = (view_data[:edition_str].blank?) ? 
-          (content_tag(:em, "May be alternate edition.", :class => ["note", "label"])) : 
-            (content_tag(:em, "Edition information",:class => ["note", "label"]) + " #{view_data[:edition_str]}"))
+          (content_tag(:em, "May be alternate edition.", :class => ["note"])) : 
+            (content_tag(:em, "Edition information",:class => ["note"]) + " #{view_data[:edition_str]}"))
         }) if ((not view_data[:match_reliability].blank?) && view_data[:match_reliability] != ServiceResponse::MatchExact) %>
   <%-
   # Debug info, hidden with explicit style, can be made visible with javascript.

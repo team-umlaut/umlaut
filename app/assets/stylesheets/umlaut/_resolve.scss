@@ -5,9 +5,9 @@
   }
 }  
 
-.umlaut-permalink-bar {
-  border-bottom: 1px solid $umlautPermalinkBorderColor;
-  background-color: $umlautPermalinkBackgroundColor;
+.umlaut-resolve-nav {
+  border-bottom: 1px solid $umlautResolveNavBorderColor;
+  background-color: $umlautResolveNavBackgroundColor;
   padding: .25em;
   text-align: right;
 }
@@ -239,11 +239,6 @@
    color: gray;
    margin-top: 6px;
    margin-bottom: 6px;
-}
-
-.edition_warning > .label {
-  font-style: normal;
-  font-weight: bold;
 }
 
 .debug_info {
