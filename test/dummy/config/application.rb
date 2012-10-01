@@ -4,7 +4,6 @@ require 'rails/all'
 
 Bundler.require
 require "umlaut"
-require "sunspot_rails"
 
 module Dummy
   class Application < Rails::Application
