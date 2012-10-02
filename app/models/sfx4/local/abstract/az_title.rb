@@ -34,38 +34,41 @@ module Sfx4
             has_one   :az_extra_info,
                       :foreign_key => 'OBJECT_ID',
                       :class_name => "#{klass.to_s.deconstantize}::AzExtraInfo"
-      
-            searchable :if => :index? do
-              # Indexed fields
-              text :title do
-                [self.TITLE_DISPLAY, self.TITLE_SORT].concat(az_title_searches.map{|az_title_search| az_title_search.TITLE_SEARCH}).uniq
-              end
-              string :title_exact, :multiple => true do
-                [self.TITLE_DISPLAY, self.TITLE_SORT].concat(az_title_searches.map{|az_title_search| az_title_search.TITLE_SEARCH}).uniq
-              end
-              string :letter_group, :multiple => true do
-                az_letter_groups.collect{ |az_letter_group|
-                  (az_letter_group.AZ_LETTER_GROUP_NAME.match(/[0-9]/)) ? 
-                    "0-9" : az_letter_group.AZ_LETTER_GROUP_NAME }
-              end
-              string :title_sort do
-                self.TITLE_SORT
-              end
-              # Stored strings.
-              string :object_id, :stored => true do
-                self.OBJECT_ID
-              end
-              string :title_display, :stored => true do
-                self.TITLE_DISPLAY
-              end
-              string :issn, :stored => true do
-                az_extra_info.issn unless az_extra_info.nil?
-              end
-              string :isbn, :stored => true do
-                az_extra_info.isbn unless az_extra_info.nil?
-              end
-              string :lccn, :stored => true do
-                az_extra_info.lccn unless az_extra_info.nil?
+
+            # Only add if the Sunspot::Rails is present
+            if Kernel.const_defined?(:Sunspot) and Sunspot.const_defined?(:Rails) and self.ancestors.include?(Sunspot::Rails::Searchable)
+              searchable :if => :index? do
+                # Indexed fields
+                text :title do
+                  [self.TITLE_DISPLAY, self.TITLE_SORT].concat(az_title_searches.map{|az_title_search| az_title_search.TITLE_SEARCH}).uniq
+                end
+                string :title_exact, :multiple => true do
+                  [self.TITLE_DISPLAY, self.TITLE_SORT].concat(az_title_searches.map{|az_title_search| az_title_search.TITLE_SEARCH}).uniq
+                end
+                string :letter_group, :multiple => true do
+                  az_letter_groups.collect{ |az_letter_group|
+                    (az_letter_group.AZ_LETTER_GROUP_NAME.match(/[0-9]/)) ? 
+                      "0-9" : az_letter_group.AZ_LETTER_GROUP_NAME }
+                end
+                string :title_sort do
+                  self.TITLE_SORT
+                end
+                # Stored strings.
+                string :object_id, :stored => true do
+                  self.OBJECT_ID
+                end
+                string :title_display, :stored => true do
+                  self.TITLE_DISPLAY
+                end
+                string :issn, :stored => true do
+                  az_extra_info.issn unless az_extra_info.nil?
+                end
+                string :isbn, :stored => true do
+                  az_extra_info.isbn unless az_extra_info.nil?
+                end
+                string :lccn, :stored => true do
+                  az_extra_info.lccn unless az_extra_info.nil?
+                end
               end
             end
 

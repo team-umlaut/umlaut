@@ -1,6 +1,10 @@
 module SearchMethods
   module Sfx4
     module UrlFetcher
+      def fetch_urls?
+        true
+      end
+      
       # used by umlaut:load_sfx_urls task. Kind of hacky way of trying to extract
       # target URLs from SFX4. 
       def fetch_urls

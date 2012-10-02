@@ -11,14 +11,16 @@ module SearchMethods
       module InstanceMethods
         protected
         def find_by_title
+          unless Kernel.const_defined?(:Sunspot) and Sunspot.const_defined?(:Rails)
+            raise NotImplementedError.new("Sunspot::Rails has not been implemnented in this Umlaut instance.")
+          end
           _find_by_title(title_query_param, search_type_param, context_object_from_params, page)
         end
         
-        def autocomplete_title
-          _autocomplete_title(title_query_param, search_type_param, page)
-        end
-      
         def find_by_group
+          unless Kernel.const_defined?(:Sunspot) and Sunspot.const_defined?(:Rails)
+            raise NotImplementedError.new("Sunspot::Rails has not been implemnented in this Umlaut instance.")
+          end
           _find_by_group(_letter_group_param, context_object_from_params, page)
         end
 
