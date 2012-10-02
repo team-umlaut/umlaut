@@ -3,7 +3,7 @@ module SearchMethods
     module UrlFetcher
       # used by umlaut:load_sfx_urls task. Kind of hacky way of trying to extract
       # target URLs from SFX4. 
-      def fetch_sfx_urls
+      def fetch_urls
         connection = az_title_klass.connection
 
         # Crazy crazy URLs to try to find PARSE_PARAMS in Sfx4 db that have a period in

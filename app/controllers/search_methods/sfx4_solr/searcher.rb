@@ -11,15 +11,15 @@ module SearchMethods
       module InstanceMethods
         protected
         def find_by_title
-          _find_by_title(title_query_param, search_type_param, context_object_from_params, params[:page])
+          _find_by_title(title_query_param, search_type_param, context_object_from_params, page)
         end
         
         def autocomplete_title
-          _autocomplete_title(title_query_param, search_type_param, params[:page])
+          _autocomplete_title(title_query_param, search_type_param, page)
         end
       
         def find_by_group
-          _find_by_group(_letter_group_param, context_object_from_params, params[:page])
+          _find_by_group(_letter_group_param, context_object_from_params, page)
         end
 
         private

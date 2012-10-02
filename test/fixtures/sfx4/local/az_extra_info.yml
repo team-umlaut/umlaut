@@ -1,7 +1,8 @@
 az_extra_info_01:
   AZ_PROFILE: default
-  kb_object: kb_object_1
-  EXTRA_INFO_XML: > <perldata>
+  OBJECT_ID: 954921332001
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x1138ae68">
@@ -422,8 +423,9 @@ az_extra_info_01:
     </perldata>
 az_extra_info_02:
   AZ_PROFILE: default
-  kb_object: kb_object_2
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921332002
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x15465670">
@@ -484,8 +486,9 @@ az_extra_info_02:
     </perldata>
 az_extra_info_03:
   AZ_PROFILE: default
-  kb_object: kb_object_3
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921332003
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x105135e8">
@@ -704,8 +707,9 @@ az_extra_info_03:
     </perldata>
 az_extra_info_04:
   AZ_PROFILE: default
-  kb_object: kb_object_4
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921332004
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x1551ad28">
@@ -1015,8 +1019,9 @@ az_extra_info_04:
     </perldata>
 az_extra_info_05:
   AZ_PROFILE: default
-  kb_object: kb_object_5
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333005
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x132e62c0">
@@ -1244,8 +1249,9 @@ az_extra_info_05:
     </perldata>
 az_extra_info_07:
   AZ_PROFILE: default
-  kb_object: kb_object_7
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333007
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x11438d40">
@@ -1510,8 +1516,9 @@ az_extra_info_07:
     </perldata>
 az_extra_info_08:
   AZ_PROFILE: default
-  kb_object: kb_object_8
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333008
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x113b4118">
@@ -1662,8 +1669,9 @@ az_extra_info_08:
     </perldata>
 az_extra_info_09:
   AZ_PROFILE: default
-  kb_object: kb_object_9
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333009
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="OBJECT_ID">954921333009</item>
     <item key="category_loop">
@@ -1818,8 +1826,9 @@ az_extra_info_09:
     </perldata>
 az_extra_info_10:
   AZ_PROFILE: default
-  kb_object: kb_object_10
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333010
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x150db9b0">
@@ -1962,8 +1971,9 @@ az_extra_info_10:
     </perldata>
 az_extra_info_12:
   AZ_PROFILE: default
-  kb_object: kb_object_12
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333012
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x10509ba0">
@@ -2024,8 +2034,9 @@ az_extra_info_12:
     </perldata>
 az_extra_info_13:
   AZ_PROFILE: default
-  kb_object: kb_object_13
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333013
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x11ee4b58">
@@ -2225,8 +2236,9 @@ az_extra_info_13:
     </perldata>
 az_extra_info_14:
   AZ_PROFILE: default
-  kb_object: kb_object_14
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333014
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x154e1d40">
@@ -2593,8 +2605,9 @@ az_extra_info_14:
     </perldata>
 az_extra_info_15:
   AZ_PROFILE: default
-  kb_object: kb_object_15
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333015
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x14b17c38">
@@ -2815,8 +2828,9 @@ az_extra_info_15:
     </perldata>
 az_extra_info_16:
   AZ_PROFILE: default
-  kb_object: kb_object_16
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333016
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x136fdf38">
@@ -3309,8 +3323,9 @@ az_extra_info_16:
     </perldata>
 az_extra_info_17:
   AZ_PROFILE: default
-  kb_object: kb_object_17
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333017
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x120e43c8">
@@ -3463,8 +3478,9 @@ az_extra_info_17:
     </perldata>
 az_extra_info_18:
   AZ_PROFILE: default
-  kb_object: kb_object_18
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333018
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x132f7640">
@@ -3881,8 +3897,9 @@ az_extra_info_18:
     </perldata>
 az_extra_info_20:
   AZ_PROFILE: default
-  kb_object: kb_object_20
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333020
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x12cf1f68">
@@ -4134,8 +4151,9 @@ az_extra_info_20:
     </perldata>
 az_extra_info_21:
   AZ_PROFILE: default
-  kb_object: kb_object_21
-  EXTRA_INFO_XML: |<perldata>
+  OBJECT_ID: 954921333021
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x106dc0a8">
@@ -4314,7 +4332,8 @@ az_extra_info_21:
 az_extra_info_22:
   AZ_PROFILE: default
   OBJECT_ID: 954921334022
-  EXTRA_INFO_XML: |<perldata>
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x15cb5b10">
@@ -4455,7 +4474,8 @@ az_extra_info_22:
 az_extra_info_23:
   AZ_PROFILE: default
   OBJECT_ID: 954921334023
-  EXTRA_INFO_XML: |<perldata>
+  EXTRA_INFO_XML: |
+    <perldata>
     <hashref memory_address="0xb9e6770">
     <item key="ABBREVIATED_TITLES">
     <arrayref memory_address="0x13188d18">

@@ -2,7 +2,14 @@ module SearchMethods
   module Sfx3      
     
     protected
+    def self.fetch_urls?
+      return SfxDb.connection_configured?
+    end
     
+    def self.fetch_urls
+      return SfxDb::SfxDbBase.fetch_sfx_urls
+    end 
+
     #returns pair of 1) array of context object results for current page, 2) hit count
     def find_by_title
       (object_ids, hit_count) = object_ids_az_v3(title_query_param, search_type_param, batch_size, page )

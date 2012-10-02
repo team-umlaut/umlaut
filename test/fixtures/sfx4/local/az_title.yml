@@ -28,118 +28,138 @@ az_title01:
   AZ_PROFILE: default
   OBJECT_ID: 954921332001
   TITLE_DISPLAY: Publishers weekly                              
-  TITLE_SORT: PUBLISHERS WEEKLY                           
+  TITLE_SORT: PUBLISHERS WEEKLY
+  SCRIPT: Latin
 az_title02:
   AZ_TITLE_ID: 13017
   AZ_PROFILE: default
   OBJECT_ID: 954921332002
   TITLE_DISPLAY: ABCA bulletin                                  
   TITLE_SORT: ABCA BULLETIN                               
+  SCRIPT: Latin
 az_title03:
   AZ_TITLE_ID: 90467
   AZ_PROFILE: default
   OBJECT_ID: 954921332003
   TITLE_DISPLAY: Communications of the ACM                      
   TITLE_SORT: COMMUNICATIONS OF THE ACM                   
+  SCRIPT: Latin
 az_title04:
   AZ_TITLE_ID: 22932
   AZ_PROFILE: default
   OBJECT_ID: 954921332004
   TITLE_DISPLAY: Planning                                       
   TITLE_SORT: PLANNING                                    
+  SCRIPT: Latin
 az_title05:
   AZ_TITLE_ID: 98846
   AZ_PROFILE: default
   OBJECT_ID: 954921333005
   TITLE_DISPLAY: Abacus                                         
   TITLE_SORT: ABACUS                                      
+  SCRIPT: Latin
 az_title07:
   AZ_TITLE_ID: 26173
   AZ_PROFILE: default
   OBJECT_ID: 954921333007
   TITLE_DISPLAY: Academy of Management journal                  
   TITLE_SORT: ACADEMY OF MANAGEMENT JOURNAL               
+  SCRIPT: Latin
 az_title08:
   AZ_TITLE_ID: 95098
   AZ_PROFILE: default
   OBJECT_ID: 954921333008
   TITLE_DISPLAY: Accountancy                                    
   TITLE_SORT: ACCOUNTANCY                                 
+  SCRIPT: Latin
 az_title09:
   AZ_TITLE_ID: 73030
   AZ_PROFILE: default
   OBJECT_ID: 954921333009
   TITLE_DISPLAY: Accountancy Ireland                            
   TITLE_SORT: ACCOUNTANCY IRELAND                         
+  SCRIPT: Latin
 az_title10:
   AZ_TITLE_ID: 32365
   AZ_PROFILE: default
   OBJECT_ID: 954921333010
   TITLE_DISPLAY: De Accountant                                  
   TITLE_SORT: DE ACCOUNTANT                               
+  SCRIPT: Latin
 az_title12:
   AZ_TITLE_ID: 45046
   AZ_PROFILE: default
   OBJECT_ID: 954921333012
   TITLE_DISPLAY: The Accountants' journal                       
   TITLE_SORT: ACCOUNTANTS JOURNAL                         
+  SCRIPT: Latin
 az_title13:
   AZ_TITLE_ID: 60707
   AZ_PROFILE: default
   OBJECT_ID: 954921333013
   TITLE_DISPLAY: Accounting and business research               
   TITLE_SORT: ACCOUNTING AND BUSINESS RESEARCH            
+  SCRIPT: Latin
 az_title14:
   AZ_TITLE_ID: 82208
   AZ_PROFILE: default
   OBJECT_ID: 954921333014
   TITLE_DISPLAY: The Accounting review                          
   TITLE_SORT: ACCOUNTING REVIEW                           
+  SCRIPT: Latin
 az_title15:
   AZ_TITLE_ID: 13877
   AZ_PROFILE: default
   OBJECT_ID: 954921333015
   TITLE_DISPLAY: Adhesives age                                  
   TITLE_SORT: ADHESIVES AGE                               
+  SCRIPT: Latin
 az_title16:
   AZ_TITLE_ID: 35282
   AZ_PROFILE: default
   OBJECT_ID: 954921333016
   TITLE_DISPLAY: Administrative science quarterly               
   TITLE_SORT: ADMINISTRATIVE SCIENCE QUARTERLY            
+  SCRIPT: Latin
 az_title17:
   AZ_TITLE_ID: 93625
   AZ_PROFILE: default
   OBJECT_ID: 954921333017
   TITLE_DISPLAY: Advances in Applied Probability                
   TITLE_SORT: ADVANCES IN APPLIED PROBABILITY             
+  SCRIPT: Latin
 az_title18:
   AZ_TITLE_ID: 115390
   AZ_PROFILE: default
   OBJECT_ID: 954921333018
   TITLE_DISPLAY: Advertising Age                                
   TITLE_SORT: ADVERTISING AGE                             
+  SCRIPT: Latin
 az_title20:
   AZ_TITLE_ID: 78720
   AZ_PROFILE: default
   OBJECT_ID: 954921333020
   TITLE_DISPLAY: Agri marketing                                 
   TITLE_SORT: AGRI MARKETING                              
+  SCRIPT: Latin
 az_title21:
   AZ_TITLE_ID: 29075
   AZ_PROFILE: default
   OBJECT_ID: 954921333021
   TITLE_DISPLAY: 'Air Conditioning, Heating & Refrigeration News' 
   TITLE_SORT: AIR CONDITIONING HEATING REFRIGERATION NEWS 
+  SCRIPT: Latin
 az_title22:
   AZ_TITLE_ID: 20375
   AZ_PROFILE: default
   OBJECT_ID: 954921334022
   TITLE_DISPLAY: Air Force Comptroller                          
   TITLE_SORT: AIR FORCE COMPTROLLER                       
+  SCRIPT: Latin
 az_title23:
   AZ_TITLE_ID: 77052
   AZ_PROFILE: default
   OBJECT_ID: 954921334023
   TITLE_DISPLAY: Air transport world                            
   TITLE_SORT: AIR TRANSPORT WORLD                         
+  SCRIPT: Latin
