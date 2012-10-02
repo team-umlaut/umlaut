@@ -2,8 +2,8 @@ SearchMethods
 ===
 SearchMethods' allow Umlaut to search an arbitrary data source for A-Z Journals.
 Implementations must adhere to the following method signatures.
-The module is included in the SearchController and has access to methods and
-variables from the SearchController.
+The module is included in the SearchController and has access to instance methods and
+instance variables from the SearchController.
 
 Class Methods:
 --- 
