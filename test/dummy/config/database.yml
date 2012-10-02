@@ -59,9 +59,9 @@ production:
 # for this purpose, rather than use one of the full-access existing SFX
 # mysql accounts. 
 #
-sfx4_db:
+sfx_db:
   adapter: mysql2
-  database: sfxlcl41 # or other sfx instance db
+  database: sfxlcl41_test # or other sfx instance db
   username: root
   password: 
   pool: 5

@@ -6,9 +6,14 @@ module SearchMethods
     
     protected
     
+    def self.fetch_urls?
+      return SfxDb.connection_configured?
+    end
+
     # used by umlaut:load_sfx_urls task. Kind of hacky way of trying to extract
     # target URLs from SFX4. 
-    def self.fetch_sfx_urls(sfx_global_db = "sfxglb41")      
+    def self.fetch_urls
+      sfx_global_db = "sfxglb41"
       connection = SfxDb::Object.connection
 
       # Crazy crazy URLs to try to find PARSE_PARAMS in Sfx4 db that have a period in

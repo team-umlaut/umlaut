@@ -9,16 +9,17 @@ class Sfx4Local < ActiveRecord::Migration
     create_table "AZ_TITLE", {:id => false} do |t|
       t.integer "AZ_TITLE_ID", :default => 0, :null => false
       t.string "AZ_PROFILE", :limit => 100, :null => false
-      t.integer "OBJECT_ID", :default => 0, :null => false
+      t.integer "OBJECT_ID", :default => 0, :null => false, :limit => 8
       t.string "TITLE_DISPLAY", :limit => 255, :null => false
       t.string "TITLE_SORT", :limit => 200, :null => false
+      t.string "SCRIPT", :limit => 20, :null => false
     end
     execute "ALTER TABLE AZ_TITLE ADD PRIMARY KEY (AZ_TITLE_ID);"
 
     create_table "AZ_EXTRA_INFO", {:id => false} do |t|
       t.integer "AZ_EXTRA_INFO_ID", :default => 0, :null => false
       t.string "AZ_PROFILE", :limit => 100, :null => false
-      t.integer "OBJECT_ID", :default => 0, :null => false
+      t.integer "OBJECT_ID", :default => 0, :null => false, :limit => 8
       t.text "EXTRA_INFO_XML", :limit => 16777215
     end
     execute "ALTER TABLE AZ_EXTRA_INFO ADD PRIMARY KEY (AZ_EXTRA_INFO_ID);"
