@@ -44,7 +44,7 @@
   # Debug info, hidden with explicit style, can be made visible with javascript.
   -%>
   <div class="debug_info" style="display:none">
-    <b>Debug info:</b> <%= service_response.service.service_id %>
+    <strong>Debug info:</strong> <%= service_response.service.service_id %>
     <%= "; #{view_data[:debug_info]}" unless view_data[:debug_info].blank? %>
   </div>
 </li>

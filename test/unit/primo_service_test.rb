@@ -128,7 +128,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
     # def test_primo_source_benchmarks
     #   request = requests(:primo_id_request)
     #   @primo_default.handle(request)
-    #   primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+    #   primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
     #   Benchmark.bmbm do |results|
     #     results.report("PrimoSource - NYUAleph:") {
     #       (1..10).each {
@@ -331,7 +331,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #     primo_sources = request.get_service_type('primo_source')
   #     assert_equal(
   #       1, primo_sources.length)
-  #     primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #     primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #     primo_source.handle(request)
   #     request.dispatched_services.reset
   #     request.service_types.reset
@@ -408,7 +408,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #     primo_sources = request.get_service_type('primo_source')
   #     assert_equal(
   #       1, primo_sources.length)
-  #     primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #     primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #     primo_source.handle(request)
   #     request.dispatched_services.reset
   #     request.service_types.reset
@@ -485,7 +485,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #     primo_sources = request.get_service_type('primo_source')
   #     assert_equal(
   #       1, primo_sources.length)
-  #     primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #     primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #     primo_source.handle(request)
   #     request.dispatched_services.reset
   #     request.service_types.reset
@@ -562,7 +562,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #     primo_sources = request.get_service_type('primo_source')
   #     assert_equal(
   #       1, primo_sources.length)
-  #     primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #     primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #     primo_source.handle(request)
   #     request.dispatched_services.reset
   #     request.service_types.reset
@@ -639,7 +639,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #     primo_sources = request.get_service_type('primo_source')
   #     assert_equal(
   #       4, primo_sources.length)
-  #     primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #     primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #     primo_source.handle(request)
   #     request.dispatched_services.reset
   #     request.service_types.reset
@@ -701,7 +701,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #     primo_sources = request.get_service_type('primo_source')
   #     assert_equal(
   #       4, primo_sources.length)
-  #     primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #     primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #     primo_source.handle(request)
   #     request.dispatched_services.reset
   #     request.service_types.reset
@@ -766,7 +766,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #     assert_equal("Center for Business and Economic Research, Western Illinois University]", request.referent.metadata["pub"]);
   #     primo_sources = request.get_service_type('primo_source')
   #     assert(1 <= primo_sources.length)
-  #     primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #     primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #     primo_source.handle(request)
   #     request.dispatched_services.reset
   #     request.service_types.reset
@@ -793,7 +793,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #       assert_equal("Association for the Journal of Religious History]", request.referent.metadata["pub"]);
   #       primo_sources = request.get_service_type('primo_source')
   #       assert_equal(0, primo_sources.length)
-  #       primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #       primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #       primo_source.handle(request)
   #       request.dispatched_services.reset
   #       request.service_types.reset
@@ -814,7 +814,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #       assert_equal("Published for the Board by the Massachusetts Medical Society", request.referent.metadata["pub"]);
   #       primo_sources = request.get_service_type('primo_source')
   #       assert_equal(0, primo_sources.length)
-  #       primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #       primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #       primo_source.handle(request)
   #       request.dispatched_services.reset
   #       request.service_types.reset
@@ -832,7 +832,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #       # record_id = request.referent.metadata["primo"]
   #       primo_sources = request.get_service_type('primo_source')
   #       assert_equal(1, primo_sources.length)
-  #       primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #       primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #       primo_source.handle(request)
   #       request.dispatched_services.reset
   #       request.service_types.reset
@@ -849,7 +849,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #       primo_sources = request.get_service_type('primo_source')
   #       assert_equal(
   #         1, primo_sources.length)
-  #       primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #       primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #       primo_source.handle(request)
   #       request.dispatched_services.reset
   #       request.service_types.reset
@@ -925,7 +925,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #     primo_sources = request.get_service_type('primo_source')
   #     assert_equal(
   #       4, primo_sources.length)
-  #     primo_source = ServiceList.instance.instantiate!("NYU_Primo_Source", nil)
+  #     primo_source = ServiceList.instance.instantiate!("Primo_Source", nil)
   #     primo_source.handle(request)
   #     request.dispatched_services.reset
   #     request.service_types.reset

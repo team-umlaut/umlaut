@@ -1,0 +1,725 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://sfx.library.edu/local?ctx_enc=info:ofi/enc:UTF-8&ctx_id=&ctx_tim=2012-10-03T12:52:17-04:00&ctx_ver=Z39.88-2004&rft.issn=0362-4331&rft.jtitle=The%20New%20York%20times&rft_val_fmt=info:ofi/fmt:kev:mtx:journal&sfx.ignore_date_threshold=1&sfx.response_type=multi_obj_xml&sfx.show_availability=1&url_ctx_fmt=info:ofi/fmt:kev:mtx:ctx&url_ver=Z39.88-2004
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 03 Oct 2012 16:52:18 GMT
+      Server:
+      - Apache
+      Content-Type:
+      - application/xml
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n\n<ctx_obj_set>\n <ctx_obj
+        identifier=\"\">\n  <ctx_obj_attributes>&lt;perldata&gt;\n &lt;hash&gt;\n
+        \ &lt;item key=\"rft.issn\"&gt;0362-4331&lt;/item&gt;\n  &lt;item key=\"ctx_tim\"&gt;2012-10-03T12:52:17-04:00&lt;/item&gt;\n
+        \ &lt;item key=\"sfx.show_availability\"&gt;1&lt;/item&gt;\n  &lt;item key=\"_stash\"&gt;\n
+        \  &lt;hash&gt;\n   &lt;/hash&gt;\n  &lt;/item&gt;\n  &lt;item key=\"ctx_ver\"&gt;Z39.88-2004&lt;/item&gt;\n
+        \ &lt;item key=\"rft.eissn\"&gt;1553-8095&lt;/item&gt;\n  &lt;item key=\"rft.place\"&gt;New-York
+        [N.Y.]&lt;/item&gt;\n  &lt;item key=\"@sfx.subcategory\"&gt;\n   &lt;array&gt;\n
+        \   &lt;item key=\"0\"&gt;Current Events &amp;amp; News&lt;/item&gt;\n   &lt;/array&gt;\n
+        \ &lt;/item&gt;\n  &lt;item key=\"rft.lccn\"&gt;sn 78004456 &lt;/item&gt;\n
+        \ &lt;item key=\"@rft_id\"&gt;\n   &lt;array&gt;\n   &lt;/array&gt;\n  &lt;/item&gt;\n
+        \ &lt;item key=\"sfx.response_type\"&gt;multi_obj_xml&lt;/item&gt;\n  &lt;item
+        key=\"sfx.ignore_char_set\"&gt;1&lt;/item&gt;\n  &lt;item key=\"req.session_id\"&gt;sB11A7FBC-0D7A-11E2-B991-C575FE4C1AE4&lt;/item&gt;\n
+        \ &lt;item key=\"url_ver\"&gt;Z39.88-2004&lt;/item&gt;\n  &lt;item key=\"ctx_enc\"&gt;UTF-8&lt;/item&gt;\n
+        \ &lt;item key=\"rft.object_type\"&gt;NEWSPAPER&lt;/item&gt;\n  &lt;item key=\"rft.language\"&gt;eng&lt;/item&gt;\n
+        \ &lt;item key=\"sfx.has_full_text\"&gt;yes&lt;/item&gt;\n  &lt;item key=\"rft.object_id\"&gt;110975413976006&lt;/item&gt;\n
+        \ &lt;item key=\"sfx.ignore_date_threshold\"&gt;1&lt;/item&gt;\n  &lt;item
+        key=\"rft.genre\"&gt;journal&lt;/item&gt;\n  &lt;item key=\"sfx.request_id\"&gt;2576884&lt;/item&gt;\n
+        \ &lt;item key=\"rft.pub\"&gt;[H.J. Raymond &amp;amp; Co.]&lt;/item&gt;\n
+        \ \n  &lt;item key=\"rft.title\"&gt;The New York times&lt;/item&gt;\n  &lt;item
+        key=\"url_ctx_fmt\"&gt;info:ofi/fmt:kev:mtx:ctx&lt;/item&gt;\n  &lt;item key=\"@rft.stitle\"&gt;\n
+        \  &lt;array&gt;\n    &lt;item key=\"0\"&gt;NEW YORK TIMES&lt;/item&gt;\n
+        \   &lt;item key=\"1\"&gt;NEW YORK DAILY TIMES&lt;/item&gt;\n    &lt;item
+        key=\"2\"&gt;NEW YORK TIMES, THE&lt;/item&gt;\n    &lt;item key=\"3\"&gt;NY
+        TIMES (PRINT)&lt;/item&gt;\n    &lt;item key=\"4\"&gt;NEW YORK TIMES LATE
+        EDITION (EAST COAST)&lt;/item&gt;\n    &lt;item key=\"5\"&gt;NEW YORK TIMES
+        ON THE WEB&lt;/item&gt;\n    &lt;item key=\"6\"&gt;NEW YORK TIMES ON THE WEB,
+        THE&lt;/item&gt;\n    &lt;item key=\"7\"&gt;NEW YORK TIMES  LATE EDITION&lt;/item&gt;\n
+        \  &lt;/array&gt;\n  &lt;/item&gt;\n  &lt;item key=\"@rfe_id\"&gt;\n   &lt;array&gt;\n
+        \  &lt;/array&gt;\n  &lt;/item&gt;\n  &lt;item key=\"rft.jtitle\"&gt;The New
+        York times&lt;/item&gt;\n  &lt;item key=\"rft.coden\"&gt;NYTIAO&lt;/item&gt;\n
+        \ &lt;item key=\"sfx.sourcename\"&gt;DEFAULT&lt;/item&gt;\n  &lt;item key=\"rft_val_fmt\"&gt;journal&lt;/item&gt;\n
+        \ &lt;item key=\"existing_ts_ids\"&gt;\n   &lt;array&gt;\n    &lt;item key=\"0\"&gt;111027614344001&lt;/item&gt;\n
+        \   &lt;item key=\"1\"&gt;111069357678001&lt;/item&gt;\n    &lt;item key=\"2\"&gt;111076678899001&lt;/item&gt;\n
+        \   &lt;item key=\"3\"&gt;111000155328001&lt;/item&gt;\n    &lt;item key=\"4\"&gt;111032274555001&lt;/item&gt;\n
+        \   &lt;item key=\"5\"&gt;20430000000000002&lt;/item&gt;\n    &lt;item key=\"6\"&gt;20430000000000000&lt;/item&gt;\n
+        \   &lt;item key=\"7\"&gt;111037301464002&lt;/item&gt;\n    &lt;item key=\"8\"&gt;1000000000003254&lt;/item&gt;\n
+        \   &lt;item key=\"9\"&gt;2400000000000013&lt;/item&gt;\n    &lt;item key=\"10\"&gt;3450000000000033&lt;/item&gt;\n
+        \   &lt;item key=\"11\"&gt;2610000000000093&lt;/item&gt;\n    &lt;item key=\"12\"&gt;3450000000000057&lt;/item&gt;\n
+        \   &lt;item key=\"13\"&gt;3450000000000033&lt;/item&gt;\n    &lt;item key=\"14\"&gt;1000000000003344&lt;/item&gt;\n
+        \   &lt;item key=\"15\"&gt;110976638852341&lt;/item&gt;\n    &lt;item key=\"16\"&gt;2610000000000093&lt;/item&gt;\n
+        \   &lt;item key=\"17\"&gt;110997450724001&lt;/item&gt;\n   &lt;/array&gt;\n
+        \ &lt;/item&gt;\n  &lt;item key=\"sfx.sid\"&gt;DEFAULT&lt;/item&gt;\n  &lt;item
+        key=\"@sfx.category\"&gt;\n   &lt;array&gt;\n    &lt;item key=\"0\"&gt;Arts
+        and Humanities&lt;/item&gt;\n   &lt;/array&gt;\n  &lt;/item&gt;\n &lt;/hash&gt;\n&lt;/perldata&gt;\n</ctx_obj_attributes>\n
+        \ <ctx_obj_targets>\n   <target>\n    <target_name>EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON</target_name>\n
+        \   <target_public_name>EBSCOhost Business Abstracts with Full Text </target_public_name>\n
+        \   <object_portfolio_id>2670000000679815</object_portfolio_id>\n    <target_id>3450000000000047</target_id>\n
+        \   <target_service_id>3450000000000057</target_service_id>\n    <service_type>getFullTxt</service_type>\n
+        \   <parser>EBSCO_HOST::ebsco_am</parser>\n    <parse_param>db_host=bft&amp;\r\nebscohosturl
+        = http://search.ebscohost.com &amp; \r\nlinkurl=http://openurl.ebscohost.com/linksvc/linking.aspx
+        &amp; shib=&amp;jkey=3RAH</parse_param>\n    <proxy>yes</proxy>\n    <crossref>no</crossref>\n
+        \   <note></note>\n    <authentication></authentication>\n    <char_set>iso-8859-1</char_set>\n
+        \   <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=bft&amp;jn=3RAH&amp;scope=site</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
+        \      <coverage_statement>Available from 2011</coverage_statement>\n      </threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
+        \     <year>2011</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
+        \  </target>\n   <target>\n    <target_name>EBSCOHOST_NEWSPAPER_SOURCE_PLUS</target_name>\n
+        \   <target_public_name>EBSCOhost Newspaper Source Plus</target_public_name>\n
+        \   <object_portfolio_id>1000000002083749</object_portfolio_id>\n    <target_id>1000000000002557</target_id>\n
+        \   <target_service_id>1000000000003254</target_service_id>\n    <service_type>getFullTxt</service_type>\n
+        \   <parser>EBSCO_HOST::newspapers</parser>\n    <parse_param>url=http://search.ebscohost.com/login.aspx
+        &amp; db_code=n5h&amp;jkey=New+York+Times</parse_param>\n    <proxy>yes</proxy>\n
+        \   <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
+        \   <char_set></char_set>\n    <displayer>FT::NO_FILL_IN</displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/login.aspx?direct=true&amp;db=n5h&amp;scope=site&amp;jn=New+York+Times</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
+        \      <coverage_statement>Available from 1985</coverage_statement>\n      </threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
+        \     <year>1985</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
+        \  </target>\n   <target>\n    <target_name>EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</target_name>\n
+        \   <target_public_name>EBSCOhost OmniFile Full Text Mega </target_public_name>\n
+        \   <object_portfolio_id>2670000000679563</object_portfolio_id>\n    <target_id>3450000000000034</target_id>\n
+        \   <target_service_id>3450000000000033</target_service_id>\n    <service_type>getFullTxt</service_type>\n
+        \   <parser>EBSCO_HOST::ebsco_am</parser>\n    <parse_param>db_host=ofm&amp;\r\nebscohosturl
+        = http://search.ebscohost.com &amp; \r\nlinkurl=http://openurl.ebscohost.com/linksvc/linking.aspx
+        &amp; shib=&amp;jkey=3RAH</parse_param>\n    <proxy>yes</proxy>\n    <crossref>no</crossref>\n
+        \   <note></note>\n    <authentication></authentication>\n    <char_set>iso-8859-1</char_set>\n
+        \   <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=ofm&amp;jn=3RAH&amp;scope=site</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
+        \      <coverage_statement>Available from 2011</coverage_statement>\n      </threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
+        \     <year>2011</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
+        \  </target>\n   <target>\n    <target_name>EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</target_name>\n
+        \   <target_public_name>EBSCOhost OmniFile Full Text Mega </target_public_name>\n
+        \   <object_portfolio_id>3450000000018747</object_portfolio_id>\n    <target_id>3450000000000034</target_id>\n
+        \   <target_service_id>3450000000000033</target_service_id>\n    <service_type>getFullTxt</service_type>\n
+        \   <parser>EBSCO_HOST::ebsco_am</parser>\n    <parse_param>db_host=ofm&amp;\r\nebscohosturl
+        = http://search.ebscohost.com &amp; \r\nlinkurl=http://openurl.ebscohost.com/linksvc/linking.aspx
+        &amp; shib=&amp;jkey=D9ZZ</parse_param>\n    <proxy>yes</proxy>\n    <crossref>no</crossref>\n
+        \   <note></note>\n    <authentication></authentication>\n    <char_set>iso-8859-1</char_set>\n
+        \   <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=ofm&amp;jn=D9ZZ&amp;scope=site</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
+        \      <coverage_statement>Available in 2003</coverage_statement>\n      </threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <in>\n      <year>2003</year>\n
+        \    </in>\n     <embargo></embargo>\n    </coverage>\n   </target>\n   <target>\n
+        \   <target_name>MISCELLANEOUS_FREE_EJOURNALS</target_name>\n    <target_public_name>Free
+        E- Journals</target_public_name>\n    <object_portfolio_id>1000000000716879</object_portfolio_id>\n
+        \   <target_id>110976638852340</target_id>\n    <target_service_id>110976638852341</target_service_id>\n
+        \   <service_type>getFullTxt</service_type>\n    <parser>Bulk::BULK</parser>\n
+        \   <parse_param>jkey=http://www.nytimes.com/</parse_param>\n    <proxy>no</proxy>\n
+        \   <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
+        \   <char_set></char_set>\n    <displayer>FT::NO_FILL_IN</displayer>\n    <target_url>http://www.nytimes.com/</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
+        \      <coverage_statement>Available from 1851  until 1922</coverage_statement>\n
+        \      <coverage_statement>Available from 1987</coverage_statement>\n      </threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
+        \     <year>1851</year>\n     </from>\n     <to>\n      <year>1922</year>\n
+        \    </to>\n     <from>\n      <year>1987</year>\n     </from>\n     <embargo></embargo>\n
+        \   </coverage>\n   </target>\n   <target>\n    <target_name>GALEGROUP_IT_NEWSSTAND</target_name>\n
+        \   <target_public_name>Gale Cengage Newsstand</target_public_name>\n    <object_portfolio_id>1000000002171800</object_portfolio_id>\n
+        \   <target_id>1000000000002642</target_id>\n    <target_service_id>1000000000003344</target_service_id>\n
+        \   <service_type>getFullTxt</service_type>\n    <parser>Gale::OpenURL</parser>\n
+        \   <parse_param>url= http://find.galegroup.com/openurl/openurl &amp;dbase=STND
+        &amp;\r\nloc_id=nysl_me_newyorku &amp;\r\nart=$$ART &amp;ltitle=New+York+Times</parse_param>\n
+        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
+        \   <char_set></char_set>\n    <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://find.galegroup.com/openurl/openurl?res_id=info%3Asid%2Fgale%3ASTND&amp;rft.issn=0362-4331&amp;req_dat=info%3Asid%2Fgale%3Augnid%3Anysl_me_newyorku&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&amp;ctx_enc=info%3Aofi%3Aenc%3AUTF-8&amp;url_ver=Z39.88-2004&amp;rft.jtitle=New+York+Times</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
+        \      <coverage_statement>Available from 1985</coverage_statement>\n      </threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
+        \     <year>1985</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
+        \  </target>\n   <target>\n    <target_name>LEXISNEXIS_ACADEMIC</target_name>\n
+        \   <target_public_name>LexisNexis Academic Universe</target_public_name>\n
+        \   <object_portfolio_id>111020439515049</object_portfolio_id>\n    <target_id>110997450724000</target_id>\n
+        \   <target_service_id>110997450724001</target_service_id>\n    <service_type>getFullTxt</service_type>\n
+        \   <parser>LEXIS::NEXIS</parser>\n    <parse_param>url=http://www.lexisnexis.com/hottopics/lnacademic&amp;jkey=6742
+        &amp; type=newspaper</parse_param>\n    <proxy>yes</proxy>\n    <crossref>no</crossref>\n
+        \   <note></note>\n    <authentication></authentication>\n    <char_set>iso-8859-1</char_set>\n
+        \   <displayer>LEXIS::NEXIS</displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://www.lexisnexis.com/hottopics/lnacademic?verb=sr&amp;csi=6742</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
+        \      <coverage_statement>Available from 1980</coverage_statement>\n      </threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
+        \     <year>1980</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
+        \  </target>\n   <target>\n    <target_name>PROQUEST_CENTRAL_NEW_PLATFORM</target_name>\n
+        \   <target_public_name>ProQuest Central New Platform</target_public_name>\n
+        \   <object_portfolio_id>2550000000138186</object_portfolio_id>\n    <target_id>2400000000000013</target_id>\n
+        \   <target_service_id>2400000000000013</target_service_id>\n    <service_type>getFullTxt</service_type>\n
+        \   <parser>PROQUEST::open</parser>\n    <parse_param>url=http://gateway.proquest.com/openurl
+        &amp; clientid=&amp;jkey=11561 &amp; exception2=issn &amp; exception1=1 </parse_param>\n
+        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
+        \   <char_set>iso-8859-1</char_set>\n    <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=11561&amp;res_dat=xri%3Apqm&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ver=Z39.88-2004&amp;genre=journal</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
+        \      <coverage_statement>Available from 1980</coverage_statement>\n      </threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
+        \     <year>1980</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
+        \  </target>\n   <target>\n    <target_name>PROQUEST_HISTORICAL_NEWSPAPERS_NEW_PLATFORM</target_name>\n
+        \   <target_public_name>ProQuest Historical Newspapers New Platform</target_public_name>\n
+        \   <object_portfolio_id>2670000000349465</object_portfolio_id>\n    <target_id>2610000000000093</target_id>\n
+        \   <target_service_id>2610000000000093</target_service_id>\n    <service_type>getFullTxt</service_type>\n
+        \   <parser>PROQUEST::open</parser>\n    <parse_param>url=http://gateway.proquest.com/openurl
+        &amp; clientid=&amp;jkey=45545 &amp; exception2=issn &amp; exception1=1 </parse_param>\n
+        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
+        \   <char_set>iso-8859-1</char_set>\n    <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=45545&amp;res_dat=xri%3Apqm&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ver=Z39.88-2004&amp;genre=journal</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
+        \      <coverage_statement>Available from 1923  until 2008</coverage_statement>\n
+        \     </threshold_text>\n      <embargo_text></embargo_text>\n     </coverage_text>\n
+        \    <from>\n      <year>1923</year>\n     </from>\n     <to>\n      <year>2008</year>\n
+        \    </to>\n     <embargo></embargo>\n    </coverage>\n   </target>\n   <target>\n
+        \   <target_name>PROQUEST_HISTORICAL_NEWSPAPERS_NEW_PLATFORM</target_name>\n
+        \   <target_public_name>ProQuest Historical Newspapers New Platform</target_public_name>\n
+        \   <object_portfolio_id>3330000000000021</object_portfolio_id>\n    <target_id>2610000000000093</target_id>\n
+        \   <target_service_id>2610000000000093</target_service_id>\n    <service_type>getFullTxt</service_type>\n
+        \   <parser>PROQUEST::open</parser>\n    <parse_param>url=http://gateway.proquest.com/openurl
+        &amp; clientid=&amp;jkey=55428 &amp; exception2=issn &amp; exception1=1 </parse_param>\n
+        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
+        \   <char_set>iso-8859-1</char_set>\n    <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=55428&amp;res_dat=xri%3Apqm&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ver=Z39.88-2004&amp;genre=journal</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
+        \      <coverage_statement>Available from 1857  until 1922</coverage_statement>\n
+        \     </threshold_text>\n      <embargo_text></embargo_text>\n     </coverage_text>\n
+        \    <from>\n      <year>1857</year>\n     </from>\n     <to>\n      <year>1922</year>\n
+        \    </to>\n     <embargo></embargo>\n    </coverage>\n   </target>\n   <target>\n
+        \   <target_name>FACTIVA</target_name>\n    <target_public_name>Factiva</target_public_name>\n
+        \   <object_portfolio_id>1000000000120139</object_portfolio_id>\n    <target_id>111037301464000</target_id>\n
+        \   <target_service_id>111037301464002</target_service_id>\n    <service_type>getFullTxt</service_type>\n
+        \   <parser>FACTIVA::FACTIVA</parser>\n    <parse_param>url=http://global.factiva.com/en/sess/login.asp?xsid=S001dbr5DEs5DEmN9MpMD6mNDVyMHmnRsIuMcNG1pRRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQAA+&amp;jkey=NYTF</parse_param>\n
+        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
+        \   <char_set>utf8</char_set>\n    <displayer>FACTIVA::FACTIVA</displayer>\n
+        \   <target_url>https://ezproxy.library.edu/login?url=http://global.factiva.com/en/sess/login.asp?xsid=S001dbr5DEs5DEmN9MpMD6mNDVyMHmnRsIuMcNG1pRRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQAA+</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
+        \      <coverage_statement>Available from 1980</coverage_statement>\n      </threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
+        \     <year>1980</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
+        \  </target>\n   <target_name>UNION_CATALOGUE_OCLC_WORLDCAT</target_name>\n
+        \   <target_public_name>WorldCat (OCLC)</target_public_name>\n    <object_portfolio_id></object_portfolio_id>\n
+        \   <target_id>111032274555000</target_id>\n    <target_service_id>111032274555001</target_service_id>\n
+        \   <service_type>getHolding</service_type>\n    <parser>FirstSearch::WORLDCAT</parser>\n
+        \   <parse_param>url=http://www.worldcat.org/search &amp;\r\npartner_key_code=exlibris
+        &amp;\r\nwcautho=100-195-964</parse_param>\n    <proxy>yes</proxy>\n    <crossref>no</crossref>\n
+        \   <note></note>\n    <authentication></authentication>\n    <char_set></char_set>\n
+        \   <displayer>Worldcat::Worldcat</displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://www.worldcat.org/search?q=ti%3AThe+New+York+times%2Bissn%3A0362-4331</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text></threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <embargo></embargo>\n
+        \   </coverage>\n   </target>\n   <target>\n    <target_name>REFWORKS_EXPORT_TOOL</target_name>\n
+        \   <target_public_name>to RefWorks </target_public_name>\n    <object_portfolio_id></object_portfolio_id>\n
+        \   <target_id>111069357678000</target_id>\n    <target_service_id>111069357678001</target_service_id>\n
+        \   <service_type>getReference</service_type>\n    <parser>REFWORKS::REFWORKS</parser>\n
+        \   <parse_param>refworksurl=http://www.refworks.com/express/ExpressImport.asp
+        &amp;\r\nproviderid = $$PROVIDERID &amp;\r\n&amp; exporturl=http://sfx.library.edu/local/cgi/public/refworks.cgi</parse_param>\n
+        \   <proxy>no</proxy>\n    <crossref>yes</crossref>\n    <note></note>\n    <authentication></authentication>\n
+        \   <char_set>utf8</char_set>\n    <displayer></displayer>\n    <target_url>http://www.refworks.com/express/ExpressImport.asp?filter=RefWorks+Tagged+Format&amp;vendor=SFX&amp;url=http%3A%2F%2Fsfx.library.edu%2Fsfxlcl41%2Fcgi%2Fpublic%2Frefworks.cgi%3FRT%3DJournal%2C%2BElectronic%26PB%3D%5BH.J.%2BRaymond%2B%26%2BCo.%5D%26PP%3DNew-York%2B%5BN.Y.%5D%26A1%3D%26JF%3DThe%2BNew%2BYork%2Btimes%26SN%3D0362-4331&amp;database=&amp;providerid=%24%24PROVIDERID</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text></threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <embargo></embargo>\n
+        \   </coverage>\n   </target>\n   <target>\n    <target_name>ISI_RESEARCHSOFT_EXPORT_TOOL</target_name>\n
+        \   <target_public_name>to EndNote </target_public_name>\n    <object_portfolio_id></object_portfolio_id>\n
+        \   <target_id>111000155328000</target_id>\n    <target_service_id>111000155328001</target_service_id>\n
+        \   <service_type>getReference</service_type>\n    <parser>SAVE_CITATION::SAVE_CITATION</parser>\n
+        \   <parse_param>url=http://sfx.library.edu/local/cgi/public/save_citation.cgi
+        &amp; text_version = $$TEXT_VERSION \r\n</parse_param>\n    <proxy>no</proxy>\n
+        \   <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
+        \   <char_set>utf8</char_set>\n    <displayer></displayer>\n    <target_url>http://sfx.library.edu/local/cgi/public/save_citation.cgi?ISSN=0362-4331&amp;Type=JOUR&amp;openurl=http%3A%2F%2Fsfx.library.edu%2Fsfxlcl41%3Furl_ver%3DZ39.88-2004%26url_ctx_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Actx%26ctx_ver%3DZ39.88-2004%26ctx_tim%3D2012-10-03T12%253A52%253A17-04%253A00%26ctx_id%3D%26ctx_enc%3Dinfo%253Aofi%252Fenc%253AUTF-8%26rft.issn%3D0362-4331%26rft.jtitle%3DThe%2520New%2520York%2520times%26rft_val_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Ajournal%26sfx.response_type%3Dmulti_obj_xml%26sfx.ignore_date_threshold%3D1%26sfx.show_availability%3D1&amp;Journal=The+New+York+times</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text></threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <embargo></embargo>\n
+        \   </coverage>\n   </target>\n   <target>\n    <target_name>CAPTURE_CITATION</target_name>\n
+        \   <target_public_name>&lt;b&gt;this citation&lt;/b&gt;</target_public_name>\n
+        \   <object_portfolio_id></object_portfolio_id>\n    <target_id>111076678898000</target_id>\n
+        \   <target_service_id>111076678899001</target_service_id>\n    <service_type>getReference</service_type>\n
+        \   <parser>CAPTURE_CITATION::CAPTURE_CITATION</parser>\n    <parse_param>url=http://sfx.library.edu/local/cgi/public/capture_citation.cgi</parse_param>\n
+        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note>Use this link
+        to create a permanent URL for course pages.&lt;br&gt;\r\nFormat this citation
+        in MLA, APA, etc.</note>\n    <authentication></authentication>\n    <char_set>utf8</char_set>\n
+        \   <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://sfx.library.edu/local/cgi/public/capture_citation.cgi?source=DEFAULT+(Via+SFX)&amp;abbrev=NEW+YORK+TIMES&amp;issn=0362-4331&amp;genre=article&amp;publiplace=New-York+%5BN.Y.%5D&amp;openurl=http%3A%2F%2Fsfx.library.edu%2Fsfxlcl41%3Furl_ver%3DZ39.88-2004%26url_ctx_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Actx%26ctx_ver%3DZ39.88-2004%26ctx_tim%3D2012-10-03T12%253A52%253A17-04%253A00%26ctx_id%3D%26ctx_enc%3Dinfo%253Aofi%252Fenc%253AUTF-8%26rft.issn%3D0362-4331%26rft.jtitle%3DThe%2520New%2520York%2520times%26rft_val_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Ajournal%26sfx.response_type%3Dmulti_obj_xml%26sfx.ignore_date_threshold%3D1%26sfx.show_availability%3D1&amp;publisher=%5BH.J.+Raymond+%26+Co.%5D&amp;journal=The+New+York+times</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text></threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <embargo></embargo>\n
+        \   </coverage>\n   </target>\n   <target>\n    <target_name>ASK_A_LIBRARIAN_LCL</target_name>\n
+        \   <target_public_name>Ask-A-Librarian</target_public_name>\n    <object_portfolio_id></object_portfolio_id>\n
+        \   <target_id>20430000000000002</target_id>\n    <target_service_id>20430000000000002</target_service_id>\n
+        \   <service_type>getWebService</service_type>\n    <parser>Generic</parser>\n
+        \   <parse_param>IF () \"http://library.edu/ask/\"</parse_param>\n    <proxy>no</proxy>\n
+        \   <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
+        \   <char_set></char_set>\n    <displayer></displayer>\n    <target_url>http://library.edu/ask/</target_url>\n
+        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text></threshold_text>\n
+        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <embargo></embargo>\n
+        \   </coverage>\n   </target>\n  </ctx_obj_targets>\n </ctx_obj>\n</ctx_obj_set>"
+    http_version: 
+  recorded_at: Wed, 03 Oct 2012 16:52:18 GMT
+- request:
+    method: post
+    uri: http://primo.library.edu/PrimoWebServices/services/primo/searcher
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<env:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n
+        \   xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\n    xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n
+        \ <env:Body>\n    <n1:searchBrief env:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"\n
+        \       xmlns:n1=\"http://www.exlibris.com/primo/xsd/wsRequest\">\n      <searchBriefRequest
+        xsi:type=\"xsd:string\">&lt;searchRequest xmlns=&apos;http://www.exlibris.com/primo/xsd/wsRequest&apos;&gt;&lt;PrimoSearchRequest
+        xmlns=&apos;http://www.exlibris.com/primo/xsd/search/request&apos;&gt;&lt;QueryTerms&gt;&lt;BoolOpeator&gt;AND&lt;/BoolOpeator&gt;&lt;QueryTerm&gt;&lt;IndexField&gt;isbn&lt;/IndexField&gt;&lt;PrecisionOperator&gt;exact&lt;/PrecisionOperator&gt;&lt;Value&gt;0362-4331&lt;/Value&gt;&lt;/QueryTerm&gt;&lt;/QueryTerms&gt;&lt;StartIndex&gt;1&lt;/StartIndex&gt;&lt;BulkSize&gt;5&lt;/BulkSize&gt;&lt;DidUMeanEnabled&gt;false&lt;/DidUMeanEnabled&gt;&lt;HighlightingEnabled&gt;false&lt;/HighlightingEnabled&gt;&lt;/PrimoSearchRequest&gt;&lt;institution&gt;INST&lt;/institution&gt;&lt;/searchRequest&gt;</searchBriefRequest>\n
+        \   </n1:searchBrief>\n  </env:Body>\n</env:Envelope>"
+    headers:
+      Content-Type:
+      - text/xml; charset=utf-8
+      Soapaction:
+      - ! '""'
+      User-Agent:
+      - SOAP4R/1.6.1-SNAPSHOT
+      Accept:
+      - ! '*/*'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - ! 'Servlet 2.4; Tomcat-5.0.28/JBoss-4.0.1 (build: CVSTag=JBoss_4_0_1 date=200412230944)'
+      Content-Type:
+      - text/xml;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Wed, 03 Oct 2012 16:52:18 GMT
+      Server:
+      - Apache-Coyote/1.1
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"utf-8\"?><soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"
+        xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><soapenv:Body><ns1:searchBriefResponse
+        soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:ns1=\"http://www.exlibris.com/primo/xsd/wsRequest\"><searchBriefReturn
+        xsi:type=\"soapenc:string\" xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/\">&lt;sear:SEGMENTS
+        xmlns=&quot;http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib&quot; xmlns:sear=&quot;http://www.exlibrisgroup.com/xsd/jaguar/search&quot;&gt;\n
+        \ &lt;sear:JAGROOT&gt;\n    &lt;sear:RESULT&gt;\n      &lt;sear:QUERYTRANSFORMS/&gt;\n
+        \     &lt;sear:FACETLIST ACCURATE_COUNTERS=&quot;true&quot;&gt;\n        &lt;sear:FACET
+        COUNT=&quot;1&quot; NAME=&quot;lang&quot;&gt;\n          &lt;sear:FACET_VALUES
+        VALUE=&quot;1&quot; KEY=&quot;eng&quot;/&gt;\n        &lt;/sear:FACET&gt;\n
+        \       &lt;sear:FACET COUNT=&quot;1&quot; NAME=&quot;rtype&quot;&gt;\n          &lt;sear:FACET_VALUES
+        VALUE=&quot;1&quot; KEY=&quot;journals&quot;/&gt;\n        &lt;/sear:FACET&gt;\n
+        \       &lt;sear:FACET COUNT=&quot;7&quot; NAME=&quot;topic&quot;&gt;\n          &lt;sear:FACET_VALUES
+        VALUE=&quot;1&quot; KEY=&quot;New York (N.Y.)&quot;/&gt;\n          &lt;sear:FACET_VALUES
+        VALUE=&quot;1&quot; KEY=&quot;New York County (N.Y.)&quot;/&gt;\n          &lt;sear:FACET_VALUES
+        VALUE=&quot;1&quot; KEY=&quot;Dance&quot;/&gt;\n          &lt;sear:FACET_VALUES
+        VALUE=&quot;1&quot; KEY=&quot;Performing arts&quot;/&gt;\n          &lt;sear:FACET_VALUES
+        VALUE=&quot;1&quot; KEY=&quot;History&quot;/&gt;\n          &lt;sear:FACET_VALUES
+        VALUE=&quot;1&quot; KEY=&quot;Government information&quot;/&gt;\n          &lt;sear:FACET_VALUES
+        VALUE=&quot;1&quot; KEY=&quot;Theater&quot;/&gt;\n        &lt;/sear:FACET&gt;\n
+        \       &lt;sear:FACET COUNT=&quot;2&quot; NAME=&quot;tlevel&quot;&gt;\n          &lt;sear:FACET_VALUES
+        VALUE=&quot;1&quot; KEY=&quot;online_resources&quot;/&gt;\n          &lt;sear:FACET_VALUES
+        VALUE=&quot;1&quot; KEY=&quot;available&quot;/&gt;\n        &lt;/sear:FACET&gt;\n
+        \       &lt;sear:FACET COUNT=&quot;1&quot; NAME=&quot;pfilter&quot;&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;journals&quot;/&gt;\n
+        \       &lt;/sear:FACET&gt;\n        &lt;sear:FACET COUNT=&quot;1&quot; NAME=&quot;creationdate&quot;&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;1900&quot;/&gt;\n
+        \       &lt;/sear:FACET&gt;\n        &lt;sear:FACET COUNT=&quot;4&quot; NAME=&quot;domain&quot;&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;CU&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;NREI&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;BOBST&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;NSSC&quot;/&gt;\n
+        \       &lt;/sear:FACET&gt;\n        &lt;sear:FACET COUNT=&quot;4&quot; NAME=&quot;genre&quot;&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;Newspapers&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;Electronic newspapers&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;Electronic journals&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;Electronic indexes&quot;/&gt;\n
+        \       &lt;/sear:FACET&gt;\n        &lt;sear:FACET COUNT=&quot;8&quot; NAME=&quot;library&quot;&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;ISAW&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;CPER&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;BOBST&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;REI&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;IFAC&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;NSSC&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;IFA&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;COUR&quot;/&gt;\n
+        \       &lt;/sear:FACET&gt;\n        &lt;sear:FACET COUNT=&quot;5&quot; NAME=&quot;local1&quot;&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;Microform Periodicals&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;Periodicals&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;Reference&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;Internet Resources&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;Microform&quot;/&gt;\n
+        \       &lt;/sear:FACET&gt;\n        &lt;sear:FACET COUNT=&quot;2&quot; NAME=&quot;local4&quot;&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;United States&quot;/&gt;\n
+        \         &lt;sear:FACET_VALUES VALUE=&quot;1&quot; KEY=&quot;New York&quot;/&gt;\n
+        \       &lt;/sear:FACET&gt;\n      &lt;/sear:FACETLIST&gt;\n      &lt;sear:DOCSET
+        IS_LOCAL=&quot;true&quot; TOTAL_TIME=&quot;13&quot; LASTHIT=&quot;1&quot;
+        FIRSTHIT=&quot;1&quot; TOTALHITS=&quot;1&quot; HIT_TIME=&quot;3&quot;&gt;\n
+        \       &lt;sear:DOC SEARCH_ENGINE_TYPE=&quot;Local Search Engine&quot; SEARCH_ENGINE=&quot;Local
+        Search Engine&quot; NO=&quot;1&quot; RANK=&quot;1.0&quot; ID=&quot;2450934&quot;&gt;\n
+        \         &lt;PrimoNMBib&gt;\n            &lt;record&gt;\n              &lt;control&gt;\n
+        \               &lt;sourcerecordid&gt;$$V000932393$$Onyu_aleph000932393&lt;/sourcerecordid&gt;\n
+        \               &lt;sourcerecordid&gt;$$V002959842$$Onyu_aleph002959842&lt;/sourcerecordid&gt;\n
+        \               &lt;sourceid&gt;$$Vnyu_aleph$$Onyu_aleph000932393&lt;/sourceid&gt;\n
+        \               &lt;sourceid&gt;$$Vnyu_aleph$$Onyu_aleph002959842&lt;/sourceid&gt;\n
+        \               &lt;recordid&gt;dedupmrg17343091&lt;/recordid&gt;\n                &lt;originalsourceid&gt;$$VNYU01$$Onyu_aleph000932393&lt;/originalsourceid&gt;\n
+        \               &lt;originalsourceid&gt;$$VNYU01$$Onyu_aleph002959842&lt;/originalsourceid&gt;\n
+        \               &lt;sourceformat&gt;$$VMARC21$$Onyu_aleph000932393&lt;/sourceformat&gt;\n
+        \               &lt;sourceformat&gt;$$VMARC21$$Onyu_aleph002959842&lt;/sourceformat&gt;\n
+        \               &lt;sourcesystem&gt;$$VAleph$$Onyu_aleph000932393&lt;/sourcesystem&gt;\n
+        \               &lt;sourcesystem&gt;$$VAleph$$Onyu_aleph002959842&lt;/sourcesystem&gt;\n
+        \               &lt;ilsapiid&gt;$$VNYU01000932393$$Onyu_aleph000932393&lt;/ilsapiid&gt;\n
+        \               &lt;ilsapiid&gt;$$VNYU01002959842$$Onyu_aleph002959842&lt;/ilsapiid&gt;\n
+        \             &lt;/control&gt;\n              &lt;display&gt;\n                &lt;type&gt;journal&lt;/type&gt;\n
+        \               &lt;title&gt;The New York times&lt;/title&gt;\n                &lt;publisher&gt;New-York
+        N.Y. : H.J. Raymond &amp;amp; Co.&lt;/publisher&gt;\n                &lt;creationdate&gt;1857-&lt;/creationdate&gt;\n
+        \               &lt;subject&gt;New York (N.Y.) -- Newspapers; New York County
+        (N.Y.) -- Newspapers; Electronic journals&lt;/subject&gt;\n                &lt;language&gt;eng&lt;/language&gt;\n
+        \               &lt;relation&gt;$$Cearlier_title $$VNew-York daily times&lt;/relation&gt;\n
+        \               &lt;rights&gt;Access is restricted to users affiliated with
+        licensed institutions.&lt;/rights&gt;\n                &lt;source&gt;$$Vnyu_aleph$$Onyu_aleph000932393&lt;/source&gt;\n
+        \               &lt;source&gt;$$Vnyu_aleph$$Onyu_aleph002959842&lt;/source&gt;\n
+        \               &lt;availlibrary&gt;$$INYU$$LBWEB$$1Internet Resources$$2(Newspaper
+        Electronic access )$$Scheck_holdings$$XNYU50$$YBWEB$$ZBNYUI$$Onyu_aleph000932393&lt;/availlibrary&gt;\n
+        \               &lt;availlibrary&gt;$$INYU$$LBOBST$$1Microform$$2(Film/Per
+        Non-circulating )$$Scheck_holdings$$5N$$XNYU50$$YBOBST$$ZMFORM$$Onyu_aleph002959842&lt;/availlibrary&gt;\n
+        \               &lt;availlibrary&gt;$$ICU$$LCU$$1Microform Periodicals$$2(Non-circulating
+        )$$Savailable$$31$$40$$5N$$60$$XNYU50$$YCU$$ZMICRP$$Onyu_aleph002959842&lt;/availlibrary&gt;\n
+        \               &lt;availlibrary&gt;$$ICU$$LCU$$1Periodicals$$2(Non-circulating
+        )$$Savailable$$31$$40$$5N$$60$$XNYU50$$YCU$$ZPERIO$$Onyu_aleph002959842&lt;/availlibrary&gt;\n
+        \               &lt;availlibrary&gt;$$INYU$$LBWEB$$1Internet Resources$$2(Newspaper
+        Electronic access )$$Scheck_holdings$$XNYU50$$YBWEB$$ZBNYUI$$Onyu_aleph002959842&lt;/availlibrary&gt;\n
+        \               &lt;availlibrary&gt;$$INYU$$LREI$$1Reference$$2(Newspaper
+        Non-circulating )$$Scheck_holdings$$XNYU50$$YNREI$$ZREF$$Onyu_aleph002959842&lt;/availlibrary&gt;\n
+        \               &lt;availlibrary&gt;$$INS$$LNSSC$$1Periodicals$$2(Non-circulating
+        )$$Scheck_holdings$$XNYU50$$YTNSSC$$ZPERIO$$Onyu_aleph002959842&lt;/availlibrary&gt;\n
+        \               &lt;availinstitution&gt;$$ICU$$Savailable&lt;/availinstitution&gt;\n
+        \               &lt;availinstitution&gt;$$INYU$$Scheck_holdings&lt;/availinstitution&gt;\n
+        \               &lt;availinstitution&gt;$$INS$$Scheck_holdings&lt;/availinstitution&gt;\n
+        \               &lt;availpnx&gt;available&lt;/availpnx&gt;\n                &lt;lds01&gt;NYU&lt;/lds01&gt;\n
+        \               &lt;lds01&gt;NYUAD&lt;/lds01&gt;\n                &lt;lds01&gt;NYU&lt;/lds01&gt;\n
+        \               &lt;lds01&gt;CU&lt;/lds01&gt;\n                &lt;lds01&gt;NS&lt;/lds01&gt;\n
+        \               &lt;lds01&gt;NYUAD&lt;/lds01&gt;\n                &lt;lds02&gt;nyu_aleph000932393&lt;/lds02&gt;\n
+        \               &lt;lds02&gt;nyu_aleph002959842&lt;/lds02&gt;\n              &lt;/display&gt;\n
+        \             &lt;links&gt;\n                &lt;linktoholdings&gt;$$V$$Taleph_holdings$$Onyu_aleph000932393&lt;/linktoholdings&gt;\n
+        \               &lt;linktoholdings&gt;$$V$$Taleph_holdings$$Onyu_aleph002959842&lt;/linktoholdings&gt;\n
+        \               &lt;backlink&gt;$$V$$Taleph_backlink$$DMore bibliographic
+        information$$Onyu_aleph000932393&lt;/backlink&gt;\n                &lt;backlink&gt;$$V$$Taleph_backlink$$DMore
+        bibliographic information$$Onyu_aleph002959842&lt;/backlink&gt;\n                &lt;linktorsrc&gt;$$V$$Uhttps://ezproxy.library.edu/login?url=http://proquest.umi.com/pqdweb?RQT=318&amp;amp;VName=PQD&amp;amp;clientid=9269&amp;amp;pmid=7818$$D1995
+        - Current Access via Proquest$$INYU$$Onyu_aleph000932393&lt;/linktorsrc&gt;\n
+        \               &lt;linktorsrc&gt;$$V$$Uhttps://ezproxy.library.edu/login?url=http://proquest.umi.com/pqdweb?RQT=318&amp;amp;VName=PQD&amp;amp;clientid=9269&amp;amp;pmid=7818$$D1995
+        - Current Access via Proquest$$INYUAD$$Onyu_aleph000932393&lt;/linktorsrc&gt;\n
+        \               &lt;linktorsrc&gt;$$V$$Uhttps://ezproxy.library.edu/login?url=http://www.nytimes.com/$$DOnline
+        version:$$INYU$$Onyu_aleph002959842&lt;/linktorsrc&gt;\n                &lt;linktorsrc&gt;$$V$$Uhttps://ezproxy.library.edu/login?url=http://www.nytimes.com/$$DOnline
+        version:$$INYUAD$$Onyu_aleph002959842&lt;/linktorsrc&gt;\n                &lt;linktorsrc&gt;$$V$$Uhttps://ezproxy.library.edu/login?url=http://web.lexis-nexis.com/universe$$DOnline
+        access via Lexis-Nexis Academic Universe: Full-text available from 1980-$$INYU$$Onyu_aleph002959842&lt;/linktorsrc&gt;\n
+        \               &lt;linktorsrc&gt;$$V$$Uhttps://ezproxy.library.edu/login?url=http://web.lexis-nexis.com/universe$$DOnline
+        access via Lexis-Nexis Academic Universe: Full-text available from 1980-$$INYUAD$$Onyu_aleph002959842&lt;/linktorsrc&gt;\n
+        \               &lt;linktorsrc&gt;$$V$$Uhttps://ezproxy.library.edu/login?url=http://www.umi.com/pqdauto$$DOnline
+        access via ProQuest:$$INYU$$Onyu_aleph002959842&lt;/linktorsrc&gt;\n                &lt;linktorsrc&gt;$$V$$Uhttps://ezproxy.library.edu/login?url=http://www.umi.com/pqdauto$$DOnline
+        access via ProQuest:$$INYUAD$$Onyu_aleph002959842&lt;/linktorsrc&gt;\n                &lt;openurl&gt;$$V$$Topenurl_journal$$Onyu_aleph000932393&lt;/openurl&gt;\n
+        \               &lt;openurl&gt;$$V$$Topenurl_journal$$Onyu_aleph002959842&lt;/openurl&gt;\n
+        \               &lt;openurlfulltext&gt;$$V$$Topenurlfull_journal$$Onyu_aleph000932393&lt;/openurlfulltext&gt;\n
+        \               &lt;openurlfulltext&gt;$$V$$Topenurlfull_journal$$Onyu_aleph002959842&lt;/openurlfulltext&gt;\n
+        \               &lt;linktoreview&gt;$$TpersistentUrl$$DCopy item link&lt;/linktoreview&gt;\n
+        \               &lt;linktouc&gt;$$Tworldcat_oclc$$DCheck other libraries (WorldCat&#xAE;)&lt;/linktouc&gt;\n
+        \             &lt;/links&gt;\n              &lt;search&gt;\n                &lt;creatorcontrib&gt;Mellon
+        Project.&lt;/creatorcontrib&gt;\n                &lt;creatorcontrib&gt;ProQuest
+        Information and Learning Company.&lt;/creatorcontrib&gt;\n                &lt;title&gt;The
+        New York times&lt;/title&gt;\n                &lt;subject&gt;New York (N.Y.)
+        \ Newspapers&lt;/subject&gt;\n                &lt;subject&gt;New York County
+        (N.Y.)  Newspapers&lt;/subject&gt;\n                &lt;subject&gt;Electronic
+        journals&lt;/subject&gt;\n                &lt;subject&gt;Niy&#x16B; Y&#x16B;rk
+        (N.Y.)&lt;/subject&gt;\n                &lt;subject&gt;Niu-y&#xFC;eh (N.Y.)&lt;/subject&gt;\n
+        \               &lt;subject&gt;Nyuyok (N.Y.)&lt;/subject&gt;\n                &lt;subject&gt;Nyu-Yor&#x1E33;
+        (N.Y.)&lt;/subject&gt;\n                &lt;subject&gt;New York City (N.Y.)&lt;/subject&gt;\n
+        \               &lt;subject&gt;New Amsterdam (N.Y.)&lt;/subject&gt;\n                &lt;subject&gt;Nu
+        Yor&#x1E33; (N.Y.)&lt;/subject&gt;\n                &lt;subject&gt;Nuyor&#x1E33;
+        (N.Y.)&lt;/subject&gt;\n                &lt;subject&gt;Novi Jork (N.Y.)&lt;/subject&gt;\n
+        \               &lt;subject&gt;Nowy Jork (N.Y.)&lt;/subject&gt;\n                &lt;subject&gt;Nova
+        Iorque (N.Y.)&lt;/subject&gt;\n                &lt;subject&gt;Ni&#x361;u &#x12C;ork
+        (N.Y.)&lt;/subject&gt;\n                &lt;subject&gt;Nueva York (N.Y.)&lt;/subject&gt;\n
+        \               &lt;general&gt;H.J. Raymond &amp;amp; Co.],&lt;/general&gt;\n
+        \               &lt;general&gt;Latest issue consulted: Vol. 151, no. 52,028
+        (Feb. 13, 2002).&lt;/general&gt;\n                &lt;general&gt;[electronic
+        resource].&lt;/general&gt;\n                &lt;general&gt;United States New
+        York New York New York.&lt;/general&gt;\n                &lt;sourceid&gt;nyu_aleph&lt;/sourceid&gt;\n
+        \               &lt;recordid&gt;nyu_aleph000932393&lt;/recordid&gt;\n                &lt;isbn&gt;0362-4331&lt;/isbn&gt;\n
+        \               &lt;rsrctype&gt;journal&lt;/rsrctype&gt;\n                &lt;creationdate&gt;1857&lt;/creationdate&gt;\n
+        \               &lt;creationdate&gt;9999&lt;/creationdate&gt;\n                &lt;addtitle&gt;New
+        York times on the web.&lt;/addtitle&gt;\n                &lt;addtitle&gt;New
+        York times large type weekly&lt;/addtitle&gt;\n                &lt;addtitle&gt;New-York
+        semi-weekly times&lt;/addtitle&gt;\n                &lt;addtitle&gt;New-York
+        weekly times&lt;/addtitle&gt;\n                &lt;addtitle&gt;Semi-weekly
+        times (New York, N.Y.)&lt;/addtitle&gt;\n                &lt;addtitle&gt;New
+        York times on the Web&lt;/addtitle&gt;\n                &lt;addtitle&gt;Little
+        times&lt;/addtitle&gt;\n                &lt;addtitle&gt;New-York daily times&lt;/addtitle&gt;\n
+        \               &lt;searchscope&gt;BWEB&lt;/searchscope&gt;\n                &lt;searchscope&gt;BWEB
+        Internet Resources&lt;/searchscope&gt;\n                &lt;searchscope&gt;nyu_aleph&lt;/searchscope&gt;\n
+        \               &lt;searchscope&gt;NYU&lt;/searchscope&gt;\n                &lt;searchscope&gt;NYUAD&lt;/searchscope&gt;\n
+        \               &lt;searchscope&gt;BOBST&lt;/searchscope&gt;\n                &lt;searchscope&gt;IFA&lt;/searchscope&gt;\n
+        \               &lt;searchscope&gt;IFAC&lt;/searchscope&gt;\n                &lt;searchscope&gt;ISAW&lt;/searchscope&gt;\n
+        \               &lt;searchscope&gt;COUR&lt;/searchscope&gt;\n                &lt;searchscope&gt;REI&lt;/searchscope&gt;\n
+        \               &lt;scope&gt;BWEB&lt;/scope&gt;\n                &lt;scope&gt;BWEB
+        Internet Resources&lt;/scope&gt;\n                &lt;scope&gt;nyu_aleph&lt;/scope&gt;\n
+        \               &lt;scope&gt;NYU&lt;/scope&gt;\n                &lt;scope&gt;NYUAD&lt;/scope&gt;\n
+        \               &lt;scope&gt;BOBST&lt;/scope&gt;\n                &lt;scope&gt;IFA&lt;/scope&gt;\n
+        \               &lt;scope&gt;IFAC&lt;/scope&gt;\n                &lt;scope&gt;ISAW&lt;/scope&gt;\n
+        \               &lt;scope&gt;COUR&lt;/scope&gt;\n                &lt;scope&gt;REI&lt;/scope&gt;\n
+        \               &lt;alttitle&gt;Combined New York morning newspapers&lt;/alttitle&gt;\n
+        \               &lt;alttitle&gt;Combined New York Sunday newspapers&lt;/alttitle&gt;\n
+        \               &lt;lsr01&gt;Newspaper&lt;/lsr01&gt;\n                &lt;lsr02&gt;H.J.
+        Raymond &amp;amp; Co.],&lt;/lsr02&gt;\n                &lt;title&gt;The New
+        York times.&lt;/title&gt;\n                &lt;subject&gt;History&lt;/subject&gt;\n
+        \               &lt;subject&gt;History  Africa&lt;/subject&gt;\n                &lt;subject&gt;History
+        \ East Asia&lt;/subject&gt;\n                &lt;subject&gt;History  Europe&lt;/subject&gt;\n
+        \               &lt;subject&gt;History  Latin America and Caribbean&lt;/subject&gt;\n
+        \               &lt;subject&gt;History  Middle East&lt;/subject&gt;\n                &lt;subject&gt;History
+        \ North America&lt;/subject&gt;\n                &lt;subject&gt;History  Slavic&lt;/subject&gt;\n
+        \               &lt;subject&gt;Dance&lt;/subject&gt;\n                &lt;subject&gt;Performing
+        arts&lt;/subject&gt;\n                &lt;subject&gt;Theater&lt;/subject&gt;\n
+        \               &lt;subject&gt;Government information  New York State and
+        City Recommended&lt;/subject&gt;\n                &lt;subject&gt;Electronic
+        indexes&lt;/subject&gt;\n                &lt;subject&gt;Electronic newspapers&lt;/subject&gt;\n
+        \               &lt;subject&gt;Dancing&lt;/subject&gt;\n                &lt;subject&gt;Information,
+        Government&lt;/subject&gt;\n                &lt;subject&gt;Show business&lt;/subject&gt;\n
+        \               &lt;subject&gt;Professional theater&lt;/subject&gt;\n                &lt;subject&gt;Theatre&lt;/subject&gt;\n
+        \               &lt;subject&gt;Dramatics&lt;/subject&gt;\n                &lt;recordid&gt;nyu_aleph002959842&lt;/recordid&gt;\n
+        \               &lt;addtitle&gt;New York semi-weekly times&lt;/addtitle&gt;\n
+        \               &lt;addtitle&gt;New York times on the web&lt;/addtitle&gt;\n
+        \               &lt;searchscope&gt;BOBST Microform&lt;/searchscope&gt;\n                &lt;searchscope&gt;CU&lt;/searchscope&gt;\n
+        \               &lt;searchscope&gt;CU Microform Periodicals&lt;/searchscope&gt;\n
+        \               &lt;searchscope&gt;CU Periodicals&lt;/searchscope&gt;\n                &lt;searchscope&gt;NREI&lt;/searchscope&gt;\n
+        \               &lt;searchscope&gt;NREI Reference&lt;/searchscope&gt;\n                &lt;searchscope&gt;TNSSC&lt;/searchscope&gt;\n
+        \               &lt;searchscope&gt;TNSSC Periodicals&lt;/searchscope&gt;\n
+        \               &lt;searchscope&gt;NS&lt;/searchscope&gt;\n                &lt;searchscope&gt;NSSC&lt;/searchscope&gt;\n
+        \               &lt;searchscope&gt;CPER&lt;/searchscope&gt;\n                &lt;scope&gt;BOBST
+        Microform&lt;/scope&gt;\n                &lt;scope&gt;CU&lt;/scope&gt;\n                &lt;scope&gt;CU
+        Microform Periodicals&lt;/scope&gt;\n                &lt;scope&gt;CU Periodicals&lt;/scope&gt;\n
+        \               &lt;scope&gt;NREI&lt;/scope&gt;\n                &lt;scope&gt;NREI
+        Reference&lt;/scope&gt;\n                &lt;scope&gt;TNSSC&lt;/scope&gt;\n
+        \               &lt;scope&gt;TNSSC Periodicals&lt;/scope&gt;\n                &lt;scope&gt;NS&lt;/scope&gt;\n
+        \               &lt;scope&gt;NSSC&lt;/scope&gt;\n                &lt;scope&gt;CPER&lt;/scope&gt;\n
+        \               &lt;alttitle&gt;N.Y. times&lt;/alttitle&gt;\n                &lt;lsr01&gt;Film/Per&lt;/lsr01&gt;\n
+        \             &lt;/search&gt;\n              &lt;sort&gt;\n                &lt;title&gt;New
+        York times&lt;/title&gt;\n                &lt;creationdate&gt;1857&lt;/creationdate&gt;\n
+        \               &lt;lso01&gt;1857&lt;/lso01&gt;\n              &lt;/sort&gt;\n
+        \             &lt;facets&gt;\n                &lt;language&gt;eng&lt;/language&gt;\n
+        \               &lt;creationdate&gt;1857&lt;/creationdate&gt;\n                &lt;topic&gt;New
+        York (N.Y.)&#x2013;Newspapers&lt;/topic&gt;\n                &lt;topic&gt;New
+        York County (N.Y.)&#x2013;Newspapers&lt;/topic&gt;\n                &lt;toplevel&gt;available&lt;/toplevel&gt;\n
+        \               &lt;toplevel&gt;online_resources&lt;/toplevel&gt;\n                &lt;prefilter&gt;journals&lt;/prefilter&gt;\n
+        \               &lt;rsrctype&gt;journals&lt;/rsrctype&gt;\n                &lt;genre&gt;Newspapers&lt;/genre&gt;\n
+        \               &lt;genre&gt;Electronic journals&lt;/genre&gt;\n                &lt;library&gt;BOBST&lt;/library&gt;\n
+        \               &lt;library&gt;IFA&lt;/library&gt;\n                &lt;library&gt;IFAC&lt;/library&gt;\n
+        \               &lt;library&gt;ISAW&lt;/library&gt;\n                &lt;library&gt;COUR&lt;/library&gt;\n
+        \               &lt;library&gt;REI&lt;/library&gt;\n                &lt;lfc01&gt;Internet
+        Resources&lt;/lfc01&gt;\n                &lt;lfc04&gt;United States&lt;/lfc04&gt;\n
+        \               &lt;lfc04&gt;New York&lt;/lfc04&gt;\n                &lt;lfc04&gt;New
+        York.&lt;/lfc04&gt;\n                &lt;topic&gt;History&lt;/topic&gt;\n
+        \               &lt;topic&gt;History&#x2013;Africa&lt;/topic&gt;\n                &lt;topic&gt;History&#x2013;East
+        Asia&lt;/topic&gt;\n                &lt;topic&gt;History&#x2013;Europe&lt;/topic&gt;\n
+        \               &lt;topic&gt;History&#x2013;Latin America and Caribbean&lt;/topic&gt;\n
+        \               &lt;topic&gt;History&#x2013;Middle East&lt;/topic&gt;\n                &lt;topic&gt;History&#x2013;North
+        America&lt;/topic&gt;\n                &lt;topic&gt;History&#x2013;Slavic&lt;/topic&gt;\n
+        \               &lt;topic&gt;Dance&lt;/topic&gt;\n                &lt;topic&gt;Performing
+        arts&lt;/topic&gt;\n                &lt;topic&gt;Theater&lt;/topic&gt;\n                &lt;topic&gt;Government
+        information&#x2013;New York State and City&#x2013;Recommended&lt;/topic&gt;\n
+        \               &lt;collection&gt;BOBST&lt;/collection&gt;\n                &lt;collection&gt;CU&lt;/collection&gt;\n
+        \               &lt;collection&gt;NREI&lt;/collection&gt;\n                &lt;collection&gt;NSSC&lt;/collection&gt;\n
+        \               &lt;genre&gt;Electronic indexes&lt;/genre&gt;\n                &lt;genre&gt;Electronic
+        newspapers&lt;/genre&gt;\n                &lt;library&gt;NSSC&lt;/library&gt;\n
+        \               &lt;library&gt;CPER&lt;/library&gt;\n                &lt;lfc01&gt;Microform&lt;/lfc01&gt;\n
+        \               &lt;lfc01&gt;Microform Periodicals&lt;/lfc01&gt;\n                &lt;lfc01&gt;Periodicals&lt;/lfc01&gt;\n
+        \               &lt;lfc01&gt;Reference&lt;/lfc01&gt;\n                &lt;frbrgroupid&gt;21490924&lt;/frbrgroupid&gt;\n
+        \               &lt;frbrtype&gt;6&lt;/frbrtype&gt;\n              &lt;/facets&gt;\n
+        \             &lt;dedup&gt;\n                &lt;t&gt;2&lt;/t&gt;\n                &lt;c2&gt;0362-4331&lt;/c2&gt;\n
+        \               &lt;c3&gt;newyorktimes&lt;/c3&gt;\n                &lt;c4&gt;new&lt;/c4&gt;\n
+        \               &lt;f4&gt;0362-4331&lt;/f4&gt;\n                &lt;f6&gt;1857&lt;/f6&gt;\n
+        \               &lt;f7&gt;new york times&lt;/f7&gt;\n                &lt;f8&gt;new
+        york times&lt;/f8&gt;\n                &lt;f9&gt;nyu&lt;/f9&gt;\n                &lt;f10&gt;new&lt;/f10&gt;\n
+        \             &lt;/dedup&gt;\n              &lt;frbr&gt;\n                &lt;t&gt;1&lt;/t&gt;\n
+        \               &lt;k3&gt;$$Knew york times$$AT&lt;/k3&gt;\n              &lt;/frbr&gt;\n
+        \             &lt;delivery&gt;\n                &lt;institution&gt;$$VNYU$$Onyu_aleph000932393&lt;/institution&gt;\n
+        \               &lt;institution&gt;$$VNYUAD$$Onyu_aleph000932393&lt;/institution&gt;\n
+        \               &lt;delcategory&gt;$$VOnline Resource$$Onyu_aleph000932393&lt;/delcategory&gt;\n
+        \               &lt;institution&gt;$$VNYU$$Onyu_aleph002959842&lt;/institution&gt;\n
+        \               &lt;institution&gt;$$VCU$$Onyu_aleph002959842&lt;/institution&gt;\n
+        \               &lt;institution&gt;$$VNS$$Onyu_aleph002959842&lt;/institution&gt;\n
+        \               &lt;institution&gt;$$VNYUAD$$Onyu_aleph002959842&lt;/institution&gt;\n
+        \               &lt;delcategory&gt;$$VOnline Resource$$Onyu_aleph002959842&lt;/delcategory&gt;\n
+        \             &lt;/delivery&gt;\n              &lt;enrichment&gt;\n                &lt;classificationlcc&gt;Newspaper&lt;/classificationlcc&gt;\n
+        \             &lt;/enrichment&gt;\n              &lt;ranking&gt;\n                &lt;booster1&gt;1&lt;/booster1&gt;\n
+        \               &lt;booster2&gt;1&lt;/booster2&gt;\n              &lt;/ranking&gt;\n
+        \             &lt;addata&gt;\n                &lt;jtitle&gt;The New York times&lt;/jtitle&gt;\n
+        \               &lt;addtitle&gt;Combined New York morning newspapers&lt;/addtitle&gt;\n
+        \               &lt;date&gt;1857&lt;/date&gt;\n                &lt;risdate&gt;1857-&lt;/risdate&gt;\n
+        \               &lt;coden&gt;NYTIAO&lt;/coden&gt;\n                &lt;format&gt;journal&lt;/format&gt;\n
+        \               &lt;genre&gt;journal&lt;/genre&gt;\n                &lt;ristype&gt;JOUR&lt;/ristype&gt;\n
+        \               &lt;cop&gt;New-York [N.Y.&lt;/cop&gt;\n                &lt;pub&gt;H.J.
+        Raymond &amp;amp; Co.]&lt;/pub&gt;\n                &lt;lad01&gt;BWEB&lt;/lad01&gt;\n
+        \               &lt;lad01&gt;Online Resource&lt;/lad01&gt;\n                &lt;jtitle&gt;The
+        New York times.&lt;/jtitle&gt;\n                &lt;stitle&gt;N.Y. times&lt;/stitle&gt;\n
+        \               &lt;issn&gt;0362-4331&lt;/issn&gt;\n                &lt;oclcid&gt;1645522&lt;/oclcid&gt;\n
+        \               &lt;lccn&gt;sn 78004456&lt;/lccn&gt;\n                &lt;lad01&gt;BOBSTBOBSTBWEBNREICUCUTNSSC&lt;/lad01&gt;\n
+        \             &lt;/addata&gt;\n            &lt;/record&gt;\n          &lt;/PrimoNMBib&gt;\n
+        \         &lt;sear:GETIT GetIt2=&quot;https://getit.library.edu/resolve?&amp;amp;ctx_ver=Z39.88-2004&amp;amp;ctx_enc=info:ofi/enc:UTF-8&amp;amp;ctx_tim=2012-10-03T12%3A52%3A19IST&amp;amp;url_ver=Z39.88-2004&amp;amp;url_ctx_fmt=infofi/fmt:kev:mtx:ctx&amp;amp;rfr_id=info:sid/primo.exlibrisgroup.com:primo-dedupmrg17343091&amp;amp;rft_val_fmt=info:ofi/fmt:kev:mtx:journal&amp;amp;rft.genre=journal&amp;amp;rft.jtitle=The%20New%20York%20times&amp;amp;rft.btitle=&amp;amp;rft.aulast=&amp;amp;rft.aufirst=&amp;amp;rft.auinit=&amp;amp;rft.auinit1=&amp;amp;rft.auinitm=&amp;amp;rft.ausuffix=&amp;amp;rft.au=&amp;amp;rft.aucorp=&amp;amp;rft.volume=&amp;amp;rft.issue=&amp;amp;rft.part=&amp;amp;rft.quarter=&amp;amp;rft.ssn=&amp;amp;rft.spage=&amp;amp;rft.epage=&amp;amp;rft.pages=&amp;amp;rft.artnum=&amp;amp;rft.pub=H.J.%20Raymond%20%26%20Co.]&amp;amp;rft.place=New-York%20[N.Y.&amp;amp;rft.issn=0362-4331&amp;amp;rft.eissn=&amp;amp;rft.isbn=&amp;amp;rft.sici=&amp;amp;rft.coden=NYTIAO&amp;amp;rft_id=info:doi/&amp;amp;rft.object_id=&amp;amp;rft.primo=dedupmrg17343091&amp;amp;rft.eisbn=&amp;amp;rft_dat=&amp;lt;nyu_aleph&gt;000932393&amp;lt;/nyu_aleph&gt;&amp;amp;rft_id=info:oai/&quot;
+        GetIt1=&quot;https://ezproxy.library.edu/login?url=http://proquest.umi.com/pqdweb?RQT=318&amp;amp;VName=PQD&amp;amp;clientid=9269&amp;amp;pmid=7818&quot;
+        deliveryCategory=&quot;Online Resource&quot;/&gt;\n          &lt;sear:GETIT
+        GetIt2=&quot;&quot; GetIt1=&quot;https://ezproxy.library.edu/login?url=http://www.nytimes.com/&quot;
+        deliveryCategory=&quot;Online Resource&quot;/&gt;\n          &lt;sear:GETIT
+        GetIt2=&quot;&quot; GetIt1=&quot;https://ezproxy.library.edu/login?url=http://web.lexis-nexis.com/universe&quot;
+        deliveryCategory=&quot;Online Resource&quot;/&gt;\n          &lt;sear:GETIT
+        GetIt2=&quot;&quot; GetIt1=&quot;https://ezproxy.library.edu/login?url=http://www.umi.com/pqdauto&quot;
+        deliveryCategory=&quot;Online Resource&quot;/&gt;\n          &lt;sear:GETIT
+        GetIt2=&quot;&quot; GetIt1=&quot;http://aleph.library.edu/F?func=item-global&amp;amp;doc_library=NYU01&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=000932393&quot;
+        deliveryCategory=&quot;Physical Item&quot;/&gt;\n          &lt;sear:LIBRARIES&gt;\n
+        \           &lt;sear:LIBRARY&gt;\n              &lt;sear:institution&gt;NYU&lt;/sear:institution&gt;\n
+        \             &lt;sear:library&gt;BWEB&lt;/sear:library&gt;\n              &lt;sear:status&gt;check_holdings&lt;/sear:status&gt;\n
+        \             &lt;sear:collection&gt;Internet Resources&lt;/sear:collection&gt;\n
+        \             &lt;sear:callNumber&gt;(Newspaper Electronic access )&lt;/sear:callNumber&gt;\n
+        \             &lt;sear:url&gt;http://aleph.library.edu/F?func=item-global&amp;amp;doc_library=NYU01&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=000932393&lt;/sear:url&gt;\n
+        \           &lt;/sear:LIBRARY&gt;\n            &lt;sear:LIBRARY&gt;\n              &lt;sear:institution&gt;NYU&lt;/sear:institution&gt;\n
+        \             &lt;sear:library&gt;BOBST&lt;/sear:library&gt;\n              &lt;sear:status&gt;check_holdings&lt;/sear:status&gt;\n
+        \             &lt;sear:collection&gt;Microform&lt;/sear:collection&gt;\n              &lt;sear:callNumber&gt;(Film/Per
+        Non-circulating )&lt;/sear:callNumber&gt;\n              &lt;sear:url&gt;http://aleph.library.edu/F?func=item-global&amp;amp;doc_library=NYU01&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=002959842&lt;/sear:url&gt;\n
+        \           &lt;/sear:LIBRARY&gt;\n            &lt;sear:LIBRARY&gt;\n              &lt;sear:institution&gt;NYU&lt;/sear:institution&gt;\n
+        \             &lt;sear:library&gt;BWEB&lt;/sear:library&gt;\n              &lt;sear:status&gt;check_holdings&lt;/sear:status&gt;\n
+        \             &lt;sear:collection&gt;Internet Resources&lt;/sear:collection&gt;\n
+        \             &lt;sear:callNumber&gt;(Newspaper Electronic access )&lt;/sear:callNumber&gt;\n
+        \             &lt;sear:url&gt;http://aleph.library.edu/F?func=item-global&amp;amp;doc_library=NYU01&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=002959842&lt;/sear:url&gt;\n
+        \           &lt;/sear:LIBRARY&gt;\n            &lt;sear:LIBRARY&gt;\n              &lt;sear:institution&gt;NYU&lt;/sear:institution&gt;\n
+        \             &lt;sear:library&gt;REI&lt;/sear:library&gt;\n              &lt;sear:status&gt;check_holdings&lt;/sear:status&gt;\n
+        \             &lt;sear:collection&gt;Reference&lt;/sear:collection&gt;\n              &lt;sear:callNumber&gt;(Newspaper
+        Non-circulating )&lt;/sear:callNumber&gt;\n              &lt;sear:url&gt;http://aleph.library.edu/F?func=item-global&amp;amp;doc_library=NYU01&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=002959842&lt;/sear:url&gt;\n
+        \           &lt;/sear:LIBRARY&gt;\n            &lt;sear:LIBRARY&gt;\n              &lt;sear:institution&gt;NS&lt;/sear:institution&gt;\n
+        \             &lt;sear:library&gt;NSSC&lt;/sear:library&gt;\n              &lt;sear:status&gt;check_holdings&lt;/sear:status&gt;\n
+        \             &lt;sear:collection&gt;Periodicals&lt;/sear:collection&gt;\n
+        \             &lt;sear:callNumber&gt;(Non-circulating )&lt;/sear:callNumber&gt;\n
+        \             &lt;sear:url&gt;http://aleph.library.edu/F?func=item-global&amp;amp;doc_library=NYU01&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=002959842&lt;/sear:url&gt;\n
+        \           &lt;/sear:LIBRARY&gt;\n          &lt;/sear:LIBRARIES&gt;\n          &lt;sear:LIBRARIES&gt;\n
+        \           &lt;sear:LIBRARY&gt;\n              &lt;sear:institution&gt;CU&lt;/sear:institution&gt;\n
+        \             &lt;sear:library&gt;CU&lt;/sear:library&gt;\n              &lt;sear:status&gt;available&lt;/sear:status&gt;\n
+        \             &lt;sear:collection&gt;Microform Periodicals&lt;/sear:collection&gt;\n
+        \             &lt;sear:callNumber&gt;(Non-circulating )&lt;/sear:callNumber&gt;\n
+        \             &lt;sear:url&gt;http://aleph.library.edu/F?func=item-global&amp;amp;doc_library=NYU01&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=002959842&lt;/sear:url&gt;\n
+        \           &lt;/sear:LIBRARY&gt;\n            &lt;sear:LIBRARY&gt;\n              &lt;sear:institution&gt;CU&lt;/sear:institution&gt;\n
+        \             &lt;sear:library&gt;CU&lt;/sear:library&gt;\n              &lt;sear:status&gt;available&lt;/sear:status&gt;\n
+        \             &lt;sear:collection&gt;Periodicals&lt;/sear:collection&gt;\n
+        \             &lt;sear:callNumber&gt;(Non-circulating )&lt;/sear:callNumber&gt;\n
+        \             &lt;sear:url&gt;http://aleph.library.edu/F?func=item-global&amp;amp;doc_library=NYU01&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=002959842&lt;/sear:url&gt;\n
+        \           &lt;/sear:LIBRARY&gt;\n          &lt;/sear:LIBRARIES&gt;\n          &lt;sear:LINKS&gt;\n
+        \           &lt;sear:openurl&gt;&lt;![CDATA[https://getit.library.edu/resolve?umlaut.institution=NYUAD&amp;ctx_ver=Z39.88-2004&amp;ctx_enc=info:ofi/enc:UTF-8&amp;ctx_tim=2012-10-03T12%3A52%3A19IST&amp;url_ver=Z39.88-2004&amp;url_ctx_fmt=infofi/fmt:kev:mtx:ctx&amp;rfr_id=info:sid/primo.exlibrisgroup.com:primo-dedupmrg17343091&amp;rft_val_fmt=info:ofi/fmt:kev:mtx:journal&amp;rft.genre=journal&amp;rft.jtitle=The%20New%20York%20times&amp;rft.btitle=&amp;rft.aulast=&amp;rft.aufirst=&amp;rft.auinit=&amp;rft.auinit1=&amp;rft.auinitm=&amp;rft.ausuffix=&amp;rft.au=&amp;rft.aucorp=&amp;rft.volume=&amp;rft.issue=&amp;rft.part=&amp;rft.quarter=&amp;rft.ssn=&amp;rft.spage=&amp;rft.epage=&amp;rft.pages=&amp;rft.artnum=&amp;rft.pub=H.J.%20Raymond%20%26%20Co.]&amp;rft.place=New-York%20[N.Y.&amp;rft.issn=0362-4331&amp;rft.eissn=&amp;rft.isbn=&amp;rft.sici=&amp;rft.coden=NYTIAO&amp;rft_id=info:doi/&amp;rft.object_id=&amp;rft.primo=dedupmrg17343091&amp;rft.eisbn=&amp;rft_dat=&lt;nyu_aleph&gt;000932393&lt;/nyu_aleph&gt;&amp;rft_id=info:oai/]]&gt;&lt;/sear:openurl&gt;\n
+        \           &lt;sear:openurl&gt;&lt;![CDATA[https://getit.library.edu/resolve?umlaut.institution=NYUAD&amp;ctx_ver=Z39.88-2004&amp;ctx_enc=info:ofi/enc:UTF-8&amp;ctx_tim=2012-10-03T12%3A52%3A19IST&amp;url_ver=Z39.88-2004&amp;url_ctx_fmt=infofi/fmt:kev:mtx:ctx&amp;rfr_id=info:sid/primo.exlibrisgroup.com:primo-dedupmrg17343091&amp;rft_val_fmt=info:ofi/fmt:kev:mtx:journal&amp;rft.genre=journal&amp;rft.jtitle=The%20New%20York%20times&amp;rft.btitle=&amp;rft.aulast=&amp;rft.aufirst=&amp;rft.auinit=&amp;rft.auinit1=&amp;rft.auinitm=&amp;rft.ausuffix=&amp;rft.au=&amp;rft.aucorp=&amp;rft.volume=&amp;rft.issue=&amp;rft.part=&amp;rft.quarter=&amp;rft.ssn=&amp;rft.spage=&amp;rft.epage=&amp;rft.pages=&amp;rft.artnum=&amp;rft.pub=H.J.%20Raymond%20%26%20Co.]&amp;rft.place=New-York%20[N.Y.&amp;rft.issn=0362-4331&amp;rft.eissn=&amp;rft.isbn=&amp;rft.sici=&amp;rft.coden=NYTIAO&amp;rft_id=info:doi/&amp;rft.object_id=&amp;rft.primo=dedupmrg17343091&amp;rft.eisbn=&amp;rft_dat=&lt;nyu_aleph&gt;002959842&lt;/nyu_aleph&gt;&amp;rft_id=info:oai/]]&gt;&lt;/sear:openurl&gt;\n
+        \           &lt;sear:backlink&gt;http://aleph.library.edu/F?func=direct&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=000932393&lt;/sear:backlink&gt;\n
+        \           &lt;sear:backlink&gt;http://aleph.library.edu/F?func=direct&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=002959842&lt;/sear:backlink&gt;\n
+        \           &lt;sear:linktorsrc&gt;https://ezproxy.library.edu/login?url=http://proquest.umi.com/pqdweb?RQT=318&amp;amp;VName=PQD&amp;amp;clientid=9269&amp;amp;pmid=7818&lt;/sear:linktorsrc&gt;\n
+        \           &lt;sear:linktorsrc&gt;https://ezproxy.library.edu/login?url=http://www.nytimes.com/&lt;/sear:linktorsrc&gt;\n
+        \           &lt;sear:linktorsrc&gt;https://ezproxy.library.edu/login?url=http://web.lexis-nexis.com/universe&lt;/sear:linktorsrc&gt;\n
+        \           &lt;sear:linktorsrc&gt;https://ezproxy.library.edu/login?url=http://www.umi.com/pqdauto&lt;/sear:linktorsrc&gt;\n
+        \           &lt;sear:thumbnail/&gt;\n            &lt;sear:openurlfulltext&gt;&lt;![CDATA[https://getit.library.edu/resolve?umlaut.institution=NYUAD&amp;ctx_ver=Z39.88-2004&amp;sfx.ignore_date_threshold=1&amp;ctx_enc=info:ofi/enc:UTF-8&amp;ctx_tim=2012-10-03T12%3A52%3A19IST&amp;url_ver=Z39.88-2004&amp;url_ctx_fmt=infofi/fmt:kev:mtx:ctx&amp;rfr_id=info:sid/primo.exlibrisgroup.com:primo-dedupmrg17343091&amp;rft_val_fmt=info:ofi/fmt:kev:mtx:journal&amp;rft.genre=journal&amp;rft.jtitle=The%20New%20York%20times&amp;rft.btitle=&amp;rft.aulast=&amp;rft.aufirst=&amp;rft.auinit=&amp;rft.auinit1=&amp;rft.auinitm=&amp;rft.ausuffix=&amp;rft.au=&amp;rft.aucorp=&amp;rft.volume=&amp;rft.issue=&amp;rft.part=&amp;rft.quarter=&amp;rft.ssn=&amp;rft.spage=&amp;rft.epage=&amp;rft.pages=&amp;rft.artnum=&amp;rft.pub=H.J.%20Raymond%20%26%20Co.]&amp;rft.place=New-York%20[N.Y.&amp;rft.issn=0362-4331&amp;rft.eissn=&amp;rft.isbn=&amp;rft.sici=&amp;rft.coden=NYTIAO&amp;rft_id=info:doi/&amp;rft.object_id=&amp;svc_val_fmt=info:ofi/fmt:kev:mtx:sch_svc&amp;svc.fulltext=yes&amp;rft.eisbn=&amp;rft_dat=&lt;nyu_aleph&gt;000932393&lt;/nyu_aleph&gt;&amp;rft_id=info:oai/]]&gt;&lt;/sear:openurlfulltext&gt;\n
+        \           &lt;sear:openurlfulltext&gt;&lt;![CDATA[https://getit.library.edu/resolve?umlaut.institution=NYUAD&amp;ctx_ver=Z39.88-2004&amp;sfx.ignore_date_threshold=1&amp;ctx_enc=info:ofi/enc:UTF-8&amp;ctx_tim=2012-10-03T12%3A52%3A19IST&amp;url_ver=Z39.88-2004&amp;url_ctx_fmt=infofi/fmt:kev:mtx:ctx&amp;rfr_id=info:sid/primo.exlibrisgroup.com:primo-dedupmrg17343091&amp;rft_val_fmt=info:ofi/fmt:kev:mtx:journal&amp;rft.genre=journal&amp;rft.jtitle=The%20New%20York%20times&amp;rft.btitle=&amp;rft.aulast=&amp;rft.aufirst=&amp;rft.auinit=&amp;rft.auinit1=&amp;rft.auinitm=&amp;rft.ausuffix=&amp;rft.au=&amp;rft.aucorp=&amp;rft.volume=&amp;rft.issue=&amp;rft.part=&amp;rft.quarter=&amp;rft.ssn=&amp;rft.spage=&amp;rft.epage=&amp;rft.pages=&amp;rft.artnum=&amp;rft.pub=H.J.%20Raymond%20%26%20Co.]&amp;rft.place=New-York%20[N.Y.&amp;rft.issn=0362-4331&amp;rft.eissn=&amp;rft.isbn=&amp;rft.sici=&amp;rft.coden=NYTIAO&amp;rft_id=info:doi/&amp;rft.object_id=&amp;svc_val_fmt=info:ofi/fmt:kev:mtx:sch_svc&amp;svc.fulltext=yes&amp;rft.eisbn=&amp;rft_dat=&lt;nyu_aleph&gt;002959842&lt;/nyu_aleph&gt;&amp;rft_id=info:oai/]]&gt;&lt;/sear:openurlfulltext&gt;\n
+        \           &lt;sear:linktoholdings&gt;http://aleph.library.edu/F?func=item-global&amp;amp;doc_library=NYU01&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=000932393&lt;/sear:linktoholdings&gt;\n
+        \           &lt;sear:linktoholdings&gt;http://aleph.library.edu/F?func=item-global&amp;amp;doc_library=NYU01&amp;amp;local_base=PRIMOCOMMON&amp;amp;doc_number=002959842&lt;/sear:linktoholdings&gt;\n
+        \           &lt;sear:linktoreview&gt;https://library.edu/persistent/lcn/dedupmrg17343091?institution=NYU&amp;amp;persistent&lt;/sear:linktoreview&gt;\n
+        \           &lt;sear:linktouc&gt;http://www.worldcat.org/search?q=no%3A1645522&lt;/sear:linktouc&gt;\n
+        \         &lt;/sear:LINKS&gt;\n        &lt;/sear:DOC&gt;\n      &lt;/sear:DOCSET&gt;\n
+        \   &lt;/sear:RESULT&gt;\n    &lt;sear:searchToken&gt;0&lt;/sear:searchToken&gt;\n
+        \ &lt;/sear:JAGROOT&gt;\n&lt;/sear:SEGMENTS&gt;\n</searchBriefReturn></ns1:searchBriefResponse></soapenv:Body></soapenv:Envelope>"
+    http_version: 
+  recorded_at: Wed, 03 Oct 2012 16:52:19 GMT
+- request:
+    method: get
+    uri: http://catalog.hathitrust.org/api/volumes/brief/json/lccn:sn78004456
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 03 Oct 2012 18:15:06 GMT
+      Server:
+      - Apache/2.2.21 (Unix) mod_fastcgi/2.4.6
+      Content-Length:
+      - '45'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Set-Cookie:
+      - NSC_cbcfm=ffffffff8edd9ed045525d5f4f58455e445a4a423660;expires=Wed, 03-Oct-2012
+        18:25:06 GMT;path=/;httponly
+    body:
+      encoding: US-ASCII
+      string: ! '{"lccn:sn78004456":{"records":[],"items":[]}}'
+    http_version: 
+  recorded_at: Wed, 03 Oct 2012 18:15:06 GMT
+- request:
+    method: post
+    uri: https://ws.isiknowledge.com/cps/xrpc
+    body:
+      encoding: UTF-8
+      string: ! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<request xmlns=\"http://www.isinet.com/xrpc41\"
+        src=\"app.id=Umlaut\">\n  <fn name=\"LinksAMR.retrieve\">\n    <list>\n      <map/>\n
+        \     <map>\n        <list name=\"JCR\">\n          <val>impactGraphURL</val>\n
+        \       </list>\n      </map>\n      <map>\n        <map name=\"cite_id\">\n
+        \         <val name=\"issn\">0362-4331</val>\n          <val name=\"stitle\">The
+        New York times</val>\n        </map>\n      </map>\n    </list>\n  </fn>\n</request>\n"
+    headers:
+      Content-Type:
+      - application/xml
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 03 Oct 2012 18:15:06 GMT
+      Server:
+      - Apache/2.0.63 (Unix) mod_ssl/2.0.63 OpenSSL/0.9.8h ESTI-Router/4.8.0.4
+      Content-Length:
+      - '271'
+      Content-Type:
+      - text/xml;charset=UTF-8
+    body:
+      encoding: US-ASCII
+      string: ! '<?xml version="1.0" encoding="UTF-8" ?>
+
+        <response xmlns="http://www.isinet.com/xrpc41" src="app.id=Umlaut">
+
+        <fn name="LinksAMR.retrieve" rc="OK">
+
+        <map>
+
+        <map name="cite_id">
+
+        <map name="JCR">
+
+        <val name="message">No Result Found</val>
+
+        </map>
+
+        </map>
+
+        </map>
+
+        </fn>
+
+        </response>
+
+'
+    http_version: 
+  recorded_at: Wed, 03 Oct 2012 18:15:06 GMT
+recorded_with: VCR 2.2.5
