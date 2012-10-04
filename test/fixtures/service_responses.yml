@@ -103,159 +103,44 @@ service_response7:
     :citation_spage: 
     :debug_info: ! ' Target: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON ; SFX object ID: 110975413976006'
 
-# | 886867363| SFX|| NULL| NULL| NULL| EBSCOhost Newspaper Source Plus| https://ezproxy.library.edu/login?url=http://search.ebscohost.com/login.aspx?direct=true&db=n5h&scope=site&jn=New+York+Times|| --- :authentication: ''
-# :source: SFX/FT::NO_FILL_IN
-# :coverage: ! 'Available from 1985.
-# '
-# :sfx_base_url: http://sfx.library.edu/local
-# :sfx_obj_index: 1
-# :sfx_target_index: 2
-# :sfx_request_id: '2576884'
-# :sfx_target_service_id: '1000000000003254'
-# :sfx_target_name: EBSCOHOST_NEWSPAPER_SOURCE_PLUS
-# :citation_volume: 
-# :citation_issue: 
-# :citation_spage: 
-# :debug_info: ! ' Target: EBSCOHOST_NEWSPAPER_SOURCE_PLUS ; SFX object ID: 110975413976006'
-# | 2012-10-03 17:13:16| fulltext|         80|
-# | 886867364| SFX|| NULL| NULL| NULL| EBSCOhost OmniFile Full Text Mega| https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=ofm&jn=3RAH&scope=site|| --- :authentication: ''
-# :source: SFX/
-# :coverage: ! 'Available from 2011.
-# '
-# :sfx_base_url: http://sfx.library.edu/local
-# :sfx_obj_index: 1
-# :sfx_target_index: 3
-# :sfx_request_id: '2576884'
-# :sfx_target_service_id: '3450000000000033'
-# :sfx_target_name: EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON
-# :citation_volume: 
-# :citation_issue: 
-# :citation_spage: 
-# :debug_info: ! ' Target: EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON ; SFX object ID:
-# 110975413976006'
-# | 2012-10-03 17:13:16| fulltext|         80|
-# | 886867365| SFX|| NULL| NULL| NULL| EBSCOhost OmniFile Full Text Mega| https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=ofm&jn=D9ZZ&scope=site|| --- :authentication: ''
-# :source: SFX/
-# :coverage: ! 'Available in 2003.
-# '
-# :sfx_base_url: http://sfx.library.edu/local
-# :sfx_obj_index: 1
-# :sfx_target_index: 4
-# :sfx_request_id: '2576884'
-# :sfx_target_service_id: '3450000000000033'
-# :sfx_target_name: EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON
-# :citation_volume: 
-# :citation_issue: 
-# :citation_spage: 
-# :debug_info: ! ' Target: EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON ; SFX object ID:
-# 110975413976006'
-# | 2012-10-03 17:13:16| fulltext|         80|
-# | 886867366| SFX|| NULL| NULL| NULL| Free E- Journals| http://www.nytimes.com/|| --- :authentication: ''
-# :source: SFX/FT::NO_FILL_IN
-# :coverage: ! 'Available from 1851  until 1922.
-# Available from 1987.
-# '
-# :sfx_base_url: http://sfx.library.edu/local
-# :sfx_obj_index: 1
-# :sfx_target_index: 5
-# :sfx_request_id: '2576884'
-# :sfx_target_service_id: '110976638852341'
-# :sfx_target_name: MISCELLANEOUS_FREE_EJOURNALS
-# :citation_volume: 
-# :citation_issue: 
-# :citation_spage: 
-# :debug_info: ! ' Target: MISCELLANEOUS_FREE_EJOURNALS ; SFX object ID: 110975413976006'
-# | 2012-10-03 17:13:16| fulltext|         80|
-# | 886867367| SFX|| NULL| NULL| NULL| Gale Cengage Newsstand| https://ezproxy.library.edu/login?url=http://find.galegroup.com/openurl/openurl?res_id=info%3Asid%2Fgale%3ASTND&rft.issn=0362-4331&req_dat=info%3Asid%2Fgale%3Augnid%3Anysl_me_newyorku&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&ctx_enc=info%3Aofi%3Aenc%3AUTF-8&url_ver=Z39.88-2004&rft.jtitle=New+York+Times|| --- :authentication: ''
-# :source: SFX/
-# :coverage: ! 'Available from 1985.
-# '
-# :sfx_base_url: http://sfx.library.edu/local
-# :sfx_obj_index: 1
-# :sfx_target_index: 6
-# :sfx_request_id: '2576884'
-# :sfx_target_service_id: '1000000000003344'
-# :sfx_target_name: GALEGROUP_IT_NEWSSTAND
-# :citation_volume: 
-# :citation_issue: 
-# :citation_spage: 
-# :debug_info: ! ' Target: GALEGROUP_IT_NEWSSTAND ; SFX object ID: 110975413976006'
-# | 2012-10-03 17:13:16| fulltext|         80|
-# | 886867368| SFX|| NULL| NULL| NULL| LexisNexis Academic Universe| https://ezproxy.library.edu/login?url=http://www.lexisnexis.com/hottopics/lnacademic?verb=sr&csi=6742|| --- :authentication: ''
-# :source: SFX/LEXIS::NEXIS
-# :coverage: ! 'Available from 1980.
-# '
-# :sfx_base_url: http://sfx.library.edu/local
-# :sfx_obj_index: 1
-# :sfx_target_index: 7
-# :sfx_request_id: '2576884'
-# :sfx_target_service_id: '110997450724001'
-# :sfx_target_name: LEXISNEXIS_ACADEMIC
-# :citation_volume: 
-# :citation_issue: 
-# :citation_spage: 
-# :debug_info: ! ' Target: LEXISNEXIS_ACADEMIC ; SFX object ID: 110975413976006'
-# | 2012-10-03 17:13:16| fulltext|         80|
-# | 886867369| SFX|| NULL| NULL| NULL| ProQuest Central New Platform| https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=11561&res_dat=xri%3Apqm&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&url_ver=Z39.88-2004&genre=journal|| --- :authentication: ''
-# :source: SFX/
-# :coverage: ! 'Available from 1980.
-# '
-# :sfx_base_url: http://sfx.library.edu/local
-# :sfx_obj_index: 1
-# :sfx_target_index: 8
-# :sfx_request_id: '2576884'
-# :sfx_target_service_id: '2400000000000013'
-# :sfx_target_name: PROQUEST_CENTRAL_NEW_PLATFORM
-# :citation_volume: 
-# :citation_issue: 
-# :citation_spage: 
-# :debug_info: ! ' Target: PROQUEST_CENTRAL_NEW_PLATFORM ; SFX object ID: 110975413976006'
-# | 2012-10-03 17:13:16| fulltext|         80|
-# | 886867370| SFX|| NULL| NULL| NULL| ProQuest Historical Newspapers New Platform| https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=45545&res_dat=xri%3Apqm&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&url_ver=Z39.88-2004&genre=journal|| --- :authentication: ''
-# :source: SFX/
-# :coverage: ! 'Available from 1923  until 2008.
-# '
-# :sfx_base_url: http://sfx.library.edu/local
-# :sfx_obj_index: 1
-# :sfx_target_index: 9
-# :sfx_request_id: '2576884'
-# :sfx_target_service_id: '2610000000000093'
-# :sfx_target_name: PROQUEST_HISTORICAL_NEWSPAPERS_NEW_PLATFORM
-# :citation_volume: 
-# :citation_issue: 
-# :citation_spage: 
-# :debug_info: ! ' Target: PROQUEST_HISTORICAL_NEWSPAPERS_NEW_PLATFORM ; SFX object
-# ID: 110975413976006'
-# | 2012-10-03 17:13:16| fulltext|         80|
-# | 886867371| SFX|| NULL| NULL| NULL| ProQuest Historical Newspapers New Platform| https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=55428&res_dat=xri%3Apqm&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&url_ver=Z39.88-2004&genre=journal|| --- :authentication: ''
-# :source: SFX/
-# :coverage: ! 'Available from 1857  until 1922.
-# '
-# :sfx_base_url: http://sfx.library.edu/local
-# :sfx_obj_index: 1
-# :sfx_target_index: 10
-# :sfx_request_id: '2576884'
-# :sfx_target_service_id: '2610000000000093'
-# :sfx_target_name: PROQUEST_HISTORICAL_NEWSPAPERS_NEW_PLATFORM
-# :citation_volume: 
-# :citation_issue: 
-# :citation_spage: 
-# :debug_info: ! ' Target: PROQUEST_HISTORICAL_NEWSPAPERS_NEW_PLATFORM ; SFX object
-# ID: 110975413976006'
-# | 2012-10-03 17:13:16| fulltext|         80|
-# | 886867372| SFX|| NULL| NULL| NULL| Factiva| https://ezproxy.library.edu/login?url=http://global.factiva.com/en/sess/login.asp?xsid=S001dbr5DEs5DEmN9MpMD6mNDVyMHmnRsIuMcNG1pRRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQAA+|| 
-# --- :authentication: ''
-# :source: SFX/FACTIVA::FACTIVA
-# :coverage: ! 'Available from 1980.
-# '
-# :sfx_base_url: http://sfx.library.edu/local
-# :sfx_obj_index: 1
-# :sfx_target_index: 11
-# :sfx_request_id: '2576884'
-# :sfx_target_service_id: '111037301464002'
-# :sfx_target_name: FACTIVA
-# :citation_volume: 
-# :citation_issue: 
-# :citation_spage: 
-# :debug_info: ! ' Target: FACTIVA ; SFX object ID: 110975413976006'
-# | 2012-10-03 17:13:16| fulltext|         80|
+service_response8:
+  service_id: Primo
+  display_text: Primo
+  url: http://primo.library.edu/primo_library/libweb/action/dlDisplay.do?docId=DOCID&institution=INST&vid=INST
+  notes: Some notes.
+  request_id: 80
+  service_type_value_name: holding
+  service_data: |
+    --- 
+    :record_id: DOCID
+    :title: The New York times
+    :author: ''
+    :source_id: sourceId
+    :original_source_id: OSID
+    :source_record_id: SRID
+    :availlibrary: $$IINST$$LLIB$$1Microform$$2(Film/Per Non-circulating )$$Scheck_holdings$$5N$$XADM$$YLIB$$ZMFORM$$ODOCID
+    :institution_code: INST
+    :institution: INST
+    :library_code: LIB
+    :library: LIB
+    :status_code: check_holdings
+    :status: check_holdings
+    :id_one: Microform
+    :id_two: (Film/Per Non-circulating )
+    :origin: DOCID
+    :display_type: journal
+    :request_url: http://request.library.edu/DOCID
+    :source_data:
+      :source_class: 
+      :source_url: 
+      :source_type: 
+    :call_number: (Film/Per Non-circulating)
+    :collection: Microform
+    :collection_str: Library Microform
+    :coverage_str: This is the coverage information.
+    :coverage_str_array: 
+      - Coverage 1
+      - Coverage 2
+    :expired: false
+    :latest: true
+    :match_reliability: unsure

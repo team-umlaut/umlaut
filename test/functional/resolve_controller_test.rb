@@ -30,12 +30,34 @@ class ResolveControllerTest < ActionController::TestCase
         end
       end
     end
+    # puts @response.body
     assert_select ".umlaut-main .umlaut-section.fulltext" do |sections|
       assert_equal 1, sections.size
       sections.each do |section|
         assert_select section, ".response_list", 1
         assert_select section, ".response_list" do |response_lists|
           assert_select section, "li.response_item", 4
+        end
+      end
+    end
+    assert_select ".umlaut-main .umlaut-section.holding" do |sections|
+      assert_equal 1, sections.size
+      sections.each do |section|
+        assert_select section, ".umlaut-holdings", 1
+        assert_select section, ".umlaut-holdings .umlaut-holding" do |holdings|
+          # This record only has 1 holding
+          assert_equal 1, holdings.size
+          holdings.each do |holding|
+            # This holding has 3 rows.
+            assert_select holding, ".row-fluid", 4
+            # Make sure the edition warning shows up.
+            assert_select holding, ".umlaut-holding-match-reliability", 1
+            # Make sure the coverage shows up.
+            assert_select holding, ".umlaut-holding-coverage", 1
+            assert_select holding, ".umlaut-holding-coverage li", 2
+            # Make sure the notes show up.
+            assert_select holding, ".umlaut-holding-notes", 1
+          end
         end
       end
     end

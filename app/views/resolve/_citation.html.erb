@@ -3,11 +3,4 @@ cite = @user_request.referent.to_citation
 @page_title = cite[:title]
 #rft_metadata = @user_request.referent.metadata
 %>
-<%= 
-  # Try to warn if this could be a typo. If we have an rft.object_id, then
-  # SFX recognized it as an actually existing journal. If not, then it
-  # might be a typo. If it came from a manually entered citation, warn them.
-  content_tag(:div, content_tag(:i, "", :class => "icon-warning-sign") +
-    " Warning: #{umlaut_config.app_name} does not know about a #{@user_request.referent.format.downcase} with this name. Please check your entry.",
-      :class=>"alert alert-error") if display_not_found_warning?(@user_request) %>
 <%= citation(cite) %>

@@ -5,7 +5,7 @@
   }
 }
 
-@mixin icons {
+@mixin umlaut_icons {
   display: inline-block;
   width: 16px;
   height: 16px;
@@ -22,7 +22,7 @@
       font-weight: bold;
     }
     i {
-      @include icons;
+      @include umlaut_icons;
       margin-left: -18px;
       // @extend .pull-left;
     }

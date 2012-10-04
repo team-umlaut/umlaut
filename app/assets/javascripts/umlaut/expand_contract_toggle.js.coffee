@@ -7,6 +7,6 @@ $ ->
       icon = $(this).parent().find "i.umlaut-toggle"
       label = $(this).parent().find ".expand_contract_action_label"
       label_text = if content.is ":visible" then "Show " else "Hide "
-      icon.toggleClass("icons-list-closed icons-list-open")
+      icon.toggleClass("umlaut_icons-list-closed umlaut_icons-list-open")
       label.text label_text
       content.toggle()

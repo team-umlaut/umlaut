@@ -126,21 +126,21 @@
   &.fulltext {
     @include iconed-response;
     .response_item i {
-      @extend .icons-famfamfam-page-text;
+      @extend .umlaut_icons-famfamfam-page-text;
     }
   }
 
   &.audio {
     @include iconed-response;
     .response_item i {
-      @extend .icons-famfamfam-page-sound;
+      @extend .umlaut_icons-famfamfam-page-sound;
     }
   }
 
   &.excerpts {
     @include iconed-response;
     .response_item i {
-      @extend .icons-famfamfam-book-open;
+      @extend .umlaut_icons-famfamfam-book-open;
     }
   }
 

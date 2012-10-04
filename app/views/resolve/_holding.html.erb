@@ -28,7 +28,7 @@ unless holdings.empty? %>
         </div><% 
         # Display edition info
         if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
-          <div class="row-fluid">
+          <div class="row-fluid umlaut-holding-match-reliability">
             <div class="span11 offset1">
               <div class="edition_warning">
                 <% unless target[:edition_str].blank? %>
@@ -36,19 +36,19 @@ unless holdings.empty? %>
                 <% else %>
                   <em class="note">May be alternate edition.</em>
                 <% end %>
-              <div>
+              </div>
             </div>
           </div><%
         end 
         # Display notes
         unless target[:notes].blank? %>
-          <div class="row-fluid">
+          <div class="row-fluid umlaut-holding-notes">
             <div class="span11 offset1"><%= target[:notes] %></div>
           </div><%
         end
         # Display coverage
         unless target[:coverage_str_array].blank? %>
-          <div class="row-fluid">
+          <div class="row-fluid umlaut-holding-coverage">
             <div class="span11 offset1"><%=              
               list_with_limit("copies_#{p.id}", target[:coverage_str_array]) do |item, index| %>
                 <li><%= item %></li><% 
