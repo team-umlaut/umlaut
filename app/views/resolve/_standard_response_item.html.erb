@@ -9,7 +9,8 @@
    # passed in in :object or :collection 
    view_data = service_response.view_data
 %>
-<li class="response_item"> 
+<li class="response_item">
+  <%= content_tag :i, nil %>
   <% 
   # Fancy schmancy ajax? But not if we're generating embed partials, won't work.
   # Generate a hyperlink that will call our standard service action

@@ -27,3 +27,8 @@
     }
   }
 }
+
+[class^="icons-"],
+[class*=" icons-"] {
+  @include icons;
+}

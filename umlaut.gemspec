@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
   s.add_dependency "exlibris-primo", "~> 0.1.0" # for Primo Service
   s.add_dependency "ensure_valid_encoding"      # used for correcting bad char enc bytes in input
   s.add_dependency "sass-rails"
+  s.add_dependency "compass-rails"        # add compass for making sprites
   s.add_dependency "bootstrap-sass"
     
   s.add_development_dependency "single_test", "~> 0.5.1"

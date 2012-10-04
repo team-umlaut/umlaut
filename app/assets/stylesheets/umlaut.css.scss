@@ -1,3 +1,6 @@
+@import "compass";
+@import "icons/*.png";
+@include all-icons-sprites;
 @import "umlaut/variables";
 @import "bootstrap";
 @import "bootstrap-responsive";
@@ -78,12 +81,6 @@ li.expand_contract_section {
   margin: 0;
   padding: 0;
   background: none;
-}
-
-img.toggle_icon {
-  border: none;
-  vertical-align: middle;
-  margin-right: 2px;
 }
 
 .content {

@@ -68,7 +68,7 @@ module ResolveHelper
       citations
     end
   end
-    
+
   def citation_element(label, content, label_class=[], content_class=[])
     label_class.push("text-small") if label_class.empty?
     content_class.push("text-small") if content_class.empty?
@@ -98,10 +98,7 @@ module ResolveHelper
   #  <% end %>
   def expand_contract_section(arg_heading, id, options={}, &block)      
     expanded = (params["umlaut.show_#{id}"] == "true") || options[:initial_expand] || false
-    icon = image_tag( ( expanded ? "list_open.png" : "list_closed.png"),
-                       :alt => "",
-                       :class => "toggle_icon",
-                       :border => "0")
+    icon = content_tag(:i, nil, :class => ["umlaut-toggle"] << ( expanded ? "icons-list-open" : "icons-list-closed"))
     heading = content_tag(:span,( expanded ? "Hide " : "Show "), :class=>'expand_contract_action_label') + arg_heading
     link_params = params.merge('umlaut.request_id' => @user_request.id,
       "umlaut.show_#{id}" => (! expanded).to_s,
@@ -190,7 +187,7 @@ module ResolveHelper
   #
   @@bg_update_sections = nil
   @@partial_update_sections = nil
-  
+
   # Called by background updater to get a list of all sections configured
   # in application config parameter resolve_sections to be included in
   # background updates. 
@@ -222,10 +219,15 @@ module ResolveHelper
       section[:html_area] == area
     end
   end
-  
+
   def html_section_by_div_id(div_id)
     umlaut_config.lookup!("resolve_sections", []).find do |defn|
       defn[:div_id] == div_id
     end
+  end
+  
+  def item_icon(section_id)
+    sections_with_icons = ["fulltext", "audio", "excerpts"]
+    content_tag(:i, nil) if sections_with_icons.include? section_id
   end
 end

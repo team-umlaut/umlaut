@@ -110,7 +110,7 @@
       }
     }
   }
-}	
+}
 
 .umlaut-section {
   .response_list {
@@ -123,25 +123,25 @@
     margin-left: 4px;
   }
 
-  &.fulltext .response_item  {
-    background: url(famfamfam/page_text.gif) no-repeat 0px 0px;
-    padding: 0px 18px 8px 22px;
+  &.fulltext {
+    @include iconed-response;
+    .response_item i {
+      @extend .icons-famfamfam-page-text;
+    }
   }
 
-  &.fulltext .expand_contract_toggle,
-  &.audio .expand_contract_toggle,
-  &.excerpts .expand_contract_toggle {
-    margin-left: 8px; 
+  &.audio {
+    @include iconed-response;
+    .response_item i {
+      @extend .icons-famfamfam-page-sound;
+    }
   }
 
-  &.audio .response_item {
-    background: url(famfamfam/page_sound.gif) no-repeat 0px 0px;
-    padding: 0px 18px 8px 22px;
-  }
-
-  &.excerpts .response_item  {
-    background:  url(famfamfam/book_open.png) no-repeat 0px 0px;
-    padding: 0px 18px 8px 22px;
+  &.excerpts {
+    @include iconed-response;
+    .response_item i {
+      @extend .icons-famfamfam-book-open;
+    }
   }
 
   &.coins {
