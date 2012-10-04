@@ -4,6 +4,11 @@
   }
 }
 
+
+input[type="submit"] {
+  padding-top: 3px;
+}
+
 @media (max-width: 767px) {
   .umlaut-citation-link {
     text-align: left;

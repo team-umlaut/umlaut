@@ -68,15 +68,12 @@ class SearchController < UmlautController
   def journal_search
     @batch_size = batch_size
     @start_result_num = (page * batch_size) - (batch_size - 1)
-    
     @search_context_object = context_object_from_params
-    
     if (! params["rft.object_id"].blank? ||
         ! params["rft.issn"].blank? ||
         ! params["rft_id"].blank? )
       # If we have an exact-type 'search', just switch to 'resolve' action
       redirect_to url_for_with_co( {:controller => 'resolve'}, context_object_from_params ) 
-      
       # don't do anything else.
       return
     elsif (params['rft.jtitle'].blank?)
@@ -86,8 +83,6 @@ class SearchController < UmlautController
       redirect_to :controller=>:search, :action=>:index
       return
     end
-    
-    
     
     # Call our particular search method, #find_by_title added by search
     # method module. 
@@ -108,7 +103,11 @@ class SearchController < UmlautController
       # 0 hits, do it too.
       redirect_to(  url_for_with_co({:controller => 'resolve'}, @search_context_object) )
     end
-
+    @page_title = 'Journal titles that '
+    @page_title +=
+      (params["umlaut.title_search_type"] == "begins") ?
+        'begin with ' : 'contain '
+    @page_title += "'" + params['rft.jtitle'] + "'"
   end
 
 
@@ -117,30 +116,14 @@ class SearchController < UmlautController
     @batch_size = batch_size
     @page = page         
     @start_result_num = (@page * @batch_size) - (@batch_size - 1)
-
-
     (@display_results, @hits) = find_by_group                         
-
-
     # Calculate end-result number for display
     @end_result_num = @start_result_num + @batch_size - 1
     if @end_result_num > @hits
       @end_result_num = @hits
     end
-
     # TODO: Make page titles configurable
-    if (params["action"] == "journal_list")
-      @page_title = "Browse by Journal Title: #{params['id']}"
-    else
-      @page_title = 'Journal titles that '
-
-      @page_title +=
-      (params["umlaut.title_search_type"] == "begins") ?
-      'begin with ' : 'contain '
-
-      @page_title += "'" + params['rft.jtitle'] + "'"
-    end
-    
+    @page_title = "Browse by Journal Title: #{params['id']}"
     # Use our ordinary search displayer to display
     # It'll notice the action and do just a bit of special stuff.
     render(:template => "search/journal_search")

@@ -1,11 +1,9 @@
 require 'test_helper'
 class ResolveControllerTest < ActionController::TestCase
   extend TestWithCassette
-  # attr_accessor :driver
   fixtures :requests, :referents, :referent_values, :dispatched_services, :service_responses
   
   setup do
-    # @driver = Selenium::WebDriver.for :firefox
     @controller = ResolveController.new
   end
   
