@@ -1,8 +1,7 @@
 module Sfx4
   module Local
-    class AzTitleSearch < ActiveRecord::Base
+    class AzTitleSearch < Sfx4::Local::Base
       include Sfx4::Local::Abstract::AzTitleSearch
-      include Sfx4::Local::Connection
     end
   end
 end

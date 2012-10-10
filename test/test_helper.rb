@@ -15,6 +15,7 @@ ActiveSupport::Deprecation.debug = true
 
 class ActiveSupport::TestCase
   def self.sfx4_fixtures(*fixture_names)
+    unless_testing_raise_error
     sfx4s = ["Global", "Local"]
     sfx4s.each do |sfx4|
       # Get the db module associate with this sfx4 instance
@@ -36,6 +37,14 @@ class ActiveSupport::TestCase
       table_names = class_names.keys.collect{|t| t.to_s}
       # Create and Instantiate Fixtures
       ActiveRecord::Fixtures.create_fixtures(path, table_names, class_names){connection}.first.fixtures
+    end
+  end
+  
+  def self.unless_testing_raise_error
+    unless (ActiveRecord::Base.configurations["sfx_db"]["mock_instance"] and 
+        ActiveRecord::Base.configurations["sfx4_local"]["mock_instance"] and 
+          ActiveRecord::Base.configurations["sfx4_global"]["mock_instance"])
+      raise SecurityError.new("Danger! These fixtures are for mock SFX testing only! Do not run fixtures against any sort of real SFX database.")
     end
   end
 end

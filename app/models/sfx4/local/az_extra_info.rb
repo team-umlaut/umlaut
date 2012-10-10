@@ -1,8 +1,7 @@
 module Sfx4
   module Local
-    class AzExtraInfo < ActiveRecord::Base
+    class AzExtraInfo < Sfx4::Local::Base
       include Sfx4::Local::Abstract::AzExtraInfo
-      include Sfx4::Local::Connection
     end
   end
 end

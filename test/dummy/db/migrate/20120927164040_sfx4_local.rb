@@ -1,3 +1,5 @@
+# This is used for SFX search testing.
+# DO NOT USE THIS FOR ANYTHING LIKE A REAL SFX DATABASE.
 class Sfx4Local < ActiveRecord::Migration
   def connection
     ActiveRecord::Base.establish_connection(:sfx4_local)
@@ -5,7 +7,8 @@ class Sfx4Local < ActiveRecord::Migration
     ActiveRecord::Base.connection
   end
 
-  def change    
+  def change
+    unless_testing_raise_error
     create_table "AZ_TITLE", {:id => false} do |t|
       t.integer "AZ_TITLE_ID", :default => 0, :null => false
       t.string "AZ_PROFILE", :limit => 100, :null => false
@@ -38,5 +41,11 @@ class Sfx4Local < ActiveRecord::Migration
       t.string "AZ_LETTER_GROUP_NAME", :limit => 10, :null => false
     end
     execute "ALTER TABLE AZ_LETTER_GROUP ADD PRIMARY KEY (AZ_LETTER_GROUP_ID);"
+  end
+
+  def unless_testing_raise_error
+    unless ActiveRecord::Base.configurations["sfx4_local"]["mock_instance"]
+      raise SecurityError.new("Danger! This is for mock SFX testing only! Do not run this migration against any sort of real SFX database.")
+    end
   end
 end

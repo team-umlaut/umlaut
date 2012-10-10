@@ -23,10 +23,9 @@
 # +--------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+------+-----+------------------------+-----------------------------+
 module Sfx4
   module Global
-    class KbObject < ActiveRecord::Base
+    class KbObject < Sfx4::Global::Base
       self.table_name = 'KB_OBJECTS'
       self.primary_key = 'OBJECT_ID'
-      include Sfx4::Global::Connection
 
       has_many  :az_titles,
                 :foreign_key=>'OBJECT_ID'
