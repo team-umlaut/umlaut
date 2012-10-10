@@ -36,7 +36,7 @@ module Sfx4
                       :class_name => "#{klass.to_s.deconstantize}::AzExtraInfo"
 
             # Only add if the Sunspot::Rails is present
-            if Kernel.const_defined?(:Sunspot) and Sunspot.const_defined?(:Rails) and self.ancestors.include?(Sunspot::Rails::Searchable)
+            if Module.const_defined?(:Sunspot) and Sunspot.const_defined?(:Rails) and self.ancestors.include?(Sunspot::Rails::Searchable)
               searchable :if => :index? do
                 # Indexed fields
                 text :title do
