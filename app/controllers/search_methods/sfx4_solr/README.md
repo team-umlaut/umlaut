@@ -25,6 +25,8 @@ SearchMethod in order to avoid (promote?) ambiguity and confusion.
 
     sfx4_global:
       adapter: mysql2
+      host: sfx.library.edu
+      port: 3310
       database: sfxglb41
       username: 
       password: 
@@ -33,6 +35,8 @@ SearchMethod in order to avoid (promote?) ambiguity and confusion.
 
     sfx4_local:
       adapter: mysql2
+      host: sfx.library.edu
+      port: 3310
       database: sfxlcl41
       username: 
       password: 
