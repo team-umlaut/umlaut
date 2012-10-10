@@ -10,6 +10,6 @@ test/dummy/tmp/
 # UPDATE: in order to test on travis-ci.org we now include the
 # database.yml and therefore comment out this .gitignore item.
 # Travis allows us to test with MySQL.
+# test/dummy/config/database.yml
 Gemfile.lock
 tmp/
-
