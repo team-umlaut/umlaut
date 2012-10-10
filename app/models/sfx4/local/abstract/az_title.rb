@@ -71,28 +71,24 @@ module Sfx4
                 end
               end
             end
-
-            include InstanceMethods
           end
         end
 
-        module InstanceMethods
-          def index?
-            self.AZ_PROFILE.eql? "default"
-          end
+        def index?
+          self.AZ_PROFILE.eql? "default"
+        end
 
-          def to_context_object(context_object)
-            ctx = OpenURL::ContextObject.new
-            # Start out wtih everything in search, to preserve date/vol/etc
-            ctx.import_context_object(context_object)
-            # Put SFX object id in rft.object_id, that's what SFX does.
-            ctx.referent.set_metadata('object_id', self.OBJECT_ID.to_s )
-            ctx.referent.set_metadata("jtitle", self.TITLE_DISPLAY || "Unknown Title")
-            ctx.referent.set_metadata("issn", az_extra_info.issn ) unless az_extra_info.nil? or az_extra_info.issn.blank?
-            ctx.referent.set_metadata("isbn", az_extra_info.isbn) unless az_extra_info.nil? or az_extra_info.isbn.blank?
-            ctx.referent.add_identifier("info:lccn/#{az_extra_info.lccn}") unless az_extra_info.nil? or az_extra_info.lccn.blank?
-            return ctx
-          end
+        def to_context_object(context_object)
+          ctx = OpenURL::ContextObject.new
+          # Start out wtih everything in search, to preserve date/vol/etc
+          ctx.import_context_object(context_object)
+          # Put SFX object id in rft.object_id, that's what SFX does.
+          ctx.referent.set_metadata('object_id', self.OBJECT_ID.to_s )
+          ctx.referent.set_metadata("jtitle", self.TITLE_DISPLAY || "Unknown Title")
+          ctx.referent.set_metadata("issn", az_extra_info.issn ) unless az_extra_info.nil? or az_extra_info.issn.blank?
+          ctx.referent.set_metadata("isbn", az_extra_info.isbn) unless az_extra_info.nil? or az_extra_info.isbn.blank?
+          ctx.referent.add_identifier("info:lccn/#{az_extra_info.lccn}") unless az_extra_info.nil? or az_extra_info.lccn.blank?
+          return ctx
         end
       end
     end

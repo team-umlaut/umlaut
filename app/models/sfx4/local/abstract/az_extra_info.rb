@@ -22,26 +22,23 @@ module Sfx4
                        :class_name => "#{klass.to_s.deconstantize}::AzTitle"
 
             include MetadataHelper # for normalize_lccn
-            include InstanceMethods
           end
         end
-      
-        module InstanceMethods
-          def issn
-            @issn ||= extra_info_xml.search("item[key=issn]").text
-          end
-      
-          def isbn
-            @isbn ||= extra_info_xml.search("item[key=isbn]").text
-          end
-        
-          def lccn
-            @lccn ||= normalize_lccn(extra_info_xml.search("item[key=lccn]").text)
-          end
-      
-          def extra_info_xml
-            @extra_info_xml ||= Nokogiri::XML(EXTRA_INFO_XML)
-          end
+
+        def issn
+          @issn ||= extra_info_xml.search("item[key=issn]").text
+        end
+
+        def isbn
+          @isbn ||= extra_info_xml.search("item[key=isbn]").text
+        end
+
+        def lccn
+          @lccn ||= normalize_lccn(extra_info_xml.search("item[key=lccn]").text)
+        end
+
+        def extra_info_xml
+          @extra_info_xml ||= Nokogiri::XML(EXTRA_INFO_XML)
         end
       end
     end

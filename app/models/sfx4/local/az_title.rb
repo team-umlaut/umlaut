@@ -1,8 +1,7 @@
 module Sfx4
   module Local
-    class AzTitle < ActiveRecord::Base
+    class AzTitle < Sfx4::Local::Base
       include Sfx4::Local::Abstract::AzTitle
-      include Sfx4::Local::Connection
     end
   end
 end
