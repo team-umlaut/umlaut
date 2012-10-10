@@ -1,4 +1,7 @@
 # Umlaut
+[![Build Status](https://secure.travis-ci.org/team-umlaut/umlaut.png)](http://travis-ci.org/team-umlaut/umlaut)
+[![Dependency Status](https://gemnasium.com/team-umlaut/umlaut.png)](https://gemnasium.com/team-umlaut/umlaut)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/team-umlaut/umlaut)
 
 Umlaut is software for libraries (the kind with books). 
 
@@ -46,4 +49,3 @@ https://github.com/team-umlaut/umlaut/
 You can join the umlaut listserv at:
 http://rubyforge.org/mail/?group_id=4382
 
-## Build Status [![Build Status](https://secure.travis-ci.org/team-umlaut/umlaut.png)](http://travis-ci.org/team-umlaut/umlaut)

@@ -7,4 +7,7 @@ test/dummy/tmp/
 # as we need a mysql db, we can't distro a database.yml
 # for test dummy app that works out of box, so leave it
 # out of git so developers can use their own without trouble.
+# UPDATE: in order to test on travis-ci.org we now include the
+# database.yml and therefore comment out this .gitignore item.
+# Travis allows us to test with MySQL.
 # test/dummy/config/database.yml
