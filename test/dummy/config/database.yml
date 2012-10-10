@@ -66,10 +66,10 @@ sfx_db:
   password: 
   pool: 5
   encoding: utf8
-  # :test_instance is used for SFX search testing.
-  # DO NOT SET :test_instance TO TRUE FOR ANYTHING LIKE A REAL SFX DATABASE.
-  # If in doubt set :test_instance => false
-  test_instance: true
+  # :mock_instance is used for SFX search testing.
+  # DO NOT SET :mock_instance TO TRUE FOR ANYTHING LIKE A REAL SFX DATABASE.
+  # If in doubt set :mock_instance => false
+  mock_instance: true
 
 # This is used for SFX search testing.
 # DO NOT SET THIS FOR ANYTHING LIKE A REAL SFX DATABASE.
@@ -80,10 +80,10 @@ sfx4_local:
   password: 
   pool: 5
   encoding: utf8
-  # :test_instance is used for SFX search testing.
-  # DO NOT SET :test_instance TO TRUE FOR ANYTHING LIKE A REAL SFX DATABASE.
-  # If in doubt set :test_instance => false
-  test_instance: true
+  # :mock_instance is used for SFX search testing.
+  # DO NOT SET :mock_instance TO TRUE FOR ANYTHING LIKE A REAL SFX DATABASE.
+  # If in doubt set :mock_instance => false
+  mock_instance: true
 
 # This is used for SFX search testing.
 # DO NOT SET THIS FOR ANYTHING LIKE A REAL SFX DATABASE.
@@ -94,8 +94,8 @@ sfx4_global:
   password: 
   pool: 5
   encoding: utf8
-  # :test_instance is used for SFX search testing.
-  # DO NOT SET :test_instance TO TRUE FOR ANYTHING LIKE A REAL SFX DATABASE.
-  # If in doubt set :test_instance => false
-  test_instance: true
+  # :mock_instance is used for SFX search testing.
+  # DO NOT SET :mock_instance TO TRUE FOR ANYTHING LIKE A REAL SFX DATABASE.
+  # If in doubt set :mock_instance => false
+  mock_instance: true
 

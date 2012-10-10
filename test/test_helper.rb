@@ -41,9 +41,9 @@ class ActiveSupport::TestCase
   end
   
   def self.unless_testing_raise_error
-    unless (ActiveRecord::Base.configurations["sfx_db"]["test_instance"] and 
-        ActiveRecord::Base.configurations["sfx4_local"]["test_instance"] and 
-          ActiveRecord::Base.configurations["sfx4_global"]["test_instance"])
+    unless (ActiveRecord::Base.configurations["sfx_db"]["mock_instance"] and 
+        ActiveRecord::Base.configurations["sfx4_local"]["mock_instance"] and 
+          ActiveRecord::Base.configurations["sfx4_global"]["mock_instance"])
       raise SecurityError.new("Danger! These fixtures are for mock SFX testing only! Do not run fixtures against any sort of real SFX database.")
     end
   end

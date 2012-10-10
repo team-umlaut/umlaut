@@ -44,7 +44,7 @@ class Sfx4Local < ActiveRecord::Migration
   end
 
   def unless_testing_raise_error
-    unless ActiveRecord::Base.configurations["sfx4_local"]["test_instance"]
+    unless ActiveRecord::Base.configurations["sfx4_local"]["mock_instance"]
       raise SecurityError.new("Danger! This is for mock SFX testing only! Do not run this migration against any sort of real SFX database.")
     end
   end
