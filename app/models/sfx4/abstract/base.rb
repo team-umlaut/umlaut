@@ -1,11 +1,6 @@
 module Sfx4
   module Abstract
     module Base
-      # Was a SFX DB connection set in database.yml to connect directly to sfx?
-      def connection_configured?
-        (not (connection_config.nil? or connection_config.blank? or connection_config[:adapter].blank?))
-      end
-
       # Class method for the module that gets called by the umlaut:load_sfx_urls task.
       # Kind of hacky way of trying to extract target URLs from SFX4.
       # Will probably be deprecated in the near future.

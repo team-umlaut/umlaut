@@ -14,72 +14,89 @@ class Sfx4SearchTest < ActiveSupport::TestCase
     @page = 1
   end
   
-  # test "fetch urls?" do
-  #   assert(SearchMethods::Sfx4.fetch_urls?)
-  # end
-  # 
-  # test "fetch urls" do
-  #   urls = SearchMethods::Sfx4.fetch_urls
-  #   assert_instance_of(Array, urls)
-  #   urls.each {|url| 
-  #     assert_instance_of(String, url)
-  #   end
-  # end
-  
   test "find by title contains"  do
     # Indices aren't set up in test instance
     # so commenting out this test for now.
     # @title_query_param = "Air"
     # @search_type_param = "contains"
-    # (context_objects, count) = find_by_title
-    # assert_equal(3, count)
-    # assert_instance_of(Array, context_objects)
-    # context_objects.each {|context_object| 
-    #   assert_instance_of(OpenURL::ContextObject, context_object)
-    #   assert_match(/Air/i, context_object.referent.get_metadata("jtitle"))
-    #   assert_not_nil(context_object.referent.get_metadata("object_id"))
-    # }
+    # # (context_objects, count) = find_by_title
+    # # Only run the assertions if we are using our mock instance
+    # # otherwise just check that this doesn't raise errors since
+    # # it's non-deterministic.
+    # if(self.class.sfx4_mock_instance?)
+    #   assert_equal(3, count)
+    #   assert_instance_of(Array, context_objects)
+    #   context_objects.each {|context_object| 
+    #     assert_instance_of(OpenURL::ContextObject, context_object)
+    #     assert_match(/Air/i, context_object.referent.get_metadata("jtitle"))
+    #     assert_not_nil(context_object.referent.get_metadata("object_id"))
+    #   }
+    # end
   end
   
   test "find by title begins with"  do
+    return unless sfx4_connection_configured?
     @title_query_param = "Account"
     @search_type_param = "begins"
     (context_objects, count) = find_by_title
-    assert_equal(5, count)
-    assert_instance_of(Array, context_objects)
-    context_objects.each {|context_object| 
-      assert_instance_of(OpenURL::ContextObject, context_object)
-      assert_match(/^(The )?Account/, context_object.referent.get_metadata("jtitle"))
-      assert_not_nil(context_object.referent.get_metadata("object_id"))
-    }
+    # Only run the assertions if we are using our mock instance
+    # otherwise just check that this doesn't raise errors since
+    # it's non-deterministic.
+    if(self.class.sfx4_mock_instance?)
+      assert_equal(5, count)
+      assert_instance_of(Array, context_objects)
+      context_objects.each {|context_object| 
+        assert_instance_of(OpenURL::ContextObject, context_object)
+        assert_match(/^(The )?Account/, context_object.referent.get_metadata("jtitle"))
+        assert_not_nil(context_object.referent.get_metadata("object_id"))
+      }
+    end
   end
   
   test "find by title exact" do
+    return unless sfx4_connection_configured?
     @title_query_param = "Advances in Applied Probability"
     @search_type_param = "exact"
     (context_objects, count) = find_by_title
-    assert_equal(1, count)
-    assert_instance_of(Array, context_objects)
-    context_objects.each {|context_object| 
-      assert_instance_of(OpenURL::ContextObject, context_object)
-      assert_equal("Advances in Applied Probability", context_object.referent.get_metadata("jtitle"))
-      assert_not_nil(context_object.referent.get_metadata("object_id"))
-    }
+    # Only run the assertions if we are using our mock instance
+    # otherwise just check that this doesn't raise errors since
+    # it's non-deterministic.
+    if(self.class.sfx4_mock_instance?)
+      assert_equal(1, count)
+      assert_instance_of(Array, context_objects)
+      context_objects.each {|context_object| 
+        assert_instance_of(OpenURL::ContextObject, context_object)
+        assert_equal("Advances in Applied Probability", context_object.referent.get_metadata("jtitle"))
+        assert_not_nil(context_object.referent.get_metadata("object_id"))
+      }
+    end
   end
   
   test"find by group" do
+    return unless sfx4_connection_configured?
     @params[:id] = "A"
     (context_objects, count) = find_by_group
-    assert_equal(16, count)
-    assert_instance_of(Array, context_objects)
-    context_objects.each {|context_object| 
-      assert_instance_of(OpenURL::ContextObject, context_object)
-      assert_match(/^(The )?A/, context_object.referent.get_metadata("jtitle"))
-      assert_not_nil(context_object.referent.get_metadata("object_id"))
-    }
+    # Only run the assertions if we are using our mock instance
+    # otherwise just check that this doesn't raise errors since
+    # it's non-deterministic.
+    if(self.class.sfx4_mock_instance?)
+      assert_equal(16, count)
+      assert_instance_of(Array, context_objects)
+      context_objects.each {|context_object| 
+        assert_instance_of(OpenURL::ContextObject, context_object)
+        assert_match(/^(The )?A/, context_object.referent.get_metadata("jtitle"))
+        assert_not_nil(context_object.referent.get_metadata("object_id"))
+      }
+    end
   end
   
   test "fetch_urls?" do
-    assert(SearchMethods::Sfx4.fetch_urls?)
+    assert(SearchMethods::Sfx4.fetch_urls?, 
+      ":sfx_db is not configured in database.yml, and 'SFX controlled' URLs will not be loaded.")
+  end
+  
+  private
+  def sfx4_connection_configured?
+    Sfx4::Local::AzTitle.connection_configured?
   end
 end
