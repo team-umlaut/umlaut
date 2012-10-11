@@ -5,7 +5,6 @@ class Sfx4SolrSearchTest < ActiveSupport::TestCase
   extend TestWithCassette
   attr_reader :params, :context_object_from_params, :title_query_param, :search_type_param, :sfx_az_profile, :batch_size, :page
   include SearchMethods::Sfx4Solr::Local
-  self.use_transactional_fixtures = false
   
   setup do
     @params = {}
