@@ -78,4 +78,8 @@ class Sfx4SearchTest < ActiveSupport::TestCase
       assert_not_nil(context_object.referent.get_metadata("object_id"))
     }
   end
+  
+  test "fetch_urls?" do
+    assert(SearchMethods::Sfx4.fetch_urls?)
+  end
 end

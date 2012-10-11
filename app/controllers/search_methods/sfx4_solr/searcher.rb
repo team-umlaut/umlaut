@@ -1,12 +1,6 @@
 module SearchMethods
   module Sfx4Solr
     module Searcher
-      def self.included(klass)
-        klass.class_eval do
-          extend SearchMethods::Sfx4::UrlFetcher
-        end
-      end
-
       protected
       def find_by_title
         unless Module.const_defined?(:Sunspot) and Sunspot.const_defined?(:Rails)

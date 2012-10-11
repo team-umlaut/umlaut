@@ -1,86 +1,47 @@
 require 'nokogiri'
-
 module SearchMethods
   module Sfx4
     include MetadataHelper # for normalize_lccn
-    
+
     protected
-    
+    # Class method for the module that gets called by the umlaut:load_sfx_urls task.
+    # Determines whether we should attempt to fetch SFX urls.
+    # Will probably be deprecated in the near future.
     def self.fetch_urls?
-      return SfxDb.connection_configured?
+      sfx4_base.connection_configured?
     end
 
-    # used by umlaut:load_sfx_urls task. Kind of hacky way of trying to extract
-    # target URLs from SFX4. 
+    # Class method for the module that gets called by the umlaut:load_sfx_urls task.
+    # Kind of hacky way of trying to extract target URLs from SFX4.
+    # Will probably be deprecated in the near future.
     def self.fetch_urls
-      sfx_global_db = "sfxglb41"
-      connection = SfxDb::Object.connection
-
-      # Crazy crazy URLs to try to find PARSE_PARAMS in Sfx4 db that have a period in
-      # them, so they look like they might be URLs. Parse params could be at target service
-      # level, or at portfolio level; and could be in local overrides or in global kb. 
-      # This is crazy crazy SQL to get this, sorry. Talking directly to SFX db isn't
-      # a great idea, but best way we've found to get this for now. Might make more
-      # sense to try to use the (very very slow) SFX export in the future instead. 
-      sql = %{
-        SELECT 
-          COALESCE(LCL_SERVICE_LINKING_INFO.PARSE_PARAM,KB_TARGET_SERVICES.PARSE_PARAM) PARSE_PARAM
-        FROM
-          LCL_TARGET_INVENTORY		  	  
-        JOIN #{sfx_global_db}.KB_TARGET_SERVICES
-		  		ON KB_TARGET_SERVICES.TARGET_ID = LCL_TARGET_INVENTORY.TARGET_ID
-		  	JOIN LCL_SERVICE_INVENTORY 
-		  		ON LCL_TARGET_INVENTORY.TARGET_ID = LCL_SERVICE_INVENTORY.TARGET_ID
-		  	LEFT OUTER JOIN LCL_SERVICE_LINKING_INFO
-				  ON 	LCL_SERVICE_INVENTORY.TARGET_SERVICE_ID =	LCL_SERVICE_LINKING_INFO.TARGET_SERVICE_ID
-				WHERE
-				  ( LCL_SERVICE_LINKING_INFO.PARSE_PARAM like '%.%' OR
-				    KB_TARGET_SERVICES.PARSE_PARAM like '%.%' )
-				 AND
-				  LCL_SERVICE_INVENTORY.ACTIVATION_STATUS='ACTIVE'	     
-				 AND
-				  LCL_TARGET_INVENTORY.ACTIVATION_STATUS = 'ACTIVE'		 
-				  
-		 UNION
-		     -- object portfolio parse param version
-		   		   SELECT
-		     COALESCE(LCL_OBJECT_PORTFOLIO_LINKING_INFO.PARSE_PARAM, KB_OBJECT_PORTFOLIOS.PARSE_PARAM) PARSE_PARAM
-		   FROM
-		     #{sfx_global_db}.KB_OBJECT_PORTFOLIOS
-		   JOIN LCL_SERVICE_INVENTORY
-        ON KB_OBJECT_PORTFOLIOS.TARGET_SERVICE_ID = LCL_SERVICE_INVENTORY.TARGET_SERVICE_ID
-	     JOIN LCL_OBJECT_PORTFOLIO_INVENTORY
-	      ON KB_OBJECT_PORTFOLIOS.OP_ID = LCL_OBJECT_PORTFOLIO_INVENTORY.OP_ID
-       left outer join  LCL_OBJECT_PORTFOLIO_LINKING_INFO
-        ON KB_OBJECT_PORTFOLIOS.OP_ID = LCL_OBJECT_PORTFOLIO_LINKING_INFO.OP_ID        
-		   WHERE
-		    ( KB_OBJECT_PORTFOLIOS.PARSE_PARAM like '%.%' OR 
-          LCL_OBJECT_PORTFOLIO_LINKING_INFO.PARSE_PARAM like '%.%' )
-        AND LCL_OBJECT_PORTFOLIO_INVENTORY.ACTIVATION_STATUS = 'ACTIVE'        
-        AND LCL_SERVICE_INVENTORY.ACTIVATION_STATUS='ACTIVE'
-      }
-      
-      results =  connection.select_all(sql)
-      
-      urls = []
-      results.each do |line|
-        param_string = line["PARSE_PARAM"]
-        
-        # Try to get things that look sort of like URLs out. Brutal force,
-        # sorry. 
-        url_re = Regexp.new('(https?://\S+\.\S+)(\s|$)')
-        urls.concat( param_string.scan( url_re ).collect {|matches| matches[0]} )                
-      end      
-      urls.uniq!
-      return urls
+      sfx4_base.fetch_urls
     end
     
-    
+    # Class method for the module.
+    # Returns the SFX4 base class in order to establish a connection.
+    def self.sfx4_base
+      # Need to do this convoluted Module.const_get so that we find the
+      # correct class. Otherwise the module looks locally and can't find it.
+      Module.const_get(:Sfx4).const_get(:Local).const_get(:Base)
+    end
+
+    # Instance method that returns the SFX4 AzTitle class for this search method.
+    # Can be overridden by search methods that want to include this one.
+    def az_title_klass
+      # Need to do this convoluted Module.const_get so that we find the
+      # correct class. Otherwise the module looks locally and can't find it.
+      Module.const_get(:Sfx4).const_get(:Local).const_get(:AzTitle)
+    end
+
+    # Instance method that returns the SFX4 DB connection for this search method.
+    def sfx4_db_connection
+      az_title_klass.connection
+    end
+
     # Needs to return ContextObjects
     def find_by_title                  
       connection = sfx4_db_connection
-  
-        
       query_match_clause = case search_type_param
         when "contains"
           terms = title_query_param.split(" ")
@@ -93,7 +54,6 @@ module SearchMethods
           query = terms.collect do |term|
             "+" + connection.quote_string(term) + "*"
           end.join(" ")
-          
           "MATCH (TS.TITLE_SEARCH) AGAINST ('#{query}' IN BOOLEAN MODE)"
         when "begins"
           # For 'begins', searching against TITLE itself rather than TITLE_SEARCH gives us 
@@ -107,7 +67,6 @@ module SearchMethods
              T.TITLE_SORT = '#{connection.quote_string(title_query_param)}'
            )"                        
         end.upcase
-        
       from_where_clause = %{
         FROM 
           AZ_TITLE T, AZ_TITLE_SEARCH TS 
@@ -116,7 +75,6 @@ module SearchMethods
           #{query_match_clause} AND 
           T.AZ_PROFILE = '#{connection.quote_string(sfx_az_profile)}'       
       } 
-      
       statement = %{
         SELECT 
           DISTINCT T.OBJECT_ID 
@@ -125,16 +83,12 @@ module SearchMethods
           T.SCRIPT DESC, T.TITLE_SORT
         LIMIT #{batch_size.to_i}
         OFFSET #{(batch_size * (page - 1)).to_i}
-        }
-
+      }
       # do the count  
-      total_hits = SfxDb::Object.count_by_sql(
-          "SELECT COUNT(DISTINCT(T.OBJECT_ID)) #{from_where_clause}"
-      )
-      
+      total_hits = az_title_klass.count_by_sql(
+          "SELECT COUNT(DISTINCT(T.OBJECT_ID)) #{from_where_clause}")
       object_ids = connection.select_all(statement).collect {|i| i.values.first}
-                  
-      sql = SfxDb::Object.send(:sanitize_sql_array,
+      sql = az_title_klass.send(:sanitize_sql_array,
         [%{
            SELECT 
               EI.OBJECT_ID, T.TITLE_DISPLAY, EI.EXTRA_INFO_XML 
@@ -148,41 +102,32 @@ module SearchMethods
            ORDER BY 
               T.SCRIPT DESC, T.TITLE_SORT
           }, 
-          sfx_az_profile, 
-          object_ids])
-      
+          sfx_az_profile, object_ids])
       title_objects =  connection.select_all(sql)
-            
       # Make em into context objects
       context_objects = title_objects.collect do |sfx_obj|
         ctx = OpenURL::ContextObject.new
         # Start out wtih everything in search, to preserve date/vol/etc
         ctx.import_context_object( context_object_from_params )        
-        
         extra_info_xml = Nokogiri::XML( sfx_obj["EXTRA_INFO_XML"] )
-        
         # Put SFX object id in rft.object_id, that's what SFX does.
         ctx.referent.set_metadata('object_id', sfx_obj["OBJECT_ID"].to_s )
         ctx.referent.set_metadata("jtitle", sfx_obj["TITLE_DISPLAY"] || "Unknown Title")
-        
         issn = extra_info_xml.search("item[key=issn]").text
         isbn =  extra_info_xml.search("item[key=isbn]").text
-        
         # LCCN is stored corrupted in xml in SFX db, without prefix like "sn" that
         # is a significant part of lccn. Our reverse engineering of SFX failed,
         # apparently there's a workaround in SFX app code. Forget it, bail
         # don't try to use lccn. 
         #lccn = extra_info_xml.search("item[key=lccn]").text
-        
         ctx.referent.set_metadata("issn", issn ) unless issn.blank?
         ctx.referent.set_metadata("isbn", isbn) unless isbn.blank?
         #ctx.referent.add_identifier("info:lccn/#{normalize_lccn(lccn)}") unless lccn.blank?      
-        
         ctx
       end
       return [context_objects, total_hits]
     end
-    
+
     # Used for clicks on A, B, C, 0-9, etc. 
     def find_by_group
       connection = sfx4_db_connection
@@ -199,69 +144,50 @@ module SearchMethods
           }
       count_sql = %{
         SELECT count(*)
-        
         #{from_where_clause}
       }
-      
       fetch_sql = %{
            SELECT 
               EI.OBJECT_ID, T.TITLE_DISPLAY, EI.EXTRA_INFO_XML
-              
             #{from_where_clause}
-            
            ORDER BY 
              T.SCRIPT DESC, T.TITLE_SORT
            LIMIT #{batch_size.to_i}
            OFFSET #{(batch_size * (page - 1)).to_i}      
       }
-          
-      total_count = SfxDb::Object.count_by_sql( count_sql )
+      total_count = az_title_klass.count_by_sql( count_sql )
       context_objects = sfx4_db_to_ctxobj( connection.select_all(fetch_sql) )
-
       return [context_objects, total_count]
     end
-    
-    def sfx4_db_connection
-      SfxDb::Object.connection
-    end
-    
+
     def sfx4_quoted_letter_group_condition
-      " AZ_LETTER_GROUP.AZ_LETTER_GROUP_NAME " +
-      case params[:id]
-      when "0-9"
-        " IN ('0','1','2','3','4','5','6','7','8','9')"
-      when /^Other/i
-        "= 'Others'"
-      else
-        "= '#{sfx4_db_connection.quote_string(params[:id].upcase)}'"
-      end
+      " AZ_LETTER_GROUP.AZ_LETTER_GROUP_NAME " + case params[:id]
+        when "0-9"
+          " IN ('0','1','2','3','4','5','6','7','8','9')"
+        when /^Other/i
+          "= 'Others'"
+        else
+          "= '#{sfx4_db_connection.quote_string(params[:id].upcase)}'"
+        end
     end
-    
+
     def sfx4_db_to_ctxobj(title_rows)
       title_rows.collect do |sfx_obj|
         ctx = OpenURL::ContextObject.new
         # Start out wtih everything in search, to preserve date/vol/etc
         ctx.import_context_object( context_object_from_params )        
-        
         extra_info_xml = Nokogiri::XML( sfx_obj["EXTRA_INFO_XML"] )
-        
         # Put SFX object id in rft.object_id, that's what SFX does. 
         ctx.referent.set_metadata('object_id', sfx_obj["OBJECT_ID"])
         ctx.referent.set_metadata("jtitle", sfx_obj["TITLE_DISPLAY"] || "Unknown Title")
-        
         issn = extra_info_xml.search("item[key=issn]").text
         isbn =  extra_info_xml.search("item[key=isbn]").text
         lccn = extra_info_xml.search("item[key=lccn]").text
-        
         ctx.referent.set_metadata("issn", issn ) unless issn.blank?
         ctx.referent.set_metadata("isbn", isbn) unless isbn.blank?
         ctx.referent.add_identifier("info:lccn/#{normalize_lccn(lccn)}") unless lccn.blank?      
-        
         ctx
       end
-      
     end
-    
   end
 end
-

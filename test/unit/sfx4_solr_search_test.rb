@@ -65,4 +65,8 @@ class Sfx4SolrSearchTest < ActiveSupport::TestCase
       assert_not_nil(context_object.referent.get_metadata("object_id"))
     }
   end
+  
+  test "fetch_urls?" do
+    assert(SearchMethods::Sfx4Solr::Local.fetch_urls?)
+  end
 end

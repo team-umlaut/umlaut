@@ -7,18 +7,16 @@
 # | TITLE_SEARCH       | text             | NO   | MUL | NULL    |                |
 # +--------------------+------------------+------+-----+---------+----------------+
 module Sfx4
-  module Local
-    module Abstract
-      module AzTitleSearch
-        def self.included(klass)
-          klass.class_eval do
-            self.table_name = 'AZ_TITLE_SEARCH'
-            self.primary_key = 'AZ_TITLE_SEARCH_ID'
+  module Abstract
+    module AzTitleSearch
+      def self.included(klass)
+        klass.class_eval do
+          self.table_name = 'AZ_TITLE_SEARCH'
+          self.primary_key = 'AZ_TITLE_SEARCH_ID'
 
-            belongs_to :az_title,
-                       :foreign_key => 'AZ_TITLE_ID',
-                       :class_name => "#{klass.to_s.deconstantize}::AzTitle"
-          end
+          belongs_to :az_title,
+                     :foreign_key => 'AZ_TITLE_ID',
+                     :class_name => "#{klass.to_s.deconstantize}::AzTitle"
         end
       end
     end
