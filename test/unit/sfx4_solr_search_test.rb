@@ -6,7 +6,6 @@ class Sfx4SolrSearchTest < ActiveSupport::TestCase
   attr_reader :params, :context_object_from_params, :title_query_param, :search_type_param, :sfx_az_profile, :batch_size, :page
   include SearchMethods::Sfx4Solr::Local
   self.use_transactional_fixtures = false
-  sfx4_fixtures :kb_objects, :az_title_search, :az_letter_group, :az_titles, :az_extra_info
   
   setup do
     @params = {}
@@ -68,6 +67,12 @@ class Sfx4SolrSearchTest < ActiveSupport::TestCase
   end
   
   test "fetch_urls?" do
-    assert(SearchMethods::Sfx4Solr::Local.fetch_urls?)
+    assert(SearchMethods::Sfx4Solr::Local.fetch_urls?, 
+      ":sfx_db is not configured in database.yml, and 'SFX controlled' URLs will not be loaded.")
+  end
+  
+  private
+  def sfx4_connection_configured?
+    Sfx4::Local::AzTitle.connection_configured?
   end
 end
