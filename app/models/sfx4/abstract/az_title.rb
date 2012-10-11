@@ -77,6 +77,7 @@ module Sfx4
         self.AZ_PROFILE.eql? UmlautController.umlaut_config.lookup!("search.sfx_az_profile", "default")
       end
 
+      # This code isn't used anywhere at the moment, but is kept around for posterities sake.
       def to_context_object(context_object)
         ctx = OpenURL::ContextObject.new
         # Start out wtih everything in search, to preserve date/vol/etc
