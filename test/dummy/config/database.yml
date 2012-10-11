@@ -59,23 +59,11 @@ production:
 # for this purpose, rather than use one of the full-access existing SFX
 # mysql accounts. 
 #
+# In this dummy app, the sfx_db configuation is used for SFX search testing.
+# DO NOT SET THIS FOR ANYTHING LIKE A REAL SFX DATABASE.
 sfx_db:
   adapter: mysql2
   database: sfxlcl41_test # or other sfx instance db
-  username: root
-  password: 
-  pool: 5
-  encoding: utf8
-  # :mock_instance is used for SFX search testing.
-  # DO NOT SET :mock_instance TO TRUE FOR ANYTHING LIKE A REAL SFX DATABASE.
-  # If in doubt set :mock_instance => false
-  mock_instance: true
-
-# This is used for SFX search testing.
-# DO NOT SET THIS FOR ANYTHING LIKE A REAL SFX DATABASE.
-sfx4_local:
-  adapter: mysql2
-  database: sfxlcl41_test
   username: root
   password: 
   pool: 5

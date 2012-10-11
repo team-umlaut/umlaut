@@ -33,7 +33,7 @@ SearchMethod in order to avoid (promote?) ambiguity and confusion.
       pool: 30
       encoding: utf8
 
-    sfx4_local:
+    sfx_db:
       adapter: mysql2
       host: sfx.library.edu
       port: 3310

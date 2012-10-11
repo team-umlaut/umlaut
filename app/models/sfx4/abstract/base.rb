@@ -1,15 +1,15 @@
-module SearchMethods
-  module Sfx4
-    module UrlFetcher
-      def fetch_urls?
-        true
+module Sfx4
+  module Abstract
+    module Base
+      # Was a SFX DB connection set in database.yml to connect directly to sfx?
+      def connection_configured?
+        (not (connection_config.nil? or connection_config.blank? or connection_config[:adapter].blank?))
       end
-      
-      # used by umlaut:load_sfx_urls task. Kind of hacky way of trying to extract
-      # target URLs from SFX4. 
-      def fetch_urls
-        connection = az_title_klass.connection
 
+      # Class method for the module that gets called by the umlaut:load_sfx_urls task.
+      # Kind of hacky way of trying to extract target URLs from SFX4.
+      # Will probably be deprecated in the near future.
+      def fetch_urls
         # Crazy crazy URLs to try to find PARSE_PARAMS in Sfx4 db that have a period in
         # them, so they look like they might be URLs. Parse params could be at target service
         # level, or at portfolio level; and could be in local overrides or in global kb. 
@@ -55,11 +55,9 @@ module SearchMethods
           }
 
         results =  connection.select_all(sql)
-
         urls = []
         results.each do |line|
           param_string = line["PARSE_PARAM"]
-
           # Try to get things that look sort of like URLs out. Brutal force,
           # sorry. 
           url_re = Regexp.new('(https?://\S+\.\S+)(\s|$)')

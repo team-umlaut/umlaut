@@ -4,8 +4,9 @@
 # As a source of this data, it generally talks to the SFX database directly. 
 # The particular method it uses to get this data is defined in a SearchMethod
 # module (app/controllers/search_methods), that gets applied to the controller.
-# Currently Sfx3 direct database or Sfx4 direct database are supported. In
-# either case with database connection info in your database.yml file under
+# Currently Sfx4 direct database and Sfx4Solr (SFX indexed in Solr via Sunspot) 
+# are supported.
+# In either case with database connection info in your database.yml file under
 # sfx_db. 
 # 
 # Future plans include a local database of titles, perhaps loaded from an 

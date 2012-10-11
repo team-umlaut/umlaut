@@ -2,7 +2,7 @@
 # DO NOT USE THIS FOR ANYTHING LIKE A REAL SFX DATABASE.
 class Sfx4Local < ActiveRecord::Migration
   def connection
-    ActiveRecord::Base.establish_connection(:sfx4_local)
+    ActiveRecord::Base.establish_connection(:sfx_db)
     ActiveRecord::Base.connection.initialize_schema_migrations_table
     ActiveRecord::Base.connection
   end
@@ -44,7 +44,7 @@ class Sfx4Local < ActiveRecord::Migration
   end
 
   def unless_testing_raise_error
-    unless ActiveRecord::Base.configurations["sfx4_local"]["mock_instance"]
+    unless ActiveRecord::Base.configurations["sfx_db"]["mock_instance"]
       raise SecurityError.new("Danger! This is for mock SFX testing only! Do not run this migration against any sort of real SFX database.")
     end
   end
