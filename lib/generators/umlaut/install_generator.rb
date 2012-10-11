@@ -70,6 +70,18 @@ module Umlaut
 #  pool: 5
 #  encoding: utf8
 # 
+# UMLAUT: for Sfx4Solr functionality.  If you're not using SFX 4 indexed in 
+# Solr via Sunspot, feel free to ignore this.
+#sfx4_global:
+#  adapter: mysql2
+#  host: my_sfx_host.u.edu
+#  port: 3310 # 3310 is defualt SFX embedded mysql port
+#  database: sfxglb41 # or other sfx global db
+#  username:
+#  password:
+#  pool: 5
+#  encoding: utf8
+# 
           eos
         end
       end
