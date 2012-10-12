@@ -27,7 +27,21 @@ Tests should pass for everyone with a straight umlaut checkout without modifying
 
 Please don't add tests that raise or fail without a private API key or access to a private server. 
 We've started to use the [VCR](https://github.com/myronmarston/vcr) gem to record HTTP responses to provide deterministic testing results.
-VCR "cassettes" are committed to the repo in `./test/vcr_cassettes/<module>`.  
+VCR "cassettes" are committed to the repo in `./test/vcr_cassettes/<module>`.
+To run VCR tests, you can leverage the `TestWithCassette` support module following the example below.
+
+    class GoogleBookSearchTest < ActiveSupport::TestCase  
+      extend TestWithCassette
+
+      # Use VCR to provide a deterministic GBS search. 
+      test_with_cassette("frankenstein by OCLC number", :google_book_search) do
+        hashified_response = @gbs_default.do_query('OCLC2364071', requests(:frankenstein))
+        assert_not_nil hashified_response
+        assert_not_nil hashified_response["totalItems"]
+        assert_operator hashified_response["totalItems"], :>, 0 
+      end
+    end
+    
 We still want to figure out a way for someone with access to the necessary third party platforms to 
 choose to run against 'live' too (for only specified services?) 
 (and then commit the new versions of the responses back to repo if they want). 
