@@ -11,8 +11,8 @@ $umlautBackgroundColor:                     #FFFDEA !default;
 // A-Z List                                 
 $umlautAzLinkColor:                         $linkColor !default;
 $umlautAzBorderColor:                       #BBBBBB !default;
-$umlautAzBackground:                        $umlautBackgroundColor !default;
-$umlautAzHoverBackground:                   #EEEEEE !default;
+$umlautAzBackgroundColor:                   $umlautBackgroundColor !default;
+$umlautAzHoverBackgroundColor:              #EEEEEE !default;
 // Search                                   
 $umlautSearchBorderColor:                   $umlautBorderColor !default;
 $umlautSearchBackgroundColor:               #EEEEEE !default;
@@ -42,7 +42,7 @@ $umlautHighlightedSectionBackgroundColor:   white !default;
 $umlautHoldingBorderColor:                  $umlautBorderColor !default;
 $umlautHoldingHighlightBackgroundColor:     $umlautSidebarBackgroundColor !default;
 // Unavailable
-$umlautUnavailableColor:                     red !default;
+$umlautUnavailableColor:                    red !default;
 // Resolve Errors                           
 $umlautResolveErrorBorderColor:             $umlautGrey !default;
 $umlautResolveErrorBackgroundColor:         white !default;

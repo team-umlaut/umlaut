@@ -8,9 +8,10 @@
     border: 1px solid $umlautAzBorderColor;
     text-decoration: none;
     color: $umlautAzLinkColor;
+    background-color: $umlautAzBackgroundColor;
     line-height: 2em;
     &:hover {
-      background-color: $umlautAzHoverBackground;
+      background-color: $umlautAzHoverBackgroundColor;
     }
   }
 }
