@@ -3,20 +3,30 @@ module SearchMethods
     module Searcher
       protected
       def find_by_title
-        unless Module.const_defined?(:Sunspot) and Sunspot.const_defined?(:Rails)
-          raise NotImplementedError.new("Sunspot::Rails has not been implemented in this Umlaut instance.")
-        end
+        raise_sunspot_not_implemented_exception unless sunspot?
         _find_by_title(title_query_param, search_type_param, context_object_from_params, page)
       end
       
       def find_by_group
-        unless Module.const_defined?(:Sunspot) and Sunspot.const_defined?(:Rails)
-          raise NotImplementedError.new("Sunspot::Rails has not been implemented in this Umlaut instance.")
-        end
+        raise_sunspot_not_implemented_exception unless sunspot?
         _find_by_group(_letter_group_param, context_object_from_params, page)
       end
       
       private
+      # Is Umlaut configured to use Sunspot?
+      def sunspot?
+        begin
+          Sunspot and Sunspot.const_defined?(:Rails)
+        rescue
+          false
+        end
+      end
+
+      # Raise a NotImplementedError is Sunspot
+      def raise_sunspot_not_implemented_exception
+        raise NotImplementedError.new("Sunspot::Rails has not been implemented in this Umlaut instance.")
+      end
+
       def _search_by_title(query, search_type, page=1)
         search = case search_type
           when "contains"

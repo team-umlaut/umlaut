@@ -1,6 +1,16 @@
 module Sfx4
   module Abstract
     module Base
+      # Is Umlaut configured to use Sunspot?
+      def sunspot?
+        begin
+          Sunspot and Sunspot.const_defined?(:Rails) and self.ancestors.include?(Sunspot::Rails::Searchable)
+        rescue NameError
+          warn "Sunspot::Rails has not been implemented in this Umlaut instance."
+          false
+        end
+      end
+
       # Class method for the module that gets called by the umlaut:load_sfx_urls task.
       # Kind of hacky way of trying to extract target URLs from SFX4.
       # Will probably be deprecated in the near future.

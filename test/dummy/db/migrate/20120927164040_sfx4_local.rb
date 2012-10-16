@@ -3,9 +3,8 @@
 class Sfx4Local < ActiveRecord::Migration
   def connection
     if sfx4_mock_instance?
-      ActiveRecord::Base.establish_connection(:sfx_db)
-      ActiveRecord::Base.connection.initialize_schema_migrations_table
-      ActiveRecord::Base.connection
+      Sfx4::Local::Base.connection.initialize_schema_migrations_table
+      return Sfx4::Local::Base.connection
     end
   end
 

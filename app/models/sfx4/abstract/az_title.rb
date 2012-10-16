@@ -34,8 +34,8 @@ module Sfx4
                     :foreign_key => 'OBJECT_ID',
                     :class_name => "#{klass.to_s.deconstantize}::AzExtraInfo"
 
-          # Only add if the Sunspot::Rails is present
-          if Module.const_defined?(:Sunspot) and Sunspot.const_defined?(:Rails) and self.ancestors.include?(Sunspot::Rails::Searchable)
+          # Only add Sunspot code if Umlaut is configured for Sunspot.
+          if sunspot?
             searchable :if => :index? do
               # Indexed fields
               text :title do

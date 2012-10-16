@@ -1,0 +1,212 @@
+--- 
+http_interactions: 
+  - request: 
+      method: post
+      uri: http://bobcat.library.nyu.edu/PrimoWebServices/services/primo/searcher
+      body: 
+        string: |-
+          <?xml version="1.0" encoding="utf-8" ?>
+          <env:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+              xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+            <env:Body>
+              <n1:getRecord env:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                  xmlns:n1="http://www.exlibris.com/primo/xsd/wsRequest">
+                <getRecordRequest xsi:type="xsd:string">&lt;fullViewRequest xmlns=&apos;http://www.exlibris.com/primo/xsd/wsRequest&apos;&gt;&lt;PrimoSearchRequest xmlns=&apos;http://www.exlibris.com/primo/xsd/search/request&apos;&gt;&lt;QueryTerms&gt;&lt;BoolOpeator&gt;AND&lt;/BoolOpeator&gt;&lt;/QueryTerms&gt;&lt;StartIndex&gt;1&lt;/StartIndex&gt;&lt;BulkSize&gt;5&lt;/BulkSize&gt;&lt;DidUMeanEnabled&gt;false&lt;/DidUMeanEnabled&gt;&lt;HighlightingEnabled&gt;false&lt;/HighlightingEnabled&gt;&lt;/PrimoSearchRequest&gt;&lt;docId&gt;nyu_aleph000062856&lt;/docId&gt;&lt;institution&gt;NYU&lt;/institution&gt;&lt;/fullViewRequest&gt;</getRecordRequest>
+              </n1:getRecord>
+            </env:Body>
+          </env:Envelope>
+      headers: 
+        Content-Type: 
+          - text/xml; charset=utf-8
+        Soapaction: 
+          - "\"\""
+        User-Agent: 
+          - SOAP4R/1.6.1-SNAPSHOT
+        Accept: 
+          - "*/*"
+    response: 
+      status: 
+        code: 200
+        message: OK
+      headers: 
+        X-Powered-By: 
+          - "Servlet 2.4; Tomcat-5.0.28/JBoss-4.0.1 (build: CVSTag=JBoss_4_0_1 date=200412230944)"
+        Content-Type: 
+          - text/xml;charset=utf-8
+        Transfer-Encoding: 
+          - chunked
+        Date: 
+          - Tue, 16 Oct 2012 01:38:38 GMT
+        Server: 
+          - Apache-Coyote/1.1
+      body: 
+        string: |-
+          <?xml version="1.0" encoding="utf-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><ns1:getRecordResponse soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://www.exlibris.com/primo/xsd/wsRequest"><getRecordReturn xsi:type="soapenc:string" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">&lt;SEGMENTS xmlns=&quot;http://www.exlibrisgroup.com/xsd/jaguar/search&quot;&gt;
+            &lt;JAGROOT&gt;
+              &lt;RESULT&gt;
+                &lt;DOCSET TOTALHITS=&quot;1&quot;&gt;
+                  &lt;sear:DOC LOCAL=&quot;true&quot; xmlns=&quot;http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib&quot; xmlns:sear=&quot;http://www.exlibrisgroup.com/xsd/jaguar/search&quot;&gt;
+                    &lt;PrimoNMBib&gt;
+                      &lt;record&gt;
+                        &lt;control&gt;
+                          &lt;sourcerecordid&gt;000062856&lt;/sourcerecordid&gt;
+                          &lt;sourceid&gt;nyu_aleph&lt;/sourceid&gt;
+                          &lt;recordid&gt;nyu_aleph000062856&lt;/recordid&gt;
+                          &lt;originalsourceid&gt;NYU01&lt;/originalsourceid&gt;
+                          &lt;ilsapiid&gt;NYU01000062856&lt;/ilsapiid&gt;
+                          &lt;sourceformat&gt;MARC21&lt;/sourceformat&gt;
+                          &lt;sourcesystem&gt;Aleph&lt;/sourcesystem&gt;
+                        &lt;/control&gt;
+                        &lt;display&gt;
+                          &lt;type&gt;book&lt;/type&gt;
+                          &lt;title&gt;Travels with my aunt&lt;/title&gt;
+                          &lt;creator&gt;Graham  Greene  1904-1991.&lt;/creator&gt;
+                          &lt;edition&gt;Deluxe ed.&lt;/edition&gt;
+                          &lt;publisher&gt;New York : Penguin Books&lt;/publisher&gt;
+                          &lt;creationdate&gt;2004&lt;/creationdate&gt;
+                          &lt;format&gt;xvi, 254 p. ; 22 cm.&lt;/format&gt;
+                          &lt;identifier&gt;$$Cisbn$$V0143039008&lt;/identifier&gt;
+                          &lt;subject&gt;British -- Foreign countries -- Fiction; Women travelers -- Fiction; Older women -- Fiction; Travelers -- Fiction; Retirees -- Fiction; Aunts -- Fiction; Humorous stories&lt;/subject&gt;
+                          &lt;language&gt;eng&lt;/language&gt;
+                          &lt;relation&gt;$$Cseries $$VPenguin classics&lt;/relation&gt;
+                          &lt;source&gt;nyu_aleph&lt;/source&gt;
+                          &lt;availlibrary&gt;$$INYU$$LBOBST$$1Main Collection$$2(PR6013.R44 T7 2004 )$$Sunavailable$$31$$41$$5N$$61$$XNYU50$$YBOBST$$ZMAIN&lt;/availlibrary&gt;
+                          &lt;lds02&gt;nyu_aleph000062856&lt;/lds02&gt;
+                          &lt;lds01&gt;NYU&lt;/lds01&gt;
+                          &lt;availinstitution&gt;$$INYU$$Sunavailable&lt;/availinstitution&gt;
+                          &lt;availpnx&gt;unavailable&lt;/availpnx&gt;
+                        &lt;/display&gt;
+                        &lt;links&gt;
+                          &lt;openurl&gt;$$Topenurl_journal&lt;/openurl&gt;
+                          &lt;backlink&gt;$$Taleph_backlink$$DMore bibliographic information&lt;/backlink&gt;
+                          &lt;thumbnail&gt;$$Tamazon_thumb&lt;/thumbnail&gt;
+                          &lt;linktotoc&gt;$$Tamazon_toc$$DCheck for Amazon Search Inside&lt;/linktotoc&gt;
+                          &lt;openurlfulltext&gt;$$Topenurlfull_journal&lt;/openurlfulltext&gt;
+                          &lt;linktoholdings&gt;$$Taleph_holdings&lt;/linktoholdings&gt;
+                          &lt;linktoreview&gt;$$TpersistentUrl$$DCopy item link&lt;/linktoreview&gt;
+                          &lt;linktouc&gt;$$Tamazon_uc$$DCheck Amazon&lt;/linktouc&gt;
+                          &lt;linktouc&gt;$$Tworldcat_isbn$$DCheck other libraries (WorldCat&#xAE;)&lt;/linktouc&gt;
+                          &lt;linktoexcerpt&gt;$$Tsyndetics_excerpt$$DExcerpt from item&lt;/linktoexcerpt&gt;
+                        &lt;/links&gt;
+                        &lt;search&gt;
+                          &lt;creatorcontrib&gt;Graham,  Greene  1904-1991.&lt;/creatorcontrib&gt;
+                          &lt;creatorcontrib&gt;Greene, Graham, 1904-1991.&lt;/creatorcontrib&gt;
+                          &lt;creatorcontrib&gt;Greene, G&lt;/creatorcontrib&gt;
+                          &lt;creatorcontrib&gt;Graham Greene ; introduction by Gloria Emerson.&lt;/creatorcontrib&gt;
+                          &lt;title&gt;Travels with my aunt /&lt;/title&gt;
+                          &lt;subject&gt;British  Foreign countries Fiction&lt;/subject&gt;
+                          &lt;subject&gt;Women travelers  Fiction&lt;/subject&gt;
+                          &lt;subject&gt;Older women  Fiction&lt;/subject&gt;
+                          &lt;subject&gt;Travelers  Fiction&lt;/subject&gt;
+                          &lt;subject&gt;Retirees  Fiction&lt;/subject&gt;
+                          &lt;subject&gt;Aunts  Fiction&lt;/subject&gt;
+                          &lt;subject&gt;Humorous stories&lt;/subject&gt;
+                          &lt;general&gt;Penguin Books,&lt;/general&gt;
+                          &lt;general&gt;&quot;Graham Greene centennial, 1904-2004&quot;--Cover.&lt;/general&gt;
+                          &lt;sourceid&gt;nyu_aleph&lt;/sourceid&gt;
+                          &lt;recordid&gt;nyu_aleph000062856&lt;/recordid&gt;
+                          &lt;isbn&gt;0143039008&lt;/isbn&gt;
+                          &lt;rsrctype&gt;book&lt;/rsrctype&gt;
+                          &lt;creationdate&gt;2004&lt;/creationdate&gt;
+                          &lt;creationdate&gt;1969&lt;/creationdate&gt;
+                          &lt;addtitle&gt;Penguin classics&lt;/addtitle&gt;
+                          &lt;searchscope&gt;BOBST&lt;/searchscope&gt;
+                          &lt;searchscope&gt;BOBST Main Collection&lt;/searchscope&gt;
+                          &lt;searchscope&gt;nyu_aleph&lt;/searchscope&gt;
+                          &lt;searchscope&gt;NYU&lt;/searchscope&gt;
+                          &lt;scope&gt;BOBST&lt;/scope&gt;
+                          &lt;scope&gt;BOBST Main Collection&lt;/scope&gt;
+                          &lt;scope&gt;nyu_aleph&lt;/scope&gt;
+                          &lt;scope&gt;NYU&lt;/scope&gt;
+                          &lt;lsr02&gt;Penguin Books,&lt;/lsr02&gt;
+                        &lt;/search&gt;
+                        &lt;sort&gt;
+                          &lt;title&gt;Travels with my aunt /&lt;/title&gt;
+                          &lt;creationdate&gt;2004&lt;/creationdate&gt;
+                          &lt;author&gt;Greene, Graham, 1904-1991.&lt;/author&gt;
+                          &lt;lso01&gt;2004&lt;/lso01&gt;
+                        &lt;/sort&gt;
+                        &lt;facets&gt;
+                          &lt;language&gt;eng&lt;/language&gt;
+                          &lt;creationdate&gt;2004&lt;/creationdate&gt;
+                          &lt;topic&gt;British&#x2013;Foreign countries&#x2013;Fiction&lt;/topic&gt;
+                          &lt;topic&gt;Women travelers&#x2013;Fiction&lt;/topic&gt;
+                          &lt;topic&gt;Older women&#x2013;Fiction&lt;/topic&gt;
+                          &lt;topic&gt;Travelers&#x2013;Fiction&lt;/topic&gt;
+                          &lt;topic&gt;Retirees&#x2013;Fiction&lt;/topic&gt;
+                          &lt;topic&gt;Aunts&#x2013;Fiction&lt;/topic&gt;
+                          &lt;collection&gt;BOBST&lt;/collection&gt;
+                          &lt;prefilter&gt;books&lt;/prefilter&gt;
+                          &lt;rsrctype&gt;books&lt;/rsrctype&gt;
+                          &lt;creatorcontrib&gt;Greene, G&lt;/creatorcontrib&gt;
+                          &lt;genre&gt;Fiction&lt;/genre&gt;
+                          &lt;genre&gt;Humorous stories&lt;/genre&gt;
+                          &lt;library&gt;BOBST&lt;/library&gt;
+                          &lt;lfc01&gt;Main Collection&lt;/lfc01&gt;
+                          &lt;classificationlcc&gt;P - Language and literature.&#x2013;English literature&lt;/classificationlcc&gt;
+                          &lt;frbrgroupid&gt;44552541&lt;/frbrgroupid&gt;
+                          &lt;frbrtype&gt;5&lt;/frbrtype&gt;
+                        &lt;/facets&gt;
+                        &lt;dedup&gt;
+                          &lt;t&gt;1&lt;/t&gt;
+                          &lt;c1&gt;2004559272&lt;/c1&gt;
+                          &lt;c2&gt;0143039008&lt;/c2&gt;
+                          &lt;c3&gt;travelswithmyaunt&lt;/c3&gt;
+                          &lt;c4&gt;2004&lt;/c4&gt;
+                          &lt;f1&gt;2004559272&lt;/f1&gt;
+                          &lt;f3&gt;0143039008&lt;/f3&gt;
+                          &lt;f5&gt;travelswithmyaunt&lt;/f5&gt;
+                          &lt;f6&gt;2004&lt;/f6&gt;
+                          &lt;f7&gt;travels with my aunt&lt;/f7&gt;
+                          &lt;f8&gt;nyu&lt;/f8&gt;
+                          &lt;f9&gt;xvi, 254 p. ;&lt;/f9&gt;
+                          &lt;f10&gt;penguin books&lt;/f10&gt;
+                          &lt;f11&gt;greene graham 1904 1991&lt;/f11&gt;
+                        &lt;/dedup&gt;
+                        &lt;frbr&gt;
+                          &lt;t&gt;1&lt;/t&gt;
+                          &lt;k1&gt;$$Kgreene graham 1904 1991$$AA&lt;/k1&gt;
+                          &lt;k3&gt;$$Kbooktravels with my aunt$$AT&lt;/k3&gt;
+                        &lt;/frbr&gt;
+                        &lt;delivery&gt;
+                          &lt;institution&gt;NYU&lt;/institution&gt;
+                          &lt;delcategory&gt;Physical Item&lt;/delcategory&gt;
+                        &lt;/delivery&gt;
+                        &lt;enrichment&gt;
+                          &lt;classificationlcc&gt;PR6013.R44&lt;/classificationlcc&gt;
+                        &lt;/enrichment&gt;
+                        &lt;ranking&gt;
+                          &lt;booster1&gt;1&lt;/booster1&gt;
+                          &lt;booster2&gt;1&lt;/booster2&gt;
+                        &lt;/ranking&gt;
+                        &lt;addata&gt;
+                          &lt;aulast&gt;Greene&lt;/aulast&gt;
+                          &lt;aufirst&gt;Graham,&lt;/aufirst&gt;
+                          &lt;au&gt;Greene, Graham, 1904-1991&lt;/au&gt;
+                          &lt;btitle&gt;Travels with my aunt&lt;/btitle&gt;
+                          &lt;seriestitle&gt;Penguin classics&lt;/seriestitle&gt;
+                          &lt;date&gt;2004&lt;/date&gt;
+                          &lt;risdate&gt;2004.&lt;/risdate&gt;
+                          &lt;isbn&gt;0143039008&lt;/isbn&gt;
+                          &lt;format&gt;book&lt;/format&gt;
+                          &lt;genre&gt;book&lt;/genre&gt;
+                          &lt;ristype&gt;BOOK&lt;/ristype&gt;
+                          &lt;notes&gt;Includes bibliographical references (p. xv-xvi).&lt;/notes&gt;
+                          &lt;cop&gt;New York&lt;/cop&gt;
+                          &lt;pub&gt;Penguin Books&lt;/pub&gt;
+                          &lt;oclcid&gt;56781200&lt;/oclcid&gt;
+                          &lt;lccn&gt;2004559272&lt;/lccn&gt;
+                          &lt;lad01&gt;Physical Item&lt;/lad01&gt;
+                        &lt;/addata&gt;
+                      &lt;/record&gt;
+                    &lt;/PrimoNMBib&gt;
+                  &lt;/sear:DOC&gt;
+                &lt;/DOCSET&gt;
+              &lt;/RESULT&gt;
+            &lt;/JAGROOT&gt;
+          &lt;/SEGMENTS&gt;
+          </getRecordReturn></ns1:getRecordResponse></soapenv:Body></soapenv:Envelope>
+      http_version: 
+    recorded_at: Tue, 16 Oct 2012 01:38:38 GMT
+recorded_with: VCR 2.2.5

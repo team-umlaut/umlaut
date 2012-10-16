@@ -20,6 +20,7 @@ class ActiveSupport::TestCase
     # Load SFX 4 fixtures only if we are explicitly creating a mock_instance
     # which should really only be the case for travis-ci.org
     if (sfx4_mock_instance?)
+      warn "Loading SFX4 fixtures."
       sfx4s = ["Global", "Local"]
       sfx4s.each do |sfx4|
         # Get the db module associate with this sfx4 instance
@@ -38,7 +39,7 @@ class ActiveSupport::TestCase
           class_names[klass.table_name.downcase.to_sym] = klass.name
         end
         # Table names are just the keys of the class names
-        table_names = class_names.keys.collect{|t| t.to_s}
+        table_names = class_names.keys.collect{|t| t.to_s.upcase}
         # Create and Instantiate Fixtures
         ActiveRecord::Fixtures.create_fixtures(path, table_names, class_names){connection}.first.fixtures
       end
@@ -48,10 +49,10 @@ class ActiveSupport::TestCase
   end
   
   def self.sfx4_mock_instance?
-    (ActiveRecord::Base.configurations["sfx_db"] and
-      ActiveRecord::Base.configurations["sfx_db"]["mock_instance"] and 
-        ActiveRecord::Base.configurations["sfx4_global"] and
-          ActiveRecord::Base.configurations["sfx4_global"]["mock_instance"])
+    (Sfx4::Local::Base.connection_configured? and
+      Sfx4::Local::Base.connection_config[:mock_instance] and 
+        Sfx4::Global::Base.connection_configured? and
+          Sfx4::Global::Base.connection_config[:mock_instance])
   end
 end
 
