@@ -12,3 +12,4 @@ before_script:
   - mysql -e 'create database sfxglb41_test;'
   - mv test/dummy/config/travis_database.yml test/dummy/config/database.yml
   - cd test/dummy && RAILS_ENV=test bundle exec rake --trace db:schema:load db:migrate
+  - cd ../../
