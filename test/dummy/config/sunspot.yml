@@ -1,3 +1,6 @@
+# Dummy config for testing sfx4solr search module.
+# Solr is not running on localhost. Instead we use a
+# VCR cassette to test the expected result from Solr.
 production:
   solr:
     hostname: localhost

@@ -49,10 +49,10 @@ class ActiveSupport::TestCase
   end
   
   def self.sfx4_mock_instance?
-    (ActiveRecord::Base.configurations["sfx_db"] and
-      ActiveRecord::Base.configurations["sfx_db"]["mock_instance"] and 
-        ActiveRecord::Base.configurations["sfx4_global"] and
-          ActiveRecord::Base.configurations["sfx4_global"]["mock_instance"])
+    (Sfx4::Local::Base.connection_configured? and
+      Sfx4::Local::Base.connection_config[:mock_instance] and 
+        Sfx4::Global::Base.connection_configured? and
+          Sfx4::Global::Base.connection_config[:mock_instance])
   end
 end
 

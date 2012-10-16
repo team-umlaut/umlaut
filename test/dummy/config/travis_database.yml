@@ -1,3 +1,10 @@
+# This file is used by travis to provide continuous
+# integration for umlaut.  It contains "mock instances"
+# of the SFX4 Global and Local databases to provide
+# sanity checks for SFX searching.  The file is 
+# renamed to database.yml as part of the travis before script 
+# hook.
+# 
 # MySQL.  Versions 4.1 and 5.0 are recommended.
 # 
 # Install the MYSQL driver

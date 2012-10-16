@@ -67,7 +67,7 @@ class Sfx4SolrSearchTest < ActiveSupport::TestCase
   
   test "fetch_urls?" do
     assert(SearchMethods::Sfx4Solr::Local.fetch_urls?, 
-      ":sfx_db is not configured in database.yml, and 'SFX controlled' URLs will not be loaded.")
+      ":sfx_db is not configured in database.yml. SFX controlled URLs will not be loaded.")
   end
   
   private
