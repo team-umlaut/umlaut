@@ -149,6 +149,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
   # end
   
   test_with_cassette("minimum config request by id", :primo) do
+    flunk("Hope this fails")
     request = requests(:primo_id_request)
     @primo_minimum.handle(request)
     request.referent.referent_values.reset

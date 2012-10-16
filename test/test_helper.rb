@@ -20,6 +20,7 @@ class ActiveSupport::TestCase
     # Load SFX 4 fixtures only if we are explicitly creating a mock_instance
     # which should really only be the case for travis-ci.org
     if (sfx4_mock_instance?)
+      warn "Loading SFX4 fixtures."
       sfx4s = ["Global", "Local"]
       sfx4s.each do |sfx4|
         # Get the db module associate with this sfx4 instance
