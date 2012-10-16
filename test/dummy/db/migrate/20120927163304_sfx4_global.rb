@@ -4,9 +4,7 @@ class Sfx4Global < ActiveRecord::Migration
   def connection
     if sfx4_mock_instance?
       Sfx4::Global::Base.connection.initialize_schema_migrations_table
-      connection = Sfx4::Global::Base.connection
-      puts Sfx4::Global::Base.connection.inspect
-      return connection
+      return Sfx4::Global::Base.connection
     end
   end
 

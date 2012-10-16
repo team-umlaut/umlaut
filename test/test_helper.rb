@@ -39,7 +39,7 @@ class ActiveSupport::TestCase
           class_names[klass.table_name.downcase.to_sym] = klass.name
         end
         # Table names are just the keys of the class names
-        table_names = class_names.keys.collect{|t| t.to_s}
+        table_names = class_names.keys.collect{|t| t.to_s.upcase}
         # Create and Instantiate Fixtures
         ActiveRecord::Fixtures.create_fixtures(path, table_names, class_names){connection}.first.fixtures
       end

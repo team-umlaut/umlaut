@@ -1,4 +1,5 @@
 az_extra_info_01:
+  AZ_EXTRA_INFO_ID: 1
   AZ_PROFILE: default
   OBJECT_ID: 954921332001
   EXTRA_INFO_XML: |
@@ -422,6 +423,7 @@ az_extra_info_01:
     </hashref>
     </perldata>
 az_extra_info_02:
+  AZ_EXTRA_INFO_ID: 2
   AZ_PROFILE: default
   OBJECT_ID: 954921332002
   EXTRA_INFO_XML: |
@@ -485,6 +487,7 @@ az_extra_info_02:
     </hashref>
     </perldata>
 az_extra_info_03:
+  AZ_EXTRA_INFO_ID: 3
   AZ_PROFILE: default
   OBJECT_ID: 954921332003
   EXTRA_INFO_XML: |
@@ -706,6 +709,7 @@ az_extra_info_03:
     </hashref>
     </perldata>
 az_extra_info_04:
+  AZ_EXTRA_INFO_ID: 4
   AZ_PROFILE: default
   OBJECT_ID: 954921332004
   EXTRA_INFO_XML: |
@@ -1018,6 +1022,7 @@ az_extra_info_04:
     </hashref>
     </perldata>
 az_extra_info_05:
+  AZ_EXTRA_INFO_ID: 5
   AZ_PROFILE: default
   OBJECT_ID: 954921333005
   EXTRA_INFO_XML: |
@@ -1248,6 +1253,7 @@ az_extra_info_05:
     </hashref>
     </perldata>
 az_extra_info_07:
+  AZ_EXTRA_INFO_ID: 7
   AZ_PROFILE: default
   OBJECT_ID: 954921333007
   EXTRA_INFO_XML: |
@@ -1515,6 +1521,7 @@ az_extra_info_07:
     </hashref>
     </perldata>
 az_extra_info_08:
+  AZ_EXTRA_INFO_ID: 8
   AZ_PROFILE: default
   OBJECT_ID: 954921333008
   EXTRA_INFO_XML: |
@@ -1668,6 +1675,7 @@ az_extra_info_08:
     </hashref>
     </perldata>
 az_extra_info_09:
+  AZ_EXTRA_INFO_ID: 9
   AZ_PROFILE: default
   OBJECT_ID: 954921333009
   EXTRA_INFO_XML: |
@@ -1825,6 +1833,7 @@ az_extra_info_09:
     </hashref>
     </perldata>
 az_extra_info_10:
+  AZ_EXTRA_INFO_ID: 10
   AZ_PROFILE: default
   OBJECT_ID: 954921333010
   EXTRA_INFO_XML: |
@@ -1970,6 +1979,7 @@ az_extra_info_10:
     </hashref>
     </perldata>
 az_extra_info_12:
+  AZ_EXTRA_INFO_ID: 12
   AZ_PROFILE: default
   OBJECT_ID: 954921333012
   EXTRA_INFO_XML: |
@@ -2033,6 +2043,7 @@ az_extra_info_12:
     </hashref>
     </perldata>
 az_extra_info_13:
+  AZ_EXTRA_INFO_ID: 13
   AZ_PROFILE: default
   OBJECT_ID: 954921333013
   EXTRA_INFO_XML: |
@@ -2235,6 +2246,7 @@ az_extra_info_13:
     </hashref>
     </perldata>
 az_extra_info_14:
+  AZ_EXTRA_INFO_ID: 14
   AZ_PROFILE: default
   OBJECT_ID: 954921333014
   EXTRA_INFO_XML: |
@@ -2604,6 +2616,7 @@ az_extra_info_14:
     </hashref>
     </perldata>
 az_extra_info_15:
+  AZ_EXTRA_INFO_ID: 15
   AZ_PROFILE: default
   OBJECT_ID: 954921333015
   EXTRA_INFO_XML: |
@@ -2827,6 +2840,7 @@ az_extra_info_15:
     </hashref>
     </perldata>
 az_extra_info_16:
+  AZ_EXTRA_INFO_ID: 16
   AZ_PROFILE: default
   OBJECT_ID: 954921333016
   EXTRA_INFO_XML: |
@@ -3322,6 +3336,7 @@ az_extra_info_16:
     </hashref>
     </perldata>
 az_extra_info_17:
+  AZ_EXTRA_INFO_ID: 17
   AZ_PROFILE: default
   OBJECT_ID: 954921333017
   EXTRA_INFO_XML: |
@@ -3477,6 +3492,7 @@ az_extra_info_17:
     </hashref>
     </perldata>
 az_extra_info_18:
+  AZ_EXTRA_INFO_ID: 18
   AZ_PROFILE: default
   OBJECT_ID: 954921333018
   EXTRA_INFO_XML: |
@@ -3896,6 +3912,7 @@ az_extra_info_18:
     </hashref>
     </perldata>
 az_extra_info_20:
+  AZ_EXTRA_INFO_ID: 20
   AZ_PROFILE: default
   OBJECT_ID: 954921333020
   EXTRA_INFO_XML: |
@@ -4150,6 +4167,7 @@ az_extra_info_20:
     </hashref>
     </perldata>
 az_extra_info_21:
+  AZ_EXTRA_INFO_ID: 21
   AZ_PROFILE: default
   OBJECT_ID: 954921333021
   EXTRA_INFO_XML: |
@@ -4330,6 +4348,7 @@ az_extra_info_21:
     </hashref>
     </perldata>
 az_extra_info_22:
+  AZ_EXTRA_INFO_ID: 22
   AZ_PROFILE: default
   OBJECT_ID: 954921334022
   EXTRA_INFO_XML: |
@@ -4472,6 +4491,7 @@ az_extra_info_22:
     </hashref>
     </perldata>
 az_extra_info_23:
+  AZ_EXTRA_INFO_ID: 23
   AZ_PROFILE: default
   OBJECT_ID: 954921334023
   EXTRA_INFO_XML: |

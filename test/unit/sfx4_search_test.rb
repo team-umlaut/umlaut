@@ -4,7 +4,6 @@ require 'test_helper'
 class Sfx4SearchTest < ActiveSupport::TestCase
   attr_reader :params, :context_object_from_params, :title_query_param, :search_type_param, :sfx_az_profile, :batch_size, :page
   include SearchMethods::Sfx4
-  self.use_transactional_fixtures = false
   sfx4_fixtures :kb_objects, :az_title_search, :az_letter_group, :az_titles, :az_extra_info
   
   setup do

@@ -24,82 +24,82 @@
 # |             115381 |      115390 | A                    |      115390 | default    | 954921333018 | Advertising Age                                | ADVERTISING AGE                             | Latin  | Adv               | NO            | 954921333018 |
 # +--------------------+-------------+----------------------+-------------+------------+--------------+------------------------------------------------+---------------------------------------------+--------+-------------------+---------------+--------------+
 az_letter_group13017:
+  AZ_LETTER_GROUP_ID: 13017
   AZ_TITLE_ID: 13017
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title02
 az_letter_group13877:
+  AZ_LETTER_GROUP_ID: 13877
   AZ_TITLE_ID: 13877
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title15
 az_letter_group20375:
+  AZ_LETTER_GROUP_ID: 20375
   AZ_TITLE_ID: 20375
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title22
 az_letter_group21333:
+  AZ_LETTER_GROUP_ID: 21333
   AZ_TITLE_ID: 21333
   AZ_LETTER_GROUP_NAME: P
-#  az_title: az_title01
 az_letter_group22932:
+  AZ_LETTER_GROUP_ID: 22932
   AZ_TITLE_ID: 22932
   AZ_LETTER_GROUP_NAME: P
-#  az_title: az_title04
 az_letter_group26173:
+  AZ_LETTER_GROUP_ID: 26173
   AZ_TITLE_ID: 26173
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title07
 az_letter_group29075:
+  AZ_LETTER_GROUP_ID: 29075
   AZ_TITLE_ID: 29075
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title21
 az_letter_group32365:
+  AZ_LETTER_GROUP_ID: 32365
   AZ_TITLE_ID: 32365
   AZ_LETTER_GROUP_NAME: D
-#  az_title: az_title10
 az_letter_group35282:
+  AZ_LETTER_GROUP_ID: 35282
   AZ_TITLE_ID: 35282
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title16
 az_letter_group45044:
+  AZ_LETTER_GROUP_ID: 45044
   AZ_TITLE_ID: 45046
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title12
 az_letter_group60704:
+  AZ_LETTER_GROUP_ID: 60704
   AZ_TITLE_ID: 60707
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title13
 az_letter_group73026:
+  AZ_LETTER_GROUP_ID: 73026
   AZ_TITLE_ID: 73030
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title09
 az_letter_group77048:
+  AZ_LETTER_GROUP_ID: 77048
   AZ_TITLE_ID: 77052
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title23
 az_letter_group78716:
+  AZ_LETTER_GROUP_ID: 78716
   AZ_TITLE_ID: 78720
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title20
 az_letter_group82203:
+  AZ_LETTER_GROUP_ID: 82203
   AZ_TITLE_ID: 82208
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title14
 az_letter_group90462:
+  AZ_LETTER_GROUP_ID: 90462
   AZ_TITLE_ID: 90467
   AZ_LETTER_GROUP_NAME: C
-#  az_title: az_title03
 az_letter_group93618:
+  AZ_LETTER_GROUP_ID: 93618
   AZ_TITLE_ID: 93625
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title17
 az_letter_group95091:
+  AZ_LETTER_GROUP_ID: 95091
   AZ_TITLE_ID: 95098
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title08
 az_letter_group98839:
+  AZ_LETTER_GROUP_ID: 98839
   AZ_TITLE_ID: 98846
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title05
 az_letter_group115381:
+  AZ_LETTER_GROUP_ID: 115381
   AZ_TITLE_ID: 115390
   AZ_LETTER_GROUP_NAME: A
-#  az_title: az_title18
