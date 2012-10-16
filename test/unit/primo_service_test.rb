@@ -87,21 +87,21 @@ class PrimoServiceTest < ActiveSupport::TestCase
       "primo_config" => "missing_config.yml" })
   end
   
-  def test_primo_service_benchmarks
-    request = requests(:primo_id_request)
-    Benchmark.bmbm do |results|
-      results.report("PrimoService Minimum Config:") {
-        (1..10).each {
-          @primo_minimum.handle(request)
-        }
-      }
-      results.report("PrimoService Default Config:") {
-        (1..10).each {
-          @primo_default.handle(request)
-        }
-      }
-    end
-  end
+  # def test_primo_service_benchmarks
+  #   request = requests(:primo_id_request)
+  #   Benchmark.bmbm do |results|
+  #     results.report("PrimoService Minimum Config:") {
+  #       (1..10).each {
+  #         @primo_minimum.handle(request)
+  #       }
+  #     }
+  #     results.report("PrimoService Default Config:") {
+  #       (1..10).each {
+  #         @primo_default.handle(request)
+  #       }
+  #     }
+  #   end
+  # end
   # 
   # def test_to_primo_source_benchmarks
   #   request = requests(:primo_id_request)
