@@ -45,7 +45,7 @@ SearchMethod in order to avoid (promote?) ambiguity and confusion.
 
 Once your Solr instance is configured and started, run
 
-    $ rake sunspot:reindex
+    $ rake sunspot:reindex[,Sfx4::Local::AzTitle]
     
 to index the AZ titles in Solr. This reindex should probably be run periodically and coincide with SFX KB updates.
 
