@@ -9,8 +9,7 @@ module Umlaut::ErrorHandling
       
       # generic catch-all comes first, later ones will take priority
       rescue_from Exception, :with => :handle_general_error
-
-      rescue_from ::StoreController::NotFound, ActiveRecord::RecordNotFound, :with => :handle_404_error
+      rescue_from ActiveRecord::RecordNotFound, :with => :handle_404_error
     end
   end
   
@@ -27,7 +26,7 @@ module Umlaut::ErrorHandling
   # Just returns a generic 404 page. 
   # Uses generic 404 page already stored in public/404.html as rails convention.     
   def handle_404_error(exception=nil)
-    render :file=>File.join(Rails.root ,"public/404.html"), :layout=>false, :status=>404
+    render :file=>File.join(Rails.root ,"public/404"), :layout=>false, :status=>404
   end
   
   
