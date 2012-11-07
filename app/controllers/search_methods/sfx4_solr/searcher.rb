@@ -71,9 +71,9 @@ module SearchMethods
         # Put SFX object id in rft.object_id, that's what SFX does.
         ctx.referent.set_metadata('object_id', hit.stored(:object_id) )
         ctx.referent.set_metadata("jtitle", hit.stored(:title_display) || "Unknown Title")
-        ctx.referent.set_metadata("issn", hit.stored(:issn)) unless hit.stored(:issn).nil? or hit.stored(:issn).issn.blank?
-        ctx.referent.set_metadata("isbn", hit.stored(:isbn)) unless hit.stored(:isbn).nil? or hit.stored(:isbn).isbn.blank?
-        ctx.referent.add_identifier("info:lccn/#{hit.stored(:lccn)}") unless hit.stored(:lccn).nil? or hit.stored(:lccn).lccn.blank?
+        ctx.referent.set_metadata("issn", hit.stored(:issn)) unless hit.stored(:issn).nil? or hit.stored(:issn).blank?
+        ctx.referent.set_metadata("isbn", hit.stored(:isbn)) unless hit.stored(:isbn).nil? or hit.stored(:isbn).blank?
+        ctx.referent.add_identifier("info:lccn/#{hit.stored(:lccn)}") unless hit.stored(:lccn).nil? or hit.stored(:lccn).blank?
         return ctx
       end
   
