@@ -17,7 +17,7 @@ module Sfx4
           self.primary_key = 'AZ_EXTRA_INFO_ID'
 
           belongs_to :az_title,
-                     :foreign_key => 'AZ_TITLE_ID',
+                     :foreign_key => 'OBJECT_ID',
                      :class_name => "#{klass.to_s.deconstantize}::AzTitle"
 
           include MetadataHelper # for normalize_lccn
@@ -37,7 +37,7 @@ module Sfx4
       end
 
       def extra_info_xml
-        @extra_info_xml ||= Nokogiri::XML(EXTRA_INFO_XML)
+        @extra_info_xml ||= Nokogiri::XML(self.EXTRA_INFO_XML)
       end
     end
   end

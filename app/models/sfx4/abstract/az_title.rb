@@ -31,6 +31,7 @@ module Sfx4
                     :class_name => "#{klass.to_s.deconstantize}::AzLetterGroup"
 
           has_one   :az_extra_info,
+                    :primary_key => 'OBJECT_ID',
                     :foreign_key => 'OBJECT_ID',
                     :class_name => "#{klass.to_s.deconstantize}::AzExtraInfo"
 
