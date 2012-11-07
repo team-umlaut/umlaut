@@ -6,7 +6,8 @@ module Sfx4
         begin
           Sunspot and Sunspot.const_defined?(:Rails) and self.ancestors.include?(Sunspot::Rails::Searchable)
         rescue NameError
-          warn "Sunspot::Rails has not been implemented in this Umlaut instance."
+          # no need to log, jsut annoying people who choose not to use it. 
+          #warn "Sunspot::Rails has not been implemented in this Umlaut instance."
           false
         end
       end

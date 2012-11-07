@@ -39,7 +39,25 @@ The Rails/Umlaut super-concise expert summary is:
 * configuration in `./config/umlaut_services.yml` and `./app/controllers/umlaut_controller.rb` 
 
 * Umlaut uses multi-threaded concurrency in a way incompatible with development-mode class reloading. You need cache_classes=false even in dev, the Umlaut install generator changes this for you. 
-    
+
+## Developing
+
+Only spotty test coverage, sorry, but we're trying to improve. Don't trust
+if all tests pass everythings good, but if tests fail, that's an unacceptable
+commit. Try to add tests with new features, although we understand when
+nobody can figure out a good way to test (esp our legacy architecture). 
+
+Run tests with `rake test`. 
+
+Tests are with plain old Test::Unit, please. 
+
+Tests use the vcr gem where appropriate. See `./test/support/test_with_cassette`.
+
+gem skeleton was created with `rails plugin new`, which creates a dummy app
+that tests are run in context of, at `./test/dummy`. 
+
+See also: https://github.com/team-umlaut/umlaut/wiki/Developing
+
 ## Source
 
 https://github.com/team-umlaut/umlaut/
