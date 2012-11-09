@@ -1,0 +1,341 @@
+# mysql> select *, t.OBJECT_ID from AZ_TITLE_SEARCH l, AZ_TITLE t where t.OBJECT_ID in (954921332001, 954921332002, 954921332003, 954921332004, 954921333005, 954921333007, 954921333008, 954921333009, 954921333010, 954921333012, 954921333013, 954921333014, 954921333015, 954921333016, 954921333017, 954921333018, 954921333020, 954921333021, 954921334022, 954921334023) and l.AZ_TITLE_ID = t.AZ_TITLE_ID and t.AZ_PROFILE='default';
+# +--------------------+------------+-------------+---------------------------------------------------------------+-------------+------------+--------------+------------------------------------------------+---------------------------------------------+--------+-------------------+---------------+--------------+
+# | AZ_TITLE_SEARCH_ID | AZ_PROFILE | AZ_TITLE_ID | TITLE_SEARCH                                                  | AZ_TITLE_ID | AZ_PROFILE | OBJECT_ID    | TITLE_DISPLAY                                  | TITLE_SORT                                  | SCRIPT | PAGINATION_SUBSTR | PEER_REVIEWED | OBJECT_ID    |
+# +--------------------+------------+-------------+---------------------------------------------------------------+-------------+------------+--------------+------------------------------------------------+---------------------------------------------+--------+-------------------+---------------+--------------+
+# |                  1 | default    |       21333 | PUBLISHERS WEEKLY                                             |       21333 | default    | 954921332001 | Publishers weekly                              | PUBLISHERS WEEKLY                           | Latin  | Pub               | NO            | 954921332001 |
+# |                  2 | default    |       21333 | PUBLISHERS WEEKLY2                                            |       21333 | default    | 954921332001 | Publishers weekly                              | PUBLISHERS WEEKLY                           | Latin  | Pub               | NO            | 954921332001 |
+# |                  3 | default    |       13017 | ABCA BULLETIN                                                 |       13017 | default    | 954921332002 | ABCA bulletin                                  | ABCA BULLETIN                               | Latin  | ABC               | YES           | 954921332002 |
+# |                  4 | default    |       13017 | A B C A BULLETIN                                              |       13017 | default    | 954921332002 | ABCA bulletin                                  | ABCA BULLETIN                               | Latin  | ABC               | YES           | 954921332002 |
+# |                  5 | default    |       90467 | COMMUNICATIONS OF THE ACM                                     |       90467 | default    | 954921332003 | Communications of the ACM                      | COMMUNICATIONS OF THE ACM                   | Latin  | Com               | YES           | 954921332003 |
+# |                  6 | default    |       90467 | ASSOCIATION FOR COMPUTING MACHINERY COMMUNICATIONS            |       90467 | default    | 954921332003 | Communications of the ACM                      | COMMUNICATIONS OF THE ACM                   | Latin  | Com               | YES           | 954921332003 |
+# |                  7 | default    |       90467 | COMMUN ACM                                                    |       90467 | default    | 954921332003 | Communications of the ACM                      | COMMUNICATIONS OF THE ACM                   | Latin  | Com               | YES           | 954921332003 |
+# |                  8 | default    |       90467 | COMM ACM                                                      |       90467 | default    | 954921332003 | Communications of the ACM                      | COMMUNICATIONS OF THE ACM                   | Latin  | Com               | YES           | 954921332003 |
+# |                  9 | default    |       90467 | ASSOCIATION FOR COMPUTING MACHINERY COMMUNICATIONS OF THE ACM |       90467 | default    | 954921332003 | Communications of the ACM                      | COMMUNICATIONS OF THE ACM                   | Latin  | Com               | YES           | 954921332003 |
+# |                 10 | default    |       90467 | COMMUNICATIONS OF THE ASSOCIATION FOR COMPUTING MACHINERY     |       90467 | default    | 954921332003 | Communications of the ACM                      | COMMUNICATIONS OF THE ACM                   | Latin  | Com               | YES           | 954921332003 |
+# |                 11 | default    |       22932 | PLANNING                                                      |       22932 | default    | 954921332004 | Planning                                       | PLANNING                                    | Latin  | Pla               | NO            | 954921332004 |
+# |                 12 | default    |       22932 | PLANNING U S                                                  |       22932 | default    | 954921332004 | Planning                                       | PLANNING                                    | Latin  | Pla               | NO            | 954921332004 |
+# |                 13 | default    |       22932 | PLANNING U K                                                  |       22932 | default    | 954921332004 | Planning                                       | PLANNING                                    | Latin  | Pla               | NO            | 954921332004 |
+# |                 14 | default    |       98846 | ABACUS                                                        |       98846 | default    | 954921333005 | Abacus                                         | ABACUS                                      | Latin  | Aba               | YES           | 954921333005 |
+# |                 15 | default    |       98846 | ABACUS OXFORD                                                 |       98846 | default    | 954921333005 | Abacus                                         | ABACUS                                      | Latin  | Aba               | YES           | 954921333005 |
+# |                 16 | default    |       98846 | ABACUS A JOURNAL OF ACCOUNTING FINANCE AND BUSINESS STUDIES   |       98846 | default    | 954921333005 | Abacus                                         | ABACUS                                      | Latin  | Aba               | YES           | 954921333005 |
+# |                 17 | default    |       26173 | ACADEMY OF MANAGEMENT JOURNAL                                 |       26173 | default    | 954921333007 | Academy of Management journal                  | ACADEMY OF MANAGEMENT JOURNAL               | Latin  | Aca               | YES           | 954921333007 |
+# |                 18 | default    |       26173 | ACAD MANAGE J                                                 |       26173 | default    | 954921333007 | Academy of Management journal                  | ACADEMY OF MANAGEMENT JOURNAL               | Latin  | Aca               | YES           | 954921333007 |
+# |                 19 | default    |       26173 | ACADEMY OF MANAGEMENT JOURNAL AMJ                             |       26173 | default    | 954921333007 | Academy of Management journal                  | ACADEMY OF MANAGEMENT JOURNAL               | Latin  | Aca               | YES           | 954921333007 |
+# |                 20 | default    |       26173 | JOURNAL OF THE ACADEMY OF MANAGEMENT                          |       26173 | default    | 954921333007 | Academy of Management journal                  | ACADEMY OF MANAGEMENT JOURNAL               | Latin  | Aca               | YES           | 954921333007 |
+# |                 21 | default    |       95098 | ACCOUNTANCY                                                   |       95098 | default    | 954921333008 | Accountancy                                    | ACCOUNTANCY                                 | Latin  | Acc               | NO            | 954921333008 |
+# |                 22 | default    |       95098 | ACCOUNTANCY THE LEADING MAGAZINE FOR FINANCE IN BUSINESS      |       95098 | default    | 954921333008 | Accountancy                                    | ACCOUNTANCY                                 | Latin  | Acc               | NO            | 954921333008 |
+# |                 23 | default    |       95098 | ACCOUNTANCY U K                                               |       95098 | default    | 954921333008 | Accountancy                                    | ACCOUNTANCY                                 | Latin  | Acc               | NO            | 954921333008 |
+# |                 24 | default    |       73030 | ACCOUNTANCY IRELAND                                           |       73030 | default    | 954921333009 | Accountancy Ireland                            | ACCOUNTANCY IRELAND                         | Latin  | Acc               | NO            | 954921333009 |
+# |                 25 | default    |       32365 | DE ACCOUNTANT                                                 |       32365 | default    | 954921333010 | De Accountant                                  | DE ACCOUNTANT                               | Latin  | De                | NO            | 954921333010 |
+# |                 26 | default    |       32365 | ACCOUNTANT                                                    |       32365 | default    | 954921333010 | De Accountant                                  | DE ACCOUNTANT                               | Latin  | De                | NO            | 954921333010 |
+# |                 27 | default    |       32365 | ACCOUNTANT DE                                                 |       32365 | default    | 954921333010 | De Accountant                                  | DE ACCOUNTANT                               | Latin  | De                | NO            | 954921333010 |
+# |                 28 | default    |       45046 | ACCOUNTANTS JOURNAL                                           |       45046 | default    | 954921333012 | The Accountants' journal                       | ACCOUNTANTS JOURNAL                         | Latin  | Acc               | NO            | 954921333012 |
+# |                 29 | default    |       60707 | ACCOUNTING AND BUSINESS RESEARCH                              |       60707 | default    | 954921333013 | Accounting and business research               | ACCOUNTING AND BUSINESS RESEARCH            | Latin  | Acc               | YES           | 954921333013 |
+# |                 30 | default    |       60707 | ACCOUNTING BUSINESS RESEARCH                                  |       60707 | default    | 954921333013 | Accounting and business research               | ACCOUNTING AND BUSINESS RESEARCH            | Latin  | Acc               | YES           | 954921333013 |
+# |                 31 | default    |       60707 | ACCOUNT BUS RES                                               |       60707 | default    | 954921333013 | Accounting and business research               | ACCOUNTING AND BUSINESS RESEARCH            | Latin  | Acc               | YES           | 954921333013 |
+# |                 32 | default    |       82208 | ACCOUNTING REVIEW                                             |       82208 | default    | 954921333014 | The Accounting review                          | ACCOUNTING REVIEW                           | Latin  | Acc               | YES           | 954921333014 |
+# |                 33 | default    |       82208 | ACCOUNT REV                                                   |       82208 | default    | 954921333014 | The Accounting review                          | ACCOUNTING REVIEW                           | Latin  | Acc               | YES           | 954921333014 |
+# |                 34 | default    |       13877 | ADHESIVES AGE                                                 |       13877 | default    | 954921333015 | Adhesives age                                  | ADHESIVES AGE                               | Latin  | Adh               | YES           | 954921333015 |
+# |                 35 | default    |       13877 | ADHES AGE                                                     |       13877 | default    | 954921333015 | Adhesives age                                  | ADHESIVES AGE                               | Latin  | Adh               | YES           | 954921333015 |
+# |                 36 | default    |       13877 | CURING DEATH                                                  |       13877 | default    | 954921333015 | Adhesives age                                  | ADHESIVES AGE                               | Latin  | Adh               | YES           | 954921333015 |
+# |                 37 | default    |       35282 | ADMINISTRATIVE SCIENCE QUARTERLY                              |       35282 | default    | 954921333016 | Administrative science quarterly               | ADMINISTRATIVE SCIENCE QUARTERLY            | Latin  | Adm               | YES           | 954921333016 |
+# |                 38 | default    |       35282 | ADM SCI Q                                                     |       35282 | default    | 954921333016 | Administrative science quarterly               | ADMINISTRATIVE SCIENCE QUARTERLY            | Latin  | Adm               | YES           | 954921333016 |
+# |                 39 | default    |       35282 | ADMIN SCI QUART                                               |       35282 | default    | 954921333016 | Administrative science quarterly               | ADMINISTRATIVE SCIENCE QUARTERLY            | Latin  | Adm               | YES           | 954921333016 |
+# |                 40 | default    |       93625 | ADVANCES IN APPLIED PROBABILITY                               |       93625 | default    | 954921333017 | Advances in Applied Probability                | ADVANCES IN APPLIED PROBABILITY             | Latin  | Adv               | YES           | 954921333017 |
+# |                 41 | default    |       93625 | ADVAN APPL PROBAB                                             |       93625 | default    | 954921333017 | Advances in Applied Probability                | ADVANCES IN APPLIED PROBABILITY             | Latin  | Adv               | YES           | 954921333017 |
+# |                 42 | default    |       93625 | ADV APPL PROBAB                                               |       93625 | default    | 954921333017 | Advances in Applied Probability                | ADVANCES IN APPLIED PROBABILITY             | Latin  | Adv               | YES           | 954921333017 |
+# |                 43 | default    |       93625 | ADV APPL P                                                    |       93625 | default    | 954921333017 | Advances in Applied Probability                | ADVANCES IN APPLIED PROBABILITY             | Latin  | Adv               | YES           | 954921333017 |
+# |                 44 | default    |       93625 | ADV APPL PROBABILITY                                          |       93625 | default    | 954921333017 | Advances in Applied Probability                | ADVANCES IN APPLIED PROBABILITY             | Latin  | Adv               | YES           | 954921333017 |
+# |                 45 | default    |      115390 | ADVERTISING AGE                                               |      115390 | default    | 954921333018 | Advertising Age                                | ADVERTISING AGE                             | Latin  | Adv               | NO            | 954921333018 |
+# |                 46 | default    |      115390 | ADVERTISING AGE MIDWEST REGION EDITION                        |      115390 | default    | 954921333018 | Advertising Age                                | ADVERTISING AGE                             | Latin  | Adv               | NO            | 954921333018 |
+# |                 47 | default    |      115390 | ADVERT AGE                                                    |      115390 | default    | 954921333018 | Advertising Age                                | ADVERTISING AGE                             | Latin  | Adv               | NO            | 954921333018 |
+# |                 48 | default    |      115390 | AD AGE GLOBAL                                                 |      115390 | default    | 954921333018 | Advertising Age                                | ADVERTISING AGE                             | Latin  | Adv               | NO            | 954921333018 |
+# |                 49 | default    |       78720 | AGRI MARKETING                                                |       78720 | default    | 954921333020 | Agri marketing                                 | AGRI MARKETING                              | Latin  | Agr               | NO            | 954921333020 |
+# |                 50 | default    |       78720 | AGRIMARKETING                                                 |       78720 | default    | 954921333020 | Agri marketing                                 | AGRI MARKETING                              | Latin  | Agr               | NO            | 954921333020 |
+# |                 51 | default    |       29075 | AIR CONDITIONING HEATING REFRIGERATION NEWS                   |       29075 | default    | 954921333021 | Air Conditioning, Heating & Refrigeration News | AIR CONDITIONING HEATING REFRIGERATION NEWS | Latin  | Air               | NO            | 954921333021 |
+# |                 52 | default    |       29075 | AIR CONDITIONING HEATING AND REFRIGERATION NEWS               |       29075 | default    | 954921333021 | Air Conditioning, Heating & Refrigeration News | AIR CONDITIONING HEATING REFRIGERATION NEWS | Latin  | Air               | NO            | 954921333021 |
+# |                 53 | default    |       20375 | AIR FORCE COMPTROLLER                                         |       20375 | default    | 954921334022 | Air Force Comptroller                          | AIR FORCE COMPTROLLER                       | Latin  | Air               | NO            | 954921334022 |
+# |                 54 | default    |       77052 | AIR TRANSPORT WORLD                                           |       77052 | default    | 954921334023 | Air transport world                            | AIR TRANSPORT WORLD                         | Latin  | Air               | NO            | 954921334023 |
+# |                 55 | default    |       77052 | AIR TRANSP WORLD                                              |       77052 | default    | 954921334023 | Air transport world                            | AIR TRANSPORT WORLD                         | Latin  | Air               | NO            | 954921334023 |
+# |                 56 | default    |       77052 | AIR TRANSPORT WORLD PENTON                                    |       77052 | default    | 954921334023 | Air transport world                            | AIR TRANSPORT WORLD                         | Latin  | Air               | NO            | 954921334023 |
+# +--------------------+------------+-------------+---------------------------------------------------------------+-------------+------------+--------------+------------------------------------------------+---------------------------------------------+--------+-------------------+---------------+--------------+
+az_title_search1:
+  AZ_TITLE_SEARCH_ID: 1
+  AZ_TITLE_ID: 21333
+  AZ_PROFILE: default
+  TITLE_SEARCH: PUBLISHERS WEEKLY
+az_title_search2:
+  AZ_TITLE_SEARCH_ID: 2
+  AZ_TITLE_ID: 21333
+  AZ_PROFILE: default
+  TITLE_SEARCH: PUBLISHERS WEEKLY2
+az_title_search3:
+  AZ_TITLE_SEARCH_ID: 3
+  AZ_TITLE_ID: 13017
+  AZ_PROFILE: default
+  TITLE_SEARCH: ABCA BULLETIN
+az_title_search4:
+  AZ_TITLE_SEARCH_ID: 4
+  AZ_TITLE_ID: 13017
+  AZ_PROFILE: default
+  TITLE_SEARCH: A B C A BULLETIN
+az_title_search5:
+  AZ_TITLE_SEARCH_ID: 5
+  AZ_TITLE_ID: 90467
+  AZ_PROFILE: default
+  TITLE_SEARCH: COMMUNICATIONS OF THE ACM
+az_title_search6:
+  AZ_TITLE_SEARCH_ID: 6
+  AZ_TITLE_ID: 90467
+  AZ_PROFILE: default
+  TITLE_SEARCH: ASSOCIATION FOR COMPUTING MACHINERY COMMUNICATIONS
+az_title_search7:
+  AZ_TITLE_SEARCH_ID: 7
+  AZ_TITLE_ID: 90467
+  AZ_PROFILE: default
+  TITLE_SEARCH: COMMUN ACM
+az_title_search8:
+  AZ_TITLE_SEARCH_ID: 8
+  AZ_TITLE_ID: 90467
+  AZ_PROFILE: default
+  TITLE_SEARCH: COMM ACM
+az_title_search9:
+  AZ_TITLE_SEARCH_ID: 9
+  AZ_TITLE_ID: 90467
+  AZ_PROFILE: default
+  TITLE_SEARCH: ASSOCIATION FOR COMPUTING MACHINERY COMMUNICATIONS OF THE ACM
+az_title_search10:
+  AZ_TITLE_SEARCH_ID: 10
+  AZ_TITLE_ID: 90467
+  AZ_PROFILE: default
+  TITLE_SEARCH: COMMUNICATIONS OF THE ASSOCIATION FOR COMPUTING MACHINERY
+az_title_search11:
+  AZ_TITLE_SEARCH_ID: 11
+  AZ_TITLE_ID: 22932
+  AZ_PROFILE: default
+  TITLE_SEARCH: PLANNING
+az_title_search12:
+  AZ_TITLE_SEARCH_ID: 12
+  AZ_TITLE_ID: 22932
+  AZ_PROFILE: default
+  TITLE_SEARCH: PLANNING U S
+az_title_search13:
+  AZ_TITLE_SEARCH_ID: 13
+  AZ_TITLE_ID: 22932
+  AZ_PROFILE: default
+  TITLE_SEARCH: PLANNING U K
+az_title_search14:
+  AZ_TITLE_SEARCH_ID: 14
+  AZ_TITLE_ID: 98846
+  AZ_PROFILE: default
+  TITLE_SEARCH: ABACUS
+az_title_search15:
+  AZ_TITLE_SEARCH_ID: 15
+  AZ_TITLE_ID: 98846
+  AZ_PROFILE: default
+  TITLE_SEARCH: ABACUS OXFORD
+az_title_search16:
+  AZ_TITLE_SEARCH_ID: 16
+  AZ_TITLE_ID: 98846
+  AZ_PROFILE: default
+  TITLE_SEARCH: ABACUS A JOURNAL OF ACCOUNTING FINANCE AND BUSINESS STUDIES
+az_title_search17:
+  AZ_TITLE_SEARCH_ID: 17
+  AZ_TITLE_ID: 26173
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACADEMY OF MANAGEMENT JOURNAL
+az_title_search18:
+  AZ_TITLE_SEARCH_ID: 18
+  AZ_TITLE_ID: 26173
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACAD MANAGE J
+az_title_search19:
+  AZ_TITLE_SEARCH_ID: 19
+  AZ_TITLE_ID: 26173
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACADEMY OF MANAGEMENT JOURNAL AMJ
+az_title_search20:
+  AZ_TITLE_SEARCH_ID: 20
+  AZ_TITLE_ID: 26173
+  AZ_PROFILE: default
+  TITLE_SEARCH: JOURNAL OF THE ACADEMY OF MANAGEMENT
+az_title_search21:
+  AZ_TITLE_SEARCH_ID: 21
+  AZ_TITLE_ID: 95098
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNTANCY
+az_title_search22:
+  AZ_TITLE_SEARCH_ID: 22
+  AZ_TITLE_ID: 95098
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNTANCY THE LEADING MAGAZINE FOR FINANCE IN BUSINESS
+az_title_search23:
+  AZ_TITLE_SEARCH_ID: 23
+  AZ_TITLE_ID: 95098
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNTANCY U K
+az_title_search24:
+  AZ_TITLE_SEARCH_ID: 24
+  AZ_TITLE_ID: 73030
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNTANCY IRELAND
+az_title_search25:
+  AZ_TITLE_SEARCH_ID: 25
+  AZ_TITLE_ID: 32365
+  AZ_PROFILE: default
+  TITLE_SEARCH: DE ACCOUNTANT
+az_title_search26:
+  AZ_TITLE_SEARCH_ID: 26
+  AZ_TITLE_ID: 32365
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNTANT
+az_title_search27:
+  AZ_TITLE_SEARCH_ID: 27
+  AZ_TITLE_ID: 32365
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNTANT DE
+az_title_search28:
+  AZ_TITLE_SEARCH_ID: 28
+  AZ_TITLE_ID: 45046
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNTANTS JOURNAL
+az_title_search29:
+  AZ_TITLE_SEARCH_ID: 29
+  AZ_TITLE_ID: 60707
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNTING AND BUSINESS RESEARCH
+az_title_search30:
+  AZ_TITLE_SEARCH_ID: 30
+  AZ_TITLE_ID: 60707
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNTING BUSINESS RESEARCH
+az_title_search31:
+  AZ_TITLE_SEARCH_ID: 31
+  AZ_TITLE_ID: 60707
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNT BUS RES
+az_title_search32:
+  AZ_TITLE_SEARCH_ID: 32
+  AZ_TITLE_ID: 82208
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNTING REVIEW
+az_title_search33:
+  AZ_TITLE_SEARCH_ID: 33
+  AZ_TITLE_ID: 82208
+  AZ_PROFILE: default
+  TITLE_SEARCH: ACCOUNT REV
+az_title_search34:
+  AZ_TITLE_SEARCH_ID: 34
+  AZ_TITLE_ID: 13877
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADHESIVES AGE
+az_title_search35:
+  AZ_TITLE_SEARCH_ID: 35
+  AZ_TITLE_ID: 13877
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADHES AGE
+az_title_search36:
+  AZ_TITLE_SEARCH_ID: 36
+  AZ_TITLE_ID: 13877
+  AZ_PROFILE: default
+  TITLE_SEARCH: CURING DEATH
+az_title_search37:
+  AZ_TITLE_SEARCH_ID: 37
+  AZ_TITLE_ID: 35282
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADMINISTRATIVE SCIENCE QUARTERLY
+az_title_search38:
+  AZ_TITLE_SEARCH_ID: 38
+  AZ_TITLE_ID: 35282
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADM SCI Q
+az_title_search39:
+  AZ_TITLE_SEARCH_ID: 39
+  AZ_TITLE_ID: 35282
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADMIN SCI QUART
+az_title_search40:
+  AZ_TITLE_SEARCH_ID: 40
+  AZ_TITLE_ID: 93625
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADVANCES IN APPLIED PROBABILITY
+az_title_search41:
+  AZ_TITLE_SEARCH_ID: 41
+  AZ_TITLE_ID: 93625
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADVAN APPL PROBAB
+az_title_search42:
+  AZ_TITLE_SEARCH_ID: 42
+  AZ_TITLE_ID: 93625
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADV APPL PROBAB
+az_title_search43:
+  AZ_TITLE_SEARCH_ID: 43
+  AZ_TITLE_ID: 93625
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADV APPL P
+az_title_search44:
+  AZ_TITLE_SEARCH_ID: 44
+  AZ_TITLE_ID: 93625
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADV APPL PROBABILITY
+az_title_search45:
+  AZ_TITLE_SEARCH_ID: 45
+  AZ_TITLE_ID: 115390
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADVERTISING AGE
+az_title_search46:
+  AZ_TITLE_SEARCH_ID: 46
+  AZ_TITLE_ID: 115390
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADVERTISING AGE MIDWEST REGION EDITION
+az_title_search47:
+  AZ_TITLE_SEARCH_ID: 47
+  AZ_TITLE_ID: 115390
+  AZ_PROFILE: default
+  TITLE_SEARCH: ADVERT AGE
+az_title_search48:
+  AZ_TITLE_SEARCH_ID: 48
+  AZ_TITLE_ID: 115390
+  AZ_PROFILE: default
+  TITLE_SEARCH: AD AGE GLOBAL
+az_title_search49:
+  AZ_TITLE_SEARCH_ID: 49
+  AZ_TITLE_ID: 78720
+  AZ_PROFILE: default
+  TITLE_SEARCH: AGRI MARKETING
+az_title_search50:
+  AZ_TITLE_SEARCH_ID: 50
+  AZ_TITLE_ID: 78720
+  AZ_PROFILE: default
+  TITLE_SEARCH: AGRIMARKETING
+az_title_search51:
+  AZ_TITLE_SEARCH_ID: 51
+  AZ_TITLE_ID: 29075
+  AZ_PROFILE: default
+  TITLE_SEARCH: AIR CONDITIONING HEATING REFRIGERATION NEWS
+az_title_search52:
+  AZ_TITLE_SEARCH_ID: 52
+  AZ_TITLE_ID: 29075
+  AZ_PROFILE: default
+  TITLE_SEARCH: AIR CONDITIONING HEATING AND REFRIGERATION NEWS
+az_title_search53:
+  AZ_TITLE_SEARCH_ID: 53
+  AZ_TITLE_ID: 20375
+  AZ_PROFILE: default
+  TITLE_SEARCH: AIR FORCE COMPTROLLER
+az_title_search54:
+  AZ_TITLE_SEARCH_ID: 54
+  AZ_TITLE_ID: 77052
+  AZ_PROFILE: default
+  TITLE_SEARCH: AIR TRANSPORT WORLD
+az_title_search55:
+  AZ_TITLE_SEARCH_ID: 55
+  AZ_TITLE_ID: 77052
+  AZ_PROFILE: default
+  TITLE_SEARCH: AIR TRANSP WORLD
+az_title_search56:
+  AZ_TITLE_SEARCH_ID: 56
+  AZ_TITLE_ID: 77052
+  AZ_PROFILE: default
+  TITLE_SEARCH: AIR TRANSPORT WORLD PENTON

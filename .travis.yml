@@ -1,8 +1,14 @@
 language: ruby
 rvm:
-  - 1.9.3
-  - jruby-18mode # JRuby in 1.8 mode
-  - jruby-19mode # JRuby in 1.9 mode
-  - rbx-18mode
-  - rbx-19mode
   - 1.8.7
+  - 1.9.3
+  - jruby-18mode # JRuby (1.8)
+  - jruby-19mode # JRuby (1.9)
+  # - rbx-18mode # Rubinius (1.8)
+  # - rbx-19mode # Rubinius (1.9)
+before_script:
+  - mysql -e 'create database umlaut3_test;'
+  - mysql -e 'create database sfxlcl41_test;'
+  - mysql -e 'create database sfxglb41_test;'
+  - mv test/dummy/config/travis_database.yml test/dummy/config/database.yml
+  - cd test/dummy && RAILS_ENV=test bundle exec rake --trace db:schema:load db:migrate && cd ../../

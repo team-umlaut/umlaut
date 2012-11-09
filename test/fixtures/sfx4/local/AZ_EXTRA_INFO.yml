@@ -1,0 +1,4802 @@
+az_extra_info_01:
+  AZ_EXTRA_INFO_ID: 1
+  AZ_PROFILE: default
+  OBJECT_ID: 954921332001
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x1138ae68">
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0xce0b850">
+    <item key="0">
+    <hashref memory_address="0x12747980">
+    <item key="ALTERNATIVE_TITLE">Publishers Weekly2</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921332001</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x12273658">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x11972260">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0xce0b860">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x14380ab0">
+    <item key="0">
+    <hashref memory_address="0x13ec76a0">
+    <item key="CATEGORY_ID">9</item>
+    <item key="CATEGORY_NAME">Information Technology</item>
+    <item key="SUBCATEGORY_ID">119</item>
+    <item key="SUBCATEGORY_NAME">Information Science and Systems</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0xf731a8e8">
+    <item key="CATEGORY_ID">16</item>
+    <item key="CATEGORY_NAME">Library and Information Sciences</item>
+    <item key="SUBCATEGORY_ID">174</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden">PWEEAD</item>
+    <item key="issn">0000-0019</item>
+    <item key="lccn">01015589</item>
+    <item key="normalized">PUBLISHERS WEEKLY</item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x18d95e90">
+    <item key="0">
+    <hashref memory_address="0x18d95ec0">
+    <item key="OP_ID">1000000000671051</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x18d95f90">
+    <item key="0">
+    <hashref memory_address="0x18d96000">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x18d95f60">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">1000000000001505</item>
+    <item key="target_internal_name">EBSCOHOST_ACADEMIC_SEARCH_COMPLETE</item>
+    <item key="target_name">EBSCOhost Academic Search Complete</item>
+    <item key="target_service_id">1000000000002159</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1997,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1997,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1a228310">
+    <item key="OP_ID">3450000000022893</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a228360">
+    <item key="0">
+    <hashref memory_address="0x1a2283c0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1998</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a228350">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000047</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON</item>
+    <item key="target_name">EBSCOhost Business Abstracts with Full Text </item>
+    <item key="target_service_id">3450000000000057</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1998,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1998,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x1a2fa8e0">
+    <item key="OP_ID">1000000000125212</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fa930">
+    <item key="0">
+    <hashref memory_address="0x1a2fa990">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fa920">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1997,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1997,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x1b0939c0">
+    <item key="OP_ID">3450000000019980</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1b093a10">
+    <item key="0">
+    <hashref memory_address="0x1b093a60">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1998</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1b093a00">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000037</item>
+    <item key="target_internal_name">EBSCOHOST_EDUCATION_FULL_TEXT_WILSON</item>
+    <item key="target_name">EBSCOhost Education Full Text</item>
+    <item key="target_service_id">3450000000000039</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1998,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1998,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0x1b95b250">
+    <item key="OP_ID">3450000000022163</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1b95b2a0">
+    <item key="0">
+    <hashref memory_address="0x1b95b300">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1998</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1b95b290">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000048</item>
+    <item key="target_internal_name">EBSCOHOST_LIBRARY_LITERATURE_INFORMATION_SCIENCE_FULL_TEXT_WILSON</item>
+    <item key="target_name">EBSCOhost Library Literature &amp; Information Science Full Text</item>
+    <item key="target_service_id">3450000000000059</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1998,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1998,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="5">
+    <hashref memory_address="0x1bda5aa0">
+    <item key="OP_ID">3450000000018968</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1bda5af0">
+    <item key="0">
+    <hashref memory_address="0x1bda5b50">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1998</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1bda5ae0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000034</item>
+    <item key="target_internal_name">EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</item>
+    <item key="target_name">EBSCOhost OmniFile Full Text Mega </item>
+    <item key="target_service_id">3450000000000033</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1998,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1998,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="6">
+    <hashref memory_address="0x1c95fde0">
+    <item key="OP_ID">111037302894000</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1c95fe30">
+    <item key="0">
+    <hashref memory_address="0x1c95fe90">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1994</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1c960020">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2011</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1c95fe20">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111037301464000</item>
+    <item key="target_internal_name">FACTIVA</item>
+    <item key="target_name">Factiva</item>
+    <item key="target_service_id">111037301464002</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1994&apos;,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2011&apos;,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1994&apos;,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2011&apos;,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="7">
+    <hashref memory_address="0x1d718628">
+    <item key="OP_ID">1000000000485631</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1d718678">
+    <item key="0">
+    <hashref memory_address="0x1d7186d8">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE">48</item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1995</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1d718668">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">110976638852340</item>
+    <item key="target_internal_name">MISCELLANEOUS_FREE_EJOURNALS</item>
+    <item key="target_name">Free E- Journals</item>
+    <item key="target_service_id">110976638852341</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1995,undef,48)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1995,undef,48)</item>
+    </hashref>
+    </item>
+    <item key="8">
+    <hashref memory_address="0x1f3e88e8">
+    <item key="OP_ID">111077816274000</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1f3e8938">
+    <item key="0">
+    <hashref memory_address="0x1f3e8998">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1990</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1f3e8928">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111031861260000</item>
+    <item key="target_internal_name">GALEGROUP_BUSINESS_INSIGHTS_ESSENTIALS</item>
+    <item key="target_name">Gale Cengage Business Insights: Essentials</item>
+    <item key="target_service_id">111031861260001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1990&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1990&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="9">
+    <hashref memory_address="0x1fcaeb88">
+    <item key="OP_ID">111031861902000</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1fcaebd8">
+    <item key="0">
+    <hashref memory_address="0x1fcaec38">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1990</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1fcaebc8">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111031861411000</item>
+    <item key="target_internal_name">GALEGROUP_GN_LITERATURE_RESOURCE_CENTER</item>
+    <item key="target_name">Gale Cengage Literature Resource Center</item>
+    <item key="target_service_id">111031861479000</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1990,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1990,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="10">
+    <hashref memory_address="0x234b6d18">
+    <item key="OP_ID">2550000000139056</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234b6de8">
+    <item key="0">
+    <hashref memory_address="0x234b6e58">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1996</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234b6db8">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1996&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1996&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_02:
+  AZ_EXTRA_INFO_ID: 2
+  AZ_PROFILE: default
+  OBJECT_ID: 954921332002
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x15465670">
+    <item key="0">
+    <hashref memory_address="0x10450090">
+    <item key="ABBREVIATED_TITLE">A B C A BULLETIN</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x1559ccb0">
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921332002</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0xccf11b0">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x1448a3c0">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x14487cc0">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x13ef08d0">
+    <item key="0">
+    <hashref memory_address="0x13c24670">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">84</item>
+    <item key="SUBCATEGORY_NAME">Trade and Commerce</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden" defined="false"></item>
+    <item key="issn">0001-0383</item>
+    <item key="lccn">sc 78001886 </item>
+    <item key="normalized">ABCA BULLETIN</item>
+    <item key="related_titles">
+    <arrayref memory_address="0x1598db50">
+    <item key="0">
+    <hashref memory_address="0xc8dfb28">
+    <item key="OBJECT_ID">954921332002</item>
+    <item key="RELATED_ISSN">8756-1972</item>
+    <item key="RELATED_OBJECT_ID">954921431725</item>
+    <item key="RELATION_TYPE">CONTINUED_BY</item>
+    <item key="TITLE_DISPLAY">The Bulletin of the Association for Business Communication</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_03:
+  AZ_EXTRA_INFO_ID: 3
+  AZ_PROFILE: default
+  OBJECT_ID: 954921332003
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x105135e8">
+    <item key="0">
+    <hashref memory_address="0xce54580">
+    <item key="ABBREVIATED_TITLE">ASSOCIATION FOR COMPUTING MACHINERY COMMUNICATIONS</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0xcd6e7d0">
+    <item key="ABBREVIATED_TITLE">COMMUN ACM</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x1266dec0">
+    <item key="ABBREVIATED_TITLE">COMM ACM</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x112b9690">
+    <item key="ABBREVIATED_TITLE">ASSOCIATION FOR COMPUTING MACHINERY COMMUNICATIONS OF THE ACM</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0x13b37240">
+    <item key="ABBREVIATED_TITLE">COMMUNICATIONS OF THE ASSOCIATION FOR COMPUTING MACHINERY</item>
+    </hashref>
+    </item>
+    <item key="5">
+    <hashref memory_address="0x16008fd0">
+    <item key="ABBREVIATED_TITLE">COMMUN. ACM</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x11c501a0">
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921332003</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x11c50190">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x129b4628">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x11c501b0">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x145e7b18">
+    <item key="0">
+    <hashref memory_address="0xfaf2e40">
+    <item key="CATEGORY_ID">9</item>
+    <item key="CATEGORY_NAME">Information Technology</item>
+    <item key="SUBCATEGORY_ID">19</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x13755628">
+    <item key="CATEGORY_ID">10</item>
+    <item key="CATEGORY_NAME">Mathematical Sciences</item>
+    <item key="SUBCATEGORY_ID">61</item>
+    <item key="SUBCATEGORY_NAME">Applied Mathematics</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x157d8c08">
+    <item key="CATEGORY_ID">15</item>
+    <item key="CATEGORY_NAME">Telecommunications Technology</item>
+    <item key="SUBCATEGORY_ID">189</item>
+    <item key="SUBCATEGORY_NAME">Communication Networks &amp; Technology</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x157f4470">
+    <item key="CATEGORY_ID">15</item>
+    <item key="CATEGORY_NAME">Telecommunications Technology</item>
+    <item key="SUBCATEGORY_ID">93</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden">CACMA2</item>
+    <item key="issn">0001-0782</item>
+    <item key="lccn">   61065941 </item>
+    <item key="normalized">COMMUNICATIONS OF THE ACM</item>
+    <item key="related_titles">
+    <arrayref memory_address="0xfd9ff88">
+    <item key="0">
+    <hashref memory_address="0x1667b008">
+    <item key="OBJECT_ID">954921332003</item>
+    <item key="RELATED_ISSN">1059-1192</item>
+    <item key="RELATED_OBJECT_ID">991042731702756</item>
+    <item key="RELATION_TYPE">SUPPLEMENT</item>
+    <item key="TITLE_DISPLAY">ACMemberNet</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x16965e28">
+    <item key="0">
+    <hashref memory_address="0x16646398">
+    <item key="OP_ID">110977319504706</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x163e5328">
+    <item key="0">
+    <hashref memory_address="0x16e8ad00">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE">1</item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME">1</item>
+    <item key="THRESH_YEAR">1958</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x163e52a8">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">110976704639514</item>
+    <item key="target_internal_name">ACM_DIGITAL_LIBRARY</item>
+    <item key="target_name">ACM Digital Library</item>
+    <item key="target_service_id">110976704639515</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1958,1,1)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1958,1,1)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1a2faa80">
+    <item key="OP_ID">1000000000123472</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2faad0">
+    <item key="0">
+    <hashref memory_address="0x1a2fab30">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1999</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2faac0">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1999,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1999,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x1f3e8a88">
+    <item key="OP_ID">111077816274001</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1f3e8ad8">
+    <item key="0">
+    <hashref memory_address="0x1f3e8b38">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1988</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1f3e8cc8">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2001</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1f3e8ac8">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111031861260000</item>
+    <item key="target_internal_name">GALEGROUP_BUSINESS_INSIGHTS_ESSENTIALS</item>
+    <item key="target_name">Gale Cengage Business Insights: Essentials</item>
+    <item key="target_service_id">111031861260001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1988&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2001&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1988&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2001&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_04:
+  AZ_EXTRA_INFO_ID: 4
+  AZ_PROFILE: default
+  OBJECT_ID: 954921332004
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x1551ad28">
+    <item key="0">
+    <hashref memory_address="0xcdfbef0">
+    <item key="ABBREVIATED_TITLE">Planning (U.S.)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x11fa34e8">
+    <item key="ABBREVIATED_TITLE">Planning (U.K.)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x11e0a2b0">
+    <item key="0">
+    <hashref memory_address="0x14cdd1e0">
+    <item key="ALTERNATIVE_TITLE">Planning (U.K.)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921332004</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x11e0a2c0">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x10f97c68">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0xcdfbf30">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x15601e50">
+    <item key="0">
+    <hashref memory_address="0x15e347b8">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">48</item>
+    <item key="SUBCATEGORY_NAME">Economics</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x139978e8">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">38</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x15e9ade0">
+    <item key="CATEGORY_ID">3</item>
+    <item key="CATEGORY_NAME">Engineering</item>
+    <item key="SUBCATEGORY_ID">67</item>
+    <item key="SUBCATEGORY_NAME">Industrial Engineering</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x101ba9a0">
+    <item key="CATEGORY_ID">11</item>
+    <item key="CATEGORY_NAME">Social Sciences</item>
+    <item key="SUBCATEGORY_ID">53</item>
+    <item key="SUBCATEGORY_NAME">Developmental Issues &amp; Socioeconomic Studies</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden">PLNNDB</item>
+    <item key="issn">0001-2610</item>
+    <item key="lccn">   72625231 </item>
+    <item key="normalized">PLANNING</item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x18d960b0">
+    <item key="0">
+    <hashref memory_address="0x18d960e0">
+    <item key="OP_ID">1000000000670867</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x18d96130">
+    <item key="0">
+    <hashref memory_address="0x18d96190">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1993</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x18d96120">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">1000000000001505</item>
+    <item key="target_internal_name">EBSCOHOST_ACADEMIC_SEARCH_COMPLETE</item>
+    <item key="target_name">EBSCOhost Academic Search Complete</item>
+    <item key="target_service_id">1000000000002159</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1993,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1993,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1a0ef090">
+    <item key="OP_ID">1000000002161267</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a0ef0e0">
+    <item key="0">
+    <hashref memory_address="0x1a0ef130">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1993</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a0ef0d0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000002632</item>
+    <item key="target_internal_name">EBSCOHOST_ART_ARCHITECTURE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Art &amp; Architecture Complete</item>
+    <item key="target_service_id">1000000000003333</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1993,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1993,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x1a2fac00">
+    <item key="OP_ID">1000000000125102</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fac50">
+    <item key="0">
+    <hashref memory_address="0x1a2facb0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1993</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fac40">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1993,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1993,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x1b163030">
+    <item key="OP_ID">1000000000651041</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1b163100">
+    <item key="0">
+    <hashref memory_address="0x1b163170">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1993</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1b1630d0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000001503</item>
+    <item key="target_internal_name">EBSCOHOST_ENVIRONMENT_COMPLETE</item>
+    <item key="target_name">EBSCOhost Environment Complete</item>
+    <item key="target_service_id">1000000000002156</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1993,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1993,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0x1bda5c40">
+    <item key="OP_ID">2670000000679579</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1bda5c90">
+    <item key="0">
+    <hashref memory_address="0x1bda5cf0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1993</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1bda5c80">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000034</item>
+    <item key="target_internal_name">EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</item>
+    <item key="target_name">EBSCOhost OmniFile Full Text Mega </item>
+    <item key="target_service_id">3450000000000033</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1993,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1993,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="5">
+    <hashref memory_address="0x1c95ff60">
+    <item key="OP_ID">1000000000776852</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1c960030">
+    <item key="0">
+    <hashref memory_address="0x1c9600a0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2002</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1c960000">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111037301464000</item>
+    <item key="target_internal_name">FACTIVA</item>
+    <item key="target_name">Factiva</item>
+    <item key="target_service_id">111037301464002</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2002&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2002&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="6">
+    <hashref memory_address="0x234b6f38">
+    <item key="OP_ID">2550000000138744</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234b6f88">
+    <item key="0">
+    <hashref memory_address="0x234b6fe8">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1987</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234b6f78">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1987&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1987&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_05:
+  AZ_EXTRA_INFO_ID: 5
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333005
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x132e62c0">
+    <item key="0">
+    <hashref memory_address="0x13d184f0">
+    <item key="ABBREVIATED_TITLE">ABACUS OXFORD</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x13d70f38">
+    <item key="ABBREVIATED_TITLE">ABACUS A JOURNAL OF ACCOUNTING FINANCE AND BUSINESS STUDIES</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x14b17c18">
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333005</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x14b17c28">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x139efe28">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x14b17c08">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x1485f048">
+    <item key="0">
+    <hashref memory_address="0x14c409f8">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">38</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x14fdb510">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">84</item>
+    <item key="SUBCATEGORY_NAME">Trade and Commerce</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x151befd8">
+    <item key="CATEGORY_ID">14</item>
+    <item key="CATEGORY_NAME">Law</item>
+    <item key="SUBCATEGORY_ID">128</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden">ABACAF</item>
+    <item key="issn">0001-3072</item>
+    <item key="lccn" defined="false"></item>
+    <item key="normalized">ABACUS</item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1a2fad60">
+    <item key="0">
+    <hashref memory_address="0x1a2fad80">
+    <item key="OP_ID">1000000000123028</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fadd0">
+    <item key="0">
+    <hashref memory_address="0x1a2fae30">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1965</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fadc0">
+    <item key="0">
+    <hashref memory_address="0x1a2efd88">
+    <item key="NOT_AVAILABLE">&gt;=</item>
+    <item key="OPERATOR">&gt;=</item>
+    <item key="RAW_TIME">1y</item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_YEAR">1</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1965,undef,undef) &amp;&amp; $obj-&gt;timediff(&apos;&gt;=&apos;,&apos;1y&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1965,undef,undef) &amp;&amp; $obj-&gt;timediff(&apos;&gt;=&apos;,&apos;1y&apos;)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1b652048">
+    <item key="OP_ID">1000000000717072</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1b652098">
+    <item key="0">
+    <hashref memory_address="0x1b6520f8">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1965</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1b652088">
+    <item key="0">
+    <hashref memory_address="0x1b64e8c0">
+    <item key="NOT_AVAILABLE">&gt;=</item>
+    <item key="OPERATOR">&gt;=</item>
+    <item key="RAW_TIME">1y</item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_YEAR">1</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000564</item>
+    <item key="target_internal_name">EBSCOHOST_HUMANITIES_INTL_COMPLETE</item>
+    <item key="target_name">EBSCOhost Humanities International Complete</item>
+    <item key="target_service_id">1000000000001117</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1965,undef,undef) &amp;&amp; $obj-&gt;timediff(&apos;&gt;=&apos;,&apos;1y&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1965,undef,undef) &amp;&amp; $obj-&gt;timediff(&apos;&gt;=&apos;,&apos;1y&apos;)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x2674e750">
+    <item key="OP_ID">3450000000002233</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x2674e7a0">
+    <item key="0">
+    <hashref memory_address="0x2674e800">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE">1</item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME">33</item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x2674e790">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000027</item>
+    <item key="target_internal_name">WILEY_ONLINE_LIBRARY_2012_FULL_COLLECTION</item>
+    <item key="target_name">Wiley Online Library 2012 Full Collection</item>
+    <item key="target_service_id">3450000000000025</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,33,1)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,33,1)</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x268fd450">
+    <item key="OP_ID">1000000002077698</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x268fd4a0">
+    <item key="0">
+    <hashref memory_address="0x268fd4f0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE">1</item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME">1</item>
+    <item key="THRESH_YEAR">1965</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x268fd6a0">
+    <item key="THRESH_ISSUE">2</item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME">32</item>
+    <item key="THRESH_YEAR">1996</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x268fd490">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">1000000000002554</item>
+    <item key="target_internal_name">WILEY_ONLINE_LIBRARY_BACKFILE_COMPLETE</item>
+    <item key="target_name">Wiley Online Library Backfile Complete</item>
+    <item key="target_service_id">1000000000003250</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1965&apos;,&apos;1&apos;,&apos;1&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;1996&apos;,&apos;32&apos;,&apos;2&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1965&apos;,&apos;1&apos;,&apos;1&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;1996&apos;,&apos;32&apos;,&apos;2&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_07:
+  AZ_EXTRA_INFO_ID: 7
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333007
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x11438d40">
+    <item key="0">
+    <hashref memory_address="0x136fdf28">
+    <item key="ABBREVIATED_TITLE">ACAD MANAGE J</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0xce304d8">
+    <item key="ABBREVIATED_TITLE">ACADEMY OF MANAGEMENT JOURNAL (AMJ)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x145b7698">
+    <item key="ABBREVIATED_TITLE">ACADEMY OF MANAGEMENT JOURNAL</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x1355e378">
+    <item key="ABBREVIATED_TITLE">JOURNAL OF THE ACADEMY OF MANAGEMENT  </item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x1203f510">
+    <item key="0">
+    <hashref memory_address="0x13060368">
+    <item key="ALTERNATIVE_TITLE">The Academy of Management Journal</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333007</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x136fdf18">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x12601c20">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x1203f500">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0xff8c498">
+    <item key="0">
+    <hashref memory_address="0x1525c608">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">37</item>
+    <item key="SUBCATEGORY_NAME">Business Management</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x136674b8">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">48</item>
+    <item key="SUBCATEGORY_NAME">Economics</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x148fbe98">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">38</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden" defined="false"></item>
+    <item key="issn">0001-4273</item>
+    <item key="lccn">   58003817 </item>
+    <item key="normalized">ACADEMY OF MANAGEMENT JOURNAL</item>
+    <item key="related_titles">
+    <arrayref memory_address="0x1636e5c0">
+    <item key="0">
+    <hashref memory_address="0xfdb0c40">
+    <item key="OBJECT_ID">954921333007</item>
+    <item key="RELATED_ISSN">0363-7425</item>
+    <item key="RELATED_OBJECT_ID">954921392000</item>
+    <item key="RELATION_TYPE">CONTINUED_IN_PART_BY</item>
+    <item key="TITLE_DISPLAY">The Academy of Management review</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0xfdb0bc0">
+    <item key="OBJECT_ID">954921333007</item>
+    <item key="RELATED_ISSN">1535-3990</item>
+    <item key="RELATED_OBJECT_ID">111006223821010</item>
+    <item key="RELATION_TYPE">CONTINUES</item>
+    <item key="TITLE_DISPLAY">The journal of the Academy of Management</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1a2faed0">
+    <item key="0">
+    <hashref memory_address="0x1a2faf00">
+    <item key="OP_ID">1000000000123030</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fb000">
+    <item key="0">
+    <hashref memory_address="0x1a2fafc0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1963</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2faf30">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1963,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1963,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x20ac67e8">
+    <item key="OP_ID">1000000000504699</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x20ac68b8">
+    <item key="0">
+    <hashref memory_address="0x20ac6928">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE">1</item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME">6</item>
+    <item key="THRESH_YEAR">1963</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x20ac6aa8">
+    <item key="THRESH_ISSUE">6</item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME">49</item>
+    <item key="THRESH_YEAR">2006</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x20ac6888">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111034808820000</item>
+    <item key="target_internal_name">JSTOR_COMPLETE</item>
+    <item key="target_name">JSTOR Complete</item>
+    <item key="target_service_id">111034808820001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1963,6,1) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2006,49,6)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1963,6,1) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2006,49,6)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x234b70b8">
+    <item key="OP_ID">2550000000131814</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234b7108">
+    <item key="0">
+    <hashref memory_address="0x234b7168">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1963</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x234b9b90">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1985</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234b70f8">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1963&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;1985&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1963&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;1985&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x234b9ad0">
+    <item key="OP_ID">2550000000131813</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234b9ba0">
+    <item key="0">
+    <hashref memory_address="0x234b9c10">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1987</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x234b9d90">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2001</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234b9b70">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1987&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2001&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1987&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2001&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_08:
+  AZ_EXTRA_INFO_ID: 8
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333008
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x113b4118">
+    <item key="0">
+    <hashref memory_address="0x146e3ca0">
+    <item key="ABBREVIATED_TITLE">ACCOUNTANCY THE LEADING MAGAZINE FOR FINANCE IN BUSINESS</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1429ad58">
+    <item key="ABBREVIATED_TITLE">Accountancy (U.K.)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0xccc3c80">
+    <item key="0">
+    <hashref memory_address="0x13a0fa20">
+    <item key="ALTERNATIVE_TITLE">Accountancy (U.K.)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333008</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0xccc3c60">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x10a43278">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0xccc3c50">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x15bc84a0">
+    <item key="0">
+    <hashref memory_address="0xfae9460">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">38</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1600d470">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">84</item>
+    <item key="SUBCATEGORY_NAME">Trade and Commerce</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x148f30b0">
+    <item key="CATEGORY_ID">14</item>
+    <item key="CATEGORY_NAME">Law</item>
+    <item key="SUBCATEGORY_ID">128</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden">ACTYAD</item>
+    <item key="issn">0001-4664</item>
+    <item key="lccn">   44035340 </item>
+    <item key="normalized">ACCOUNTANCY</item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1a2fb0e0">
+    <item key="0">
+    <hashref memory_address="0x1a2fb110">
+    <item key="OP_ID">1000000000123035</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fb160">
+    <item key="0">
+    <hashref memory_address="0x1a2fb1c0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2003</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fb150">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,2003,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,2003,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1c960160">
+    <item key="OP_ID">1000000000120327</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1c9601b0">
+    <item key="0">
+    <hashref memory_address="0x1c960210">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1994</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1c9603a0">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2007</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1c9601a0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111037301464000</item>
+    <item key="target_internal_name">FACTIVA</item>
+    <item key="target_name">Factiva</item>
+    <item key="target_service_id">111037301464002</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1994&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2007&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1994&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2007&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_09:
+  AZ_EXTRA_INFO_ID: 9
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333009
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="OBJECT_ID">954921333009</item>
+    <item key="category_loop">
+    <arrayref memory_address="0x14f44170">
+    <item key="0">
+    <hashref memory_address="0x10c16fa0">
+    <item key="CATEGORY_ID">2</item>
+    <item key="CATEGORY_NAME">Arts and Humanities</item>
+    <item key="SUBCATEGORY_ID">115</item>
+    <item key="SUBCATEGORY_NAME">Current Events &amp; News</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x11bccad0">
+    <item key="CATEGORY_ID">2</item>
+    <item key="CATEGORY_NAME">Arts and Humanities</item>
+    <item key="SUBCATEGORY_ID">87</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x14a92cf8">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">38</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x151b3620">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">84</item>
+    <item key="SUBCATEGORY_NAME">Trade and Commerce</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0x15038f90">
+    <item key="CATEGORY_ID">14</item>
+    <item key="CATEGORY_NAME">Law</item>
+    <item key="SUBCATEGORY_ID">128</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden" defined="false"></item>
+    <item key="issn">0001-4699</item>
+    <item key="lccn" defined="false"></item>
+    <item key="normalized">ACCOUNTANCY IRELAND</item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1a2fb280">
+    <item key="0">
+    <hashref memory_address="0x1a2fb2b0">
+    <item key="OP_ID">1000000000123036</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fb300">
+    <item key="0">
+    <hashref memory_address="0x1a2fb360">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2005</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fb2f0">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,2005,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,2005,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1f3e8c08">
+    <item key="OP_ID">111077816274004</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1f3e8cd8">
+    <item key="0">
+    <hashref memory_address="0x1f3e8d48">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2001</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1f3e8ca8">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111031861260000</item>
+    <item key="target_internal_name">GALEGROUP_BUSINESS_INSIGHTS_ESSENTIALS</item>
+    <item key="target_name">Gale Cengage Business Insights: Essentials</item>
+    <item key="target_service_id">111031861260001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2001&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2001&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x234b9cd0">
+    <item key="OP_ID">2550000000131828</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234b9da0">
+    <item key="0">
+    <hashref memory_address="0x234b9e10">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1996</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234b9d70">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1996&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1996&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_10:
+  AZ_EXTRA_INFO_ID: 10
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333010
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x150db9b0">
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x14439ab8">
+    <item key="0">
+    <hashref memory_address="0x14439ae8">
+    <item key="ALTERNATIVE_TITLE">Accountant, De</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x15f21980">
+    <item key="ALTERNATIVE_TITLE">Accountant</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333010</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x14439ad8">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x14970f68">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x14970f78">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x139df208">
+    <item key="0">
+    <hashref memory_address="0x155465c8">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">84</item>
+    <item key="SUBCATEGORY_NAME">Trade and Commerce</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden" defined="false"></item>
+    <item key="issn">0001-4729</item>
+    <item key="lccn" defined="false"></item>
+    <item key="normalized">DE ACCOUNTANT</item>
+    <item key="related_titles">
+    <arrayref memory_address="0xec5f838">
+    <item key="0">
+    <hashref memory_address="0x1671e1b0">
+    <item key="OBJECT_ID">954921333010</item>
+    <item key="RELATED_ISSN">2211-5382</item>
+    <item key="RELATED_OBJECT_ID">3330000000000237</item>
+    <item key="RELATION_TYPE">CONTINUED_BY</item>
+    <item key="TITLE_DISPLAY">Accountant</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1d718788">
+    <item key="0">
+    <hashref memory_address="0x1d7187a8">
+    <item key="OP_ID">3340000000000812</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1d7187f8">
+    <item key="0">
+    <hashref memory_address="0x1d718858">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2002</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1d7189e8">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2010</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1d7187e8">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">110976638852340</item>
+    <item key="target_internal_name">MISCELLANEOUS_FREE_EJOURNALS</item>
+    <item key="target_name">Free E- Journals</item>
+    <item key="target_service_id">110976638852341</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2002&apos;,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2010&apos;,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2002&apos;,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2010&apos;,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x210281f0">
+    <item key="OP_ID">1000000001228588</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x21028240">
+    <item key="0">
+    <hashref memory_address="0x210282a0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2008</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x21028230">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">110997450724000</item>
+    <item key="target_internal_name">LEXISNEXIS_ACADEMIC</item>
+    <item key="target_name">LexisNexis Academic Universe</item>
+    <item key="target_service_id">110997450724001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2008&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2008&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_12:
+  AZ_EXTRA_INFO_ID: 12
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333012
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x10509ba0">
+    <item key="0">
+    <hashref memory_address="0xce2d528">
+    <item key="ABBREVIATED_TITLE">ACCOUNTANTS&apos; JOURNAL</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x116d9db8">
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333012</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0xcd12958">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x11820f80">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x11820f70">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x13d05848">
+    <item key="0">
+    <hashref memory_address="0x1548eb40">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">84</item>
+    <item key="SUBCATEGORY_NAME">Trade and Commerce</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden" defined="false"></item>
+    <item key="issn">0001-4745</item>
+    <item key="lccn">   47035363 </item>
+    <item key="normalized">ACCOUNTANTS JOURNAL</item>
+    <item key="related_titles">
+    <arrayref memory_address="0x161e1880">
+    <item key="0">
+    <hashref memory_address="0xfdb3300">
+    <item key="OBJECT_ID">954921333012</item>
+    <item key="RELATED_ISSN">1172-9929</item>
+    <item key="RELATED_OBJECT_ID">954921428668</item>
+    <item key="RELATION_TYPE">CONTINUED_BY</item>
+    <item key="TITLE_DISPLAY">Chartered accountants journal of New Zealand</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_13:
+  AZ_EXTRA_INFO_ID: 13
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333013
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x11ee4b58">
+    <item key="0">
+    <hashref memory_address="0x127a01c8">
+    <item key="ABBREVIATED_TITLE">ACCOUNTING &amp; BUSINESS RESEARCH</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x13b23700">
+    <item key="ABBREVIATED_TITLE">ACCOUNT BUS RES</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x11a9d4b8">
+    <item key="0">
+    <hashref memory_address="0xcd96d88">
+    <item key="ALTERNATIVE_TITLE">Accounting and Business Research</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333013</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x127a01b8">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x12839b40">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x12839b20">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x16026830">
+    <item key="0">
+    <hashref memory_address="0x13ca8af8">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">38</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x144eac88">
+    <item key="CATEGORY_ID">14</item>
+    <item key="CATEGORY_NAME">Law</item>
+    <item key="SUBCATEGORY_ID">128</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0xf72d1ce8">
+    <item key="CATEGORY_ID">14</item>
+    <item key="CATEGORY_NAME">Law</item>
+    <item key="SUBCATEGORY_ID">219</item>
+    <item key="SUBCATEGORY_NAME">Investment Laws</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0xf72f6d48">
+    <item key="CATEGORY_ID">14</item>
+    <item key="CATEGORY_NAME">Law</item>
+    <item key="SUBCATEGORY_ID">159</item>
+    <item key="SUBCATEGORY_NAME">Taxation Laws</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden" defined="false"></item>
+    <item key="issn">0001-4788</item>
+    <item key="lccn">sn 85011308 </item>
+    <item key="normalized">ACCOUNTING AND BUSINESS RESEARCH</item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1a2fb430">
+    <item key="0">
+    <hashref memory_address="0x1a2fb450">
+    <item key="OP_ID">1000000000123037</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fb4a0">
+    <item key="0">
+    <hashref memory_address="0x1a2fb500">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1982</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1a2fda68">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2010</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fb490">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1982,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2010,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1982,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2010,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x234b9ed0">
+    <item key="OP_ID">2670000000783311</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234b9f20">
+    <item key="0">
+    <hashref memory_address="0x234b9f80">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1987</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x234ba110">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2010</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234b9f10">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1987,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2010,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1987,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2010,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x25c10570">
+    <item key="OP_ID">3440000000000075</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x25c105c0">
+    <item key="0">
+    <hashref memory_address="0x25c10620">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE">2</item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME">27</item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x25c105b0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000002358</item>
+    <item key="target_internal_name">TAYLOR_FRANCIS_SOCIAL_SCIENCE_HUMANITIES_WITH_SCIENCE_TECHNOLOGY</item>
+    <item key="target_name">Taylor &amp; Francis Social Science &amp; Humanities with Science &amp; Technology</item>
+    <item key="target_service_id">1000000000003050</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,27,2)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,27,2)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_14:
+  AZ_EXTRA_INFO_ID: 14
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333014
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x154e1d40">
+    <item key="0">
+    <hashref memory_address="0x1052bc98">
+    <item key="ABBREVIATED_TITLE">ACCOUNTING REVIEW</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x134c48d8">
+    <item key="ABBREVIATED_TITLE">ACCOUNT REV</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0xce55ec8">
+    <item key="0">
+    <hashref memory_address="0xbb06358">
+    <item key="ALTERNATIVE_TITLE">The Accounting Review</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333014</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0xce55ee8">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0xcc30518">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0xcc304c8">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0xffed438">
+    <item key="0">
+    <hashref memory_address="0x154c1558">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">176</item>
+    <item key="SUBCATEGORY_NAME">Accounting and Auditing</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1429acd8">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">37</item>
+    <item key="SUBCATEGORY_NAME">Business Management</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x14f045d0">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">49</item>
+    <item key="SUBCATEGORY_NAME">Finance</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x13ba73e8">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">38</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0x14a95ea0">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">84</item>
+    <item key="SUBCATEGORY_NAME">Trade and Commerce</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden">ACRVAS</item>
+    <item key="issn">0001-4826</item>
+    <item key="lccn">29008222</item>
+    <item key="normalized">ACCOUNTING REVIEW</item>
+    <item key="related_titles">
+    <arrayref memory_address="0x162ed888">
+    <item key="0">
+    <hashref memory_address="0xfdb3a00">
+    <item key="OBJECT_ID">954921333014</item>
+    <item key="RELATED_ISSN" defined="false"></item>
+    <item key="RELATED_OBJECT_ID">1000000000813204</item>
+    <item key="RELATION_TYPE">CONTINUES</item>
+    <item key="TITLE_DISPLAY">Papers and proceedings of the American Association of University Instructors in Accounting</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0xfdb3980">
+    <item key="OBJECT_ID">954921333014</item>
+    <item key="RELATED_ISSN">0587-2863</item>
+    <item key="RELATED_OBJECT_ID">991042740232426</item>
+    <item key="RELATION_TYPE">SUPPLEMENT</item>
+    <item key="TITLE_DISPLAY">Committee reports - American Accounting Association</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0xc205a08">
+    <item key="0">
+    <hashref memory_address="0xc205a28">
+    <item key="OP_ID">1000000001038531</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0xc205af8">
+    <item key="0">
+    <hashref memory_address="0xc205b68">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1926</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0xc205d08">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1995</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0xc205ac8">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000001956</item>
+    <item key="target_internal_name">CHADWYCK_PAO_PERIODICALS_ARCHIVE_ONLINE_COLLECTION_1</item>
+    <item key="target_name">Chadwyck PAO Collection 1</item>
+    <item key="target_service_id">1000000000002617</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1926&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;1995&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1926&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;1995&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1a228490">
+    <item key="OP_ID">3450000000022513</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2284e0">
+    <item key="0">
+    <hashref memory_address="0x1a228540">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1995</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2284d0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000047</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON</item>
+    <item key="target_name">EBSCOhost Business Abstracts with Full Text </item>
+    <item key="target_service_id">3450000000000057</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x1a2fd9a8">
+    <item key="OP_ID">1000000000123048</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fda78">
+    <item key="0">
+    <hashref memory_address="0x1a2fdae8">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1926</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fda48">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1926,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1926,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x1bda5dc0">
+    <item key="OP_ID">3450000000016806</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1bda5e10">
+    <item key="0">
+    <hashref memory_address="0x1bda5e70">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1995</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1bda5e00">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000034</item>
+    <item key="target_internal_name">EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</item>
+    <item key="target_name">EBSCOhost OmniFile Full Text Mega </item>
+    <item key="target_service_id">3450000000000033</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0x1f3e8e08">
+    <item key="OP_ID">111077816274006</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1f3e8e58">
+    <item key="0">
+    <hashref memory_address="0x1f3e8eb8">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2001</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1f3eb650">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2004</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1f3e8e48">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111031861260000</item>
+    <item key="target_internal_name">GALEGROUP_BUSINESS_INSIGHTS_ESSENTIALS</item>
+    <item key="target_name">Gale Cengage Business Insights: Essentials</item>
+    <item key="target_service_id">111031861260001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2001&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2004&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2001&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2004&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="5">
+    <hashref memory_address="0x20ac69e8">
+    <item key="OP_ID">111035480841001</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x20ac6ab8">
+    <item key="0">
+    <hashref memory_address="0x20ac9110">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE">1</item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME">1</item>
+    <item key="THRESH_YEAR">1926</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x20ac9290">
+    <item key="THRESH_ISSUE">5</item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME">81</item>
+    <item key="THRESH_YEAR">2006</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x20ac6a88">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111034808820000</item>
+    <item key="target_internal_name">JSTOR_COMPLETE</item>
+    <item key="target_name">JSTOR Complete</item>
+    <item key="target_service_id">111034808820001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1926,1,1) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2006,81,5)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1926,1,1) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2006,81,5)</item>
+    </hashref>
+    </item>
+    <item key="6">
+    <hashref memory_address="0x234ba050">
+    <item key="OP_ID">2550000000131842</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234ba120">
+    <item key="0">
+    <hashref memory_address="0x234ba190">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1988</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234ba0f0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1988&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1988&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_15:
+  AZ_EXTRA_INFO_ID: 15
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333015
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x14b17c38">
+    <item key="0">
+    <hashref memory_address="0x120e43b8">
+    <item key="ABBREVIATED_TITLE">ADHES AGE</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x123715b8">
+    <item key="0">
+    <hashref memory_address="0x160f55c8">
+    <item key="ALTERNATIVE_TITLE">Curing Death </item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333015</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x12371568">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x13c3dbe0">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x120e43f8">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x1524af40">
+    <item key="0">
+    <hashref memory_address="0x155e0ab0">
+    <item key="CATEGORY_ID">8</item>
+    <item key="CATEGORY_NAME">Chemistry</item>
+    <item key="SUBCATEGORY_ID">16</item>
+    <item key="SUBCATEGORY_NAME">Chemical Engineering</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden">ADHAAO</item>
+    <item key="issn">0001-821X</item>
+    <item key="lccn" defined="false"></item>
+    <item key="normalized">ADHESIVES AGE</item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1bda5f20">
+    <item key="0">
+    <hashref memory_address="0x1bda5f40">
+    <item key="OP_ID">3450000000016812</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1bda5f90">
+    <item key="0">
+    <hashref memory_address="0x1bda5ff0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1bdaa450">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2002</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1bda5f80">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000034</item>
+    <item key="target_internal_name">EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</item>
+    <item key="target_name">EBSCOhost OmniFile Full Text Mega </item>
+    <item key="target_service_id">3450000000000033</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2002,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2002,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1c9602e0">
+    <item key="OP_ID">111037302894010</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1c9603b0">
+    <item key="0">
+    <hashref memory_address="0x1c960420">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1994</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1c9605a0">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2004</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1c960380">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111037301464000</item>
+    <item key="target_internal_name">FACTIVA</item>
+    <item key="target_name">Factiva</item>
+    <item key="target_service_id">111037301464002</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1994&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2004&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1994&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2004&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x1f3e8f88">
+    <item key="OP_ID">111077816274007</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1f3eb660">
+    <item key="0">
+    <hashref memory_address="0x1f3eb6d0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1990</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1f3eb850">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2002</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1f3eb630">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111031861260000</item>
+    <item key="target_internal_name">GALEGROUP_BUSINESS_INSIGHTS_ESSENTIALS</item>
+    <item key="target_name">Gale Cengage Business Insights: Essentials</item>
+    <item key="target_service_id">111031861260001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1990&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2002&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1990&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2002&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x234ba250">
+    <item key="OP_ID">2550000000131880</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234ba2a0">
+    <item key="0">
+    <hashref memory_address="0x234ba300">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1992</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x234ba490">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1999</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234ba290">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1992&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;1999&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1992&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;1999&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_16:
+  AZ_EXTRA_INFO_ID: 16
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333016
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x136fdf38">
+    <item key="0">
+    <hashref memory_address="0x10ec8c98">
+    <item key="ABBREVIATED_TITLE">ADM SCI Q</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x132cb350">
+    <item key="ABBREVIATED_TITLE">ADMIN SCI QUART</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x149653f0">
+    <item key="0">
+    <hashref memory_address="0x10b35a98">
+    <item key="ALTERNATIVE_TITLE">Administrative Science Quarterly</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333016</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x14965400">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x149653c0">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x143e7e38">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x15e86618">
+    <item key="0">
+    <hashref memory_address="0x160d6e40">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">37</item>
+    <item key="SUBCATEGORY_NAME">Business Management</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1603ffb8">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">48</item>
+    <item key="SUBCATEGORY_NAME">Economics</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x13b2bb18">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">38</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x1612ca48">
+    <item key="CATEGORY_ID">14</item>
+    <item key="CATEGORY_NAME">Law</item>
+    <item key="SUBCATEGORY_ID">128</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0xf7017d18">
+    <item key="CATEGORY_ID">14</item>
+    <item key="CATEGORY_NAME">Law</item>
+    <item key="SUBCATEGORY_ID">169</item>
+    <item key="SUBCATEGORY_NAME">Industrial Relations Law</item>
+    </hashref>
+    </item>
+    <item key="5">
+    <hashref memory_address="0xcaa6180">
+    <item key="CATEGORY_ID">11</item>
+    <item key="CATEGORY_NAME">Social Sciences</item>
+    <item key="SUBCATEGORY_ID">21</item>
+    <item key="SUBCATEGORY_NAME">Public Policy &amp; Administration</item>
+    </hashref>
+    </item>
+    <item key="6">
+    <hashref memory_address="0x159bee18">
+    <item key="CATEGORY_ID">11</item>
+    <item key="CATEGORY_NAME">Social Sciences</item>
+    <item key="SUBCATEGORY_ID">22</item>
+    <item key="SUBCATEGORY_NAME">Sociology</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden">ASCQAG</item>
+    <item key="issn">0001-8392</item>
+    <item key="lccn">   78648129 </item>
+    <item key="normalized">ADMINISTRATIVE SCIENCE QUARTERLY</item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1a2285f0">
+    <item key="0">
+    <hashref memory_address="0x1a228610">
+    <item key="OP_ID">3450000000022515</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a228660">
+    <item key="0">
+    <hashref memory_address="0x1a2286c0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1995</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1a228850">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2000</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a228650">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000047</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON</item>
+    <item key="target_name">EBSCOhost Business Abstracts with Full Text </item>
+    <item key="target_service_id">3450000000000057</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2000,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2000,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1a2fdbc8">
+    <item key="OP_ID">1000000000123063</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fdc18">
+    <item key="0">
+    <hashref memory_address="0x1a2fdc78">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1956</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fdc08">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1956,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1956,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x1b093b50">
+    <item key="OP_ID">3450000000019608</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1b093ba0">
+    <item key="0">
+    <hashref memory_address="0x1b093c00">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1995</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1b093d90">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2000</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1b093b90">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000037</item>
+    <item key="target_internal_name">EBSCOHOST_EDUCATION_FULL_TEXT_WILSON</item>
+    <item key="target_name">EBSCOhost Education Full Text</item>
+    <item key="target_service_id">3450000000000039</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2000,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2000,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x1bda60c0">
+    <item key="OP_ID">3450000000016813</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1bdaa460">
+    <item key="0">
+    <hashref memory_address="0x1bdaa4d0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1995</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1bdaa670">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2000</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1bdaa430">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000034</item>
+    <item key="target_internal_name">EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</item>
+    <item key="target_name">EBSCOhost OmniFile Full Text Mega </item>
+    <item key="target_service_id">3450000000000033</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2000,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2000,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0x1c29ef58">
+    <item key="OP_ID">3450000000020086</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1c29edb8">
+    <item key="0">
+    <hashref memory_address="0x1c29ee88">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1995</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1c2a15d8">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2000</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1c29ef68">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000033</item>
+    <item key="target_internal_name">EBSCOHOST_SOCIAL_SCIENCES_FULL_TEXT_WILSON</item>
+    <item key="target_name">EBSCOhost Social Sciences Full Text </item>
+    <item key="target_service_id">3450000000000031</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2000,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2000,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="5">
+    <hashref memory_address="0x1c325050">
+    <item key="OP_ID">1000000000072670</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1c3250a0">
+    <item key="0">
+    <hashref memory_address="0x1c325100">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1956</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1c325090">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000530</item>
+    <item key="target_internal_name">EBSCOHOST_SOCINDEX_WITH_FULL_TEXT</item>
+    <item key="target_name">EBSCOhost SocINDEX with Full Text</item>
+    <item key="target_service_id">1000000000001060</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1956,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1956,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="6">
+    <hashref memory_address="0x1f3eb790">
+    <item key="OP_ID">111077816274008</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1f3eb860">
+    <item key="0">
+    <hashref memory_address="0x1f3eb8d0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1989</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1f3eba50">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2003</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1f3eb830">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111031861260000</item>
+    <item key="target_internal_name">GALEGROUP_BUSINESS_INSIGHTS_ESSENTIALS</item>
+    <item key="target_name">Gale Cengage Business Insights: Essentials</item>
+    <item key="target_service_id">111031861260001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1989&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2003&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1989&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2003&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="7">
+    <hashref memory_address="0x20ac91d0">
+    <item key="OP_ID">111035480841002</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x20ac92a0">
+    <item key="0">
+    <hashref memory_address="0x20ac9310">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE">1</item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME">1</item>
+    <item key="THRESH_YEAR">1956</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x20ac9490">
+    <item key="THRESH_ISSUE">4</item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME">53</item>
+    <item key="THRESH_YEAR">2008</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x20ac9270">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111034808820000</item>
+    <item key="target_internal_name">JSTOR_COMPLETE</item>
+    <item key="target_name">JSTOR Complete</item>
+    <item key="target_service_id">111034808820001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1956,1,1) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2008,53,4)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1956,1,1) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2008,53,4)</item>
+    </hashref>
+    </item>
+    <item key="8">
+    <hashref memory_address="0x234ba3d0">
+    <item key="OP_ID">2550000000131888</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234ba4a0">
+    <item key="0">
+    <hashref memory_address="0x234ba510">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1987</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x234ba690">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2001</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234ba470">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1987&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2001&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1987&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2001&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="9">
+    <hashref memory_address="0x251ab4a8">
+    <item key="OP_ID">3230000000029185</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x251ab578">
+    <item key="0">
+    <hashref memory_address="0x251ab5e8">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE">1</item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME">44</item>
+    <item key="THRESH_YEAR">1999</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x251ab548">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3230000000000042</item>
+    <item key="target_internal_name">SAGE_PREMIER_2012</item>
+    <item key="target_name">SAGE Premier 2012</item>
+    <item key="target_service_id">3230000000000046</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1999,44,1)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1999,44,1)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_17:
+  AZ_EXTRA_INFO_ID: 17
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333017
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x120e43c8">
+    <item key="0">
+    <hashref memory_address="0x133ff800">
+    <item key="ABBREVIATED_TITLE">ADVAN APPL PROBAB</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x13a5a1a8">
+    <item key="ABBREVIATED_TITLE">ADV APPL PROBAB</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0xcce3040">
+    <item key="ABBREVIATED_TITLE">ADV APPL P</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x133ff7e0">
+    <item key="ABBREVIATED_TITLE">ADV APPL PROBABILITY</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x123d38f8">
+    <item key="0">
+    <hashref memory_address="0x1357ad48">
+    <item key="ALTERNATIVE_TITLE">Advances in applied probability</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333017</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x123d3928">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x10ec8c68">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0xcce3020">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x15b7c0f0">
+    <item key="0">
+    <hashref memory_address="0x150b2e50">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">185</item>
+    <item key="SUBCATEGORY_NAME">Operations Research</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x15ee8398">
+    <item key="CATEGORY_ID">10</item>
+    <item key="CATEGORY_NAME">Mathematical Sciences</item>
+    <item key="SUBCATEGORY_ID">61</item>
+    <item key="SUBCATEGORY_NAME">Applied Mathematics</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden">AAPBBD</item>
+    <item key="issn">0001-8678</item>
+    <item key="lccn" defined="false"></item>
+    <item key="normalized">ADVANCES IN APPLIED PROBABILITY</item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1a2fdd18">
+    <item key="0">
+    <hashref memory_address="0x1a2fdd48">
+    <item key="OP_ID">1000000000676497</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fdd98">
+    <item key="0">
+    <hashref memory_address="0x1a2fddf8">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2007</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fdd88">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,2007,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,2007,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x20ac93d0">
+    <item key="OP_ID">1000000000095977</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x20ac94a0">
+    <item key="0">
+    <hashref memory_address="0x20ac9510">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE">1</item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME">1</item>
+    <item key="THRESH_YEAR">1969</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x20ac9690">
+    <item key="THRESH_ISSUE">4</item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME">40</item>
+    <item key="THRESH_YEAR">2008</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x20ac9470">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111034808820000</item>
+    <item key="target_internal_name">JSTOR_COMPLETE</item>
+    <item key="target_name">JSTOR Complete</item>
+    <item key="target_service_id">111034808820001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1969,1,1) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2008,40,4)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1969,1,1) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,2008,40,4)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_18:
+  AZ_EXTRA_INFO_ID: 18
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333018
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x132f7640">
+    <item key="0">
+    <hashref memory_address="0xbb57248">
+    <item key="ABBREVIATED_TITLE">ADVERTISING AGE</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0xcce3030">
+    <item key="ABBREVIATED_TITLE">ADVERTISING AGE; MIDWEST REGION EDITION</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x12a32e28">
+    <item key="ABBREVIATED_TITLE">ADVERT AGE</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x10c6d288">
+    <item key="0">
+    <hashref memory_address="0x13d1cf80">
+    <item key="ALTERNATIVE_TITLE">Ad Age Global</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333018</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x10c6d298">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0xbb572b8">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x10c6d2a8">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x14c076f0">
+    <item key="0">
+    <hashref memory_address="0x1603c4d0">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">38</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x14721f58">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">84</item>
+    <item key="SUBCATEGORY_NAME">Trade and Commerce</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden">ADVAAQ</item>
+    <item key="issn">0001-8899</item>
+    <item key="lccn">   42047059 </item>
+    <item key="normalized">ADVERTISING AGE</item>
+    <item key="related_titles">
+    <arrayref memory_address="0x1635d240">
+    <item key="0">
+    <hashref memory_address="0x163e8720">
+    <item key="OBJECT_ID">954921333018</item>
+    <item key="RELATED_ISSN">1524-8984</item>
+    <item key="RELATED_OBJECT_ID">962824994228</item>
+    <item key="RELATION_TYPE">SUPPLEMENT</item>
+    <item key="TITLE_DISPLAY">Advertising age international</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x18d96250">
+    <item key="0">
+    <hashref memory_address="0x18d96280">
+    <item key="OP_ID">1000000000666978</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x18d962d0">
+    <item key="0">
+    <hashref memory_address="0x18d96330">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1996</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x18d962c0">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">1000000000001505</item>
+    <item key="target_internal_name">EBSCOHOST_ACADEMIC_SEARCH_COMPLETE</item>
+    <item key="target_name">EBSCOhost Academic Search Complete</item>
+    <item key="target_service_id">1000000000002159</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1996,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1996,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1a228790">
+    <item key="OP_ID">3450000000022517</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a22b010">
+    <item key="0">
+    <hashref memory_address="0x1a22b080">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a228830">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000047</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON</item>
+    <item key="target_name">EBSCOhost Business Abstracts with Full Text </item>
+    <item key="target_service_id">3450000000000057</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x1a2fdec8">
+    <item key="OP_ID">1000000000123073</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fdf18">
+    <item key="0">
+    <hashref memory_address="0x1a2fdf78">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1996</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fdf08">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1996,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1996,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x1af0ebe0">
+    <item key="OP_ID">111074637927007</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1af112a8">
+    <item key="0">
+    <hashref memory_address="0x1af11318">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1996</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1af11278">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111074637443000</item>
+    <item key="target_internal_name">EBSCOHOST_COMM_MASS_MEDIA_COMPLETE</item>
+    <item key="target_name">EBSCOhost Communication &amp; Mass Media Complete</item>
+    <item key="target_service_id">111074637444001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1996,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1996,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0x1bdaa5b0">
+    <item key="OP_ID">3450000000016822</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1bdaa680">
+    <item key="0">
+    <hashref memory_address="0x1bdaa6f0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1bdaa650">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000034</item>
+    <item key="target_internal_name">EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</item>
+    <item key="target_name">EBSCOhost OmniFile Full Text Mega </item>
+    <item key="target_service_id">3450000000000033</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="5">
+    <hashref memory_address="0x1c9604e0">
+    <item key="OP_ID">111037302894013</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1c9605b0">
+    <item key="0">
+    <hashref memory_address="0x1c960620">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1991</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1c960580">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111037301464000</item>
+    <item key="target_internal_name">FACTIVA</item>
+    <item key="target_name">Factiva</item>
+    <item key="target_service_id">111037301464002</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1991&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1991&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="6">
+    <hashref memory_address="0x1c9606e0">
+    <item key="OP_ID">2550000000123782</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1c960730">
+    <item key="0">
+    <hashref memory_address="0x1c960790">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LOWER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1c960920">
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_LESS">&lt;=</item>
+    <item key="THRESH_UPPER_LIMIT">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2002</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1c960720">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111037301464000</item>
+    <item key="target_internal_name">FACTIVA</item>
+    <item key="target_name">Factiva</item>
+    <item key="target_service_id">111037301464002</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1997&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2002&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1997&apos;,&apos;undef&apos;,&apos;undef&apos;) &amp;&amp; $obj-&gt;parsedDate(&apos;&lt;=&apos;,&apos;2002&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="7">
+    <hashref memory_address="0x1f3eb990">
+    <item key="OP_ID">111077816274009</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1f3eba60">
+    <item key="0">
+    <hashref memory_address="0x1f3ebad0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1f3eba30">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111031861260000</item>
+    <item key="target_internal_name">GALEGROUP_BUSINESS_INSIGHTS_ESSENTIALS</item>
+    <item key="target_name">Gale Cengage Business Insights: Essentials</item>
+    <item key="target_service_id">111031861260001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1997&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1997&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="8">
+    <hashref memory_address="0x21028390">
+    <item key="OP_ID">110997451458003</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x210283e0">
+    <item key="0">
+    <hashref memory_address="0x21028440">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1986</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x210283d0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">110997450724000</item>
+    <item key="target_internal_name">LEXISNEXIS_ACADEMIC</item>
+    <item key="target_name">LexisNexis Academic Universe</item>
+    <item key="target_service_id">110997450724001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1986&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1986&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="9">
+    <hashref memory_address="0x234ba5d0">
+    <item key="OP_ID">2550000000131913</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234ba6a0">
+    <item key="0">
+    <hashref memory_address="0x234ba710">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1999</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234ba670">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1999&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1999&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_20:
+  AZ_EXTRA_INFO_ID: 20
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333020
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x12cf1f68">
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x10c3d6e0">
+    <item key="0">
+    <hashref memory_address="0x11f81030">
+    <item key="ALTERNATIVE_TITLE">AgriMarketing</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333020</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x10c3d6f0">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x11f810a0">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x10c3d700">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0xccad068">
+    <item key="0">
+    <hashref memory_address="0x12074178">
+    <item key="CATEGORY_ID">6</item>
+    <item key="CATEGORY_NAME">Agriculture Sciences</item>
+    <item key="SUBCATEGORY_ID">173</item>
+    <item key="SUBCATEGORY_NAME">Agro Business, Economics and Policies</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x10a43188">
+    <item key="CATEGORY_ID">6</item>
+    <item key="CATEGORY_NAME">Agriculture Sciences</item>
+    <item key="SUBCATEGORY_ID">152</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x121e68c0">
+    <item key="CATEGORY_ID">2</item>
+    <item key="CATEGORY_NAME">Arts and Humanities</item>
+    <item key="SUBCATEGORY_ID">115</item>
+    <item key="SUBCATEGORY_NAME">Current Events &amp; News</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x1558d730">
+    <item key="CATEGORY_ID">2</item>
+    <item key="CATEGORY_NAME">Arts and Humanities</item>
+    <item key="SUBCATEGORY_ID">87</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0x13d82950">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">38</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="5">
+    <hashref memory_address="0x1550bcd8">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">84</item>
+    <item key="SUBCATEGORY_NAME">Trade and Commerce</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden" defined="false"></item>
+    <item key="issn">0002-1180</item>
+    <item key="lccn" defined="false"></item>
+    <item key="normalized">AGRI MARKETING</item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1a22b130">
+    <item key="0">
+    <hashref memory_address="0x1a22b160">
+    <item key="OP_ID">3450000000022522</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a22b1b0">
+    <item key="0">
+    <hashref memory_address="0x1a22b210">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1995</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a22b1a0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000047</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON</item>
+    <item key="target_name">EBSCOhost Business Abstracts with Full Text </item>
+    <item key="target_service_id">3450000000000057</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1a2fe068">
+    <item key="OP_ID">2670000000723137</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fe0b8">
+    <item key="0">
+    <hashref memory_address="0x1a2fe118">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2011</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fe0a8">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,2011,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,2011,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x1bdaa7b0">
+    <item key="OP_ID">3450000000016839</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1bdaa800">
+    <item key="0">
+    <hashref memory_address="0x1bdaa860">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1995</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1bdaa7f0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000034</item>
+    <item key="target_internal_name">EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</item>
+    <item key="target_name">EBSCOhost OmniFile Full Text Mega </item>
+    <item key="target_service_id">3450000000000033</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1995,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x1f3ebb90">
+    <item key="OP_ID">111077816274011</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1f3ebbe0">
+    <item key="0">
+    <hashref memory_address="0x1f3ebc40">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2000</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1f3ebbd0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111031861260000</item>
+    <item key="target_internal_name">GALEGROUP_BUSINESS_INSIGHTS_ESSENTIALS</item>
+    <item key="target_name">Gale Cengage Business Insights: Essentials</item>
+    <item key="target_service_id">111031861260001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2000&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2000&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0x234ba7d0">
+    <item key="OP_ID">2550000000131962</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234ba820">
+    <item key="0">
+    <hashref memory_address="0x234ba880">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1992</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234ba810">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1992&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1992&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_21:
+  AZ_EXTRA_INFO_ID: 21
+  AZ_PROFILE: default
+  OBJECT_ID: 954921333021
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x106dc0a8">
+    <item key="0">
+    <hashref memory_address="0x148c0f18">
+    <item key="ABBREVIATED_TITLE">AIR CONDITIONING HEATING AND REFRIGERATION NEWS</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x12612f18">
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921333021</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x148c0ef8">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x132e8790">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x132e87a0">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0xcebdbd8">
+    <item key="0">
+    <hashref memory_address="0x146f93d8">
+    <item key="CATEGORY_ID">3</item>
+    <item key="CATEGORY_NAME">Engineering</item>
+    <item key="SUBCATEGORY_ID">367</item>
+    <item key="SUBCATEGORY_NAME">Cryotechnology</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x14cc2ca8">
+    <item key="CATEGORY_ID">3</item>
+    <item key="CATEGORY_NAME">Engineering</item>
+    <item key="SUBCATEGORY_ID">146</item>
+    <item key="SUBCATEGORY_NAME">Electronics</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden" defined="false"></item>
+    <item key="issn">0002-2276</item>
+    <item key="lccn">sc 82003671 </item>
+    <item key="normalized">AIR CONDITIONING HEATING REFRIGERATION NEWS</item>
+    <item key="related_titles">
+    <arrayref memory_address="0x163d28f0">
+    <item key="0">
+    <hashref memory_address="0x16404ee0">
+    <item key="OBJECT_ID">954921333021</item>
+    <item key="RELATED_ISSN">0891-9976</item>
+    <item key="RELATED_OBJECT_ID">963018169898</item>
+    <item key="RELATION_TYPE">SUPPLEMENT</item>
+    <item key="TITLE_DISPLAY">Engineered Systems</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x16404f60">
+    <item key="OBJECT_ID">954921333021</item>
+    <item key="RELATED_ISSN">1061-9631</item>
+    <item key="RELATED_OBJECT_ID">991042749722398</item>
+    <item key="RELATION_TYPE">SUPPLEMENT</item>
+    <item key="TITLE_DISPLAY">The Air conditioning, heating and refrigeration news. HVAC/R directory issue</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1a2fe1b8">
+    <item key="0">
+    <hashref memory_address="0x1a2fe1e8">
+    <item key="OP_ID">1000000000123096</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fe238">
+    <item key="0">
+    <hashref memory_address="0x1a2fe298">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1994</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fe228">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1994,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1994,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1f3ebd10">
+    <item key="OP_ID">111077816275013</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1f3ebd60">
+    <item key="0">
+    <hashref memory_address="0x1f3ebdc0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1989</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1f3ebd50">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111031861260000</item>
+    <item key="target_internal_name">GALEGROUP_BUSINESS_INSIGHTS_ESSENTIALS</item>
+    <item key="target_name">Gale Cengage Business Insights: Essentials</item>
+    <item key="target_service_id">111031861260001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1989&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1989&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x234ba950">
+    <item key="OP_ID">2550000000131982</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234ba9a0">
+    <item key="0">
+    <hashref memory_address="0x234baa00">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234ba990">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1997&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1997&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_22:
+  AZ_EXTRA_INFO_ID: 22
+  AZ_PROFILE: default
+  OBJECT_ID: 954921334022
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x15cb5b10">
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x14c74d60">
+    <item key="0">
+    <hashref memory_address="0x14c74d90">
+    <item key="ALTERNATIVE_TITLE">The Air Force comptroller</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921334022</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x14c74d80">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x137c1610">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x137c1620">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x1521d698">
+    <item key="0">
+    <hashref memory_address="0x155e0750">
+    <item key="CATEGORY_ID">13</item>
+    <item key="CATEGORY_NAME">Business, Economy and Management</item>
+    <item key="SUBCATEGORY_ID">38</item>
+    <item key="SUBCATEGORY_NAME">General and Others</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0xfdc2758">
+    <item key="CATEGORY_ID">3</item>
+    <item key="CATEGORY_NAME">Engineering</item>
+    <item key="SUBCATEGORY_ID">302</item>
+    <item key="SUBCATEGORY_NAME">Aerospace and Aeronautics</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x10277f60">
+    <item key="CATEGORY_ID">11</item>
+    <item key="CATEGORY_NAME">Social Sciences</item>
+    <item key="SUBCATEGORY_ID">54</item>
+    <item key="SUBCATEGORY_NAME">Foreign Policy, Defense and Internal Security</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0xcaf0898">
+    <item key="CATEGORY_ID">11</item>
+    <item key="CATEGORY_NAME">Social Sciences</item>
+    <item key="SUBCATEGORY_ID">21</item>
+    <item key="SUBCATEGORY_NAME">Public Policy &amp; Administration</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden">AFCTB3</item>
+    <item key="issn">0002-2365</item>
+    <item key="lccn" defined="false"></item>
+    <item key="normalized">AIR FORCE COMPTROLLER</item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1a2fe338">
+    <item key="0">
+    <hashref memory_address="0x1a2fe368">
+    <item key="OP_ID">1000000000123097</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fe3b8">
+    <item key="0">
+    <hashref memory_address="0x1a2fe418">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fe3a8">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x234bbf80">
+    <item key="OP_ID">2550000000131983</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234bbfd0">
+    <item key="0">
+    <hashref memory_address="0x234bc030">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1996</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234bbfc0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1996,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1996,undef,undef)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
+az_extra_info_23:
+  AZ_EXTRA_INFO_ID: 23
+  AZ_PROFILE: default
+  OBJECT_ID: 954921334023
+  EXTRA_INFO_XML: |
+    <perldata>
+    <hashref memory_address="0xb9e6770">
+    <item key="ABBREVIATED_TITLES">
+    <arrayref memory_address="0x13188d18">
+    <item key="0">
+    <hashref memory_address="0x14381040">
+    <item key="ABBREVIATED_TITLE">AIR TRANSP WORLD</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="ALTERNATIVE_TITLES">
+    <arrayref memory_address="0x153abb48">
+    <item key="0">
+    <hashref memory_address="0x151eb800">
+    <item key="ALTERNATIVE_TITLE">Air Transport World</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x150db9d0">
+    <item key="ALTERNATIVE_TITLE">Air Transport World (Penton)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="OBJECT_ID">954921334023</item>
+    <item key="PINYIN_TITLES">
+    <arrayref memory_address="0x109e5c50">
+    </arrayref>
+    </item>
+    <item key="TRANSLATED_TITLES">
+    <arrayref memory_address="0x11fbef50">
+    </arrayref>
+    </item>
+    <item key="UNIFORM_TITLES">
+    <arrayref memory_address="0x153abb28">
+    </arrayref>
+    </item>
+    <item key="category_loop">
+    <arrayref memory_address="0x14f35c88">
+    <item key="0">
+    <hashref memory_address="0x14e93e90">
+    <item key="CATEGORY_ID">3</item>
+    <item key="CATEGORY_NAME">Engineering</item>
+    <item key="SUBCATEGORY_ID">181</item>
+    <item key="SUBCATEGORY_NAME">Automobile and Transportation</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1437c148">
+    <item key="CATEGORY_ID">3</item>
+    <item key="CATEGORY_NAME">Engineering</item>
+    <item key="SUBCATEGORY_ID">66</item>
+    <item key="SUBCATEGORY_NAME">Fire Fighting and Safety Engineering</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="coden" defined="false"></item>
+    <item key="issn">0002-2543</item>
+    <item key="lccn">   66098382 </item>
+    <item key="normalized">AIR TRANSPORT WORLD</item>
+    <item key="related_titles">
+    <arrayref memory_address="0x1622db30">
+    <item key="0">
+    <hashref memory_address="0x1640af18">
+    <item key="OBJECT_ID">954921334023</item>
+    <item key="RELATED_ISSN">1536-7789</item>
+    <item key="RELATED_OBJECT_ID">991042727100164</item>
+    <item key="RELATION_TYPE">SUPPLEMENT</item>
+    <item key="TITLE_DISPLAY">ATW&apos;s airport equipment &amp; technology</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="target_service_loop">
+    <arrayref memory_address="0x1a22b2b0">
+    <item key="0">
+    <hashref memory_address="0x1a22b2e0">
+    <item key="OP_ID">3450000000022525</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a22b330">
+    <item key="0">
+    <hashref memory_address="0x1a22b390">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a22b320">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000047</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON</item>
+    <item key="target_name">EBSCOhost Business Abstracts with Full Text </item>
+    <item key="target_service_id">3450000000000057</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="1">
+    <hashref memory_address="0x1a2fe508">
+    <item key="OP_ID">1000000000123099</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1a2fe558">
+    <item key="0">
+    <hashref memory_address="0x1a2fe5b8">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1a2fe548">
+    </arrayref>
+    </item>
+    <item key="authentication"></item>
+    <item key="note"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name" defined="false"></item>
+    <item key="target_id">1000000000000630</item>
+    <item key="target_internal_name">EBSCOHOST_BUSINESS_SOURCE_COMPLETE</item>
+    <item key="target_name">EBSCOhost Business Source Complete</item>
+    <item key="target_service_id">1000000000001224</item>
+    <item key="threshold">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1997,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&quot;&gt;=&quot;,1997,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="2">
+    <hashref memory_address="0x1bdaa930">
+    <item key="OP_ID">3450000000016852</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1bdaa980">
+    <item key="0">
+    <hashref memory_address="0x1bdaa9e0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1997</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1bdaa970">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">3450000000000034</item>
+    <item key="target_internal_name">EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</item>
+    <item key="target_name">EBSCOhost OmniFile Full Text Mega </item>
+    <item key="target_service_id">3450000000000033</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1997,undef,undef)</item>
+    </hashref>
+    </item>
+    <item key="3">
+    <hashref memory_address="0x1c960860">
+    <item key="OP_ID">111037302895022</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1c960930">
+    <item key="0">
+    <hashref memory_address="0x1c9609a0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1989</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1c960900">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111037301464000</item>
+    <item key="target_internal_name">FACTIVA</item>
+    <item key="target_name">Factiva</item>
+    <item key="target_service_id">111037301464002</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1989&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1989&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="4">
+    <hashref memory_address="0x1f3ebe90">
+    <item key="OP_ID">111077816275014</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x1f3ebee0">
+    <item key="0">
+    <hashref memory_address="0x1f3ebf40">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1983</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x1f3ebed0">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">111031861260000</item>
+    <item key="target_internal_name">GALEGROUP_BUSINESS_INSIGHTS_ESSENTIALS</item>
+    <item key="target_name">Gale Cengage Business Insights: Essentials</item>
+    <item key="target_service_id">111031861260001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1983&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;1983&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="5">
+    <hashref memory_address="0x21028510">
+    <item key="OP_ID">2560000000061651</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x21028560">
+    <item key="0">
+    <hashref memory_address="0x210285c0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">2009</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x21028550">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">110997450724000</item>
+    <item key="target_internal_name">LEXISNEXIS_ACADEMIC</item>
+    <item key="target_name">LexisNexis Academic Universe</item>
+    <item key="target_service_id">110997450724001</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2009&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,&apos;2009&apos;,&apos;undef&apos;,&apos;undef&apos;)</item>
+    </hashref>
+    </item>
+    <item key="6">
+    <hashref memory_address="0x234bc100">
+    <item key="OP_ID">2670000000783317</item>
+    <item key="PARSE_DATE">
+    <arrayref memory_address="0x234bc150">
+    <item key="0">
+    <hashref memory_address="0x234bc1b0">
+    <item key="THRESH_GREATOR">&gt;=</item>
+    <item key="THRESH_ISSUE"></item>
+    <item key="THRESH_UNRELATED">1</item>
+    <item key="THRESH_VOLUME"></item>
+    <item key="THRESH_YEAR">1991</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    <item key="TIME_DIFF">
+    <arrayref memory_address="0x234bc140">
+    </arrayref>
+    </item>
+    <item key="authentication" defined="false"></item>
+    <item key="note" defined="false"></item>
+    <item key="service">getFullTxt</item>
+    <item key="service_name"></item>
+    <item key="target_id">2400000000000013</item>
+    <item key="target_internal_name">PROQUEST_CENTRAL_NEW_PLATFORM</item>
+    <item key="target_name">ProQuest Central New Platform</item>
+    <item key="target_service_id">2400000000000013</item>
+    <item key="threshold">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1991,undef,undef)</item>
+    <item key="threshold_global">$obj-&gt;parsedDate(&apos;&gt;=&apos;,1991,undef,undef)</item>
+    </hashref>
+    </item>
+    </arrayref>
+    </item>
+    </hashref>
+    </perldata>
