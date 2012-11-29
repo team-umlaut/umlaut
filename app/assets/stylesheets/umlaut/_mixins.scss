@@ -6,6 +6,10 @@
 }
 
 @mixin umlaut_icons {
+  background: {
+    image: image-url("umlaut_icons.png");
+    repeat: no-repeat;
+  }
   display: inline-block;
   width: 16px;
   height: 16px;

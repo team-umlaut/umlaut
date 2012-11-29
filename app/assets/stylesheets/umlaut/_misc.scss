@@ -27,13 +27,3 @@
     }
   }
 }
-
-[class^="umlaut_icons-"],
-[class*=" umlaut_icons-"] {
-  @include umlaut_icons;
-}
-
-.umlaut_icons-famfamfam-error,
-.umlaut_icons-famfamfam-help {
-  vertical-align: bottom;
-}

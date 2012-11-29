@@ -1,11 +1,9 @@
-@import "compass";
-@import "umlaut_icons/*.png";
-@include all-umlaut_icons-sprites;
 @import "umlaut/variables";
 @import "bootstrap";
 @import "bootstrap-responsive";
 @import "umlaut/mixins";
-@import "umlaut/reset";
+@import "umlaut/base";
+@import "umlaut/icons";
 @import "umlaut/forms";
 @import "umlaut/misc";
 @import "umlaut/az";
@@ -13,6 +11,7 @@
 @import "umlaut/results";
 @import "umlaut/resolve";
 @import "umlaut/admin";
+@import "umlaut/citation";
 
 .umlaut-container {
   @extend .container;

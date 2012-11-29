@@ -1,0 +1,12 @@
+.umlaut-citation {
+  .umlaut-citation-label,
+  .umlaut-citation-content {
+    @extend .text-small;
+    &.title, &.author {
+      @extend .text-large;
+    }
+  }
+  // Clustered citation elements
+  .published, .volume, .issue, .page {
+  }
+}

@@ -43,37 +43,48 @@ module ResolveHelper
     return nil
   end
 
-  # Generate the citation
+  # 
+  # Returns the citation 
+  # 
+  # Specifically returns a description list of citation elements.
+  # 
   def citation(cite)
-    return content_tag(:dl, :class => "dl-horizontal") do
+    return content_tag(:dl, :class => "dl-horizontal umlaut-citation") {
+      citations = "".html_safe
       # Title
-      citations = citation_element(cite[:title_label], cite[:title], ["strong", "text-large"], ["text-large"])
+      citations << citation_element(cite[:title_label], cite[:title], "title")
       # Author
-      citations << citation_element("Author", cite[:author], ["strong", "text-large"], ["text-large"]) if cite[:author]
+      citations << citation_element("Author", cite[:author]) if cite[:author]
       # Subtitle
-      citations << citation_element(cite[:subtitle_label], cite[:subtitle], ["strong", "text-small"]) if cite[:subtitle]
+      citations << citation_element(cite[:subtitle_label], cite[:subtitle], "subtitle") if cite[:subtitle]
       # ISSN
-      citations << citation_element("ISSN", cite[:issn], ["strong", "text-small"]) unless (cite[:issn].nil? or cite[:issn].empty?)
+      citations << citation_element("ISSN", cite[:issn]) unless (cite[:issn].nil? or cite[:issn].empty?)
       # ISBN
-      citations << citation_element("ISBN", cite[:isbn], ["strong", "text-small"]) unless (cite[:isbn].nil? or cite[:isbn].empty?)
+      citations << citation_element("ISBN", cite[:isbn]) unless (cite[:isbn].nil? or cite[:isbn].empty?)
       # Publisher
       citations << citation_element("Publisher", cite[:pub]) unless (cite[:pub].nil? or cite[:pub].empty?)
       # Publishing info, etc.
-      unless cite[:date].blank? && cite[:volume].blank? && cite[:issue].blank? && cite[:page].blank?
-        citations << citation_element("Published", date_format(cite[:date])) unless (cite[:date].nil? or cite[:date].empty?)
-        citations << citation_element("Volume", cite[:volume]) unless (cite[:volume].nil? or cite[:volume].empty?)
-        citations << citation_element("Issue", cite[:issue]) unless (cite[:issue].nil? or cite[:issue].empty?)
-        citations << citation_element("Page", cite[:page]) unless (cite[:page].nil? or cite[:page].empty?)
-      end
+      citations << citation_element("Published", date_format(cite[:date])) unless (cite[:date].nil? or cite[:date].empty?)
+      citations << citation_element("Volume", cite[:volume]) unless (cite[:volume].nil? or cite[:volume].empty?)
+      citations << citation_element("Issue", cite[:issue]) unless (cite[:issue].nil? or cite[:issue].empty?)
+      citations << citation_element("Page", cite[:page]) unless (cite[:page].nil? or cite[:page].empty?)
       citations
-    end
+    }
   end
 
-  def citation_element(label, content, label_class=[], content_class=[])
-    label_class.push("text-small") if label_class.empty?
-    content_class.push("text-small") if content_class.empty?
-    return (content_tag(:dt, "#{label}:", :class => label_class.push("umlaut-citation-label")) + 
-      content_tag(:dd, content, :class => label_class.push("umlaut-citation-content")))
+  # 
+  # Returns a citation element that consists of an element label and 
+  # the citation element content (data?).
+  # 
+  # Specifically returns a description list pair
+  #   <dt class="#{label} umlaut-citation-label">#{label}</dt>
+  #   <dd class="#{label} umlaut-citation-content">#{content}</dd>
+  # 
+  def citation_element(label, contents, klass="")
+    contents = [contents] if contents.is_a? String
+    return (content_tag(:dt, "#{label}:", :class => [label.downcase, "umlaut-citation-label", klass]) + 
+      (contents.collect { |content| 
+        content_tag(:dd, content, :class => [label.downcase, "umlaut-citation-content", klass]) }).join.html_safe)
   end
 
   # Did this come from citation linker style entry?

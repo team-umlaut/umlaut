@@ -3,7 +3,6 @@ require 'umlaut/routes'
 # not sure why including openurl gem doesn't do the require, but it
 # seems to need this. 
 require 'openurl'
-require 'compass-rails'
 require 'bootstrap-sass'
 
 module Umlaut
@@ -36,7 +35,6 @@ module Umlaut
     initializer "#{engine_name}.asset_pipeline" do |app|
       app.config.assets.precompile << 'umlaut/update_html.js'
       app.config.assets.precompile << "umlaut_ui.js"
-      app.config.compass.sprite_load_path << File.join(self.root, "app", "assets", "images")
     end
     
     # Patch with fixed 'fair' version of ConnectionPool, see 
