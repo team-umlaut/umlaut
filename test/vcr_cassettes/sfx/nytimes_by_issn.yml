@@ -1,265 +1,699 @@
----
-http_interactions:
-- request:
-    method: get
-    uri: http://sfx.library.edu/local?ctx_enc=info:ofi/enc:UTF-8&ctx_id=&ctx_tim=2012-10-03T15:49:34-04:00&ctx_ver=Z39.88-2004&rft.coden=NYTIAO&rft.eissn=1553-8095&rft.genre=journal&rft.issn=0362-4331&rft.jtitle=The%20New%20York%20times&rft.language=eng&rft.lccn=sn%2078004456%20&rft.object_id=110975413976006&rft.object_type=NEWSPAPER&rft.place=New-York%20%5BN.Y.%5D&rft.pub=%5BH.J.%20Raymond%20%26%20Co.%5D&rft.stitle=NEW%20YORK%20TIMES&rft.title=The%20New%20York%20times&rft_val_fmt=info:ofi/fmt:kev:mtx:journal&sfx.ignore_date_threshold=1&sfx.response_type=multi_obj_xml&sfx.show_availability=1&url_ctx_fmt=info:ofi/fmt:kev:mtx:ctx&url_ver=Z39.88-2004
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - ! '*/*'
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Wed, 03 Oct 2012 16:52:19 GMT
-      Server:
-      - Apache
-      Content-Type:
-      - application/xml
-      Transfer-Encoding:
-      - chunked
-    body:
-      encoding: US-ASCII
-      string: ! "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n\n<ctx_obj_set>\n <ctx_obj
-        identifier=\"\">\n  <ctx_obj_attributes>&lt;perldata&gt;\n &lt;hash&gt;\n
-        \ &lt;item key=\"rft.issn\"&gt;0362-4331&lt;/item&gt;\n  &lt;item key=\"ctx_tim\"&gt;2012-10-03T12:52:19-04:00&lt;/item&gt;\n
-        \ &lt;item key=\"sfx.show_availability\"&gt;1&lt;/item&gt;\n  &lt;item key=\"_stash\"&gt;\n
-        \  &lt;hash&gt;\n   &lt;/hash&gt;\n  &lt;/item&gt;\n  &lt;item key=\"ctx_ver\"&gt;Z39.88-2004&lt;/item&gt;\n
-        \ &lt;item key=\"rft.eissn\"&gt;1553-8095&lt;/item&gt;\n  &lt;item key=\"rft.place\"&gt;New-York
-        [N.Y.]&lt;/item&gt;\n  &lt;item key=\"@sfx.subcategory\"&gt;\n   &lt;array&gt;\n
-        \   &lt;item key=\"0\"&gt;Current Events &amp;amp; News&lt;/item&gt;\n   &lt;/array&gt;\n
-        \ &lt;/item&gt;\n  &lt;item key=\"rft.lccn\"&gt;sn 78004456 &lt;/item&gt;\n
-        \ &lt;item key=\"@rft_id\"&gt;\n   &lt;array&gt;\n   &lt;/array&gt;\n  &lt;/item&gt;\n
-        \ &lt;item key=\"sfx.response_type\"&gt;multi_obj_xml&lt;/item&gt;\n  &lt;item
-        key=\"sfx.ignore_char_set\"&gt;1&lt;/item&gt;\n  &lt;item key=\"req.session_id\"&gt;sB21B5530-0D7A-11E2-8F25-C675FE4C1AE4&lt;/item&gt;\n
-        \ &lt;item key=\"url_ver\"&gt;Z39.88-2004&lt;/item&gt;\n  &lt;item key=\"ctx_enc\"&gt;UTF-8&lt;/item&gt;\n
-        \ &lt;item key=\"rft.object_type\"&gt;NEWSPAPER&lt;/item&gt;\n  &lt;item key=\"rft.language\"&gt;eng&lt;/item&gt;\n
-        \ &lt;item key=\"sfx.has_full_text\"&gt;yes&lt;/item&gt;\n  &lt;item key=\"rft.object_id\"&gt;110975413976006&lt;/item&gt;\n
-        \ &lt;item key=\"rft.genre\"&gt;journal&lt;/item&gt;\n  &lt;item key=\"sfx.ignore_date_threshold\"&gt;1&lt;/item&gt;\n
-        \ &lt;item key=\"sfx.request_id\"&gt;2576885&lt;/item&gt;\n  &lt;item key=\"rft.pub\"&gt;[H.J.
-        Raymond &amp;amp; Co.]&lt;/item&gt;\n  \n  &lt;item key=\"rft.title\"&gt;The
-        New York times&lt;/item&gt;\n  &lt;item key=\"url_ctx_fmt\"&gt;info:ofi/fmt:kev:mtx:ctx&lt;/item&gt;\n
-        \ &lt;item key=\"@rft.stitle\"&gt;\n   &lt;array&gt;\n    &lt;item key=\"0\"&gt;NEW
-        YORK TIMES&lt;/item&gt;\n    &lt;item key=\"1\"&gt;NEW YORK TIMES&lt;/item&gt;\n
-        \   &lt;item key=\"2\"&gt;NEW YORK DAILY TIMES&lt;/item&gt;\n    &lt;item
-        key=\"3\"&gt;NEW YORK TIMES, THE&lt;/item&gt;\n    &lt;item key=\"4\"&gt;NY
-        TIMES (PRINT)&lt;/item&gt;\n    &lt;item key=\"5\"&gt;NEW YORK TIMES LATE
-        EDITION (EAST COAST)&lt;/item&gt;\n    &lt;item key=\"6\"&gt;NEW YORK TIMES
-        ON THE WEB&lt;/item&gt;\n    &lt;item key=\"7\"&gt;NEW YORK TIMES ON THE WEB,
-        THE&lt;/item&gt;\n    &lt;item key=\"8\"&gt;NEW YORK TIMES  LATE EDITION&lt;/item&gt;\n
-        \  &lt;/array&gt;\n  &lt;/item&gt;\n  &lt;item key=\"@rfe_id\"&gt;\n   &lt;array&gt;\n
-        \  &lt;/array&gt;\n  &lt;/item&gt;\n  &lt;item key=\"rft.jtitle\"&gt;The New
-        York times&lt;/item&gt;\n  &lt;item key=\"rft.coden\"&gt;NYTIAO&lt;/item&gt;\n
-        \ &lt;item key=\"sfx.sourcename\"&gt;DEFAULT&lt;/item&gt;\n  &lt;item key=\"rft_val_fmt\"&gt;journal&lt;/item&gt;\n
-        \ &lt;item key=\"existing_ts_ids\"&gt;\n   &lt;array&gt;\n    &lt;item key=\"0\"&gt;111027614344001&lt;/item&gt;\n
-        \   &lt;item key=\"1\"&gt;111069357678001&lt;/item&gt;\n    &lt;item key=\"2\"&gt;111076678899001&lt;/item&gt;\n
-        \   &lt;item key=\"3\"&gt;111000155328001&lt;/item&gt;\n    &lt;item key=\"4\"&gt;111032274555001&lt;/item&gt;\n
-        \   &lt;item key=\"5\"&gt;20430000000000002&lt;/item&gt;\n    &lt;item key=\"6\"&gt;20430000000000000&lt;/item&gt;\n
-        \   &lt;item key=\"7\"&gt;111037301464002&lt;/item&gt;\n    &lt;item key=\"8\"&gt;1000000000003254&lt;/item&gt;\n
-        \   &lt;item key=\"9\"&gt;2400000000000013&lt;/item&gt;\n    &lt;item key=\"10\"&gt;3450000000000033&lt;/item&gt;\n
-        \   &lt;item key=\"11\"&gt;2610000000000093&lt;/item&gt;\n    &lt;item key=\"12\"&gt;3450000000000057&lt;/item&gt;\n
-        \   &lt;item key=\"13\"&gt;3450000000000033&lt;/item&gt;\n    &lt;item key=\"14\"&gt;1000000000003344&lt;/item&gt;\n
-        \   &lt;item key=\"15\"&gt;110976638852341&lt;/item&gt;\n    &lt;item key=\"16\"&gt;2610000000000093&lt;/item&gt;\n
-        \   &lt;item key=\"17\"&gt;110997450724001&lt;/item&gt;\n   &lt;/array&gt;\n
-        \ &lt;/item&gt;\n  &lt;item key=\"sfx.sid\"&gt;DEFAULT&lt;/item&gt;\n  &lt;item
-        key=\"@sfx.category\"&gt;\n   &lt;array&gt;\n    &lt;item key=\"0\"&gt;Arts
-        and Humanities&lt;/item&gt;\n   &lt;/array&gt;\n  &lt;/item&gt;\n &lt;/hash&gt;\n&lt;/perldata&gt;\n</ctx_obj_attributes>\n
-        \ <ctx_obj_targets>\n   <target>\n    <target_name>EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON</target_name>\n
-        \   <target_public_name>EBSCOhost Business Abstracts with Full Text </target_public_name>\n
-        \   <object_portfolio_id>2670000000679815</object_portfolio_id>\n    <target_id>3450000000000047</target_id>\n
-        \   <target_service_id>3450000000000057</target_service_id>\n    <service_type>getFullTxt</service_type>\n
-        \   <parser>EBSCO_HOST::ebsco_am</parser>\n    <parse_param>db_host=bft&amp;\r\nebscohosturl
-        = http://search.ebscohost.com &amp; \r\nlinkurl=http://openurl.ebscohost.com/linksvc/linking.aspx
-        &amp; shib=&amp;jkey=3RAH</parse_param>\n    <proxy>yes</proxy>\n    <crossref>no</crossref>\n
-        \   <note></note>\n    <authentication></authentication>\n    <char_set>iso-8859-1</char_set>\n
-        \   <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=bft&amp;jn=3RAH&amp;scope=site</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
-        \      <coverage_statement>Available from 2011</coverage_statement>\n      </threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
-        \     <year>2011</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
-        \  </target>\n   <target>\n    <target_name>EBSCOHOST_NEWSPAPER_SOURCE_PLUS</target_name>\n
-        \   <target_public_name>EBSCOhost Newspaper Source Plus</target_public_name>\n
-        \   <object_portfolio_id>1000000002083749</object_portfolio_id>\n    <target_id>1000000000002557</target_id>\n
-        \   <target_service_id>1000000000003254</target_service_id>\n    <service_type>getFullTxt</service_type>\n
-        \   <parser>EBSCO_HOST::newspapers</parser>\n    <parse_param>url=http://search.ebscohost.com/login.aspx
-        &amp; db_code=n5h&amp;jkey=New+York+Times</parse_param>\n    <proxy>yes</proxy>\n
-        \   <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
-        \   <char_set></char_set>\n    <displayer>FT::NO_FILL_IN</displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/login.aspx?direct=true&amp;db=n5h&amp;scope=site&amp;jn=New+York+Times</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
-        \      <coverage_statement>Available from 1985</coverage_statement>\n      </threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
-        \     <year>1985</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
-        \  </target>\n   <target>\n    <target_name>EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</target_name>\n
-        \   <target_public_name>EBSCOhost OmniFile Full Text Mega </target_public_name>\n
-        \   <object_portfolio_id>2670000000679563</object_portfolio_id>\n    <target_id>3450000000000034</target_id>\n
-        \   <target_service_id>3450000000000033</target_service_id>\n    <service_type>getFullTxt</service_type>\n
-        \   <parser>EBSCO_HOST::ebsco_am</parser>\n    <parse_param>db_host=ofm&amp;\r\nebscohosturl
-        = http://search.ebscohost.com &amp; \r\nlinkurl=http://openurl.ebscohost.com/linksvc/linking.aspx
-        &amp; shib=&amp;jkey=3RAH</parse_param>\n    <proxy>yes</proxy>\n    <crossref>no</crossref>\n
-        \   <note></note>\n    <authentication></authentication>\n    <char_set>iso-8859-1</char_set>\n
-        \   <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=ofm&amp;jn=3RAH&amp;scope=site</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
-        \      <coverage_statement>Available from 2011</coverage_statement>\n      </threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
-        \     <year>2011</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
-        \  </target>\n   <target>\n    <target_name>EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</target_name>\n
-        \   <target_public_name>EBSCOhost OmniFile Full Text Mega </target_public_name>\n
-        \   <object_portfolio_id>3450000000018747</object_portfolio_id>\n    <target_id>3450000000000034</target_id>\n
-        \   <target_service_id>3450000000000033</target_service_id>\n    <service_type>getFullTxt</service_type>\n
-        \   <parser>EBSCO_HOST::ebsco_am</parser>\n    <parse_param>db_host=ofm&amp;\r\nebscohosturl
-        = http://search.ebscohost.com &amp; \r\nlinkurl=http://openurl.ebscohost.com/linksvc/linking.aspx
-        &amp; shib=&amp;jkey=D9ZZ</parse_param>\n    <proxy>yes</proxy>\n    <crossref>no</crossref>\n
-        \   <note></note>\n    <authentication></authentication>\n    <char_set>iso-8859-1</char_set>\n
-        \   <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=ofm&amp;jn=D9ZZ&amp;scope=site</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
-        \      <coverage_statement>Available in 2003</coverage_statement>\n      </threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <in>\n      <year>2003</year>\n
-        \    </in>\n     <embargo></embargo>\n    </coverage>\n   </target>\n   <target>\n
-        \   <target_name>MISCELLANEOUS_FREE_EJOURNALS</target_name>\n    <target_public_name>Free
-        E- Journals</target_public_name>\n    <object_portfolio_id>1000000000716879</object_portfolio_id>\n
-        \   <target_id>110976638852340</target_id>\n    <target_service_id>110976638852341</target_service_id>\n
-        \   <service_type>getFullTxt</service_type>\n    <parser>Bulk::BULK</parser>\n
-        \   <parse_param>jkey=http://www.nytimes.com/</parse_param>\n    <proxy>no</proxy>\n
-        \   <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
-        \   <char_set></char_set>\n    <displayer>FT::NO_FILL_IN</displayer>\n    <target_url>http://www.nytimes.com/</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
-        \      <coverage_statement>Available from 1851  until 1922</coverage_statement>\n
-        \      <coverage_statement>Available from 1987</coverage_statement>\n      </threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
-        \     <year>1851</year>\n     </from>\n     <to>\n      <year>1922</year>\n
-        \    </to>\n     <from>\n      <year>1987</year>\n     </from>\n     <embargo></embargo>\n
-        \   </coverage>\n   </target>\n   <target>\n    <target_name>GALEGROUP_IT_NEWSSTAND</target_name>\n
-        \   <target_public_name>Gale Cengage Newsstand</target_public_name>\n    <object_portfolio_id>1000000002171800</object_portfolio_id>\n
-        \   <target_id>1000000000002642</target_id>\n    <target_service_id>1000000000003344</target_service_id>\n
-        \   <service_type>getFullTxt</service_type>\n    <parser>Gale::OpenURL</parser>\n
-        \   <parse_param>url= http://find.galegroup.com/openurl/openurl &amp;dbase=STND
-        &amp;\r\nloc_id=nysl_me_newyorku &amp;\r\nart=$$ART &amp;ltitle=New+York+Times</parse_param>\n
-        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
-        \   <char_set></char_set>\n    <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://find.galegroup.com/openurl/openurl?res_id=info%3Asid%2Fgale%3ASTND&amp;rft.issn=0362-4331&amp;req_dat=info%3Asid%2Fgale%3Augnid%3Anysl_me_newyorku&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&amp;ctx_enc=info%3Aofi%3Aenc%3AUTF-8&amp;url_ver=Z39.88-2004&amp;rft.jtitle=New+York+Times</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
-        \      <coverage_statement>Available from 1985</coverage_statement>\n      </threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
-        \     <year>1985</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
-        \  </target>\n   <target>\n    <target_name>LEXISNEXIS_ACADEMIC</target_name>\n
-        \   <target_public_name>LexisNexis Academic Universe</target_public_name>\n
-        \   <object_portfolio_id>111020439515049</object_portfolio_id>\n    <target_id>110997450724000</target_id>\n
-        \   <target_service_id>110997450724001</target_service_id>\n    <service_type>getFullTxt</service_type>\n
-        \   <parser>LEXIS::NEXIS</parser>\n    <parse_param>url=http://www.lexisnexis.com/hottopics/lnacademic&amp;jkey=6742
-        &amp; type=newspaper</parse_param>\n    <proxy>yes</proxy>\n    <crossref>no</crossref>\n
-        \   <note></note>\n    <authentication></authentication>\n    <char_set>iso-8859-1</char_set>\n
-        \   <displayer>LEXIS::NEXIS</displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://www.lexisnexis.com/hottopics/lnacademic?verb=sr&amp;csi=6742</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
-        \      <coverage_statement>Available from 1980</coverage_statement>\n      </threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
-        \     <year>1980</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
-        \  </target>\n   <target>\n    <target_name>PROQUEST_CENTRAL_NEW_PLATFORM</target_name>\n
-        \   <target_public_name>ProQuest Central New Platform</target_public_name>\n
-        \   <object_portfolio_id>2550000000138186</object_portfolio_id>\n    <target_id>2400000000000013</target_id>\n
-        \   <target_service_id>2400000000000013</target_service_id>\n    <service_type>getFullTxt</service_type>\n
-        \   <parser>PROQUEST::open</parser>\n    <parse_param>url=http://gateway.proquest.com/openurl
-        &amp; clientid=&amp;jkey=11561 &amp; exception2=issn &amp; exception1=1 </parse_param>\n
-        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
-        \   <char_set>iso-8859-1</char_set>\n    <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=11561&amp;res_dat=xri%3Apqm&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ver=Z39.88-2004&amp;genre=journal</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
-        \      <coverage_statement>Available from 1980</coverage_statement>\n      </threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
-        \     <year>1980</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
-        \  </target>\n   <target>\n    <target_name>PROQUEST_HISTORICAL_NEWSPAPERS_NEW_PLATFORM</target_name>\n
-        \   <target_public_name>ProQuest Historical Newspapers New Platform</target_public_name>\n
-        \   <object_portfolio_id>2670000000349465</object_portfolio_id>\n    <target_id>2610000000000093</target_id>\n
-        \   <target_service_id>2610000000000093</target_service_id>\n    <service_type>getFullTxt</service_type>\n
-        \   <parser>PROQUEST::open</parser>\n    <parse_param>url=http://gateway.proquest.com/openurl
-        &amp; clientid=&amp;jkey=45545 &amp; exception2=issn &amp; exception1=1 </parse_param>\n
-        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
-        \   <char_set>iso-8859-1</char_set>\n    <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=45545&amp;res_dat=xri%3Apqm&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ver=Z39.88-2004&amp;genre=journal</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
-        \      <coverage_statement>Available from 1923  until 2008</coverage_statement>\n
-        \     </threshold_text>\n      <embargo_text></embargo_text>\n     </coverage_text>\n
-        \    <from>\n      <year>1923</year>\n     </from>\n     <to>\n      <year>2008</year>\n
-        \    </to>\n     <embargo></embargo>\n    </coverage>\n   </target>\n   <target>\n
-        \   <target_name>PROQUEST_HISTORICAL_NEWSPAPERS_NEW_PLATFORM</target_name>\n
-        \   <target_public_name>ProQuest Historical Newspapers New Platform</target_public_name>\n
-        \   <object_portfolio_id>3330000000000021</object_portfolio_id>\n    <target_id>2610000000000093</target_id>\n
-        \   <target_service_id>2610000000000093</target_service_id>\n    <service_type>getFullTxt</service_type>\n
-        \   <parser>PROQUEST::open</parser>\n    <parse_param>url=http://gateway.proquest.com/openurl
-        &amp; clientid=&amp;jkey=55428 &amp; exception2=issn &amp; exception1=1 </parse_param>\n
-        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
-        \   <char_set>iso-8859-1</char_set>\n    <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=55428&amp;res_dat=xri%3Apqm&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ver=Z39.88-2004&amp;genre=journal</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
-        \      <coverage_statement>Available from 1857  until 1922</coverage_statement>\n
-        \     </threshold_text>\n      <embargo_text></embargo_text>\n     </coverage_text>\n
-        \    <from>\n      <year>1857</year>\n     </from>\n     <to>\n      <year>1922</year>\n
-        \    </to>\n     <embargo></embargo>\n    </coverage>\n   </target>\n   <target>\n
-        \   <target_name>FACTIVA</target_name>\n    <target_public_name>Factiva</target_public_name>\n
-        \   <object_portfolio_id>1000000000120139</object_portfolio_id>\n    <target_id>111037301464000</target_id>\n
-        \   <target_service_id>111037301464002</target_service_id>\n    <service_type>getFullTxt</service_type>\n
-        \   <parser>FACTIVA::FACTIVA</parser>\n    <parse_param>url=http://global.factiva.com/en/sess/login.asp?xsid=S001dbr5DEs5DEmN9MpMD6mNDVyMHmnRsIuMcNG1pRRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQAA+&amp;jkey=NYTF</parse_param>\n
-        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
-        \   <char_set>utf8</char_set>\n    <displayer>FACTIVA::FACTIVA</displayer>\n
-        \   <target_url>https://ezproxy.library.edu/login?url=http://global.factiva.com/en/sess/login.asp?xsid=S001dbr5DEs5DEmN9MpMD6mNDVyMHmnRsIuMcNG1pRRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQAA+</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text>\n
-        \      <coverage_statement>Available from 1980</coverage_statement>\n      </threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <from>\n
-        \     <year>1980</year>\n     </from>\n     <embargo></embargo>\n    </coverage>\n
-        \  </target>\n   <target_name>UNION_CATALOGUE_OCLC_WORLDCAT</target_name>\n
-        \   <target_public_name>WorldCat (OCLC)</target_public_name>\n    <object_portfolio_id></object_portfolio_id>\n
-        \   <target_id>111032274555000</target_id>\n    <target_service_id>111032274555001</target_service_id>\n
-        \   <service_type>getHolding</service_type>\n    <parser>FirstSearch::WORLDCAT</parser>\n
-        \   <parse_param>url=http://www.worldcat.org/search &amp;\r\npartner_key_code=exlibris
-        &amp;\r\nwcautho=100-195-964</parse_param>\n    <proxy>yes</proxy>\n    <crossref>no</crossref>\n
-        \   <note></note>\n    <authentication></authentication>\n    <char_set></char_set>\n
-        \   <displayer>Worldcat::Worldcat</displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://www.worldcat.org/search?q=ti%3AThe+New+York+times%2Bissn%3A0362-4331</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text></threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <embargo></embargo>\n
-        \   </coverage>\n   </target>\n   <target>\n    <target_name>REFWORKS_EXPORT_TOOL</target_name>\n
-        \   <target_public_name>to RefWorks </target_public_name>\n    <object_portfolio_id></object_portfolio_id>\n
-        \   <target_id>111069357678000</target_id>\n    <target_service_id>111069357678001</target_service_id>\n
-        \   <service_type>getReference</service_type>\n    <parser>REFWORKS::REFWORKS</parser>\n
-        \   <parse_param>refworksurl=http://www.refworks.com/express/ExpressImport.asp
-        &amp;\r\nproviderid = $$PROVIDERID &amp;\r\n&amp; exporturl=http://sfx.library.edu/local/cgi/public/refworks.cgi</parse_param>\n
-        \   <proxy>no</proxy>\n    <crossref>yes</crossref>\n    <note></note>\n    <authentication></authentication>\n
-        \   <char_set>utf8</char_set>\n    <displayer></displayer>\n    <target_url>http://www.refworks.com/express/ExpressImport.asp?filter=RefWorks+Tagged+Format&amp;vendor=SFX&amp;url=http%3A%2F%2Fsfx.library.edu%2Fsfxlcl41%2Fcgi%2Fpublic%2Frefworks.cgi%3FRT%3DJournal%2C%2BElectronic%26PB%3D%5BH.J.%2BRaymond%2B%26%2BCo.%5D%26PP%3DNew-York%2B%5BN.Y.%5D%26A1%3D%26JF%3DThe%2BNew%2BYork%2Btimes%26SN%3D0362-4331&amp;database=&amp;providerid=%24%24PROVIDERID</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text></threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <embargo></embargo>\n
-        \   </coverage>\n   </target>\n   <target>\n    <target_name>ISI_RESEARCHSOFT_EXPORT_TOOL</target_name>\n
-        \   <target_public_name>to EndNote </target_public_name>\n    <object_portfolio_id></object_portfolio_id>\n
-        \   <target_id>111000155328000</target_id>\n    <target_service_id>111000155328001</target_service_id>\n
-        \   <service_type>getReference</service_type>\n    <parser>SAVE_CITATION::SAVE_CITATION</parser>\n
-        \   <parse_param>url=http://sfx.library.edu/local/cgi/public/save_citation.cgi
-        &amp; text_version = $$TEXT_VERSION \r\n</parse_param>\n    <proxy>no</proxy>\n
-        \   <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
-        \   <char_set>utf8</char_set>\n    <displayer></displayer>\n    <target_url>http://sfx.library.edu/local/cgi/public/save_citation.cgi?ISSN=0362-4331&amp;Type=JOUR&amp;openurl=http%3A%2F%2Fsfx.library.edu%2Fsfxlcl41%3Furl_ver%3DZ39.88-2004%26url_ctx_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Actx%26ctx_ver%3DZ39.88-2004%26ctx_tim%3D2012-10-03T12%253A52%253A19-04%253A00%26ctx_id%3D%26ctx_enc%3Dinfo%253Aofi%252Fenc%253AUTF-8%26rft.coden%3DNYTIAO%26rft.eissn%3D1553-8095%26rft.genre%3Djournal%26rft.issn%3D0362-4331%26rft.jtitle%3DThe%2520New%2520York%2520times%26rft.language%3Deng%26rft.lccn%3Dsn%252078004456%2520%26rft.object_id%3D110975413976006%26rft.object_type%3DNEWSPAPER%26rft.place%3DNew-York%2520%255BN.Y.%255D%26rft.pub%3D%255BH.J.%2520Raymond%2520%2526%2520Co.%255D%26rft.stitle%3DNEW%2520YORK%2520TIMES%26rft.title%3DThe%2520New%2520York%2520times%26rft_val_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Ajournal%26sfx.response_type%3Dmulti_obj_xml%26sfx.ignore_date_threshold%3D1%26sfx.show_availability%3D1&amp;Journal=The+New+York+times</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text></threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <embargo></embargo>\n
-        \   </coverage>\n   </target>\n   <target>\n    <target_name>CAPTURE_CITATION</target_name>\n
-        \   <target_public_name>&lt;b&gt;this citation&lt;/b&gt;</target_public_name>\n
-        \   <object_portfolio_id></object_portfolio_id>\n    <target_id>111076678898000</target_id>\n
-        \   <target_service_id>111076678899001</target_service_id>\n    <service_type>getReference</service_type>\n
-        \   <parser>CAPTURE_CITATION::CAPTURE_CITATION</parser>\n    <parse_param>url=http://sfx.library.edu/local/cgi/public/capture_citation.cgi</parse_param>\n
-        \   <proxy>yes</proxy>\n    <crossref>no</crossref>\n    <note>Use this link
-        to create a permanent URL for course pages.&lt;br&gt;\r\nFormat this citation
-        in MLA, APA, etc.</note>\n    <authentication></authentication>\n    <char_set>utf8</char_set>\n
-        \   <displayer></displayer>\n    <target_url>https://ezproxy.library.edu/login?url=http://sfx.library.edu/local/cgi/public/capture_citation.cgi?source=DEFAULT+(Via+SFX)&amp;abbrev=NEW+YORK+TIMES&amp;issn=0362-4331&amp;genre=article&amp;publiplace=New-York+%5BN.Y.%5D&amp;openurl=http%3A%2F%2Fsfx.library.edu%2Fsfxlcl41%3Furl_ver%3DZ39.88-2004%26url_ctx_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Actx%26ctx_ver%3DZ39.88-2004%26ctx_tim%3D2012-10-03T12%253A52%253A19-04%253A00%26ctx_id%3D%26ctx_enc%3Dinfo%253Aofi%252Fenc%253AUTF-8%26rft.coden%3DNYTIAO%26rft.eissn%3D1553-8095%26rft.genre%3Djournal%26rft.issn%3D0362-4331%26rft.jtitle%3DThe%2520New%2520York%2520times%26rft.language%3Deng%26rft.lccn%3Dsn%252078004456%2520%26rft.object_id%3D110975413976006%26rft.object_type%3DNEWSPAPER%26rft.place%3DNew-York%2520%255BN.Y.%255D%26rft.pub%3D%255BH.J.%2520Raymond%2520%2526%2520Co.%255D%26rft.stitle%3DNEW%2520YORK%2520TIMES%26rft.title%3DThe%2520New%2520York%2520times%26rft_val_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Ajournal%26sfx.response_type%3Dmulti_obj_xml%26sfx.ignore_date_threshold%3D1%26sfx.show_availability%3D1&amp;publisher=%5BH.J.+Raymond+%26+Co.%5D&amp;journal=The+New+York+times</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text></threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <embargo></embargo>\n
-        \   </coverage>\n   </target>\n   <target>\n    <target_name>ASK_A_LIBRARIAN_LCL</target_name>\n
-        \   <target_public_name>Ask-A-Librarian</target_public_name>\n    <object_portfolio_id></object_portfolio_id>\n
-        \   <target_id>20430000000000002</target_id>\n    <target_service_id>20430000000000002</target_service_id>\n
-        \   <service_type>getWebService</service_type>\n    <parser>Generic</parser>\n
-        \   <parse_param>IF () \"http://library.edu/ask/\"</parse_param>\n    <proxy>no</proxy>\n
-        \   <crossref>no</crossref>\n    <note></note>\n    <authentication></authentication>\n
-        \   <char_set></char_set>\n    <displayer></displayer>\n    <target_url>http://library.edu/ask/</target_url>\n
-        \   <is_related>no</is_related>\n    <coverage>\n     <coverage_text>\n      <threshold_text></threshold_text>\n
-        \     <embargo_text></embargo_text>\n     </coverage_text>\n     <embargo></embargo>\n
-        \   </coverage>\n   </target>\n  </ctx_obj_targets>\n </ctx_obj>\n</ctx_obj_set>"
-    http_version: 
-  recorded_at: Wed, 03 Oct 2012 16:52:20 GMT
-recorded_with: VCR 2.2.5
+--- 
+http_interactions: 
+  - request: 
+      method: get
+      uri: http://sfx.library.edu/local?ctx_enc=info:ofi/enc:UTF-8&ctx_id=&ctx_tim=2012-11-29T12:26:01-05:00&ctx_ver=Z39.88-2004&rft.issn=0362-4331&rft.jtitle=The%20New%20York%20times&rft_val_fmt=info:ofi/fmt:kev:mtx:journal&sfx.ignore_date_threshold=1&sfx.response_type=multi_obj_xml&sfx.show_availability=1&url_ctx_fmt=info:ofi/fmt:kev:mtx:ctx&url_ver=Z39.88-2004
+      body: 
+        string: ""
+      headers: 
+        Accept: 
+          - "*/*"
+    response: 
+      status: 
+        code: 200
+        message: OK
+      headers: 
+        Date: 
+          - Thu, 29 Nov 2012 17:26:02 GMT
+        Server: 
+          - Apache
+        Content-Type: 
+          - application/xml
+        Transfer-Encoding: 
+          - chunked
+      body: 
+        string: |-
+          <?xml version="1.0" encoding="utf-8"?>
+          
+          <ctx_obj_set>
+           <ctx_obj identifier="">
+            <ctx_obj_attributes>&lt;perldata&gt;
+           &lt;hash&gt;
+            &lt;item key="rft.issn"&gt;0362-4331&lt;/item&gt;
+            &lt;item key="ctx_tim"&gt;2012-11-29T12:26:01-05:00&lt;/item&gt;
+            &lt;item key="sfx.show_availability"&gt;1&lt;/item&gt;
+            &lt;item key="_stash"&gt;
+             &lt;hash&gt;
+             &lt;/hash&gt;
+            &lt;/item&gt;
+            &lt;item key="ctx_ver"&gt;Z39.88-2004&lt;/item&gt;
+            &lt;item key="rft.eissn"&gt;1553-8095&lt;/item&gt;
+            &lt;item key="rft.place"&gt;New-York [N.Y.]&lt;/item&gt;
+            &lt;item key="@sfx.subcategory"&gt;
+             &lt;array&gt;
+              &lt;item key="0"&gt;Current Events &amp;amp; News&lt;/item&gt;
+             &lt;/array&gt;
+            &lt;/item&gt;
+            &lt;item key="rft.lccn"&gt;sn 78004456 &lt;/item&gt;
+            &lt;item key="@rft_id"&gt;
+             &lt;array&gt;
+             &lt;/array&gt;
+            &lt;/item&gt;
+            &lt;item key="sfx.response_type"&gt;multi_obj_xml&lt;/item&gt;
+            &lt;item key="sfx.ignore_char_set"&gt;1&lt;/item&gt;
+            &lt;item key="req.session_id"&gt;sD8ED41F4-3A49-11E2-B279-4554FE4C1AE4&lt;/item&gt;
+            &lt;item key="url_ver"&gt;Z39.88-2004&lt;/item&gt;
+            &lt;item key="ctx_enc"&gt;UTF-8&lt;/item&gt;
+            &lt;item key="rft.object_type"&gt;JOURNAL&lt;/item&gt;
+            &lt;item key="rft.language"&gt;eng&lt;/item&gt;
+            &lt;item key="sfx.has_full_text"&gt;yes&lt;/item&gt;
+            &lt;item key="rft.object_id"&gt;110975413976006&lt;/item&gt;
+            &lt;item key="sfx.ignore_date_threshold"&gt;1&lt;/item&gt;
+            &lt;item key="rft.genre"&gt;journal&lt;/item&gt;
+            &lt;item key="sfx.request_id"&gt;3099492&lt;/item&gt;
+            &lt;item key="rft.pub"&gt;[H.J. Raymond &amp;amp; Co.]&lt;/item&gt;
+            
+            &lt;item key="rft.title"&gt;The New York times&lt;/item&gt;
+            &lt;item key="url_ctx_fmt"&gt;info:ofi/fmt:kev:mtx:ctx&lt;/item&gt;
+            &lt;item key="@rft.stitle"&gt;
+             &lt;array&gt;
+              &lt;item key="0"&gt;NEW YORK TIMES&lt;/item&gt;
+              &lt;item key="1"&gt;NEW YORK DAILY TIMES&lt;/item&gt;
+              &lt;item key="2"&gt;NEW YORK TIMES, THE&lt;/item&gt;
+              &lt;item key="3"&gt;NY TIMES (PRINT)&lt;/item&gt;
+              &lt;item key="4"&gt;NEW YORK TIMES LATE EDITION (EAST COAST)&lt;/item&gt;
+              &lt;item key="5"&gt;NEW YORK TIMES ON THE WEB&lt;/item&gt;
+              &lt;item key="6"&gt;NEW YORK TIMES ON THE WEB, THE&lt;/item&gt;
+              &lt;item key="7"&gt;NEW YORK TIMES  LATE EDITION&lt;/item&gt;
+             &lt;/array&gt;
+            &lt;/item&gt;
+            &lt;item key="@rfe_id"&gt;
+             &lt;array&gt;
+             &lt;/array&gt;
+            &lt;/item&gt;
+            &lt;item key="rft.jtitle"&gt;The New York times&lt;/item&gt;
+            &lt;item key="rft.coden"&gt;NYTIAO&lt;/item&gt;
+            &lt;item key="sfx.sourcename"&gt;DEFAULT&lt;/item&gt;
+            &lt;item key="rft_val_fmt"&gt;journal&lt;/item&gt;
+            &lt;item key="existing_ts_ids"&gt;
+             &lt;array&gt;
+              &lt;item key="0"&gt;111027614344001&lt;/item&gt;
+              &lt;item key="1"&gt;111069357678001&lt;/item&gt;
+              &lt;item key="2"&gt;111076678899001&lt;/item&gt;
+              &lt;item key="3"&gt;111000155328001&lt;/item&gt;
+              &lt;item key="4"&gt;111032274555001&lt;/item&gt;
+              &lt;item key="5"&gt;20430000000000002&lt;/item&gt;
+              &lt;item key="6"&gt;20430000000000000&lt;/item&gt;
+              &lt;item key="7"&gt;111037301464002&lt;/item&gt;
+              &lt;item key="8"&gt;1000000000003254&lt;/item&gt;
+              &lt;item key="9"&gt;2400000000000013&lt;/item&gt;
+              &lt;item key="10"&gt;3450000000000033&lt;/item&gt;
+              &lt;item key="11"&gt;2610000000000093&lt;/item&gt;
+              &lt;item key="12"&gt;3450000000000057&lt;/item&gt;
+              &lt;item key="13"&gt;3450000000000033&lt;/item&gt;
+              &lt;item key="14"&gt;111021039760001&lt;/item&gt;
+              &lt;item key="15"&gt;1000000000003344&lt;/item&gt;
+              &lt;item key="16"&gt;110976638852341&lt;/item&gt;
+              &lt;item key="17"&gt;2610000000000093&lt;/item&gt;
+              &lt;item key="18"&gt;1000000000002113&lt;/item&gt;
+              &lt;item key="19"&gt;110997450724001&lt;/item&gt;
+             &lt;/array&gt;
+            &lt;/item&gt;
+            &lt;item key="sfx.sid"&gt;DEFAULT&lt;/item&gt;
+            &lt;item key="@sfx.category"&gt;
+             &lt;array&gt;
+              &lt;item key="0"&gt;Arts and Humanities&lt;/item&gt;
+             &lt;/array&gt;
+            &lt;/item&gt;
+           &lt;/hash&gt;
+          &lt;/perldata&gt;
+          </ctx_obj_attributes>
+            <ctx_obj_targets>
+             <target>
+              <target_name>EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON</target_name>
+              <target_public_name>EBSCOhost Business Abstracts with Full Text </target_public_name>
+              <object_portfolio_id>2670000000679815</object_portfolio_id>
+              <target_id>3450000000000047</target_id>
+              <target_service_id>3450000000000057</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>EBSCO_HOST::ebsco_am</parser>
+              <parse_param>db_host=bft&amp;
+          ebscohosturl = http://search.ebscohost.com &amp; 
+          linkurl=http://openurl.ebscohost.com/linksvc/linking.aspx &amp; shib=&amp;jkey=3RAH</parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>iso-8859-1</char_set>
+              <displayer></displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=bft&amp;jn=3RAH&amp;scope=site</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 2011</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>2011</year>
+               </from>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>EBSCOHOST_NEWSPAPER_SOURCE_PLUS</target_name>
+              <target_public_name>EBSCOhost Newspaper Source Plus</target_public_name>
+              <object_portfolio_id>1000000002083749</object_portfolio_id>
+              <target_id>1000000000002557</target_id>
+              <target_service_id>1000000000003254</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>EBSCO_HOST::newspapers</parser>
+              <parse_param>url=http://search.ebscohost.com/login.aspx &amp; db_code=n5h&amp;jkey=New+York+Times</parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set></char_set>
+              <displayer>FT::NO_FILL_IN</displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/login.aspx?direct=true&amp;db=n5h&amp;scope=site&amp;jn=New+York+Times</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 1985</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>1985</year>
+               </from>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</target_name>
+              <target_public_name>EBSCOhost OmniFile Full Text Mega </target_public_name>
+              <object_portfolio_id>2670000000679563</object_portfolio_id>
+              <target_id>3450000000000034</target_id>
+              <target_service_id>3450000000000033</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>EBSCO_HOST::ebsco_am</parser>
+              <parse_param>db_host=ofm&amp;
+          ebscohosturl = http://search.ebscohost.com &amp; 
+          linkurl=http://openurl.ebscohost.com/linksvc/linking.aspx &amp; shib=&amp;jkey=3RAH</parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>iso-8859-1</char_set>
+              <displayer></displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=ofm&amp;jn=3RAH&amp;scope=site</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 2011</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>2011</year>
+               </from>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>EBSCOHOST_OMNIFILE_FULL_TEXT_MEGA_WILSON</target_name>
+              <target_public_name>EBSCOhost OmniFile Full Text Mega </target_public_name>
+              <object_portfolio_id>3450000000018747</object_portfolio_id>
+              <target_id>3450000000000034</target_id>
+              <target_service_id>3450000000000033</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>EBSCO_HOST::ebsco_am</parser>
+              <parse_param>db_host=ofm&amp;
+          ebscohosturl = http://search.ebscohost.com &amp; 
+          linkurl=http://openurl.ebscohost.com/linksvc/linking.aspx &amp; shib=&amp;jkey=D9ZZ</parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>iso-8859-1</char_set>
+              <displayer></displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=ofm&amp;jn=D9ZZ&amp;scope=site</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available in 2003</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <in>
+                <year>2003</year>
+               </in>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>MISCELLANEOUS_FREE_EJOURNALS</target_name>
+              <target_public_name>Free E- Journals</target_public_name>
+              <object_portfolio_id>1000000000716879</object_portfolio_id>
+              <target_id>110976638852340</target_id>
+              <target_service_id>110976638852341</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>Bulk::BULK</parser>
+              <parse_param>jkey=http://www.nytimes.com/</parse_param>
+              <proxy>no</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>iso-8859-1</char_set>
+              <displayer>FT::NO_FILL_IN</displayer>
+              <target_url>http://www.nytimes.com/</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 1851  until 1922</coverage_statement>
+                 <coverage_statement>Available from 1987</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>1851</year>
+               </from>
+               <to>
+                <year>1922</year>
+               </to>
+               <from>
+                <year>1987</year>
+               </from>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>GALEGROUP_ACADEMIC_ONEFILE</target_name>
+              <target_public_name>Gale Cengage Academic OneFile</target_public_name>
+              <object_portfolio_id>1000000000623737</object_portfolio_id>
+              <target_id>1000000000001464</target_id>
+              <target_service_id>1000000000002113</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>Gale::OpenURL</parser>
+              <parse_param>url= http://find.galegroup.com/openurl/openurl &amp;
+          dbase=AONE &amp;
+          loc_id=nysl_me_newyorku  &amp;
+          art=yes  &amp;&amp;ltitle=New+York+Times</parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set></char_set>
+              <displayer></displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://find.galegroup.com/openurl/openurl?res_id=info%3Asid%2Fgale%3AAONE&amp;rft.issn=0362-4331&amp;req_dat=info%3Asid%2Fgale%3Augnid%3Anysl_me_newyorku&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&amp;ctx_enc=info%3Aofi%3Aenc%3AUTF-8&amp;url_ver=Z39.88-2004&amp;rft.jtitle=New+York+Times</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 1985</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>1985</year>
+               </from>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>GALEGROUP_GENERAL_ONEFILE</target_name>
+              <target_public_name>Gale Cengage General OneFile</target_public_name>
+              <object_portfolio_id>1000000000712442</object_portfolio_id>
+              <target_id>111021039760000</target_id>
+              <target_service_id>111021039760001</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>Gale::OpenURL</parser>
+              <parse_param>url= http://find.galegroup.com/openurl/openurl &amp;dbase=ITOF &amp;
+          loc_id=nysl_me_newyorku  &amp;
+          art=yes &amp;ltitle=New+York+Times</parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>iso-8859-1</char_set>
+              <displayer></displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://find.galegroup.com/openurl/openurl?res_id=info%3Asid%2Fgale%3AITOF&amp;rft.issn=0362-4331&amp;req_dat=info%3Asid%2Fgale%3Augnid%3Anysl_me_newyorku&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&amp;ctx_enc=info%3Aofi%3Aenc%3AUTF-8&amp;url_ver=Z39.88-2004&amp;rft.jtitle=New+York+Times</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 1985</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>1985</year>
+               </from>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>GALEGROUP_IT_NEWSSTAND</target_name>
+              <target_public_name>Gale Cengage Newsstand</target_public_name>
+              <object_portfolio_id>1000000002171800</object_portfolio_id>
+              <target_id>1000000000002642</target_id>
+              <target_service_id>1000000000003344</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>Gale::OpenURL</parser>
+              <parse_param>url= http://find.galegroup.com/openurl/openurl &amp;dbase=STND &amp;
+          loc_id=nysl_me_newyorku &amp;
+          art=$$ART &amp;ltitle=New+York+Times</parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set></char_set>
+              <displayer></displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://find.galegroup.com/openurl/openurl?res_id=info%3Asid%2Fgale%3ASTND&amp;rft.issn=0362-4331&amp;req_dat=info%3Asid%2Fgale%3Augnid%3Anysl_me_newyorku&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&amp;ctx_enc=info%3Aofi%3Aenc%3AUTF-8&amp;url_ver=Z39.88-2004&amp;rft.jtitle=New+York+Times</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 1985</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>1985</year>
+               </from>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>LEXISNEXIS_ACADEMIC</target_name>
+              <target_public_name>LexisNexis Academic Universe</target_public_name>
+              <object_portfolio_id>111020439515049</object_portfolio_id>
+              <target_id>110997450724000</target_id>
+              <target_service_id>110997450724001</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>LEXIS::NEXIS</parser>
+              <parse_param>url=http://www.lexisnexis.com/hottopics/lnacademic&amp;jkey=6742 &amp; type=newspaper</parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>iso-8859-1</char_set>
+              <displayer>LEXIS::NEXIS</displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://www.lexisnexis.com/hottopics/lnacademic?verb=sr&amp;csi=6742</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 1980</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>1980</year>
+               </from>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>PROQUEST_CENTRAL_NEW_PLATFORM</target_name>
+              <target_public_name>ProQuest Central New Platform</target_public_name>
+              <object_portfolio_id>2550000000138186</object_portfolio_id>
+              <target_id>2400000000000013</target_id>
+              <target_service_id>2400000000000013</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>PROQUEST::open</parser>
+              <parse_param>url=http://gateway.proquest.com/openurl &amp; clientid=&amp;jkey=11561 &amp; exception2=issn &amp; exception1=1 </parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>iso-8859-1</char_set>
+              <displayer></displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=11561&amp;res_dat=xri%3Apqm&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ver=Z39.88-2004&amp;genre=journal</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 1980</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>1980</year>
+               </from>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>PROQUEST_HISTORICAL_NEWSPAPERS_NEW_PLATFORM</target_name>
+              <target_public_name>ProQuest Historical Newspapers New Platform</target_public_name>
+              <object_portfolio_id>2670000000349465</object_portfolio_id>
+              <target_id>2610000000000093</target_id>
+              <target_service_id>2610000000000093</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>PROQUEST::open</parser>
+              <parse_param>url=http://gateway.proquest.com/openurl &amp; clientid=&amp;jkey=45545 &amp; exception2=issn &amp; exception1=1 </parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>iso-8859-1</char_set>
+              <displayer></displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=45545&amp;res_dat=xri%3Apqm&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ver=Z39.88-2004&amp;genre=journal</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 1923  until 2009</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>1923</year>
+               </from>
+               <to>
+                <year>2009</year>
+               </to>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>PROQUEST_HISTORICAL_NEWSPAPERS_NEW_PLATFORM</target_name>
+              <target_public_name>ProQuest Historical Newspapers New Platform</target_public_name>
+              <object_portfolio_id>3330000000000021</object_portfolio_id>
+              <target_id>2610000000000093</target_id>
+              <target_service_id>2610000000000093</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>PROQUEST::open</parser>
+              <parse_param>url=http://gateway.proquest.com/openurl &amp; clientid=&amp;jkey=55428 &amp; exception2=issn &amp; exception1=1 </parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>iso-8859-1</char_set>
+              <displayer></displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://gateway.proquest.com/openurl?rft_id=55428&amp;res_dat=xri%3Apqm&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;url_ver=Z39.88-2004&amp;genre=journal</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 1857  until 1922</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>1857</year>
+               </from>
+               <to>
+                <year>1922</year>
+               </to>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>FACTIVA</target_name>
+              <target_public_name>Factiva</target_public_name>
+              <object_portfolio_id>1000000000120139</object_portfolio_id>
+              <target_id>111037301464000</target_id>
+              <target_service_id>111037301464002</target_service_id>
+              <service_type>getFullTxt</service_type>
+              <parser>FACTIVA::FACTIVA</parser>
+              <parse_param>url=http://global.factiva.com/en/sess/login.asp?xsid=S001dbr5DEs5DEmN9MpMD6mNDVyMHmnRsIuMcNG1pRRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQAA+&amp;jkey=NYTF</parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>utf8</char_set>
+              <displayer>FACTIVA::FACTIVA</displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://global.factiva.com/en/sess/login.asp?xsid=S001dbr5DEs5DEmN9MpMD6mNDVyMHmnRsIuMcNG1pRRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQAA+</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text>
+                 <coverage_statement>Available from 1980</coverage_statement>
+                </threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <from>
+                <year>1980</year>
+               </from>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>NYU_Libraries_LCL</target_name>
+              <target_public_name>NYU Libraries</target_public_name>
+              <object_portfolio_id></object_portfolio_id>
+              <target_id>20430000000000000</target_id>
+              <target_service_id>20430000000000000</target_service_id>
+              <service_type>getHolding</service_type>
+              <parser>NYU::ALL</parser>
+              <parse_param></parse_param>
+              <proxy>no</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set></char_set>
+              <displayer>NYU::ALL</displayer>
+              <target_url></target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text></threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>UNION_CATALOGUE_OCLC_WORLDCAT</target_name>
+              <target_public_name>WorldCat (OCLC)</target_public_name>
+              <object_portfolio_id></object_portfolio_id>
+              <target_id>111032274555000</target_id>
+              <target_service_id>111032274555001</target_service_id>
+              <service_type>getHolding</service_type>
+              <parser>FirstSearch::WORLDCAT</parser>
+              <parse_param>url=http://www.worldcat.org/search &amp;
+          partner_key_code=exlibris &amp;
+          wcautho=100-195-964</parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set></char_set>
+              <displayer>Worldcat::Worldcat</displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://www.worldcat.org/search?q=ti%3AThe+New+York+times%2Bissn%3A0362-4331</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text></threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>REFWORKS_EXPORT_TOOL</target_name>
+              <target_public_name>to RefWorks </target_public_name>
+              <object_portfolio_id></object_portfolio_id>
+              <target_id>111069357678000</target_id>
+              <target_service_id>111069357678001</target_service_id>
+              <service_type>getReference</service_type>
+              <parser>REFWORKS::REFWORKS</parser>
+              <parse_param>refworksurl=http://www.refworks.com/express/ExpressImport.asp &amp;
+          providerid = $$PROVIDERID &amp;
+          &amp; exporturl=http://sfx.library.edu/local/cgi/public/refworks.cgi</parse_param>
+              <proxy>no</proxy>
+              <crossref>yes</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>utf8</char_set>
+              <displayer></displayer>
+              <target_url>http://www.refworks.com/express/ExpressImport.asp?filter=RefWorks+Tagged+Format&amp;vendor=SFX&amp;url=http%3A%2F%2Fsfx.library.edu%2Flocal%2Fcgi%2Fpublic%2Frefworks.cgi%3FRT%3DJournal%2C%2BElectronic%26PB%3D%5BH.J.%2BRaymond%2B%26%2BCo.%5D%26PP%3DNew-York%2B%5BN.Y.%5D%26A1%3D%26JF%3DThe%2BNew%2BYork%2Btimes%26SN%3D0362-4331&amp;database=&amp;providerid=%24%24PROVIDERID</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text></threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>ISI_RESEARCHSOFT_EXPORT_TOOL</target_name>
+              <target_public_name>to EndNote </target_public_name>
+              <object_portfolio_id></object_portfolio_id>
+              <target_id>111000155328000</target_id>
+              <target_service_id>111000155328001</target_service_id>
+              <service_type>getReference</service_type>
+              <parser>SAVE_CITATION::SAVE_CITATION</parser>
+              <parse_param>url=http://sfx.library.edu/local/cgi/public/save_citation.cgi &amp; text_version = $$TEXT_VERSION 
+          </parse_param>
+              <proxy>no</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set>utf8</char_set>
+              <displayer></displayer>
+              <target_url>http://sfx.library.edu/local/cgi/public/save_citation.cgi?ISSN=0362-4331&amp;Type=JOUR&amp;openurl=http%3A%2F%2Fsfx.library.edu%2Flocal%3Furl_ver%3DZ39.88-2004%26url_ctx_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Actx%26ctx_ver%3DZ39.88-2004%26ctx_tim%3D2012-11-29T12%253A26%253A01-05%253A00%26ctx_id%3D%26ctx_enc%3Dinfo%253Aofi%252Fenc%253AUTF-8%26rft.issn%3D0362-4331%26rft.jtitle%3DThe%2520New%2520York%2520times%26rft_val_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Ajournal%26sfx.response_type%3Dmulti_obj_xml%26sfx.ignore_date_threshold%3D1%26sfx.show_availability%3D1&amp;Journal=The+New+York+times</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text></threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>CAPTURE_CITATION</target_name>
+              <target_public_name>&lt;b&gt;this citation&lt;/b&gt;</target_public_name>
+              <object_portfolio_id></object_portfolio_id>
+              <target_id>111076678898000</target_id>
+              <target_service_id>111076678899001</target_service_id>
+              <service_type>getReference</service_type>
+              <parser>CAPTURE_CITATION::CAPTURE_CITATION</parser>
+              <parse_param>url=http://sfx.library.edu/local/cgi/public/capture_citation.cgi</parse_param>
+              <proxy>yes</proxy>
+              <crossref>no</crossref>
+              <note>Use this link to create a permanent URL for course pages.&lt;br&gt;
+          Format this citation in MLA, APA, etc.</note>
+              <authentication></authentication>
+              <char_set>utf8</char_set>
+              <displayer></displayer>
+              <target_url>https://ezproxy.library.edu/login?url=http://sfx.library.edu/local/cgi/public/capture_citation.cgi?source=DEFAULT+(Via+SFX)&amp;issn=0362-4331&amp;publisher=%5BH.J.+Raymond+%26+Co.%5D&amp;journal=The+New+York+times&amp;abbrev=NEW+YORK+TIMES&amp;genre=article&amp;publiplace=New-York+%5BN.Y.%5D&amp;openurl=http%3A%2F%2Fsfx.library.edu%2Flocal%3Furl_ver%3DZ39.88-2004%26url_ctx_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Actx%26ctx_ver%3DZ39.88-2004%26ctx_tim%3D2012-11-29T12%253A26%253A01-05%253A00%26ctx_id%3D%26ctx_enc%3Dinfo%253Aofi%252Fenc%253AUTF-8%26rft.issn%3D0362-4331%26rft.jtitle%3DThe%2520New%2520York%2520times%26rft_val_fmt%3Dinfo%253Aofi%252Ffmt%253Akev%253Amtx%253Ajournal%26sfx.response_type%3Dmulti_obj_xml%26sfx.ignore_date_threshold%3D1%26sfx.show_availability%3D1</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text></threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <embargo></embargo>
+              </coverage>
+             </target>
+             <target>
+              <target_name>ASK_A_LIBRARIAN_LCL</target_name>
+              <target_public_name>Ask-A-Librarian</target_public_name>
+              <object_portfolio_id></object_portfolio_id>
+              <target_id>20430000000000002</target_id>
+              <target_service_id>20430000000000002</target_service_id>
+              <service_type>getWebService</service_type>
+              <parser>Generic</parser>
+              <parse_param>IF () "http://library.edu/ask/"</parse_param>
+              <proxy>no</proxy>
+              <crossref>no</crossref>
+              <note></note>
+              <authentication></authentication>
+              <char_set></char_set>
+              <displayer></displayer>
+              <target_url>http://library.edu/ask/</target_url>
+              <is_related>no</is_related>
+              <coverage>
+               <coverage_text>
+                <threshold_text></threshold_text>
+                <embargo_text></embargo_text>
+               </coverage_text>
+               <embargo></embargo>
+              </coverage>
+             </target>
+            </ctx_obj_targets>
+           </ctx_obj>
+          </ctx_obj_set>
+      http_version: 
+    recorded_at: Thu, 29 Nov 2012 17:26:02 GMT
+recorded_with: VCR 2.3.0
