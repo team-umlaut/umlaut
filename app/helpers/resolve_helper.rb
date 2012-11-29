@@ -80,11 +80,9 @@ module ResolveHelper
   #   <dt class="#{label} umlaut-citation-label">#{label}</dt>
   #   <dd class="#{label} umlaut-citation-content">#{content}</dd>
   # 
-  def citation_element(label, contents, klass="")
-    contents = [contents] if contents.is_a? String
+  def citation_element(label, content, klass="")
     return (content_tag(:dt, "#{label}:", :class => [label.downcase, "umlaut-citation-label", klass]) + 
-      (contents.collect { |content| 
-        content_tag(:dd, content, :class => [label.downcase, "umlaut-citation-content", klass]) }).join.html_safe)
+      content_tag(:dd, content, :class => [label.downcase, "umlaut-citation-content", klass]))
   end
 
   # Did this come from citation linker style entry?
