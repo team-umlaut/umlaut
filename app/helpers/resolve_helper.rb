@@ -44,35 +44,6 @@ module ResolveHelper
   end
 
   # 
-  # Returns the citation 
-  # 
-  # Specifically returns a description list of citation elements.
-  # 
-  def citation(cite)
-    return content_tag(:dl, :class => "dl-horizontal umlaut-citation") {
-      citations = "".html_safe
-      # Title
-      citations << citation_element(cite[:title_label], cite[:title], "title")
-      # Author
-      citations << citation_element("Author", cite[:author]) if cite[:author]
-      # Subtitle
-      citations << citation_element(cite[:subtitle_label], cite[:subtitle], "subtitle") if cite[:subtitle]
-      # ISSN
-      citations << citation_element("ISSN", cite[:issn]) unless (cite[:issn].nil? or cite[:issn].empty?)
-      # ISBN
-      citations << citation_element("ISBN", cite[:isbn]) unless (cite[:isbn].nil? or cite[:isbn].empty?)
-      # Publisher
-      citations << citation_element("Publisher", cite[:pub]) unless (cite[:pub].nil? or cite[:pub].empty?)
-      # Publishing info, etc.
-      citations << citation_element("Published", date_format(cite[:date])) unless (cite[:date].nil? or cite[:date].empty?)
-      citations << citation_element("Volume", cite[:volume]) unless (cite[:volume].nil? or cite[:volume].empty?)
-      citations << citation_element("Issue", cite[:issue]) unless (cite[:issue].nil? or cite[:issue].empty?)
-      citations << citation_element("Page", cite[:page]) unless (cite[:page].nil? or cite[:page].empty?)
-      citations
-    }
-  end
-
-  # 
   # Returns a citation element that consists of an element label and 
   # the citation element content (data?).
   # 
@@ -80,9 +51,10 @@ module ResolveHelper
   #   <dt class="#{label} umlaut-citation-label">#{label}</dt>
   #   <dd class="#{label} umlaut-citation-content">#{content}</dd>
   # 
-  def citation_element(label, content, klass="")
-    return (content_tag(:dt, "#{label}:", :class => [label.downcase, "umlaut-citation-label", klass]) + 
-      content_tag(:dd, content, :class => [label.downcase, "umlaut-citation-content", klass]))
+  def citation_element(label, content, klass=nil)
+    klass = klass.nil? ? label.downcase : klass
+    return (content_tag(:dt, "#{label}:", :class => ["umlaut-citation-label", klass]) + 
+      content_tag(:dd, content, :class => ["umlaut-citation-content", klass]))
   end
 
   # Did this come from citation linker style entry?

@@ -3,4 +3,24 @@ cite = @user_request.referent.to_citation
 @page_title = cite[:title]
 #rft_metadata = @user_request.referent.metadata
 %>
-<%= citation(cite) %>
+<%= content_tag(:dl, :class => "dl-horizontal umlaut-citation") do
+  citations = "".html_safe
+  # Title
+  citations << citation_element(cite[:title_label], cite[:title], "title")
+  # Author
+  citations << citation_element("Author", cite[:author]) if cite[:author]
+  # Subtitle
+  citations << citation_element(cite[:subtitle_label], cite[:subtitle], "subtitle") if cite[:subtitle]
+  # ISSN
+  citations << citation_element("ISSN", cite[:issn]) if cite[:issn]
+  # ISBN
+  citations << citation_element("ISBN", cite[:isbn]) if cite[:isbn]
+  # Publisher
+  citations << citation_element("Publisher", cite[:pub]) if cite[:pub]
+  # Publishing info, etc.
+  citations << citation_element("Published", date_format(cite[:date])) if cite[:date]
+  citations << citation_element("Volume", cite[:volume]) if cite[:volume]
+  citations << citation_element("Issue", cite[:issue]) if cite[:issue]
+  citations << citation_element("Page", cite[:page]) if cite[:page]
+  citations
+end %>
