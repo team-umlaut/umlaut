@@ -1,1 +1,18 @@
-<div class="no_js"><%= render :partial=>"email" %></div>
+<div class="email">
+  <%
+  unless @user_request.nil?
+    cite = @user_request.referent.to_citation %>
+    <%= form_tag({:controller => "export_email", :action => "send_email", :id => params[:id]}, :class => "form-inline" ) do  %>
+      <h2>Email the title and locations</h2>
+      <%= validation_error( @error || flash[:error]) if ( @error || flash[:error]) %>
+      <fieldset>
+        <legend>Title: <%= h(cite[:title]) %>/<%= h(cite[:author]) %></legend>
+        <div class="control-group">
+          <%= label_tag 'email', 'Enter your email address:' %>
+          <%= text_field_tag 'email', params[:email], :class => "input-xlarge" %>
+        </div>
+        <%= submit_tag 'Send!', :class => "btn btn-inverse" %>
+      </fieldset><%
+    end 
+  end %>
+</div>

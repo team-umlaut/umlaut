@@ -15,7 +15,7 @@
       <div class="control-group">
         <%= label :journal, :title, "Journal Title:" %>
         <%= text_field :journal, :title, {:name=>'rft.jtitle', :class=>"title_search input-xlarge"} %>
-        <select name="umlaut.title_search_type" class="sfx_title_search input-medium">
+        <select name="umlaut.title_search_type" class="title_search_type input-medium">
           <%= options_for_select({"contains" => "contains", "begins with" => "begins", "exact match" => "exact"}, params["umlaut.title_search_type"])  %>
         </select>
       </div>
@@ -54,7 +54,7 @@
       </div>
     </fieldset>
   </div> 
-  <%= submit_tag "Search", {:name=>"Generate_OpenURL2"} %>
+  <%= submit_tag "Search", {:name=>"Generate_OpenURL2", :class => "btn"} %>
 </form>
 <h3 class="help-block umlaut-separator"><i class="umlaut_icons-famfamfam-help"></i> <span>Having Trouble?</span></h3>
 <p class="help-block">

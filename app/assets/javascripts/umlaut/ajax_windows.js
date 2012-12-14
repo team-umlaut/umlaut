@@ -1,29 +1,26 @@
 /* ajax_windows.js.  Support for modal popup windows in Umlaut items. */
 jQuery(document).ready(function($) {
-  var ajax_form_catch, shared_modal_d;
-  shared_modal_d = $("<div></div>").dialog({
-    autoOpen: false,
-    modal: true,
-    width: "400px"
-  });
-  $("a.ajax_window").live("click", function(event) {
-    $(shared_modal_d).load(this.href, function() {
-      var heading;
-      heading = shared_modal_d.find("h1, h2, h3, h4, h5, h6").eq(0).remove();
-      $(shared_modal_d).dialog("option", "title", heading.text());
-      return $(shared_modal_d).dialog("open");
-    });
+  var populate_modal = function(data, textStatus, jqXHR) {
+    data = $(data);
+    var heading = data.find("h1, h2, h3, h4, h5, h6").eq(0).remove();
+    $("#modal .modal-header h3").text(heading.text());
+    var submit = data.find("form input[type=submit]").eq(0).remove();
+    $("#modal .modal-body").html(data.html());
+    if (submit)  $("#modal .modal-footer").html(submit.wrap('<div>').parent().html());
+    $("#modal").modal("show");
+  }
+  var display_modal = function(event) {
+    event.preventDefault();
+    $.get(this.href, "", populate_modal, "html");
     return false;
-  });
-  ajax_form_catch = function(event) {
-    $(shared_modal_d).load($(event.target).closest("form").attr("action"), $(event.target).closest("form").serialize(), function() {
-      var heading;
-      heading = shared_modal_d.find("h1, h2, h3, h4, h5, h6").eq(0).remove();
-      $(shared_modal_d).dialog("option", "title", heading.text());
-      return $(shared_modal_d).dialog("open");
-    });
+  }
+  var ajax_form_catch = function(event) {
+    event.preventDefault();
+    var form =  $("#modal form");
+    $.post(form.attr("action"), form.serialize(), populate_modal, "html");
     return false;
   };
-  $("form.modal_dialog_form input[type=submit]").live("click", ajax_form_catch);
-  return $("form.modal_dialog_form").live("submit", ajax_form_catch);
+  $("a.ajax_window").live("click", display_modal);
+  $("#modal .modal-footer input[type=submit]").live("click", ajax_form_catch);
+  $("#modal form").live("submit", ajax_form_catch);
 });

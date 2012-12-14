@@ -16,11 +16,11 @@
       <div class="control-group">
         <%= label :journal, :title, "Journal Title:" %>
         <%= text_field :journal, :title, {:name=>'rft.jtitle', :value=>params['rft.jtitle'], :class=>"title_search input-xlarge"} %>
-        <select name="umlaut.title_search_type" class="input-medium">
+        <select name="umlaut.title_search_type" class="title_search_type input-medium">
           <%= options_for_select({"contains" => "contains", "begins with" => "begins", "exact match" => "exact"}, params["umlaut.title_search_type"])  %>
         </select>
       </div>
-      <%= submit_tag "Search", {:name=>"Generate_OpenURL2"} %>
+      <%= submit_tag "Search", {:name=>"Generate_OpenURL2", :class => "btn"} %>
       <%= link_to('More search options', {:controller=>'search'}, :class => "inline-help") %>
     </fieldset>
   </div>
@@ -34,19 +34,19 @@
 <% if params["rft.jtitle"] %>
   <div class="note"><em><strong>Note:</strong> Alternate titles might have matched your search terms</em></div>
 <% end %>
-<div class='umlaut-pagination'>
+<div class='umlaut-pagination pagination'>
   <%= render :partial=>'pager' %>
 </div>
 <div class="umlaut-results">
   <% @display_results.each do | co | 
     @current_context_object = co
     partial_name = @citation_partial || 'citation' %>
-    <div class="umlaut-result">
+    <div class="umlaut-result well well-small">
       <%= render :partial=>partial_name %>
     </div>
   <% end %>
 </div>
-<div class='umlaut-pagination'>
+<div class='umlaut-pagination pagination'>
   <%= render :partial=>'pager' %>
 </div>
 <% if params["action"] == "journal_list" %> 

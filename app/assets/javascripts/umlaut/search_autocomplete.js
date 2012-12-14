@@ -8,36 +8,43 @@ jQuery(document).ready(function($) {
     }
   });
 
-  $("input.title_search").autocomplete({
+  // Search for the title with the current form.
+  var search_title = function(query, process) {
+    var form = this.$element.closest("form");
+    var url = form.attr("action").replace("journal_search", "auto_complete_for_journal_title");
+    // Get JSON from 
+    $.getJSON(
+      form.attr("action").replace("journal_search", "auto_complete_for_journal_title"),
+      form.serialize(),
+      function(data) {
+        process(data)
+      }
+    )
+  }
+
+  $("input.title_search").typeahead({
+    items: 10,
     minLength: 3,
-    source: function(request, response) {              
-      var form = $(this.element).closest("form");
-      $.ajax({
-        url: form.attr("action").replace("journal_search", "auto_complete_for_journal_title"),
-        dataType: "json",
-        data: form.serialize(),
-        success: function(data) {
-          response($.map(data, function(item) {
-            return {
-              label: item.title,
-              id: item.object_id
-            }
-          }));
-        }
-      });
+    source: search_title,
+    highlighter: function(item) { 
+      // Bootstrap updates the item as it passes through the callback chain
+      // so this is a hack to ensure we get the proper values.
+      return "<strong id=\"" + item.object_id + "\" class=\"title\">"+ item.title + "</strong>"; 
     },
-    select: function(event, ui) {
-      var form = $(event.target).closest("form");
-      form.find("input.rft_object_id").val(ui.item.id);
-      form.find("input.rft_title").val( ui.item.label );
-      form.find("select.sfx_title_search").val("exact");
+    sorter: function(items) { return items },
+    matcher: function(item) { return true; },
+    updater: function(item) {
+      // Get the selected item via our hack.
+      var selected_item = this.$menu.find('.active .title');
+      // We set the id attribute as the object id
+      var object_id = selected_item.attr("id");
+      // We set the inner text with the title
+      var title = selected_item.text();
+      var form = this.$element.closest("form");
+      form.find("input.rft_object_id").val(object_id);
+      form.find("input.rft_title").val(title);
+      form.find("select.title_search_type").val("exact");
+      return title;
     }
   });
 });
-
-/* 
-    select: function(event, ui) {
-      log(ui.item ? ("Selected: " + ui.item.value + ", geonameId: " + ui.item.id) : "Nothing selected, input was " + this.value);
-    }
-  });
-*/

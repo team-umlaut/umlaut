@@ -31,7 +31,7 @@ if (search_providers.length > 0 and (not service_type_in_progress?('search_insid
             <input type="hidden" name="id" value="<%= search_providers[0].id %>">
             <%= search_providers[0].view_data[:display_text] %>:<% end %>
         </span>
-        <input name="query" type="text" /> <input value="search" type="submit">
+        <input name="query" type="text" /> <input value="search" type="submit" class="btn">
       </form>
     </div>
   </div><%

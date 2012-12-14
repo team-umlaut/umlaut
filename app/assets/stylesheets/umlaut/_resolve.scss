@@ -8,13 +8,14 @@
 .umlaut-resolve-nav {
   border-bottom: 1px solid $umlautResolveNavBorderColor;
   background-color: $umlautResolveNavBackgroundColor;
-  padding: .25em;
+  padding: .5em;
   text-align: right;
 }
 
 .umlaut-main, .umlaut-sidebar {
   ul {
-    @extend .unstyled;
+    margin-left: 0;
+    list-style: none;
   }
 }
 
@@ -34,14 +35,20 @@
   }
 
   .umlaut-section {
-  	margin: .5em 1em .75em .5em;
-  	padding: 0.5em;
+    margin: {
+      top: .5em;
+      left: 1em;
+      right: .75em;
+      bottom: .5em;
+    }
+    padding: 0 0.5em;
     .response_list {
       margin-left:10px;
     }
     &.help {
       @extend .well;
       @extend .well-small;
+      padding: 0.5em;
       background-color: $umlautHelpBackgroundColor;
       border: {
         color: $umlautHelpBorderColor;
@@ -76,16 +83,6 @@
   }  
 }
 
-// Styles for individual section boxes, 
-// and parent areas, on resolve screen.
-.main_response_list {
-  margin: 10px 0 10px 0px;
-  .umlaut-section {
-    margin-top: 1.25em;
-    margin-bottom: .5em;
-  }
-}
-
 .umlaut-resource-info {
   @extend .well;
   @extend .well-small;
@@ -94,14 +91,6 @@
     color: $umlautResourceInfoBorderColor;
   }
   .resource_info_sections {
-    .umlaut-section {
-      margin-top: 12px;
-      margin-bottom: 4px;
-      padding-top: 6px;
-      padding-left: 4px;
-      margin-left: 8px;
-    }
-
     dl {
       dt, dd {
         padding: {
@@ -113,11 +102,6 @@
 }
 
 .umlaut-section {
-  .response_list {
-    margin-left:20px;
-	  line-height:110%;
-	}
-
   // Special looks for particular sections
   &.fulltext .response_list {
     margin-left: 4px;
@@ -126,21 +110,21 @@
   &.fulltext {
     @include iconed-response;
     .response_item i {
-      @extend .icons-famfamfam-page-text;
+      @extend .umlaut_icons-famfamfam-page-text;
     }
   }
 
   &.audio {
     @include iconed-response;
     .response_item i {
-      @extend .icons-famfamfam-page-sound;
+      @extend .umlaut_icons-famfamfam-page-sound;
     }
   }
 
   &.excerpts {
     @include iconed-response;
     .response_item i {
-      @extend .icons-famfamfam-book-open;
+      @extend .umlaut_icons-famfamfam-book-open;
     }
   }
 

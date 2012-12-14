@@ -1,60 +1,54 @@
 .umlaut-results {
   @extend .umlaut-separator;
- 	background-color: $umlautResultsBackgroundColor;
+   background-color: $umlautResultsBackgroundColor;
 }
 
 .umlaut-result {
-  @extend .well;
-  @extend .well-small;
   margin: {
     bottom: $baseLineHeight/2;
   }
+
   padding: {
     top: 2px;
     bottom: 2px;
     left: 2px;
     right: 2px;
   }
-}
 
-.umlaut-citation {
-}
-
-.umlaut-citation-link {
-  text-align: right;
-  padding: {
-    top: $baseLineHeight;
+  .umlaut-citation-link {
+    text-align: right;
+    padding: {
+      top: $baseLineHeight;
+    }
   }
 }
 
 .umlaut-pagination {
-  @extend .pagination;
   font-size: 125%;
 }
 
 @media (max-width: 767px) {
-  .umlaut-citation {
-    font: {
-      size: $baseFontSize*1.25
-    }
-    line-height: $baseLineHeight*2;
-    dl {
-      dt, dd {
-        padding: {
-          top: $baseLineHeight;
+  .umlaut-result {
+    .umlaut-citation {
+      font: {
+        size: $baseFontSize*1.25
+      }
+      line-height: $baseLineHeight*2;
+      dl {
+        dt, dd {
+          padding: {
+            top: $baseLineHeight;
+          }
         }
       }
     }
-  }
 
-  .umlaut-citation-link {
-    text-align: left;
-    font: {
-      size: $baseFontSize*1.25
-    }
-    line-height: $baseLineHeight*2;
-    padding: {
-      top: $baseLineHeight*2;
+    .umlaut-citation-link {
+      text-align: left;
+      font: {
+        size: $baseFontSize*1.25
+      }
+      line-height: $baseLineHeight*2;
     }
   }
 }
