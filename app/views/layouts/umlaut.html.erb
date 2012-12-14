@@ -10,7 +10,7 @@
     <%= render_umlaut_head_content %>
   </head>
   <body>
-    <div class="umlaut-container">
+    <div class="umlaut-container container">
       <header id="header" class="header">
         <h1><%= umlaut_config.app_name %></h1>
       </header>
@@ -19,7 +19,7 @@
           URL: <%= link_to current_permalink_url, current_permalink_url %>          
         </nav>
       <% end %>
-      <div class="container-fluid <%= "umlaut-#{params[:controller]}-container" %>">
+      <div class="umlaut-main-container-fluid container-fluid <%= "umlaut-#{params[:controller]}-container" %>">
         <%= yield %>
       </div>
       <footer id="footer" class="footer">

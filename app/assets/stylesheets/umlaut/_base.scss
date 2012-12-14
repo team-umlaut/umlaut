@@ -1,5 +1,8 @@
 body {
-  padding-left: 20px; 
+  padding: {
+    left: 20px;
+    right: 20px;
+  }
 }
 
 header {
@@ -41,3 +44,17 @@ select {
   *margin-top: 4px; /* For IE7, add top margin to align select with labels */
   line-height: auto;
 }
+
+@media (max-width: 767px) {
+  .umlaut-main-container-fluid {
+    @include umlaut-container-padding;
+  }
+  
+  body {
+    padding: {
+      left: 0;
+      right: 0;
+    }
+  }
+}
+

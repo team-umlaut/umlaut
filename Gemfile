@@ -18,7 +18,7 @@ group :development, :test do
 
   platforms :ruby do
     gem 'mysql2'
-    gem 'therubyracer'
+    gem 'therubyracer', "~> 0.10.0"
     gem 'ruby-prof'
   end
 

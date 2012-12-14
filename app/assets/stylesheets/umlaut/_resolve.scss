@@ -64,37 +64,27 @@
   }
 }
 
-@media (max-width: 767px) {
-  .umlaut-sidebar {
-    @include umlaut-container-padding;
-    background-color: $umlautMainBackgroundColor;
-    border: none;
-    padding: {
-      top: 10px;
-    }
-
-    .umlaut-help-list {
-      text-align: left;
-    }
-  }
-
-  .umlaut-resolve-container {
-    background-color: $umlautMainBackgroundColor;
-  }  
-}
-
 .umlaut-resource-info {
   @extend .well;
   @extend .well-small;
+  padding: {
+    top: 0;
+    bottom: 0;
+  }
   background-color: $umlautResourceInfoBackgroundColor;
   border: {
     color: $umlautResourceInfoBorderColor;
   }
   .resource_info_sections {
     dl {
+      margin: {
+        top: .5em;
+        bottom: .5em;
+      };
       dt, dd {
         padding: {
-          top: 5px;
+          top: .25em;
+          top: .25em;
         }
       }
     }
@@ -242,6 +232,37 @@
   border: {
     color: $umlautResolveErrorBorderColor;
   }
+}
+
+@media (max-width: 767px) {
+  #cover_image {
+    display: none;
+  }
+  .umlaut-sidebar {
+    @include umlaut-container-padding;
+    background-color: $umlautMainBackgroundColor;
+    border: none;
+    padding: {
+      top: 10px;
+    }
+    
+    .umlaut-section {
+      margin: {
+        left: 0;
+      }
+      padding: {
+        left: 0;
+      }
+    }
+
+    .umlaut-help-list {
+      text-align: left;
+    }
+  }
+
+  .umlaut-resolve-container {
+    background-color: $umlautMainBackgroundColor;
+  }  
 }
 
 @media (min-width: 768px) and (max-width: 979px) { 
