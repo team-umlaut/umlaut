@@ -79,7 +79,7 @@ module ResolveHelper
   #  <% end %>
   def expand_contract_section(arg_heading, id, options={}, &block)      
     expanded = (params["umlaut.show_#{id}"] == "true") || options[:initial_expand] || false
-    icon = content_tag(:i, nil, :class => ["umlaut-toggle"] << ( expanded ? "umlaut_icons-list-open" : "umlaut_icons-list-closed"))
+    icon = content_tag(:i, nil, :class => ["expand_contract_toggle"] << ( expanded ? "umlaut_icons-list-open" : "umlaut_icons-list-closed"))
     heading = content_tag(:span,( expanded ? "Hide " : "Show "), :class=>'expand_contract_action_label') + arg_heading
     link_params = params.merge('umlaut.request_id' => @user_request.id,
       "umlaut.show_#{id}" => (! expanded).to_s,
