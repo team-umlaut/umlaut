@@ -8,7 +8,8 @@
    pipline fingerprinted. sorry, best way to make it work!
 */
 jQuery(document).ready(function($) {
-  $(".expand_contract_toggle").live("click", function() {
+  $(".expand_contract_toggle").live("click", function(event) {
+    event.preventDefault();
     var content = $(this).next(".expand_contract_content");
     var icon = $(this).parent().find('img.toggle_icon');
     if (content.is(":visible")) {
