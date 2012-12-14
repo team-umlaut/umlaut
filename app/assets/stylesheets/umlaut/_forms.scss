@@ -1,5 +1,8 @@
 .form-inline {
   .control-group {
+    padding: {
+      left: .5em;
+    }
     display: inline;
   }
 }
@@ -10,6 +13,9 @@
   }
   .form-inline {
     .control-group {
+      padding: {
+        left: 0;
+      }
       display: block;
     }
   }
