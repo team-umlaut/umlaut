@@ -1,0 +1,105 @@
+# mysql> select *, t.OBJECT_ID from AZ_LETTER_GROUP l, AZ_TITLE t where t.OBJECT_ID in (954921332001, 954921332002, 954921332003, 954921332004, 954921333005, 954921333007, 954921333008, 954921333009, 954921333010, 954921333012, 954921333013, 954921333014, 954921333015, 954921333016, 954921333017, 954921333018, 954921333020, 954921333021, 954921334022, 954921334023) and l.AZ_TITLE_ID = t.AZ_TITLE_ID and t.AZ_PROFILE='default';
+# +--------------------+-------------+----------------------+-------------+------------+--------------+------------------------------------------------+---------------------------------------------+--------+-------------------+---------------+--------------+
+# | AZ_LETTER_GROUP_ID | AZ_TITLE_ID | AZ_LETTER_GROUP_NAME | AZ_TITLE_ID | AZ_PROFILE | OBJECT_ID    | TITLE_DISPLAY                                  | TITLE_SORT                                  | SCRIPT | PAGINATION_SUBSTR | PEER_REVIEWED | OBJECT_ID    |
+# +--------------------+-------------+----------------------+-------------+------------+--------------+------------------------------------------------+---------------------------------------------+--------+-------------------+---------------+--------------+
+# |              13017 |       13017 | A                    |       13017 | default    | 954921332002 | ABCA bulletin                                  | ABCA BULLETIN                               | Latin  | ABC               | YES           | 954921332002 |
+# |              13877 |       13877 | A                    |       13877 | default    | 954921333015 | Adhesives age                                  | ADHESIVES AGE                               | Latin  | Adh               | YES           | 954921333015 |
+# |              20375 |       20375 | A                    |       20375 | default    | 954921334022 | Air Force Comptroller                          | AIR FORCE COMPTROLLER                       | Latin  | Air               | NO            | 954921334022 |
+# |              21333 |       21333 | P                    |       21333 | default    | 954921332001 | Publishers weekly                              | PUBLISHERS WEEKLY                           | Latin  | Pub               | NO            | 954921332001 |
+# |              22932 |       22932 | P                    |       22932 | default    | 954921332004 | Planning                                       | PLANNING                                    | Latin  | Pla               | NO            | 954921332004 |
+# |              26173 |       26173 | A                    |       26173 | default    | 954921333007 | Academy of Management journal                  | ACADEMY OF MANAGEMENT JOURNAL               | Latin  | Aca               | YES           | 954921333007 |
+# |              29075 |       29075 | A                    |       29075 | default    | 954921333021 | Air Conditioning, Heating & Refrigeration News | AIR CONDITIONING HEATING REFRIGERATION NEWS | Latin  | Air               | NO            | 954921333021 |
+# |              32365 |       32365 | D                    |       32365 | default    | 954921333010 | De Accountant                                  | DE ACCOUNTANT                               | Latin  | De                | NO            | 954921333010 |
+# |              35282 |       35282 | A                    |       35282 | default    | 954921333016 | Administrative science quarterly               | ADMINISTRATIVE SCIENCE QUARTERLY            | Latin  | Adm               | YES           | 954921333016 |
+# |              45044 |       45046 | A                    |       45046 | default    | 954921333012 | The Accountants' journal                       | ACCOUNTANTS JOURNAL                         | Latin  | Acc               | NO            | 954921333012 |
+# |              60704 |       60707 | A                    |       60707 | default    | 954921333013 | Accounting and business research               | ACCOUNTING AND BUSINESS RESEARCH            | Latin  | Acc               | YES           | 954921333013 |
+# |              73026 |       73030 | A                    |       73030 | default    | 954921333009 | Accountancy Ireland                            | ACCOUNTANCY IRELAND                         | Latin  | Acc               | NO            | 954921333009 |
+# |              77048 |       77052 | A                    |       77052 | default    | 954921334023 | Air transport world                            | AIR TRANSPORT WORLD                         | Latin  | Air               | NO            | 954921334023 |
+# |              78716 |       78720 | A                    |       78720 | default    | 954921333020 | Agri marketing                                 | AGRI MARKETING                              | Latin  | Agr               | NO            | 954921333020 |
+# |              82203 |       82208 | A                    |       82208 | default    | 954921333014 | The Accounting review                          | ACCOUNTING REVIEW                           | Latin  | Acc               | YES           | 954921333014 |
+# |              90462 |       90467 | C                    |       90467 | default    | 954921332003 | Communications of the ACM                      | COMMUNICATIONS OF THE ACM                   | Latin  | Com               | YES           | 954921332003 |
+# |              93618 |       93625 | A                    |       93625 | default    | 954921333017 | Advances in Applied Probability                | ADVANCES IN APPLIED PROBABILITY             | Latin  | Adv               | YES           | 954921333017 |
+# |              95091 |       95098 | A                    |       95098 | default    | 954921333008 | Accountancy                                    | ACCOUNTANCY                                 | Latin  | Acc               | NO            | 954921333008 |
+# |              98839 |       98846 | A                    |       98846 | default    | 954921333005 | Abacus                                         | ABACUS                                      | Latin  | Aba               | YES           | 954921333005 |
+# |             115381 |      115390 | A                    |      115390 | default    | 954921333018 | Advertising Age                                | ADVERTISING AGE                             | Latin  | Adv               | NO            | 954921333018 |
+# +--------------------+-------------+----------------------+-------------+------------+--------------+------------------------------------------------+---------------------------------------------+--------+-------------------+---------------+--------------+
+az_letter_group13017:
+  AZ_LETTER_GROUP_ID: 13017
+  AZ_TITLE_ID: 13017
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group13877:
+  AZ_LETTER_GROUP_ID: 13877
+  AZ_TITLE_ID: 13877
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group20375:
+  AZ_LETTER_GROUP_ID: 20375
+  AZ_TITLE_ID: 20375
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group21333:
+  AZ_LETTER_GROUP_ID: 21333
+  AZ_TITLE_ID: 21333
+  AZ_LETTER_GROUP_NAME: P
+az_letter_group22932:
+  AZ_LETTER_GROUP_ID: 22932
+  AZ_TITLE_ID: 22932
+  AZ_LETTER_GROUP_NAME: P
+az_letter_group26173:
+  AZ_LETTER_GROUP_ID: 26173
+  AZ_TITLE_ID: 26173
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group29075:
+  AZ_LETTER_GROUP_ID: 29075
+  AZ_TITLE_ID: 29075
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group32365:
+  AZ_LETTER_GROUP_ID: 32365
+  AZ_TITLE_ID: 32365
+  AZ_LETTER_GROUP_NAME: D
+az_letter_group35282:
+  AZ_LETTER_GROUP_ID: 35282
+  AZ_TITLE_ID: 35282
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group45044:
+  AZ_LETTER_GROUP_ID: 45044
+  AZ_TITLE_ID: 45046
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group60704:
+  AZ_LETTER_GROUP_ID: 60704
+  AZ_TITLE_ID: 60707
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group73026:
+  AZ_LETTER_GROUP_ID: 73026
+  AZ_TITLE_ID: 73030
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group77048:
+  AZ_LETTER_GROUP_ID: 77048
+  AZ_TITLE_ID: 77052
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group78716:
+  AZ_LETTER_GROUP_ID: 78716
+  AZ_TITLE_ID: 78720
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group82203:
+  AZ_LETTER_GROUP_ID: 82203
+  AZ_TITLE_ID: 82208
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group90462:
+  AZ_LETTER_GROUP_ID: 90462
+  AZ_TITLE_ID: 90467
+  AZ_LETTER_GROUP_NAME: C
+az_letter_group93618:
+  AZ_LETTER_GROUP_ID: 93618
+  AZ_TITLE_ID: 93625
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group95091:
+  AZ_LETTER_GROUP_ID: 95091
+  AZ_TITLE_ID: 95098
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group98839:
+  AZ_LETTER_GROUP_ID: 98839
+  AZ_TITLE_ID: 98846
+  AZ_LETTER_GROUP_NAME: A
+az_letter_group115381:
+  AZ_LETTER_GROUP_ID: 115381
+  AZ_TITLE_ID: 115390
+  AZ_LETTER_GROUP_NAME: A

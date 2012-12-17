@@ -6,40 +6,24 @@ namespace :umlaut do
 
     desc "Loads sfx_urls from SFX installation. SFX mysql login needs to be set in config."
     task :load_sfx_urls => :environment do
-
-      if SfxDb.connection_configured?
-    
-        puts "Loading SFXUrls via direct access to SFX db."
-        #sfxlcl41.TARGET_SERVICE
-        # Check if we have an SFX3 schema, or if not use SFX4
-        sfx3 = true
-        begin
-          SfxDb::Object.connection.select_all("SHOW FIELDS FROM TARGET_SERVICE")
-        rescue ActiveRecord::StatementInvalid
-          sfx3 = false
-        end
-        
-        if sfx3
-          urls = SfxDb::SfxDbBase.fetch_sfx_urls
-        else
-          urls = SearchMethods::Sfx4.fetch_sfx_urls
-        end
-        
+      # Get the configured searcher
+      searcher = UmlautController.umlaut_config.lookup!("search.az_search_method", SearchMethods::Sfx4)
+      if searcher.fetch_urls?
+        puts "Loading SfxUrls (e.g. via direct access to SFX db)."
+        # Grab the urls
+        urls = searcher.fetch_urls
         ignore_urls = UmlautController.umlaut_config.lookup!("sfx.sfx_load_ignore_hosts", [])
-        
         # We only want the hostnames
         hosts = urls.collect do |u|
           begin
-          uri = URI.parse(u)
-          uri.host
+            uri = URI.parse(u)
+            uri.host
           rescue Exception
           end
         end
         hosts.uniq!
-        
         SfxUrl.transaction do
           SfxUrl.delete_all
-          
           hosts.each {|h| SfxUrl.new({:url => h}).save! unless ignore_urls.find {|ignore| ignore === h }}      
         end
       else

@@ -1,0 +1,96 @@
+# This file is used by travis to provide continuous
+# integration for umlaut.  It contains "mock instances"
+# of the SFX4 Global and Local databases to provide
+# sanity checks for SFX searching.  The file is 
+# renamed to database.yml as part of the travis before script 
+# hook.
+# 
+# MySQL.  Versions 4.1 and 5.0 are recommended.
+# 
+# Install the MYSQL driver
+#   gem install mysql2
+#
+# Ensure the MySQL gem is defined in your Gemfile
+#   gem 'mysql2'
+#
+# And be sure to use new-style password hashing:
+#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+#
+# UMLAUT: mysql db with mysql2 adapter strongly recommended for Umlaut, in both 
+# production and development. sqlite3 has unclear semantics under threaded 
+# concurrency which umlaut uses, and in many cases simply does not work. 
+#
+# A high (connection) pool setting is also, sadly, generally
+# required at present. 
+#
+# development:
+#   adapter: mysql2
+#   host: 
+#   username:
+#   password:
+#   database:
+#   pool: 30
+
+development:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: umlaut3_development
+  pool: 5
+  username: root
+  password: 
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  adapter: mysql2
+  database: umlaut3_test
+  pool: 5
+  username: root
+  encoding: utf8
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: umlaut3
+  pool: 30
+  username: 
+  password: 
+          
+#
+# UMLAUT: for the 'search' functions (A-Z title lookup) to work, you need
+# a direct database connection to the SFX database, under 'sfx_db' key. 
+# You should manually set up a new read-only MySQL account in the SFX db
+# for this purpose, rather than use one of the full-access existing SFX
+# mysql accounts. 
+#
+# In this dummy app, the sfx_db configuation is used for SFX search testing.
+# DO NOT SET THIS FOR ANYTHING LIKE A REAL SFX DATABASE.
+sfx_db:
+  adapter: mysql2
+  database: sfxlcl41_test # or other sfx instance db
+  username: root
+  password: 
+  pool: 5
+  encoding: utf8
+  # :mock_instance is used for SFX search testing.
+  # DO NOT SET :mock_instance TO TRUE FOR ANYTHING LIKE A REAL SFX DATABASE.
+  # If in doubt set :mock_instance => false
+  mock_instance: true
+
+# This is used for SFX search testing.
+# DO NOT SET THIS FOR ANYTHING LIKE A REAL SFX DATABASE.
+sfx4_global:
+  adapter: mysql2
+  database: sfxglb41_test
+  username: root
+  password: 
+  pool: 5
+  encoding: utf8
+  # :mock_instance is used for SFX search testing.
+  # DO NOT SET :mock_instance TO TRUE FOR ANYTHING LIKE A REAL SFX DATABASE.
+  # If in doubt set :mock_instance => false
+  mock_instance: true
+

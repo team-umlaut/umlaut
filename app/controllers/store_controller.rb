@@ -3,7 +3,13 @@ class StoreController < UmlautController
   require 'openurl'
   def index
     
-    perm = Permalink.find(params[:id])
+    perm = Permalink.where(:id => params[:id]).first
+    
+    unless perm # not in our db
+      handle_404_error
+      return
+    end
+    
         
     co = OpenURL::ContextObject.new
 
@@ -12,29 +18,29 @@ class StoreController < UmlautController
     # the permalink, if the Referent has been purged. Either way
     # we're good. 
     referent = nil
-    if ( perm && perm.referent)
+    if ( perm.referent)
       referent = perm.referent
-    elsif (perm && perm.context_obj_serialized)
+    elsif ( perm.context_obj_serialized)
       stored_co = perm.restore_context_object
       # And a referrent, no referrer for now, we'll restore it later. 
       referent = Referent.create_by_context_object( stored_co, :permalink => false )
       perm.referent = referent
-    end
-
-    perm.last_access = Time.now # keep track of when permalink last actually retrieved
-
-    # will catch possible new referent to be saved, as well as
-    # update to last_access
-    perm.save!
-    
+    end    
 
     unless ( referent )
       # We can't find a referent or succesfully restore an xml context
       # object to send the user to the request. We can not resolve
       # this permalink!
-      
-      raise NotFound.new("Permalink request could not be resolved. Returning 404. Permalink id: #{params[:id]}")            
+      handle_404_error
+      return 
+      #raise NotFound.new("Permalink request could not be resolved. Returning 404. Permalink id: #{params[:id]}")            
     end
+    
+    perm.last_access = Time.now # keep track of when permalink last actually retrieved
+
+    # will catch possible new referent to be saved, as well as
+    # update to last_access
+    perm.save!
     
     # Whether it was an already existing one, or a newly created one
     # turn it back to a co so we can add a few more things. 
@@ -62,8 +68,6 @@ class StoreController < UmlautController
     # with same name.
 
     redirect_to( url_for_with_co( new_params, co) )
-  end
-  
-  class NotFound < Exception ; end
+  end    
   
 end

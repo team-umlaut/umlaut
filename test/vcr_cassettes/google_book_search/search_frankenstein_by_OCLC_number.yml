@@ -1,0 +1,107 @@
+--- 
+http_interactions: 
+  - request: 
+      method: get
+      uri: https://www.googleapis.com/books/v1/volumes?printType=books&q=OCLC2364071
+      body: 
+        string: ""
+      headers: 
+        X-Forwarded-For: 
+          - 127.0.0.1
+        Accept: 
+          - "*/*"
+    response: 
+      status: 
+        code: 200
+        message: OK
+      headers: 
+        Expires: 
+          - Tue, 16 Oct 2012 01:23:42 GMT
+        Date: 
+          - Tue, 16 Oct 2012 01:23:42 GMT
+        Cache-Control: 
+          - private, max-age=0, must-revalidate, no-transform
+        Etag: 
+          - "\"76HmI4RwS6OgNCePdQ6xAc8z5Bg/kPKSU_-RclVR-6p6aJLF4I3OBKg\""
+        Content-Type: 
+          - application/json; charset=UTF-8
+        X-Content-Type-Options: 
+          - nosniff
+        X-Frame-Options: 
+          - SAMEORIGIN
+        X-Xss-Protection: 
+          - 1; mode=block
+        Server: 
+          - GSE
+        Transfer-Encoding: 
+          - chunked
+      body: 
+        string: |
+          {
+           "kind": "books#volumes",
+           "totalItems": 1,
+           "items": [
+            {
+             "kind": "books#volume",
+             "id": "QKgVAAAAYAAJ",
+             "etag": "ATLNMZ0aerc",
+             "selfLink": "https://www.googleapis.com/books/v1/volumes/QKgVAAAAYAAJ",
+             "volumeInfo": {
+              "title": "Frankenstein",
+              "subtitle": "Or, The Modern Prometheus",
+              "authors": [
+               "Mary Wollstonecraft Shelley"
+              ],
+              "publishedDate": "1922",
+              "industryIdentifiers": [
+               {
+                "type": "OTHER",
+                "identifier": "PRNC:32101064790353"
+               }
+              ],
+              "pageCount": 332,
+              "printType": "BOOK",
+              "categories": [
+               "Fiction"
+              ],
+              "averageRating": 3.5,
+              "ratingsCount": 1988,
+              "contentVersion": "0.0.2.0.full.3",
+              "imageLinks": {
+               "smallThumbnail": "http://bks6.books.google.com/books?id=QKgVAAAAYAAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+               "thumbnail": "http://bks6.books.google.com/books?id=QKgVAAAAYAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+              },
+              "language": "en",
+              "previewLink": "http://books.google.com/books?id=QKgVAAAAYAAJ&printsec=frontcover&dq=OCLC2364071&as_pt=BOOKS&hl=&cd=1&source=gbs_api",
+              "infoLink": "http://books.google.com/books?id=QKgVAAAAYAAJ&dq=OCLC2364071&as_pt=BOOKS&hl=&source=gbs_api",
+              "canonicalVolumeLink": "http://books.google.com/books/about/Frankenstein.html?hl=&id=QKgVAAAAYAAJ"
+             },
+             "saleInfo": {
+              "country": "US",
+              "saleability": "FREE",
+              "isEbook": true
+             },
+             "accessInfo": {
+              "country": "US",
+              "viewability": "ALL_PAGES",
+              "embeddable": true,
+              "publicDomain": true,
+              "textToSpeechPermission": "ALLOWED",
+              "epub": {
+               "isAvailable": true,
+               "downloadLink": "http://books.google.com/books/download/Frankenstein.epub?id=QKgVAAAAYAAJ&hl=&output=epub&source=gbs_api"
+              },
+              "pdf": {
+               "isAvailable": true,
+               "downloadLink": "http://books.google.com/books/download/Frankenstein.pdf?id=QKgVAAAAYAAJ&hl=&output=pdf&sig=ACfU3U3nhOFhUroWh_b-nMaAulaAV6kjlw&source=gbs_api"
+              },
+              "webReaderLink": "http://books.google.com/books/reader?id=QKgVAAAAYAAJ&as_pt=BOOKS&hl=&printsec=frontcover&output=reader&source=gbs_api",
+              "accessViewStatus": "FULL_PUBLIC_DOMAIN"
+             }
+            }
+           ]
+          }
+
+      http_version: 
+    recorded_at: Tue, 16 Oct 2012 01:23:42 GMT
+recorded_with: VCR 2.2.5

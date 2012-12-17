@@ -1,0 +1,20 @@
+# Dummy config for testing sfx4solr search module.
+# Solr is not running on localhost. Instead we use a
+# VCR cassette to test the expected result from Solr.
+production:
+  solr:
+    hostname: localhost
+    port: 8983
+    log_level: WARNING
+
+development:
+  solr:
+    hostname: localhost
+    port: 8982
+    log_level: INFO
+
+test:
+  solr:
+    hostname: localhost
+    port: 8981
+    log_level: WARNING
