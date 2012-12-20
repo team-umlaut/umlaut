@@ -6,7 +6,11 @@ jQuery(document).ready(function($) {
     $("#modal .modal-header h3").text(heading.text());
     var submit = data.find("form input[type=submit]").eq(0).remove();
     $("#modal .modal-body").html(data.html());
-    if (submit)  $("#modal .modal-footer").html(submit.wrap('<div>').parent().html());
+    footer = $("#modal .modal-footer")
+    var old_submit = footer.find("#modal .modal-footer input[type=submit]").eq(0).remove();
+    if (submit) {
+      footer.prepend(submit);
+    }
     $("#modal").modal("show");
   }
   var display_modal = function(event) {
