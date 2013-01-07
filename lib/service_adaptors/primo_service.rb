@@ -133,10 +133,10 @@ class PrimoService < Service
       config.load_yaml config_file unless config.load_time
     end
     # Defaults
-    @holding_attributes = Exlibris::Primo::Holding.base_attributes
-    @rsrc_attributes = Exlibris::Primo::Rsrc.base_attributes
-    @toc_attributes = Exlibris::Primo::Toc.base_attributes
-    @related_link_attributes = Exlibris::Primo::RelatedLink.base_attributes
+    @holding_attributes = []
+    @rsrc_attributes = []
+    @toc_attributes = []
+    @related_link_attributes = []
     # TODO: Run these decisions someone to see if they make sense.
     @referent_enhancements = {
       # Prefer SFX journal titles to Primo journal titles
@@ -222,8 +222,8 @@ class PrimoService < Service
     rescue Exception => e
       # Log error and return finished
       Rails.logger.error(
-        "Error in Exlibris::Primo::Searcher. "+
-        "Returning 0 Primo services for search #{search_params.inspect}. "+
+        "Error in Exlibris::Primo::Search. "+
+        "Returning 0 Primo services for search #{search.inspect}. "+
         "Exlibris::Primo::Searcher raised the following exception:\n#{e}\n#{e.backtrace.inspect}")
       return request.dispatched(self, true)
     end
@@ -280,22 +280,18 @@ class PrimoService < Service
       #   We didn't find any actual holdings
       #   We didn't come from Primo (prevent round trips since that would be weird)
       #   We have a title to search for.
-      if @service_types.include?("holding_search") and holdings.empty? and (not primo_identifier?)
-        if holdings.empty? and
-            and
-           not @title.nil?
-          service_data = {}
-          service_data[:type] = "link_to_search"
-          service_data[:display_text] = (@holding_search_text.nil?) ? "Search for this title." : @holding_search_text
-          service_data[:note] = ""
-          service_data[:url] = @base_url+"/primo_library/libweb/action/dlSearch.do?institution=#{@holding_search_institution}&vid=#{@vid}&onCampus=false&query=#{CGI::escape("title,exact,"+@title)}&indx=1&bulkSize=10&group=GUEST"
-          request.add_service_response(
-            service_data.merge(
-              :service => self,
-              :service_type_value => 'holding_search'
-            )
+      if @service_types.include?("holding_search") and holdings.empty? and (not primo_identifier?) and (not @title.nil?)
+        service_data = {}
+        service_data[:type] = "link_to_search"
+        service_data[:display_text] = (@holding_search_text.nil?) ? "Search for this title." : @holding_search_text
+        service_data[:note] = ""
+        service_data[:url] = @base_url+"/primo_library/libweb/action/dlSearch.do?institution=#{@holding_search_institution}&vid=#{@vid}&onCampus=false&query=#{CGI::escape("title,exact,"+@title)}&indx=1&bulkSize=10&group=GUEST"
+        request.add_service_response(
+          service_data.merge(
+            :service => self,
+            :service_type_value => 'holding_search'
           )
-        end
+        )
       end
     end
     # Get fulltext
@@ -396,7 +392,7 @@ class PrimoService < Service
   def to_primo_source(service_response)
     source_parameters = { :base_url => @base_url, :vid => @vid, :config => primo_config }
     @holding_attributes.each { |attr|
-        source_parameters[attr] = service_response.data_values[attr] }
+      source_parameters[attr] = service_response.data_values[attr] }
     return Exlibris::Primo::Holding.new(source_parameters).to_source
   end
 
@@ -405,9 +401,9 @@ class PrimoService < Service
     @referent_enhancements.each do |key, options|
       metadata_element = (options[:value].nil?) ? key : options[:value]
       # Enhance the referent from the 'addata' section
-      method = "addata_#{metadata_element}".to_sym
+      metadata_method = "addata_#{metadata_element}".to_sym
       # Get the metadata value if it's there
-      metadata_value = record.send(method) if record.respond_to? method
+      metadata_value = record.send(metadata_method) if record.respond_to? metadata_method
       # Enhance the referent
       request.referent.enhance_referent(key.to_s, metadata_value,
         true, false, options) unless metadata_value.nil?

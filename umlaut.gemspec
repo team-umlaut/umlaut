@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   # Remember to generate a faster json adapter into app gemfile, rather than just multi_json lowest common denominator.
   s.add_dependency "multi_json"           # use best locally installed json gem for json parsing
   s.add_dependency "confstruct", "~> 0.2" # used for our configuration object
-  s.add_dependency "exlibris-primo", "~> 0.1.0" # for Primo Service
+  # s.add_dependency "exlibris-primo", "~> 0.1.0" # for Primo Service
   s.add_dependency "ensure_valid_encoding"      # used for correcting bad char enc bytes in input
     
   s.add_development_dependency "single_test", "~> 0.5.1"
