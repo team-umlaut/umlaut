@@ -128,15 +128,14 @@ class PrimoService < Service
 
   # Overwrites Service#new.
   def initialize(config)
-    # Configure Primo if this is the first time through
-    Exlibris::Primo.configure do |config|
-      config.load_yaml config_file unless config.load_time
-    end
-    # Defaults
-    @holding_attributes = []
-    @rsrc_attributes = []
-    @toc_attributes = []
-    @related_link_attributes = []
+    # Configure Primo
+    configure_primo
+    # Attributes for holding service data.
+    @holding_attributes = [:record_id, :original_id, :title, :author, :display_type, 
+      :source_id, :original_source_id, :source_record_id, :ils_api_id, :institution_code,
+      :institution, :library_code, :library, :collection, :call_number, :coverage, :notes, 
+      :subfields]
+    @link_attributes = [:record_id, :original_id, :url, :display, :notes, :subfields]
     # TODO: Run these decisions someone to see if they make sense.
     @referent_enhancements = {
       # Prefer SFX journal titles to Primo journal titles
@@ -219,170 +218,63 @@ class PrimoService < Service
         # We'll take the first record, since there should only be one.
         enhance_referent(request, records.first)
       end
+      # Get cover image only if @record_id is defined
+      # TODO: make cover image service smarter and only
+      # include things that are actually URLs.
+      # if @record_id and @service_types.include?("cover_image")
+      #   cover_image = primo_searcher.cover_image
+      #   unless cover_image.nil?
+      #     request.add_service_response(
+      #       :service => self,
+      #       :display_text => 'Cover Image',
+      #       :key => 'medium',
+      #       :url => cover_image,
+      #       :size => 'medium',
+      #       :service_type_value => :cover_image)
+      #   end
+      # end
+      # Add holding services
+      if @service_types.include?("holding") or @service_types.include?("primo_source")
+        # Get holdings from the returned Primo records
+        holdings = records.collect{|record| record.holdings}.flatten
+        # Add the holding services
+        add_holding_services(request, holdings) unless holdings.empty?
+        # Provide title search functionality in the absence of available holdings.
+        # The logic below says only present the holdings search in the following case:
+        #   We've configured to present holding search
+        #   We didn't find any actual holdings
+        #   We didn't come from Primo (prevent round trips since that would be weird)
+        #   We have a title to search for.
+        if @service_types.include?("holding_search") and holdings.empty? and (not primo_identifier?) and (not @title.nil?)
+          # Add the holding search service
+          add_holding_search_service(request)
+        end
+      end
+      # Add fulltext services
+      if @service_types.include?("fulltext")
+        # Get fulltexts from the returned Primo records
+        fulltexts = records.collect{|record| record.fulltexts}.flatten
+        # Add the fulltext services
+        add_fulltext_services(request, fulltexts) unless fulltexts.empty?
+      end
+      # Add table of contents services
+      if @service_types.include?("table_of_contents")
+        # Get tables of contents from the returned Primo records
+        tables_of_contents = records.collect{|record| record.tables_of_contents}.flatten
+        # Add the table of contents services
+        add_table_of_contents_services(request, tables_of_contents) unless tables_of_contents.empty?
+      end
+      if @service_types.include?("highlighted_link")
+        # Get related links from the returned Primo records
+        highlighted_links = records.collect{|record| record.related_links}.flatten
+        add_highlighted_link_services(request, highlighted_links) unless highlighted_links.empty?
+      end
     rescue Exception => e
       # Log error and return finished
       Rails.logger.error(
         "Error in Exlibris::Primo::Search. "+
         "Returning 0 Primo services for search #{search.inspect}. "+
-        "Exlibris::Primo::Searcher raised the following exception:\n#{e}\n#{e.backtrace.inspect}")
-      return request.dispatched(self, true)
-    end
-    # Get cover image only if @primo_id is defined
-    # TODO: make cover image service smarter and only
-    # include things that are actually URLs.
-    # if @record_id and @service_types.include?("cover_image")
-    #   cover_image = primo_searcher.cover_image
-    #   unless cover_image.nil?
-    #     request.add_service_response(
-    #       :service => self,
-    #       :display_text => 'Cover Image',
-    #       :key => 'medium',
-    #       :url => cover_image,
-    #       :size => 'medium',
-    #       :service_type_value => :cover_image)
-    #   end
-    # end
-    # Get holdings from Primo Searcher
-    if @service_types.include?("holding") or @service_types.include?("primo_source")
-      records.each do |record|
-        record.holdings.each do |holding|
-          next if @suppress_holdings.find {|suppress| suppress === holding.availlibrary}
-          service_data = {}
-          @holding_attributes.each do |attr|
-            service_data[attr] = holding.method(attr).call
-          end
-          # Umlaut specific attributes.
-          service_data[:match_reliability] =
-            (reliable_match?(:title => holding.title, :author => holding.author)) ?
-              ServiceResponse::MatchExact : ServiceResponse::MatchUnsure
-          service_data[:request_link_supports_ajax_call] =
-            (holding.respond_to?(:request_link_supports_ajax_call)) ?
-              holding.request_link_supports_ajax_call : false
-          # Only add one service type, either "primo_source" OR "holding", not both.
-          service_type = (@service_types.include?("primo_source")) ? "primo_source" : "holding"
-          # Add some other holding information for compatibility with default holding partial
-          service_data.merge!({
-            :call_number => holding.call_number, :collection => holding.collection,
-            :collection_str => "#{holding.library} #{holding.collection}",
-            :coverage_str => holding.coverage.join("<br />"),
-            :coverage_str_array => holding.coverage }) if service_type.eql? "holding"
-          request.add_service_response(
-            service_data.merge(
-              :service => self,
-              :service_type_value => service_type
-            )
-          )
-        end
-      end
-      # Provide title search functionality in the absence of available holdings.
-      # The logic below says only present the holdings search in the following case:
-      #   We've configured to present holding search
-      #   We didn't find any actual holdings
-      #   We didn't come from Primo (prevent round trips since that would be weird)
-      #   We have a title to search for.
-      if @service_types.include?("holding_search") and holdings.empty? and (not primo_identifier?) and (not @title.nil?)
-        service_data = {}
-        service_data[:type] = "link_to_search"
-        service_data[:display_text] = (@holding_search_text.nil?) ? "Search for this title." : @holding_search_text
-        service_data[:note] = ""
-        service_data[:url] = @base_url+"/primo_library/libweb/action/dlSearch.do?institution=#{@holding_search_institution}&vid=#{@vid}&onCampus=false&query=#{CGI::escape("title,exact,"+@title)}&indx=1&bulkSize=10&group=GUEST"
-        request.add_service_response(
-          service_data.merge(
-            :service => self,
-            :service_type_value => 'holding_search'
-          )
-        )
-      end
-    end
-    # Get fulltext
-    if @service_types.include?("fulltext")
-      # Get RSRCs from Primo Searcher (executes search)
-      # Let's find any URLs, and add full text responses for those.
-      urls_seen = [] # for de-duplicating urls from catalog.
-      primo_searcher.rsrcs.each do |rsrc|
-        # No url? Forget it.
-        next if rsrc.url.nil?
-        # Next if duplicate.
-        next if urls_seen.include?(rsrc.url)
-        # Don't add the URL if it matches our SFXUrl finder (unless fulltext is empty,
-        # [assuming something is better than nothing]), because
-        # that means we think this is an SFX controlled URL.
-        next if SfxUrl.sfx_controls_url?(handle_ezproxy(rsrc.url)) and
-          request.referent.metadata['genre'] != "book" and
-            !request.get_service_type("fulltext", { :refresh => true }).empty?
-        # We have our own list of URLs to suppress, array of strings
-        # or regexps.
-        next if @suppress_urls.find {|suppress| suppress === rsrc.url}
-        urls_seen.push(rsrc.url)
-        service_data = {}
-        @rsrc_attributes.each do |attr|
-          service_data[attr] = rsrc.method(attr).call
-        end
-        # Default display text to URL.
-        service_data[:display_text] = (service_data[:display].nil?) ? service_data[:url] : service_data[:display]
-        # Add the response
-        request.add_service_response(
-          service_data.merge(
-            :service => self,
-            :service_type_value => 'fulltext'
-          )
-        )
-      end
-    end
-    # Get TOCs
-    if @service_types.include?("table_of_contents")
-      # Let's find any TOCs, and add table of contents responses for those.
-      tocs_seen = [] # for de-duplicating urls from catalog.
-      primo_searcher.tocs.each do |toc|
-        url = toc.url # actual url
-        next if tocs_seen.include?(toc.url)
-        # We have our own list of URLs to suppress, array of strings
-        # or regexps.
-        next if @suppress_tocs.find {|suppress| suppress === toc.url}
-        # No url? Forget it.
-        next if toc.url.nil?
-        tocs_seen.push(toc.url)
-        service_data = {}
-        @toc_attributes.each do |attr|
-          service_data[attr] = toc.method(attr).call
-        end
-        # Default display text to URL.
-        service_data[:display_text] = (service_data[:display].nil?) ? service_data[:url] : service_data[:display]
-        # Add the response
-        request.add_service_response(
-          service_data.merge(
-            :service => self,
-            :service_type_value => 'table_of_contents'
-          )
-        )
-      end
-    end
-    if @service_types.include?("highlighted_link")
-      # Let's find any related links, and add highlighted link responses for those.
-      related_links_seen = [] # for de-duplicating urls from catalog.
-      primo_searcher.related_links.each do |related_link|
-        url = related_link.url # actual url
-        next if related_links_seen.include?(related_link.url)
-        # We have our own list of URLs to suppress, array of strings
-        # or regexps.
-        next if @suppress_related_links.find {|suppress| suppress === related_link.url}
-        # No url? Forget it.
-        next if related_link.url.nil?
-        related_links_seen.push(related_link.url)
-        service_data = {}
-        @related_link_attributes.each do |attr|
-          service_data[attr] = related_link.method(attr).call
-        end
-        # Default display text to URL.
-        service_data[:display_text] = (service_data[:display].nil?) ? service_data[:url] : service_data[:display]
-        # Add the response
-        request.add_service_response(
-          service_data.merge(
-            :service => self,
-            :service_type_value => 'highlighted_link'
-          )
-        )
-      end
+        "Exlibris::Primo::Search raised the following exception:\n#{e}\n#{e.backtrace.inspect}")
     end
     return request.dispatched(self, true)
   end
@@ -395,6 +287,26 @@ class PrimoService < Service
       source_parameters[attr] = service_response.data_values[attr] }
     return Exlibris::Primo::Holding.new(source_parameters).to_source
   end
+
+  # Configure Primo if this is the first time through 
+  def configure_primo
+    Exlibris::Primo.configure do |primo_config|
+      primo_config.load_yaml config_file unless primo_config.load_time
+    end
+  end
+  private :configure_primo
+
+  # Reset Primo configuration
+  # Only used in testing
+  def reset_primo_config
+    Exlibris::Primo.configure do |primo_config|
+      primo_config.load_time = nil
+      primo_config.libraries = {}
+      primo_config.availability_statuses = {}
+      primo_config.sources = {}
+    end
+  end
+  private :reset_primo_config
 
   # Enhance the referent based on metadata in the given record
   def enhance_referent(request, record)
@@ -410,6 +322,117 @@ class PrimoService < Service
     end
   end
   private :enhance_referent
+
+  # Add a holding service for each holding returned from Primo
+  def add_holding_services(request, holdings)
+    holdings.each do |holding|
+      next if @suppress_holdings.find {|suppress_holding| suppress_holding === holding.availlibrary}
+      service_data = {}
+      @holding_attributes.each do |attr|
+        service_data[attr] = holding.send(attr)
+      end
+      # Umlaut specific attributes.
+      service_data[:match_reliability] =
+        (reliable_match?(:title => holding.title, :author => holding.author)) ?
+          ServiceResponse::MatchExact : ServiceResponse::MatchUnsure
+      service_data[:request_link_supports_ajax_call] =
+        (holding.respond_to?(:request_link_supports_ajax_call)) ?
+          holding.request_link_supports_ajax_call : false
+      # Availability status from Primo is probably out of date, so set to "check_holdings"
+      holding.availability_status_code = "check_holdings"
+      # Add status
+      service_data[:status_code] = holding.availability_status_code
+      service_data[:status] = holding.availability_status
+      # Add URL
+      service_data[:url] = 
+        "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=#{holding.record_id}&institution=#{@institution}&vid=#{@vid}" 
+      # Only add one service type, either "primo_source" OR "holding", not both.
+      service_type = (@service_types.include?("primo_source")) ? "primo_source" : "holding"
+      # Add some other holding information for compatibility with default holding partial
+      service_data.merge!({
+        :call_number => holding.call_number, :collection => holding.collection,
+        :collection_str => "#{holding.library} #{holding.collection}",
+        :coverage_str => holding.coverage.join("<br />"),
+        :coverage_str_array => holding.coverage }) if service_type.eql? "holding"
+      request.add_service_response(
+        service_data.merge(
+          :service => self,
+          :service_type_value => service_type
+        )
+      )
+    end
+  end
+  private :add_holding_services
+
+  # Add a holding search service
+  def add_holding_search_service(request)
+    service_data = {}
+    service_data[:type] = "link_to_search"
+    service_data[:display_text] = (@holding_search_text.nil?) ? "Search for this title." : @holding_search_text
+    service_data[:note] = ""
+    service_data[:url] = @base_url+"/primo_library/libweb/action/dlSearch.do?institution=#{@holding_search_institution}&vid=#{@vid}&onCampus=false&query=#{CGI::escape("title,exact,"+@title)}&indx=1&bulkSize=10&group=GUEST"
+    request.add_service_response(
+      service_data.merge(
+        :service => self,
+        :service_type_value => 'holding_search'
+      )
+    )
+  end
+  private :add_holding_search_service
+
+  # Add a full text service for each fulltext returned from Primo
+  def add_fulltext_services(request, fulltexts)
+    add_link_services(request, fulltexts, 'fulltext', @suppress_urls) { |fulltext|
+      # Don't add the URL if it matches our SFXUrl finder (unless fulltext is empty,
+      # [assuming something is better than nothing]), because
+      # that means we think this is an SFX controlled URL.
+      next if SfxUrl.sfx_controls_url?(handle_ezproxy(fulltext.url)) and
+        request.referent.metadata['genre'] != "book" and
+          !request.get_service_type("fulltext", { :refresh => true }).empty?
+    }
+  end
+  private :add_fulltext_services
+
+  # Add a table of contents service for each table of contents returned from Primo
+  def add_table_of_contents_services(request, tables_of_contents)
+    add_link_services(request, tables_of_contents, 'table_of_contents', @suppress_tocs)
+  end
+  private :add_table_of_contents_services
+
+  # Add a highlighted link service for each related link returned from Primo
+  def add_highlighted_link_services(request, highlight_links)
+    add_link_services(request, highlight_links, 'highlighted_link', @suppress_related_links)
+  end
+  private :add_highlighted_link_services
+
+  # Add a link service (specified by the given type) for each link returned from Primo
+  def add_link_services(request, links, service_type, suppress_urls, &block)
+    links_seen = [] # for de-duplicating urls
+    links.each do |link|
+      next if links_seen.include?(link.url)
+      # Check the list of URLs to suppress, array of strings or regexps.
+      # If we have a match, suppress.
+      next if suppress_urls.find {|suppress| suppress === link.url}
+      # No url? Forget it.
+      next if link.url.nil?
+      yield link unless block.nil?
+      links_seen.push(link.url)
+      service_data = {}
+      @link_attributes.each do |attr|
+        service_data[attr] = link.send(attr)
+      end
+      # Default display text to URL.
+      service_data[:display_text] = (service_data[:display].nil?) ? service_data[:url] : service_data[:display]
+      # Add the response
+      request.add_service_response(
+        service_data.merge(
+          :service => self,
+          :service_type_value => service_type
+        )
+      )
+    end
+  end
+  private :add_link_services
 
   # Map old config names to new config names for backwards compatibility
   def backward_compatibility(config)
@@ -434,14 +457,13 @@ class PrimoService < Service
   # based on the values passed in.
   # Minimum requirement is to check title.
   def reliable_match?(record_metadata)
-    return true unless (@primo_id.nil? or @primo_id.empty?)
+    return true unless (@record_id.nil? or @record_id.empty?)
     return true unless (@issn.nil? or @issn.empty?) and (@isbn.nil? or @isbn.empty?)
     return false if (record_metadata.nil? or record_metadata.empty? or record_metadata[:title].nil? or record_metadata[:title].empty?)
     # Titles must be equal
-    return false unless record_metadata[:title].downcase.eql?(@title.downcase)
-    # Compare record metadata with metadata that was passed in.
-    # Only check if the record metadata value contains the input value since we can't be too strict.
-    record_metadata.each { |type, value| return false if value.downcase.match("#{self.method(type).call}".downcase).nil?}
+    return false unless record_metadata[:title].to_s.downcase.eql?(@title.downcase)
+    # Author must be equal
+    return false unless record_metadata[:author].to_s.downcase.eql?(@author.downcase)
     return true
   end
   private :reliable_match?
@@ -449,7 +471,7 @@ class PrimoService < Service
   def config_file
     default_file = "#{Rails.root}/config/primo.yml"
     config_file = @primo_config.nil? ? default_file : "#{Rails.root}/config/"+ @primo_config
-    Rails.logger.warn("Primo config file not found: #{config_file}.") and return {} unless File.exists?(config_file)
+    Rails.logger.warn("Primo config file not found: #{config_file}.") and return "" unless File.exists?(config_file)
     config_file
   end
   private :config_file

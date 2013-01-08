@@ -80,7 +80,7 @@ aleph_sub_library_codes:
   "NYHSPR": "NYHS"
   "NYHSREF": "NYHS"
   "REI": "NREI"
-statuses:
+availability_statuses:
   "available": "Available"
   "requested": "Requested"
   "unavailable": "Check Availability"
