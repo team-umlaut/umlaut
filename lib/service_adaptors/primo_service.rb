@@ -406,13 +406,13 @@ class PrimoService < Service
   private :add_highlighted_link_services
 
   # Add a link service (specified by the given type) for each link returned from Primo
-  def add_link_services(request, links, service_type, suppress_urls, &block)
+  def add_link_services(request, links, service_type, suppress_links, &block)
     links_seen = [] # for de-duplicating urls
     links.each do |link|
       next if links_seen.include?(link.url)
       # Check the list of URLs to suppress, array of strings or regexps.
       # If we have a match, suppress.
-      next if suppress_urls.find {|suppress| suppress === link.url}
+      next if suppress_links.find {|suppress_link| suppress_link === link.url}
       # No url? Forget it.
       next if link.url.nil?
       yield link unless block.nil?

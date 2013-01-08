@@ -1,18 +1,17 @@
 --- 
-recorded_with: VCR 2.4.0
 http_interactions: 
 - request: 
     method: post
     uri: http://bobcat.library.nyu.edu/PrimoWebServices/services/searcher
     body: 
-      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wsdl="http://bobcat.library.nyu.edu/PrimoWebServices/services/searcher" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><getRecord><request><![CDATA[<fullViewRequest xmlns:uic="http://www.exlibris.com/primo/xsd/primoview/uicomponents" xmlns="http://www.exlibris.com/primo/xsd/wsRequest"><PrimoSearchRequest xmlns="http://www.exlibris.com/primo/xsd/search/request"><QueryTerms><BoolOpeator>AND</BoolOpeator></QueryTerms><StartIndex>1</StartIndex><BulkSize>5</BulkSize><DidUMeanEnabled>false</DidUMeanEnabled></PrimoSearchRequest><institution>NYU</institution><docId>nyu_aleph000935132</docId></fullViewRequest>]]></request></getRecord></env:Body></env:Envelope>
+      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wsdl="http://bobcat.library.nyu.edu/PrimoWebServices/services/searcher"><env:Body><getRecord><request><![CDATA[<fullViewRequest xmlns:uic="http://www.exlibris.com/primo/xsd/primoview/uicomponents" xmlns="http://www.exlibris.com/primo/xsd/wsRequest"><PrimoSearchRequest xmlns="http://www.exlibris.com/primo/xsd/search/request"><QueryTerms><BoolOpeator>AND</BoolOpeator></QueryTerms><StartIndex>1</StartIndex><BulkSize>5</BulkSize><DidUMeanEnabled>false</DidUMeanEnabled></PrimoSearchRequest><institution>NYU</institution><docId>nyu_aleph000935132</docId></fullViewRequest>]]></request></getRecord></env:Body></env:Envelope>
     headers: 
+      Soapaction: 
+      - "\"getRecord\""
       Accept: 
       - "*/*"
       Content-Type: 
       - text/xml;charset=UTF-8
-      Soapaction: 
-      - "\"getRecord\""
       Content-Length: 
       - "833"
   response: 
@@ -21,15 +20,15 @@ http_interactions:
       message: OK
     headers: 
       Date: 
-      - Tue, 08 Jan 2013 17:32:07 GMT
+      - Tue, 08 Jan 2013 19:23:05 GMT
       Content-Type: 
       - text/xml;charset=utf-8
-      Server: 
-      - Apache-Coyote/1.1
-      Transfer-Encoding: 
-      - chunked
       X-Powered-By: 
       - "Servlet 2.4; Tomcat-5.0.28/JBoss-4.0.1 (build: CVSTag=JBoss_4_0_1 date=200412230944)"
+      Transfer-Encoding: 
+      - chunked
+      Server: 
+      - Apache-Coyote/1.1
     body: 
       string: |-
         <?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><getRecordResponse soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><getRecordReturn xsi:type="soapenc:string" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">&lt;SEGMENTS xmlns=&quot;http://www.exlibrisgroup.com/xsd/jaguar/search&quot;&gt;
@@ -275,4 +274,5 @@ http_interactions:
         &lt;/SEGMENTS&gt;
         </getRecordReturn></getRecordResponse></soapenv:Body></soapenv:Envelope>
     http_version: 
-  recorded_at: Tue, 08 Jan 2013 17:32:07 GMT
+  recorded_at: Tue, 08 Jan 2013 19:23:05 GMT
+recorded_with: VCR 2.4.0

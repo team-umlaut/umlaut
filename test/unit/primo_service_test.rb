@@ -200,6 +200,25 @@ class PrimoServiceTest < ActiveSupport::TestCase
         holdings.first.view_data[key],
         "#{key} different than expected.")
     }
+    tables_of_contents = request.get_service_type('table_of_contents')
+    assert_equal(
+      1, tables_of_contents.length)
+    assert_equal(
+      "https://ezproxy.library.nyu.edu/login?url=http://dummy.toc.com",
+      tables_of_contents.first.url )
+    assert_equal(
+      "Dummy Table of Contents",
+      tables_of_contents.first.display_text )
+    test_data = {
+      :record_id => "nyu_aleph000062856",
+      :original_id => "nyu_aleph000062856",
+      :display => "Dummy Table of Contents" }
+    test_data.each { |key, value|
+      assert_equal(
+        value,
+        tables_of_contents.first.service_data[key],
+        "#{key} different than expected.")
+    }
   end
 
   test_with_cassette("no config request by id", :primo) do
@@ -316,9 +335,25 @@ class PrimoServiceTest < ActiveSupport::TestCase
     @primo_default.handle(request)
     request.dispatched_services.reset
     request.service_responses.reset
-    fulltext = request.get_service_type('fulltext')
-    url = @primo_default.send(:handle_ezproxy, fulltext.first.url)
+    fulltexts = request.get_service_type('fulltext')
+    url = @primo_default.send(:handle_ezproxy, fulltexts.first.url)
     assert(SfxUrl.sfx_controls_url?(url))
-    assert_equal(1, fulltext.length)
+    assert_equal(1, fulltexts.length)
+    assert_equal(
+      "https://ezproxy.library.nyu.edu/login?url=http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=34445",
+      fulltexts.first.url )
+    assert_equal(
+      "1997 - 2000 Full Text available from ProQuest",
+      fulltexts.first.display_text )
+    test_data = {
+      :record_id => "nyu_aleph000935132",
+      :original_id => "nyu_aleph000935132",
+      :display => "1997 - 2000 Full Text available from ProQuest" }
+    test_data.each { |key, value|
+      assert_equal(
+        value,
+        fulltexts.first.service_data[key],
+        "#{key} different than expected.")
+    }
   end
 end
