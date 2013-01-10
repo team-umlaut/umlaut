@@ -9,7 +9,7 @@ gemspec
 group :development, :test do
   platforms :jruby do
     gem 'activerecord-jdbc-adapter', :require => false
-    gem 'jdbc-mysql', :require => false
+    gem 'activerecord-jdbcmysql-adapter', :require => false
     gem 'jruby-rack'
     gem 'therubyrhino'
     gem 'jruby-prof'

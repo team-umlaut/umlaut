@@ -2,3 +2,6 @@
 gateway:
   id: 1
   url: gateway.ovid.com
+proquest:
+  id: 2
+  url: proquest.umi.com

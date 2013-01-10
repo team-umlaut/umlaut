@@ -70,7 +70,7 @@ class Blacklight < Service
   def handle(request)
     ids_processed = []
     holdings_added = 0
-
+    
     if (@identifier_search && url = blacklight_precise_search_url(request) )
       doc = Nokogiri::XML( http_fetch(url).body )
       
@@ -98,7 +98,8 @@ class Blacklight < Service
         # filter out matches whose titles don't really match at all, or
         # which have already been seen in identifier search. 
         entries = filter_keyword_entries( doc.xpath("atom:feed/atom:entry", xml_ns) , :exclude_ids => ids_processed, :remove_subtitle => (! title_is_serial?(request.referent)) )
-
+        
+        
         marc_by_atom_id = {}
         
         # Grab the marc from our entries. Important not to do a // xpath
@@ -196,7 +197,13 @@ class Blacklight < Service
     # We need both title and author to search keyword style, or
     # we get too many false positives. Except serials we'll do
     # title only. sigh, logic tree. 
-    title = get_search_title(request.referent)
+    
+    # Also need to use appropriate 'container' title if avail, not
+    # article title. 
+    title = request.referent['jtitle']     
+    title = request.referent['btitle'] if title.blank?
+    title = request.referent['title'] if title.blank?
+
     author = get_top_level_creator(request.referent)
     return nil unless title && (author || (@bl_fields["serials_limit_clause"] && title_is_serial?(request.referent)))
     # phrase search for title, just raw dismax for author
@@ -273,24 +280,29 @@ class Blacklight < Service
   def filter_keyword_entries(atom_entries, options = {})
     options[:exclude_ids] ||= []
     options[:remove_subtitle] ||= true
+    
+    title = request.referent['jtitle']     
+    title = request.referent['btitle'] if title.blank?
+    title = request.referent['title'] if title.blank?
+    
     request_title_forms = [
-        raw_search_title(request.referent).downcase,        
-        normalize_title( raw_search_title(request.referent) )
+        title.downcase,        
+        normalize_title( title )
     ]
-    request_title_forms << normalize_title( raw_search_title(request.referent), :remove_subtitle => true) if options[:remove_subtitle]
-    request_title_forms.compact
+    request_title_forms << normalize_title( title, :remove_subtitle => true) if options[:remove_subtitle]
+    request_title_forms = request_title_forms.compact.uniq
 
     # Only keep entries with title match, and that aren't in the
     # exclude_ids list. 
     good_entries = atom_entries.find_all do |atom_entry|
-      title = atom_entry.xpath("atom:title/text()", xml_ns).to_s  
+      title = atom_entry.xpath("atom:title/text()", xml_ns).text  
    
       entry_title_forms = [
         title.downcase,
         normalize_title(title)
       ]
       entry_title_forms << normalize_title(title, :remove_subtitle=>true) if options[:remove_subtitle]
-      entry_title_forms.compact
+      entry_title_forms = entry_title_forms.compact.uniq
       
       ((entry_title_forms & request_title_forms).length > 0 &&
        (bib_ids_from_atom_entries(atom_entry) & options[:exclude_ids]).length == 0)
@@ -310,7 +322,7 @@ class Blacklight < Service
   
     return base_url + "?search_field=#{@cql_search_field}&content_format=#{format}&q=" + CGI.escape("#{@bl_fields["id"]} any \"#{ids.join(" ")}\"")
   end
-    
+
 
   def get_solr_id(rft)
     rft.identifiers.each do |id|

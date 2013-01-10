@@ -1,0 +1,278 @@
+--- 
+http_interactions: 
+- request: 
+    method: post
+    uri: http://bobcat.library.nyu.edu/PrimoWebServices/services/searcher
+    body: 
+      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wsdl="http://bobcat.library.nyu.edu/PrimoWebServices/services/searcher"><env:Body><getRecord><request><![CDATA[<fullViewRequest xmlns:uic="http://www.exlibris.com/primo/xsd/primoview/uicomponents" xmlns="http://www.exlibris.com/primo/xsd/wsRequest"><PrimoSearchRequest xmlns="http://www.exlibris.com/primo/xsd/search/request"><QueryTerms><BoolOpeator>AND</BoolOpeator></QueryTerms><StartIndex>1</StartIndex><BulkSize>5</BulkSize><DidUMeanEnabled>false</DidUMeanEnabled></PrimoSearchRequest><institution>NYU</institution><docId>nyu_aleph000935132</docId></fullViewRequest>]]></request></getRecord></env:Body></env:Envelope>
+    headers: 
+      Soapaction: 
+      - "\"getRecord\""
+      Accept: 
+      - "*/*"
+      Content-Type: 
+      - text/xml;charset=UTF-8
+      Content-Length: 
+      - "833"
+  response: 
+    status: 
+      code: 200
+      message: OK
+    headers: 
+      Date: 
+      - Tue, 08 Jan 2013 19:23:05 GMT
+      Content-Type: 
+      - text/xml;charset=utf-8
+      X-Powered-By: 
+      - "Servlet 2.4; Tomcat-5.0.28/JBoss-4.0.1 (build: CVSTag=JBoss_4_0_1 date=200412230944)"
+      Transfer-Encoding: 
+      - chunked
+      Server: 
+      - Apache-Coyote/1.1
+    body: 
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><getRecordResponse soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><getRecordReturn xsi:type="soapenc:string" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">&lt;SEGMENTS xmlns=&quot;http://www.exlibrisgroup.com/xsd/jaguar/search&quot;&gt;
+          &lt;JAGROOT&gt;
+            &lt;RESULT&gt;
+              &lt;DOCSET TOTALHITS=&quot;1&quot;&gt;
+                &lt;sear:DOC LOCAL=&quot;true&quot; xmlns=&quot;http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib&quot; xmlns:sear=&quot;http://www.exlibrisgroup.com/xsd/jaguar/search&quot;&gt;
+                  &lt;PrimoNMBib&gt;
+                    &lt;record&gt;
+                      &lt;control&gt;
+                        &lt;sourcerecordid&gt;000935132&lt;/sourcerecordid&gt;
+                        &lt;sourceid&gt;nyu_aleph&lt;/sourceid&gt;
+                        &lt;recordid&gt;nyu_aleph000935132&lt;/recordid&gt;
+                        &lt;originalsourceid&gt;NYU01&lt;/originalsourceid&gt;
+                        &lt;ilsapiid&gt;NYU01000935132&lt;/ilsapiid&gt;
+                        &lt;sourceformat&gt;MARC21&lt;/sourceformat&gt;
+                        &lt;sourcesystem&gt;Aleph&lt;/sourcesystem&gt;
+                      &lt;/control&gt;
+                      &lt;display&gt;
+                        &lt;type&gt;journal&lt;/type&gt;
+                        &lt;title&gt;Australian journal of international affairs the journal of the Australian Institute of International Affairs.&lt;/title&gt;
+                        &lt;contributor&gt;Australian Institute of International Affairs.&lt;/contributor&gt;
+                        &lt;publisher&gt;Canberra, A.C.T. : Australian Institute of International Affairs&lt;/publisher&gt;
+                        &lt;creationdate&gt;1990-&lt;/creationdate&gt;
+                        &lt;subject&gt;Australia -- Periodicals; East Asia -- Periodicals; Australie -- Paeriodiques; Extr?eme-Orient -- Paeriodiques; Electronic journals&lt;/subject&gt;
+                        &lt;language&gt;eng&lt;/language&gt;
+                        &lt;relation&gt;$$Cearlier_title $$VAustralian outlook&lt;/relation&gt;
+                        &lt;relation&gt;$$Cindexes$$VVols. 27 (1973)-50 (1996). 1 v.&lt;/relation&gt;
+                        &lt;source&gt;nyu_aleph&lt;/source&gt;
+                        &lt;rights&gt;Access is restricted to users affiliated with licensed institutions.&lt;/rights&gt;
+                        &lt;availlibrary&gt;$$INYU$$LBWEB$$1Internet Resources$$2(DU80 .A947 Electronic access )$$Scheck_holdings$$XNYU50$$YBWEB$$ZBNYUI&lt;/availlibrary&gt;
+                        &lt;lds02&gt;nyu_aleph000935132&lt;/lds02&gt;
+                        &lt;lds01&gt;NYU&lt;/lds01&gt;
+                        &lt;lds01&gt;NYUAD&lt;/lds01&gt;
+                        &lt;availinstitution&gt;$$INYU$$Scheck_holdings&lt;/availinstitution&gt;
+                        &lt;availpnx&gt;available&lt;/availpnx&gt;
+                      &lt;/display&gt;
+                      &lt;links&gt;
+                        &lt;openurl&gt;$$Topenurl_journal&lt;/openurl&gt;
+                        &lt;backlink&gt;$$Taleph_backlink$$DMore bibliographic information&lt;/backlink&gt;
+                        &lt;linktorsrc&gt;$$Uhttps://ezproxy.library.nyu.edu/login?url=http://proquest.umi.com/pqdweb?RQT=318&amp;amp;VName=PQD&amp;amp;clientid=9269&amp;amp;pmid=34445$$D1997 - 2000 Full Text available from ProQuest$$INYU&lt;/linktorsrc&gt;
+                        &lt;linktorsrc&gt;$$Uhttps://ezproxy.library.nyu.edu/login?url=http://proquest.umi.com/pqdweb?RQT=318&amp;amp;VName=PQD&amp;amp;clientid=9269&amp;amp;pmid=34445$$D1997 - 2000 Full Text available from ProQuest$$INYUAD&lt;/linktorsrc&gt;
+                        &lt;openurlfulltext&gt;$$Topenurlfull_journal&lt;/openurlfulltext&gt;
+                        &lt;linktoholdings&gt;$$Taleph_holdings&lt;/linktoholdings&gt;
+                        &lt;linktoreview&gt;$$TpersistentUrl$$DCopy item link&lt;/linktoreview&gt;
+                      &lt;/links&gt;
+                      &lt;search&gt;
+                        &lt;creatorcontrib&gt;Australian Institute of International Affairs.&lt;/creatorcontrib&gt;
+                        &lt;creatorcontrib&gt;Mellon Project.&lt;/creatorcontrib&gt;
+                        &lt;creatorcontrib&gt;ProQuest Information and Learning Company.&lt;/creatorcontrib&gt;
+                        &lt;title&gt;Australian journal of international affairs the journal of the Australian Institute of International Affairs.&lt;/title&gt;
+                        &lt;subject&gt;Australia  Periodicals&lt;/subject&gt;
+                        &lt;subject&gt;East Asia  Periodicals&lt;/subject&gt;
+                        &lt;subject&gt;Australie  Paeriodiques&lt;/subject&gt;
+                        &lt;subject&gt;Extr?eme-Orient  Paeriodiques&lt;/subject&gt;
+                        &lt;subject&gt;Electronic journals&lt;/subject&gt;
+                        &lt;subject&gt;Austraalia &#xDC;hendus&lt;/subject&gt;
+                        &lt;subject&gt;&#x391;&#x3C5;&#x3C3;&#x3C4;&#x3C1;&#x3B1;&#x3BB;&#x3B9;&#x301;&#x3B1;&lt;/subject&gt;
+                        &lt;subject&gt;Aystralia&lt;/subject&gt;
+                        &lt;subject&gt;&#x39A;&#x3BF;&#x3B9;&#x3BD;&#x3BF;&#x3C0;&#x3BF;&#x3BB;&#x3B9;&#x3C4;&#x3B5;&#x3B9;&#x301;&#x3B1; &#x3C4;&#x3B7;&#x3C2; &#x391;&#x3C5;&#x3C3;&#x3C4;&#x3C1;&#x3B1;&#x3BB;&#x3B9;&#x301;&#x3B1;&#x3C2;&lt;/subject&gt;
+                        &lt;subject&gt;Koinopoliteia t&#x113;s Aystralias&lt;/subject&gt;
+                        &lt;subject&gt;&#x5D0;&#x5D5;&#x5E1;&#x5D8;&#x5E8;&#x5DC;&#x5D9;&#x5D4;&lt;/subject&gt;
+                        &lt;subject&gt;&#x5E7;&#x5D4;&#x5D9;&#x5DC;&#x5D9;&#x5D9;&#x5EA; &#x5D0;&#x5D5;&#x5E1;&#x5D8;&#x5E8;&#x5DC;&#x5D9;&#x5D4;&lt;/subject&gt;
+                        &lt;subject&gt;&#x1E32;ehiliyat Os&#x1E6D;ralyah&lt;/subject&gt;
+                        &lt;subject&gt;&#x2BB;Aukekulelia&lt;/subject&gt;
+                        &lt;subject&gt;Ausztr&#xE1;lia&lt;/subject&gt;
+                        &lt;subject&gt;Ausztr&#xE1;l &#xC1;llamsz&#xF6;vets&#xE9;g&lt;/subject&gt;
+                        &lt;subject&gt;&#xC1;stral&#xED;a&lt;/subject&gt;
+                        &lt;subject&gt;Samveldi&#xF0; &#xC1;stral&#xED;a&lt;/subject&gt;
+                        &lt;subject&gt;Negara Persemakmuran Australia&lt;/subject&gt;
+                        &lt;subject&gt;Persemakmuran Australia&lt;/subject&gt;
+                        &lt;subject&gt;Austr&#x101;lijas Savien&#x12B;ba&lt;/subject&gt;
+                        &lt;subject&gt;Australijos Sandrauga&lt;/subject&gt;
+                        &lt;subject&gt;Australie&lt;/subject&gt;
+                        &lt;subject&gt;Nova Hollandia&lt;/subject&gt;
+                        &lt;subject&gt;Avstralii&#x361;a&lt;/subject&gt;
+                        &lt;subject&gt;Commonwealth of Australia&lt;/subject&gt;
+                        &lt;subject&gt;New Holland&lt;/subject&gt;
+                        &lt;subject&gt;Os&#x1E6D;ralyah&lt;/subject&gt;
+                        &lt;subject&gt;Us&#x1E6D;ralyah&lt;/subject&gt;
+                        &lt;subject&gt;Australien&lt;/subject&gt;
+                        &lt;subject&gt;&#x410;&#x432;&#x441;&#x442;&#x440;&#x430;&#x43B;&#x438;&#xFFFD;&#x430;&lt;/subject&gt;
+                        &lt;subject&gt;Avstralija&lt;/subject&gt;
+                        &lt;subject&gt;&#x41A;&#x43E;&#x43C;&#x43E;&#x43D;&#x432;&#x435;&#x43B;&#x442;&#x43E;&#x442; &#x43D;&#x430; &#x410;&#x432;&#x441;&#x442;&#x440;&#x430;&#x43B;&#x438;&#xFFFD;&#x430;&lt;/subject&gt;
+                        &lt;subject&gt;Komonveltot na Avstralija&lt;/subject&gt;
+                        &lt;subject&gt;&#x414;&#x440;&#x436;&#x430;&#x432;&#x43D;&#x430; &#x437;&#x430;&#x435;&#x434;&#x43D;&#x438;&#x446;&#x430; &#x410;&#x432;&#x441;&#x442;&#x440;&#x430;&#x43B;&#x438;&#xFFFD;&#x430;&lt;/subject&gt;
+                        &lt;subject&gt;Dr&#x17E;avna zaednica Avstralija&lt;/subject&gt;
+                        &lt;subject&gt;Aostralia&lt;/subject&gt;
+                        &lt;subject&gt;Komanwel Australia&lt;/subject&gt;
+                        &lt;subject&gt;Awstralja&lt;/subject&gt;
+                        &lt;subject&gt;Ahitereiria&lt;/subject&gt;
+                        &lt;subject&gt;Whakaminenga o Ahitereiria&lt;/subject&gt;
+                        &lt;subject&gt;&#x410;&#x432;&#x441;&#x442;&#x440;&#x430;&#x43B;&#x438;&#x44F;&lt;/subject&gt;
+                        &lt;subject&gt;&#x410;&#x432;&#x441;&#x442;&#x440;&#x430;&#x43B;&#x438;&#x439;&#x441;&#x43A;&#x438;&#x439; &#x421;&#x43E;&#x44E;&#x437;&lt;/subject&gt;
+                        &lt;subject&gt;Avstrali&#x12D;ski&#x12D; Soi&#x361;uz&lt;/subject&gt;
+                        &lt;subject&gt;Mancomunidad de Australia&lt;/subject&gt;
+                        &lt;subject&gt;Awstralia&lt;/subject&gt;
+                        &lt;subject&gt;Cymanwlad Awstralia&lt;/subject&gt;
+                        &lt;subject&gt;Australiese Gemenebes&lt;/subject&gt;
+                        &lt;subject&gt;&#x623;&#x633;&#x62A;&#x631;&#x627;&#x644;&#x64A;&#x627;&lt;/subject&gt;
+                        &lt;subject&gt;Ustur&#x101;liy&#x101;&lt;/subject&gt;
+                        &lt;subject&gt;&#x643;&#x648;&#x645;&#x646;&#x648;&#x644;&#x62B; &#x627;&#x644;&#x623;&#x633;&#x62A;&#x631;&#x627;&#x644;&#x64A;&lt;/subject&gt;
+                        &lt;subject&gt;K&#x16B;munw&#x101;lth al-Ustur&#x101;l&#x12B;&lt;/subject&gt;
+                        &lt;subject&gt;&#x410;&#xFFFD;&#x441;&#x442;&#x440;&#x430;&#x43B;&#xFFFD;&#x44F;&lt;/subject&gt;
+                        &lt;subject&gt;A&#x16D;stralii&#x361;a&lt;/subject&gt;
+                        &lt;subject&gt;Australija&lt;/subject&gt;
+                        &lt;subject&gt;&#x410;&#x432;&#x441;&#x442;&#x440;&#x430;&#x43B;&#x438;&#x439;&#x441;&#x43A;&#x438; &#x441;&#x44A;&#x44E;&#x437;&lt;/subject&gt;
+                        &lt;subject&gt;Avstrali&#x12D;ski s&#x16D;i&#x361;uz&lt;/subject&gt;
+                        &lt;subject&gt;&#x410;&#x432;&#x441;&#x442;&#x440;&#x430;&#x43B;&#x438;&#x439;&#x441;&#x43A;&#x438;&#x44F;&#x442; &#x441;&#x44A;&#x44E;&#x437;&lt;/subject&gt;
+                        &lt;subject&gt;Avstrali&#x12D;skii&#x361;at s&#x16D;i&#x361;uz&lt;/subject&gt;
+                        &lt;subject&gt;Mancomunitat d'Austr&#xE0;lia&lt;/subject&gt;
+                        &lt;subject&gt;Awstralya&lt;/subject&gt;
+                        &lt;subject&gt;Komonwelt sa Awstralya&lt;/subject&gt;
+                        &lt;subject&gt;Australsk&#xE9; spole&#x10D;enstv&#xED;&lt;/subject&gt;
+                        &lt;subject&gt;A&#x16D;stralio&lt;/subject&gt;
+                        &lt;subject&gt;Komunejo de A&#x16D;stralio&lt;/subject&gt;
+                        &lt;subject&gt;Komuna&#x135;o de A&#x16D;stralio&lt;/subject&gt;
+                        &lt;subject&gt;Austraalia&lt;/subject&gt;
+                        &lt;subject&gt;Far East&lt;/subject&gt;
+                        &lt;subject&gt;Eastern Asia&lt;/subject&gt;
+                        &lt;subject&gt;East (Far East)&lt;/subject&gt;
+                        &lt;subject&gt;Asia, Eastern&lt;/subject&gt;
+                        &lt;subject&gt;Asia, East&lt;/subject&gt;
+                        &lt;general&gt;Australian Institute of International Affairs,&lt;/general&gt;
+                        &lt;general&gt;Latest issue consulted: Vol. 58, no. 1 (Mar. 2004).&lt;/general&gt;
+                        &lt;general&gt;Title from cover.&lt;/general&gt;
+                        &lt;general&gt;[electronic resource] :&lt;/general&gt;
+                        &lt;sourceid&gt;nyu_aleph&lt;/sourceid&gt;
+                        &lt;recordid&gt;nyu_aleph000935132&lt;/recordid&gt;
+                        &lt;isbn&gt;1035-7718 0004-9913&lt;/isbn&gt;
+                        &lt;isbn&gt;1465-332X&lt;/isbn&gt;
+                        &lt;rsrctype&gt;journal&lt;/rsrctype&gt;
+                        &lt;creationdate&gt;1990&lt;/creationdate&gt;
+                        &lt;creationdate&gt;9999&lt;/creationdate&gt;
+                        &lt;addtitle&gt;Australian journal of international affairs (Online)&lt;/addtitle&gt;
+                        &lt;addtitle&gt;Australian outlook&lt;/addtitle&gt;
+                        &lt;searchscope&gt;BWEB&lt;/searchscope&gt;
+                        &lt;searchscope&gt;BWEB Internet Resources&lt;/searchscope&gt;
+                        &lt;searchscope&gt;nyu_aleph&lt;/searchscope&gt;
+                        &lt;searchscope&gt;NYU&lt;/searchscope&gt;
+                        &lt;searchscope&gt;NYUAD&lt;/searchscope&gt;
+                        &lt;searchscope&gt;BOBST&lt;/searchscope&gt;
+                        &lt;searchscope&gt;IFA&lt;/searchscope&gt;
+                        &lt;searchscope&gt;IFAC&lt;/searchscope&gt;
+                        &lt;searchscope&gt;ISAW&lt;/searchscope&gt;
+                        &lt;searchscope&gt;COUR&lt;/searchscope&gt;
+                        &lt;searchscope&gt;REI&lt;/searchscope&gt;
+                        &lt;scope&gt;BWEB&lt;/scope&gt;
+                        &lt;scope&gt;BWEB Internet Resources&lt;/scope&gt;
+                        &lt;scope&gt;nyu_aleph&lt;/scope&gt;
+                        &lt;scope&gt;NYU&lt;/scope&gt;
+                        &lt;scope&gt;NYUAD&lt;/scope&gt;
+                        &lt;scope&gt;BOBST&lt;/scope&gt;
+                        &lt;scope&gt;IFA&lt;/scope&gt;
+                        &lt;scope&gt;IFAC&lt;/scope&gt;
+                        &lt;scope&gt;ISAW&lt;/scope&gt;
+                        &lt;scope&gt;COUR&lt;/scope&gt;
+                        &lt;scope&gt;REI&lt;/scope&gt;
+                        &lt;lsr01&gt;DU80 .A947&lt;/lsr01&gt;
+                        &lt;lsr01&gt;DU80.A947&lt;/lsr01&gt;
+                        &lt;lsr02&gt;Australian Institute of International Affairs,&lt;/lsr02&gt;
+                      &lt;/search&gt;
+                      &lt;sort&gt;
+                        &lt;title&gt;Australian journal of international affairs the journal of the Australian Institute of International Affairs.&lt;/title&gt;
+                        &lt;creationdate&gt;1990&lt;/creationdate&gt;
+                        &lt;author&gt;Australian Institute of International Affairs.&lt;/author&gt;
+                        &lt;lso01&gt;1990&lt;/lso01&gt;
+                      &lt;/sort&gt;
+                      &lt;facets&gt;
+                        &lt;language&gt;eng&lt;/language&gt;
+                        &lt;creationdate&gt;1990&lt;/creationdate&gt;
+                        &lt;topic&gt;Australia&#x2013;Periodicals&lt;/topic&gt;
+                        &lt;topic&gt;East Asia&#x2013;Periodicals&lt;/topic&gt;
+                        &lt;topic&gt;Australie&#x2013;Paeriodiques&lt;/topic&gt;
+                        &lt;topic&gt;Extr?eme-Orient&#x2013;Paeriodiques&lt;/topic&gt;
+                        &lt;toplevel&gt;available&lt;/toplevel&gt;
+                        &lt;toplevel&gt;online_resources&lt;/toplevel&gt;
+                        &lt;prefilter&gt;journals&lt;/prefilter&gt;
+                        &lt;rsrctype&gt;journals&lt;/rsrctype&gt;
+                        &lt;creatorcontrib&gt;Australian Institute of International Affairs&lt;/creatorcontrib&gt;
+                        &lt;genre&gt;Periodicals&lt;/genre&gt;
+                        &lt;genre&gt;Paeriodiques&lt;/genre&gt;
+                        &lt;genre&gt;Electronic journals&lt;/genre&gt;
+                        &lt;library&gt;BOBST&lt;/library&gt;
+                        &lt;library&gt;IFA&lt;/library&gt;
+                        &lt;library&gt;IFAC&lt;/library&gt;
+                        &lt;library&gt;ISAW&lt;/library&gt;
+                        &lt;library&gt;COUR&lt;/library&gt;
+                        &lt;library&gt;REI&lt;/library&gt;
+                        &lt;lfc01&gt;Internet Resources&lt;/lfc01&gt;
+                        &lt;classificationlcc&gt;D - History (general) and history of europe.&#x2013;History of Oceania (South Seas)&#x2013;Australia&lt;/classificationlcc&gt;
+                        &lt;frbrgroupid&gt;60248633&lt;/frbrgroupid&gt;
+                        &lt;frbrtype&gt;6&lt;/frbrtype&gt;
+                      &lt;/facets&gt;
+                      &lt;dedup&gt;
+                        &lt;t&gt;2&lt;/t&gt;
+                        &lt;c2&gt;1035-7718 0004-9913;1465-332X&lt;/c2&gt;
+                        &lt;c3&gt;australianjournalofinalaffairs&lt;/c3&gt;
+                        &lt;c4&gt;canberra&lt;/c4&gt;
+                        &lt;f4&gt;1035-7718 0004-9913;1465-332X&lt;/f4&gt;
+                        &lt;f6&gt;1990&lt;/f6&gt;
+                        &lt;f7&gt;australian journal of international affairs the journal of the australian institute of international affairs&lt;/f7&gt;
+                        &lt;f8&gt;australian journal of international affairs&lt;/f8&gt;
+                        &lt;f9&gt;at&lt;/f9&gt;
+                        &lt;f10&gt;canberra&lt;/f10&gt;
+                      &lt;/dedup&gt;
+                      &lt;frbr&gt;
+                        &lt;t&gt;1&lt;/t&gt;
+                        &lt;k1&gt;$$Kaustralian institute of international affairs$$AA&lt;/k1&gt;
+                        &lt;k3&gt;$$Kaustralian journal of international affairs the journal of the australian institute of international affairs$$AT&lt;/k3&gt;
+                      &lt;/frbr&gt;
+                      &lt;delivery&gt;
+                        &lt;institution&gt;NYU&lt;/institution&gt;
+                        &lt;institution&gt;NYUAD&lt;/institution&gt;
+                        &lt;delcategory&gt;Online Resource&lt;/delcategory&gt;
+                      &lt;/delivery&gt;
+                      &lt;enrichment&gt;
+                        &lt;classificationlcc&gt;DU80&lt;/classificationlcc&gt;
+                      &lt;/enrichment&gt;
+                      &lt;ranking&gt;
+                        &lt;booster1&gt;1&lt;/booster1&gt;
+                        &lt;booster2&gt;1&lt;/booster2&gt;
+                      &lt;/ranking&gt;
+                      &lt;addata&gt;
+                        &lt;addau&gt;Australian Institute of International Affairs&lt;/addau&gt;
+                        &lt;jtitle&gt;Australian journal of international affairs the journal of the Australian Institute of International Affairs.&lt;/jtitle&gt;
+                        &lt;date&gt;1990&lt;/date&gt;
+                        &lt;risdate&gt;1990-&lt;/risdate&gt;
+                        &lt;format&gt;journal&lt;/format&gt;
+                        &lt;genre&gt;journal&lt;/genre&gt;
+                        &lt;ristype&gt;JOUR&lt;/ristype&gt;
+                        &lt;cop&gt;Canberra, A.C.T.&lt;/cop&gt;
+                        &lt;pub&gt;Australian Institute of International Affairs&lt;/pub&gt;
+                        &lt;lad01&gt;BWEB&lt;/lad01&gt;
+                        &lt;lad01&gt;Online Resource&lt;/lad01&gt;
+                      &lt;/addata&gt;
+                    &lt;/record&gt;
+                  &lt;/PrimoNMBib&gt;
+                &lt;/sear:DOC&gt;
+              &lt;/DOCSET&gt;
+            &lt;/RESULT&gt;
+          &lt;/JAGROOT&gt;
+        &lt;/SEGMENTS&gt;
+        </getRecordReturn></getRecordResponse></soapenv:Body></soapenv:Envelope>
+    http_version: 
+  recorded_at: Tue, 08 Jan 2013 19:23:05 GMT
+recorded_with: VCR 2.4.0
