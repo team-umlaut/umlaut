@@ -131,9 +131,9 @@ class PrimoService < Service
     # Configure Primo
     configure_primo
     # Attributes for holding service data.
-    @holding_attributes = [:record_id, :original_id, :title, :author, :display_type, 
+    @holding_attributes = [:record_id, :original_id, :title, :author, :display_type,
       :source_id, :original_source_id, :source_record_id, :ils_api_id, :institution_code,
-      :institution, :library_code, :library, :collection, :call_number, :coverage, :notes, 
+      :institution, :library_code, :library, :collection, :call_number, :coverage, :notes,
       :subfields]
     @link_attributes = [:record_id, :original_id, :url, :display, :notes, :subfields]
     # TODO: Run these decisions someone to see if they make sense.
@@ -282,13 +282,13 @@ class PrimoService < Service
   # Called by ServiceType#view_data to provide custom functionality for Primo sources.
   # For more information on Primo sources see PrimoSource.
   def to_primo_source(service_response)
-    source_parameters = { :base_url => @base_url, :vid => @vid, :config => primo_config }
+    source_parameters = { :base_url => @base_url, :vid => @vid }
     @holding_attributes.each { |attr|
       source_parameters[attr] = service_response.data_values[attr] }
     return Exlibris::Primo::Holding.new(source_parameters).to_source
   end
 
-  # Configure Primo if this is the first time through 
+  # Configure Primo if this is the first time through
   def configure_primo
     Exlibris::Primo.configure do |primo_config|
       primo_config.load_yaml config_file unless primo_config.load_time
@@ -344,8 +344,8 @@ class PrimoService < Service
       service_data[:status_code] = holding.availability_status_code
       service_data[:status] = holding.availability_status
       # Add URL
-      service_data[:url] = 
-        "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=#{holding.record_id}&institution=#{@institution}&vid=#{@vid}" 
+      service_data[:url] =
+        "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=#{holding.record_id}&institution=#{@institution}&vid=#{@vid}"
       # Only add one service type, either "primo_source" OR "holding", not both.
       service_type = (@service_types.include?("primo_source")) ? "primo_source" : "holding"
       # Add some other holding information for compatibility with default holding partial
@@ -357,9 +357,7 @@ class PrimoService < Service
       request.add_service_response(
         service_data.merge(
           :service => self,
-          :service_type_value => service_type
-        )
-      )
+          :service_type_value => service_type))
     end
   end
   private :add_holding_services
@@ -374,9 +372,7 @@ class PrimoService < Service
     request.add_service_response(
       service_data.merge(
         :service => self,
-        :service_type_value => 'holding_search'
-      )
-    )
+        :service_type_value => 'holding_search'))
   end
   private :add_holding_search_service
 
@@ -427,9 +423,7 @@ class PrimoService < Service
       request.add_service_response(
         service_data.merge(
           :service => self,
-          :service_type_value => service_type
-        )
-      )
+          :service_type_value => service_type))
     end
   end
   private :add_link_services
