@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'fileutils'
 class PrimoServiceTest < ActiveSupport::TestCase
   extend TestWithCassette
   fixtures :requests, :referents, :referent_values, :sfx_urls
@@ -147,6 +148,18 @@ class PrimoServiceTest < ActiveSupport::TestCase
   #     }
   #   end
   # end
+
+  test "missing primo config" do
+    @primo_minimum.send(:reset_primo_config)
+    FileUtils.mv(PrimoService.default_config_file, "#{PrimoService.default_config_file}.bak")
+    assert_nothing_raised {
+      PrimoService.new({
+        "priority"=>1, "service_id" => "Primo",
+        "base_url" => @base_url, "vid" => @vid, "institution" => @institution,
+        "holding_search_institution" => @primo_definition["holding_search_institution"]})
+    }
+    FileUtils.mv("#{PrimoService.default_config_file}.bak", PrimoService.default_config_file)
+  end
 
   test_with_cassette("minimum config request by id", :primo) do
     request = requests(:primo_id_request)
