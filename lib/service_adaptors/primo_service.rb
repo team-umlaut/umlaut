@@ -282,7 +282,7 @@ class PrimoService < Service
   # Called by ServiceType#view_data to provide custom functionality for Primo sources.
   # For more information on Primo sources see PrimoSource.
   def to_primo_source(service_response)
-    source_parameters = { :base_url => @base_url, :vid => @vid }
+    source_parameters = {}
     @holding_attributes.each { |attr|
       source_parameters[attr] = service_response.data_values[attr] }
     return Exlibris::Primo::Holding.new(source_parameters).to_source
@@ -290,9 +290,9 @@ class PrimoService < Service
 
   # Configure Primo if this is the first time through
   def configure_primo
-    Exlibris::Primo.configure do |primo_config|
+    Exlibris::Primo.configure { |primo_config|
       primo_config.load_yaml config_file unless primo_config.load_time
-    end
+    } if File.exists?(config_file)
   end
   private :configure_primo
 
