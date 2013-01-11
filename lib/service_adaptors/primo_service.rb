@@ -138,7 +138,7 @@ class PrimoService < Service
     @holding_attributes = [:record_id, :original_id, :title, :author, :display_type,
       :source_id, :original_source_id, :source_record_id, :ils_api_id, :institution_code,
       :institution, :library_code, :library, :collection, :call_number, :coverage, :notes,
-      :subfields]
+      :subfields, :status_code, :status]
     @link_attributes = [:record_id, :original_id, :url, :display, :notes, :subfields]
     # TODO: Run these decisions someone to see if they make sense.
     @referent_enhancements = {
@@ -336,29 +336,23 @@ class PrimoService < Service
     holdings.each do |holding|
       next if @suppress_holdings.find {|suppress_holding| suppress_holding === holding.availlibrary}
       service_data = {}
+      # Availability status from Primo is probably out of date, so set to "check_holdings"
+      holding.status_code = "check_holdings"
       @holding_attributes.each do |attr|
         service_data[attr] = holding.send(attr)
       end
+      # Only add one service type, either "primo_source" OR "holding", not both.
+      service_type = (@service_types.include?("primo_source")) ? "primo_source" : "holding"
       # Umlaut specific attributes.
       service_data[:match_reliability] =
         (reliable_match?(:title => holding.title, :author => holding.author)) ?
           ServiceResponse::MatchExact : ServiceResponse::MatchUnsure
-      service_data[:request_link_supports_ajax_call] =
-        (holding.respond_to?(:request_link_supports_ajax_call)) ?
-          holding.request_link_supports_ajax_call : false
-      # Availability status from Primo is probably out of date, so set to "check_holdings"
-      holding.availability_status_code = "check_holdings"
-      # Add status
-      service_data[:status_code] = holding.availability_status_code
-      service_data[:status] = holding.availability_status
-      # Add URL
       service_data[:url] =
         "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=#{holding.record_id}&institution=#{@institution}&vid=#{@vid}"
-      # Only add one service type, either "primo_source" OR "holding", not both.
-      service_type = (@service_types.include?("primo_source")) ? "primo_source" : "holding"
-      # Add some other holding information for compatibility with default holding partial
+      # Add some other holding information
       service_data.merge!({
-        :call_number => holding.call_number, :collection => holding.collection,
+        :request_link_supports_ajax_call => ((holding.respond_to?(:request_link_supports_ajax_call)) ?
+          holding.request_link_supports_ajax_call : false),
         :collection_str => "#{holding.library} #{holding.collection}",
         :coverage_str => holding.coverage.join("<br />"),
         :coverage_str_array => holding.coverage }) if service_type.eql? "holding"

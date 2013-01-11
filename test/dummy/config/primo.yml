@@ -105,7 +105,7 @@ sources:
      rest_url: "http://alephstage.library.nyu.edu:1891/rest-dlf"
      illiad_url: "http://illdev.library.nyu.edu"
      type: aleph
-     class_name: NYUAleph
+     class_name: Aleph
      local_base: "PRIMOCOMMON"
      "866$l_mappings": 
        Bobst: 
@@ -260,12 +260,12 @@ sources:
      rest_url: "http://alephstage.library.nyu.edu:1891/rest-dlf"
      illiad_url: "http://illdev.library.nyu.edu"
      type: aleph
-     class_name: NYUAleph
+     class_name: Aleph
      local_base: "PRIMOCOMMON"
   ADCOURSES:
      base_url: "http://alephstage.library.nyu.edu"
      rest_url: "http://alephstage.library.nyu.edu:1891/rest-dlf"
      illiad_url: "http://illdev.library.nyu.edu"
      type: aleph
-     class_name: NYUAleph
+     class_name: Aleph
      local_base: "PRIMOCOMMON"

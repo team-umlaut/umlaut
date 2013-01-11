@@ -62,8 +62,16 @@ default:
           - abstract
           - referent_enhance
           - cover_image
-          
       
+      PrimoSource:
+        type: PrimoSource
+        disabled: false
+        display_name: PrimoSource
+        priority: 4      
+        base_url: http://bobcat.library.nyu.edu
+        vid: NYU
+        institution: NYU
+
       # Priority c  : Background          
       
       # Second half of Amazon. It's Slow to lookup highlighted_link and search_inside

@@ -38,7 +38,9 @@ class PrimoSource < PrimoService
           service_data[attr.to_sym] = holding.send(attr.to_sym) if holding.respond_to?(attr.to_sym)
         end
         service_data.merge!({
-          :call_number => holding.call_number, :collection => holding.collection,
+          :url => holding.url,
+          :request_link_supports_ajax_call => ((holding.respond_to?(:request_link_supports_ajax_call)) ?
+            holding.request_link_supports_ajax_call : false),
           :collection_str => "#{holding.library} #{holding.collection}",
           :coverage_str => holding.coverage.join("<br />"),
           :coverage_str_array => holding.coverage,
