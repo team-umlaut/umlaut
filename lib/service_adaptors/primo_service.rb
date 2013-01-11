@@ -126,6 +126,10 @@ class PrimoService < Service
   # For matching purposes.
   attr_reader :title, :author
 
+  def self.default_config_file
+    "#{Rails.root}/config/primo.yml"
+  end
+
   # Overwrites Service#new.
   def initialize(config)
     # Configure Primo
@@ -286,6 +290,10 @@ class PrimoService < Service
     @holding_attributes.each { |attr|
       source_parameters[attr] = service_response.data_values[attr] }
     return Exlibris::Primo::Holding.new(source_parameters).to_source
+  end
+
+  def default_config_file
+    self.class.default_config_file
   end
 
   # Configure Primo if this is the first time through
@@ -463,8 +471,7 @@ class PrimoService < Service
   private :reliable_match?
 
   def config_file
-    default_file = "#{Rails.root}/config/primo.yml"
-    config_file = @primo_config.nil? ? default_file : "#{Rails.root}/config/"+ @primo_config
+    config_file = @primo_config.nil? ? default_config_file : "#{Rails.root}/config/"+ @primo_config
     Rails.logger.warn("Primo config file not found: #{config_file}.") and return "" unless File.exists?(config_file)
     config_file
   end
