@@ -48,61 +48,61 @@ default:
         - referent_enhance
         - cover_image
 
-      # First half of Amazon, run in foreground, get metadata and cover images.
-      Amazon:
-        disabled: true
-        display_name: Amazon.com
-        type: Amazon
-        url: http://webservices.amazon.com/onca/xml
-        api_key: "NEED_API_KEY"
-        secret_key: "NEED_SECRET_KEY"
-        associate_tag: "NEED_ASSOCIATE_ID"
-        priority: 3
-        service_types:
-          - abstract
-          - referent_enhance
-          - cover_image
+    # First half of Amazon, run in foreground, get metadata and cover images.
+    Amazon:
+      disabled: true
+      display_name: Amazon.com
+      type: Amazon
+      url: http://webservices.amazon.com/onca/xml
+      api_key: "NEED_API_KEY"
+      secret_key: "NEED_SECRET_KEY"
+      associate_tag: "NEED_ASSOCIATE_ID"
+      priority: 3
+      service_types:
+        - abstract
+        - referent_enhance
+        - cover_image
 
-      PrimoSource:
-        type: PrimoSource
-        disabled: false
-        display_name: PrimoSource
-        priority: 4      
-        base_url: http://bobcat.library.nyu.edu
-        vid: NYU
-        institution: NYU
+    PrimoSource:
+      type: PrimoSource
+      disabled: false
+      display_name: PrimoSource
+      priority: 4      
+      base_url: http://bobcat.library.nyu.edu
+      vid: NYU
+      institution: NYU
 
-      # Priority c  : Background          
+    # Priority c  : Background          
 
-      # Second half of Amazon. It's Slow to lookup highlighted_link and search_inside
-      # availability, so we do it in a bg wave.  
-      Amazon_bg:
-        type: Amazon
-        disabled: true        
-        api_key: "NEED_API_KEY"
-        secret_key: "NEED_SECRET_KEY"
-        associate_tag: "NEED_ASSOCIATE_ID"
-        priority: c        
-        make_aws_call: false
-        service_types:
-          - highlighted_link
-          - search_inside
-          - excerpts
+    # Second half of Amazon. It's Slow to lookup highlighted_link and search_inside
+    # availability, so we do it in a bg wave.  
+    Amazon_bg:
+      type: Amazon
+      disabled: true        
+      api_key: "NEED_API_KEY"
+      secret_key: "NEED_SECRET_KEY"
+      associate_tag: "NEED_ASSOCIATE_ID"
+      priority: c        
+      make_aws_call: false
+      service_types:
+        - highlighted_link
+        - search_inside
+        - excerpts
+  
+    CoverThing:
+      type: CoverThing
+      disabled: true        
+      developer_key: YOUR_LT_KEY
+      priority: c
+      # Pre-empted by says if we already have a cover_image response
+      # from somewhere else that runs earlier, don't run this. 
+      preempted_by:
+        existing_type: cover_image
     
-      CoverThing:
-        type: CoverThing
-        disabled: true        
-        developer_key: YOUR_LT_KEY
-        priority: c
-        # Pre-empted by says if we already have a cover_image response
-        # from somewhere else that runs earlier, don't run this. 
-        preempted_by:
-          existing_type: cover_image
-    
-      ElsevierCover:
-        disabled: true        
-        type: ElsevierCover
-        priority: c
+    ElsevierCover:
+      disabled: true        
+      type: ElsevierCover
+      priority: c
         
     GoogleBookSearch:
      type: GoogleBookSearch
