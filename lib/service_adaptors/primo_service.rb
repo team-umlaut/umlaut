@@ -351,8 +351,6 @@ class PrimoService < Service
         "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=#{holding.record_id}&institution=#{@institution}&vid=#{@vid}"
       # Add some other holding information
       service_data.merge!({
-        :request_link_supports_ajax_call => ((holding.respond_to?(:request_link_supports_ajax_call)) ?
-          holding.request_link_supports_ajax_call : false),
         :collection_str => "#{holding.library} #{holding.collection}",
         :coverage_str => holding.coverage.join("<br />"),
         :coverage_str_array => holding.coverage }) if service_type.eql? "holding"

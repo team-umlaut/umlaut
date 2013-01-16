@@ -17,7 +17,7 @@ class PrimoSource < PrimoService
 
   # Overwrites PrimoService#handle.
   def handle(request)
-    primo_sources = request.get_service_type('primo_source', {})
+    primo_sources = request.get_service_type('primo_source', {:refresh => true})
     sources_seen = Array.new # for de-duplicating holdings from catalog.
     primo_sources.each do |primo_source|
       source = primo_source.view_data
@@ -39,8 +39,6 @@ class PrimoSource < PrimoService
         end
         service_data.merge!({
           :url => holding.url,
-          :request_link_supports_ajax_call => ((holding.respond_to?(:request_link_supports_ajax_call)) ?
-            holding.request_link_supports_ajax_call : false),
           :collection_str => "#{holding.library} #{holding.collection}",
           :coverage_str => holding.coverage.join("<br />"),
           :coverage_str_array => holding.coverage,
