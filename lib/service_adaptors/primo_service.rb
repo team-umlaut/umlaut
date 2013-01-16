@@ -192,6 +192,7 @@ class PrimoService < Service
     @identifier = request.referrer_id
     @record_id = record_id(request)
     @isbn = isbn(request)
+    @issn = issn(request)
     @title = title(request)
     @author = author(request)
     @genre = genre(request)
@@ -478,7 +479,7 @@ class PrimoService < Service
   private :handle_ezproxy
 
   def record_id(request)
-    record_id = identifier.match(/primo-(.+)/)[1] if primo_identifier?
+    record_id = @identifier.match(/primo-(.+)/)[1] if primo_identifier?
     # DEPRECATED
     # Extend OpenURL standard to take Primo Doc Id
     record_id = request.referent.metadata['primo'] unless request.referent.metadata['primo'].nil?
