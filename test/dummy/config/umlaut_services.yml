@@ -48,54 +48,61 @@ default:
         - referent_enhance
         - cover_image
 
-    # Priority 3
-    # First half of Amazon, run in foreground, get metadata and cover images.
-    Amazon:
-      display_name: Amazon.com
-      type: Amazon
-      url: http://webservices.amazon.com/onca/xml
-      api_key: 1ZQ8VEWY2A7VSJ93CW82
-      secret_key: jZNsa8uaOxo2mj1TvHQVDs464TcPEvuidSF/xepO
-      associate_tag: nyli0a-20
-      priority: 3
-      service_types:
-        - referent_enhance
-        - cover_image
+      # First half of Amazon, run in foreground, get metadata and cover images.
+      Amazon:
+        disabled: true
+        display_name: Amazon.com
+        type: Amazon
+        url: http://webservices.amazon.com/onca/xml
+        api_key: "NEED_API_KEY"
+        secret_key: "NEED_SECRET_KEY"
+        associate_tag: "NEED_ASSOCIATE_ID"
+        priority: 3
+        service_types:
+          - abstract
+          - referent_enhance
+          - cover_image
+
+      PrimoSource:
+        type: PrimoSource
+        disabled: false
+        display_name: PrimoSource
+        priority: 4      
+        base_url: http://bobcat.library.nyu.edu
+        vid: NYU
+        institution: NYU
+
+      # Priority c  : Background          
+
+      # Second half of Amazon. It's Slow to lookup highlighted_link and search_inside
+      # availability, so we do it in a bg wave.  
+      Amazon_bg:
+        type: Amazon
+        disabled: true        
+        api_key: "NEED_API_KEY"
+        secret_key: "NEED_SECRET_KEY"
+        associate_tag: "NEED_ASSOCIATE_ID"
+        priority: c        
+        make_aws_call: false
+        service_types:
+          - highlighted_link
+          - search_inside
+          - excerpts
     
-    # Priority c: Background          
-    # Second half of Amazon. It's Slow to lookup highlighted_link and search_inside
-    # availability, so we do it in a bg wave.  
-    Amazon_bg:
-      type: Amazon
-      api_key: 1ZQ8VEWY2A7VSJ93CW82
-      secret_key: jZNsa8uaOxo2mj1TvHQVDs464TcPEvuidSF/xepO
-      associate_tag: nyli0a-20
-      priority: c        
-      service_types:
-        - abstract
-        - highlighted_link
-        - search_inside
-        - excerpts
+      CoverThing:
+        type: CoverThing
+        disabled: true        
+        developer_key: YOUR_LT_KEY
+        priority: c
+        # Pre-empted by says if we already have a cover_image response
+        # from somewhere else that runs earlier, don't run this. 
+        preempted_by:
+          existing_type: cover_image
     
-    CoverThing:
-      type: CoverThing
-      disabled: true        
-      developer_key: YOUR_LT_KEY
-      priority: c
-      # Pre-empted by says if we already have a cover_image response
-      # from somewhere else that runs earlier, don't run this. 
-      preempted_by:
-        existing_type: cover_image
-        
-    ElsevierCover:
-      disabled: true
-      type: ElsevierCover
-      priority: c
-      
-    UlrichsCover:
-      disabled: true
-      type: UlrichsCover
-      priority: c      
+      ElsevierCover:
+        disabled: true        
+        type: ElsevierCover
+        priority: c
         
     GoogleBookSearch:
      type: GoogleBookSearch
