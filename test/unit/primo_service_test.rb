@@ -205,8 +205,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
       :coverage => [],
       :url => "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=nyu_aleph000062856&institution=NYU&vid=#{@vid}",
       :request_url => nil,
-      :match_reliability => ServiceResponse::MatchExact,
-      :request_link_supports_ajax_call => false }
+      :match_reliability => ServiceResponse::MatchExact}
     test_data.each { |key, value|
       assert_equal(
         value,
@@ -279,8 +278,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
       :coverage => [],
       :url => "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=nyu_aleph000062856&institution=NYU&vid=#{@vid}",
       :request_url => nil,
-      :match_reliability => ServiceResponse::MatchExact,
-      :request_link_supports_ajax_call => false }
+      :match_reliability => ServiceResponse::MatchExact}
     test_data.each { |key, value|
       assert_equal(
         value,
@@ -333,8 +331,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
       :coverage => [],
       :url => "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=nyu_aleph000062856&institution=NYU&vid=#{@vid}",
       :request_url => nil,
-      :match_reliability => ServiceResponse::MatchExact,
-      :request_link_supports_ajax_call => false }
+      :match_reliability => ServiceResponse::MatchExact}
     test_data.each { |key, value|
       assert_equal(
         value,

@@ -340,7 +340,7 @@ class PrimoService < Service
       # Availability status from Primo is probably out of date, so set to "check_holdings"
       holding.status_code = "check_holdings"
       @holding_attributes.each do |attr|
-        service_data[attr] = holding.send(attr)
+        service_data[attr] = holding.send(attr) if holding.respond_to?(attr)
       end
       # Only add one service type, either "primo_source" OR "holding", not both.
       service_type = (@service_types.include?("primo_source")) ? "primo_source" : "holding"
