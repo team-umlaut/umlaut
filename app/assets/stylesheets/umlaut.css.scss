@@ -49,37 +49,6 @@
   padding-top: 8px;
 }
 
-.expand_contract_toggle {
-  margin-top: 4px;
-  margin-bottom: 4px;
-  margin-left: -18px;
-}
-
-/* IE-only, IE doesn't like our negative margin
-   inside a table. Use that crazy '*' so only IE will see it. */
-table .expand_contract_toggle {
-  *margin-left: 0;
-}
-
-.section_subheading {
-  margin-top: .75em;
-  margin-bottom: .75em;
-}
-
-.expand_contract_content {
-  margin-top: 0.5em;
-}
-
-div.expand_contract_section {
-  margin-top: 0.25em;
-}
-
-li.expand_contract_section {
-  margin: 0;
-  padding: 0;
-  background: none;
-}
-
 .content {
   font-size: 12px;
   padding: 10px;

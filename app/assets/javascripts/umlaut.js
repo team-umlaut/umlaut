@@ -12,6 +12,7 @@
 //= require bootstrap-transition
 //= require bootstrap-modal
 //= require bootstrap-typeahead
+//= require bootstrap-collapse
 
 // Require all js files inside the 'umlaut' subdir next to this file.  
 //= require_tree './umlaut'
