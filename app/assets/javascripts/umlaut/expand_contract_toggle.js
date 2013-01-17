@@ -9,20 +9,26 @@
 */
 jQuery(document).ready(function($) {
   $(".collapse-toggle").live("click", function(event) {
-    $(this).collapse('toggle');
     event.preventDefault();
+    $(this).collapse('toggle');
     return false;
   });
   $(".collapse").live("shown", function(event) {
-    // Update the icon
-    $(this).parent().find('.collapse-toggle i').removeClass("umlaut_icons-list-closed").addClass("umlaut_icons-list-open");
-    // Update the action label
-    $(this).parent().find(".expand_contract_action_label").text("Hide ");
+    // Hack cuz collapse don't work right
+    if($(this).hasClass('in')) {
+      // Update the icon
+      $(this).parent().find('.collapse-toggle i').removeClass("umlaut_icons-list-closed").addClass("umlaut_icons-list-open");
+      // Update the action label
+      $(this).parent().find(".expand_contract_action_label").text("Hide ");
+    }
   });
   $(".collapse").live("hidden", function(event) {
-    // Update the icon
-    $(this).parent().find('.collapse-toggle i').removeClass("umlaut_icons-list-open").addClass("umlaut_icons-list-closed");
-    // Update the action label
-    $(this).parent().find(".expand_contract_action_label").text("Show ");
+    // Hack cuz collapse don't work right
+    if(!$(this).hasClass('in')) {
+      // Update the icon
+      $(this).parent().find('.collapse-toggle i').removeClass("umlaut_icons-list-open").addClass("umlaut_icons-list-closed");
+      // Update the action label
+      $(this).parent().find(".expand_contract_action_label").text("Show ");
+    }
   });
 });
