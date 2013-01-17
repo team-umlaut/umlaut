@@ -104,6 +104,10 @@ default:
       type: ElsevierCover
       priority: c
         
+    UlrichsCover:
+      type: UlrichsCover
+      priority: c      
+          
     GoogleBookSearch:
      type: GoogleBookSearch
      disabled: true
