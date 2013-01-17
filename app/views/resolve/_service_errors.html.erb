@@ -8,9 +8,9 @@ unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
         <li class="text-small">           
           Some <em><%= dispatch.service.service_types_generated.collect { |type|
             type.display_name_pluralize.downcase}.join(",") %></em>
-          from <a class="simple_visible_toggle"><strong><%= dispatch.service.display_name %></strong></a>
+          from <a class="collapse-toggle" data-target="<%= "#failed_dispatch_#{dispatch.id}"%>" data-toggle="collapse"><strong><%= dispatch.service.display_name %></strong></a>
           <% exception_info = dispatch.exception_info %>
-          <div style="display: none;">
+          <div id="<%= "failed_dispatch_#{dispatch.id}"%>" class="collapse">
             <ul class="nav nav-list">
               <li class="nav-header">Technical Error Information</li>
               <li><pre><%= exception_info[:class_name] if exception_info %></pre></li>
