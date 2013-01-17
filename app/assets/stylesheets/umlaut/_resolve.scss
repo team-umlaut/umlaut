@@ -92,6 +92,7 @@
 }
 
 .umlaut-section {
+  margin-top: 5px;
   // Special looks for particular sections
   &.fulltext .response_list {
     margin-left: 4px;
@@ -271,6 +272,7 @@
   .umlaut-section {
     &.holding {
       .umlaut-holdings {
+        padding: 0px;
         .umlaut-holding {
           a.btn {
             padding: {
