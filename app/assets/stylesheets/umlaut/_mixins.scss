@@ -21,17 +21,11 @@
 
 @mixin iconed-response {
   .response_item  {
-    padding: 0px 18px 8px 22px;
     a {
       font-weight: bold;
     }
     i {
       @include umlaut_icons;
-      margin-left: -18px;
-      // @extend .pull-left;
     }
-  }
-  .expand_contract_toggle {
-    margin-left: 8px; 
   }
 }
