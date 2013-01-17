@@ -47,4 +47,20 @@ class PrimoSourceTest < ActiveSupport::TestCase
       view_data = request.get_service_type('holding').first.view_data
     }
   end
+
+  test_with_cassette("primo journal issn search handle", :primo) do
+    assert_nothing_raised {
+      request = requests(:primo_journal1_request)
+      @primo_service.handle(request)
+      request.dispatched_services.reload
+      request.service_responses.reload
+      holdings = request.get_service_type('holding', {:refresh => true})
+      assert_equal(0, holdings.size)
+      @primo_source.handle(request)
+      request.dispatched_services.reload
+      request.service_responses.reload
+      holdings = request.get_service_type('holding', {:refresh => true})
+      assert_equal(5, holdings.size)
+    }
+  end
 end

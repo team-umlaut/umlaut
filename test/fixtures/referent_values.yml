@@ -315,13 +315,13 @@ primo_journal1_rv2:
   metadata: true
   private_data: false
 
-primo_journal1_rv3:
-  referent: primo_journal1_referent
-  key_name: "primo"
-  value: "nyu_aleph002895625"
-  normalized_value: "nyu_aleph002895625"
-  metadata: true
-  private_data: false
+# primo_journal1_rv3:
+#   referent: primo_journal1_referent
+#   key_name: primo
+#   value: nyu_aleph002895625
+#   normalized_value: nyu_aleph002895625
+#   metadata: true
+#   private_data: false
 
 primo_journal1_rv4:
   referent: primo_journal1_referent
