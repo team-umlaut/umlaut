@@ -13,13 +13,13 @@ jQuery(document).ready(function($) {
     event.preventDefault();
     return false;
   });
-  $(".collapse").live("show", function(event) {
+  $(".collapse").live("shown", function(event) {
     // Update the icon
     $(this).parent().find('.collapse-toggle i').removeClass("umlaut_icons-list-closed").addClass("umlaut_icons-list-open");
     // Update the action label
     $(this).parent().find(".expand_contract_action_label").text("Hide ");
   });
-  $(".collapse").live("hide", function(event) {
+  $(".collapse").live("hidden", function(event) {
     // Update the icon
     $(this).parent().find('.collapse-toggle i').removeClass("umlaut_icons-list-open").addClass("umlaut_icons-list-closed");
     // Update the action label
