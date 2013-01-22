@@ -1,26 +1,53 @@
-<% 
+<%
 cite = @user_request.referent.to_citation
-@page_title = cite[:title]
-#rft_metadata = @user_request.referent.metadata
-%>
-<%= content_tag(:dl, :class => "dl-horizontal umlaut-citation") do
-  citations = "".html_safe
-  # Title
-  citations << citation_element(cite[:title_label], cite[:title], "title")
-  # Author
-  citations << citation_element("Author", cite[:author]) if cite[:author]
-  # Subtitle
-  citations << citation_element(cite[:subtitle_label], cite[:subtitle], "subtitle") if cite[:subtitle]
-  # ISSN
-  citations << citation_element("ISSN", cite[:issn]) if cite[:issn]
-  # ISBN
-  citations << citation_element("ISBN", cite[:isbn]) if cite[:isbn]
-  # Publisher
-  citations << citation_element("Publisher", cite[:pub]) if cite[:pub]
-  # Publishing info, etc.
-  citations << citation_element("Published", date_format(cite[:date])) if cite[:date]
-  citations << citation_element("Volume", cite[:volume]) if cite[:volume]
-  citations << citation_element("Issue", cite[:issue]) if cite[:issue]
-  citations << citation_element("Page", cite[:page]) if cite[:page]
-  citations
-end %>
+@page_title = cite[:title] %>
+<dl class="dl-horizontal">
+  <%= # Title
+  content_tag(:dt, "#{cite[:title_label]}:", :class => "title") +
+    content_tag(:dd, cite[:title], :class => "title") %>
+  <%= # Author
+  if cite[:author] and (not cite[:author].blank?)
+    content_tag(:dt, "Author:", :class => "author") +
+      content_tag(:dd, cite[:author], :class => "author")
+  end %>
+  <%= # Subtitle
+  if cite[:subtitle] and (not cite[:subtitle].blank?)
+    content_tag(:dt, "#{cite[:subtitle_label]}:", :class => "subtitle") +
+      content_tag(:dd, cite[:subtitle], :class => "subtitle")
+  end %>
+  <%= # ISSN
+  if cite[:issn] and (not cite[:issn].blank?)
+    content_tag(:dt, "ISSN:", :class => "issn") +
+      content_tag(:dd, cite[:issn], :class => "issn")
+  end %>
+  <%= # ISBN
+  if cite[:isbn] and (not cite[:isbn].blank?)
+    content_tag(:dt, "ISBN:", :class => "isbn") +
+      content_tag(:dd, cite[:isbn], :class => "isbn")
+  end %>
+  <%= # Publisher
+  if cite[:pub] and (not cite[:pub].blank?)
+    content_tag(:dt, "Publisher:", :class => "publisher") +
+      content_tag(:dd, cite[:pub], :class => "publisher")
+  end %>
+  <%= # Publishing info, etc.
+  if cite[:date] and (not cite[:date].blank?)
+    content_tag(:dt, "Published:", :class => "published") +
+      content_tag(:dd, date_format(cite[:date]), :class => "published")
+  end %>
+  <%= # Volume
+  if cite[:volume] and (not cite[:volume].blank?)
+    content_tag(:dt, "Volume:", :class => "volume") +
+      content_tag(:dd, cite[:volume], :class => "volume")
+  end %>
+  <%= # Issue
+  if cite[:issue] and (not cite[:issue].blank?)
+    content_tag(:dt, "Issue:", :class => "issue") +
+      content_tag(:dd, cite[:issue], :class => "issue")
+  end %>
+  <%= # Pages
+  if cite[:page] and (not cite[:page].blank?)
+    content_tag(:dt, "Page:", :class => "page") +
+      content_tag(:dd, cite[:page], :class => "page")
+  end %>
+</dl>

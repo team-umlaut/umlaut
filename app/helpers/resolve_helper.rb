@@ -43,20 +43,6 @@ module ResolveHelper
     return nil
   end
 
-  #
-  # Returns a citation element that consists of an element label and
-  # the citation element content (data?).
-  #
-  # Specifically returns a description list pair
-  #   <dt class="#{label} umlaut-citation-label">#{label}</dt>
-  #   <dd class="#{label} umlaut-citation-content">#{content}</dd>
-  #
-  def citation_element(label, content, klass=nil)
-    klass = klass.nil? ? label.downcase : klass
-    return (content_tag(:dt, "#{label}:", :class => ["umlaut-citation-label", klass]) +
-      content_tag(:dd, content, :class => ["umlaut-citation-content", klass]))
-  end
-
   # Did this come from citation linker style entry?
   # We check the referrer.
   def user_entered_citation?(uml_request)
