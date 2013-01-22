@@ -10,59 +10,12 @@
 @import "umlaut/search";
 @import "umlaut/results";
 @import "umlaut/resolve";
+@import "umlaut/spinner";
 @import "umlaut/admin";
 
 .umlaut-container {
-  margin: {
-    top: 10px;
-    bottom: 10px;
-  }
+  margin-top: 10px;
+  margin-bottom: 10px;
   border: 1px solid $umlautBorderColor;
-  background: { 
-    color: $umlautBackgroundColor;
-  }
+  background-color: $umlautBackgroundColor;
 }
-
-/*******************************/
-/* Standard inteface devices      */
-/*******************************/
-
-.background_progress_spinner {
-  line-height: 1.5em;
-  color: gray;
-}
-
-.background_progress_spinner img {
-  vertical-align: bottom;
-}
-
-.main_response_list .background_progress_spinner {
-  padding-left: 18px; 
-}
-
-.sidebar .background_progress_spinner {
-  padding-left: 10px; 
-}
-
-.umlaut-resource-info .background_progress_spinner { 
-  padding-left: 24px;
-  padding-top: 8px;
-}
-
-.content {
-  font-size: 12px;
-  padding: 10px;
-}
-
-.holding_heading_row {
-  border-top: 1px solid #E9E9E9; 
-  padding-right: 18px;
-  padding-top: 4px;
-  padding-bottom: 0px;
-}
-.holding tr:first-child > td.holding_heading_row {
-  border-top: none;
-  padding-top: 0px;
-}
-
-

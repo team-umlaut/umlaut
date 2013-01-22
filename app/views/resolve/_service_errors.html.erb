@@ -1,21 +1,24 @@
 <% 
 failed_dispatches = failed_service_dispatches()
 unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
-  <div id="service_errors_content" class="small_right_box">
+  <div id="service_errors_content">
     <i class="umlaut_icons-famfamfam-error"></i> <span class="warning">Some content may not be included due to errors:</span>
     <ul>
       <% failed_dispatches.each do | dispatch | %>
-        <li class="text-small">           
-          Some <em><%= dispatch.service.service_types_generated.collect { |type|
-            type.display_name_pluralize.downcase}.join(",") %></em>
+        <li class="text-small">
+          Some <strong><%= dispatch.service.service_types_generated.collect { |type|
+            type.display_name_pluralize.downcase}.join(",") %></strong>
           from <a class="collapse-toggle" data-target="<%= "#failed_dispatch_#{dispatch.id}"%>" data-toggle="collapse"><strong><%= dispatch.service.display_name %></strong></a>
           <% exception_info = dispatch.exception_info %>
           <div id="<%= "failed_dispatch_#{dispatch.id}"%>" class="collapse">
             <ul class="nav nav-list">
               <li class="nav-header">Technical Error Information</li>
-              <li><pre><%= exception_info[:class_name] if exception_info %></pre></li>
-              <li><pre><%= exception_info[:message] if exception_info %></pre></li>
-              <li><pre>dispatched service id: <%= dispatch.id %></pre></li>
+              <%= content_tag("li") do
+                content_tag("pre", :class=>"pre-scrollable") do
+                  error_message = (exception_info) ? "#{exception_info[:class_name]}: #{exception_info[:message]}\n" : ""
+                  error_message + "dispatched service id: #{dispatch.id}"
+                end
+              end %>
             </ul>
           </div>
         </li>

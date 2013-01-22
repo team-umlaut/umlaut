@@ -1,29 +1,17 @@
 .umlaut-separator {
   border-top: 1px solid $umlautBorderColor;
-  padding: {
-    top: 15px;
-  }
+  padding-top: 15px;
 }
 
 .text-small {
   font: {
-    size: $smallFontSize
-  }
-}
-
-.text-large {
-  font: {
-    size: $largeFontSize
+    size: $fontSizeSmall
   }
 }
 
 .alert {
-  font: {
-    size: 125%;
-  }
+  font-size: 125%;
   li {
-    margin: {
-      top: 1em;
-    }
+    margin-top: 1em;
   }
 }

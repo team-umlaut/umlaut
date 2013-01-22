@@ -49,12 +49,9 @@ select {
   .umlaut-main-container-fluid {
     @include umlaut-container-padding;
   }
-  
+
   body {
-    padding: {
-      left: 0;
-      right: 0;
-    }
+    padding-left: 0;
+    padding-right: 0;
   }
 }
-

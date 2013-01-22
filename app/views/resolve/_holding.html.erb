@@ -17,7 +17,7 @@ unless holdings.empty? %>
           <div class="span3"><%= target[:collection_str] %></div>
           <div class="span4"><%= target[:call_number]%></div><%
           # Set status class based on configured available statuses
-          status_class = umlaut_config.holdings.available_statuses.include?(target[:status]) ? 'available' : '' %> 
+          status_class = umlaut_config.holdings.available_statuses.include?(target[:status]) ? 'umlaut-available' : '' %> 
           <div class="span3 <%= status_class %>"><%= target[:status] %></div>
           <div class="span2">
             <%= link_to("More Info", {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"btn btn-success") %>
@@ -30,7 +30,7 @@ unless holdings.empty? %>
         if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
           <div class="row-fluid umlaut-holding-match-reliability">
             <div class="span11 offset1">
-              <div class="edition_warning">
+              <div class="response_edition_warning">
                 <% unless target[:edition_str].blank? %>
                   <em class="note">Edition information</em> <%= target[:edition_str] %>
                 <% else %>

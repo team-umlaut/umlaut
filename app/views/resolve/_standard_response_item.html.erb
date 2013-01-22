@@ -27,19 +27,19 @@
     <%= link_to(view_data[:display_text], {:controller=>'link_router', :id=>service_response.id}, 
           {:id => "svctype_link_#{service_response.id}", :target=>"_blank"}) %><% 
   end %>
-  <%= content_tag(:div, "from #{view_data[:source] || service_response.service.display_name}", :class => "umlaut-link-source") if show_source %>
+  <%= content_tag(:div, "from #{view_data[:source] || service_response.service.display_name}", :class => "response_source") if show_source %>
   <%= content_tag(:div, view_data[:coverage], :class => "response_coverage_statement") unless view_data[:coverage].blank? %>
   <%-
     # legacy, the 'notes' field can take raw html, we need to leave it that way for
-    #now, but it's not great.
+    # now, but it's not great.
   -%>
   <%= content_tag(:div, view_data[:notes].html_safe, :class => "response_notes") unless view_data[:notes].blank? %>
   <%= content_tag(:div, content_tag(:strong, "Authentication:") + " #{view_data[:authentication]}", 
         :class => "response_authentication_instructions") unless view_data[:authentication].blank? %>
-  <%= (content_tag(:div, :class => "edition_warning") {
+  <%= (content_tag(:div, :class => "response_edition_warning") {
         (return content = (view_data[:edition_str].blank?) ? 
           (content_tag(:em, "May be alternate edition.", :class => ["note"])) : 
-            (content_tag(:em, "Edition information",:class => ["note"]) + " #{view_data[:edition_str]}"))
+            (content_tag(:em, "Edition information", :class => ["note"]) + " #{view_data[:edition_str]}"))
         }) if ((not view_data[:match_reliability].blank?) && view_data[:match_reliability] != ServiceResponse::MatchExact) %>
   <%-
   # Debug info, hidden with explicit style, can be made visible with javascript.

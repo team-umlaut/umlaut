@@ -1,4 +1,4 @@
-<tr class="dispatch_line">
+<tr>
   <td><%= dispatched_service.updated_at.localtime.to_s(:short) %></td>
   <td><%= dispatched_service.service_id %></td>    
   <td><%= dispatched_service.status %></td>
@@ -7,17 +7,17 @@
     <td><%= link_to "[View cached request]", url_for(:controller => "/resolve", :action => :index, "umlaut.request_id" => dispatched_service.request_id ) %></td>
   <% end %>
 </tr>
-<tr>
 <% if dispatched_service.exception_info %>
-  <td colspan="5">  
-    <%= dispatched_service.exception_info[:class_name] %>: <%= dispatched_service.exception_info[:message] %>
-    <% if dispatched_service.exception_info[:backtrace] %>
-    <ul>
-      <% dispatched_service.exception_info[:backtrace].each do |line| %>
-        <%= simple_format line %>
+  <tr>
+    <td colspan="5">  
+      <%= dispatched_service.exception_info[:class_name] %>: <%= dispatched_service.exception_info[:message] %>
+      <% if dispatched_service.exception_info[:backtrace] %>
+      <ul>
+        <% dispatched_service.exception_info[:backtrace].each do |line| %>
+          <%= simple_format line %>
+        <% end %>
+        </ul>
       <% end %>
-    </ul>
-    <% end %>
-  </td>
-</tr>
+    </td>
+  </tr>
 <% end %>

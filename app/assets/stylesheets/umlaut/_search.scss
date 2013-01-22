@@ -1,15 +1,10 @@
 .umlaut-search {
-  font-size:11px;
+  font-size: 11px;
   padding: 10px;
   border: 1px solid $umlautSearchBorderColor;
-  background: {
-    color: $umlautSearchBackgroundColor;
-  }
-
-  margin: {
-    top: 12px;
-    bottom: 12px;
-  }
+  background-color: $umlautSearchBackgroundColor;
+  margin-top: $baseLineHeight;
+  margin-bottom: $baseLineHeight;
 
   .row-fluid {
     margin-bottom: $baseLineHeight;

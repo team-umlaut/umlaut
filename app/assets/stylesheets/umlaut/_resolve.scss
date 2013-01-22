@@ -1,10 +1,3 @@
-.umlaut-resolve-container {
-  padding: {
-    left: 0px;
-    right: 0px;
-  }
-}  
-
 .umlaut-resolve-nav {
   border-bottom: 1px solid $umlautResolveNavBorderColor;
   background-color: $umlautResolveNavBackgroundColor;
@@ -19,87 +12,34 @@
   }
 }
 
+// Main section styles
 .umlaut-main {
   @include umlaut-container-padding;
   background-color: $umlautMainBackgroundColor;
 }
 
-.umlaut-sidebar {
-  border: {
-    left: 1px solid $umlautSidebarBorderColor;
-    bottom: 1px solid $umlautSidebarBorderColor;
-  }
-  background-color: $umlautSidebarBackgroundColor;
-  .response_notes {
-    margin-left: 10px;
-  }
-
-  .umlaut-section {
-    margin: {
-      top: .5em;
-      left: 1em;
-      right: .75em;
-      bottom: .5em;
-    }
-    padding: 0 0.5em;
-    .response_list {
-      margin-left:10px;
-    }
-    &.help {
-      @extend .well;
-      @extend .well-small;
-      padding: 0.5em;
-      background-color: $umlautHelpBackgroundColor;
-      border: {
-        color: $umlautHelpBorderColor;
-      }
-    }
-  }
-
-  .umlaut-help-list {
-    margin: {
-      top: .5em;
-    }
-    text-align: right;
+.response_list {
+  .response_item  {
+    margin-left: $umlautIndentLarge;
+    padding-bottom: 5px;
   }
 }
 
-.umlaut-resource-info {
-  @extend .well;
-  @extend .well-small;
-  padding: {
-    top: 0;
-    bottom: 0;
-  }
-  background-color: $umlautResourceInfoBackgroundColor;
-  border: {
-    color: $umlautResourceInfoBorderColor;
-  }
-  .resource_info_sections {
-    dl {
-      margin: {
-        top: .5em;
-        bottom: .5em;
-      };
-      dt, dd {
-        padding: {
-          top: .25em;
-          top: .25em;
-        }
-      }
-    }
-  }
+// Little semantic pieces on resolve page
+.umlaut-content-indent {
+  margin-left: $umlautIndentLarge;
 }
 
 .umlaut-section {
   margin-top: $baseLineHeight;
-  // Special looks for particular sections
-  &.fulltext .response_list {
-    margin-left: 4px;
-  }
 
+  // Special looks for particular sections
   &.fulltext {
     @include iconed-response;
+    // Line responses up with collapse caret
+    .response_list {
+      margin-left: 4px;
+    }
     .response_item i {
       @extend .umlaut_icons-famfamfam-page-text;
     }
@@ -120,12 +60,13 @@
   }
 
   &.coins {
-    border: none; 
+    border: none;
   }
-  
+
   &.holding {
     .umlaut-holdings {
-      padding-left: 12px;
+      padding-left: $umlautIndentLarge;
+      border-top: 1px solid $umlautHoldingBorderColor;
       .umlaut-holding {
         padding: {
           top: .75em;
@@ -133,20 +74,12 @@
           left: .25em;
           right: .25em;
         }
-        border: {
-          top: 1px solid $umlautHoldingBorderColor;
-        }
         &:first-child {
-          border: {
-            top: none
-          }
+          border-top: none;
         }
         &:nth-child(odd) {
           background-color: $umlautHoldingHighlightBackgroundColor;
         }
-        // &:hover {
-        //   background-color: $umlautHoldingHighlightBackgroundColor;
-        // }
         a.btn {
           display:block;
           margin: {
@@ -156,55 +89,26 @@
       }
     }
   }
-}
 
-.response_list {
-  .response_item  {
-    padding-left: 12px;
-    padding-bottom: 5px;
+  &.help {
+    @include umlaut-well($umlautHelpBackgroundColor, $umlautHelpBorderColor);
+    padding: 0.5em !important;
   }
-}
-
-// Little semantic pieces on resolve page
-.umlaut-content-indent {
-  margin-left: 12px;
 }
 
 .umlaut-section-highlighted {
-  @extend .well;
-  @extend .well-small;
-  background-color: $umlautHighlightedSectionBackgroundColor;
-  border: {
-    color: $umlautHighlightedSectionBorderColor;
-  }
-}
-
-.umlaut-link-source {
-  @extend .muted;
-  @extend .text-small;
-  padding-left: 10px;
-  margin-top: .25em;
-}
-
-.response_notes {
-   margin-top: .5em;
-}
-
-.available {
-	color: #00CC33;
-	font-style: italic;
-}
-
-.umlaut-unavailable {
-	color: $umlautUnavailableColor;
-	font-style: italic;
-	font-size: $baseFontSize;
+  @include umlaut-well($umlautHighlightedSectionBackgroundColor, $umlautHighlightedSectionBorderColor);
+  padding: 0.5em !important;
 }
 
 .section_prompt {
+  margin-left: $umlautIndentLarge;
   font-style: italic;
-  margin-left: 12px;
   margin-bottom: 8px;
+}
+
+.response_authentication_instructions {
+  margin-top: .5em;
 }
 
 .response_coverage_statement {
@@ -212,35 +116,95 @@
   margin-top: .25em;
 }
 
-.edition_warning {
+.response_edition_warning {
    color: gray;
    margin-top: 6px;
    margin-bottom: 6px;
 }
 
+.response_notes {
+   margin-top: .5em;
+}
+
+.response_source {
+  @extend .muted;
+  margin-top: .25em;
+  font-size: $fontSizeSmall;
+  margin-left: $umlautIndentLarge;
+}
+
 .debug_info {
-  @extend .well;
-  @extend .well-small;
-  background-color: $umlautDebugInfoBackgroundColor;
+  @include umlaut-well($umlautDebugInfoBackgroundColor, $umlautDebugInfoBorderColor);
+}
+
+.umlaut-sidebar {
   border: {
-    color: $umlautDebugInfoBorderColor;
+    left: 1px solid $umlautSidebarBorderColor;
+    bottom: 1px solid $umlautSidebarBorderColor;
   }
+  background-color: $umlautSidebarBackgroundColor;
+
+  .umlaut-section {
+    margin: 0.5em 1em;
+    padding: 0 0.5em;
+  }
+
+  .response_notes {
+    margin-left: $umlautIndentSmall;
+  }
+
+  .response_source {
+    margin-left: $umlautIndentSmall;
+  }
+
+  .umlaut-help-list {
+    margin-top: .5em;
+    text-align: right;
+  }
+}
+
+.umlaut-resource-info {
+  @include umlaut-well($umlautResourceInfoBackgroundColor, $umlautResourceInfoBorderColor);
+  padding-top: 0;
+  padding-bottom: 0;
+  .resource_info_sections {
+    dl {
+      margin: {
+        top: .5em;
+        bottom: .5em;
+      };
+      dt, dd {
+        padding: {
+          top: .25em;
+          top: .25em;
+        }
+      }
+    }
+  }
+}
+
+.umlaut-available {
+  color: $umlautAvailableColor;
+  font-style: italic;
+  font-size: $baseFontSize;
+}
+
+.umlaut-unavailable {
+  color: $umlautUnavailableColor;
+  font-style: italic;
+  font-size: $baseFontSize;
 }
 
 // Resolve Errors
 #service_errors_content {
-  @extend .well;
-  @extend .well-small;
-  background-color: $umlautResolveErrorBackgroundColor;
-  border: {
-    color: $umlautResolveErrorBorderColor;
-  }
+  @include umlaut-well($umlautResolveErrorBackgroundColor, $umlautResolveErrorBorderColor);
 }
 
 @media (max-width: 767px) {
   #cover_image {
     display: none;
   }
+
   .umlaut-sidebar {
     @include umlaut-container-padding;
     background-color: $umlautMainBackgroundColor;
@@ -248,14 +212,10 @@
     padding: {
       top: 10px;
     }
-    
+
     .umlaut-section {
-      margin: {
-        left: 0;
-      }
-      padding: {
-        left: 0;
-      }
+      margin-left: 0;
+      padding-left: 0;
 
       &.holding {
         .umlaut-holdings {
@@ -268,13 +228,9 @@
       text-align: left;
     }
   }
-
-  .umlaut-resolve-container {
-    background-color: $umlautMainBackgroundColor;
-  }  
 }
 
-@media (min-width: 768px) and (max-width: 979px) { 
+@media (min-width: 768px) and (max-width: 979px) {
   .umlaut-section {
     &.holding {
       .umlaut-holdings {
