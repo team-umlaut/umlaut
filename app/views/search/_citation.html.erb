@@ -4,7 +4,7 @@
   labels = referent_labels
 %>
 <div class="row-fluid">
-  <dl class="dl-horizontal">
+  <dl class="dl-horizontal span8">
     <%= # Article Title
     if ref_meta.has_key?("atitle") and (not ref_meta["atitle"].blank?)
       content_tag(:dt, "#{labels.atitle}:", :class => "atitle") +

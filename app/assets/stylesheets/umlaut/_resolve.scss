@@ -185,15 +185,10 @@
   padding-bottom: 0;
   .resource_info_sections {
     dl {
-      margin: {
-        top: .5em;
-        bottom: .5em;
-      };
+      margin-top: .5em;
+      margin-bottom: .5em;
       dt, dd {
-        padding: {
-          top: .25em;
-          top: .25em;
-        }
+        padding-top: .25em;
       }
     }
   }

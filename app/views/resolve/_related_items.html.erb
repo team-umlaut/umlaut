@@ -15,6 +15,6 @@ end
 # If there are no related or cited by services, tell the user.
 if (!service_types_in_progress?([ServiceTypeValue['cited_by'], ServiceTypeValue['similar']])) && similar.empty? && cited_by.empty? -%>
   <ul class="related_items response_list">
-    <li><i>No related items found.</i></li>
+    <li><em>No related items found.</em></li>
   </ul><% 
 end %>

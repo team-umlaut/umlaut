@@ -17,9 +17,7 @@
 
   .umlaut-citation-link {
     text-align: right;
-    padding: {
-      top: $baseLineHeight;
-    }
+    padding-top: $baseLineHeight;
   }
 }
 
@@ -29,25 +27,17 @@
 
 @media (max-width: 767px) {
   .umlaut-result {
-    .umlaut-citation {
-      font: {
-        size: $baseFontSize*1.25
-      }
-      line-height: $baseLineHeight*2;
-      dl {
-        dt, dd {
-          padding: {
-            top: $baseLineHeight;
-          }
-        }
+    font-size: $baseFontSize*1.25;
+    line-height: $baseLineHeight*2;
+    dl {
+      dt, dd {
+        padding-top: $baseLineHeight;
       }
     }
 
     .umlaut-citation-link {
       text-align: left;
-      font: {
-        size: $baseFontSize*1.25
-      }
+      font-size: $baseFontSize*1.25;
       line-height: $baseLineHeight*2;
     }
   }
