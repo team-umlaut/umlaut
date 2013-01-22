@@ -30,7 +30,7 @@
   }
 }
 
-// Little semantic pieces on resolve page
+// Content indents
 .umlaut-content-indent {
   margin-left: $umlautIndentLarge;
 }
@@ -99,6 +99,12 @@
   &.help {
     @include umlaut-well($umlautHelpBackgroundColor, $umlautHelpBorderColor);
     padding: 0.5em !important;
+  }
+
+  &.search_inside {
+    input[type="submit"].btn {
+      vertical-align: top;
+    }
   }
 }
 
