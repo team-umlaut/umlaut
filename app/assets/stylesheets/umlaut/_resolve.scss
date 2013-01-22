@@ -41,10 +41,6 @@
   // Special looks for particular sections
   &.fulltext {
     @include iconed-response;
-    // Line responses up with collapse caret
-    .response_list {
-      margin-left: 4px;
-    }
     .response_item i {
       @extend .umlaut_icons-famfamfam-page-text;
     }
@@ -94,9 +90,7 @@
         }
         a.btn {
           display:block;
-          margin: {
-            bottom: .25em;
-          }
+          margin-bottom: .25em;
         }
       }
     }
@@ -111,6 +105,10 @@
 .umlaut-section-highlighted {
   @include umlaut-well($umlautHighlightedSectionBackgroundColor, $umlautHighlightedSectionBorderColor);
   padding: 0.5em !important;
+  // Line responses up with collapse caret
+  .response_list {
+    margin-left: 4px;
+  }
 }
 
 .section_prompt {
@@ -221,9 +219,7 @@
     @include umlaut-container-padding;
     background-color: $umlautMainBackgroundColor;
     border: none;
-    padding: {
-      top: 10px;
-    }
+    padding-top: 10px;
 
     .umlaut-section {
       margin-left: 0;
@@ -248,10 +244,8 @@
       .umlaut-holdings {
         .umlaut-holding {
           a.btn {
-            padding: {
-              left: 3px;
-              right: 3px;
-            }
+            padding-left: 3px;
+            padding-right: 3px;
           }
         }
       }
