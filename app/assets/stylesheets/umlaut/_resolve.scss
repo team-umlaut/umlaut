@@ -63,6 +63,13 @@
     border: none;
   }
 
+  &.document_delivery {
+    @include iconed-response;
+    .response_item i {
+      @extend .umlaut_icons-famfamfam-book-go;
+    }
+  }
+
   &.holding {
     .umlaut-holdings {
       padding-left: $umlautIndentLarge;
