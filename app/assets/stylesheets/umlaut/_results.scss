@@ -4,8 +4,11 @@
 }
 
 .umlaut-result {
-  margin: {
-    bottom: $baseLineHeight/2;
+  margin-bottom: $baseLineHeight/2;
+  dl {
+    dt, dd {
+      padding-top: $baseLineHeight/2;
+    }
   }
 
   padding: {
