@@ -44,7 +44,14 @@ class PrimoSourceTest < ActiveSupport::TestCase
       @primo_source.handle(request)
       request.dispatched_services.reload
       request.service_responses.reload
-      view_data = request.get_service_type('holding').first.view_data
+      holdings = request.get_service_type('holding', {:refresh => true})
+      assert_equal(1, holdings.size)
+      holdings.each do |holding|
+        view_data = holding.view_data
+        assert((not view_data[:source_data].nil?), "Book :source_data is nil.")
+        assert((not view_data[:source_data].empty?), "Book :source_data is empty.")
+        assert_equal("NYU01", view_data[:source_data][:doc_library], "Book :source_data[:doc_library] is unexpected.")
+      end
     }
   end
 
@@ -61,6 +68,12 @@ class PrimoSourceTest < ActiveSupport::TestCase
       request.service_responses.reload
       holdings = request.get_service_type('holding', {:refresh => true})
       assert_equal(5, holdings.size)
+      holdings.each do |holding|
+        view_data = holding.view_data
+        assert((not view_data[:source_data].nil?), "Journal :source_data is nil.")
+        assert((not view_data[:source_data].empty?), "Journal :source_data is empty.")
+        assert_equal("NYU01", view_data[:source_data][:doc_library], "Journal :source_data[:doc_library] is unexpected.")
+      end
     }
   end
 end
