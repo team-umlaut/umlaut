@@ -138,7 +138,7 @@ class PrimoService < Service
     @holding_attributes = [:record_id, :original_id, :title, :author, :display_type,
       :source_id, :original_source_id, :source_record_id, :ils_api_id, :institution_code,
       :institution, :library_code, :library, :collection, :call_number, :coverage, :notes,
-      :subfields, :status_code, :status]
+      :subfields, :status_code, :status, :source_data]
     @link_attributes = [:record_id, :original_id, :url, :display, :notes, :subfields]
     # TODO: Run these decisions someone to see if they make sense.
     @referent_enhancements = {

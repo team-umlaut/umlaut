@@ -203,6 +203,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
       :origin => nil,
       :display_type => "book",
       :coverage => [],
+      :source_data => {},
       :url => "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=nyu_aleph000062856&institution=NYU&vid=#{@vid}",
       :request_url => nil,
       :match_reliability => ServiceResponse::MatchExact}
@@ -276,6 +277,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
       :origin => nil,
       :display_type => "book",
       :coverage => [],
+      :source_data => {},
       :url => "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=nyu_aleph000062856&institution=NYU&vid=#{@vid}",
       :request_url => nil,
       :match_reliability => ServiceResponse::MatchExact}
@@ -329,6 +331,7 @@ class PrimoServiceTest < ActiveSupport::TestCase
       :origin => nil,
       :display_type => "book",
       :coverage => [],
+      :source_data => {},
       :url => "#{@base_url}/primo_library/libweb/action/dlDisplay.do?docId=nyu_aleph000062856&institution=NYU&vid=#{@vid}",
       :request_url => nil,
       :match_reliability => ServiceResponse::MatchExact}
