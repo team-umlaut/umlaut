@@ -38,6 +38,11 @@
 .umlaut-section {
   margin-top: $baseLineHeight;
 
+  // Response elements
+  [class^="response_"] {
+    @include response-element-margins-large;
+  }
+
   // Special looks for particular sections
   &.fulltext {
     @include iconed-response;
@@ -123,30 +128,13 @@
   margin-bottom: 8px;
 }
 
-.response_authentication_instructions {
-  margin-top: .5em;
-}
-
-.response_coverage_statement {
-  margin-bottom: .5em;
-  margin-top: .25em;
-}
-
 .response_edition_warning {
    color: gray;
-   margin-top: 6px;
-   margin-bottom: 6px;
-}
-
-.response_notes {
-   margin-top: .5em;
 }
 
 .response_source {
   @extend .muted;
-  margin-top: .25em;
   font-size: $fontSizeSmall;
-  margin-left: $umlautIndentLarge;
 }
 
 .debug_info {
@@ -163,14 +151,11 @@
   .umlaut-section {
     margin: 0.5em 1em;
     padding: 0 0.5em;
-  }
 
-  .response_notes {
-    margin-left: $umlautIndentSmall;
-  }
-
-  .response_source {
-    margin-left: $umlautIndentSmall;
+    // Response elements
+    [class^="response_"] {
+      @include response-element-margins-large;
+    }
   }
 
   .umlaut-help-list {

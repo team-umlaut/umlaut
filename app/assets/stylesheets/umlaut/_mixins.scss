@@ -34,3 +34,22 @@
   background-color: $backgroundColor;
   border-color: $borderColor;
 }
+
+@mixin response-element-margins-large {
+  margin-top: .25em;
+  margin-bottom: .5em;
+  margin-left: $umlautIndentLarge;
+}
+
+@mixin response-element-margins-small {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: $umlautIndentSmall;
+}
+
+
+@mixin response-element-margins-none {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+}

@@ -30,13 +30,11 @@ unless holdings.empty? %>
         if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
           <div class="row-fluid umlaut-holding-match-reliability">
             <div class="span11 offset1">
-              <div class="response_edition_warning">
-                <% unless target[:edition_str].blank? %>
-                  <em class="note">Edition information</em> <%= target[:edition_str] %>
-                <% else %>
-                  <em class="note">May be alternate edition.</em>
-                <% end %>
-              </div>
+              <% unless target[:edition_str].blank? %>
+                <em class="note">Edition information</em> <%= target[:edition_str] %>
+              <% else %>
+                <em class="note">May be alternate edition.</em>
+              <% end %>
             </div>
           </div><%
         end 
