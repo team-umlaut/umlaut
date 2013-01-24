@@ -37,6 +37,15 @@ service_response3:
     ---
     :link_supports_ajax_call: true
 
+service_response9:
+  service_id: TxtHoldingExport
+  display_text: Send to phone
+  request_id: 80
+  service_type_value_name: export_citation
+  service_data: |
+    ---
+    :link_supports_ajax_call: true
+
 service_response4:
   service_id: SFX
   display_text: EBSCOhost Newspaper Source Plus

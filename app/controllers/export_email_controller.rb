@@ -1,25 +1,13 @@
 class ExportEmailController < UmlautController
   
   before_filter :load_objects
-  layout Proc.new { |controller|         
-     if (controller.request.xhr? || controller.params["X-Requested-With"] == "XmlHttpRequest")
-       nil
-     else
-       umlaut_config.layout
-     end
-  }
+  layout :search_layout_except_xhr
 
   def load_objects
     @svc_response = ServiceResponse.find(params[:id])
     @user_request = @svc_response.request if @svc_response
   end
   
-  def email    
-  end 
-  
-  def txt    
-  end
-    
   def send_email
     @email = params[:email]
     @fulltexts = @user_request.get_service_type('fulltext', { :refresh=>true })

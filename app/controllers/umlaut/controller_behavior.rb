@@ -18,6 +18,12 @@ module Umlaut::ControllerBehavior
   
   protected
   
+  # Returns the search layout name unless this is an XML HTTP Request.
+  def search_layout_except_xhr
+    @layout_name ||= (request.xhr? || params["X-Requested-With"] == "XmlHttpRequest") ?
+      nil : umlaut_config.search_layout
+  end
+
   # Returns a Collection object with currently configured services. 
   # Loads from Rails.root/config/umlaut_services.yml
   #
