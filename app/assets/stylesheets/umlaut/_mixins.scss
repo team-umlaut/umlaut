@@ -36,6 +36,7 @@
 }
 
 @mixin response-element-margins-large {
+  margin-top: $baseLineHeight/4;
   margin-left: $umlautIndentLarge;
 }
 
@@ -45,5 +46,6 @@
 
 
 @mixin response-element-margins-none {
+  margin-top: 0;
   margin-left: 0;
 }
