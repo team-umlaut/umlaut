@@ -16,5 +16,7 @@
 
 // Require all js files inside the 'umlaut' subdir next to this file.  
 //= require_tree './umlaut'
+//= require improved-modal/bootstrap-modalmanager.js
+//= require improved-modal/bootstrap-modal.js
 
 

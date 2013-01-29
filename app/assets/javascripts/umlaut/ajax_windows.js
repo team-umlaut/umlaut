@@ -11,6 +11,7 @@ jQuery(document).ready(function($) {
     $("#modal").modal("show");
   }
   var display_modal = function(event) {
+    $('body').modalmanager('loading');
     event.preventDefault();
     $.get(this.href, "", populate_modal, "html");
     return false;

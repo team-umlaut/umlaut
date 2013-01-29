@@ -8,7 +8,7 @@
         <legend>Title: <%= h(brief_citation(@user_request)) %></legend>
         <%= label_tag('number', 'Enter your mobile phone number:') %>
         <%= text_field_tag('number', params[:number], :size => 14) %>
-        <small><em>10 digit US cell phone number</em></small>
+        <small><em>10 digit US cell phone number</em></small><br />
         <%= label_tag('provider', 'Select your provider:') %>
         <% providers = @svc_response.service.instance_variable_get("@providers") %>
         <%= select_tag "provider", options_for_select(providers.sort, params[:provider]) %>
