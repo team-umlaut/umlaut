@@ -480,7 +480,7 @@ class PrimoService < Service
 
   def record_id(request)
     # Let SFX handle primoArticles (is that even a thing anymore?)
-    return if @identifier.match(/primoArticle/)
+    return if @identifier.match(/primoArticle/) if primo_identifier?
     record_id = @identifier.match(/primo-(.+)/)[1] if primo_identifier?
     # DEPRECATED
     # Extend OpenURL standard to take Primo Doc Id
