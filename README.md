@@ -2,6 +2,7 @@
 [![Build Status](https://secure.travis-ci.org/team-umlaut/umlaut.png)](http://travis-ci.org/team-umlaut/umlaut)
 [![Dependency Status](https://gemnasium.com/team-umlaut/umlaut.png)](https://gemnasium.com/team-umlaut/umlaut)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/team-umlaut/umlaut)
+<!--[![Security Status](http://rails-brakeman.com/team-umlaut/umlaut.png)](http://rails-brakeman.com/team-umlaut/umlaut)-->
 
 Umlaut is software for libraries (the kind with books). 
 
@@ -11,7 +12,17 @@ knowledge base. But it's actually quite a bit more than that.
 It could also be described as: a just-in-time aggregator of  "last mile" 
 specific-citation services, taking input as OpenURL, and providing both an 
 HTML UI and an api suite for embedding Umlaut services in other products. 
-[What do you mean by this?](https://github.com/team-umlaut/umlaut/wiki/What-is-Umlaut-anyway)
+
+Umlaut's role is to provide the user with services that apply to the item of interest. 
+And services provided by various different products: including as a major target, your
+[OpenURL Knowledge Base](http://en.wikipedia.org/wiki/OpenURL_knowledge_base), but also
+including other products. Services provided by the hosting institution, licensed by the 
+hosting institution, as well as free services the hosting institution wishes to 
+advertise/recommend to it's users.
+
+Umlaut strives to supply links that take the user in as few clicks as possible to the service listed, without ever listing 'blind links' that you first have to click on to find out whether they are available. Umlaut pre-checks things when neccesary to only list services, with any needed contextual info, such that the user knows what they get when they click on it. Save the time of the user.
+
+[What do you mean by all this?](https://github.com/team-umlaut/umlaut/wiki/What-is-Umlaut-anyway)
 
 Umlaut is distributed as a ruby Rails engine gem. It's a very heavyweight engine,
 the point of distro'ing as a gem is to make it easy to keep local 
