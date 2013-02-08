@@ -20,7 +20,7 @@ module Umlaut::ErrorHandling
     log_error_with_context(exception)
     
     @page_title = "Error!"
-    render "error", :status => 500
+    render "error", :status => 500 unless performed?
   end
   
   # Just returns a generic 404 page. 
