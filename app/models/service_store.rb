@@ -30,7 +30,7 @@ class ServiceStore
         if group["services"]
           # Add the group name to each service
           # in the group
-          group["services"].each do |service|
+          group["services"].each_pair do |service_id, service|
             service["group"] = group_name
           end
           # Merge the group's services into the service definitions.
