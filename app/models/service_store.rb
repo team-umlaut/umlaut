@@ -27,7 +27,15 @@ class ServiceStore
     unless defined? @@service_definitions
       @@service_definitions = {}
       config.each_pair do |group_name, group|
-        @@service_definitions.merge!(  group["services"]  ) if group["services"]
+        if group["services"]
+          # Add the group name to each service
+          # in the group
+          group["services"].each do |service|
+            service["group"] = group_name
+          end
+          # Merge the group's services into the service definitions.
+          @@service_definitions.merge!(  group["services"]  )
+        end
       end
       # set service_id key in each based on hash key
       @@service_definitions.each_pair do |key, hash|
