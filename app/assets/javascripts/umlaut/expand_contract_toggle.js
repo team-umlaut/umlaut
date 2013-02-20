@@ -9,7 +9,7 @@
 */
 jQuery(document).ready(function($) {
    
-    $(".expand_contract_toggle").live("click", function() {
+    $(document).on("click", ".expand_contract_toggle", function() {
         var content = $(this).next(".expand_contract_content");
         var icon = $(this).parent().find('img.toggle_icon');
         

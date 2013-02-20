@@ -1,7 +1,7 @@
 /* search_autocomplete.js.  Add autocomplete to Umlaut journal title search. */
 jQuery(document).ready(function($) {
     
-    $("form.OpenURL").live("submit", function() {
+    $(document).on("submit", "form.OpenURL", function() {
        var form = $(this);
        if ( form.find(".rft_title").val() != $(this).val()) {
           form.find(".rft_object_id").val("");

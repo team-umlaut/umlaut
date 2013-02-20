@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
     modal: true,
     width: "400px"
   });
-  $("a.ajax_window").live("click", function(event) {
+  $(document).on("click", "a.ajax_window", function(event) {
     $(shared_modal_d).load(this.href, function() {
       var heading;
       heading = shared_modal_d.find("h1, h2, h3, h4, h5, h6").eq(0).remove();
@@ -24,6 +24,6 @@ jQuery(document).ready(function($) {
     });
     return false;
   };
-  $("form.modal_dialog_form input[type=submit]").live("click", ajax_form_catch);
-  return $("form.modal_dialog_form").live("submit", ajax_form_catch);
+  $(document).on("click", "form.modal_dialog_form input[type=submit]", ajax_form_catch);
+  return $(document).on("submit", "form.modal_dialog_form", ajax_form_catch);
 });
