@@ -20,6 +20,7 @@ group :development, :test do
     gem 'mysql2'
     gem 'therubyracer', "~> 0.10.0"
     gem 'ruby-prof'
+    gem 'debugger'
   end
 
   gem 'jquery-rails'
@@ -31,5 +32,3 @@ end
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-# To use debugger
-# gem 'ruby-debug'
