@@ -20,6 +20,9 @@ group :development, :test do
     gem 'mysql2'
     gem 'therubyracer', "~> 0.10.0"
     gem 'ruby-prof'
+  end
+
+  platforms :mri_19 do
     gem 'debugger'
   end
 
