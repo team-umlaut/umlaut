@@ -380,7 +380,7 @@ class Sfx < Service
     end
 
     
-    response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => @user_request.title_level_citation? ) 
+    response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => request.title_level_citation? ) 
               
     # Now that they've been post-processed, actually commit them. 
     response_queue.each_pair do |type, list|
