@@ -11,6 +11,10 @@ ServiceResponses have a few basic attributes stored in columns in the db: 'displ
 
 In addition, there's a Hash (automatically serialized by ActiveRecord) that's stored in service_data, for arbitrary additional data that a Service can store--whatever you want, just put it in. However, there are conventions that Views expect, see below.  You can access ALL the arbitrary key/values in a ServiceResponse, built-in in attributes or from the serialized Hash, by the proxy object returned from #data_values.
 
+You can create a ServiceResponse object with ServiceResponse.create_from_hash, 
+where the hash keys may be direct iVar columns, or serialized in the
+service_data hash, you don't have to care. 
+
 ServiceResponse is connected to a Request via the ServiceType join table. The data architecture allows a ServiceResponse to be tied to multiple requests, perhaps to support some kind of cacheing re-use in the future. But at present, the code doesn't do this, a ServiceResponse will really only be related to one request. However, a ServiceResponse can be related to a single Request more than once--once per each type of service response. ServiceType is really a three way join, representing a ServiceResponse, attached to a particular Request, with a particular ServiceTypeValue.  
 
 
@@ -42,6 +46,12 @@ These are applicable only when the incoming OpenURL is an article-level citation
 
   [:coverage_checked]  boolean, default true.  False for links from, eg, the catalog, where we weren't able to pre-check if the particular citation is included at this link.
   [:can_link_to_article] boolean, default true. False if the links is _known_ not to deliver user to actual article requested, but just to a title-level page. Even though SFX links sometimes incorrectly do this, they are still not set to false here.  
+  
+== Coverage dates
+Generally only for fulltext. Right now only supplied by SFX. 
+
+  [:coverage_begin_date]  Ruby Date object representing start of coverage
+  [:coverage_end_date]  Ruby Date object representing end of coverage
  
 == highlighted_link (see also)
  [:source]   (optional, otherwise service's display_name is used)
@@ -97,6 +107,15 @@ class ServiceResponse < ActiveRecord::Base
   def initialize(params = nil)
     super(params)
     self.service_data = {} unless self.service_data
+  end
+  
+  # Create from a hash of key/values, where some keys
+  # may be direct iVars, some may end up serialized in service_data, 
+  # you don't have to care, it will do the right thing. 
+  def self.create_from_hash(hash)
+    r = ServiceResponse.new
+    r.take_key_values(hash)
+    return hash
   end
 
   # Instantiates and returns a new Service associated with this response.
