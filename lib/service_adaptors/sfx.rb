@@ -380,7 +380,7 @@ class Sfx < Service
     end
 
     
-    response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"]) 
+    response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => @user_request.title_level_citation? ) 
               
     # Now that they've been post-processed, actually commit them. 
     response_queue.each_pair do |type, list|
@@ -455,7 +455,7 @@ class Sfx < Service
   # Does not mutate list passed in, don't try to change it to mutate,
   # makes it hard to deal with list changing from underneath you in logic. 
   def roll_up_responses(list, options = {})
-    options = options.reverse_merge(:coverage_sensitive => false)
+    options = options.reverse_merge(:coverage_sensitive => true)
     
     prefixes = @roll_up_prefixes
     
