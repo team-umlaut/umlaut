@@ -260,7 +260,7 @@ module ResolveHelper
     start   = response[:coverage_begin_date].try(:year) || "first"
     finish  = response[:coverage_end_date].try(:year) || "latest"
     
-    content_tag("b", :class=>"coverage_summary") do
+    content_tag("span", :class=>"coverage_summary") do
       "#{start} – #{finish}:"
     end
   end

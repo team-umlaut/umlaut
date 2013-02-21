@@ -442,6 +442,13 @@ img.toggle_icon {
   color: gray;
 }
 
+a:not(:hover) .coverage_summary {
+  /* even though it's part of a hyperlink, we make it black for distinction */
+  color: black; 
+}
+
+
+
 .edition_warning {
    color: gray;
    margin-top: 6px;

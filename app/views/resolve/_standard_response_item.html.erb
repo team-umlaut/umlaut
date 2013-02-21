@@ -39,9 +39,11 @@
   <% else 
     # Ordinary href link. 
   %>      
-    
-    <%= coverage_summary(view_data) %>
-    <%= link_to view_data[:display_text], {:controller=>'link_router', :id=>service_response.id}, 'target'=>"_blank", 'id' => "svctype_link_#{service_response.id}" %>
+        
+    <%= link_to( {:controller=>'link_router', :id=>service_response.id}, 'target'=>"_blank", 'id' => "svctype_link_#{service_response.id}" ) do %>
+       <%= coverage_summary(view_data) %>
+       <%= view_data[:display_text] %> 
+    <% end %>
   <% end %>
 
 <% if show_source %>

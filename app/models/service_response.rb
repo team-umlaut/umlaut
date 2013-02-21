@@ -90,7 +90,7 @@ Generally only for fulltext. Right now only supplied by SFX.
 
 =end
 class ServiceResponse < ActiveRecord::Base  
-  @@built_in_fields = [:display_text, :url, :notes, :response_key, :value_string, :value_alt_string, :value_text]
+  @@built_in_fields = [:display_text, :url, :notes, :response_key, :value_string, :value_alt_string, :value_text, :id]
   belongs_to :request
   serialize :service_data  
   # This value is not stored in db, but is set temporarily so
