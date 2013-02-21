@@ -2,7 +2,6 @@ require 'test_helper'
 
 require 'nokogiri'
 
-require 'minitest/spec'
 
 # Most of the SFX plugin isn't yet tested, but you have to start somewhere. 
 #
