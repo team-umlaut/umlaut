@@ -255,7 +255,8 @@ module UmlautConfigurable
       end
       
       add_resolve_sections! do
-        div_id "fulltext"        
+        div_id "fulltext"    
+        section_title "Online Access"
         html_area :main
         partial :fulltext
         show_partial_only true
