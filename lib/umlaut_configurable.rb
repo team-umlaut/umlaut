@@ -255,8 +255,7 @@ module UmlautConfigurable
       end
       
       add_resolve_sections! do
-        div_id "fulltext"
-        section_title "#{ServiceTypeValue[:fulltext].display_name} via:"
+        div_id "fulltext"        
         html_area :main
         partial :fulltext
         show_partial_only true
@@ -271,8 +270,7 @@ module UmlautConfigurable
       end
       
       add_resolve_sections! do
-        div_id "audio"
-        section_title "#{ServiceTypeValue[:audio].display_name} via"
+        div_id "audio"        
         html_area :main
         visibility :responses_exist
       end
