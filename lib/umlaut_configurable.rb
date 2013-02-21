@@ -148,6 +148,12 @@ module UmlautConfigurable
   
       end
       
+      resolve_display do
+        # Where available, prefix links with year coverage summary
+        # using ResolveHelper#coverage_summery helper. 
+        show_coverage_summary true
+      end
+      
       # Configuration for the 'search' functions -- A-Z lookup
       # and citation entry. 
       search do

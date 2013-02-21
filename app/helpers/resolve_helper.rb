@@ -1,3 +1,5 @@
+#encoding: UTF-8
+
 module ResolveHelper
   # some useful methods started out as helper methods, but now are in the
   # Request model. We delegate them for convenience and backwards compat.
@@ -240,6 +242,26 @@ module ResolveHelper
   def html_section_by_div_id(div_id)
     umlaut_config.lookup!("resolve_sections", []).find do |defn|
       defn[:div_id] == div_id
+    end
+  end
+  
+  ##
+  # Outputs "yyyy - yyyy" coverage summary, with html tags, IF coverage
+  # dates are available, it is a title-level request, and we're configured
+  # to show with config resolve_display.show_coverage_summary
+  def coverage_summary(response)
+    unless (@user_request.title_level_citation? &&
+            umlaut_config.lookup!("resolve_display.show_coverage_summary", false) &&
+            (response[:coverage_begin_date] || response[:coverage_end_date])
+            )       
+      return nil
+    end
+    
+    start   = response[:coverage_begin_date].try(:year) || "first"
+    finish  = response[:coverage_end_date].try(:year) || "latest"
+    
+    content_tag("b", :class=>"coverage_summary") do
+      "#{start} – #{finish}:"
     end
   end
  

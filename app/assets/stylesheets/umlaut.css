@@ -55,7 +55,7 @@ h2 {
 h3 {
 	font-size: 1em;
 	font-weight:bold;
-	margin-bottom:0.7em;
+	margin-bottom:0.8em;
 }
 h4 {
 	font-size: 1em;
@@ -404,6 +404,8 @@ img.toggle_icon {
   margin-top: .25em;
 }
 
+
+
 .response_notes {
    margin-top: .5em;
 }
@@ -431,12 +433,13 @@ img.toggle_icon {
 .section_prompt {
   font-style: italic;
   margin-left: 22px;
-  margin-bottom: 8px;
+  margin-bottom: 0.8em;
 }
 
 .response_coverage_statement {
   margin-bottom: .5em;
-  margin-top: .25em;
+  margin-top: .5em;
+  color: gray;
 }
 
 .edition_warning {
