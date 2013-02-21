@@ -158,7 +158,6 @@ module ResolveHelper
   #     <li>Item Number: <%= index %>: <%= item.title %></li>
   # <% end %>
   def list_with_limit(id, list, options = {}, &block)
-
     # backwards compatible to when third argument was just a number
     # for limit. 
     options = {:limit => options} unless options.kind_of?(Hash)  
@@ -166,27 +165,34 @@ module ResolveHelper
 
     return "" if list.empty?
             
-
-    content = "".html_safe
-    content <<
-    content_tag(:ul, :class => options[:ul_class]) do        
-    list.slice(0, options[:limit]).enum_for(:each_with_index).collect do |item, index|      
-         yield(item, index)         
-      end.join(" \n    ").html_safe
-    end    
+    visible_list  = (list.length > options[:limit]) ? list.slice(0, options[:limit]-1) : list         
+    hidden_list   = (list.length > options[:limit]) ? list.slice((options[:limit]-1)..list.length-1) : []
     
-    if (list.length > options[:limit] )      
-      content << 
-      expand_contract_section("#{list.length - options[:limit] } more", id) do
-        content_tag(:ul, :class=>options[:ul_class]) do        
-          list.slice(options[:limit]..list.length-1).enum_for(:each_with_index).each do |item, index|   
-            yield(item, index + options[:limit])
-          end.join(" \n    ").html_safe              
-        end          
-      end
+    parts =[]
+    
+    parts <<
+      content_tag(:ul, :class => options[:ul_class]) do   
+        safe_join(
+          visible_list.enum_for(:each_with_index).collect do |item, index|      
+             yield(item, index)         
+          end, " \n    "
+        )
+      end    
+    
+    if ( hidden_list.present? )      
+      parts << 
+        expand_contract_section("#{hidden_list.length} more", id) do
+          content_tag(:ul, :class=>options[:ul_class]) do   
+            safe_join(
+              hidden_list.enum_for(:each_with_index).collect do |item, index|   
+                yield(item, index + options[:limit])
+              end, " \n    "
+            )
+          end          
+        end
     end
     
-    return content
+    return safe_join(parts, "\n")
   end
 
 

@@ -85,3 +85,7 @@ if ! defined? VCR
     end
   end
 end
+
+def assert_length(size, list)
+  assert_equal size, list.length, "Expected size of #{size} for #{list}"
+end
