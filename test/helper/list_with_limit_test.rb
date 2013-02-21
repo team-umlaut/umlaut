@@ -59,7 +59,7 @@ class ListWithLimitTest < ActionView::TestCase
         
     assert_not_nil hidden_list
     assert_length 2, hidden_list.css("li")
-    assert_include "Show 2 more", dom.at_css(".expand_contract_action_label").text
+    assert dom.at_css(".expand_contract_action_label").text.include?("Show 2 more")
   end
   
   def test_list_many_more_than_limit    
