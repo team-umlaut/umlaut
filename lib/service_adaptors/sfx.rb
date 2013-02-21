@@ -379,8 +379,9 @@ class Sfx < Service
       end
     end
 
-    
-    response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => request.title_level_citation? ) 
+    if response_queue["fulltext"].present?
+      response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => request.title_level_citation? )
+    end
               
     # Now that they've been post-processed, actually commit them. 
     response_queue.each_pair do |type, list|
