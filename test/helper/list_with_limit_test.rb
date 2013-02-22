@@ -14,7 +14,7 @@ class ListWithLimitTest < ActionView::TestCase
     dom = Nokogiri::HTML::fragment(str)
     
     first = dom.at_css("ul")
-    second = dom.at_css("div.expand_contract_content ul")
+    second = dom.at_css("div.collapse ul")
     
     return [first, second, dom]
   end
@@ -55,12 +55,12 @@ class ListWithLimitTest < ActionView::TestCase
     assert_not_nil visible_list    
     assert_length 4, visible_list.css("li") 
     
-    assert_present dom.at_css("ul + div.expand_contract_section a.expand_contract_toggle")
+    assert_present dom.at_css("ul + div.collapsible a.collapse-toggle")
         
     assert_not_nil hidden_list
     assert_length 2, hidden_list.css("li")
 
-    assert dom.at_css(".expand_contract_toggle").text.include?("Show 2 more")
+    assert dom.at_css(".collapsible").text.include?("Show 2 more")
   end
   
   def test_list_many_more_than_limit    
@@ -71,7 +71,7 @@ class ListWithLimitTest < ActionView::TestCase
     assert_not_nil visible_list    
     assert_length 4, visible_list.css("li") 
     
-    assert_present dom.at_css("ul + div.expand_contract_section a.expand_contract_toggle")
+    assert_present dom.at_css("ul + div.collapsible a.collapse-toggle")
     
     assert_not_nil hidden_list
     assert_length 6, hidden_list.css("li") 
