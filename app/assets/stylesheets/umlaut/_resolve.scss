@@ -195,6 +195,11 @@
   @include umlaut-well($umlautResolveErrorBackgroundColor, $umlautResolveErrorBorderColor);
 }
 
+a:not(:hover) .coverage_summary {
+  /* even though it's part of a hyperlink, we make it black for distinction */
+  color: black; 
+}
+
 @media (max-width: 767px) {
   #cover_image {
     display: none;
