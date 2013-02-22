@@ -8,12 +8,12 @@
    pipline fingerprinted. sorry, best way to make it work!
 */
 jQuery(document).ready(function($) {
-  $(".collapse-toggle").live("click", function(event) {
+  $(document).on("click", ".collapse-toggle", function(event) {
     event.preventDefault();
     $(this).collapse('toggle');
     return false;
   });
-  $(".collapse").live("shown", function(event) {
+  $(document).on("shown", ".collapse", function(event) {
     // Hack cuz collapse don't work right
     if($(this).hasClass('in')) {
       // Update the icon
@@ -22,7 +22,7 @@ jQuery(document).ready(function($) {
       $(this).parent().find(".expand_contract_action_label").text("Hide ");
     }
   });
-  $(".collapse").live("hidden", function(event) {
+  $(document).on("hidden", ".collapse", function(event) {
     // Hack cuz collapse don't work right
     if(!$(this).hasClass('in')) {
       // Update the icon

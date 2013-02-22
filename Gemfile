@@ -22,6 +22,10 @@ group :development, :test do
     gem 'ruby-prof'
   end
 
+  platforms :mri_19 do
+    gem 'debugger'
+  end
+
   gem 'jquery-rails'
   gem "activerecord-import"
 end
@@ -31,5 +35,3 @@ end
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-# To use debugger
-# gem 'ruby-debug'

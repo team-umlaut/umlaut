@@ -22,7 +22,7 @@ jQuery(document).ready(function($) {
     $.post(form.attr("action"), form.serialize(), populate_modal, "html");
     return false;
   };
-  $("a.ajax_window").live("click", display_modal);
-  $("#modal .modal-footer input[type=submit]").live("click", ajax_form_catch);
-  $("#modal form").live("submit", ajax_form_catch);
+  $(document).on("click", "a.ajax_window", display_modal);
+  $(document).on("click", "#modal .modal-footer input[type=submit]", ajax_form_catch);
+  $(document).on("submit", "#modal form", ajax_form_catch);
 });

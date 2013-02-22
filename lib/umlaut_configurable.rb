@@ -148,6 +148,12 @@ module UmlautConfigurable
   
       end
       
+      resolve_display do
+        # Where available, prefix links with year coverage summary
+        # using ResolveHelper#coverage_summery helper. 
+        show_coverage_summary true
+      end
+      
       # Configuration for the 'search' functions -- A-Z lookup
       # and citation entry. 
       search do
@@ -261,8 +267,8 @@ module UmlautConfigurable
       end
       
       add_resolve_sections! do
-        div_id "fulltext"
-        section_title "#{ServiceTypeValue[:fulltext].display_name} via:"
+        div_id "fulltext"    
+        section_title "Online Access"
         html_area :main
         partial :fulltext
         show_partial_only true
@@ -277,8 +283,7 @@ module UmlautConfigurable
       end
       
       add_resolve_sections! do
-        div_id "audio"
-        section_title "#{ServiceTypeValue[:audio].display_name} via"
+        div_id "audio"        
         html_area :main
         visibility :responses_exist
       end

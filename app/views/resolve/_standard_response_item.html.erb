@@ -24,8 +24,11 @@
           "svc_id_#{service_response.id}") { content_tag(:div, content, :class => "umlaut-content-indent") } %>
   <% # Ordinary href link
   else %>      
-    <%= link_to(view_data[:display_text], {:controller=>'link_router', :id=>service_response.id}, 
-          {:id => "svctype_link_#{service_response.id}", :target=>"_blank"}) %><% 
+    <%= link_to({:controller=>'link_router', :id=>service_response.id}, 
+          {:id => "svctype_link_#{service_response.id}", :target=>"_blank"}) do %>
+      <%= coverage_summary(view_data) %>
+      <%= view_data[:display_text] %><%
+    end
   end %>
   <%= content_tag(:div, "from #{view_data[:source] || service_response.service.display_name}", :class => "response_source") if show_source %>
   <%= content_tag(:div, view_data[:coverage], :class => "response_coverage_statement") unless view_data[:coverage].blank? %>

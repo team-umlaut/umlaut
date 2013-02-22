@@ -36,11 +36,18 @@
 #     relationships, set to empty array [] to eliminate defaults. 
 # sfx_timeout: in seconds, for both open/read timeout value for SFX connection.
 #          Defaults to 8.
+# roll_up_prefixes: ARRAY of STRINGs, prefixes like "EBSCOHOST_". If multiple
+#      targets sharing one of the specified prefixes are supplied from SFX,
+#      they will be "rolled up" and collapsed, just the first one included
+#      in response. For TITLE-LEVEL (rather than article-level) requests,
+#      the roll-up algorithm is sensitive to COVERAGES, and will only suppress
+#      targets that have coverages included in remaining non-suppressed targets.  
 class Sfx < Service
   require 'uri'
   require 'htmlentities'
   require 'cgi'
   require 'nokogiri'
+  require 'date'
 
   #require 'open_url'
 
@@ -184,6 +191,10 @@ class Sfx < Service
     # We're going to keep our @really_distant_relationship stuff here. 
     related_titles = {}
     
+    # We organize our responses in a queue, so we can process them
+    # for collapse function, before actually writing to db. 
+    response_queue ||= {}
+    
     0.upto(sfx_objs.length - 1 ) do |sfx_obj_index|
     
       sfx_obj = sfx_objs[sfx_obj_index]
@@ -218,7 +229,7 @@ class Sfx < Service
 
       
       metadata = request.referent.metadata
-      
+            
       # For each target delivered by SFX
       sfx_obj.search("./ctx_obj_targets/target").each_with_index do|target, target_index|  
         response_data = {}
@@ -319,7 +330,13 @@ class Sfx < Service
           response_data[:authentication] = CGI.unescapeHTML((target/"./authentication").inner_text)
           response_data[:source] = source
           response_data[:coverage] = coverage if coverage
-  
+          
+          
+          # machine actionable coverage elements, used for collapsing    
+          ( response_data[:coverage_begin_date], response_data[:coverage_end_date] ) =
+            determine_coverage_boundaries(target)
+          
+          
           # Sfx metadata we want
           response_data[:sfx_base_url] = @base_url
           response_data[:sfx_obj_index] = sfx_obj_index + 1 # sfx is 1 indexed
@@ -345,19 +362,34 @@ class Sfx < Service
           response_data[:debug_info] =" Target: #{sfx_target_name} ; SFX object ID: #{object_id}"
           
           response_data[:display_text] = (target/"./target_public_name").inner_text
-    
-          request.add_service_response(
-            response_data.merge(
-              :service => self,              
-              :service_type_value => umlaut_service
-           ))
-            
+        
+          response_data.merge!(
+            :service => self,              
+            :service_type_value => umlaut_service
+          )
+                                
+          #request.add_service_response( response_data )
+          # We add the response_data to a list for now, so we can post-process
+          # for collapse feature  before we actually add them. 
+          response_queue[umlaut_service] ||= []
+          response_queue[umlaut_service] << response_data
               
                               
         end
       end
     end
 
+    if response_queue["fulltext"].present?
+      response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => request.title_level_citation? )
+    end
+              
+    # Now that they've been post-processed, actually commit them. 
+    response_queue.each_pair do |type, list|
+      list.each do |response|      
+        request.add_service_response( response )
+      end
+    end
+    
     # Add in links to our related titles
     related_titles.each_pair do |issn, hash|
       request.add_service_response(        
@@ -377,6 +409,105 @@ class Sfx < Service
     
   end
 
+  # pass in a nokogiri element for <target>, we'll calculate 
+  # ruby Date objects for begin date and end date of coverage,
+  # passed out as a two-element array [begin, end]. 
+  #
+  # taking embargoes into account. nil if unbounded. 
+  def determine_coverage_boundaries(target)    
+    # machine actionable coverage elements, used for collapsing          
+    if (from = target.at_xpath("./coverage/from"))            
+      year   = from.at_xpath("year").try(:text).try(:to_i)     
+      # SFX KB does not have month/day, only year, set to begin of year
+      begin_date = Date.new(year, 1, 1) if year            
+    end
+    
+    if (from = target.at_xpath("./coverage/to"))            
+      year   = from.at_xpath("year").try(:text).try(:to_i)
+      # set to end of year
+      end_date = Date.new(year, 12, 31) if year            
+    end
+            
+    # If there's an embargo too, it may modify existing dates
+    if (embargo = target.at_xpath("./coverage/embargo"))
+      days = embargo.at_xpath("days").try(:text).try(:to_i)
+      days.try do |days|
+        embargo_days = Date.today - days
+        if embargo.at_xpath("availability").try(:text) == "available"
+          # only most recent X days, at earliest start                
+          begin_date = 
+            [begin_date || embargo_days, embargo_days].max                
+        else # not_available
+          # stops at most recent X days, at latest end
+          end_date = 
+            [end_date || embargo_days, embargo_days].min
+        end
+      end
+    end
+    return [begin_date, end_date]
+  end
+  
+  # Pass in a list of hashes for making ServiceResponse's, we will roll up
+  # those that should be rolled up per roll_up_prefixes configuration.
+  #
+  # In :coverage_sensitive => true, will roll up sensitive to overlapping
+  # coverage to not remove any coverage. 
+  #
+  # Does not mutate list passed in, don't try to change it to mutate,
+  # makes it hard to deal with list changing from underneath you in logic. 
+  def roll_up_responses(list, options = {})
+    options = options.reverse_merge(:coverage_sensitive => true)
+    
+    prefixes = @roll_up_prefixes
+    
+    # If not configured for roll-up, just return it directly. 
+    return list unless prefixes.present?
+
+    
+    if options[:coverage_sensitive] == true
+      # roll up targets with same prefix only if coverage is a strict
+      # subset of an existing one. If two are equal, take first.       
+      list = list.reject.each_with_index do |item, index|
+        prefix = prefixes.find {|p| item[:sfx_target_name].start_with?(p)}        
+        bdate = item[:coverage_begin_date] || Date.new(1,1,1)
+        edate = item[:coverage_end_date] || Date.today
+        
+        prefix && (
+          # earlier is equal or superset
+          list.slice(0, index).find do |candidate|
+            # nil considered very early or very late, unbounded
+            candidate_bdate = candidate[:coverage_begin_date] || Date.new(1,1,1)
+            candidate_edate = candidate[:coverage_end_date]   || Date.today
+            
+            candidate[:sfx_target_name].start_with?(prefix) &&
+            (candidate_bdate <= bdate) && (candidate_edate >= edate)
+          end ||
+          # later is superset, not equal
+          list.slice(index+1, list.length).find do |candidate|
+            candidate_bdate = (candidate[:coverage_begin_date] || Date.new(1,1,1))
+            candidate_edate = (candidate[:coverage_end_date]   || Date.today)
+                                                
+            candidate[:sfx_target_name].start_with?(prefix) &&
+            (candidate_bdate <= bdate) && (candidate_edate >= edate) &&
+            (! (bdate == candidate_bdate && edate == candidate_edate))
+          end
+          )
+      end            
+    else # not coverage_sensitive
+      # Just roll up to FIRST of each prefix
+      list = list.reject.each_with_index do |item, index|
+        prefix = prefixes.find {|p| item[:sfx_target_name].start_with?(p)}
+        
+        prefix && list.slice(0,index).find do |candidate|
+          candidate[:sfx_target_name].start_with?(prefix)
+        end      
+      end
+    end
+    
+    
+    return list
+  end
+  
    
   def sfx_click_passthrough
     # From config, or default to false. 

@@ -1,3 +1,5 @@
+#encoding: UTF-8
+
 module ResolveHelper
   # some useful methods started out as helper methods, but now are in the
   # Request model. We delegate them for convenience and backwards compat.
@@ -129,24 +131,28 @@ module ResolveHelper
     options = {:limit => options} unless options.kind_of?(Hash)
     options[:limit] ||= 5
     return "" if list.empty?
-    content = "".html_safe
-    content <<
-    content_tag(:ul, :class => options[:ul_class]) do
-      list.slice(0, options[:limit]).enum_for(:each_with_index).collect do |item, index|
-        yield(item, index)
-      end.join(" \n    ").html_safe
+    visible_list  = (list.length > options[:limit]) ? list.slice(0, options[:limit]-1) : list         
+    hidden_list   = (list.length > options[:limit]) ? list.slice((options[:limit]-1)..list.length-1) : []
+    parts =[]
+    parts << content_tag(:ul, :class => options[:ul_class]) do
+      safe_join(
+        visible_list.enum_for(:each_with_index).collect do |item, index|
+          yield(item, index)
+        end, " \n    "
+      )
     end
-    if (list.length > options[:limit])
-      content <<
-      expand_contract_section("#{list.length - options[:limit] } more", id) do
+    if (hidden_list.present?)
+      parts << expand_contract_section("#{hidden_list.length} more", id) do
         content_tag(:ul, :class=>options[:ul_class]) do
-          list.slice(options[:limit]..list.length-1).enum_for(:each_with_index).each do |item, index|
-            yield(item, index + options[:limit])
-          end.join(" \n    ").html_safe
+          safe_join(
+            hidden_list.enum_for(:each_with_index).collect do |item, index| 
+              yield(item, index + options[:limit])
+            end, " \n    "
+          )
         end
       end
     end
-    return content
+    return safe_join(parts, "\n")
   end
 
   ##
@@ -197,5 +203,22 @@ module ResolveHelper
   def item_icon(section_id)
     sections_with_icons = ["fulltext", "audio", "excerpts"]
     content_tag(:i, nil) if sections_with_icons.include? section_id
+  end
+  
+  ##
+  # Outputs "yyyy - yyyy" coverage summary, with html tags, IF coverage
+  # dates are available, it is a title-level request, and we're configured
+  # to show with config resolve_display.show_coverage_summary
+  def coverage_summary(response)
+    unless (@user_request.title_level_citation? &&
+            umlaut_config.lookup!("resolve_display.show_coverage_summary", false) &&
+            (response[:coverage_begin_date] || response[:coverage_end_date]))
+      return nil
+    end
+    start = response[:coverage_begin_date].try(:year) || "first"
+    finish = response[:coverage_end_date].try(:year) || "latest"
+    content_tag("span", :class=>"coverage_summary") do
+      "#{start} – #{finish}:"
+    end
   end
 end
