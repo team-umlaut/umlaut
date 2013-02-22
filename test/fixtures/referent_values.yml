@@ -1754,4 +1754,90 @@ sfx_multi_obj_request_no_fulltext_rv8:
   metadata: true
   private_data: false
 
+momo1:
+  referent: momo
+  normalized_value: momo
+  key_name: btitle
+  metadata: true
+  value: Momo
+  private_data: false
 
+momo2:
+  referent: momo
+  normalized_value: 038519093X
+  key_name: isbn
+  metadata: true
+  value: 038519093X
+  private_data: false
+
+momo3:
+  referent: momo
+  normalized_value: book
+  key_name: format
+  metadata: false
+  value: book
+  private_data: false
+
+momo4:
+  referent: momo
+  normalized_value: book
+  key_name: genre
+  metadata: true
+  value: book
+  private_data: false
+
+momo5:
+  referent: momo
+  normalized_value: doubleday
+  key_name: pub
+  metadata: true
+  value: Doubleday
+  private_data: false
+
+momo6:
+  referent: momo
+  normalized_value: michael
+  key_name: aufirst
+  metadata: true
+  value: Michael
+  private_data: false
+
+momo7:
+  referent: momo
+  normalized_value: ende
+  key_name: aulast
+  metadata: true
+  value: Ende
+  private_data: false
+
+advocate1:
+  referent: advocate
+  normalized_value: advocate
+  key_name: jtitle
+  metadata: true
+  value: Advocate
+  private_data: false
+
+advocate2:
+  referent: advocate
+  normalized_value: 1832-9373
+  key_name: issn
+  metadata: true
+  value: 1832-9373
+  private_data: false
+
+advocate3:
+  referent: advocate
+  normalized_value: journal
+  key_name: format
+  metadata: false
+  value: journal
+  private_data: false
+
+advocate4:
+  referent: advocate
+  normalized_value: 2670000000017711
+  key_name: object_id
+  metadata: true
+  value: 2670000000017711
+  private_data: false

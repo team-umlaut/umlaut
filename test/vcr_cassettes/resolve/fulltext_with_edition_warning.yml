@@ -1,0 +1,38 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://catalog.hathitrust.org/api/volumes/brief/json/isbn:038519093X
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 22 Feb 2013 17:18:28 GMT
+      Server:
+      - Apache/2.2.21 (Unix) mod_fastcgi/2.4.6
+      Content-Length:
+      - '511'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Set-Cookie:
+      - NSC_cbcfm=ffffffff8edd9ed045525d5f4f58455e445a4a423660;expires=Fri, 22-Feb-2013
+        17:28:28 GMT;path=/;httponly
+    body:
+      encoding: US-ASCII
+      string: ! '{"isbn:038519093X":{"records":{"000346062":{"recordURL":"http:\/\/catalog.hathitrust.org\/Record\/000346062","titles":["Momo
+        \/"],"isbns":["9780385190930","9780385190930"],"issns":[],"oclcs":["10779071"],"lccns":["84010157"],"publishDates":["1985"]}},"items":[{"orig":"University
+        of Michigan","fromRecord":"000346062","htid":"mdp.39015054080638","itemURL":"http:\/\/hdl.handle.net\/2027\/mdp.39015054080638","rightsCode":"ic","lastUpdate":"20120614","enumcron":false,"usRightsString":"Limited
+        (search-only)"}]}}'
+    http_version: 
+  recorded_at: Fri, 22 Feb 2013 17:18:28 GMT
+recorded_with: VCR 2.4.0

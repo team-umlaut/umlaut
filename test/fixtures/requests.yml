@@ -288,3 +288,11 @@ sfx_multi_obj_request_no_fulltext_request:
   client_ip_addr: "127.0.0.1" 
   contextobj_fingerprint: "b75283f6fb365d5901fbdc6726301377"
   
+momo:
+  id: 81
+  referent: momo
+
+advocate:
+  id: 82
+  referent: advocate
+  referrer_id: info:sid/sfxit.com:citation

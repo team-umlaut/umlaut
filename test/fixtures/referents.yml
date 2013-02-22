@@ -159,3 +159,10 @@ sfx_owner_but_fulltext_empty_referent:
 sfx_multi_obj_request_no_fulltext_referent:
   title: "Mobile Information Systems"
 
+momo:
+  title: Momo
+  isbn: 038519093X
+
+advocate:
+  title: Advocate
+  issn: 1832-9373

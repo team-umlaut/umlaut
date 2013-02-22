@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'test_helper'
 class ResolveControllerTest < ActionController::TestCase
   extend TestWithCassette
@@ -71,5 +72,34 @@ class ResolveControllerTest < ActionController::TestCase
         assert_select section, ".response_list", 1
       end
     end
+  end
+
+  test_with_cassette("fulltext with edition warning", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
+    umlaut_request = requests(:momo)
+    get(:index, {'umlaut.request_id' => umlaut_request.id})
+    assert_response :success
+    assert_select 'div#fulltext ul.response_list li.response_item' do |elements|
+      assert_equal(1, elements.size)
+      elements.each do |element|
+        assert_select element, "a", {:count => 1, :href => "", :text => "the Internet Archive: Open Source Book"}
+        assert_select element, 'div.edition_warning', {:count => 1,
+          :text => "Edition information Momo, ovvero l&#x27;arcana storia dei ladri di tempo e della bambina che restituÃ¬ agli uomini il tempo trafugato"}
+      end
+    end
+  end
+
+  test_with_cassette("no holdings", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
+    umlaut_request = requests(:advocate)
+    get(:index, {'umlaut.request_id' => umlaut_request.id, "umlaut.institution" => "NYU"})
+    assert_response :success
+    assert_select 'div#fulltext ul.response_list li.response_item' do |elements|
+      assert_equal(1, elements.size)
+      elements.each do |element|
+        assert_select element, "a", {:count => 1, :href => "", :text => "Gale Cengage Newsstand"}
+        assert_select element, 'div.response_coverage_statement', {:count => 1, :text => "Available from 2009."}
+      end
+    end
+    # Assert no holdings
+    assert_select 'div#holding div.umlaut-holdings', :count => 0
   end
 end
