@@ -1,12 +1,9 @@
 <% 
 =begin
-  jrochkind's alternative partial for displaying holdings. Displays more
-  information to deal with the more information we need to display from
-  our Horizon. In tabular format. Customized for JH's needs, but should
-  be usable by anyone. 
+  scotdalton's alternative partial for displaying holdings.
 =end
-# Display holdings
-holdings = get_service_type('holding')
+# Get and display holdings
+holdings = holding.find_all{|response| response.service_type_value_name.eql? "holding"}
 unless holdings.empty? %>  
   <div class="container-fluid umlaut-holdings"><%
     # Process each holding.
@@ -61,8 +58,8 @@ end
 # Process the case where holdings are empty
 if holdings.empty? %>
   <div class="umlaut-content-indent"><%
-    # Display holding searches
-    searches = get_service_type('holding_search')
+    # Get and display holding searches
+    searches = holding.find_all{|response| response.service_type_value_name.eql? "holding_searches"}
     searches.each do | result_st |
       response = result_st.view_data %>
       <p><%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %></p><% 
