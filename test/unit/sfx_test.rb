@@ -18,8 +18,21 @@ class SfxTest < ActiveSupport::TestCase
   # Use VCR to provide a deterministic SFX search.
   # TODO: Check more of the response
   test_with_cassette("nytimes by issn", :sfx, :match_requests_on => [:method, :uri_without_ctx_tim]) do
-    nytimes_resquest = requests(:nytimes)
-    response = @sfx_default.do_request(@sfx_default.initialize_client(nytimes_resquest))
-    # puts response.inspect
+    nytimes_request = requests(:nytimes)
+    # Clear request
+    nytimes_request.service_responses.each do |service_response|
+      service_response.destroy
+    end
+    nytimes_request.dispatched_services.reload
+    nytimes_request.service_responses.reload
+    assert_equal 0, nytimes_request.service_responses.count
+    response = @sfx_default.do_request(@sfx_default.initialize_client(nytimes_request))
+    @sfx_default.parse_response(response, nytimes_request)
+    nytimes_request.dispatched_services.reload
+    nytimes_request.service_responses.reload
+    assert_equal 16, nytimes_request.service_responses.size
+    first_service_response = nytimes_request.service_responses.first
+    assert_not_nil(first_service_response.view_data[:proxy], "Proxy is nil")
+    assert(first_service_response.view_data[:proxy], "Proxy is false")
   end
 end
