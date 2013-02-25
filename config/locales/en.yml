@@ -1,0 +1,5 @@
+en:
+  umlaut:
+    coverage_summary:
+      open_start: "first"
+      open_end: "latest"
