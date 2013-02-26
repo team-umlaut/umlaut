@@ -1,0 +1,106 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.journaltocs.ac.uk/api/journals/1533290X?output=articles&user=unregistered@nowhere.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: !binary |-
+        T0s=
+    headers:
+      !binary "RGF0ZQ==":
+      - !binary |-
+        VHVlLCAyNiBGZWIgMjAxMyAxNzozNjo1NSBHTVQ=
+      !binary "U2VydmVy":
+      - !binary |-
+        QXBhY2hlLzIuMi4xNSAoQ2VudE9TKQ==
+      !binary "WC1Qb3dlcmVkLUJ5":
+      - !binary |-
+        UEhQLzUuMy4z
+      !binary "Q29udGVudC1MZW5ndGg=":
+      - !binary |-
+        NjI2NQ==
+      !binary "Q29udGVudC1UeXBl":
+      - !binary |-
+        YXBwbGljYXRpb24veG1sOyBjaGFyc2V0PUlTTy04ODU5LTE=
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\r\n
+        \        xmlns=\"http://purl.org/rss/1.0/\"\r\n         xmlns:mn=\"http://usefulinc.com/rss/manifest/\"\r\n
+        \        xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n\n  <channel rdf:about=\"http://www.journaltocs.hw.ac.uk/api/\">\r\n
+        \   <title>JournalTOCs API</title>\r\n    <link>http://www.journaltocs.ac.uk/develop.php</link>\r\n
+        \   <description><![CDATA[This is the URL Base for the JournalTOCs API, which
+        is freely available for developers to create their own web applications with
+        Table of Contents (TOCs) published by over 16,000 scholarly journals.]]></description>\r\n
+        \   <dc:publisher>JournalTOCs API</dc:publisher>\r\n    <dc:creator>JOURNALTOCS
+        API PROJECT</dc:creator>\r\n\t\t<dc:coverage>1</dc:coverage>\r\n    <image
+        rdf:resource=\"http://www.journaltocs.hw.ac.uk/images/xtralogo.gif\" />\r\n
+        \   <items>\r\n      <rdf:Seq>\r\n        <rdf:li rdf:resource=\"http://www.journaltocs.ac.uk/api\"
+        />\r\n      </rdf:Seq>\r\n    </items>\r\n  </channel>\r\n    <item rdf:about=\"http://www.journaltocs.ac.uk/develop.php\">\r\n
+        \   <link>http://www.journaltocs.ac.uk/develop.php</link>\r\n    <title>API
+        Usage</title>\r\n    <description><![CDATA[To use this API you need to specify
+        what you want to extract from our database of TOC RSS feeds. You will provide
+        that \r\n\t\tinformation by indicating (1) the name of the \"call\" or resource-type
+        you want to search and (2) a query string \r\n\t\t<p>This is an example of
+        using the API to search for all the journals that contain any word starting
+        with <i>scient</i> in their titles:<br>\r\n    http://www.journaltocs.ac.uk/api/journals/scient*?user=macleod.roddy@gmail.com\r\n
+        \   <p>(in the example, the call is \"journals\", the query string is \"scient*\"
+        and the username is macleod.roddy@gmail.com)</p>    \r\n\t\t<p>(1) These are
+        the calls currently being supported by the API: (names need to be provided
+        in lower case)\r\n\t\t<ul>\r\n    <li> journals: to do a search in the journal
+        titles (can return journal's metadata or the articles<br>\r\n    <li>  articles:
+        to search in the metadata found in the journal TOC articles<br>\r\n    <li>
+        \ user: to extract the RSS feeds found in the mytocs folder of the user identified
+        by the specified email address<br>\r\n    <li>  institution: to search for
+        latest articles published in journals subscribed by an institution.<!--<br>\r\n
+        \   <li>  subjects: to search for journals using the DDC based subject classification
+        available at journalTOCs<br>\r\n    <li>  publishers: to fetch the journals
+        available at journalTOCs for the specified publisher name.-->\r\n    </ul>\r\n
+        \   <p>(2) You are free to use any keywords in your query string. However,
+        it is useful to notice that:\r\n\t\t<ul>\r\n    <li>  <b>IMPORTANT:</b> If
+        you are using \"journals\" you must specify your username.<br>\r\n\t\tIf you
+        don't have a username with JournalTOCs, please first sign up at <a href=\"http://www.journaltocs.ac.uk/index.php?action=register\">http://www.journaltocs.ac.uk/index.php?action=register</a>
+        before using the API call \"journals\"<br>\r\n\t\t<br>Your query string can
+        be an ISSN value, a JournalTOCs unique ID or any keyword(s)<br>\r\n\t\tIn
+        fact you can create four types of searches with the \"journals\" call:<br>\r\n\t\t1.
+        by ISSN number:<br>\r\nexample:<br>\r\nhttp://www.journaltocs.ac.uk/api/journals/1533-290X?user=macleod.roddy@gmail.com<br>\r\n2.
+        by exact journal title (phrase):<br>\r\nexample:<br>\r\nhttp://www.journaltocs.ac.uk/api/journals/\"journal
+        of medicinal chemistry\"?user=macleod.roddy@gmail.com<br>\r\n3. by keyword(s)
+        included in anywhere in the title<br>\r\nexample:<br>\r\nhttp://www.journaltocs.ac.uk/api/journals/journal+of+medicinal+chemistry?user=macleod.roddy@gmail.com<br>\r\n4.
+        By journal title that start exactly with a keyword or a phrase<br>\r\nexample:<br>\r\nhttp://www.journaltocs.ac.uk/api/journals/\"journal
+        of medicinal?user=macleod.roddy@gmail.com <br>\r\nTo get the full RSS feeds
+        for the journal, please use:<br>\r\nhttp://www.journaltocs.ac.uk/api/journals/0002-7294?output=articles&user=macleod.roddy@gmail.com<br>\r\n
+        \   <li>  If you are using \"articles\" your query string can be any keyword(s)<br>\r\n\t\t<li>
+        \ By default, the Boolean operator is \"AND\". Thus, for example<br> \r\n
+        \     http://www.journaltocs.ac.uk/api/articles/british geological survey<br>\r\n
+        \     will only return items that contain the three keywords (british, geological
+        and survey).<br>\r\n    <li>  You can change the default Boolean operator
+        by inserting ORs in your search query. For example:<br>\r\n      http://www.journaltocs.ac.uk/api/articles/british
+        or geological or survey<br>\r\n      will return all the records that contain
+        at least one of the words British, geological or survey<br>\r\n\t\t<li> To
+        search phrases, please enclose your query string using double quotations.
+        For example<br>\r\n\t\t  http://www.journaltocs.ac.uk/api/articles/\"University%20of%20Warwick\"\r\n\r\n<li>
+        \ To get the journal TOCs of all journals that you have saved in your MyTOCs
+        folder, enter your email address as the \"resource-type\" or call. \r\nYou
+        do not need to specify a query string in this case. For example:<br>\r\n\t\t
+        \ http://www.journaltocs.ac.uk/api/r.a.macleod@hw.ac.uk\r\n\r\n<li>  To search
+        for latest articles published in journals subscribed by your institution,
+        enter your institution identification as the \"resource-type\" or call. \r\nYou
+        \ need to specify a query string in this case. For example:<br>\r\n\t\t  http://www.journaltocs.ac.uk/api/HeriotWatt/corrosion<br>\r\n\t\t\treturns
+        the journals subscribed by the Heriot Watt University that contain the query
+        string \"corrosion\" in their RSS feed items.<br>\r\n\t\t\t(*) Currently,
+        this call works only for the Heriot Watt University\r\n    </ul>\t\t\r\n\t\t\r\n\t\t<p>Each
+        resource-type is associated with an specific API call.</p>\r\n    <p>Currently
+        the API return results in RSS 1.0 format only.</p>\r\n    <p>Go to http://www.journaltocs.ac.uk/index.php?action=api
+        for further information.</p>\r\n\t\t<p>Technical Documentation: <a href=\"http://www.journaltocs.ac.uk/api_help.php\"><u><b>http://www.journaltocs.ac.uk/api_help.php</b></u></a></p>]]></description>\r\n
+        \   </item>\r\n\t\r\n  <rdf:Description rdf:ID=\"manifest\">\r\n    <mn:channels>\r\n
+        \     <rdf:Seq>\r\n        <rdf:li rdf:resource=\"http://www.journaltocs.hw.ac.uk/api/\"
+        />\r\n      </rdf:Seq>\r\n    </mn:channels>\r\n  </rdf:Description>\r\n\r\n</rdf:RDF>"
+    http_version: 
+  recorded_at: Tue, 26 Feb 2013 17:36:55 GMT
+recorded_with: VCR 2.4.0

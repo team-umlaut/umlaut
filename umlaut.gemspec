@@ -35,6 +35,10 @@ Gem::Specification.new do |s|
   s.add_dependency "confstruct", "~> 0.2" # used for our configuration object
   s.add_dependency "exlibris-primo", "~> 0.1.0" # for Primo Service
   s.add_dependency "ensure_valid_encoding"      # used for correcting bad char enc bytes in input
+
+  s.add_dependency "httpclient", "~> 2.3.3" # a good ruby http client, used only in some places but may use more in future. 
+
+  s.add_dependency "bento_search", ">= 1.0.2", "< 2.0.0" # used only by JournalTocs stuff right now, using model/view for interpreting/dispalying/transforming items from JournalTocs
     
   s.add_development_dependency "single_test", "~> 0.5.1"
   s.add_development_dependency "uglifier"

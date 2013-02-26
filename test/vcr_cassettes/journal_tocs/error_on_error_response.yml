@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.journaltocs.ac.uk/bad_url/journals/1533290X?output=articles&user=macleod.roddy@gmail.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 404
+      message: !binary |-
+        Tm90IEZvdW5k
+    headers:
+      !binary "RGF0ZQ==":
+      - !binary |-
+        VHVlLCAyNiBGZWIgMjAxMyAxNzozMzozNiBHTVQ=
+      !binary "U2VydmVy":
+      - !binary |-
+        QXBhY2hlLzIuMi4xNSAoQ2VudE9TKQ==
+      !binary "Q29udGVudC1MZW5ndGg=":
+      - !binary |-
+        MzEz
+      !binary "Q29udGVudC1UeXBl":
+      - !binary |-
+        dGV4dC9odG1sOyBjaGFyc2V0PWlzby04ODU5LTE=
+    body:
+      encoding: US-ASCII
+      string: ! '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>404 Not Found</title>
+
+        </head><body>
+
+        <h1>Not Found</h1>
+
+        <p>The requested URL /bad_url/journals/1533290X was not found on this server.</p>
+
+        <hr>
+
+        <address>Apache/2.2.15 (CentOS) Server at www.journaltocs.hw.ac.uk Port 80</address>
+
+        </body></html>
+
+'
+    http_version: 
+  recorded_at: Tue, 26 Feb 2013 17:33:36 GMT
+recorded_with: VCR 2.4.0
