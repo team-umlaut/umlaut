@@ -47,6 +47,7 @@ class JournalTocsFetcherTest < ActiveSupport::TestCase
     
     assert_present items
     assert_kind_of Array, items
+    assert_kind_of BentoSearch::Results, items
     items.each do |item|
       assert_kind_of BentoSearch::ResultItem, item
     end

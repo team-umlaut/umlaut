@@ -66,55 +66,55 @@ class JournalTocsFetcher
     # returns an array of BentoSearch::ResultItem objects, representing
     # items. 
     def items      
-
-      
-      xml.xpath("./rdf:RDF/rss:item", xml_ns).collect do |node|        
-        item = BentoSearch::ResultItem.new
-        
-        item.issn   = self.issn # one we searched with, we know that!
-                
-        item.title  = xml_text(node, "rss:title")
-        item.link   = xml_text(node, "rss:link")
-                        
-        item.publisher      = xml_text(node, "prism:publisher") || xml_text(node, "dc:publisher") 
-        item.source_title   = xml_text(node, "prism:PublicationName")
-        item.volume         = xml_text(node, "prism:volume")
-        item.issue          = xml_text(node, "prism:number")
-        item.start_page     = xml_text(node, "prism:startingPage")
-        item.end_page       = xml_text(node, "prism:endingPage")
-        
-        # Look for something that looks like a DOI in dc:identifier        
-        node.xpath("dc:identifier").each do |id_node| 
-          if id_node.text =~ /\ADOI (.*)\Z/
-            item.doi = $1
-            break
-          end
-        end
-        
-        # authors?
-        node.xpath("dc:creator", xml_ns).each do |creator_node|
-          name = creator_node.text
-          name.strip!
+      BentoSearch::Results.new.concat(      
+        xml.xpath("./rdf:RDF/rss:item", xml_ns).collect do |node|        
+          item = BentoSearch::ResultItem.new
           
-          item.authors << BentoSearch::Author.new(:display => name)
+          item.issn   = self.issn # one we searched with, we know that!
+                  
+          item.title  = xml_text(node, "rss:title")
+          item.link   = xml_text(node, "rss:link")
+                          
+          item.publisher      = xml_text(node, "prism:publisher") || xml_text(node, "dc:publisher") 
+          item.source_title   = xml_text(node, "prism:PublicationName")
+          item.volume         = xml_text(node, "prism:volume")
+          item.issue          = xml_text(node, "prism:number")
+          item.start_page     = xml_text(node, "prism:startingPage")
+          item.end_page       = xml_text(node, "prism:endingPage")
+          
+          # Look for something that looks like a DOI in dc:identifier        
+          node.xpath("dc:identifier").each do |id_node| 
+            if id_node.text =~ /\ADOI (.*)\Z/
+              item.doi = $1
+              break
+            end
+          end
+          
+          # authors?
+          node.xpath("dc:creator", xml_ns).each do |creator_node|
+            name = creator_node.text
+            name.strip!
+            
+            item.authors << BentoSearch::Author.new(:display => name)
+          end
+          
+          # Date is weird and various formatted, we do our best to
+          # look for yyyy-mm-dd at the beginning of either prism:coverDate or
+          # dc:date or prism:publicationDate 
+          date_node = xml_text(node, "prism:coverDate") || xml_text(node, "dc:date") || xml_text(node, "prism:publicationDate")
+          if date_node && date_node =~ /\A(\d\d\d\d-\d\d-\d\d)/ 
+            item.publication_date = Date.strptime( $1, "%Y-%m-%d")
+          end
+          
+          # abstract, we need to strip possible HTML tags (sometimes they're
+          # there, sometimes not). 
+          item.abstract   = xml_text(node, "rss:description").try do |text|
+            strip_tags(text)
+          end
+          
+          item
         end
-        
-        # Date is weird and various formatted, we do our best to
-        # look for yyyy-mm-dd at the beginning of either prism:coverDate or
-        # dc:date or prism:publicationDate 
-        date_node = xml_text(node, "prism:coverDate") || xml_text(node, "dc:date") || xml_text(node, "prism:publicationDate")
-        if date_node && date_node =~ /\A(\d\d\d\d-\d\d-\d\d)/ 
-          item.publication_date = Date.strptime( $1, "%Y-%m-%d")
-        end
-        
-        # abstract, we need to strip possible HTML tags (sometimes they're
-        # there, sometimes not). 
-        item.abstract   = xml_text(node, "rss:description").try do |text|
-          strip_tags(text)
-        end
-        
-        item
-      end
+      )
     end
     
     # just a convenience method
