@@ -4,6 +4,8 @@ require 'httpclient/include_client'
 
 require 'bento_search'
 
+require 'htmlentities'
+
 # Initialize with an ISSN, and a registered email address (used as api key)
 #
 #    JournalTocsFetcher.new("12345678", :registered_email => "nobody@example.com")
@@ -96,6 +98,11 @@ class JournalTocsFetcher
           node.xpath("dc:creator", xml_ns).each do |creator_node|
             name = creator_node.text
             name.strip!
+            
+            # author names in RSS seem to often have HTML entities,
+            # un-encode them to literals. 
+            name = HTMLEntities.new.decode(name)
+            
             
             item.authors << BentoSearch::Author.new(:display => name)
           end
