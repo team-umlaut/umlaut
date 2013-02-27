@@ -22,7 +22,11 @@ class JournalTocsController < UmlautController
     # direct to use our custom decorator
     @results.each {|r| r.decorator = "JournalTocsController::ArticleDecorator" }
     
-
+    # No title given? Let's try to sniff one from the results. 
+    if @title.blank?
+      @title = @results.first.try(:journal_title)
+    end
+    
     
     respond_to do |format|
       format.html # journal_tocs/show.html.erb
