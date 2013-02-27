@@ -70,6 +70,8 @@ class JournalTocsFetcher
         xml.xpath("./rdf:RDF/rss:item", xml_ns).collect do |node|        
           item = BentoSearch::ResultItem.new
           
+          item.format = "Article"
+          
           item.issn   = self.issn # one we searched with, we know that!
                   
           item.title  = xml_text(node, "rss:title")

@@ -83,7 +83,7 @@ module Umlaut
           # TODO tighten this up to only match what oughta be matched.           
           # Note: This route will make all actions in this controller accessible via GET requests.
           
-          match 'resolve(/:action(/:id(.:format)))' => "resolve"
+          match 'resolve(/:action(/:id(.:format)))' => "resolve", :as => :resolve
         end
       end
       
@@ -158,7 +158,7 @@ module Umlaut
       
       def journal_tocs
         add_routes do |options|
-          match "current_articles(/:issn)" => "journal_tocs#show"
+          get "current_articles(/:issn)" => "journal_tocs#show"
         end
       end
       
