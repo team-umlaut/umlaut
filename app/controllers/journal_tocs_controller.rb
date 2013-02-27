@@ -69,6 +69,17 @@ class JournalTocsController < UmlautController
       nil
     end
     
+    # force display of complete date if present, even for journals. 
+    def display_date
+      if self.publication_date       
+        I18n.localize(self.publication_date, :format => "%d %b %Y")       
+      elsif self.year
+        self.year.to_s
+      else
+        nil
+      end
+    end
+    
   end
   
   

@@ -919,8 +919,12 @@ body.banner {
  padding: 0px 18px 8px 22px;
 }
 
-.bento_item_row .author {
+.bento_item_row.first_about {
   color: gray;
+}
+
+.bento_item_row .date {
+  white-space: nowrap;
 }
 
  
