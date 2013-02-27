@@ -90,6 +90,13 @@ class JournalTocsFetcher
           node.xpath("dc:identifier").each do |id_node| 
             if id_node.text =~ /\ADOI (.*)\Z/
               item.doi = $1
+              # doi's seem to often have garbage after a "; ", especially
+              # from highwire. heuristically fix, sorry, a real DOI with "; "
+              # will get corrupted. 
+              if (parts = item.doi.split("; ")).length > 1
+                item.doi = parts.first
+              end
+              
               break
             end
           end
