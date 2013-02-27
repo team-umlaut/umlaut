@@ -1,0 +1,49 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.journaltocs.ac.uk/api/journals/badissn?output=articles&user=macleod.roddy@gmail.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: !binary |-
+        T0s=
+    headers:
+      !binary "RGF0ZQ==":
+      - !binary |-
+        VHVlLCAyNiBGZWIgMjAxMyAyMDo0OTozNyBHTVQ=
+      !binary "U2VydmVy":
+      - !binary |-
+        QXBhY2hlLzIuMi4xNSAoQ2VudE9TKQ==
+      !binary "WC1Qb3dlcmVkLUJ5":
+      - !binary |-
+        UEhQLzUuMy4z
+      !binary "Q29udGVudC1MZW5ndGg=":
+      - !binary |-
+        MTIwMQ==
+      !binary "Q29udGVudC1UeXBl":
+      - !binary |-
+        YXBwbGljYXRpb24veG1sOyBjaGFyc2V0PXV0Zi04
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\r\n
+        \        xmlns=\"http://purl.org/rss/1.0/\"\r\n         xmlns:mn=\"http://usefulinc.com/rss/manifest/\"\r\n
+        \        xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n\n  <channel rdf:about=\"http://www.journaltocs.hw.ac.uk/api/journals\">\r\n
+        \   <title>JournalTOCs API - Found 0 journals for: badissn (0 articles)</title>\r\n
+        \   <link>http://www.journaltocs.ac.uk/api/journals/badissn</link>\r\n    <description><![CDATA[Your
+        query: badissn has returned 0 articles. Table of contents is currently unavailable
+        for this journal. Please report to S.Chumbe@hw.ac.uk]]></description>\r\n
+        \   <dc:publisher>JournalTOCs API</dc:publisher>\r\n    <dc:creator>JOURNALTOCS
+        API PROJECT</dc:creator>\r\n\t\t<dc:coverage>1</dc:coverage>\r\n    <image
+        rdf:resource=\"http://www.journaltocs.hw.ac.uk/images/xtralogo.gif\" />\r\n
+        \   <items>\r\n      <rdf:Seq>\r\n        \r\n      </rdf:Seq>\r\n    </items>\r\n
+        \ </channel>\r\n  \r\n\t\r\n  <rdf:Description rdf:ID=\"manifest\">\r\n    <mn:channels>\r\n
+        \     <rdf:Seq>\r\n        <rdf:li rdf:resource=\"http://www.journaltocs.hw.ac.uk/api/journals\"
+        />\r\n      </rdf:Seq>\r\n    </mn:channels>\r\n  </rdf:Description>\r\n\r\n</rdf:RDF>"
+    http_version: 
+  recorded_at: Tue, 26 Feb 2013 20:49:37 GMT
+recorded_with: VCR 2.4.0

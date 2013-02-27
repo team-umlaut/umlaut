@@ -76,5 +76,11 @@ class JournalTocsFetcherTest < ActiveSupport::TestCase
     
   end
   
+  test_with_cassette("empty results on bad ISSN", :journal_tocs) do
+    items = JournalTocsFetcher.new("badissn",  :registered_email => @@registered_email).items
+    
+    assert_empty items
+  end
+  
   
 end
