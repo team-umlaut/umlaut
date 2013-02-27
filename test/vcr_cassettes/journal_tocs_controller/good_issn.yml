@@ -1,0 +1,447 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.journaltocs.ac.uk/api/journals/1600-5740?output=articles&user=macleod.roddy@gmail.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: !binary |-
+        T0s=
+    headers:
+      !binary "RGF0ZQ==":
+      - !binary |-
+        V2VkLCAyNyBGZWIgMjAxMyAxNjo1NDozNSBHTVQ=
+      !binary "U2VydmVy":
+      - !binary |-
+        QXBhY2hlLzIuMi4xNSAoQ2VudE9TKQ==
+      !binary "WC1Qb3dlcmVkLUJ5":
+      - !binary |-
+        UEhQLzUuMy4z
+      !binary "VHJhbnNmZXItRW5jb2Rpbmc=":
+      - !binary |-
+        Y2h1bmtlZA==
+      !binary "Q29udGVudC1UeXBl":
+      - !binary |-
+        YXBwbGljYXRpb24veG1sOyBjaGFyc2V0PXV0Zi04
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"
+        \r\n         xmlns:prism=\"http://prismstandard.org/namespaces/1.2/basic/\"
+        \r\n\t\t\t\t xmlns:dc=\"http://purl.org/dc/elements/1.1/\" \r\n\t\t\t\t xmlns:mn=\"http://usefulinc.com/rss/manifest/\"\r\n\t\t\t\t
+        xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" \r\n\t\t\t\t xmlns=\"http://purl.org/rss/1.0/\">\n\n
+        \ <channel rdf:about=\"http://www.journaltocs.hw.ac.uk/api/journals\">\r\n
+        \   <title>JournalTOCs API - Acta Crystallographica Section B Structural Science
+        (10 articles)</title>\r\n    <link>http://www.journaltocs.ac.uk/api/journals/1600-5740</link>\r\n
+        \   <description><![CDATA[Your query: 1600-5740 has returned 10 articles.
+        They are listed in alphabetical order per journal (maximum number of returned
+        items is 3000).]]></description>\r\n    <dc:publisher>JournalTOCs API</dc:publisher>\r\n
+        \   <dc:creator>JOURNALTOCS API PROJECT</dc:creator>\r\n\t\t<dc:coverage>1</dc:coverage>\r\n
+        \   <image rdf:resource=\"http://www.journaltocs.hw.ac.uk/images/xtralogo.gif\"
+        />\r\n    <items>\r\n      <rdf:Seq>\r\n        \r\n      </rdf:Seq>\r\n    </items>\r\n
+        \ </channel>\r\n  <item rdf:about=\"http://dx.doi.org/10.1107/S0108768112051506\">\n<title>On
+        the shortest BIII&#x2014;O bonds</title>\r\n<link>http://scripts.iucr.org/cgi-bin/paper?kd5067</link>\r\n<description>For
+        the crystal structures of oxoborates, the value of &#x223C;&#x2005;1.2&#x2005;&#xC5;
+        can be regarded as the lower physical limit for BIII&#x2014;O bond lengths.
+        The oxoborate crystal structures with BIII&#x2014;O bond lengths shorter than
+        &#x223C;&#x2005;1.2&#x2005;&#xC5; have been found to be either doubtful or
+        clearly erroneous.</description>\r\n<dc:identifier>DOI 10.1107/S0108768112051506</dc:identifier>\r\n<dc:creator>Sidey
+        V.</dc:creator>\n<dc:subject>oxoborates; bond lengths</dc:subject>\n<dc:date>2013-01-19</dc:date>\n<dc:source>Acta
+        Crystallographica Section B Structural Science, Vol. 69, No. 1 (2013) pp.
+        86 - 89</dc:source>\n<dc:publisher>International Union of Crystallography
+        (IUCr)</dc:publisher>\n<prism:PublicationName>Acta Crystallographica Section
+        B Structural Science</prism:PublicationName>\n<prism:volume>69</prism:volume>\n<prism:number>1</prism:number>\n<prism:startingPage>86</prism:startingPage>\n<prism:endingPage>89</prism:endingPage>\n<prism:publicationDate>2013-01-19</prism:publicationDate>\n<content:encoded><![CDATA[<p><a
+        href=\"http://scripts.iucr.org/cgi-bin/paper?kd5067\"><b>On the shortest BIII&#x2014;O
+        bonds</b></A><br />Sidey V.<br /><i>Acta Crystallographica Section B Structural
+        Science, Vol. 69, No. 1 (2013) pp. 86 - 89</i><br />For the crystal structures
+        of oxoborates, the value of &#x223C;&#x2005;1.2&#x2005;&#xC5; can be regarded
+        as the lower physical limit for BIII&#x2014;O bond lengths. The oxoborate
+        crystal structures with BIII&#x2014;O bond lengths shorter than &#x223C;&#x2005;1.2&#x2005;&#xC5;
+        have been found to be either doubtful or clearly erroneous.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://dx.doi.org/10.1107/S0108768112051142\">\n<title>A high-pressure
+        polymorph of chlorpropamide formed on hydrostatic compression of the &#x3B1;-form
+        in saturated ethanol solution</title>\r\n<link>http://scripts.iucr.org/cgi-bin/paper?gp5058</link>\r\n<description>The
+        crystal structure of the high-pressure polymorph (&#x3B1;&#x2032;) of an antidiabetic
+        drug, chlorpropamide [4-chloro-N-(propylaminocarbonyl)benzenesulfonamide,
+        C10H13ClN2O3S], which is formed at &#x223C;&#x2005;2.8&#x2005;GPa from the
+        &#x3B1;-polymorph (P212121) on hydrostatic compression in saturated ethanol
+        solution, has been determined. As a result of the phase transition, the a,
+        c and &#x3B1; parameters change jumpwise, whereas the changes in b parameter
+        are continuous through the phase transition point. The high-pressure form
+        is monoclinic (P2111) and has Z&#x2032; equal to 2, the two independent molecules
+        differing in their conformations. The hydrogen bonds expand slightly in the
+        high-pressure polymorph after the transition, and this expansion is interrelated
+        with the changes in molecular conformations enabling a denser packing. The
+        transition is reversible, but the crystal quality deteriorates as a result
+        of multiple compression&#x2013;decompression cycles, and a pseudomerohedral
+        twinning accompanies the transformation.</description>\r\n<dc:identifier>DOI
+        10.1107/S0108768112051142</dc:identifier>\r\n<dc:creator>Seryotkin Y.V.; Drebushchak,
+        \ T.N.; Boldyreva,  E.V.</dc:creator>\n<dc:subject>polymorphism; high pressure;
+        chlorpropamide; molecular conformations; hydrogen bonds; twinning</dc:subject>\n<dc:date>2013-01-19</dc:date>\n<dc:source>Acta
+        Crystallographica Section B Structural Science, Vol. 69, No. 1 (2013) pp.
+        77 - 85</dc:source>\n<dc:publisher>International Union of Crystallography
+        (IUCr)</dc:publisher>\n<prism:PublicationName>Acta Crystallographica Section
+        B Structural Science</prism:PublicationName>\n<prism:volume>69</prism:volume>\n<prism:number>1</prism:number>\n<prism:startingPage>77</prism:startingPage>\n<prism:endingPage>85</prism:endingPage>\n<prism:publicationDate>2013-01-19</prism:publicationDate>\n<content:encoded><![CDATA[<p><a
+        href=\"http://scripts.iucr.org/cgi-bin/paper?gp5058\"><b>A high-pressure polymorph
+        of chlorpropamide formed on hydrostatic compression of the &#x3B1;-form in
+        saturated ethanol solution</b></A><br />Seryotkin Y.V.; Drebushchak,  T.N.;
+        Boldyreva,  E.V.<br /><i>Acta Crystallographica Section B Structural Science,
+        Vol. 69, No. 1 (2013) pp. 77 - 85</i><br />The crystal structure of the high-pressure
+        polymorph (&#x3B1;&#x2032;) of an antidiabetic drug, chlorpropamide [4-chloro-N-(propylaminocarbonyl)benzenesulfonamide,
+        C10H13ClN2O3S], which is formed at &#x223C;&#x2005;2.8&#x2005;GPa from the
+        &#x3B1;-polymorph (P212121) on hydrostatic compression in saturated ethanol
+        solution, has been determined. As a result of the phase transition, the a,
+        c and &#x3B1; parameters change jumpwise, whereas the changes in b parameter
+        are continuous through the phase transition point. The high-pressure form
+        is monoclinic (P2111) and has Z&#x2032; equal to 2, the two independent molecules
+        differing in their conformations. The hydrogen bonds expand slightly in the
+        high-pressure polymorph after the transition, and this expansion is interrelated
+        with the changes in molecular conformations enabling a denser packing. The
+        transition is reversible, but the crystal quality deteriorates as a result
+        of multiple compression&#x2013;decompression cycles, and a pseudomerohedral
+        twinning accompanies the transformation.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://dx.doi.org/10.1107/S0108768112047416\">\n<title>Entry point
+        into new trimeric and tetrameric imide-based macrocyclic esters derived from
+        isophthaloyl dichloride and methyl 6-aminonicotinate</title>\r\n<link>http://scripts.iucr.org/cgi-bin/paper?gp5057</link>\r\n<description>The
+        one-step reaction of isophthaloyl dichloride with the 2-aminopyridine derivative
+        (methyl 6-aminonicotinate) yields (i) a trimer-based macrocycle (EsIO)3 and
+        (ii) a tetramer-based macrocycle (EsIO)4 in modest isolated synthetic yields
+        (total of 25%), together with (iii) longer open-chain oligomers. The macrocyclization
+        relies on the semi-flexible imide hinge formed by reaction of the 2-amino(pyridine)
+        functional group with two acyl chloride functional groups. The determining
+        factors in macrocycle synthesis are: (a) imide formation using the heteroaromatic
+        ortho-N functionality; (b) the inherent ability of the imide to twist by 85&#x2013;115&#xB0;
+        from planarity (as measured by the CO...CO imide torsion angles), thereby
+        providing a hinge for macrocyclic ring closure or potentially (non)helical
+        assembly in oligomer/polymer formation; (c) the conformational flexibility
+        of the isophthaloyl group with meta-related carbonyl groups to twist and adopt
+        either syn or anti conformations, although the syn conformation is observed
+        structurally for all isophthaloyl groups in both (EsIO)3 (trezimide) and (EsIO)4
+        (tennimide) macrocycles.</description>\r\n<dc:identifier>DOI 10.1107/S0108768112047416</dc:identifier>\r\n<dc:creator>Mocilac
+        P.; Gallagher,  J.F.</dc:creator>\n<dc:subject>conformation; carboxylate;
+        imide; macrocycle; pyridine</dc:subject>\n<dc:date>2012-12-20</dc:date>\n<dc:source>Acta
+        Crystallographica Section B Structural Science, Vol. 69, No. 1 (2012) pp.
+        62 - 69</dc:source>\n<dc:publisher>International Union of Crystallography
+        (IUCr)</dc:publisher>\n<prism:PublicationName>Acta Crystallographica Section
+        B Structural Science</prism:PublicationName>\n<prism:volume>69</prism:volume>\n<prism:number>1</prism:number>\n<prism:startingPage>62</prism:startingPage>\n<prism:endingPage>69</prism:endingPage>\n<prism:publicationDate>2012-12-20</prism:publicationDate>\n<content:encoded><![CDATA[<p><a
+        href=\"http://scripts.iucr.org/cgi-bin/paper?gp5057\"><b>Entry point into
+        new trimeric and tetrameric imide-based macrocyclic esters derived from isophthaloyl
+        dichloride and methyl 6-aminonicotinate</b></A><br />Mocilac P.; Gallagher,
+        \ J.F.<br /><i>Acta Crystallographica Section B Structural Science, Vol. 69,
+        No. 1 (2012) pp. 62 - 69</i><br />The one-step reaction of isophthaloyl dichloride
+        with the 2-aminopyridine derivative (methyl 6-aminonicotinate) yields (i)
+        a trimer-based macrocycle (EsIO)3 and (ii) a tetramer-based macrocycle (EsIO)4
+        in modest isolated synthetic yields (total of 25%), together with (iii) longer
+        open-chain oligomers. The macrocyclization relies on the semi-flexible imide
+        hinge formed by reaction of the 2-amino(pyridine) functional group with two
+        acyl chloride functional groups. The determining factors in macrocycle synthesis
+        are: (a) imide formation using the heteroaromatic ortho-N functionality; (b)
+        the inherent ability of the imide to twist by 85&#x2013;115&#xB0; from planarity
+        (as measured by the CO...CO imide torsion angles), thereby providing a hinge
+        for macrocyclic ring closure or potentially (non)helical assembly in oligomer/polymer
+        formation; (c) the conformational flexibility of the isophthaloyl group with
+        meta-related carbonyl groups to twist and adopt either syn or anti conformations,
+        although the syn conformation is observed structurally for all isophthaloyl
+        groups in both (EsIO)3 (trezimide) and (EsIO)4 (tennimide) macrocycles.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://dx.doi.org/10.1107/S0108768112049324\">\n<title>Thermodynamic
+        and structural relationships between the two polymorphs of 1,3-dimethylurea</title>\r\n<link>http://scripts.iucr.org/cgi-bin/paper?ps5022</link>\r\n<description>The
+        title compound exists as polymorph (I), Fdd2 with Z = 8 [P&#xE9;rez-Folch
+        et al. (1997). J. Chem. Cryst. 27, 367&#x2013;369; Marsh (2004). Acta Cryst.
+        B60, 252&#x2013;253], and as polymorph (II), P21212 with Z = 2 [Martins et
+        al. (2009). J. Phys. Chem. A, 113, 5998&#x2013;6003]. We have redetermined
+        both structures at somewhat lower temperatures [(I) at 180&#x2005;K rather
+        than room temperature; (II) at 100&#x2005;K rather than 150&#x2005;K]. For
+        polymorph (I) the space group Fdd2 is confirmed rather than the original choice
+        of Cc. The molecular structures of both polymorphs are essentially identical,
+        with exact crystallographic twofold symmetry, approximate C2v symmetry, and
+        a trans orientation of the H&#x2014;N&#x2014;C=O moiety. In both polymorphs
+        the molecules associate into chains of rings with graph set C(4)[R21(6)] via
+        bifurcated hydrogen-bond systems C(N&#x2014;H)2...O=C. In the polar structure
+        (I) the chains are necessarily all parallel, whereas in (II) equal numbers
+        of parallel and antiparallel chains are present. Further physical investigations
+        [differential scanning calorimetry (DSC), powder investigations, solvent-induced
+        phase conversions] were undertaken: these showed: (i) that the commercially
+        available compound consists predominantly of polymorph (II), which on heating
+        transforms into polymorph (I) by an endothermic reaction, so that both polymorphs
+        are related by enantiotropism; (ii) that polymorph (I) represents the more
+        stable modification at room temperature, where polymorph (II) is metastable,
+        with the thermodynamic transition temperature lying somewhere between 253&#x2005;K
+        and room temperature. An apparent third polymorph, consisting of fibrous needles,
+        was shown by powder diffraction to consist of a mixture of polymorphs (I)
+        and (II).</description>\r\n<dc:identifier>DOI 10.1107/S0108768112049324</dc:identifier>\r\n<dc:creator>N&amp;&#35;xE4;ther
+        C.; D&amp;&#35;xF6;ring,  C.; Jess,  I.; Jones,  P.G.; Taouss,  C.</dc:creator>\n<dc:subject>thermodynamics;
+        polymorphism; hydrogen bonding; powder studies; solvent-induced phase conversion;
+        differential scanning calorimetry</dc:subject>\n<dc:date>2012-12-20</dc:date>\n<dc:source>Acta
+        Crystallographica Section B Structural Science, Vol. 69, No. 1 (2012) pp.
+        70 - 76</dc:source>\n<dc:publisher>International Union of Crystallography
+        (IUCr)</dc:publisher>\n<prism:PublicationName>Acta Crystallographica Section
+        B Structural Science</prism:PublicationName>\n<prism:volume>69</prism:volume>\n<prism:number>1</prism:number>\n<prism:startingPage>70</prism:startingPage>\n<prism:endingPage>76</prism:endingPage>\n<prism:publicationDate>2012-12-20</prism:publicationDate>\n<content:encoded><![CDATA[<p><a
+        href=\"http://scripts.iucr.org/cgi-bin/paper?ps5022\"><b>Thermodynamic and
+        structural relationships between the two polymorphs of 1,3-dimethylurea</b></A><br
+        />N&#xE4;ther C.; D&#xF6;ring,  C.; Jess,  I.; Jones,  P.G.; Taouss,  C.<br
+        /><i>Acta Crystallographica Section B Structural Science, Vol. 69, No. 1 (2012)
+        pp. 70 - 76</i><br />The title compound exists as polymorph (I), Fdd2 with
+        Z = 8 [P&#xE9;rez-Folch et al. (1997). J. Chem. Cryst. 27, 367&#x2013;369;
+        Marsh (2004). Acta Cryst. B60, 252&#x2013;253], and as polymorph (II), P21212
+        with Z = 2 [Martins et al. (2009). J. Phys. Chem. A, 113, 5998&#x2013;6003].
+        We have redetermined both structures at somewhat lower temperatures [(I) at
+        180&#x2005;K rather than room temperature; (II) at 100&#x2005;K rather than
+        150&#x2005;K]. For polymorph (I) the space group Fdd2 is confirmed rather
+        than the original choice of Cc. The molecular structures of both polymorphs
+        are essentially identical, with exact crystallographic twofold symmetry, approximate
+        C2v symmetry, and a trans orientation of the H&#x2014;N&#x2014;C=O moiety.
+        In both polymorphs the molecules associate into chains of rings with graph
+        set C(4)[R21(6)] via bifurcated hydrogen-bond systems C(N&#x2014;H)2...O=C.
+        In the polar structure (I) the chains are necessarily all parallel, whereas
+        in (II) equal numbers of parallel and antiparallel chains are present. Further
+        physical investigations [differential scanning calorimetry (DSC), powder investigations,
+        solvent-induced phase conversions] were undertaken: these showed: (i) that
+        the commercially available compound consists predominantly of polymorph (II),
+        which on heating transforms into polymorph (I) by an endothermic reaction,
+        so that both polymorphs are related by enantiotropism; (ii) that polymorph
+        (I) represents the more stable modification at room temperature, where polymorph
+        (II) is metastable, with the thermodynamic transition temperature lying somewhere
+        between 253&#x2005;K and room temperature. An apparent third polymorph, consisting
+        of fibrous needles, was shown by powder diffraction to consist of a mixture
+        of polymorphs (I) and (II).</p>]]></content:encoded>\r\n</item>\n<item rdf:about=\"http://dx.doi.org/10.1107/S0108768112048331\">\n<title>Structural
+        and electronic aspects of hydrogen bonding in two polymorphs of butylene-N,N&#x2032;-bis(O,O&#x2032;-diarylphosphoramidate)</title>\r\n<link>http://scripts.iucr.org/cgi-bin/paper?ps5019</link>\r\n<description>The
+        bisphosphoramidate (C6H5O)2P(O)NH(CH2)4NHP(O)(OC6H5)2 crystallizes in two
+        polymorphs, one (ndl) with a needle habit from tetrahydrofuran (THF)/ethanol
+        and another (prm) which forms prisms from H2O/ethanol. The molecules in the
+        two forms differ from each other in some torsion angles and the orientation
+        of the diaminobutane bridge, although the differences between the similar
+        bond lengths are not significant for the two polymorphs. The geometry optimizations
+        at the B3LYP/6-31+G* level for isolated molecules show that the two conformers
+        which exist in the crystalline state also represent local gas-phase energy
+        minima. The decrease in the N&#x2014;H distance from the optimized to the
+        crystal structures has been described in terms of the decrease in electron
+        density (&#x3C1;) at the bond-critical point (b.c.p.) of the N&#x2014;H bond
+        path when the molecule participates in hydrogen bonding, comparing the results
+        of atoms-in-molecules (AIM) and natural bond orbital (NBO) analyses for fully
+        optimized structures ndl and prm with their hydrogen-bonded model clusters.</description>\r\n<dc:identifier>DOI
+        10.1107/S0108768112048331</dc:identifier>\r\n<dc:creator>Gholivand K.; Valmoozi,
+        \ A.A.E.; Mahzouni,  H.R.</dc:creator>\n<dc:subject>bisphosphoramidate; polymorphism;
+        density-functional theory calculations; hydrogen bonding; X-ray crystallography</dc:subject>\n<dc:date>2012-12-20</dc:date>\n<dc:source>Acta
+        Crystallographica Section B Structural Science, Vol. 69, No. 1 (2012) pp.
+        55 - 61</dc:source>\n<dc:publisher>International Union of Crystallography
+        (IUCr)</dc:publisher>\n<prism:PublicationName>Acta Crystallographica Section
+        B Structural Science</prism:PublicationName>\n<prism:volume>69</prism:volume>\n<prism:number>1</prism:number>\n<prism:startingPage>55</prism:startingPage>\n<prism:endingPage>61</prism:endingPage>\n<prism:publicationDate>2012-12-20</prism:publicationDate>\n<content:encoded><![CDATA[<p><a
+        href=\"http://scripts.iucr.org/cgi-bin/paper?ps5019\"><b>Structural and electronic
+        aspects of hydrogen bonding in two polymorphs of butylene-N,N&#x2032;-bis(O,O&#x2032;-diarylphosphoramidate)</b></A><br
+        />Gholivand K.; Valmoozi,  A.A.E.; Mahzouni,  H.R.<br /><i>Acta Crystallographica
+        Section B Structural Science, Vol. 69, No. 1 (2012) pp. 55 - 61</i><br />The
+        bisphosphoramidate (C6H5O)2P(O)NH(CH2)4NHP(O)(OC6H5)2 crystallizes in two
+        polymorphs, one (ndl) with a needle habit from tetrahydrofuran (THF)/ethanol
+        and another (prm) which forms prisms from H2O/ethanol. The molecules in the
+        two forms differ from each other in some torsion angles and the orientation
+        of the diaminobutane bridge, although the differences between the similar
+        bond lengths are not significant for the two polymorphs. The geometry optimizations
+        at the B3LYP/6-31+G* level for isolated molecules show that the two conformers
+        which exist in the crystalline state also represent local gas-phase energy
+        minima. The decrease in the N&#x2014;H distance from the optimized to the
+        crystal structures has been described in terms of the decrease in electron
+        density (&#x3C1;) at the bond-critical point (b.c.p.) of the N&#x2014;H bond
+        path when the molecule participates in hydrogen bonding, comparing the results
+        of atoms-in-molecules (AIM) and natural bond orbital (NBO) analyses for fully
+        optimized structures ndl and prm with their hydrogen-bonded model clusters.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://dx.doi.org/10.1107/S0108768112046733\">\n<title>Electronic
+        influence of &#x3B2;-diketonato-type ligands on the coordination of 1,5-cyclooctadiene
+        to palladium(II) as defined by `Venus fly trap' geometric parameters</title>\r\n<link>http://scripts.iucr.org/cgi-bin/paper?eb5019</link>\r\n<description>A
+        range of single-crystal structures of the type [Pd(cod)(LL&#x2032;-Bid)]A,
+        where LL&#x2032;-Bid = acetylacetonato (acac), thenoyltrifluoroactetonato
+        (thtfac) and hexafluoroacetylacetonato (hfacac), and A = tetrafluoroborate
+        (BF4&#x2212;) and hexafluorophosphate (PF6&#x2212;), are reported. The complexes
+        [Pd(cod)(acac)]PF6 (I), [Pd(cod)(thtfac)]PF6 (III), [Pd(cod)(thtfac)]BF4 (IV)
+        and [Pd(cod)(hfacac)]PF6 (V) are isostructural in the monoclinic space group
+        P21/c. The influence of the variation of the &#x3B2;-diketonato-type ligands
+        on the coordination geometry of cis,cis-1,5-cycloocta-1,5-diene (cod) was
+        investigated and found that no significant changes to the Pd&#x2014;C and
+        C=C bond distances were observed. The `Venus fly trap' parameters vary by
+        7.8&#xB0; for the `jaw' angle (&#x3C8;), while the `bite' angle (&#x3C7;)
+        remains virtually constant.</description>\r\n<dc:identifier>DOI 10.1107/S0108768112046733</dc:identifier>\r\n<dc:creator>Hill
+        T.N.; Roodt,  A.; Steyl,  G.</dc:creator>\n<dc:subject>&#x3B2;-diketonato;
+        `Venus fly trap' parameters; coordination geometry</dc:subject>\n<dc:date>2012-12-20</dc:date>\n<dc:source>Acta
+        Crystallographica Section B Structural Science, Vol. 69, No. 1 (2012) pp.
+        36 - 42</dc:source>\n<dc:publisher>International Union of Crystallography
+        (IUCr)</dc:publisher>\n<prism:PublicationName>Acta Crystallographica Section
+        B Structural Science</prism:PublicationName>\n<prism:volume>69</prism:volume>\n<prism:number>1</prism:number>\n<prism:startingPage>36</prism:startingPage>\n<prism:endingPage>42</prism:endingPage>\n<prism:publicationDate>2012-12-20</prism:publicationDate>\n<content:encoded><![CDATA[<p><a
+        href=\"http://scripts.iucr.org/cgi-bin/paper?eb5019\"><b>Electronic influence
+        of &#x3B2;-diketonato-type ligands on the coordination of 1,5-cyclooctadiene
+        to palladium(II) as defined by `Venus fly trap' geometric parameters</b></A><br
+        />Hill T.N.; Roodt,  A.; Steyl,  G.<br /><i>Acta Crystallographica Section
+        B Structural Science, Vol. 69, No. 1 (2012) pp. 36 - 42</i><br />A range of
+        single-crystal structures of the type [Pd(cod)(LL&#x2032;-Bid)]A, where LL&#x2032;-Bid
+        = acetylacetonato (acac), thenoyltrifluoroactetonato (thtfac) and hexafluoroacetylacetonato
+        (hfacac), and A = tetrafluoroborate (BF4&#x2212;) and hexafluorophosphate
+        (PF6&#x2212;), are reported. The complexes [Pd(cod)(acac)]PF6 (I), [Pd(cod)(thtfac)]PF6
+        (III), [Pd(cod)(thtfac)]BF4 (IV) and [Pd(cod)(hfacac)]PF6 (V) are isostructural
+        in the monoclinic space group P21/c. The influence of the variation of the
+        &#x3B2;-diketonato-type ligands on the coordination geometry of cis,cis-1,5-cycloocta-1,5-diene
+        (cod) was investigated and found that no significant changes to the Pd&#x2014;C
+        and C=C bond distances were observed. The `Venus fly trap' parameters vary
+        by 7.8&#xB0; for the `jaw' angle (&#x3C8;), while the `bite' angle (&#x3C7;)
+        remains virtually constant.</p>]]></content:encoded>\r\n</item>\n<item rdf:about=\"http://dx.doi.org/10.1107/S0108768112050434\">\n<title>Weak
+        intermolecular hydrogen and halogen interactions in an isomorphous halogen
+        series of pseudoterpyridine ZnII complexes</title>\r\n<link>http://scripts.iucr.org/cgi-bin/paper?eb5021</link>\r\n<description>The
+        synthesis and characterization of a series of halogen-substituted pseudoterpyridine
+        ZnII homoleptic mononuclear complexes, based on ligands L11&#x2013;L44 [2,6-pyridinedicarboxaldehydebis(p-R-phenylimines),
+        R = F, Cl, Br, I] are reported. Neither of the structures contain relatively
+        strong classical hydrogen bonds (OH...O, NH...O, OH...N, NH...N) and the structure
+        packing is thus determined by a subtle interplay of weaker interactions. Isostructurality
+        of the four halogen analogues is very rare, and in this study &#x2014;Br,
+        &#x2014;Cl and &#x2014;F are found to be isostructural in different degrees,
+        whereas &#x2014;I is not. Interestingly, although it is closely isostructural
+        to the &#x2014;Cl and &#x2014;Br compounds, the F analogue is shown not to
+        form F...O bonds, while the Cl and the Br analogues do form Hal...O bonds.
+        This raises an important question on the role of Hal...O bonds in the structuration
+        of the crystal packing, particularly the stabilization effect. Similarly,
+        while the CH...Hal interaction seems to give one-dimensional cohesion in the
+        &#x2014;Cl and &#x2014;Br analogues, this feature is absent in the &#x2014;F
+        analogue, despite its close isostructurality. CH...O interactions appear to
+        dominate to a first degree the cohesion between the anionic trifluoromethanesulfonate
+        network and the cationic Zn-pyridinedicarboxaldehydebis(p-R-phenylimines)
+        network. The analysis of these interactions is corroborated by reduced density
+        gradient calculations based on promolecular densities.</description>\r\n<dc:identifier>DOI
+        10.1107/S0108768112050434</dc:identifier>\r\n<dc:creator>Dumitru F.; Legrand,
+        \ Y.&#45;M.; Barboiu,  M.; van der Lee,  A.</dc:creator>\n<dc:subject>metallosupramolecular
+        complexes; imine; self-assembly; weak hydrogen and halogen interactions</dc:subject>\n<dc:date>2013-01-19</dc:date>\n<dc:source>Acta
+        Crystallographica Section B Structural Science, Vol. 69, No. 1 (2013) pp.
+        43 - 54</dc:source>\n<dc:publisher>International Union of Crystallography
+        (IUCr)</dc:publisher>\n<prism:PublicationName>Acta Crystallographica Section
+        B Structural Science</prism:PublicationName>\n<prism:volume>69</prism:volume>\n<prism:number>1</prism:number>\n<prism:startingPage>43</prism:startingPage>\n<prism:endingPage>54</prism:endingPage>\n<prism:publicationDate>2013-01-19</prism:publicationDate>\n<content:encoded><![CDATA[<p><a
+        href=\"http://scripts.iucr.org/cgi-bin/paper?eb5021\"><b>Weak intermolecular
+        hydrogen and halogen interactions in an isomorphous halogen series of pseudoterpyridine
+        ZnII complexes</b></A><br />Dumitru F.; Legrand,  Y.-M.; Barboiu,  M.; van
+        der Lee,  A.<br /><i>Acta Crystallographica Section B Structural Science,
+        Vol. 69, No. 1 (2013) pp. 43 - 54</i><br />The synthesis and characterization
+        of a series of halogen-substituted pseudoterpyridine ZnII homoleptic mononuclear
+        complexes, based on ligands L11&#x2013;L44 [2,6-pyridinedicarboxaldehydebis(p-R-phenylimines),
+        R = F, Cl, Br, I] are reported. Neither of the structures contain relatively
+        strong classical hydrogen bonds (OH...O, NH...O, OH...N, NH...N) and the structure
+        packing is thus determined by a subtle interplay of weaker interactions. Isostructurality
+        of the four halogen analogues is very rare, and in this study &#x2014;Br,
+        &#x2014;Cl and &#x2014;F are found to be isostructural in different degrees,
+        whereas &#x2014;I is not. Interestingly, although it is closely isostructural
+        to the &#x2014;Cl and &#x2014;Br compounds, the F analogue is shown not to
+        form F...O bonds, while the Cl and the Br analogues do form Hal...O bonds.
+        This raises an important question on the role of Hal...O bonds in the structuration
+        of the crystal packing, particularly the stabilization effect. Similarly,
+        while the CH...Hal interaction seems to give one-dimensional cohesion in the
+        &#x2014;Cl and &#x2014;Br analogues, this feature is absent in the &#x2014;F
+        analogue, despite its close isostructurality. CH...O interactions appear to
+        dominate to a first degree the cohesion between the anionic trifluoromethanesulfonate
+        network and the cationic Zn-pyridinedicarboxaldehydebis(p-R-phenylimines)
+        network. The analysis of these interactions is corroborated by reduced density
+        gradient calculations based on promolecular densities.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://dx.doi.org/10.1107/S0108768113000189\">\n<title>Structural
+        transformations in the low-temperature grown GaAs with superlattices of Sb
+        and P &#x3B4;-layers</title>\r\n<link>http://scripts.iucr.org/cgi-bin/paper?wf5104</link>\r\n<description>The
+        structure of low-temperature grown GaAs with equidistant &#x3B4;-layers of
+        Sb and P was studied by analysis of the X-ray curves, which was supported
+        by optical absorption measurements and transmission electron microscopy. The
+        simultaneous fitting of the X-ray reflectivity curve and diffraction ones
+        for GaAs (004) and GaAs (115) crystallographic planes provided reliable information
+        about the period of &#x3B4;-layer superlattice, thickness of the Sb and P
+        &#x3B4;-layers, and amount of excess As. Variation of these parameters was
+        documented when excess As precipitated into As nanoinclusions upon annealing.
+        The Sb and P &#x3B4;-layers impact differently on the As precipitation processes
+        in low-temperature grown GaAs. The combination of Sb and P &#x3B4;-layers
+        appears to be an effective tool for spatial patterning of the nanoinclusion
+        array and prevention of the defect formation under annealing.</description>\r\n<dc:identifier>DOI
+        10.1107/S0108768113000189</dc:identifier>\r\n<dc:creator>Baidakova M.V.; Bert,
+        \ N.A.; Chaldyshev,  V.V.; Nevedomsky,  V.N.; Yagovkina,  M.A.; Preobrazhenskii,
+        \ V.V.; Putyato,  M.A.; Semyagin,  B.R.</dc:creator>\n<dc:subject>structural
+        transformation; low-temperature grown GaAs; X-ray diffraction and reflectivity</dc:subject>\n<dc:date>2013-01-19</dc:date>\n<dc:source>Acta
+        Crystallographica Section B Structural Science, Vol. 69, No. 1 (2013) pp.
+        30 - 35</dc:source>\n<dc:publisher>International Union of Crystallography
+        (IUCr)</dc:publisher>\n<prism:PublicationName>Acta Crystallographica Section
+        B Structural Science</prism:PublicationName>\n<prism:volume>69</prism:volume>\n<prism:number>1</prism:number>\n<prism:startingPage>30</prism:startingPage>\n<prism:endingPage>35</prism:endingPage>\n<prism:publicationDate>2013-01-19</prism:publicationDate>\n<content:encoded><![CDATA[<p><a
+        href=\"http://scripts.iucr.org/cgi-bin/paper?wf5104\"><b>Structural transformations
+        in the low-temperature grown GaAs with superlattices of Sb and P &#x3B4;-layers</b></A><br
+        />Baidakova M.V.; Bert,  N.A.; Chaldyshev,  V.V.; Nevedomsky,  V.N.; Yagovkina,
+        \ M.A.; Preobrazhenskii,  V.V.; Putyato,  M.A.; Semyagin,  B.R.<br /><i>Acta
+        Crystallographica Section B Structural Science, Vol. 69, No. 1 (2013) pp.
+        30 - 35</i><br />The structure of low-temperature grown GaAs with equidistant
+        &#x3B4;-layers of Sb and P was studied by analysis of the X-ray curves, which
+        was supported by optical absorption measurements and transmission electron
+        microscopy. The simultaneous fitting of the X-ray reflectivity curve and diffraction
+        ones for GaAs (004) and GaAs (115) crystallographic planes provided reliable
+        information about the period of &#x3B4;-layer superlattice, thickness of the
+        Sb and P &#x3B4;-layers, and amount of excess As. Variation of these parameters
+        was documented when excess As precipitated into As nanoinclusions upon annealing.
+        The Sb and P &#x3B4;-layers impact differently on the As precipitation processes
+        in low-temperature grown GaAs. The combination of Sb and P &#x3B4;-layers
+        appears to be an effective tool for spatial patterning of the nanoinclusion
+        array and prevention of the defect formation under annealing.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://dx.doi.org/10.1107/S0108768112051361\">\n<title>The charge-flipping
+        algorithm in crystallography</title>\r\n<link>http://scripts.iucr.org/cgi-bin/paper?sn5119</link>\r\n<description>The
+        charge-flipping algorithm (CFA) is a member of the diverse family of dual-space
+        iterative phasing algorithms. These algorithms use alternating modifications
+        in direct and reciprocal space to find a solution to the phase problem. The
+        current state-of-the-art CFA is reviewed and it is put in the context of related
+        dual-space algorithms with relevance for crystallography. The CFA has found
+        applications in many crystallographic problems. The principal applications
+        in various fields are described with sections devoted to routine structure
+        solution, the solution of complex structures from powder diffraction data,
+        the solution of incommensurately modulated crystals and quasicrystals, macromolecular
+        crystallography and single-particle imaging.</description>\r\n<dc:identifier>DOI
+        10.1107/S0108768112051361</dc:identifier>\r\n<dc:creator>Palatinus L.</dc:creator>\n<dc:subject>charge-flipping
+        algorithm; dual-space methods; structure solution</dc:subject>\n<dc:date>2013-01-19</dc:date>\n<dc:source>Acta
+        Crystallographica Section B Structural Science, Vol. 69, No. 1 (2013) pp.
+        1 - 16</dc:source>\n<dc:publisher>International Union of Crystallography (IUCr)</dc:publisher>\n<prism:PublicationName>Acta
+        Crystallographica Section B Structural Science</prism:PublicationName>\n<prism:volume>69</prism:volume>\n<prism:number>1</prism:number>\n<prism:startingPage>1</prism:startingPage>\n<prism:endingPage>16</prism:endingPage>\n<prism:publicationDate>2013-01-19</prism:publicationDate>\n<content:encoded><![CDATA[<p><a
+        href=\"http://scripts.iucr.org/cgi-bin/paper?sn5119\"><b>The charge-flipping
+        algorithm in crystallography</b></A><br />Palatinus L.<br /><i>Acta Crystallographica
+        Section B Structural Science, Vol. 69, No. 1 (2013) pp. 1 - 16</i><br />The
+        charge-flipping algorithm (CFA) is a member of the diverse family of dual-space
+        iterative phasing algorithms. These algorithms use alternating modifications
+        in direct and reciprocal space to find a solution to the phase problem. The
+        current state-of-the-art CFA is reviewed and it is put in the context of related
+        dual-space algorithms with relevance for crystallography. The CFA has found
+        applications in many crystallographic problems. The principal applications
+        in various fields are described with sections devoted to routine structure
+        solution, the solution of complex structures from powder diffraction data,
+        the solution of incommensurately modulated crystals and quasicrystals, macromolecular
+        crystallography and single-particle imaging.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://dx.doi.org/10.1107/S0108768112051105\">\n<title>The role
+        of the coordination defect (CD) in the structures of anion-deficient, fluorite-related
+        compounds</title>\r\n<link>http://scripts.iucr.org/cgi-bin/paper?wf5105</link>\r\n<description>The
+        various superstructure phases that occur with the anion-deficient compositions
+        of binary oxides MO2&#x2005;&#x2212;&#x2005;x with the fluorite structure
+        as parent are explored here in terms of the original `coordination defect'
+        (or CD) concept in which each vacant oxygen site, &#x25A1;, is `coordinated'
+        by six O atoms thereby creating the octahedral `structure-determining' entity
+        [M3.5&#x25A1;O6]. It emerges that the structure and composition of each anion-deficient
+        (polymorph) phase can be described in terms of crystallographic `motifs' which
+        comprise sets of parallel coplanar polygons based on &#xBD;&#x2329;210&#x232A;F
+        and &#xBD;&#x2329;111&#x232A;F CD linkages.</description>\r\n<dc:identifier>DOI
+        10.1107/S0108768112051105</dc:identifier>\r\n<dc:creator>Bevan D.J.M.; Martin,
+        \ L.L.; Martin,  R.L.</dc:creator>\n<dc:subject>coordination defect concept;
+        binary oxides; superstructure phases</dc:subject>\n<dc:date>2013-01-19</dc:date>\n<dc:source>Acta
+        Crystallographica Section B Structural Science, Vol. 69, No. 1 (2013) pp.
+        17 - 29</dc:source>\n<dc:publisher>International Union of Crystallography
+        (IUCr)</dc:publisher>\n<prism:PublicationName>Acta Crystallographica Section
+        B Structural Science</prism:PublicationName>\n<prism:volume>69</prism:volume>\n<prism:number>1</prism:number>\n<prism:startingPage>17</prism:startingPage>\n<prism:endingPage>29</prism:endingPage>\n<prism:publicationDate>2013-01-19</prism:publicationDate>\n<content:encoded><![CDATA[<p><a
+        href=\"http://scripts.iucr.org/cgi-bin/paper?wf5105\"><b>The role of the coordination
+        defect (CD) in the structures of anion-deficient, fluorite-related compounds</b></A><br
+        />Bevan D.J.M.; Martin,  L.L.; Martin,  R.L.<br /><i>Acta Crystallographica
+        Section B Structural Science, Vol. 69, No. 1 (2013) pp. 17 - 29</i><br />The
+        various superstructure phases that occur with the anion-deficient compositions
+        of binary oxides MO2&#x2005;&#x2212;&#x2005;x with the fluorite structure
+        as parent are explored here in terms of the original `coordination defect'
+        (or CD) concept in which each vacant oxygen site, &#x25A1;, is `coordinated'
+        by six O atoms thereby creating the octahedral `structure-determining' entity
+        [M3.5&#x25A1;O6]. It emerges that the structure and composition of each anion-deficient
+        (polymorph) phase can be described in terms of crystallographic `motifs' which
+        comprise sets of parallel coplanar polygons based on &#xBD;&#x2329;210&#x232A;F
+        and &#xBD;&#x2329;111&#x232A;F CD linkages.</p>]]></content:encoded>\r\n</item>\n\r\n\t\r\n
+        \ <rdf:Description rdf:ID=\"manifest\">\r\n    <mn:channels>\r\n      <rdf:Seq>\r\n
+        \       <rdf:li rdf:resource=\"http://www.journaltocs.hw.ac.uk/api/journals\"
+        />\r\n      </rdf:Seq>\r\n    </mn:channels>\r\n  </rdf:Description>\r\n\r\n</rdf:RDF>"
+    http_version: 
+  recorded_at: Wed, 27 Feb 2013 16:54:35 GMT
+recorded_with: VCR 2.4.0

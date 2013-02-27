@@ -26,8 +26,14 @@ module Umlaut
     end
 
     def route_sets
-      # :admin is not included by default, needs to be turned on. 
-      (@options[:only] || default_route_sets) - (@options[:except] || []) + (@options[:admin] == true ? [:admin] : [])
+      # :admin and others not included by default, needs to be turned on. 
+      (@options[:only] || default_route_sets) - (@options[:except] || []) + turned_on_optional_route_sets
+    end
+    
+    def turned_on_optional_route_sets
+      [:admin, :journal_tocs].collect do |option| 
+        option if @options[option] 
+      end.compact
     end
 
     def default_route_sets
@@ -147,6 +153,12 @@ module Umlaut
           
           
           match 'images/spinner.gif' => redirect("/assets/spinner.gif")
+        end
+      end
+      
+      def journal_tocs
+        add_routes do |options|
+          match "current_articles(/:issn)" => "journal_tocs#show"
         end
       end
       

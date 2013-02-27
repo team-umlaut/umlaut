@@ -1,0 +1,59 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.journaltocs.ac.uk/api/journals/?output=articles&user=macleod.roddy@gmail.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: !binary |-
+        T0s=
+    headers:
+      !binary "RGF0ZQ==":
+      - !binary |-
+        V2VkLCAyNyBGZWIgMjAxMyAxNjo0OTozNiBHTVQ=
+      !binary "U2VydmVy":
+      - !binary |-
+        QXBhY2hlLzIuMi4xNSAoQ2VudE9TKQ==
+      !binary "WC1Qb3dlcmVkLUJ5":
+      - !binary |-
+        UEhQLzUuMy4z
+      !binary "Q29udGVudC1MZW5ndGg=":
+      - !binary |-
+        MTk3Ng==
+      !binary "Q29udGVudC1UeXBl":
+      - !binary |-
+        YXBwbGljYXRpb24veG1sOyBjaGFyc2V0PUlTTy04ODU5LTE=
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\r\n
+        \        xmlns=\"http://purl.org/rss/1.0/\"\r\n         xmlns:mn=\"http://usefulinc.com/rss/manifest/\"\r\n
+        \        xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n\n  <channel rdf:about=\"http://www.journaltocs.hw.ac.uk/api/journals\">\r\n
+        \   <title>JournalTOCs API</title>\r\n    <link>http://www.journaltocs.ac.uk/api</link>\r\n
+        \   <description><![CDATA[This is the URL Base for the JournalTOCs API, which
+        is freely available for developers to create their own web applications with
+        Table of Contents (TOCs) published by over 16,000 scholarly journals.]]></description>\r\n
+        \   <dc:publisher>JournalTOCs API</dc:publisher>\r\n    <dc:creator>JOURNALTOCS
+        API PROJECT</dc:creator>\r\n\t\t<dc:coverage>1</dc:coverage>\r\n    <image
+        rdf:resource=\"http://www.journaltocs.hw.ac.uk/images/xtralogo.gif\" />\r\n
+        \   <items>\r\n      <rdf:Seq>\r\n        <rdf:li rdf:resource=\"http://www.journaltocs.ac.uk/api\"
+        />\r\n      </rdf:Seq>\r\n    </items>\r\n  </channel>\r\n    <item rdf:about=\"http://www.journaltocs.ac.uk/api\">\r\n
+        \   <link>http://www.journaltocs.ac.uk/api</link>\r\n    <title>JournalTOCs
+        API journals</title>\r\n    <description><![CDATA[To use this API you need
+        to specify a value for journals</p>\r\n\t\t<p>This is an example of using
+        the API to search for all the journals that contain the word <i>science</i>
+        in their titles:<br>\r\n    http://www.journaltocs.hw.ac.uk/api/journals/science\r\n
+        \   <p>(in the example, the resource-type is \"journals\" and the query string
+        is \"science\")</p>\r\n    <p>Currently the API return results in RSS 1.0
+        format only.</p>\r\n    <p>Go to http://www.journaltocs.hw.ac.uk/index.php?action=api
+        for further information.</p>]]></description>\r\n\t\t\r\n    </item>\r\n\t\r\n
+        \ <rdf:Description rdf:ID=\"manifest\">\r\n    <mn:channels>\r\n      <rdf:Seq>\r\n
+        \       <rdf:li rdf:resource=\"http://www.journaltocs.hw.ac.uk/api/journals\"
+        />\r\n      </rdf:Seq>\r\n    </mn:channels>\r\n  </rdf:Description>\r\n\r\n</rdf:RDF>"
+    http_version: 
+  recorded_at: Wed, 27 Feb 2013 16:49:36 GMT
+recorded_with: VCR 2.4.0
