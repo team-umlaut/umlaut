@@ -4,6 +4,11 @@ require 'umlaut/routes'
 # seems to need this. 
 require 'openurl'
 
+# need to explicitly require bento_search engine gem, 
+# so the rails engine aspects will get activated. doh. 
+require 'bento_search'
+
+
 module Umlaut
   class Engine < Rails::Engine
     engine_name "umlaut"
