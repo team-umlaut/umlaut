@@ -406,8 +406,11 @@ img.toggle_icon {
 
 
 
-.response_notes {
-   margin-top: .5em;
+
+.response_notes, .response_authentication_instructions {
+   margin-top: .5em;   
+   color: gray;
+   font-weight: bold;
 }
 
 .sidebar .response_notes {
@@ -436,7 +439,7 @@ img.toggle_icon {
   margin-bottom: 0.8em;
 }
 
-.response_coverage_statement {
+.response_coverage_statement, .edition_warning {
   margin-bottom: .5em;
   margin-top: .5em;
   color: gray;
@@ -445,14 +448,6 @@ img.toggle_icon {
 a:not(:hover) .coverage_summary {
   /* even though it's part of a hyperlink, we make it black for distinction */
   color: black; 
-}
-
-
-
-.edition_warning {
-   color: gray;
-   margin-top: 6px;
-   margin-bottom: 6px;
 }
 
 .edition_warning > .label {
