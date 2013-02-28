@@ -1,0 +1,1103 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.journaltocs.ac.uk/api/journals/15322890?output=articles&user=macleod.roddy@gmail.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: !binary |-
+        T0s=
+    headers:
+      !binary "RGF0ZQ==":
+      - !binary |-
+        VGh1LCAyOCBGZWIgMjAxMyAxNjozNDozOCBHTVQ=
+      !binary "U2VydmVy":
+      - !binary |-
+        QXBhY2hlLzIuMi4xNSAoQ2VudE9TKQ==
+      !binary "WC1Qb3dlcmVkLUJ5":
+      - !binary |-
+        UEhQLzUuMy4z
+      !binary "VHJhbnNmZXItRW5jb2Rpbmc=":
+      - !binary |-
+        Y2h1bmtlZA==
+      !binary "Q29udGVudC1UeXBl":
+      - !binary |-
+        YXBwbGljYXRpb24veG1sOyBjaGFyc2V0PXV0Zi04
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"
+        \r\n         xmlns:prism=\"http://prismstandard.org/namespaces/1.2/basic/\"
+        \r\n\t\t\t\t xmlns:dc=\"http://purl.org/dc/elements/1.1/\" \r\n\t\t\t\t xmlns:mn=\"http://usefulinc.com/rss/manifest/\"\r\n\t\t\t\t
+        xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" \r\n\t\t\t\t xmlns=\"http://purl.org/rss/1.0/\">\n\n
+        \ <channel rdf:about=\"http://www.journaltocs.hw.ac.uk/api/journals\">\r\n
+        \   <title>JournalTOCs API - Journal of the American Society for Information
+        Science and Technology (27 articles)</title>\r\n    <link>http://www.journaltocs.ac.uk/api/journals/15322890</link>\r\n
+        \   <description><![CDATA[Your query: 15322890 has returned 27 articles. They
+        are listed in alphabetical order per journal (maximum number of returned items
+        is 3000).]]></description>\r\n    <dc:publisher>JournalTOCs API</dc:publisher>\r\n
+        \   <dc:creator>JOURNALTOCS API PROJECT</dc:creator>\r\n\t\t<dc:coverage>1</dc:coverage>\r\n
+        \   <image rdf:resource=\"http://www.journaltocs.hw.ac.uk/images/xtralogo.gif\"
+        />\r\n    <items>\r\n      <rdf:Seq>\r\n        \r\n      </rdf:Seq>\r\n    </items>\r\n
+        \ </channel>\r\n  <item rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22776\">\n<title>Correlation
+        over time for citations to mathematics articles</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22776</link>\r\n<description>Explicit
+        definition of the limits of citation analysis demands additional tests for
+        the validity of citation analysis. The stability of citation rankings over
+        time can be regarded as confirming the validity of evaluative citation analysis.
+        This stability over time was investigated for two sets of citation records
+        from the Web of Science (Thomson Reuters, Philadelphia, PA) for articles published
+        in journals classified in Journal Citation Reports as Mathematics. These sets
+        are of all such articles for the 1960s and for the 1970s. This study employs
+        only descriptive statistics and draws no inferences to any larger population.
+        The study found a high correlation from one decade to the next of rankings
+        among sets of most highly cited articles. However, the study found a low correlation
+        for rankings among articles whose ranks were the 500 directly below those
+        of the 500 most cited. This perhaps expected result is discussed in terms
+        of the Gl&#228;nzel&#8208;Schubert&#8208;Schoepflin stochastic model for citation
+        processes and also in connection with an account of the purposes of evaluative
+        citation analysis. This interpretative context suggests why the limitations
+        of citation analysis may be inherent to citation analysis even when it is
+        done well.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22776</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22776\"><b>Correlation
+        over time for citations to mathematics articles</b></A><br /> <br /><i>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </i><br />Explicit definition of the limits of citation analysis
+        demands additional tests for the validity of citation analysis. The stability
+        of citation rankings over time can be regarded as confirming the validity
+        of evaluative citation analysis. This stability over time was investigated
+        for two sets of citation records from the Web of Science (Thomson Reuters,
+        Philadelphia, PA) for articles published in journals classified in Journal
+        Citation Reports as Mathematics. These sets are of all such articles for the
+        1960s and for the 1970s. This study employs only descriptive statistics and
+        draws no inferences to any larger population. The study found a high correlation
+        from one decade to the next of rankings among sets of most highly cited articles.
+        However, the study found a low correlation for rankings among articles whose
+        ranks were the 500 directly below those of the 500 most cited. This perhaps
+        expected result is discussed in terms of the Gl&#228;nzel&#8208;Schubert&#8208;Schoepflin
+        stochastic model for citation processes and also in connection with an account
+        of the purposes of evaluative citation analysis. This interpretative context
+        suggests why the limitations of citation analysis may be inherent to citation
+        analysis even when it is done well.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22756\">\n<title>Do
+        humans have conceptual models about geographic objects&#39; a user study</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22756</link>\r\n<description>In
+        this article, we investigate what sorts of information humans request about
+        geographical objects of the same type. For example, Edinburgh Castle and Bodiam
+        Castle are two objects of the same type: &#8220;castle.&#8221; The question
+        is whether specific information is requested for the object type &#8220;castle&#8221;
+        and how this information differs for objects of other types (e.g., church,
+        museum, or lake). We aim to answer this question using an online survey. In
+        the survey, we showed 184 participants 200 images pertaining to urban and
+        rural objects and asked them to write questions for which they would like
+        to know the answers when seeing those objects. Our analysis of the 6,169 questions
+        collected in the survey shows that humans have shared ideas of what to ask
+        about geographical objects. When the object types resemble each other (e.g.,
+        church and temple), the requested information is similar for the objects of
+        these types. Otherwise, the information is specific to an object type. Our
+        results may be very useful in guiding Natural Language Processing tasks involving
+        automatic generation of templates for image descriptions and their assessment,
+        as well as image indexing and organization.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22756</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22756\"><b>Do
+        humans have conceptual models about geographic objects&#39; a user study</b></A><br
+        /> <br /><i>Journal of the American Society for Information Science and Technology,
+        Vol. , No.  () pp.  - </i><br />In this article, we investigate what sorts
+        of information humans request about geographical objects of the same type.
+        For example, Edinburgh Castle and Bodiam Castle are two objects of the same
+        type: &#8220;castle.&#8221; The question is whether specific information is
+        requested for the object type &#8220;castle&#8221; and how this information
+        differs for objects of other types (e.g., church, museum, or lake). We aim
+        to answer this question using an online survey. In the survey, we showed 184
+        participants 200 images pertaining to urban and rural objects and asked them
+        to write questions for which they would like to know the answers when seeing
+        those objects. Our analysis of the 6,169 questions collected in the survey
+        shows that humans have shared ideas of what to ask about geographical objects.
+        When the object types resemble each other (e.g., church and temple), the requested
+        information is similar for the objects of these types. Otherwise, the information
+        is specific to an object type. Our results may be very useful in guiding Natural
+        Language Processing tasks involving automatic generation of templates for
+        image descriptions and their assessment, as well as image indexing and organization.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22738\">\n<title>User
+        evaluation of automatically generated keywords and toponyms for geo&#8208;referenced
+        images</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22738</link>\r\n<description>This
+        article presents the results of a user evaluation of automatically generated
+        concept keywords and place names (toponyms) for geo&#8208;referenced images.
+        Automatically annotating images is becoming indispensable for effective information
+        retrieval, since the number of geo&#8208;referenced images available online
+        is growing, yet many images are insufficiently tagged or captioned to be efficiently
+        searchable by standard information retrieval procedures. The Tripod project
+        developed original methods for automatically annotating geo&#8208;referenced
+        images by generating representations of the likely visible footprint of a
+        geo&#8208;referenced image, and using this footprint to query spatial databases
+        and web resources. These queries return raw lists of potential keywords and
+        toponyms, which are subsequently filtered and ranked. This article reports
+        on user experiments designed to evaluate the quality of the generated annotations.
+        The experiments combined quantitative and qualitative approaches: To retrieve
+        a large number of responses, participants rated the annotations in standardized
+        online questionnaires that showed an image and its corresponding keywords.
+        In addition, several focus groups provided rich qualitative information in
+        open discussions. The results of the evaluation show that currently the annotation
+        method performs better on rural images than on urban ones. Further, for each
+        image at least one suitable keyword could be generated. The integration of
+        heterogeneous data sources resulted in some images having a high level of
+        noise in the form of obviously wrong or spurious keywords. The article discusses
+        the evaluation itself and methods to improve the automatic generation of annotations.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22738</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22738\"><b>User
+        evaluation of automatically generated keywords and toponyms for geo&#8208;referenced
+        images</b></A><br /> <br /><i>Journal of the American Society for Information
+        Science and Technology, Vol. , No.  () pp.  - </i><br />This article presents
+        the results of a user evaluation of automatically generated concept keywords
+        and place names (toponyms) for geo&#8208;referenced images. Automatically
+        annotating images is becoming indispensable for effective information retrieval,
+        since the number of geo&#8208;referenced images available online is growing,
+        yet many images are insufficiently tagged or captioned to be efficiently searchable
+        by standard information retrieval procedures. The Tripod project developed
+        original methods for automatically annotating geo&#8208;referenced images
+        by generating representations of the likely visible footprint of a geo&#8208;referenced
+        image, and using this footprint to query spatial databases and web resources.
+        These queries return raw lists of potential keywords and toponyms, which are
+        subsequently filtered and ranked. This article reports on user experiments
+        designed to evaluate the quality of the generated annotations. The experiments
+        combined quantitative and qualitative approaches: To retrieve a large number
+        of responses, participants rated the annotations in standardized online questionnaires
+        that showed an image and its corresponding keywords. In addition, several
+        focus groups provided rich qualitative information in open discussions. The
+        results of the evaluation show that currently the annotation method performs
+        better on rural images than on urban ones. Further, for each image at least
+        one suitable keyword could be generated. The integration of heterogeneous
+        data sources resulted in some images having a high level of noise in the form
+        of obviously wrong or spurious keywords. The article discusses the evaluation
+        itself and methods to improve the automatic generation of annotations.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22771\">\n<title>The
+        differences between latent topics in abstracts and citation contexts of citing
+        papers</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22771</link>\r\n<description>Although
+        it is commonly expected that the citation context of a reference is likely
+        to provide more detailed and direct information about the nature of a citation,
+        few studies in the literature have specifically addressed the extent to which
+        the information in different parts of a scientific publication differs. Do
+        abstracts tend to use conceptually broader terms than sentences in a citation
+        context in the body of a publication&#39; In this article, we propose a method
+        to analyze and compare latent topics in scientific publications, in particular,
+        from abstracts of papers that cited a target reference and from sentences
+        that cited the target reference. We conducted an experiment and applied topical
+        modeling techniques to full&#8208;text papers in eight biomedicine journals.
+        Topics derived from the two sources are compared in terms of their similarities
+        and broad&#8208;narrow relationships defined based on information entropy.
+        The results show that abstracts and citation contexts are characterized by
+        distinct sets of topics with moderate overlaps. Furthermore, the results confirm
+        that topics from abstracts of citing papers have broader terms than topics
+        from citation contexts formed by citing sentences. The method and the findings
+        could be used to enhance and extend the current methodologies for research
+        evaluation and citation evaluation.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22771</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22771\"><b>The
+        differences between latent topics in abstracts and citation contexts of citing
+        papers</b></A><br /> <br /><i>Journal of the American Society for Information
+        Science and Technology, Vol. , No.  () pp.  - </i><br />Although it is commonly
+        expected that the citation context of a reference is likely to provide more
+        detailed and direct information about the nature of a citation, few studies
+        in the literature have specifically addressed the extent to which the information
+        in different parts of a scientific publication differs. Do abstracts tend
+        to use conceptually broader terms than sentences in a citation context in
+        the body of a publication&#39; In this article, we propose a method to analyze
+        and compare latent topics in scientific publications, in particular, from
+        abstracts of papers that cited a target reference and from sentences that
+        cited the target reference. We conducted an experiment and applied topical
+        modeling techniques to full&#8208;text papers in eight biomedicine journals.
+        Topics derived from the two sources are compared in terms of their similarities
+        and broad&#8208;narrow relationships defined based on information entropy.
+        The results show that abstracts and citation contexts are characterized by
+        distinct sets of topics with moderate overlaps. Furthermore, the results confirm
+        that topics from abstracts of citing papers have broader terms than topics
+        from citation contexts formed by citing sentences. The method and the findings
+        could be used to enhance and extend the current methodologies for research
+        evaluation and citation evaluation.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22928\">\n<title>Thinking
+        about data</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22928</link>\r\n<description>&lt;br&gt;\nArticle
+        URL: http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22928&lt;br&gt;\nJournal:
+        Journal of the American Society for Information Science and Technology</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22928</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22928\"><b>Thinking
+        about data</b></A><br /> <br /><i>Journal of the American Society for Information
+        Science and Technology, Vol. , No.  () pp.  - </i><br />\nArticle URL: http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22928\nJournal:
+        Journal of the American Society for Information Science and Technology</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22780\">\n<title>How
+        information matters: Networks and public policy innovation by Kathleen Hale.
+        washington, DC: Georgetown University Press, 2011. 230 pp. $29.95. (isbn 978&#8208;1&#8208;58901&#8208;700&#8208;9).</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22780</link>\r\n<description>&lt;br&gt;\nArticle
+        URL: http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22780&lt;br&gt;\nJournal:
+        Journal of the American Society for Information Science and Technology</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22780</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22780\"><b>How
+        information matters: Networks and public policy innovation by Kathleen Hale.
+        washington, DC: Georgetown University Press, 2011. 230 pp. $29.95. (isbn 978&#8208;1&#8208;58901&#8208;700&#8208;9).</b></A><br
+        /> <br /><i>Journal of the American Society for Information Science and Technology,
+        Vol. , No.  () pp.  - </i><br />\nArticle URL: http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22780\nJournal:
+        Journal of the American Society for Information Science and Technology</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22720\">\n<title>The
+        problem of percentile rank scores used with small reference sets</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22720</link>\r\n<description>&lt;br&gt;\nArticle
+        URL: http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22720&lt;br&gt;\nJournal:
+        Journal of the American Society for Information Science and Technology</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22720</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22720\"><b>The
+        problem of percentile rank scores used with small reference sets</b></A><br
+        /> <br /><i>Journal of the American Society for Information Science and Technology,
+        Vol. , No.  () pp.  - </i><br />\nArticle URL: http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22720\nJournal:
+        Journal of the American Society for Information Science and Technology</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22763\">\n<title>Evaluating
+        the success of vocabulary reconciliation for cultural heritage collections</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22763</link>\r\n<description>The
+        concept of Linked Data has made its entrance in the cultural heritage sector
+        due to its potential use for the integration of heterogeneous collections
+        and deriving additional value out of existing metadata. However, practitioners
+        and researchers alike need a better understanding of what outcome they can
+        reasonably expect of the reconciliation process between their local metadata
+        and established controlled vocabularies which are already a part of the Linked
+        Data cloud. This paper offers an in&#8208;depth analysis of how a locally
+        developed vocabulary can be successfully reconciled with the Library of Congress
+        Subject Headings (LCSH) and the Arts and Architecture Thesaurus (AAT) through
+        the help of a general&#8208;purpose tool for interactive data transformation
+        (OpenRefine). Issues negatively affecting the reconciliation process are identified
+        and solutions are proposed in order to derive maximum value from existing
+        metadata and controlled vocabularies in an automated manner.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22763</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22763\"><b>Evaluating
+        the success of vocabulary reconciliation for cultural heritage collections</b></A><br
+        /> <br /><i>Journal of the American Society for Information Science and Technology,
+        Vol. , No.  () pp.  - </i><br />The concept of Linked Data has made its entrance
+        in the cultural heritage sector due to its potential use for the integration
+        of heterogeneous collections and deriving additional value out of existing
+        metadata. However, practitioners and researchers alike need a better understanding
+        of what outcome they can reasonably expect of the reconciliation process between
+        their local metadata and established controlled vocabularies which are already
+        a part of the Linked Data cloud. This paper offers an in&#8208;depth analysis
+        of how a locally developed vocabulary can be successfully reconciled with
+        the Library of Congress Subject Headings (LCSH) and the Arts and Architecture
+        Thesaurus (AAT) through the help of a general&#8208;purpose tool for interactive
+        data transformation (OpenRefine). Issues negatively affecting the reconciliation
+        process are identified and solutions are proposed in order to derive maximum
+        value from existing metadata and controlled vocabularies in an automated manner.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22805\">\n<title>Why
+        do group members provide information to digital knowledge repositories&#39;
+        a multilevel application of transactive memory theory</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22805</link>\r\n<description>The
+        proliferation of digital knowledge repositories (DKRs) used for distributed
+        and collocated work raises important questions about how to manage these technologies.
+        This study investigates why individuals contribute information to DKRs by
+        applying and extending transactive memory theory. Data from knowledge workers
+        (N&#8201;=&#8201;208) nested in work groups (J&#8201;=&#8201;17) located in
+        Europe and the United States revealed, consistent with transactive memory
+        theory, that perceptions of experts' retrieval of information were positively
+        related to the likelihood of information provision to DKRs. The relationship
+        between experts' perceptions of retrieval and information provision varied
+        from group to group, and cross&#8208;level interactions indicated that trust
+        in how the information would be used and the interdependence of tasks within
+        groups could explain that variation. Furthermore, information provision to
+        DKRs was related to communication networks in ways consistent with theorizing
+        regarding the formation of transactive memory systems. Implications for theory
+        and practice are discussed, emphasizing the utility of multilevel approaches
+        for conceptualizing and modeling why individuals provide information to DKRs.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22805</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22805\"><b>Why
+        do group members provide information to digital knowledge repositories&#39;
+        a multilevel application of transactive memory theory</b></A><br /> <br /><i>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </i><br />The proliferation of digital knowledge repositories
+        (DKRs) used for distributed and collocated work raises important questions
+        about how to manage these technologies. This study investigates why individuals
+        contribute information to DKRs by applying and extending transactive memory
+        theory. Data from knowledge workers (N&#8201;=&#8201;208) nested in work groups
+        (J&#8201;=&#8201;17) located in Europe and the United States revealed, consistent
+        with transactive memory theory, that perceptions of experts' retrieval of
+        information were positively related to the likelihood of information provision
+        to DKRs. The relationship between experts' perceptions of retrieval and information
+        provision varied from group to group, and cross&#8208;level interactions indicated
+        that trust in how the information would be used and the interdependence of
+        tasks within groups could explain that variation. Furthermore, information
+        provision to DKRs was related to communication networks in ways consistent
+        with theorizing regarding the formation of transactive memory systems. Implications
+        for theory and practice are discussed, emphasizing the utility of multilevel
+        approaches for conceptualizing and modeling why individuals provide information
+        to DKRs.</p>]]></content:encoded>\r\n</item>\n<item rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22759\">\n<title>Placing
+        articles in the large publisher nations: Is there a &#8220;free lunch&#8221;
+        in terms of higher impact&#39;</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22759</link>\r\n<description>This
+        paper deals with the role of a journal's publisher country in determining
+        the expected citation rates of the articles published in it. We analyze whether
+        a paper has a higher citation rate when it is published in one of the large
+        publisher nations, the U.S., U.K., or the Netherlands, compared to a hypothetical
+        situation when the same paper is published in journals of different origin.
+        This would constitute a &#8220;free lunch,&#8221; which could be explained
+        by a Matthew effect visible on the country&#8208;level, similar to the well&#8208;documented
+        Matthew effect on the author&#8208;level. We first use a simulation model
+        that highlights increasing citation returns to quality as the central key
+        condition on which such a Matthew effect may emerge. Then we use an international
+        bibliometric panel data set of forty&#8208;nine countries for the years 2000&#8211;2010
+        and show that such a &#8220;free lunch&#8221; implied by this Matthew effect
+        can be observed for top journals from the U.S. and depending on the specification
+        also from the U.K. and the Netherlands, while there is no effect for lower&#8208;ranked
+        American journals and negative effects for lower&#8208;ranked British journals
+        as well as those coming from the Netherlands.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22759</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22759\"><b>Placing
+        articles in the large publisher nations: Is there a &#8220;free lunch&#8221;
+        in terms of higher impact&#39;</b></A><br /> <br /><i>Journal of the American
+        Society for Information Science and Technology, Vol. , No.  () pp.  - </i><br
+        />This paper deals with the role of a journal's publisher country in determining
+        the expected citation rates of the articles published in it. We analyze whether
+        a paper has a higher citation rate when it is published in one of the large
+        publisher nations, the U.S., U.K., or the Netherlands, compared to a hypothetical
+        situation when the same paper is published in journals of different origin.
+        This would constitute a &#8220;free lunch,&#8221; which could be explained
+        by a Matthew effect visible on the country&#8208;level, similar to the well&#8208;documented
+        Matthew effect on the author&#8208;level. We first use a simulation model
+        that highlights increasing citation returns to quality as the central key
+        condition on which such a Matthew effect may emerge. Then we use an international
+        bibliometric panel data set of forty&#8208;nine countries for the years 2000&#8211;2010
+        and show that such a &#8220;free lunch&#8221; implied by this Matthew effect
+        can be observed for top journals from the U.S. and depending on the specification
+        also from the U.K. and the Netherlands, while there is no effect for lower&#8208;ranked
+        American journals and negative effects for lower&#8208;ranked British journals
+        as well as those coming from the Netherlands.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22842\">\n<title>Social
+        networking and scientific communication: A paradoxical return to Mertonian
+        roots&#39;</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22842</link>\r\n<description>Although
+        modes of interaction between the two continue to evolve, society and science
+        are inextricably linked. Preserving the integrity of science, and by extension
+        society, in the era of Twitter and Facebook represents a significant challenge.
+        The concept of open communication in science is not a new one. Sociologist
+        and scientific historian Robert Merton elegantly chronicled the qualities,
+        or &#8220;norms&#8221; of science as Communism, Universalism, Disinterestedness,
+        and Organized Scepticism, referred to by the acronym &#8220;CUDOS.&#8221;
+        Is social networking providing us with more efficient ways of upholding deep&#8208;rooted
+        principles, or are we at risk of compromising the integrity of science by
+        bypassing traditional gatekeepers&#39;</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22842</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22842\"><b>Social
+        networking and scientific communication: A paradoxical return to Mertonian
+        roots&#39;</b></A><br /> <br /><i>Journal of the American Society for Information
+        Science and Technology, Vol. , No.  () pp.  - </i><br />Although modes of
+        interaction between the two continue to evolve, society and science are inextricably
+        linked. Preserving the integrity of science, and by extension society, in
+        the era of Twitter and Facebook represents a significant challenge. The concept
+        of open communication in science is not a new one. Sociologist and scientific
+        historian Robert Merton elegantly chronicled the qualities, or &#8220;norms&#8221;
+        of science as Communism, Universalism, Disinterestedness, and Organized Scepticism,
+        referred to by the acronym &#8220;CUDOS.&#8221; Is social networking providing
+        us with more efficient ways of upholding deep&#8208;rooted principles, or
+        are we at risk of compromising the integrity of science by bypassing traditional
+        gatekeepers&#39;</p>]]></content:encoded>\r\n</item>\n<item rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22764\">\n<title>Scholars
+        on soap boxes: Science communication and dissemination in TED videos</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22764</link>\r\n<description>Online
+        videos provide a novel, and often interactive, platform for the popularization
+        of science. One successful collection is hosted on the TED (Technology, Entertainment,
+        Design) website. This study uses a range of bibliometric (citation) and webometric
+        (usage and bookmarking) indicators to examine TED videos in order to provide
+        insights into the type and scope of their impact. The results suggest that
+        TED Talks impact primarily the public sphere, with about three&#8208;quarters
+        of a billion total views, rather than the academic realm. Differences were
+        found among broad disciplinary areas, with art and design videos having generally
+        lower levels of impact but science and technology videos generating otherwise
+        average impact for TED. Many of the metrics were only loosely related, but
+        there was a general consensus about the most popular videos as measured through
+        views or comments on YouTube and the TED site. Moreover, most videos were
+        found in at least one online syllabus and videos in online syllabi tended
+        to be more viewed, discussed, and blogged. Less&#8208;liked videos generated
+        more discussion, although this may be because they are more controversial.
+        Science and technology videos presented by academics were more liked than
+        those by nonacademics, showing that academics are not disadvantaged in this
+        new media environment.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22764</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22764\"><b>Scholars
+        on soap boxes: Science communication and dissemination in TED videos</b></A><br
+        /> <br /><i>Journal of the American Society for Information Science and Technology,
+        Vol. , No.  () pp.  - </i><br />Online videos provide a novel, and often interactive,
+        platform for the popularization of science. One successful collection is hosted
+        on the TED (Technology, Entertainment, Design) website. This study uses a
+        range of bibliometric (citation) and webometric (usage and bookmarking) indicators
+        to examine TED videos in order to provide insights into the type and scope
+        of their impact. The results suggest that TED Talks impact primarily the public
+        sphere, with about three&#8208;quarters of a billion total views, rather than
+        the academic realm. Differences were found among broad disciplinary areas,
+        with art and design videos having generally lower levels of impact but science
+        and technology videos generating otherwise average impact for TED. Many of
+        the metrics were only loosely related, but there was a general consensus about
+        the most popular videos as measured through views or comments on YouTube and
+        the TED site. Moreover, most videos were found in at least one online syllabus
+        and videos in online syllabi tended to be more viewed, discussed, and blogged.
+        Less&#8208;liked videos generated more discussion, although this may be because
+        they are more controversial. Science and technology videos presented by academics
+        were more liked than those by nonacademics, showing that academics are not
+        disadvantaged in this new media environment.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22623\">\n<title>Document
+        clustering using the LSI subspace signature model</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22623</link>\r\n<description>We
+        describe the latent semantic indexing subspace signature model (LSISSM) for
+        semantic content representation of unstructured text. Grounded on singular
+        value decomposition, the model represents terms and documents by the distribution
+        signatures of their statistical contribution across the top&#8208;ranking
+        latent concept dimensions. LSISSM matches term signatures with document signatures
+        according to their mapping coherence between latent semantic indexing (LSI)
+        term subspace and LSI document subspace. LSISSM does feature reduction and
+        finds a low&#8208;rank approximation of scalable and sparse term&#8208;document
+        matrices. Experiments demonstrate that this approach significantly improves
+        the performance of major clustering algorithms such as standard K&#8208;means
+        and self&#8208;organizing maps compared with the vector space model and the
+        traditional LSI model. The unique contribution ranking mechanism in LSISSM
+        also improves the initialization of standard K&#8208;means compared with random
+        seeding procedure, which sometimes causes low efficiency and effectiveness
+        of clustering. A two&#8208;stage initialization strategy based on LSISSM significantly
+        reduces the running time of standard K&#8208;means procedures.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22623</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22623\"><b>Document
+        clustering using the LSI subspace signature model</b></A><br /> <br /><i>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </i><br />We describe the latent semantic indexing subspace signature
+        model (LSISSM) for semantic content representation of unstructured text. Grounded
+        on singular value decomposition, the model represents terms and documents
+        by the distribution signatures of their statistical contribution across the
+        top&#8208;ranking latent concept dimensions. LSISSM matches term signatures
+        with document signatures according to their mapping coherence between latent
+        semantic indexing (LSI) term subspace and LSI document subspace. LSISSM does
+        feature reduction and finds a low&#8208;rank approximation of scalable and
+        sparse term&#8208;document matrices. Experiments demonstrate that this approach
+        significantly improves the performance of major clustering algorithms such
+        as standard K&#8208;means and self&#8208;organizing maps compared with the
+        vector space model and the traditional LSI model. The unique contribution
+        ranking mechanism in LSISSM also improves the initialization of standard K&#8208;means
+        compared with random seeding procedure, which sometimes causes low efficiency
+        and effectiveness of clustering. A two&#8208;stage initialization strategy
+        based on LSISSM significantly reduces the running time of standard K&#8208;means
+        procedures.</p>]]></content:encoded>\r\n</item>\n<item rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22789\">\n<title>Learning
+        to rank using smoothing methods for language modeling</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22789</link>\r\n<description>The
+        central issue in language model estimation is smoothing, which is a technique
+        for avoiding zero probability estimation problem and overcoming data sparsity.
+        There are three representative smoothing methods: Jelinek&#8208;Mercer (JM)
+        method; Bayesian smoothing using Dirichlet priors (Dir) method; and absolute
+        discounting (Dis) method, whose parameters are usually estimated empirically.
+        Previous research in information retrieval (IR) on smoothing parameter estimation
+        tends to select a single value from optional values for the collection, but
+        it may not be appropriate for all the queries. The effectiveness of all the
+        optional values should be considered to improve the ranking performance. Recently,
+        learning to rank has become an effective approach to optimize the ranking
+        accuracy by merging the existing retrieval methods. In this article, the smoothing
+        methods for language modeling in information retrieval (LMIR) with different
+        parameters are treated as different retrieval methods, then a learning to
+        rank approach to learn a ranking model based on the features extracted by
+        smoothing methods is presented. In the process of learning, the effectiveness
+        of all the optional smoothing parameters is taken into account for all queries.
+        The experimental results on the Learning to Rank for Information Retrieval
+        (LETOR) LETOR3.0 and LETOR4.0 data sets show that our approach is effective
+        in improving the performance of LMIR.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22789</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22789\"><b>Learning
+        to rank using smoothing methods for language modeling</b></A><br /> <br /><i>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </i><br />The central issue in language model estimation is smoothing,
+        which is a technique for avoiding zero probability estimation problem and
+        overcoming data sparsity. There are three representative smoothing methods:
+        Jelinek&#8208;Mercer (JM) method; Bayesian smoothing using Dirichlet priors
+        (Dir) method; and absolute discounting (Dis) method, whose parameters are
+        usually estimated empirically. Previous research in information retrieval
+        (IR) on smoothing parameter estimation tends to select a single value from
+        optional values for the collection, but it may not be appropriate for all
+        the queries. The effectiveness of all the optional values should be considered
+        to improve the ranking performance. Recently, learning to rank has become
+        an effective approach to optimize the ranking accuracy by merging the existing
+        retrieval methods. In this article, the smoothing methods for language modeling
+        in information retrieval (LMIR) with different parameters are treated as different
+        retrieval methods, then a learning to rank approach to learn a ranking model
+        based on the features extracted by smoothing methods is presented. In the
+        process of learning, the effectiveness of all the optional smoothing parameters
+        is taken into account for all queries. The experimental results on the Learning
+        to Rank for Information Retrieval (LETOR) LETOR3.0 and LETOR4.0 data sets
+        show that our approach is effective in improving the performance of LMIR.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22760\">\n<title>New
+        patterns of scientific growth: How research expanded after the invention of
+        scanning tunneling microscopy and the discovery of Buckminsterfullerenes</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22760</link>\r\n<description>This
+        article describes patterns of scientific growth that emerge in response to
+        major research accomplishments in instrumentation and the discovery of new
+        matter. Using two Nobel Prize&#8208;winning contributions, the scanning tunneling
+        microscope (STM) and the discovery of Buckminsterfullerenes (BUF), we examine
+        the growth of follow&#8208;up research via citation networks at the author
+        and subdiscipline level. A longitudinal network analysis suggests that structure,
+        cohesiveness, and interdisciplinarity vary considerably with the type of breakthrough
+        and over time. Scientific progress appears to be multifaceted, including not
+        only theoretical advances but also the discovery of new instrumentation and
+        new matter. In addition, we argue that scientific growth does not necessarily
+        lead to the formation of new specialties or new subdisciplines. Rather, we
+        observe the emergence of a research community formed at the intersection of
+        subdisciplinary boundaries.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22760</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22760\"><b>New
+        patterns of scientific growth: How research expanded after the invention of
+        scanning tunneling microscopy and the discovery of Buckminsterfullerenes</b></A><br
+        /> <br /><i>Journal of the American Society for Information Science and Technology,
+        Vol. , No.  () pp.  - </i><br />This article describes patterns of scientific
+        growth that emerge in response to major research accomplishments in instrumentation
+        and the discovery of new matter. Using two Nobel Prize&#8208;winning contributions,
+        the scanning tunneling microscope (STM) and the discovery of Buckminsterfullerenes
+        (BUF), we examine the growth of follow&#8208;up research via citation networks
+        at the author and subdiscipline level. A longitudinal network analysis suggests
+        that structure, cohesiveness, and interdisciplinarity vary considerably with
+        the type of breakthrough and over time. Scientific progress appears to be
+        multifaceted, including not only theoretical advances but also the discovery
+        of new instrumentation and new matter. In addition, we argue that scientific
+        growth does not necessarily lead to the formation of new specialties or new
+        subdisciplines. Rather, we observe the emergence of a research community formed
+        at the intersection of subdisciplinary boundaries.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22772\">\n<title>Exploring
+        the effects of a transition to open access: Insights from a simulation study</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22772</link>\r\n<description>The
+        Open Access (OA) movement, which postulates gratis and unrestricted online
+        access to publicly funded research findings, has significantly gained momentum
+        in recent years. The two ways of achieving OA are self&#8208;archiving of
+        scientific work by the authors (Green OA) and publishing in OA journals (Gold
+        OA). But there is still no consensus which model should be supported in particular.
+        The aim of this simulation study is to discover mechanisms and predict developments
+        that may lead to specific outcomes of possible market transformation scenarios.
+        It contributes to theories related to OA by substantiating the argument of
+        a citation advantage of OA articles and by visualizing the mechanisms of a
+        journal system collapsing in the long&#8208;term due to the continuation of
+        the serials crisis. The practical contribution of this research stems from
+        the integration of all market players: Decisions regarding potential financial
+        support of OA models can be aligned with our findings, as well as the decision
+        of a publisher to migrate his/her journals to Gold OA. Our results indicate
+        that for scholarly communication in general, a transition to Green OA combined
+        with a certain level of subscription&#8208;based publishing and a migration
+        of few top journals is the most beneficial development.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22772</dc:identifier>\r\n<dc:creator>The
+        Open Access &#40;OA&#41; movement, which postulates gratis and unrestricted
+        online access to publicly funded research findings, has significantly gained
+        momentum in recent years. The two ways of achieving OA are self&amp;&#35;8208;archiving
+        of scientific work by the authors &#40;Green OA&#41; and publishing in OA
+        s &#40;Gold OA&#41;. But there is still no consensus which model should be
+        supported in particular. The aim of this simulation study is to discover mechanisms
+        and predict developments that may lead to specific outcomes of possible market
+        transformation scenarios. It contributes to theories related to OA by substantiating
+        the argument of a citation advantage of OA s and by visualizing the mechanisms
+        of a  system collapsing in the long&amp;&#35;8208;term due to the continuation
+        of the serials crisis. The practical contribution of this research stems from
+        the integration of all market players&#58; Decisions regarding potential financial
+        support of OA models can be aligned with our findings, as we</dc:creator>\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22772\"><b>Exploring
+        the effects of a transition to open access: Insights from a simulation study</b></A><br
+        /> <br /><i>Journal of the American Society for Information Science and Technology,
+        Vol. , No.  () pp.  - </i><br />The Open Access (OA) movement, which postulates
+        gratis and unrestricted online access to publicly funded research findings,
+        has significantly gained momentum in recent years. The two ways of achieving
+        OA are self&#8208;archiving of scientific work by the authors (Green OA) and
+        publishing in OA journals (Gold OA). But there is still no consensus which
+        model should be supported in particular. The aim of this simulation study
+        is to discover mechanisms and predict developments that may lead to specific
+        outcomes of possible market transformation scenarios. It contributes to theories
+        related to OA by substantiating the argument of a citation advantage of OA
+        articles and by visualizing the mechanisms of a journal system collapsing
+        in the long&#8208;term due to the continuation of the serials crisis. The
+        practical contribution of this research stems from the integration of all
+        market players: Decisions regarding potential financial support of OA models
+        can be aligned with our findings, as well as the decision of a publisher to
+        migrate his/her journals to Gold OA. Our results indicate that for scholarly
+        communication in general, a transition to Green OA combined with a certain
+        level of subscription&#8208;based publishing and a migration of few top journals
+        is the most beneficial development.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22792\">\n<title>How
+        to analyze percentile citation impact data meaningfully in bibliometrics:
+        The statistical analysis of distributions, percentile rank classes, and top&#8208;cited
+        papers</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22792</link>\r\n<description>According
+        to current research in bibliometrics, percentiles (or percentile rank classes)
+        are the most suitable method for normalizing the citation counts of individual
+        publications in terms of the subject area, the document type, and the publication
+        year. Up to now, bibliometric research has concerned itself primarily with
+        the calculation of percentiles. This study suggests how percentiles (and percentile
+        rank classes) can be analyzed meaningfully for an evaluation study. Publication
+        sets from four universities are compared with each other to provide sample
+        data. These suggestions take into account on the one hand the distribution
+        of percentiles over the publications in the sets (universities here) and on
+        the other hand concentrate on the range of publications with the highest citation
+        impact&#8212;that is, the range that is usually of most interest in the evaluation
+        of scientific performance.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22792</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22792\"><b>How
+        to analyze percentile citation impact data meaningfully in bibliometrics:
+        The statistical analysis of distributions, percentile rank classes, and top&#8208;cited
+        papers</b></A><br /> <br /><i>Journal of the American Society for Information
+        Science and Technology, Vol. , No.  () pp.  - </i><br />According to current
+        research in bibliometrics, percentiles (or percentile rank classes) are the
+        most suitable method for normalizing the citation counts of individual publications
+        in terms of the subject area, the document type, and the publication year.
+        Up to now, bibliometric research has concerned itself primarily with the calculation
+        of percentiles. This study suggests how percentiles (and percentile rank classes)
+        can be analyzed meaningfully for an evaluation study. Publication sets from
+        four universities are compared with each other to provide sample data. These
+        suggestions take into account on the one hand the distribution of percentiles
+        over the publications in the sets (universities here) and on the other hand
+        concentrate on the range of publications with the highest citation impact&#8212;that
+        is, the range that is usually of most interest in the evaluation of scientific
+        performance.</p>]]></content:encoded>\r\n</item>\n<item rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22774\">\n<title>Empirical
+        evidence for the relevance of fractional scoring in the calculation of percentile
+        rank scores</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22774</link>\r\n<description>Fractional
+        scoring has been proposed to avoid inconsistencies in the attribution of publications
+        to percentile rank classes. Uncertainties and ambiguities in the evaluation
+        of percentile ranks can be demonstrated most easily with small data sets.
+        But for larger data sets, an often large number of papers with the same citation
+        count leads to the same uncertainties and ambiguities, which can be avoided
+        by fractional scoring, demonstrated by four different empirical data sets
+        with several thousand publications each, which are assigned to six percentile
+        rank classes. Only by utilizing fractional scoring does, the total score of
+        all papers exactly reproduce the theoretical value in each case.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22774</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22774\"><b>Empirical
+        evidence for the relevance of fractional scoring in the calculation of percentile
+        rank scores</b></A><br /> <br /><i>Journal of the American Society for Information
+        Science and Technology, Vol. , No.  () pp.  - </i><br />Fractional scoring
+        has been proposed to avoid inconsistencies in the attribution of publications
+        to percentile rank classes. Uncertainties and ambiguities in the evaluation
+        of percentile ranks can be demonstrated most easily with small data sets.
+        But for larger data sets, an often large number of papers with the same citation
+        count leads to the same uncertainties and ambiguities, which can be avoided
+        by fractional scoring, demonstrated by four different empirical data sets
+        with several thousand publications each, which are assigned to six percentile
+        rank classes. Only by utilizing fractional scoring does, the total score of
+        all papers exactly reproduce the theoretical value in each case.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22825\">\n<title>RDA:
+        Resource description &amp; access&#8212;a survey of the current state of the
+        art</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22825</link>\r\n<description>Resource
+        Description &amp; Access (RDA) is intended to provide a flexible and extensible
+        framework that can accommodate all types of content and media within rapidly
+        evolving digital environments while also maintaining compatibility with the
+        Anglo&#8208;American Cataloguing Rules, 2nd edition (AACR2). The cataloging
+        community is grappling with practical issues in navigating the transition
+        from AACR2 to RDA; there is a definite need to evaluate major subject areas
+        and broader themes in information organization under the new RDA paradigm.
+        This article aims to accomplish this task through a thorough and critical
+        review of the emerging RDA literature published from 2005 to 2011. The review
+        mostly concerns key areas of difference between RDA and AACR2, the relationship
+        of the new cataloging code to metadata standards, the impact on encoding standards
+        such as Machine&#8208;Readable Cataloging (MARC), end user considerations,
+        and practitioners' views on RDA implementation and training. Future research
+        will require more in&#8208;depth studies of RDA's expected benefits and the
+        manner in which the new cataloging code will improve resource retrieval and
+        bibliographic control for users and catalogers alike over AACR2. The question
+        as to how the cataloging community can best move forward to the post&#8208;AACR2/MARC
+        environment must be addressed carefully so as to chart the future of bibliographic
+        control in the evolving environment of information production, management,
+        and use.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22825</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22825\"><b>RDA:
+        Resource description &amp; access&#8212;a survey of the current state of the
+        art</b></A><br /> <br /><i>Journal of the American Society for Information
+        Science and Technology, Vol. , No.  () pp.  - </i><br />Resource Description
+        &amp; Access (RDA) is intended to provide a flexible and extensible framework
+        that can accommodate all types of content and media within rapidly evolving
+        digital environments while also maintaining compatibility with the Anglo&#8208;American
+        Cataloguing Rules, 2nd edition (AACR2). The cataloging community is grappling
+        with practical issues in navigating the transition from AACR2 to RDA; there
+        is a definite need to evaluate major subject areas and broader themes in information
+        organization under the new RDA paradigm. This article aims to accomplish this
+        task through a thorough and critical review of the emerging RDA literature
+        published from 2005 to 2011. The review mostly concerns key areas of difference
+        between RDA and AACR2, the relationship of the new cataloging code to metadata
+        standards, the impact on encoding standards such as Machine&#8208;Readable
+        Cataloging (MARC), end user considerations, and practitioners' views on RDA
+        implementation and training. Future research will require more in&#8208;depth
+        studies of RDA's expected benefits and the manner in which the new cataloging
+        code will improve resource retrieval and bibliographic control for users and
+        catalogers alike over AACR2. The question as to how the cataloging community
+        can best move forward to the post&#8208;AACR2/MARC environment must be addressed
+        carefully so as to chart the future of bibliographic control in the evolving
+        environment of information production, management, and use.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22762\">\n<title>On
+        ranking relevant entities in heterogeneous networks using a language&#8208;based
+        model</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22762</link>\r\n<description>A
+        new challenge, accessing multiple relevant entities, arises from the availability
+        of linked heterogeneous data. In this article, we address more specifically
+        the problem of accessing relevant entities, such as publications and authors
+        within a bibliographic network, given an information need. We propose a novel
+        algorithm, called BibRank, that estimates a joint relevance of documents and
+        authors within a bibliographic network. This model ranks each type of entity
+        using a score propagation algorithm with respect to the query topic and the
+        structure of the underlying bi&#8208;type information entity network. Evidence
+        sources, namely content&#8208;based and network&#8208;based scores, are both
+        used to estimate the topical similarity between connected entities. For this
+        purpose, authorship relationships are analyzed through a language model&#8208;based
+        score on the one hand and on the other hand, non topically related entities
+        of the same type are detected through marginal citations. The article reports
+        the results of experiments using the Bibrank algorithm for an information
+        retrieval task. The CiteSeerX bibliographic data set forms the basis for the
+        topical query automatic generation and evaluation. We show that a statistically
+        significant improvement over closely related ranking models is achieved.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22762</dc:identifier>\r\n<dc:creator>A
+        new challenge, accessing multiple relevant entities, arises from the availability
+        of linked heterogeneous data. In this , we address more specifically the problem
+        of accessing relevant entities, such as publications and authors within a
+        bibliographic network, given an information need. We propose a novel algorithm,
+        called BibRank, that estimates a joint relevance of documents and authors
+        within a bibliographic network. This model ranks each type of entity using
+        a score propagation algorithm with respect to the query topic and the structure
+        of the underlying bi&amp;&#35;8208;type information entity network. Evidence
+        sources, namely content&amp;&#35;8208;based and network&amp;&#35;8208;based
+        scores, are both used to estimate the topical similarity between connected
+        entities. For this purpose, authorship relationships are analyzed through
+        a language model&amp;&#35;8208;based score on the one hand and on the other
+        hand, non topically related entities of the same type are detected through
+        marginal citations. T</dc:creator>\n<dc:source>Journal of the American Society
+        for Information Science and Technology, Vol. , No.  () pp.  - </dc:source>\n<dc:publisher>John
+        Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal of the American
+        Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22762\"><b>On
+        ranking relevant entities in heterogeneous networks using a language&#8208;based
+        model</b></A><br /> <br /><i>Journal of the American Society for Information
+        Science and Technology, Vol. , No.  () pp.  - </i><br />A new challenge, accessing
+        multiple relevant entities, arises from the availability of linked heterogeneous
+        data. In this article, we address more specifically the problem of accessing
+        relevant entities, such as publications and authors within a bibliographic
+        network, given an information need. We propose a novel algorithm, called BibRank,
+        that estimates a joint relevance of documents and authors within a bibliographic
+        network. This model ranks each type of entity using a score propagation algorithm
+        with respect to the query topic and the structure of the underlying bi&#8208;type
+        information entity network. Evidence sources, namely content&#8208;based and
+        network&#8208;based scores, are both used to estimate the topical similarity
+        between connected entities. For this purpose, authorship relationships are
+        analyzed through a language model&#8208;based score on the one hand and on
+        the other hand, non topically related entities of the same type are detected
+        through marginal citations. The article reports the results of experiments
+        using the Bibrank algorithm for an information retrieval task. The CiteSeerX
+        bibliographic data set forms the basis for the topical query automatic generation
+        and evaluation. We show that a statistically significant improvement over
+        closely related ranking models is achieved.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22840\">\n<title>The
+        impact of technological advances on recording studio practices</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22840</link>\r\n<description>Since
+        the invention of sound reproduction in the late 19th century, studio practices
+        in musical recording evolved in parallel with technological improvements.
+        Recently, digital technology and Internet file sharing led to the delocalization
+        of professional recording studios and the decline of traditional record companies.
+        A direct consequence of this new paradigm is that studio professions found
+        themselves in a transitional phase, needing to be reinvented. To understand
+        the scope of these recent technological advances, we first offer an overview
+        of musical recording culture and history and show how studio recordings became
+        a sophisticated form of musical artwork that differed from concert representations.
+        We then trace the economic evolution of the recording industry through technological
+        advances and present positive and negative impacts of the decline of the traditional
+        business model on studio practices and professions. Finally, we report findings
+        from interviews with six world&#8208;renowned record producers reflecting
+        on their recording approaches, the impact of recent technological advances
+        on their careers, and the future of their profession. Interviewees appreciate
+        working on a wider variety of projects than they have in the past, but they
+        all discuss trade&#8208;offs between artistic expectations and budget constraints
+        in the current paradigm. Our investigations converge to show that studio professionals
+        have adjusted their working settings to the new economic situation, although
+        they still rely on the same aesthetic approaches as in the traditional business
+        model to produce musical recordings.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22840</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22840\"><b>The
+        impact of technological advances on recording studio practices</b></A><br
+        /> <br /><i>Journal of the American Society for Information Science and Technology,
+        Vol. , No.  () pp.  - </i><br />Since the invention of sound reproduction
+        in the late 19th century, studio practices in musical recording evolved in
+        parallel with technological improvements. Recently, digital technology and
+        Internet file sharing led to the delocalization of professional recording
+        studios and the decline of traditional record companies. A direct consequence
+        of this new paradigm is that studio professions found themselves in a transitional
+        phase, needing to be reinvented. To understand the scope of these recent technological
+        advances, we first offer an overview of musical recording culture and history
+        and show how studio recordings became a sophisticated form of musical artwork
+        that differed from concert representations. We then trace the economic evolution
+        of the recording industry through technological advances and present positive
+        and negative impacts of the decline of the traditional business model on studio
+        practices and professions. Finally, we report findings from interviews with
+        six world&#8208;renowned record producers reflecting on their recording approaches,
+        the impact of recent technological advances on their careers, and the future
+        of their profession. Interviewees appreciate working on a wider variety of
+        projects than they have in the past, but they all discuss trade&#8208;offs
+        between artistic expectations and budget constraints in the current paradigm.
+        Our investigations converge to show that studio professionals have adjusted
+        their working settings to the new economic situation, although they still
+        rely on the same aesthetic approaches as in the traditional business model
+        to produce musical recordings.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22773\">\n<title>Analyzing
+        structural stratification in the Swedish higher education system: Data contextualization
+        with policy&#8208;history analysis</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22773</link>\r\n<description>20th
+        century massification of higher education and research in academia is said
+        to have produced structurally stratified higher education systems in many
+        countries. Most manifestly, the research mission of universities appears to
+        be divisive. Authors have claimed that the Swedish system, while formally
+        unified, has developed into a binary state, and statistics seem to support
+        this conclusion. This article makes use of a comprehensive statistical data
+        source on Swedish higher education institutions to illustrate stratification,
+        and uses literature on Swedish research policy history to contextualize the
+        statistics. Highlighting the opportunities as well as constraints of the data,
+        the article argues that there is great merit in combining statistics with
+        a qualitative analysis when studying the structural characteristics of national
+        higher education systems. Not least the article shows that it is an over&#8208;simplification
+        to describe the Swedish system as binary; the stratification is more complex.
+        On basis of the analysis, the article also argues that while global trends
+        certainly influence national developments, higher education systems have country&#8208;specific
+        features that may enrich the understanding of how systems evolve and therefore
+        should be analyzed as part of a broader study of the increasingly globalized
+        academic system.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22773</dc:identifier>\r\n<dc:creator>20th
+        century massification of higher education and research in academia is said
+        to have produced structurally stratified higher education systems in many
+        countries. Most manifestly, the research mission of universities appears to
+        be divisive.  have claimed that the Swedish system, while formally unified,
+        has developed into a binary state, and statistics seem to support this conclusion.
+        This  makes use of a comprehensive statistical data source on Swedish higher
+        education institutions to illustrate stratification, and uses literature on
+        Swedish research policy history to contextualize the statistics. Highlighting
+        the opportunities as well as constraints of the data, the  argues that there
+        is great merit in combining statistics with a qualitative analysis when studying
+        the structural characteristics of national higher education systems. Not least
+        the  shows that it is an over&amp;&#35;8208;simplification to describe the
+        Swedish system as binary; the stratification</dc:creator>\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22773\"><b>Analyzing
+        structural stratification in the Swedish higher education system: Data contextualization
+        with policy&#8208;history analysis</b></A><br /> <br /><i>Journal of the American
+        Society for Information Science and Technology, Vol. , No.  () pp.  - </i><br
+        />20th century massification of higher education and research in academia
+        is said to have produced structurally stratified higher education systems
+        in many countries. Most manifestly, the research mission of universities appears
+        to be divisive. Authors have claimed that the Swedish system, while formally
+        unified, has developed into a binary state, and statistics seem to support
+        this conclusion. This article makes use of a comprehensive statistical data
+        source on Swedish higher education institutions to illustrate stratification,
+        and uses literature on Swedish research policy history to contextualize the
+        statistics. Highlighting the opportunities as well as constraints of the data,
+        the article argues that there is great merit in combining statistics with
+        a qualitative analysis when studying the structural characteristics of national
+        higher education systems. Not least the article shows that it is an over&#8208;simplification
+        to describe the Swedish system as binary; the stratification is more complex.
+        On basis of the analysis, the article also argues that while global trends
+        certainly influence national developments, higher education systems have country&#8208;specific
+        features that may enrich the understanding of how systems evolve and therefore
+        should be analyzed as part of a broader study of the increasingly globalized
+        academic system.</p>]]></content:encoded>\r\n</item>\n<item rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22786\">\n<title>Seeking
+        information for a middle school history project: The concept of implicit knowledge
+        in the students' transition from Kuhlthau's Stage 3 to Stage 4</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22786</link>\r\n<description>The
+        article reports the findings of a content analysis study of 16 student&#8208;group
+        proposals for a grade eight history project. The students listed their topic
+        and thesis in the proposal, and information in support of their thesis. The
+        study's focus is this topic&#8208;to&#8208;thesis transition. The study's
+        conceptual framework is Kuhlthau's six stage ISP Model's transition from exploring
+        information in Stage 3 to formulating a focus or personal perspective on the
+        assignment topic in Stage 4. Our study coding scheme identifies elements of
+        the students' implicit knowledge in the 16 proposals. To validate implicit
+        knowledge as a predictor of successful student performance, implicit knowledge
+        was coded, scored, and then the correlation coefficient was established between
+        the score and the students' instructors' marks. In Part 2 of the study we
+        found strong and significant association between the McGill coding scores
+        and the instructors' marks for the 16 proposals. This study is a first step
+        in identifying, operationalizing, and testing user&#8208;centered implicit
+        knowledge elements for future implementation in interactive information systems
+        designed for middle school students researching a thesis&#8208;objective history
+        assignment.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22786</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22786\"><b>Seeking
+        information for a middle school history project: The concept of implicit knowledge
+        in the students' transition from Kuhlthau's Stage 3 to Stage 4</b></A><br
+        /> <br /><i>Journal of the American Society for Information Science and Technology,
+        Vol. , No.  () pp.  - </i><br />The article reports the findings of a content
+        analysis study of 16 student&#8208;group proposals for a grade eight history
+        project. The students listed their topic and thesis in the proposal, and information
+        in support of their thesis. The study's focus is this topic&#8208;to&#8208;thesis
+        transition. The study's conceptual framework is Kuhlthau's six stage ISP Model's
+        transition from exploring information in Stage 3 to formulating a focus or
+        personal perspective on the assignment topic in Stage 4. Our study coding
+        scheme identifies elements of the students' implicit knowledge in the 16 proposals.
+        To validate implicit knowledge as a predictor of successful student performance,
+        implicit knowledge was coded, scored, and then the correlation coefficient
+        was established between the score and the students' instructors' marks. In
+        Part 2 of the study we found strong and significant association between the
+        McGill coding scores and the instructors' marks for the 16 proposals. This
+        study is a first step in identifying, operationalizing, and testing user&#8208;centered
+        implicit knowledge elements for future implementation in interactive information
+        systems designed for middle school students researching a thesis&#8208;objective
+        history assignment.</p>]]></content:encoded>\r\n</item>\n<item rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22785\">\n<title>The
+        ripple effect: Citation chain reactions of a nobel prize</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22785</link>\r\n<description>This
+        paper explores the possible citation chain reactions of a Nobel Prize using
+        the mathematician Robert J. Aumann as a case example. The results show that
+        the award of the Nobel Prize in 2005 affected not only the citations to his
+        work, but also affected the citations to the references in his scientific
+        oeuvre. The results indicate that the spillover effect is almost as powerful
+        as the effect itself. We are consequently able to document a ripple effect
+        in which the awarding of the Nobel Prize ignites a citation chain reaction
+        to Aumann's scientific ouvre and to the references in its nearest citation
+        network. The effect is discussed using innovation decision process theory
+        as a point of departure to identify the factors that created a bandwagon effect
+        leading to the reported observations.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22785</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22785\"><b>The
+        ripple effect: Citation chain reactions of a nobel prize</b></A><br /> <br
+        /><i>Journal of the American Society for Information Science and Technology,
+        Vol. , No.  () pp.  - </i><br />This paper explores the possible citation
+        chain reactions of a Nobel Prize using the mathematician Robert J. Aumann
+        as a case example. The results show that the award of the Nobel Prize in 2005
+        affected not only the citations to his work, but also affected the citations
+        to the references in his scientific oeuvre. The results indicate that the
+        spillover effect is almost as powerful as the effect itself. We are consequently
+        able to document a ripple effect in which the awarding of the Nobel Prize
+        ignites a citation chain reaction to Aumann's scientific ouvre and to the
+        references in its nearest citation network. The effect is discussed using
+        innovation decision process theory as a point of departure to identify the
+        factors that created a bandwagon effect leading to the reported observations.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22788\">\n<title>Supposedly
+        uncited articles of Nobel laureates and Fields medalists can be prevalently
+        attributed to the errors of omission and commission</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22788</link>\r\n<description>Several
+        independent authors reported a high share of uncited publications, which include
+        those produced by top scientists. This share was repeatedly reported to exceed
+        10% of the total papers produced, without any explanation of this phenomenon
+        and the lack of difference in uncitedness between average and successful researchers.
+        In this report, we analyze the uncitedness among two independent groups of
+        highly visible scientists (mathematicians represented by Fields medalists,
+        and researchers in physiology or medicine represented by Nobel Prize laureates
+        in the respective field). Analysis of both groups led to the identical conclusion:
+        over 90% of the uncited database records of highly visible scientists can
+        be explained by the inclusion of editorial materials progress reports presented
+        at international meetings (meeting abstracts), discussion items (letters to
+        the editor, discussion), personalia (biographic items), and by errors of omission
+        and commission of the Web of Science (WoS) database and of the citing documents.
+        Only a marginal amount of original articles and reviews were found to be uncited
+        (0.9 and 0.3%, respectively), which is in strong contrast with the previously
+        reported data, which never addressed the document types among the uncited
+        records.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22788</dc:identifier>\r\n<dc:creator>Several
+        independent authors reported a high share of uncited publications, which include
+        those produced by top scientists. This share was repeatedly reported to exceed
+        10&#37; of the total papers produced, without any explanation of this phenomenon
+        and the lack of difference in uncitedness between average and successful researchers.
+        In this report, we analyze the uncitedness among two independent groups of
+        highly visible scientists &#40;mathematicians represented by Fields medalists,
+        and researchers in physiology or medicine represented by Nobel Prize laureates
+        in the respective field&#41;. Analysis of both groups led to the identical
+        conclusion&#58; over 90&#37; of the uncited database records of highly visible
+        scientists can be explained by the inclusion of editorial materials progress
+        reports presented at international meetings &#40;meeting abstracts&#41;, discussion
+        items &#40;letters to the editor, discussion&#41;, personalia &#40;biographic
+        items&#41;, and by errors of omission and commission of the Web of Science
+        &#40;WoS&#41;</dc:creator>\n<dc:source>Journal of the American Society for
+        Information Science and Technology, Vol. , No.  () pp.  - </dc:source>\n<dc:publisher>John
+        Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal of the American
+        Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22788\"><b>Supposedly
+        uncited articles of Nobel laureates and Fields medalists can be prevalently
+        attributed to the errors of omission and commission</b></A><br /> <br /><i>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </i><br />Several independent authors reported a high share of
+        uncited publications, which include those produced by top scientists. This
+        share was repeatedly reported to exceed 10% of the total papers produced,
+        without any explanation of this phenomenon and the lack of difference in uncitedness
+        between average and successful researchers. In this report, we analyze the
+        uncitedness among two independent groups of highly visible scientists (mathematicians
+        represented by Fields medalists, and researchers in physiology or medicine
+        represented by Nobel Prize laureates in the respective field). Analysis of
+        both groups led to the identical conclusion: over 90% of the uncited database
+        records of highly visible scientists can be explained by the inclusion of
+        editorial materials progress reports presented at international meetings (meeting
+        abstracts), discussion items (letters to the editor, discussion), personalia
+        (biographic items), and by errors of omission and commission of the Web of
+        Science (WoS) database and of the citing documents. Only a marginal amount
+        of original articles and reviews were found to be uncited (0.9 and 0.3%, respectively),
+        which is in strong contrast with the previously reported data, which never
+        addressed the document types among the uncited records.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22752\">\n<title>Uncertainties
+        and ambiguities in percentiles and how to avoid them</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22752</link>\r\n<description>The
+        recently proposed fractional scoring scheme is used to attribute publications
+        to percentile rank classes. It is shown that in this way uncertainties and
+        ambiguities in the evaluation of specific quantile values and percentile ranks
+        do not occur. Using the fractional scoring the total score of all papers exactly
+        reproduces the theoretical value.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22752</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22752\"><b>Uncertainties
+        and ambiguities in percentiles and how to avoid them</b></A><br /> <br /><i>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </i><br />The recently proposed fractional scoring scheme is used
+        to attribute publications to percentile rank classes. It is shown that in
+        this way uncertainties and ambiguities in the evaluation of specific quantile
+        values and percentile ranks do not occur. Using the fractional scoring the
+        total score of all papers exactly reproduces the theoretical value.</p>]]></content:encoded>\r\n</item>\n<item
+        rdf:about=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22802\">\n<title>Group
+        informatics: A methodological approach and ontology for sociotechnical group
+        research</title>\r\n<link>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22802</link>\r\n<description>We
+        present a methodological approach, called Group Informatics, for understanding
+        the social connections that are created between members of technologically
+        mediated groups. Our methodological approach supports focused thinking about
+        how online groups differ from each other, and diverge from their face&#8208;to&#8208;face
+        counterparts. Group Informatics is grounded in 5 years of empirical studies
+        of technologically mediated groups in online learning, software engineering,
+        online political discourse, crisis informatics, and other domains. We describe
+        the Group Informatics model and the related, 2&#8208;phase methodological
+        approach in detail. Phase one of the methodological approach centers on a
+        set of guiding research questions aimed at directing the application of Group
+        Informatics to new corpora of integrated electronic trace data and qualitative
+        research data. Phase 2 of the methodological approach is a systematic set
+        of steps for transforming electronic trace data into weighted social networks.</description>\r\n<dc:identifier>http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22802</dc:identifier>\r\n<dc:source>Journal
+        of the American Society for Information Science and Technology, Vol. , No.
+        \ () pp.  - </dc:source>\n<dc:publisher>John Wiley &amp; Sons</dc:publisher>\n<prism:PublicationName>Journal
+        of the American Society for Information Science and Technology</prism:PublicationName>\n<content:encoded><![CDATA[<p><a
+        href=\"http://onlinelibrary.wiley.com/resolve/doi?DOI=10.1002%2Fasi.22802\"><b>Group
+        informatics: A methodological approach and ontology for sociotechnical group
+        research</b></A><br /> <br /><i>Journal of the American Society for Information
+        Science and Technology, Vol. , No.  () pp.  - </i><br />We present a methodological
+        approach, called Group Informatics, for understanding the social connections
+        that are created between members of technologically mediated groups. Our methodological
+        approach supports focused thinking about how online groups differ from each
+        other, and diverge from their face&#8208;to&#8208;face counterparts. Group
+        Informatics is grounded in 5 years of empirical studies of technologically
+        mediated groups in online learning, software engineering, online political
+        discourse, crisis informatics, and other domains. We describe the Group Informatics
+        model and the related, 2&#8208;phase methodological approach in detail. Phase
+        one of the methodological approach centers on a set of guiding research questions
+        aimed at directing the application of Group Informatics to new corpora of
+        integrated electronic trace data and qualitative research data. Phase 2 of
+        the methodological approach is a systematic set of steps for transforming
+        electronic trace data into weighted social networks.</p>]]></content:encoded>\r\n</item>\n\r\n\t\r\n
+        \ <rdf:Description rdf:ID=\"manifest\">\r\n    <mn:channels>\r\n      <rdf:Seq>\r\n
+        \       <rdf:li rdf:resource=\"http://www.journaltocs.hw.ac.uk/api/journals\"
+        />\r\n      </rdf:Seq>\r\n    </mn:channels>\r\n  </rdf:Description>\r\n\r\n</rdf:RDF>"
+    http_version: 
+  recorded_at: Thu, 28 Feb 2013 16:34:39 GMT
+recorded_with: VCR 2.4.0

@@ -65,6 +65,14 @@ class JournalTocsFetcher
       return xml
     end
     
+    # Just return a count of items from XML response, without the work
+    # of turning them into BentoSearch::Results. 
+    #
+    # May still raise on errors at server. See #fetch_xml
+    def count
+      xml.xpath("./rdf:RDF/rss:item", xml_ns).length
+    end
+    
     # returns an array of BentoSearch::ResultItem objects, representing
     # items. 
     def items      
