@@ -158,7 +158,7 @@ module Umlaut
       
       def journal_tocs
         add_routes do |options|
-          get "current_articles(/:issn)" => "journal_tocs#show"
+          get "current_articles(/:issn)" => "journal_tocs#show", :as => :journal_tocs
         end
       end
       
