@@ -23,9 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.2.5"
   s.add_dependency "jquery-rails"         # our built in JS uses jquery
  
-  # nokogiri sadly locked to 1.5.0 due to some regressions:
-  # https://github.com/tenderlove/nokogiri/issues/638 
-  s.add_dependency "nokogiri", "1.5.0"    # for XML parsing
+  s.add_dependency "nokogiri", "~> 1.5.3"    # for XML parsing
   s.add_dependency "openurl", ">= 0.4.0"  # for OpenURL parsing and creating
   s.add_dependency "marc", ">= 0.5.0", "< 1.1"  # for parsing Marc files in catalog/ils adaptors
   s.add_dependency "isbn"                 # used by amazon among others
