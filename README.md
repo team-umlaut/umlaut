@@ -37,7 +37,7 @@ https://github.com/team-umlaut/umlaut/wiki/Installation.
 
 The Rails/Umlaut super-concise expert summary is:
 
-* Rails 3.1+
+* Rails 3.1+ (but not yet tested with Rails 4), ruby 1.9.3. 
 
 * gem 'umlaut'
 
