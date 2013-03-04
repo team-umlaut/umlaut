@@ -409,8 +409,7 @@ img.toggle_icon {
 
 .response_notes, .response_authentication_instructions {
    margin-top: .5em;   
-   color: gray;
-   font-weight: bold;
+   color: gray;   
 }
 
 .sidebar .response_notes {
@@ -935,3 +934,12 @@ body.banner {
 .bento_item_row.second_about {
   color: gray; 
 }
+
+/* Google Scholar Link: 
+   Make the example look like it does on google scholar: */
+.gscholar_example {
+   background: white;
+   color: blue;
+   font-variant: small-caps;
+}
+
