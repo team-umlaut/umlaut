@@ -415,18 +415,28 @@ class Sfx < Service
   #
   # taking embargoes into account. nil if unbounded. 
   def determine_coverage_boundaries(target)    
-    # machine actionable coverage elements, used for collapsing          
+    # machine actionable coverage elements, used for collapsing
+    if (in_node = target.at_xpath("./coverage/in"))
+        year = in_node.at_xpath("year").try(:text).try(:to_i)
+        if year && year != 0
+          begin_date = Date.new(year, 1, 1)
+          end_date   = Date.new(year, 12, 31)
+        end
+    end
+    
     if (from = target.at_xpath("./coverage/from"))            
       year   = from.at_xpath("year").try(:text).try(:to_i)     
       # SFX KB does not have month/day, only year, set to begin of year
-      begin_date = Date.new(year, 1, 1) if year            
+      begin_date = Date.new(year, 1, 1) if year && year != 0
     end
     
     if (from = target.at_xpath("./coverage/to"))            
       year   = from.at_xpath("year").try(:text).try(:to_i)
       # set to end of year
-      end_date = Date.new(year, 12, 31) if year            
+      end_date = Date.new(year, 12, 31) if year && year != 0
     end
+    
+    
             
     # If there's an embargo too, it may modify existing dates
     if (embargo = target.at_xpath("./coverage/embargo"))
