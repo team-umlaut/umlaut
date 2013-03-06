@@ -12,18 +12,6 @@ frankenstein:
 simple_request_referent:
   issn: "0098-7484"
   
-primo_id_referent:
-  title: "Travels with my aunt"
-  isbn: "0143039008"
-
-primo_checked_out_referent:
-  title: "Argument realization"
-  isbn: "0521663318"
-
-primo_journal1_referent:
-  title: "The Musical quarterly."
-  issn: "0027-4631"
-
 primo_journal2_referent:
   title: "Journal of behavioral economics"
   issn: "0090-5720"
@@ -147,9 +135,6 @@ primo_nysid_checked_out_referent:
 critical_inquiry_referent:
   title: "Critical inquiry"
   issn: "0093-1896"
-
-sfx_owner_but_fulltext_empty_referent:
-  title: "Australian journal of international affairs the journal of the Australian Institute of International Affairs."
 
 sfx_multi_obj_request_no_fulltext_referent:
   title: "Mobile Information Systems"
