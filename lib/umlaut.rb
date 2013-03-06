@@ -4,6 +4,10 @@ require 'umlaut/routes'
 # seems to need this. 
 require 'openurl'
 
+# Require service so that gems can use it outside of Rails
+# e.g. in tests that don't need the whole rails environment.
+require 'service'
+
 module Umlaut
   class Engine < Rails::Engine
     engine_name "umlaut"
@@ -41,9 +45,5 @@ module Umlaut
     #initializer("#{engine_name}.patch_connection_pool", :before => "active_record.initialize_database") do |app|
       load File.join(self.root, "active_record_patch", "connection_pool.rb")
     #end
-    
-         
-    
-    
   end
 end
