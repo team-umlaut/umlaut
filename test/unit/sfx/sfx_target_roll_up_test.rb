@@ -133,6 +133,34 @@ class SfxTargetRollUpTest < ActiveSupport::TestCase
       assert_equal (Date.today - 730), end_date      
     end
     
+    def test_in_coverage
+      str = <<-EOS
+        <target>
+          <coverage>
+            <coverage_text>
+              <threshold_text>
+                <coverage_statement>Available in 2010</coverage_statement>
+              </threshold_text>
+              <embargo_text/>
+            </coverage_text>
+            <in>
+              <year>2010</year>
+            </in>
+            <embargo/>
+          </coverage>
+        </target>
+      EOS
+      xml = Nokogiri::XML(str)
+      
+      sfx = Sfx.new({'priority' => 1, 'base_url' => "http://example.org"})
+      
+      (begin_date, end_date) = sfx.determine_coverage_boundaries(xml.at_xpath("./target"))
+      
+      assert_equal Date.new(2010, 1, 1), begin_date
+      assert_equal Date.new(2010, 12, 31), end_date
+      
+    end
+    
     def test_roll_up_responses_noop_with_no_config
       sfx = Sfx.new({'priority' => 1, 
                      'base_url' => "http://example.org"

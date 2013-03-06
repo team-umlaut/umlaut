@@ -25,7 +25,7 @@
   <% # Ordinary href link
   else %>      
     <%= link_to({:controller=>'link_router', :id=>service_response.id}, 
-          {:id => "svctype_link_#{service_response.id}", :target=>"_blank"}) do %>
+          {:id => "svctype_link_#{service_response.id}", :target=>"_blank", :class => "response_link"}) do %>
       <%= coverage_summary(view_data) %>
       <%= view_data[:display_text] %><%
     end
