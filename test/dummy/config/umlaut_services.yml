@@ -18,10 +18,16 @@ default:
     # Priority 3
     SFX:
       type: Sfx
-      disabled: true
       display_name: Find It
-      base_url: YOUR_SFX_BASE_URL
-      priority: 3
+      base_url: http://sfx.library.edu/local
+      priority: 1
+      roll_up_prefixes:
+        - 'EBSCOHOST_'
+        - 'JSTOR_'
+        - 'PROQUEST_'
+        - 'SPRINGER_LINK_'
+        - 'ELSEVIER_SD_'
+        - 'HIGHWIRE_'
 
     # First half of Amazon, run in foreground, get metadata and cover images.
     Amazon:

@@ -69,7 +69,7 @@ service_response4:
     :debug_info: ! ' Target: EBSCOHOST_NEWSPAPER_SOURCE_PLUS ; SFX object ID: 110975413976006'
 
 service_response5:
-  service_id: Primo
+  service_id: SFX
   display_text: 1995 - Current Access via Proquest
   url: http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=7818
   request_id: 80
@@ -113,7 +113,7 @@ service_response7:
     :debug_info: ! ' Target: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON ; SFX object ID: 110975413976006'
 
 service_response8:
-  service_id: Primo
+  service_id: GoogleBookSearch
   display_text: Primo
   url: http://primo.library.edu/primo_library/libweb/action/dlDisplay.do?docId=DOCID&institution=INST&vid=INST
   notes: Some notes.
