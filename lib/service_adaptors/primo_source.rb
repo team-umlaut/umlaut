@@ -18,15 +18,15 @@ class PrimoSource < PrimoService
   # Overwrites PrimoService#handle.
   def handle(request)
     primo_sources = request.get_service_type('primo_source', {:refresh => true})
-    sources_seen = Array.new # for de-duplicating holdings from catalog.
+    sources = [] # for de-duplicating holdings from catalog.
     primo_sources.each do |primo_source|
+      # Calls PrimoService#to_primo_source.
       source = primo_source.view_data
       # There are some cases where source records may need to be de-duplicated against existing records
       # Check if we've already seen this record.
-      seen_sources_key = source.source_id.to_s + source.source_record_id.to_s
-      next if source.dedup? and sources_seen.include?(seen_sources_key)
-      # If we get this far, record that we've seen this holding.
-      sources_seen.push(seen_sources_key)
+      next if sources.include?(source)
+      # Include the source so that it's available for deduping
+      sources << source
       # There may be multiple holdings mapped to one availlibrary here,
       # so we get the additional holdings and add them.
       source.expand.each do |holding|
