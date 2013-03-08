@@ -3,7 +3,7 @@
   unless @user_request.nil? %>
     <%= form_tag( {:controller => "export_email", :action => "send_txt", :id => params[:id]}, :class => "form-inline" ) do %>
       <h2>Send the title and location of an item to your mobile phone</h2>
-      <%= validation_error( @error || flash[:error]) if ( @error || flash[:error]) %>
+      <%= validation_error flash[:alert] if flash[:alert] %>
       <fieldset>
         <legend>Title: <%= h(brief_citation(@user_request)) %></legend>
         <%= label_tag('number', 'Enter your mobile phone number:') %>
