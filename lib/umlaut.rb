@@ -5,10 +5,6 @@ require 'umlaut/routes'
 require 'openurl'
 require 'bootstrap-sass'
 
-# Require service so that gems can use it outside of Rails
-# e.g. in tests that don't need the whole rails environment.
-require 'service'
-
 module Umlaut
   class Engine < Rails::Engine
     engine_name "umlaut"
