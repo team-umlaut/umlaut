@@ -43,6 +43,11 @@
     @include response-element-margins-large;
   }
 
+  // Don't indent response links
+  response_link {
+    @include response-element-margins-none;
+  }
+
   // Special looks for particular sections
   &.fulltext {
     @include iconed-response;
@@ -154,6 +159,11 @@
     // Response elements
     [class^="response_"] {
       @include response-element-margins-large;
+    }
+
+    // Don't indent response links
+    response_link {
+      @include response-element-margins-none;
     }
   }
 
