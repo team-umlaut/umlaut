@@ -4,6 +4,9 @@ require 'umlaut/routes'
 # seems to need this. 
 require 'openurl'
 
+# Require service so that gems can use it before Rails is initialized
+require 'service'
+
 module Umlaut
   class Engine < Rails::Engine
     engine_name "umlaut"
