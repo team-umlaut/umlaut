@@ -26,7 +26,6 @@ group :development, :test do
     gem 'debugger'
   end
 
-  gem 'jquery-rails'
   gem "activerecord-import"
 end
 

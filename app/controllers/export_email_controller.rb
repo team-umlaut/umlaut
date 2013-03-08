@@ -14,13 +14,9 @@ class ExportEmailController < UmlautController
     @holdings = @user_request.get_service_type('holding', { :refresh=>true })
     if valid_email?
       Emailer.citation(@email, @user_request, @fulltexts, @holdings).deliver
-      respond_to do |format|
-        format.html {  render }
-      end
     else
-      @partial = "email"
-      flash[:error] = email_validation_error
-      redirect_to params_preserve_xhr(params.merge(:action => "email"))
+      flash[:alert] = email_validation_error
+      render :email and return
     end
   end
 
@@ -30,27 +26,26 @@ class ExportEmailController < UmlautController
     @number.gsub!(/[^\d]/, '') if @number
     @provider = params[:provider]
     @email = "#{@number}@#{@provider}" unless @number.nil? or @provider.nil?
-    @holding_id = params[:holding]
+    @holding = params[:holding]
     if valid_txt_number? && valid_txt_holding?
-      Emailer.short_citation(@email, @user_request, holding_location(@holding_id), call_number(@holding_id)).deliver
-      render # send_txt.rhtml
+      Emailer.short_citation(@email, @user_request, holding_location(@holding), call_number(@holding)).deliver
     else
-      flash[:error] = txt_validation_error
-      redirect_to params_preserve_xhr(params.merge(:action => "txt"))
+      flash[:alert] = txt_validation_error
+      render :txt and return
     end
   end
 
   private
   def valid_txt_number?
-    return (! @number.blank?) && @number.length == 10
+    ((not @number.blank?) && @number.length == 10)
   end
 
   def valid_txt_holding?
-     return ! @holding_id.blank?
+    (not @holding.blank?)
   end
 
   def valid_email?
-    return @email =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
+    (@email =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i)
   end
 
   def txt_validation_error
