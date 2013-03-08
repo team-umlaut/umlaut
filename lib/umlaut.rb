@@ -5,6 +5,9 @@ require 'umlaut/routes'
 require 'openurl'
 require 'bootstrap-sass'
 
+# Require service so that gems can use it before Rails is initialized
+require 'service'
+
 module Umlaut
   class Engine < Rails::Engine
     engine_name "umlaut"
