@@ -1,54 +1,54 @@
 # register an email address at: http://www.journaltocs.ac.uk/index.php?action=register
 
 class JournalTocsController < UmlautController
-  
+
   def show
     @issn  = params["rft.issn"] || params["issn"]
-    
+
     if @issn.blank?
       render :status => 500, :text => "Client must supply an ISSN"
       return
-    end   
+    end
     @title = params["rft.title"] || params["title"]
-     
-    fetcher = JournalTocsFetcher.new(@issn)    
+
+    fetcher = JournalTocsFetcher.new(@issn)
     @results = fetcher.items
-    
+
     if @results.empty?
       render :status => 404, :text => "No current articles available for #{@title} #{@issn}"
       return
     end
-    
+
     # direct to use our custom decorator
     @results.each {|r| r.decorator = "JournalTocsController::ArticleDecorator" }
-    
-    # No title given? Let's try to sniff one from the results. 
+
+    # No title given? Let's try to sniff one from the results.
     if @title.blank?
       @title = @results.first.try(:journal_title)
     end
-    
-    
+
+
     respond_to do |format|
       format.html # journal_tocs/show.html.erb
       format.atom do
-        render( :template => "bento_search/atom_results",              
+        render( :template => "bento_search/atom_results",
                 :locals   => {
                   :atom_results     => @results,
                   :feed_name        => "Recent Articles from #{@title || @issn}",
                   :feed_author_name => "MyCorp"
-              }      
+              }
         )
-      end 
+      end
     end
-    
+
   end
-  
+
   # A article decorator from BentoSearch, where we customize our links:
   # If we have enough info for an OpenURL, do a self-pointing OpenURL
   # to us, set with redirect to fulltext. If there is not enough info
-  # for an openurl, no link at all at present. 
+  # for an openurl, no link at all at present.
   #
-  # Possible enhancements: Refworks link. Find It link without auto redirect. 
+  # Possible enhancements: Refworks link. Find It link without auto redirect.
   #   link to publisher link if it's open access?
   #   link to publisher link through ezproxy even if it's not, on a wing and a prayer?
   class ArticleDecorator < BentoSearch::StandardDecorator
@@ -59,32 +59,32 @@ class JournalTocsController < UmlautController
         nil
       end
     end
-    
+
     def sufficient_for_openurl?
-      doi.present? || (issn.present? && volume.present? && issue.present? && number.present? && start_page.present?)
+      doi.present? || (issn.present? && volume.present? && issue.present? && start_page.present?)
     end
-    
+
     # We don't want to display format
     def display_format
       nil
     end
-    
-    # force display of complete date if present, even for journals. 
+
+    # force display of complete date if present, even for journals.
     def display_date
-      if self.publication_date       
-        I18n.localize(self.publication_date, :format => "%d %b %Y")       
+      if self.publication_date
+        I18n.localize(self.publication_date, :format => "%d %b %Y")
       elsif self.year
         self.year.to_s
       else
         nil
       end
     end
-    
+
   end
-  
-  
-  
-  
-  
+
+
+
+
+
 end
 
