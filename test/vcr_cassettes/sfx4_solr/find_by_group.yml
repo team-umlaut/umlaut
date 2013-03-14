@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - Jetty(6.1.3)
     body:
-      encoding: US-ASCII
+      encoding: UTF-8
       string: ! '{''responseHeader''=>{''status''=>0,''QTime''=>1,''params''=>{''sort''=>''title_sort_s
         asc'',''start''=>''0'',''q''=>''*:*'',''wt''=>''ruby'',''fq''=>[''type:Sfx4\\:\\:Local\\:\\:AzTitle'',''letter_group_sm:A''],''rows''=>''20''}},''response''=>{''numFound''=>16,''start''=>0,''docs''=>[{''id''=>''Sfx4::Local::AzTitle
         98846'',''object_id_ss''=>''2147483647'',''title_display_ss''=>''Abacus''},{''id''=>''Sfx4::Local::AzTitle
@@ -44,4 +44,4 @@ http_interactions:
         transport world''}]}}'
     http_version: 
   recorded_at: Sat, 29 Sep 2012 23:41:19 GMT
-recorded_with: VCR 2.2.5
+recorded_with: VCR 2.4.0

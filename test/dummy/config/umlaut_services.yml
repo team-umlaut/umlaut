@@ -22,7 +22,6 @@ default:
       
       SFX:
         type: Sfx
-        disabled: true
         display_name: Find It       
         base_url: http://sfx.library.edu/local
         priority: 3      

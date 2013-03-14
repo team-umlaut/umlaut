@@ -1,0 +1,116 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B0%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Fri, 22 Feb 2013 17:18:20 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22momo%22+AND+creator:%28ende%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Fri, 22 Feb 2013 23:18:20 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Fri, 22 Feb 2013 17:18:20 GMT
+- request:
+    method: get
+    uri: http://archive.org/advancedsearch.php?fl%5B0%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: !binary |-
+        T0s=
+    headers:
+      !binary "U2VydmVy":
+      - !binary |-
+        bmdpbngvMS4xLjE5
+      !binary "RGF0ZQ==":
+      - !binary |-
+        RnJpLCAyMiBGZWIgMjAxMyAxNzoxODoyMSBHTVQ=
+      !binary "Q29udGVudC1UeXBl":
+      - !binary |-
+        YXBwbGljYXRpb24vanNvbg==
+      !binary "VHJhbnNmZXItRW5jb2Rpbmc=":
+      - !binary |-
+        Y2h1bmtlZA==
+      !binary "Q29ubmVjdGlvbg==":
+      - !binary |-
+        a2VlcC1hbGl2ZQ==
+      !binary "WC1Qb3dlcmVkLUJ5":
+      - !binary |-
+        UEhQLzUuMy4xMC0xdWJ1bnR1My4y
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJyZXNwb25zZUhlYWRlciI6eyJzdGF0dXMiOjAsIlFUaW1lIjoxLCJwYXJh
+        bXMiOnsianNvbi53cmYiOiIiLCJxaW4iOiJ0aXRsZTpcIm1vbW9cIiBBTkQg
+        Y3JlYXRvcjooZW5kZSkgQU5EIChtZWRpYXR5cGU6dGV4dHMgT1IgbWVkaWF0
+        eXBlOmF1ZGlvKSIsImZsIjoiKiIsImluZGVudCI6IiIsInN0YXJ0IjoiMCIs
+        InEiOiJ0aXRsZTpcIm1vbW9cIiBBTkQgY3JlYXRvcjooZW5kZSApIEFORCAo
+        IG1lZGlhdHlwZTp0ZXh0cyBPUiBtZWRpYXR5cGU6YXVkaW8gKSIsInd0Ijoi
+        anNvbiIsInJvd3MiOiI5OTkifX0sInJlc3BvbnNlIjp7Im51bUZvdW5kIjox
+        LCJzdGFydCI6MCwiZG9jcyI6W3sibWVkaWF0eXBlIjoidGV4dHMiLCJ0aXRs
+        ZSI6Ik1vbW8sIG92dmVybyBsJ2FyY2FuYSBzdG9yaWEgZGVpIGxhZHJpIGRp
+        IHRlbXBvIGUgZGVsbGEgYmFtYmluYSBjaGUgcmVzdGl0dcODwqwgYWdsaSB1
+        b21pbmkgaWwgdGVtcG8gdHJhZnVnYXRvIiwiZGVzY3JpcHRpb24iOiJWaWNp
+        bm8gYWQgdW5hIGNpdHTDg8KgIHNlbnphIG5vbWUsIHZpIHNvbm8gaSByZXN0
+        aSBkaSB1biBwaWNjb2xvIGVkIGFudGljbyBhbmZpdGVhdHJvLCBzaW1ib2xv
+        IGluIHBhc3NhdG8gZGkgYXJ0ZSBlIGRpdmVydGltZW50by4gUXVpIHZpIHRy
+        b3ZhIHJpZnVnaW8gdW5hIHBpY2NvbGEgYmFtYmluYSBkYWxsZSBtaXN0ZXJp
+        b3NlIG9yaWdpbmkgZWQgaSBjaXR0YWRpbmkgZGkgcXVlc3RhIGlubm9taW5h
+        dGEgY2l0dMODwqAsIG9sdHJlIGEgcHJlbmRlcnNlbmUgY3VyYSwgdHJvdmFu
+        byBpbiBsZWkgYWxjdW5lIHBvdGVuemlhbGl0w4PCoCBmdW9yaSBkYWwgY29t
+        dW5lOiBmYSBzYm9jY2lhcmUgbGEgZmFudGFzaWEgZGVpIHN1b2kgY29ldGFu
+        ZWksIMODwqggY2FwYWNlIGRpIHJpYXBwYWNpZmljYXJlIGdsaSBhbmltaSBs
+        aXRpZ2lvc2ksIGRpIGZhciBjb21wcmVuZGVyZSBnbGkgZXJyb3JpIGUgdHJv
+        dmFyZSBsZSBzb2x1emlvbmkgZGVpIHByb2JsZW1pLiBFIHF1ZXN0byBhdnZp
+        ZW5lIHNvbG8gdHJhbWl0ZSBsYSBzdWEgY2FwYWNpdMODwqAgZGkgYXNjb2x0
+        YXJlLiBUdXR0byB0cmFzY29ycmUgdHJhbnF1aWxsbyBwZXIgTW9tbyBlZCBp
+        IHN1b2kgYW1pY2ksIGZpbmNow4PCqSBsYSBjaXR0w4PCoCBub24gdmllbmUg
+        aW52YXNhIGRhaSBtaXN0ZXJpb3NpIFNpZ25vcmkgZ3JpZ2ksIHZlc3RpdGkg
+        ZGkgc2N1cm8gZSBkYWwgdm9sdG8gY2luZXJlbywgY2hlIG1pcmFubyBhZCBp
+        bXBhZHJvbmlyc2kgZGVsIHRlbXBvIGRlZ2xpIHVvbWluaS4uLiIsImRvd25s
+        b2FkcyI6MzksIndlZWsiOjAsIm1vbnRoIjoyLCJpZGVudGlmaWVyIjoiTW9t
+        b092dmVyb0xhcmNhbmFTdG9yaWFEZWlMYWRyaURpVGVtcG9FRGVsbGFCYW1i
+        aW5hQ2hlUmVzdGl0dSIsInN1YmplY3QiOlsibW9tbyBtaWNoYWVsIGVuZGUi
+        XSwiZm9ybWF0IjpbIk1ldGFkYXRhIiwiVGV4dCBQREYiXSwiY29sbGVjdGlv
+        biI6WyJvcGVuc291cmNlIl0sIm9haV91cGRhdGVkYXRlIjpbIjIwMTEtMDQt
+        MDFUMTU6NTk6NTRaIiwiMjAxMS0wNC0wMVQxNTo1OTo1NFoiXSwiY3JlYXRv
+        ciI6WyJNaWNoYWVsIEVuZGUiXX1dfX0=
+    http_version: 
+  recorded_at: Fri, 22 Feb 2013 17:18:21 GMT
+recorded_with: VCR 2.4.0
