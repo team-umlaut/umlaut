@@ -14,8 +14,8 @@ module Umlaut::HtmlHeadHelper
   # if requested by presence of @meta_refresh_self ivar.
   # this method usually called in a layout.
   def render_meta_refresh
-    (@meta_refresh_self) ? 
-      tag( "meta", "http-equiv" => "refresh", "content" => @meta_refresh_self) : ""
+    (@meta_refresh_self) ?
+      tag("meta", "http-equiv" => "refresh", "content" => @meta_refresh_self) : ""
   end
 
   # standard umlaut head content, may later include more
