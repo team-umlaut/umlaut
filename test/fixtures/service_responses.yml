@@ -70,17 +70,14 @@ service_response4:
 
 service_response5:
   service_id: SFX
-  display_text: 1995 - Current Access via Proquest
+  display_text: Proquest
   url: http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=7818
   request_id: 80
   service_type_value_name: fulltext
   service_data: |
     --- 
-    :record_id: dedupmrg17343091
-    :display_text: 1995 - Current Access via Proquest
-    :institution_code: NYU
+    :display_text: Proquest
     :url: http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=7818
-    :origin: nyu_aleph000932393
 
 service_response6:
   service_id: Ulrichs
