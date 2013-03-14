@@ -53,7 +53,8 @@ The Rails/Umlaut super-concise expert summary is:
 
 ## Add ons
 Some Umlaut services adapters are sufficiently complicated or are on different release cycles 
-from the core code that they merit their own gems.
+from the core code that they merit their own gems. Generally, you will need to include these gems 
+in your application's Gemfile in order to get the described functionality.
 
 | Add on | Description |
 |:---|:---|
