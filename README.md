@@ -1,7 +1,8 @@
 # Umlaut
+[![Gem Version](https://badge.fury.io/rb/umlaut.png)](http://badge.fury.io/rb/umlaut)
 [![Build Status](https://secure.travis-ci.org/team-umlaut/umlaut.png)](http://travis-ci.org/team-umlaut/umlaut)
 [![Dependency Status](https://gemnasium.com/team-umlaut/umlaut.png)](https://gemnasium.com/team-umlaut/umlaut)
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/team-umlaut/umlaut)
+[![Code Climate](https://codeclimate.com/github/team-umlaut/umlaut.png)](https://codeclimate.com/github/team-umlaut/umlaut)
 <!--[![Security Status](http://rails-brakeman.com/team-umlaut/umlaut.png)](http://rails-brakeman.com/team-umlaut/umlaut)-->
 
 Umlaut is software for libraries (the kind with books). 
@@ -49,7 +50,17 @@ The Rails/Umlaut super-concise expert summary is:
 
 * configuration in `./config/umlaut_services.yml` and `./app/controllers/umlaut_controller.rb` 
 
-* Umlaut uses multi-threaded concurrency in a way incompatible with development-mode class reloading. You need cache_classes=false even in dev, the Umlaut install generator changes this for you. 
+* Umlaut uses multi-threaded concurrency in a way incompatible with development-mode class reloading. You need cache_classes=false even in dev, the Umlaut install generator changes this for you.
+
+## Add ons
+Some Umlaut services adapters are sufficiently complicated or are on different release cycles 
+from the core code that they merit their own gems. Generally, you will need to include these gems 
+in your application's Gemfile in order to get the described functionality.
+
+| Add on | Description |
+|:---|:---|
+| [`umlaut-primo`](/team-umlaut/umlaut-primo) | Umlaut services to provide full text service responses, holdings, etc. from the Primo discovery solution. |
+
 
 ## Developing
 
