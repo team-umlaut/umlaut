@@ -15,6 +15,8 @@ module Umlaut::ErrorHandling
   def handle_general_error(exception)
     log_error_with_context(exception)
     @page_title = "Error!"
+    # Only render this if we haven't done anything else
+    # e.g. if some other gem may be handling its own errors
     render "error", :status => 500 unless performed?
   end
   protected :handle_general_error
