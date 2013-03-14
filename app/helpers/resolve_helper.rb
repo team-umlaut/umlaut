@@ -72,22 +72,18 @@ module ResolveHelper
                        :class => "toggle_icon",
                        :border => "0")
     heading = content_tag(:span,( expanded ? "Hide " : "Show "), :class=>'expand_contract_action_label') + arg_heading
-
     link_params = params.merge('umlaut.request_id' => @user_request.id,
-      "umlaut.show_#{id}" => (! expanded).to_s ,
-
+      "umlaut.show_#{id}" => (! expanded).to_s,
       # Need to zero out format-related params for when we're coming
       # from a partial html api request, so the link we generate
       # is not to format json/xml/etc.
       :format => nil,
       'umlaut.response_format' => nil,
       'umlaut.jsonp'=>nil,
-
       # In Rails3, an :anchor param will actually be used for #fragmentIdentifier
       # on end of url
       :anchor => "#{id}_toggle_link"
       )
-
     # Make sure a self-referencing link from partial_html_sections
     # really goes to full HTML view.
     link_params[:action] = "index" if link_params[:action] == "partial_html_sections"
@@ -141,36 +137,28 @@ module ResolveHelper
     # for limit.
     options = {:limit => options} unless options.kind_of?(Hash)
     options[:limit] ||= 5
-
     return "" if list.empty?
-
     visible_list  = (list.length > options[:limit]) ? list.slice(0, options[:limit]-1) : list
     hidden_list   = (list.length > options[:limit]) ? list.slice((options[:limit]-1)..list.length-1) : []
-
     parts =[]
-
-    parts <<
-      content_tag(:ul, :class => options[:ul_class]) do
-        safe_join(
-          visible_list.enum_for(:each_with_index).collect do |item, index|
-             yield(item, index)
-          end, " \n    "
-        )
-      end
-
-    if ( hidden_list.present? )
-      parts <<
-        expand_contract_section("#{hidden_list.length} more", id) do
-          content_tag(:ul, :class=>options[:ul_class]) do
-            safe_join(
-              hidden_list.enum_for(:each_with_index).collect do |item, index|
-                yield(item, index + options[:limit])
-              end, " \n    "
-            )
-          end
-        end
+    parts << content_tag(:ul, :class => options[:ul_class]) do
+      safe_join(
+        visible_list.enum_for(:each_with_index).collect do |item, index|
+           yield(item, index)
+        end, " \n    "
+      )
     end
-
+    if (hidden_list.present?)
+      parts << expand_contract_section("#{hidden_list.length} more", id) do
+        content_tag(:ul, :class=>options[:ul_class]) do
+          safe_join(
+            hidden_list.enum_for(:each_with_index).collect do |item, index|
+              yield(item, index + options[:limit])
+            end, " \n    "
+          )
+        end
+      end
+    end
     return safe_join(parts, "\n")
   end
 
@@ -226,12 +214,13 @@ module ResolveHelper
   def coverage_summary(response)
     unless (@user_request.title_level_citation? &&
             umlaut_config.lookup!("resolve_display.show_coverage_summary", false) &&
-            (response[:coverage_begin_date] || response[:coverage_end_date])
-            )
+            (response[:coverage_begin_date] || response[:coverage_end_date]))
       return nil
     end
+
     start   = response[:coverage_begin_date].try(:year) || I18n.t("umlaut.coverage_summary.open_start", :default => "first")
     finish  = response[:coverage_end_date].try(:year) || I18n.t("umlaut.coverage_summary.open_end", :default => "latest")
+
     content_tag("span", :class=>"coverage_summary") do
       "#{start} – #{finish}:"
     end
