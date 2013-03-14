@@ -1,3 +1,44 @@
-<div class="no_js">
-  <%= render :partial=>"txt" %>
+<div class="txt">
+  <%
+  unless @user_request.nil? %>
+    <div class="inner_modal_dialog">
+      <%= form_tag( {:controller => "export_email", :action => "send_txt", :id => params[:id]}, :class => "modal_dialog_form" ) do %>
+        <h2>Send the title and location of an item to your mobile phone</h2>
+        <div class="formError">
+          <%= validation_error( @error || flash[:alert]) if ( @error || flash[:alert]) %>
+        </div>
+        <h3><strong>Title:</strong>
+          <%= h(brief_citation(@user_request)) %>
+        </h3>
+        <div class="section">
+          <%= label_tag('number', 'Enter your mobile phone number:') %>
+          <%= text_field_tag('number', params[:number], :size => 14) %>
+          <p class="smallText"><em>10 digit US cell phone number</em></p>
+        </div>
+        <div class="section">
+          <%= label_tag('provider', 'Select your provider:') %>
+          <%
+            providers = @svc_response.service.instance_variable_get("@providers") %>
+          <%= select_tag "provider", options_for_select(providers.sort, params[:provider]) %>
+        </div><%
+        holdings = @user_request.get_service_type('holding', {}) %>
+        <div class="section">
+          <p>Choose the item you want to send:</p>
+          <ul><%
+            holdings.each do |p|
+              target = p.view_data %>
+              <li>
+                <%= radio_button_tag 'holding', p.id, (params[:holding].to_s == p.id.to_s) || holdings.length == 1 %>
+                <%= label_tag "holding_#{p.id}", formatted_html_holding_status(target) %>
+              </li><%
+            end %>
+          </ul>
+        </div>
+        <div class="section">
+          <p class="smallText"><em>Note: charges may apply if your service plan does not cover unlimited texting</em></p>
+          <%= submit_tag 'Send!' %>
+        </div><%
+      end %>
+    </div><%
+  end %>
 </div>
