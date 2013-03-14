@@ -36,7 +36,7 @@ class GoogleBookSearchTest < ActiveSupport::TestCase
   # simple match and a huge regexp was making my head hurt.
   # UPDATE: Use VCR to provide a deterministic GBS search.
   # TODO: Check more of the response
-  test_with_cassette("search frankenstein by OCLC number", :google_book_search) do
+  test_with_cassette("frankenstein by OCLC number", :google_book_search) do
     hashified_response = @gbs_default.do_query('OCLC2364071', requests(:frankenstein))
     assert_not_nil hashified_response
     assert_not_nil hashified_response["totalItems"]
