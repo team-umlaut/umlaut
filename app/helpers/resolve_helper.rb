@@ -144,7 +144,7 @@ module ResolveHelper
     parts << content_tag(:ul, :class => options[:ul_class]) do
       safe_join(
         visible_list.enum_for(:each_with_index).collect do |item, index|
-           yield(item, index)
+          yield(item, index)
         end, " \n    "
       )
     end
