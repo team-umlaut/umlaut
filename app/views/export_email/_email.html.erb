@@ -7,7 +7,7 @@ cite = @user_request.referent.to_citation %>
   <h2>Email the title and locations</h2>
   
   <div class="formError">
-    <%= validation_error( @error || flash[:error]) if ( @error || flash[:error]) %>
+    <%= validation_error( @error || flash[:alert]) if ( @error || flash[:alert]) %>
   </div>
   
   <h3><strong>Title:</strong> <%= h(cite[:title]) %>/<%= h(cite[:author]) %></h3>
