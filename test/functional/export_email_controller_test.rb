@@ -10,7 +10,7 @@ class ExportEmailControllerTest < ActionController::TestCase
   test "layout" do
     get(:email, :id => @email_service_response.id)
     assert_response :success
-    assert_select "body div.umlaut-container", 1
+    assert_select "body div.umlaut.container", 1
     assert_select "div.email", 1
   end
 
@@ -19,7 +19,7 @@ class ExportEmailControllerTest < ActionController::TestCase
     assert_response :success
     # Assert that no layout was included in the request
     assert_select "body", 0
-    assert_select "div.umlaut-container", 0
+    assert_select "div.umlaut.container", 0
     assert_select "div.email", 1
   end
 end
