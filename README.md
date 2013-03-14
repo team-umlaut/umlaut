@@ -1,8 +1,8 @@
 # Umlaut
-<!--[![Gem Version](https://badge.fury.io/rb/umlaut.png)](http://badge.fury.io/rb/umlaut)-->
+[![Gem Version](https://badge.fury.io/rb/umlaut.png)](http://badge.fury.io/rb/umlaut)
 [![Build Status](https://secure.travis-ci.org/team-umlaut/umlaut.png)](http://travis-ci.org/team-umlaut/umlaut)
 [![Dependency Status](https://gemnasium.com/team-umlaut/umlaut.png)](https://gemnasium.com/team-umlaut/umlaut)
-<!--[![Code Climate](https://codeclimate.com/github/team-umlaut/umlaut.png)](https://codeclimate.com/github/team-umlaut/umlaut)-->
+[![Code Climate](https://codeclimate.com/github/team-umlaut/umlaut.png)](https://codeclimate.com/github/team-umlaut/umlaut)
 <!--[![Security Status](http://rails-brakeman.com/team-umlaut/umlaut.png)](http://rails-brakeman.com/team-umlaut/umlaut)-->
 
 Umlaut is software for libraries (the kind with books). 
