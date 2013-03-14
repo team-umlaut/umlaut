@@ -1,5 +1,5 @@
 # Referent fixtures
-frankenstein: 
+frankenstein:
   isbn: "9780393964585"
   atitle: ""
   title: "frankenstein : the 1818 text, contexts, nineteenth-century responses, modern criticism"
@@ -13,148 +13,13 @@ nytimes:
   id: 2
   issn: 0362-4331
   title: The New York times
-  
+
 simple_request_referent:
   issn: "0098-7484"
-  
-primo_id_referent:
-  title: "Travels with my aunt"
-  isbn: "0143039008"
-
-primo_checked_out_referent:
-  title: "Argument realization"
-  isbn: "0521663318"
-
-primo_journal1_referent:
-  title: "The Musical quarterly."
-  issn: "0027-4631"
-
-primo_journal2_referent:
-  title: "Journal of behavioral economics"
-  issn: "0090-5720"
-
-primo_journal3_referent:
-  title: "The Journal of religious history"
-  issn: "0022-4227"
-
-primo_journal4_referent:
-  title: "The journal of the American Board of Family Practice"
-  issn: "0893-8652"
-
-primo_journal5_referent:
-  atitle: "roadblocks grow for mayor's pick to head n.y.c. sch..."
-  title: "education week"
-  issn: "0277-4232"
-  year: "2010"
-  volume: "30"
-
-primo_toc_referent:
-  title: "The risk management process : business strategy and tactics"
-  isbn: "9780471405542"
-
-primo_bobst_available_referent:
-  title: "Parole, personnage et référence dans le théâtre de Jean Racine"
-
-primo_bobst_checked_out_referent:
-  title: "Aquinas and Maimonides on the possibility of the knowledge of God : an examination of the Quaestio de attributis"
-  isbn: "1402047207"
-
-primo_bobst_ill_referent:
-  title: "El Niño inocente de La Guardia"
-  isbn: "0729302156"
-
-primo_bobst_in_processing_referent:
-  title: "Plurilinguismo e lirica medievale : da Raimbaut de Vaqueiras a Dante"
-
-primo_bobst_offsite_referent:
-  title: "Natural learning and mathematics"
-  isbn: "0435083287"
-
-primo_bafc_available_referent:
-  title: "Shajiabang [sound recording] : model opera of the Cultural Revolution : orchestral highlights"
-
-primo_bafc_checked_out_referent:
-  title: "Founder of the Delta blues [sound recording]"
-
-primo_tnsgi_available_referent:
-  title: "Massive change : a manifesto for the future global design culture"
-  isbn: "0714844012"
-
-primo_bobst_problem1_referent:
-  title: "Janáček's interconnected world : with a closer look at The cunning little vixen ; Evocations of an earthly nature : for orchestra"
-
-primo_bres_available_referent:
-  title: "Personality and psychopathology : feminist reappraisals"
-  isbn: "0898627745"
-
-primo_bres_checked_out_referent:
-  title: "Cheap amusements : working women and leisure in turn-of-the-century New York"
-  isbn: "0877223890"
-
-primo_bafc_available_referent:
-  title: "Shajiabang [sound recording] : model opera of the Cultural Revolution : orchestral highlights"
-
-primo_bafc_checked_out_referent:
-  title: "Founder of the Delta blues [sound recording]"
-
-primo_bfale_available_referent:
-  title: "Golden state."
-  isbn: "0807606766"
-
-primo_btam_available_referent:
-  title: "Pacifism and invasion ; On duelling"
-
-primo_ncour_available_referent:
-  title: "Algorithmic graph theory"
-  isbn: "0521246598"
-
-primo_ncour_checked_out_referent:
-  title: "Many-valued logics"
-  isbn: "0387559264"
-
-primo_nifa_available_referent:
-  title: "Medieval architecture, medieval learning : builders and masters in the age of romanesque and gothic"
-  isbn: "0300049188"
-
-primo_nifa_offsite_referent:
-  title: "Les grandes heures de Rohan (Bibliothèque nationale)."
-
-primo_tnsfo_available_referent:
-  title: "Foucault beyond Foucault : power and its intensifications since 1984"
-  isbn: "9780804757010"
-
-primo_tnsfo_offsite_referent:
-  title: "Eugene V. Debs : a biography"
-
-primo_tnsfo_checked_out_referent:
-  title: "U.S. force structure in NATO: an alternative; a staff paper"
-  isbn: "0815751710"
-
-# primo_tnsgi_available_referent:
-#   title: "The mediation of ornament"
-#   isbn: "0691040990"
-# 
-primo_tnsgi_checked_out_referent:
-  title: "Flowers : watercolors & monotypes"
-  isbn: "0810931052"
-
-primo_cu_available_referent:
-  title: "Varieties of visual experience"
-  isbn: "0810939223"
-
-primo_cu_checked_out_referent:
-  title: "The poetical works of Matthew Prior : With a life"
-
-primo_nysid_checked_out_referent:
-  title: "Early Mexican houses : a book of photographs & measured drawings"
-  isbn: "0942655036"
 
 critical_inquiry_referent:
   title: "Critical inquiry"
   issn: "0093-1896"
-
-sfx_owner_but_fulltext_empty_referent:
-  title: "Australian journal of international affairs the journal of the Australian Institute of International Affairs."
 
 sfx_multi_obj_request_no_fulltext_referent:
   title: "Mobile Information Systems"

@@ -1,6 +1,6 @@
 # Referent_value fixtures
- 
-referent_value_1: 
+
+referent_value_1:
   normalized_value: info:oclcnum/33045872
   key_name: identifier
   metadata: false
@@ -9,8 +9,8 @@ referent_value_1:
   referent_id: 1
   created_at: 2008-06-28 16:15:27 -04:00
   private_data: false
- 
-referent_value_2: 
+
+referent_value_2:
   normalized_value: book
   key_name: format
   metadata: false
@@ -19,9 +19,9 @@ referent_value_2:
   referent_id: 1
   created_at: 2008-06-28 16:15:27 -04:00
   private_data: false
- 
-referent_value_3: 
-  normalized_value: 9780393964585
+
+referent_value_3:
+  normalized_value: "9780393964585"
   key_name: isbn
   metadata: true
   id: 3
@@ -29,8 +29,8 @@ referent_value_3:
   referent_id: 1
   created_at: 2008-06-28 16:15:27 -04:00
   private_data: false
- 
-referent_value_4: 
+
+referent_value_4:
   normalized_value: new york
   key_name: place
   metadata: true
@@ -39,9 +39,9 @@ referent_value_4:
   referent_id: 1
   created_at: 2008-06-28 16:15:27 -04:00
   private_data: false
- 
-referent_value_5: 
-  normalized_value: 
+
+referent_value_5:
+  normalized_value: ""
   key_name: atitle
   metadata: true
   id: 5
@@ -49,9 +49,9 @@ referent_value_5:
   referent_id: 1
   created_at: 2008-06-28 16:15:27 -04:00
   private_data: false
- 
-referent_value_6: 
-  normalized_value: 
+
+referent_value_6:
+  normalized_value: ""
   key_name: aucorp
   metadata: true
   id: 6
@@ -59,9 +59,9 @@ referent_value_6:
   referent_id: 1
   created_at: 2008-06-28 16:15:27 -04:00
   private_data: false
- 
-referent_value_7: 
-  normalized_value: 1997
+
+referent_value_7:
+  normalized_value: "1997"
   key_name: date
   metadata: true
   id: 7
@@ -69,9 +69,9 @@ referent_value_7:
   referent_id: 1
   created_at: 2008-06-28 16:15:27 -04:00
   private_data: false
- 
-referent_value_8: 
-  normalized_value: 'frankenstein : the 1818 text, contexts, nineteenth-century responses, modern criticism'
+
+referent_value_8:
+  normalized_value: "frankenstein : the 1818 text, contexts, nineteenth-century responses, modern criticism"
   key_name: btitle
   metadata: true
   id: 8
@@ -80,8 +80,8 @@ referent_value_8:
   created_at: 2008-06-28 16:15:27 -04:00
   private_data: false
 
-referent_value_9: 
-  normalized_value: 
+referent_value_9:
+  normalized_value: ""
   key_name: series
   metadata: true
   id: 9
@@ -90,7 +90,7 @@ referent_value_9:
   created_at: 2008-06-28 16:15:27 -04:00
   private_data: false
 
-referent_value_10: 
+referent_value_10:
   normalized_value: w.w. norton
   key_name: pub
   metadata: true
@@ -100,7 +100,7 @@ referent_value_10:
   created_at: 2008-06-28 16:15:27 -04:00
   private_data: false
 
-referent_value_11: 
+referent_value_11:
   normalized_value: book
   key_name: genre
   metadata: true
@@ -110,7 +110,7 @@ referent_value_11:
   created_at: 2008-06-28 16:15:27 -04:00
   private_data: false
 
-referent_value_12: 
+referent_value_12:
   normalized_value: 1st ed.
   key_name: edition
   metadata: true
@@ -120,7 +120,7 @@ referent_value_12:
   created_at: 2008-06-28 16:15:28 -04:00
   private_data: false
 
-referent_value_13: 
+referent_value_13:
   normalized_value: wollstonecraft
   key_name: auinitm
   metadata: true
@@ -130,8 +130,8 @@ referent_value_13:
   created_at: 2008-06-28 16:15:28 -04:00
   private_data: false
 
-referent_value_14: 
-  normalized_value: 
+referent_value_14:
+  normalized_value: ""
   key_name: tpages
   metadata: true
   id: 14
@@ -139,8 +139,8 @@ referent_value_14:
   referent_id: 1
   created_at: 2008-06-28 16:15:28 -04:00
   private_data: false
- 
-referent_value_15: 
+
+referent_value_15:
   normalized_value: mary
   key_name: aufirst
   metadata: true
@@ -149,8 +149,8 @@ referent_value_15:
   referent_id: 1
   created_at: 2008-06-28 16:15:28 -04:00
   private_data: false
- 
-referent_value_16: 
+
+referent_value_16:
   normalized_value: shelley
   key_name: aulast
   metadata: true
@@ -159,8 +159,8 @@ referent_value_16:
   referent_id: 1
   created_at: 2008-06-28 16:15:28 -04:00
   private_data: false
- 
-referent_value_17: 
+
+referent_value_17:
   normalized_value: tag:gpc,2008-6-28:1
   key_name: identifier
   metadata: false
@@ -195,20 +195,20 @@ nytimes_rv3:
   private_data: false
 
 simp_rv1:
-  referent: simple_referent
-  key_name: format
-  value: journal
-  normalized_value: journal
-  metadata: false 
-  private_data: false
+ referent: simple_referent
+ key_name: "format"
+ value: "journal"
+ normalized_value: "journal"
+ metadata: false
+ private_data: false
 
 simp_rv2:
-  referent: simple_referent
-  key_name: genre
-  value: journal
-  normalized_value: journal
-  metadata: true
-  private_data: false
+ referent: simple_referent
+ key_name: "genre"
+ value: "journal"
+ normalized_value: "journal"
+ metadata: true
+ private_data: false
 
 simp_rv3:
   referent: simple_referent
@@ -218,1539 +218,163 @@ simp_rv3:
   metadata: true
   private_data: false
 
-primo_id_rv1:
-  referent: primo_id_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_id_rv2:
-  referent: primo_id_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-# primo_id_rv3:
-#   referent: primo_id_referent
-#   key_name: identifier
-#   metadata: false
-#   value: info:sid/primo.exlibrisgroup.com:primo-nyu_aleph000062856
-#   normalized_value: info:sid/primo.exlibrisgroup.com:primo-nyu_aleph000062856
-#   private_data: false
-
-primo_id_rv3:
-  referent: primo_id_referent
-  key_name: primo
-  value: nyu_aleph000062856
-  normalized_value: nyu_aleph000062856
-  metadata: true
-  private_data: false
-
-primo_id_rv4:
-  referent: primo_id_referent
-  key_name: title
-  value: Travels with my aunt
-  normalized_value: Travels with my aunt
-  metadata: true
-  private_data: false
-
-primo_id_rv5:
-  referent: primo_id_referent
-  key_name: btitle
-  value: Travels with my aunt
-  normalized_value: Travels with my aunt
-  metadata: true
-  private_data: false
-
-primo_id_rv6:
-  referent: primo_id_referent
-  key_name: isbn
-  value: 0143039008
-  normalized_value: 0143039008
-  metadata: true
-  private_data: false
-
-primo_check_out_rv1:
-  referent: primo_checked_out_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_check_out_rv2:
-  referent: primo_checked_out_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_check_out_rv3:
-  referent: primo_checked_out_referent
-  key_name: primo
-  value: nyu_aleph000742457
-  normalized_value: nyu_aleph000742457
-  metadata: true
-  private_data: false
-
-primo_check_out_rv4:
-  referent: primo_checked_out_referent
-  key_name: title
-  value: Argument realization
-  normalized_value: Argument realization
-  metadata: true
-  private_data: false
-
-primo_check_out_rv5:
-  referent: primo_checked_out_referent
-  key_name: btitle
-  value: Argument realization
-  normalized_value: Argument realization
-  metadata: true
-  private_data: false
-
-primo_check_out_rv6:
-  referent: primo_checked_out_referent
-  key_name: isbn
-  value: 0521663318
-  normalized_value: 0521663318
-  metadata: true
-  private_data: false
-  
-primo_journal1_rv1:
-  referent: primo_journal1_referent
-  key_name: format
-  value: journal
-  normalized_value: journal
-  metadata: true
-  private_data: false
-
-primo_journal1_rv2:
-  referent: primo_journal1_referent
-  key_name: genre
-  value: journal
-  normalized_value: journal
-  metadata: true
-  private_data: false
-
-# primo_journal1_rv3:
-#   referent: primo_journal1_referent
-#   key_name: primo
-#   value: nyu_aleph002895625
-#   normalized_value: nyu_aleph002895625
-#   metadata: true
-#   private_data: false
-
-primo_journal1_rv4:
-  referent: primo_journal1_referent
-  key_name: title
-  value: The Musical quarterly.
-  normalized_value: The Musical quarterly.
-  metadata: true
-  private_data: false
-  
-primo_journal1_rv5:
-  referent: primo_journal1_referent
-  key_name: issn
-  value: 0027-4631
-  normalized_value: 0027-4631
-  metadata: true
-  private_data: false
-
-primo_journal2_rv1:
-  referent: primo_journal2_referent
-  key_name: format
-  value: journal
-  normalized_value: journal
-  metadata: true
-  private_data: false
-
-primo_journal2_rv2:
-  referent: primo_journal2_referent
-  key_name: genre
-  value: journal
-  normalized_value: journal
-  metadata: true
-  private_data: false
-
-primo_journal2_rv3:
-  referent: primo_journal2_referent
-  key_name: primo
-  value: dedupmrg41684735
-  normalized_value: dedupmrg41684735
-  metadata: true
-  private_data: false
-
-primo_journal2_rv4:
-  referent: primo_journal2_referent
-  key_name: title
-  value: Journal of behavioral economics
-  normalized_value: Journal of behavioral economics
-  metadata: true
-  private_data: false
-
-primo_journal2_rv5:
-  referent: primo_journal2_referent
-  key_name: issn
-  value: 0090-5720
-  normalized_value: 0090-5720
-  metadata: true
-  private_data: false
-
-primo_journal3_rv1:
-  referent: primo_journal3_referent
-  key_name: format
-  value: journal
-  normalized_value: journal
-  metadata: true
-  private_data: false
-
-primo_journal3_rv2:
-  referent: primo_journal3_referent
-  key_name: genre
-  value: journal
-  normalized_value: journal
-  metadata: true
-  private_data: false
-
-primo_journal3_rv3:
-  referent: primo_journal3_referent
-  key_name: primo
-  value: dedupmrg41678343
-  normalized_value: dedupmrg41678343
-  metadata: true
-  private_data: false
-
-primo_journal3_rv4:
-  referent: primo_journal3_referent
-  key_name: title
-  value: The Journal of religious history
-  normalized_value: The Journal of religious history
-  metadata: true
-  private_data: false
-
-primo_journal3_rv5:
-  referent: primo_journal3_referent
-  key_name: issn
-  value: 0022-4227
-  normalized_value: 0022-4227
-  metadata: true
-  private_data: false
-
-primo_journal4_rv1:
-  referent: primo_journal4_referent
-  key_name: format
-  value: journal
-  normalized_value: journal
-  metadata: true
-  private_data: false
-
-primo_journal4_rv2:
-  referent: primo_journal4_referent
-  key_name: genre
-  value: journal
-  normalized_value: journal
-  metadata: true
-  private_data: false
-
-primo_journal4_rv3:
-  referent: primo_journal4_referent
-  key_name: primo
-  value: dedupmrg8302546
-  normalized_value: dedupmrg8302546
-  metadata: true
-  private_data: false
-
-primo_journal4_rv4:
-  referent: primo_journal4_referent
-  key_name: title
-  value: The journal of the American Board of Family Practice
-  normalized_value: The journal of the American Board of Family Practice
-  metadata: true
-  private_data: false
-
-primo_journal4_rv5:
-  referent: primo_journal4_referent
-  key_name: issn
-  value: 0893-8652
-  normalized_value: 0893-8652
-  metadata: true
-  private_data: false
-
-primo_journal5_rv1:
-  referent: primo_journal5_referent
-  key_name: format
-  value: journal
-  normalized_value: journal
-  metadata: true
-  private_data: false
-
-primo_journal5_rv2:
-  referent: primo_journal5_referent
-  key_name: genre
-  value: article
-  normalized_value: article
-  metadata: true
-  private_data: false
-
-primo_journal5_rv3:
-  referent: primo_journal5_referent
-  key_name: atitle
-  value: Roadblocks Grow for Mayor's Pick to Head N.Y.C. Schools 
-  normalized_value: Roadblocks Grow for Mayor's Pick to Head N.Y.C. Schools 
-  metadata: true
-  private_data: false
-
-primo_journal5_rv4:
-  referent: primo_journal5_referent
-  key_name: jtitle
-  value: Education week
-  normalized_value: Education week
-  metadata: true
-  private_data: false
-
-primo_journal5_rv5:
-  referent: primo_journal5_referent
-  key_name: issn
-  value: 0277-4232
-  normalized_value: 0277-4232
-  metadata: true
-  private_data: false
-
-primo_journal5_rv6:
-  referent: primo_journal5_referent
-  key_name: eissn
-  value: 1944-8333
-  normalized_value: 1944-8333
-  metadata: true
-  private_data: false
-
-primo_journal5_rv7:
-  referent: primo_journal5_referent
-  key_name: aulast
-  value: Samuels
-  normalized_value: Samuels
-  metadata: true
-  private_data: false
-
-primo_journal5_rv8:
-  referent: primo_journal5_referent
-  key_name: aufirst
-  value: Christina
-  normalized_value: Christina
-  metadata: true
-  private_data: false
-
-primo_toc_rv1:
-  referent: primo_toc_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_toc_rv2:
-  referent: primo_toc_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_toc_rv3:
-  referent: primo_toc_referent
-  key_name: primo
-  value: nyu_aleph003149772
-  normalized_value: nyu_aleph003149772
-  metadata: true
-  private_data: false
-
-primo_toc_rv4:
-  referent: primo_toc_referent
-  key_name: title
-  value: 'The risk management process : business strategy and tactics'
-  normalized_value: 'The risk management process : business strategy and tactics'
-  metadata: true
-  private_data: false
-
-primo_toc_rv5:
-  referent: primo_toc_referent
-  key_name: isbn
-  value: 9780471405542
-  normalized_value: 9780471405542
-  metadata: true
-  private_data: false
-
-primo_bobst_available_rv1:
-  referent: primo_bobst_available_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bobst_available_rv2:
-  referent: primo_bobst_available_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bobst_available_rv3:
-  referent: primo_bobst_available_referent
-  key_name: primo
-  value: nyu_aleph002045809
-  normalized_value: nyu_aleph002045809
-  metadata: true
-  private_data: false
-
-primo_bobst_available_rv4:
-  referent: primo_bobst_available_referent
-  key_name: title
-  value: Parole, personnage et référence dans le théâtre de Jean Racine
-  normalized_value: Parole, personnage et référence dans le théâtre de Jean Racine
-  metadata: true
-  private_data: false
-  
-primo_bobst_checked_out_rv1:
-  referent: primo_bobst_checked_out_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bobst_checked_out_rv2:
-  referent: primo_bobst_checked_out_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bobst_checked_out_rv3:
-  referent: primo_bobst_checked_out_referent
-  key_name: primo
-  value: nyu_aleph000017832
-  normalized_value: nyu_aleph000017832
-  metadata: true
-  private_data: false
-
-primo_bobst_checked_out_rv4:
-  referent: primo_bobst_checked_out_referent
-  key_name: title
-  value: 'Aquinas and Maimonides on the possibility of the knowledge of God : an examination of the Quaestio de attributis'
-  normalized_value: 'Aquinas and Maimonides on the possibility of the knowledge of God : an examination of the Quaestio de attributis'
-  metadata: true
-  private_data: false
-
-primo_bobst_checked_out_rv5:
-  referent: primo_bobst_checked_out_referent
-  key_name: isbn
-  value: 1402047207
-  normalized_value: 1402047207
-  metadata: true
-  private_data: false
-
-primo_bobst_ill_rv1:
-  referent: primo_bobst_ill_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bobst_ill_rv2:
-  referent: primo_bobst_ill_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bobst_ill_rv3:
-  referent: primo_bobst_ill_referent
-  key_name: primo
-  value: nyu_aleph002801015
-  normalized_value: nyu_aleph002801015
-  metadata: true
-  private_data: false
-
-primo_bobst_ill_rv4:
-  referent: primo_bobst_ill_referent
-  key_name: title
-  value: El Niño inocente de La Guardia
-  normalized_value: El Niño inocente de La Guardia
-  metadata: true
-  private_data: false
-
-primo_bobst_ill_rv5:
-  referent: primo_bobst_ill_referent
-  key_name: isbn
-  value: 0729302156
-  normalized_value: 0729302156
-  metadata: true
-  private_data: false
-  
-primo_bobst_in_processing_rv1:
-  referent: primo_bobst_in_processing_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bobst_in_processing_rv2:
-  referent: primo_bobst_in_processing_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bobst_in_processing_rv3:
-  referent: primo_bobst_in_processing_referent
-  key_name: primo
-  value: nyu_aleph002723601
-  normalized_value: nyu_aleph002723601
-  metadata: true
-  private_data: false
-
-primo_bobst_in_processing_rv4:
-  referent: primo_bobst_in_processing_referent
-  key_name: title
-  value: 'Plurilinguismo e lirica medievale : da Raimbaut de Vaqueiras a Dante'
-  normalized_value: 'Plurilinguismo e lirica medievale : da Raimbaut de Vaqueiras a Dante'
-  metadata: true
-  private_data: false
-
-primo_bobst_offsite_rv1:
-  referent: primo_bobst_offsite_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bobst_offsite_rv2:
-  referent: primo_bobst_offsite_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bobst_offsite_rv3:
-  referent: primo_bobst_offsite_referent
-  key_name: primo
-  value: nyu_aleph002045324
-  normalized_value: nyu_aleph002045324
-  metadata: true
-  private_data: false
-
-primo_bobst_offsite_rv4:
-  referent: primo_bobst_offsite_referent
-  key_name: title
-  value: Natural learning and mathematics
-  normalized_value: Natural learning and mathematics
-  metadata: true
-  private_data: false
-
-primo_bobst_offsite_rv5:
-  referent: primo_bobst_offsite_referent
-  key_name: isbn
-  value: 0435083287
-  normalized_value: 0435083287
-  metadata: true
-  private_data: false
-
-primo_bafc_available_rv1:
-  referent: primo_bafc_available_referent
-  key_name: format
-  value: audio
-  normalized_value: audio
-  metadata: true
-  private_data: false
-
-primo_bafc_available_rv2:
-  referent: primo_bafc_available_referent
-  key_name: genre
-  value: audio
-  normalized_value: audio
-  metadata: true
-  private_data: false
-
-primo_bafc_available_rv3:
-  referent: primo_bafc_available_referent
-  key_name: primo
-  value: nyu_aleph000013884
-  normalized_value: nyu_aleph000013884
-  metadata: true
-  private_data: false
-
-primo_bafc_available_rv4:
-  referent: primo_bafc_available_referent
-  key_name: title
-  value: 'Shajiabang [sound recording] : model opera of the Cultural Revolution : orchestral highlights'
-  normalized_value: 'Shajiabang [sound recording] : model opera of the Cultural Revolution : orchestral highlights'
-  metadata: true
-  private_data: false
-
-primo_bafc_checked_out_rv1:
-  referent: primo_bafc_checked_out_referent
-  key_name: format
-  value: audio
-  normalized_value: audio
-  metadata: true
-  private_data: false
-
-primo_bafc_checked_out_rv2:
-  referent: primo_bafc_checked_out_referent
-  key_name: genre
-  value: audio
-  normalized_value: audio
-  metadata: true
-  private_data: false
-
-primo_bafc_checked_out_rv3:
-  referent: primo_bafc_checked_out_referent
-  key_name: primo
-  value: nyu_aleph002094735
-  normalized_value: nyu_aleph002094735
-  metadata: true
-  private_data: false
-
-primo_bafc_checked_out_rv4:
-  referent: primo_bafc_checked_out_referent
-  key_name: title
-  value: Founder of the Delta blues [sound recording]
-  normalized_value: Founder of the Delta blues [sound recording]
-  metadata: true
-  private_data: false
-  
-primo_tnsgi_available_rv1:
-  referent: primo_tnsgi_available_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_tnsgi_available_rv2:
-  referent: primo_tnsgi_available_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_tnsgi_available_rv3:
-  referent: primo_tnsgi_available_referent
-  key_name: primo
-  value: nyu_aleph000278832
-  normalized_value: nyu_aleph000278832
-  metadata: true
-  private_data: false
-
-primo_tnsgi_available_rv4:
-  referent: primo_tnsgi_available_referent
-  key_name: title
-  value: 'Massive change : a manifesto for the future global design culture'
-  normalized_value: 'Massive change : a manifesto for the future global design culture'
-  metadata: true
-  private_data: false
-
-primo_tnsgi_available_rv5:
-  referent: primo_tnsgi_available_referent
-  key_name: isbn
-  value: 0714844012
-  normalized_value: 0714844012
-  metadata: true
-  private_data: false
-  
-primo_bobst_problem1_rv1:
-  referent: primo_bobst_problem1_referent
-  key_name: format
-  value: dissertation
-  normalized_value: dissertation
-  metadata: true
-  private_data: false
-
-primo_bobst_problem1_rv2:
-  referent: primo_bobst_problem1_referent
-  key_name: genre
-  value: dissertation
-  normalized_value: dissertation
-  metadata: true
-  private_data: false
-
-primo_bobst_problem1_rv3:
-  referent: primo_bobst_problem1_referent
-  key_name: primo
-  value: nyu_aleph000509288
-  normalized_value: nyu_aleph000509288
-  metadata: true
-  private_data: false
-
-primo_bobst_problem1_rv4:
-  referent: primo_bobst_problem1_referent
-  key_name: title
-  value: "Janáček's interconnected world : with a closer look at The cunning little vixen ; Evocations of an earthly nature : for orchestra"
-  normalized_value: "Janáček's interconnected world : with a closer look at The cunning little vixen ; Evocations of an earthly nature : for orchestra"
-  metadata: true
-  private_data: false
-
-primo_bres_available_rv1:
-  referent: primo_bres_available_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bres_available_rv2:
-  referent: primo_bres_available_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bres_available_rv3:
-  referent: primo_bres_available_referent
-  key_name: primo
-  value: nyu_aleph002036136
-  normalized_value: nyu_aleph002036136
-  metadata: true
-  private_data: false
-
-primo_bres_available_rv4:
-  referent: primo_bres_available_referent
-  key_name: title
-  value: 'Personality and psychopathology : feminist reappraisals'
-  normalized_value: 'Personality and psychopathology : feminist reappraisals'
-  metadata: true
-  private_data: false
-
-primo_bres_available_rv5:
-  referent: primo_bres_available_referent
-  key_name: isbn
-  value: 0898627745
-  normalized_value: 0898627745
-  metadata: true
-  private_data: false
-
-primo_bres_checked_out_rv1:
-  referent: primo_bres_checked_out_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bres_checked_out_rv2:
-  referent: primo_bres_checked_out_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bres_checked_out_rv3:
-  referent: primo_bres_checked_out_referent
-  key_name: primo
-  value: nyu_aleph002743452
-  normalized_value: nyu_aleph002743452
-  metadata: true
-  private_data: false
-
-primo_bres_checked_out_rv4:
-  referent: primo_bres_checked_out_referent
-  key_name: title
-  value: 'Cheap amusements : working women and leisure in turn-of-the-century New York'
-  normalized_value: 'Cheap amusements : working women and leisure in turn-of-the-century New York'
-  metadata: true
-  private_data: false
-
-primo_bres_checked_out_rv5:
-  referent: primo_bres_checked_out_referent
-  key_name: isbn
-  value: 0877223890
-  normalized_value: 0877223890
-  metadata: true
-  private_data: false
-
-primo_bafc_available_rv1:
-  referent: primo_bafc_available_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bafc_available_rv2:
-  referent: primo_bafc_available_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bafc_available_rv3:
-  referent: primo_bafc_available_referent
-  key_name: primo
-  value: nyu_aleph000013884
-  normalized_value: nyu_aleph000013884
-  metadata: true
-  private_data: false
-
-primo_bafc_available_rv4:
-  referent: primo_bafc_available_referent
-  key_name: title
-  value: 'Shajiabang [sound recording] : model opera of the Cultural Revolution : orchestral highlights'
-  normalized_value: 'Shajiabang [sound recording] : model opera of the Cultural Revolution : orchestral highlights'
-  metadata: true
-  private_data: false
-
-primo_bafc_checked_out_rv1:
-  referent: primo_bafc_checked_out_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bafc_checked_out_rv2:
-  referent: primo_bafc_checked_out_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bafc_checked_out_rv3:
-  referent: primo_bafc_checked_out_referent
-  key_name: primo
-  value: nyu_aleph002094735
-  normalized_value: nyu_aleph002094735
-  metadata: true
-  private_data: false
-
-primo_bafc_checked_out_rv4:
-  referent: primo_bafc_checked_out_referent
-  key_name: title
-  value: Founder of the Delta blues [sound recording]
-  normalized_value: Founder of the Delta blues [sound recording]
-  metadata: true
-  private_data: false
-
-primo_bfale_available_rv1:
-  referent: primo_bfale_available_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bfale_available_rv2:
-  referent: primo_bfale_available_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_bfale_available_rv3:
-  referent: primo_bfale_available_referent
-  key_name: primo
-  value: nyu_aleph002046736
-  normalized_value: nyu_aleph002046736
-  metadata: true
-  private_data: false
-
-primo_bfale_available_rv4:
-  referent: primo_bfale_available_referent
-  key_name: title
-  value: Golden state.
-  normalized_value: Golden state.
-  metadata: true
-  private_data: false
-
-primo_bfale_available_rv5:
-  referent: primo_bfale_available_referent
-  key_name: isbn
-  value: 0807606766
-  normalized_value: 0807606766
-  metadata: true
-  private_data: false
-
-primo_btam_available_rv1:
-  referent: primo_btam_available_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_btam_available_rv2:
-  referent: primo_btam_available_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_btam_available_rv3:
-  referent: primo_btam_available_referent
-  key_name: primo
-  value: nyu_aleph002045797
-  normalized_value: nyu_aleph002045797
-  metadata: true
-  private_data: false
-
-primo_btam_available_rv4:
-  referent: primo_btam_available_referent
-  key_name: title
-  value: Pacifism and invasion ; On duelling
-  normalized_value: Pacifism and invasion ; On duelling
-  metadata: true
-  private_data: false
-
-primo_ncour_available_rv1:
-  referent: primo_ncour_available_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_ncour_available_rv2:
-  referent: primo_ncour_available_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_ncour_available_rv3:
-  referent: primo_ncour_available_referent
-  key_name: primo
-  value: nyu_aleph002734871
-  normalized_value: nyu_aleph002734871
-  metadata: true
-  private_data: false
-
-primo_ncour_available_rv4:
-  referent: primo_ncour_available_referent
-  key_name: title
-  value: Algorithmic graph theory
-  normalized_value: Algorithmic graph theory
-  metadata: true
-  private_data: false
-
-primo_ncour_available_rv5:
-  referent: primo_ncour_available_referent
-  key_name: isbn
-  value: 0521246598
-  normalized_value: 0521246598
-  metadata: true
-  private_data: false
-
-primo_ncour_checked_out_rv1:
-  referent: primo_ncour_checked_out_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_ncour_checked_out_rv2:
-  referent: primo_ncour_checked_out_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_ncour_checked_out_rv3:
-  referent: primo_ncour_checked_out_referent
-  key_name: primo
-  value: nyu_aleph002046930
-  normalized_value: nyu_aleph002046930
-  metadata: true
-  private_data: false
-
-primo_ncour_checked_out_rv4:
-  referent: primo_ncour_checked_out_referent
-  key_name: title
-  value: Many-valued logics
-  normalized_value: Many-valued logics
-  metadata: true
-  private_data: false
-
-primo_ncour_checked_out_rv5:
-  referent: primo_ncour_checked_out_referent
-  key_name: isbn
-  value: 0387559264
-  normalized_value: 0387559264
-  metadata: true
-  private_data: false
-
-primo_nifa_available_rv1:
-  referent: primo_nifa_available_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_nifa_available_rv2:
-  referent: primo_nifa_available_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_nifa_available_rv3:
-  referent: primo_nifa_available_referent
-  key_name: primo
-  value: nyu_aleph002045653
-  normalized_value: nyu_aleph002045653
-  metadata: true
-  private_data: false
-
-primo_nifa_available_rv4:
-  referent: primo_nifa_available_referent
-  key_name: title
-  value: 'Medieval architecture, medieval learning : builders and masters in the age of romanesque and gothic'
-  normalized_value: 'Medieval architecture, medieval learning : builders and masters in the age of romanesque and gothic'
-  metadata: true
-  private_data: false
-
-primo_nifa_available_rv5:
-  referent: primo_nifa_available_referent
-  key_name: isbn
-  value: 0300049188
-  normalized_value: 0300049188
-  metadata: true
-  private_data: false
-
-primo_nifa_offsite_rv1:
-  referent: primo_nifa_offsite_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_nifa_offsite_rv2:
-  referent: primo_nifa_offsite_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_nifa_offsite_rv3:
-  referent: primo_nifa_offsite_referent
-  key_name: primo
-  value: nyu_aleph002046688
-  normalized_value: nyu_aleph002046688
-  metadata: true
-  private_data: false
-
-primo_nifa_offsite_rv4:
-  referent: primo_nifa_offsite_referent
-  key_name: title
-  value: Les grandes heures de Rohan (Bibliothèque nationale).
-  normalized_value: Les grandes heures de Rohan (Bibliothèque nationale).
-  metadata: true
-  private_data: false
-
-primo_tnsfo_available_rv1:
-  referent: primo_tnsfo_available_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_tnsfo_available_rv2:
-  referent: primo_tnsfo_available_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_tnsfo_available_rv3:
-  referent: primo_tnsfo_available_referent
-  key_name: primo
-  value: nyu_aleph000571658
-  normalized_value: nyu_aleph000571658
-  metadata: true
-  private_data: false
-
-primo_tnsfo_available_rv4:
-  referent: primo_tnsfo_available_referent
-  key_name: title
-  value: 'Foucault beyond Foucault : power and its intensifications since 1984'
-  normalized_value: 'Foucault beyond Foucault : power and its intensifications since 1984'
-  metadata: true
-  private_data: false
-
-primo_tnsfo_available_rv5:
-  referent: primo_tnsfo_available_referent
-  key_name: isbn
-  value: 9780804757010
-  normalized_value: 9780804757010
-  metadata: true
-  private_data: false
-
-primo_tnsfo_offsite_rv1:
-  referent: primo_tnsfo_offsite_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_tnsfo_offsite_rv2:
-  referent: primo_tnsfo_offsite_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_tnsfo_offsite_rv3:
-  referent: primo_tnsfo_offsite_referent
-  key_name: primo
-  value: nyu_aleph002046666
-  normalized_value: nyu_aleph002046666
-  metadata: true
-  private_data: false
-
-primo_tnsfo_offsite_rv4:
-  referent: primo_tnsfo_offsite_referent
-  key_name: title
-  value: 'Eugene V. Debs : a biography'
-  normalized_value: 'Eugene V. Debs : a biography'
-  metadata: true
-  private_data: false
-
-primo_tnsfo_checked_out_rv1:
-  referent: primo_tnsfo_checked_out_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_tnsfo_checked_out_rv2:
-  referent: primo_tnsfo_checked_out_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_tnsfo_checked_out_rv3:
-  referent: primo_tnsfo_checked_out_referent
-  key_name: primo
-  value: nyu_aleph002660869
-  normalized_value: nyu_aleph002660869
-  metadata: true
-  private_data: false
-
-primo_tnsfo_checked_out_rv4:
-  referent: primo_tnsfo_checked_out_referent
-  key_name: title
-  value: 'U.S. force structure in NATO: an alternative; a staff paper'
-  normalized_value: 'U.S. force structure in NATO: an alternative; a staff paper'
-  metadata: true
-  private_data: false
-
-primo_tnsfo_checked_out_rv5:
-  referent: primo_tnsfo_checked_out_referent
-  key_name: isbn
-  value: 0815751710
-  normalized_value: 0815751710
-  metadata: true
-  private_data: false
-
-# primo_tnsgi_available_rv1:
-#   referent: primo_tnsgi_available_referent
-#   key_name: format
-#   value: book
-#   normalized_value: book
-#   metadata: true
-#   private_data: false
-# 
-# primo_tnsgi_available_rv2:
-#   referent: primo_tnsgi_available_referent
-#   key_name: genre
-#   value: book
-#   normalized_value: book
-#   metadata: true
-#   private_data: false
-# 
-# primo_tnsgi_available_rv3:
-#   referent: primo_tnsgi_available_referent
-#   key_name: primo
-#   value: nyu_aleph002046560
-#   normalized_value: nyu_aleph002046560
-#   metadata: true
-#   private_data: false
-# 
-# primo_tnsgi_available_rv4:
-#   referent: primo_tnsgi_available_referent
-#   key_name: title
-#   value: The mediation of ornament
-#   normalized_value: The mediation of ornament
-#   metadata: true
-#   private_data: false
-# 
-# primo_tnsgi_available_rv5:
-#   referent: primo_tnsgi_available_referent
-#   key_name: isbn
-#   value: 0691040990
-#   normalized_value: 0691040990
-#   metadata: true
-#   private_data: false
-# 
-primo_tnsgi_checked_out_rv1:
-  referent: primo_tnsgi_checked_out_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_tnsgi_checked_out_rv2:
-  referent: primo_tnsgi_checked_out_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_tnsgi_checked_out_rv3:
-  referent: primo_tnsgi_checked_out_referent
-  key_name: primo
-  value: nyu_aleph001861422
-  normalized_value: nyu_aleph001861422
-  metadata: true
-  private_data: false
-
-primo_tnsgi_checked_out_rv4:
-  referent: primo_tnsgi_checked_out_referent
-  key_name: title
-  value: 'Flowers : watercolors & monotypes'
-  normalized_value: 'Flowers : watercolors & monotypes'
-  metadata: true
-  private_data: false
-
-primo_tnsgi_checked_out_rv5:
-  referent: primo_tnsgi_checked_out_referent
-  key_name: isbn
-  value: 0810931052
-  normalized_value: 0810931052
-  metadata: true
-  private_data: false
-
-primo_cu_available_rv1:
-  referent: primo_cu_available_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_cu_available_rv2:
-  referent: primo_cu_available_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_cu_available_rv3:
-  referent: primo_cu_available_referent
-  key_name: primo
-  value: nyu_aleph002045694
-  normalized_value: nyu_aleph002045694
-  metadata: true
-  private_data: false
-
-primo_cu_available_rv4:
-  referent: primo_cu_available_referent
-  key_name: title
-  value: Varieties of visual experience
-  normalized_value: Varieties of visual experience
-  metadata: true
-  private_data: false
-
-primo_cu_available_rv5:
-  referent: primo_cu_available_referent
-  key_name: isbn
-  value: 0810939223
-  normalized_value: 0810939223
-  metadata: true
-  private_data: false
-
-primo_cu_checked_out_rv1:
-  referent: primo_cu_checked_out_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_cu_checked_out_rv2:
-  referent: primo_cu_checked_out_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_cu_checked_out_rv3:
-  referent: primo_cu_checked_out_referent
-  key_name: primo
-  value: nyu_aleph001728166
-  normalized_value: nyu_aleph001728166
-  metadata: true
-  private_data: false
-
-primo_cu_checked_out_rv4:
-  referent: primo_cu_checked_out_referent
-  key_name: title
-  value: 'The poetical works of Matthew Prior : With a life'
-  normalized_value: 'The poetical works of Matthew Prior : With a life'
-  metadata: true
-  private_data: false
-
-primo_nysid_checked_out_rv1:
-  referent: primo_nysid_checked_out_referent
-  key_name: format
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_nysid_checked_out_rv2:
-  referent: primo_nysid_checked_out_referent
-  key_name: genre
-  value: book
-  normalized_value: book
-  metadata: true
-  private_data: false
-
-primo_nysid_checked_out_rv3:
-  referent: primo_nysid_checked_out_referent
-  key_name: primo
-  value: nyu_aleph001446749
-  normalized_value: nyu_aleph001446749
-  metadata: true
-  private_data: false
-
-primo_nysid_checked_out_rv4:
-  referent: primo_nysid_checked_out_referent
-  key_name: title
-  value: 'Early Mexican houses : a book of photographs & measured drawings'
-  normalized_value: 'Early Mexican houses : a book of photographs & measured drawings'
-  metadata: true
-  private_data: false
-
-primo_nysid_checked_out_rv5:
-  referent: primo_nysid_checked_out_referent
-  key_name: isbn
-  value: 0942655036
-  normalized_value: 0942655036
-  metadata: true
-  private_data: false
-
 critical_inquiry_rv1:
   referent: critical_inquiry_referent
-  key_name: issn
-  value: 0093-1896
-  normalized_value: 0093-1896
+  key_name: "issn"
+  value: "0093-1896"
+  normalized_value: "0093-1896"
   metadata: true
   private_data: false
 
 critical_inquiry_rv2:
   referent: critical_inquiry_referent
-  key_name: title
-  value: Critical inquiry
-  normalized_value: Critical inquiry
+  key_name: "title"
+  value: "Critical inquiry"
+  normalized_value: "Critical inquiry"
   metadata: true
   private_data: false
 
 critical_inquiry_rv3:
   referent: critical_inquiry_referent
-  key_name: jtitle
-  value: Critical inquiry
-  normalized_value: Critical inquiry
+  key_name: "jtitle"
+  value: "Critical inquiry"
+  normalized_value: "Critical inquiry"
   metadata: true
   private_data: false
 
 critical_inquiry_rv4:
   referent: critical_inquiry_referent
-  key_name: stitle
-  value: CRIT INQUIRY
-  normalized_value: CRIT INQUIRY
+  key_name: "stitle"
+  value: "CRIT INQUIRY"
+  normalized_value: "CRIT INQUIRY"
   metadata: true
   private_data: false
 
 critical_inquiry_rv5:
   referent: critical_inquiry_referent
-  key_name: genre
-  value: journal
-  normalized_value: journal
+  key_name: "genre"
+  value: "journal"
+  normalized_value: "journal"
   metadata: true
   private_data: false
 
 critical_inquiry_rv6:
   referent: critical_inquiry_referent
-  key_name: aulast
-  value: Ranciè
-  normalized_value: Ranciè
+  key_name: "aulast"
+  value: "Ranciè"
+  normalized_value: "Ranciè"
   metadata: true
   private_data: false
 
 critical_inquiry_rv7:
   referent: critical_inquiry_referent
-  key_name: aufirst
-  value: Ranci&
-  normalized_value: Ranci&
+  key_name: "aufirst"
+  value: "Ranci&"
+  normalized_value: "Ranci&"
   metadata: true
   private_data: false
 
 critical_inquiry_rv8:
   referent: critical_inquiry_referent
-  key_name: object_id
-  value: 954925463186
-  normalized_value: 954925463186
+  key_name: "object_id"
+  value: "954925463186"
+  normalized_value: "954925463186"
   metadata: true
   private_data: false
 
 critical_inquiry_rv9:
   referent: critical_inquiry_referent
-  key_name: object_type
-  value: JOURNAL
-  normalized_value: JOURNAL
+  key_name: "object_type"
+  value: "JOURNAL"
+  normalized_value: "JOURNAL"
   metadata: true
   private_data: false
 
 critical_inquiry_rv10:
   referent: critical_inquiry_referent
-  key_name: eissn
-  value: 1539-7858
-  normalized_value: 1539-7858
+  key_name: "eissn"
+  value: "1539-7858"
+  normalized_value: "1539-7858"
   metadata: true
   private_data: false
 
 critical_inquiry_rv11:
   referent: critical_inquiry_referent
-  key_name: atitle
-  value: 'The Aesthetic Dimension: Aesthetics, Politics, Knowledge'
-  normalized_value: 'The Aesthetic Dimension: Aesthetics, Politics, Knowledge'
+  key_name: "atitle"
+  value: "The Aesthetic Dimension: Aesthetics, Politics, Knowledge"
+  normalized_value: "The Aesthetic Dimension: Aesthetics, Politics, Knowledge"
   metadata: true
   private_data: false
-  
+
 critical_inquiry_rv12:
   referent: critical_inquiry_referent
-  key_name: format
-  value: journal
-  normalized_value: journal
-  metadata: true
-  private_data: false
-
-sfx_owner_but_fulltext_empty_rv1:
-  referent: sfx_owner_but_fulltext_empty_referent
-  key_name: primo
-  value: nyu_aleph000935132
-  normalized_value: nyu_aleph000935132
-  metadata: true
-  private_data: false
-
-sfx_owner_but_fulltext_empty_rv2:
-  referent: sfx_owner_but_fulltext_empty_referent
-  key_name: genre
-  value: journal
-  normalized_value: journal
+  key_name: "format"
+  value: "journal"
+  normalized_value: "journal"
   metadata: true
   private_data: false
 
 sfx_multi_obj_request_no_fulltext_rv1:
   referent: sfx_multi_obj_request_no_fulltext_referent
-  key_name: aulast
-  value: Santi
-  normalized_value: Santi
+  key_name: "aulast"
+  value: "Santi"
+  normalized_value: "Santi"
   metadata: true
   private_data: false
 
 sfx_multi_obj_request_no_fulltext_rv2:
   referent: sfx_multi_obj_request_no_fulltext_referent
-  key_name: btitle
-  value: Mobile Information Systems
-  normalized_value: Mobile Information Systems
+  key_name: "btitle"
+  value: "Mobile Information Systems"
+  normalized_value: "Mobile Information Systems"
   metadata: true
   private_data: false
 
 sfx_multi_obj_request_no_fulltext_rv3:
   referent: sfx_multi_obj_request_no_fulltext_referent
-  key_name: aufirst
-  value: Caballé
-  normalized_value: Caballé
+  key_name: "aufirst"
+  value: "Caballé"
+  normalized_value: "Caballé"
   metadata: true
   private_data: false
 
 sfx_multi_obj_request_no_fulltext_rv4:
   referent: sfx_multi_obj_request_no_fulltext_referent
-  key_name: atitle
-  value: Using mobile devices to support online collaborative learning
-  normalized_value: Using mobile devices to support online collaborative learning
+  key_name: "atitle"
+  value: "Using mobile devices to support online collaborative learning"
+  normalized_value: "Using mobile devices to support online collaborative learning"
   metadata: true
   private_data: false
 
 sfx_multi_obj_request_no_fulltext_rv5:
   referent: sfx_multi_obj_request_no_fulltext_referent
-  key_name: date
-  value: 2010
-  normalized_value: 2010
+  key_name: "date"
+  value: "2010"
+  normalized_value: "2010"
   metadata: true
   private_data: false
 
 sfx_multi_obj_request_no_fulltext_rv6:
   referent: sfx_multi_obj_request_no_fulltext_referent
-  key_name: volume
-  value: 6
-  normalized_value: 6
+  key_name: "volume"
+  value: "6"
+  normalized_value: "6"
   metadata: true
   private_data: false
 
 sfx_multi_obj_request_no_fulltext_rv7:
   referent: sfx_multi_obj_request_no_fulltext_referent
-  key_name: year
-  value: 2010
-  normalized_value: 2010
+  key_name: "year"
+  value: "2010"
+  normalized_value: "2010"
   metadata: true
   private_data: false
 
 sfx_multi_obj_request_no_fulltext_rv8:
   referent: sfx_multi_obj_request_no_fulltext_referent
-  key_name: issue
-  value: 1
-  normalized_value: 1
+  key_name: "issue"
+  value: "1"
+  normalized_value: "1"
   metadata: true
   private_data: false
 

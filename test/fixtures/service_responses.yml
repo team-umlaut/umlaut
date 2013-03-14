@@ -69,7 +69,7 @@ service_response4:
     :debug_info: ! ' Target: EBSCOHOST_NEWSPAPER_SOURCE_PLUS ; SFX object ID: 110975413976006'
 
 service_response5:
-  service_id: Primo
+  service_id: SFX
   display_text: 1995 - Current Access via Proquest
   url: http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=7818
   request_id: 80
@@ -113,45 +113,26 @@ service_response7:
     :debug_info: ! ' Target: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON ; SFX object ID: 110975413976006'
 
 service_response8:
-  service_id: Primo
-  display_text: Primo
-  url: http://primo.library.edu/primo_library/libweb/action/dlDisplay.do?docId=DOCID&institution=INST&vid=INST
+  service_id: GoogleBookSearch
+  display_text: Library holding
+  url: http://holding.library.edu/DOCID
   notes: Some notes.
   request_id: 80
   service_type_value_name: holding
   service_data: |
     --- 
-    :record_id: DOCID
     :title: The New York times
     :author: ''
-    :source_id: sourceId
-    :original_source_id: OSID
-    :source_record_id: SRID
-    :availlibrary: $$IINST$$LLIB$$1Microform$$2(Film/Per Non-circulating )$$Scheck_holdings$$5N$$XADM$$YLIB$$ZMFORM$$ODOCID
-    :institution_code: INST
-    :institution: INST
-    :library_code: LIB
-    :library: LIB
-    :status_code: check_holdings
-    :status: check_holdings
-    :id_one: Microform
-    :id_two: (Film/Per Non-circulating )
-    :origin: DOCID
+    :status: Check Availability
     :display_type: journal
     :request_url: http://request.library.edu/DOCID
-    :source_data:
-      :source_class: 
-      :source_url: 
-      :source_type: 
-    :call_number: (Film/Per Non-circulating)
-    :collection: Microform
-    :collection_str: Library Microform
+    :call_number: (Call Number)
+    :collection: Library Holding
+    :collection_str: Library Holding
     :coverage_str: This is the coverage information.
     :coverage_str_array: 
       - Coverage 1
       - Coverage 2
-    :expired: false
-    :latest: true
     :match_reliability: unsure
 
 service_response9:
