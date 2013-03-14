@@ -31,8 +31,8 @@ Gem::Specification.new do |s|
   s.add_dependency "isbn", "~> 2.0.9"           # used by amazon among others
   s.add_dependency "htmlentities"               # used by SFX adapter to unescape &ent;s
   # Remember to generate a faster json adapter into app gemfile, rather than just multi_json lowest common denominator.
-  s.add_dependency "multi_json"           # use best locally installed json gem for json parsing
-  s.add_dependency "confstruct", "~> 0.2" # used for our configuration object
+  s.add_dependency "multi_json"                 # use best locally installed json gem for json parsing
+  s.add_dependency "confstruct", "~> 0.2"       # used for our configuration object
   s.add_dependency "ensure_valid_encoding"      # used for correcting bad char enc bytes in input
   s.add_dependency "sass-rails", "~> 3.2.6"     # used for sass
   s.add_dependency "bootstrap-sass", "~> 2.3.0" # used for bootstrap
