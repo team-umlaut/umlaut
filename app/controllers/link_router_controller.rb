@@ -59,11 +59,4 @@ class LinkRouterController < UmlautController
     end
   end
   protected :calculate_url_for_response
-
-  # We intentionally use a method calculated at request-time for layout,
-  # so it can be changed in config at request-time. 
-  def resolve_layout_name
-    umlaut_config.resolve_layout
-  end
-  protected :resolve_layout_name
 end
