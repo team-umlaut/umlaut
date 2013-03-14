@@ -49,7 +49,16 @@ The Rails/Umlaut super-concise expert summary is:
 
 * configuration in `./config/umlaut_services.yml` and `./app/controllers/umlaut_controller.rb` 
 
-* Umlaut uses multi-threaded concurrency in a way incompatible with development-mode class reloading. You need cache_classes=false even in dev, the Umlaut install generator changes this for you. 
+* Umlaut uses multi-threaded concurrency in a way incompatible with development-mode class reloading. You need cache_classes=false even in dev, the Umlaut install generator changes this for you.
+
+## Add ons
+Some Umlaut services adapters are sufficiently complicated or are on different release cycles 
+from the core code that they merit their own gems.
+
+| Add on | Description |
+|:---|:---|
+| [`umlaut-primo`](/team-umlaut/umlaut-primo) | Umlaut services to provide full text service responses, holdings, etc. from the Primo discovery solution. |
+
 
 ## Developing
 
