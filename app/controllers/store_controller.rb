@@ -65,7 +65,6 @@ class StoreController < UmlautController
     # You might think you can just merge these into a hash and use url_for,
     # but Rails redirect_to/url_for isn't happy with multiple query params
     # with same name.
-
     redirect_to( url_for_with_co( new_params, co) )
   end
 end
