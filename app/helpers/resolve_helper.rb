@@ -131,7 +131,7 @@ module ResolveHelper
     options = {:limit => options} unless options.kind_of?(Hash)
     options[:limit] ||= 5
     return "" if list.empty?
-    visible_list  = (list.length > options[:limit]) ? list.slice(0, options[:limit]-1) : list         
+    visible_list  = (list.length > options[:limit]) ? list.slice(0, options[:limit]-1) : list
     hidden_list   = (list.length > options[:limit]) ? list.slice((options[:limit]-1)..list.length-1) : []
     parts =[]
     parts << content_tag(:ul, :class => options[:ul_class]) do
@@ -145,7 +145,7 @@ module ResolveHelper
       parts << expand_contract_section("#{hidden_list.length} more", id) do
         content_tag(:ul, :class=>options[:ul_class]) do
           safe_join(
-            hidden_list.enum_for(:each_with_index).collect do |item, index| 
+            hidden_list.enum_for(:each_with_index).collect do |item, index|
               yield(item, index + options[:limit])
             end, " \n    "
           )
@@ -204,7 +204,7 @@ module ResolveHelper
     sections_with_icons = ["fulltext", "audio", "excerpts"]
     content_tag(:i, nil) if sections_with_icons.include? section_id
   end
-  
+
   ##
   # Outputs "yyyy - yyyy" coverage summary, with html tags, IF coverage
   # dates are available, it is a title-level request, and we're configured
@@ -215,10 +215,10 @@ module ResolveHelper
             (response[:coverage_begin_date] || response[:coverage_end_date]))
       return nil
     end
-    
+
     start   = response[:coverage_begin_date].try(:year) || I18n.t("umlaut.coverage_summary.open_start", :default => "first")
     finish  = response[:coverage_end_date].try(:year) || I18n.t("umlaut.coverage_summary.open_end", :default => "latest")
-    
+
     content_tag("span", :class=>"coverage_summary") do
       "#{start} – #{finish}:"
     end
