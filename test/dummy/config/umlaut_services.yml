@@ -24,8 +24,15 @@ default:
         type: Sfx
         disabled: true
         display_name: Find It       
-        base_url: YOUR_SFX_BASE_URL
+        base_url: http://sfx.library.edu/local
         priority: 3      
+        roll_up_prefixes:
+          - 'EBSCOHOST_'
+          - 'JSTOR_'
+          - 'PROQUEST_'
+          - 'SPRINGER_LINK_'
+          - 'ELSEVIER_SD_'
+          - 'HIGHWIRE_'
       
       Primo:
         type: PrimoService
