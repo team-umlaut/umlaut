@@ -15,7 +15,6 @@ class ExportEmailController < UmlautController
     if valid_email?
       Emailer.citation(@email, @user_request, @fulltexts, @holdings).deliver
     else
-      @partial = "email"
       flash[:alert] = email_validation_error
       render :email and return
     end
@@ -29,7 +28,7 @@ class ExportEmailController < UmlautController
     @email = "#{@number}@#{@provider}" unless @number.nil? or @provider.nil?
     @holding = params[:holding]
     if valid_txt_number? && valid_txt_holding?
-      Emailer.short_citation(@email, @user_request, holding_location(@holding_id), call_number(@holding_id)).deliver
+      Emailer.short_citation(@email, @user_request, holding_location(@holding), call_number(@holding)).deliver
     else
       flash[:alert] = txt_validation_error
       render :txt and return

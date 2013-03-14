@@ -36,26 +36,27 @@ class LinkRouterController < UmlautController
   #
   # Used from LinkController's index,
   def calculate_url_for_response(svc_response)
-      svc = ServiceStore.instantiate_service!(svc_response.service_id, nil)
-      destination =  svc.response_url(svc_response, params)
-      # if response_url returned a string, it's an external url and we're
-      # done. If it's something else, usually a hash, then pass it to
-      # url_for to generate a url.
-      if destination.kind_of?(String)
-        url = destination
+    svc = ServiceStore.instantiate_service!(svc_response.service_id, nil)
+    destination =  svc.response_url(svc_response, params)
 
-        # Call link_out_filters, if neccesary.
-        # These are services listed as  task: link_out_filter  in services.yml
-        (1..9).each do |priority|
-          @collection.link_out_service_level( priority ).each do |filter|
-            filtered_url = filter.link_out_filter(url, svc_response)
-            url = filtered_url if filtered_url
-          end
+    # if response_url returned a string, it's an external url and we're
+    # done. If it's something else, usually a hash, then pass it to
+    # url_for to generate a url.
+    if destination.kind_of?(String)
+      url = destination
+
+      # Call link_out_filters, if neccesary.
+      # These are services listed as  task: link_out_filter  in services.yml
+      (1..9).each do |priority|
+        @collection.link_out_service_level( priority ).each do |filter|
+          filtered_url = filter.link_out_filter(url, svc_response)
+          url = filtered_url if filtered_url
         end
-        return url
-      else
-        return url_for(params_preserve_xhr(destination))
       end
+      return url
+    else
+      return url_for(params_preserve_xhr(destination))
+    end
   end
   protected :calculate_url_for_response
 end
