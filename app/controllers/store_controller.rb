@@ -37,7 +37,6 @@ class StoreController < UmlautController
     end
 
     perm.last_access = Time.now # keep track of when permalink last actually retrieved
-
     # will catch possible new referent to be saved, as well as
     # update to last_access
     perm.save!
@@ -66,8 +65,6 @@ class StoreController < UmlautController
     # You might think you can just merge these into a hash and use url_for,
     # but Rails redirect_to/url_for isn't happy with multiple query params
     # with same name.
-
     redirect_to( url_for_with_co( new_params, co) )
   end
-
 end
