@@ -27,27 +27,6 @@ default:
         base_url: YOUR_SFX_BASE_URL
         priority: 3      
       
-      Primo:
-        type: PrimoService
-        disabled: false
-        display_name: Primo
-        priority: 3      
-        base_url: http://bobcat.library.nyu.edu
-        vid: NYU
-        institution: NYU
-        holding_search_institution: NYU
-        holding_search_text: Search for this title in Primo.
-        suppress_holdings: [ !ruby/regexp '/\$\$LBWEB/', !ruby/regexp '/\$\$LNWEB/', !ruby/regexp '/\$\$LTWEB/', !ruby/regexp '/\$\$LWEB/', !ruby/regexp '/\$\$1Restricted Internet Resources/' ]
-        ez_proxy: !ruby/regexp '/https\:\/\/ezproxy\.library\.nyu\.edu\/login\?url=/'
-        service_types:
-          - holding
-          - holding_search
-          - fulltext
-          - table_of_contents
-          - referent_enhance
-          - cover_image
-
-        
       # First half of Amazon, run in foreground, get metadata and cover images.
       Amazon:
         disabled: true
