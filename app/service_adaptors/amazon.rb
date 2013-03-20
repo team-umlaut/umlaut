@@ -1,3 +1,5 @@
+require 'aws_product_sign'
+
 #
 #   As of Aug 15 2009, Amazon API calls will require a secret key from Amazon.
 #   If you are unable to get such an account/key, this service can still be used

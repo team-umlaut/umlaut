@@ -1,3 +1,5 @@
+require 'term_color'
+
 # ServiceWave is basically responsible for multi-threaded execution of
 # a list of services, all in the same priority. Generally it's only
 # called by Collection, nobody else needs it directly. 
