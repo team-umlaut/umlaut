@@ -244,7 +244,7 @@ class Service
         uml_request.dispatched_services.to_a.find do |disp|
           service == "*" || 
           (disp.service_id == service &&
-            (disp.status ==  DispatchedService.Succesful ))
+            (disp.status ==  DispatchedService::Successful ))
         end
       else
         # Check service responses
