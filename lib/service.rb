@@ -32,7 +32,7 @@
 # to. If service returns original url or nil, original url will still be used. 
 
 class Service
-  attr_reader :priority, :service_id, :url, :task, :status, :name
+  attr_reader :priority, :service_id, :url, :task, :status, :name, :group
   attr_writer :session_id
   attr_accessor :request
   @@required_params_for_subclass = {} # initialize class var
