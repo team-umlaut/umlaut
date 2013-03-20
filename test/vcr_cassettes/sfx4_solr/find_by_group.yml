@@ -46,7 +46,7 @@ http_interactions:
   recorded_at: Sat, 29 Sep 2012 23:41:19 GMT
 - request:
     method: head
-    uri: http://images.serialssolutions.com/ulrichs/18329373.gif
+    uri: http://images.serialssolutions.com/ulrichs/03624331.gif
     body:
       encoding: US-ASCII
       string: ''
@@ -69,10 +69,10 @@ http_interactions:
       X-Powered-By:
       - ASP.NET
       Date:
-      - Fri, 22 Feb 2013 16:23:29 GMT
+      - Thu, 14 Mar 2013 18:16:40 GMT
     body:
       encoding: US-ASCII
       string: ''
     http_version: 
-  recorded_at: Fri, 22 Feb 2013 16:23:29 GMT
+  recorded_at: Thu, 14 Mar 2013 18:16:40 GMT
 recorded_with: VCR 2.4.0

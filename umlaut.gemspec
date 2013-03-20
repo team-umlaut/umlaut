@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   end
 
   s.add_dependency "rails", "~> 3.2.12"         # require a secure rails
-  s.add_dependency "jquery-rails", "~> 2.2.1"   # our built in JS uses jquery
+  s.add_dependency "jquery-rails"               # our built in JS uses jquery
 
   # nokogiri needs to be on or greater than version 1.5.3:
   # https://github.com/tenderlove/nokogiri/issues/638

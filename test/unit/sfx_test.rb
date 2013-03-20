@@ -1,4 +1,4 @@
-# tests for google book search service
+# tests for SFX service
 # Only the the simplest of tests are done so far. To do more advanced tests,
 # request fixtures for more cases should be created.
 require 'test_helper'

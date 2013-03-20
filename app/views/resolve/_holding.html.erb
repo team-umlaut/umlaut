@@ -1,10 +1,10 @@
-<% 
+<%
 =begin
   scotdalton's alternative partial for displaying holdings.
 =end
 # Get and display holdings
 holdings = holding.find_all{|response| response.service_type_value_name.eql? "holding"}
-unless holdings.empty? %>  
+unless holdings.empty? %>
   <div class="container-fluid umlaut-holdings"><%
     # Process each holding.
     holdings.each do |p|
@@ -14,7 +14,7 @@ unless holdings.empty? %>
           <div class="span3"><%= target[:collection_str] %></div>
           <div class="span4"><%= target[:call_number]%></div><%
           # Set status class based on configured available statuses
-          status_class = umlaut_config.holdings.available_statuses.include?(target[:status]) ? 'umlaut-available' : '' %> 
+          status_class = umlaut_config.holdings.available_statuses.include?(target[:status]) ? 'umlaut-available' : '' %>
           <div class="span3 <%= status_class %>"><%= target[:status] %></div>
           <div class="span2">
             <%= link_to("More Info", {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"btn btn-success") %>
@@ -22,7 +22,7 @@ unless holdings.empty? %>
               <%= link_to("Request", target[:request_url], :target => "_blank", :class=>"btn btn-primary") %><br />
             <% end %>
           </div>
-        </div><% 
+        </div><%
         # Display edition info
         if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
           <div class="row-fluid umlaut-holding-match-reliability">
@@ -34,7 +34,7 @@ unless holdings.empty? %>
               <% end %>
             </div>
           </div><%
-        end 
+        end
         # Display notes
         unless target[:notes].blank? %>
           <div class="row-fluid umlaut-holding-notes">
@@ -44,9 +44,9 @@ unless holdings.empty? %>
         # Display coverage
         unless target[:coverage_str_array].blank? %>
           <div class="row-fluid umlaut-holding-coverage">
-            <div class="span11 offset1"><%=              
+            <div class="span11 offset1"><%=
               list_with_limit("copies_#{p.id}", target[:coverage_str_array]) do |item, index| %>
-                <li><%= item %></li><% 
+                <li><%= item %></li><%
               end %>
             </div>
           </div><%
@@ -62,8 +62,8 @@ if holdings.empty? %>
     searches = holding.find_all{|response| response.service_type_value_name.eql? "holding_searches"}
     searches.each do | result_st |
       response = result_st.view_data %>
-      <p><%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %></p><% 
-    end 
+      <p><%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %></p><%
+    end
     # Display "Not Available" if we've completed our service run and both holdings and holding searches are empty
     if (holdings.blank? and searches.blank? and (not service_types_in_progress?(['holding', 'holding_search']))) %>
       <p class="umlaut-unavailable">Not Available</p><%
