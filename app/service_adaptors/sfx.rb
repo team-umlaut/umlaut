@@ -530,7 +530,7 @@ class Sfx < Service
   # umlaut service response is so old that we can't use it for
   # sfx click passthrough anymore. 
   def expired_sfx_request(response)
-    require 'CronTab'
+    require 'cron_tab'
 
     crontab_str = @sfx_requests_expire_crontab
 
