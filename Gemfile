@@ -25,9 +25,6 @@ group :development, :test do
     gem 'debugger', "~> 1.5.0"
   end
 
-  platforms :rbx do
-  end
-
   gem 'jquery-rails'
   gem "activerecord-import"
 end
