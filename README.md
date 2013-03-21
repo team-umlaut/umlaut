@@ -59,7 +59,7 @@ in your application's Gemfile in order to get the described functionality.
 
 | Add on | Description |
 |:---|:---|
-| [`umlaut-primo`](/team-umlaut/umlaut-primo) | Umlaut services to provide full text service responses, holdings, etc. from the Primo discovery solution. |
+| [`umlaut-primo`](https://github.com/team-umlaut/umlaut-primo) | Umlaut services to provide full text service responses, holdings, etc. from the Primo discovery solution. |
 
 
 ## Developing
