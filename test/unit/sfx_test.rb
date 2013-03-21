@@ -2,7 +2,7 @@
 # Only the the simplest of tests are done so far. To do more advanced tests,
 # request fixtures for more cases should be created.
 require 'test_helper'
-class SfxTest < ActiveSupport::TestCase  
+class SfxTest < ActiveSupport::TestCase
   extend TestWithCassette
   fixtures :requests, :referents, :dispatched_services, :service_responses
   
