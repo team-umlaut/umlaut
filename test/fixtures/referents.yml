@@ -9,6 +9,11 @@ frankenstein:
   volume: ""
   created_at: 2008-06-28 16:15:27 -04:00
 
+nytimes:
+  id: 2
+  issn: 0362-4331
+  title: The New York times
+
 simple_request_referent:
   issn: "0098-7484"
 
@@ -18,3 +23,11 @@ critical_inquiry_referent:
 
 sfx_multi_obj_request_no_fulltext_referent:
   title: "Mobile Information Systems"
+
+momo:
+  title: Momo
+  isbn: 038519093X
+
+advocate:
+  title: Advocate
+  issn: 1832-9373

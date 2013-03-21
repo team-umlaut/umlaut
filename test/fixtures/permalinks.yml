@@ -1,1 +1,24 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+nytimes:
+  referent_id: 2
+
+expired_referent:
+  context_obj_serialized: |
+      <ctx:context-objects xmlns:ctx='info:ofi/fmt:xml:xsd:ctx' xsi:schemaLocation='info:ofi/fmt:xml:xsd:ctx http://www.openurl.info/registry/docs/info:ofi/fmt:xml:xsd:ctx' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+        <ctx:context-object identifier='' timestamp='2013-03-19T17:15:04-04:00' version='Z39.88-2004'>
+          <ctx:referent>
+            <ctx:metadata-by-val>
+              <ctx:format>info:ofi/fmt:xml:xsd:journal</ctx:format>
+              <ctx:metadata>
+                <rft:journal xmlns:rft='info:ofi/fmt:xml:xsd:journal' xsi:schemaLocation='info:ofi/fmt:xml:xsd:journal http://www.openurl.info/registry/docs/info:ofi/fmt:xml:xsd:journal'>
+                  <rft:issn>0028-792X</rft:issn>
+                  <rft:jtitle>The New Yorker</rft:jtitle>
+                  <rft:object_id>110975413975944</rft:object_id>
+                  <rft:authors/>
+                </rft:journal>
+              </ctx:metadata>
+            </ctx:metadata-by-val>
+            <ctx:identifier>info:lccn/2011201780</ctx:identifier>
+          </ctx:referent>
+        </ctx:context-object>
+      </ctx:context-objects>
