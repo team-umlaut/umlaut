@@ -15,6 +15,7 @@ class SearchControllerTest < ActionController::TestCase
   # Tests don't currently support contains searching because sdalton can't/won't
   # figure out FULLTEXT indexing in MySQL, so we'll test begins with searching.
   test "journal search" do
+    return unless Sfx4::Local::AzTitle.connection_configured?
     get :journal_search, "rft.jtitle"=>"Account", "umlaut.title_search_type"=>"begins"
     assert_response :success
     assert_select "title", "Find It | Journal titles that begin with &#x27;Account&#x27;"
@@ -26,6 +27,7 @@ class SearchControllerTest < ActionController::TestCase
   end
 
   test "journal list" do
+    return unless Sfx4::Local::AzTitle.connection_configured?
     get :journal_list, :id => "A"
     assert_response :success
     assert_select "title", "Find It | Browse by Journal Title: A"

@@ -114,4 +114,35 @@ http_interactions:
         Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
     http_version: 
   recorded_at: Thu, 14 Mar 2013 18:44:54 GMT
+- request:
+    method: head
+    uri: http://www.extranet.elsevier.com/inca_covers_store/issn/18329373.gif
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 404
+      message: Object Not Found
+    headers:
+      Server:
+      - Microsoft-IIS/5.0
+      Date:
+      - Wed, 20 Mar 2013 17:34:09 GMT
+      Connection:
+      - close
+      Content-Length:
+      - '4040'
+      Content-Type:
+      - text/html
+    body:
+      encoding: US-ASCII
+      string: ''
+    http_version: 
+  recorded_at: Wed, 20 Mar 2013 17:34:10 GMT
 recorded_with: VCR 2.4.0

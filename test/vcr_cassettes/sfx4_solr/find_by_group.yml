@@ -75,4 +75,35 @@ http_interactions:
       string: ''
     http_version: 
   recorded_at: Thu, 14 Mar 2013 18:16:40 GMT
+- request:
+    method: head
+    uri: http://images.serialssolutions.com/ulrichs/18329373.gif
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Length:
+      - '1635'
+      Content-Type:
+      - text/html
+      Server:
+      - Microsoft-IIS/6.0
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Wed, 20 Mar 2013 17:34:11 GMT
+    body:
+      encoding: US-ASCII
+      string: ''
+    http_version: 
+  recorded_at: Wed, 20 Mar 2013 17:34:11 GMT
 recorded_with: VCR 2.4.0
