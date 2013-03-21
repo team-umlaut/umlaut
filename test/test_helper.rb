@@ -80,17 +80,6 @@ VCR.configure do |c|
   # c.debug_logger = $stderr
 end
 
-# Silly way to not have to rewrite all our tests if we
-# temporarily disable VCR, make VCR.use_cassette a no-op
-# instead of no-such-method. 
-if ! defined? VCR
-  module VCR
-    def self.use_cassette(*args)
-      yield
-    end
-  end
-end
-
 def assert_length(size, list)
   assert_equal size, list.length, "Expected size of #{size} for #{list}"
 end
