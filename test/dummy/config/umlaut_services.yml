@@ -92,6 +92,14 @@ default:
         priority: c        
         #api_key: 'YOUR_GBS_API_KEY'
                 
+      DummyService:
+        type: DummyService
+        priority: c      
+        responses:
+          - service_type_value: holding
+            display_text: Library holding
+            url: http://holding.library.edu/DOCID
+
       Ulrichs:
         display_name: "Ulrich's Directory"
         type: UlrichsLink

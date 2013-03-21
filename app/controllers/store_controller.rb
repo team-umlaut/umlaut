@@ -7,10 +7,7 @@ class StoreController < UmlautController
 
   def index
     perm = Permalink.where(:id => params[:id]).first
-    unless perm # not in our db
-      handle_404_error
-      return
-    end
+    handle_404_error and return unless perm # not in our db
 
     co = OpenURL::ContextObject.new
     # We might have a link to a Referent in our db, or we might
@@ -18,23 +15,19 @@ class StoreController < UmlautController
     # the permalink, if the Referent has been purged. Either way
     # we're good.
     referent = nil
-    if ( perm.referent)
+    if (perm.referent)
       referent = perm.referent
-    elsif ( perm.context_obj_serialized)
+    elsif (perm.context_obj_serialized)
       stored_co = perm.restore_context_object
       # And a referrent, no referrer for now, we'll restore it later.
-      referent = Referent.create_by_context_object( stored_co, :permalink => false )
+      referent = Referent.create_by_context_object(stored_co, :permalink => false)
       perm.referent = referent
     end
 
-    unless ( referent )
-      # We can't find a referent or succesfully restore an xml context
-      # object to send the user to the request. We can not resolve
-      # this permalink!
-      handle_404_error
-      return
-      #raise NotFound.new("Permalink request could not be resolved. Returning 404. Permalink id: #{params[:id]}")
-    end
+    # We can't find a referent or succesfully restore an xml context
+    # object to send the user to the request. We can not resolve
+    # this permalink!
+    handle_404_error and return unless referent
 
     perm.last_access = Time.now # keep track of when permalink last actually retrieved
     # will catch possible new referent to be saved, as well as
@@ -48,7 +41,7 @@ class StoreController < UmlautController
     # We preserve original referrer. Even though this isn't entirely accurate
     # this is neccesary to get SFX to handle it properly when we call to SFX,
     # including handling source-specific private data, etc.
-    co.referrer.add_identifier( perm.orig_rfr_id ) if perm.orig_rfr_id
+    co.referrer.add_identifier(perm.orig_rfr_id) if perm.orig_rfr_id
 
     # Let's add any supplementary umlaut params passed to us
     # Everything except the 'id' which we used for the Rails action.
@@ -65,6 +58,6 @@ class StoreController < UmlautController
     # You might think you can just merge these into a hash and use url_for,
     # but Rails redirect_to/url_for isn't happy with multiple query params
     # with same name.
-    redirect_to( url_for_with_co( new_params, co) )
+    redirect_to(url_for_with_co(new_params, co))
   end
 end

@@ -304,4 +304,346 @@ http_interactions:
         Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
     http_version: 
   recorded_at: Wed, 20 Mar 2013 17:49:46 GMT
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B0%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Thu, 21 Mar 2013 13:19:34 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22momo%22+AND+creator:%28ende%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Thu, 21 Mar 2013 19:19:34 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Thu, 21 Mar 2013 13:19:34 GMT
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B0%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Thu, 21 Mar 2013 13:29:53 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22momo%22+AND+creator:%28ende%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Thu, 21 Mar 2013 19:29:53 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Thu, 21 Mar 2013 13:29:54 GMT
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B0%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Thu, 21 Mar 2013 13:36:33 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22momo%22+AND+creator:%28ende%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Thu, 21 Mar 2013 19:36:33 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Thu, 21 Mar 2013 13:36:33 GMT
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B0%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Thu, 21 Mar 2013 14:05:39 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22momo%22+AND+creator:%28ende%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Thu, 21 Mar 2013 20:05:39 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Thu, 21 Mar 2013 14:05:39 GMT
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B0%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Thu, 21 Mar 2013 14:07:52 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22momo%22+AND+creator:%28ende%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Thu, 21 Mar 2013 20:07:52 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Thu, 21 Mar 2013 14:07:52 GMT
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B0%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Thu, 21 Mar 2013 14:11:16 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22momo%22+AND+creator:%28ende%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Thu, 21 Mar 2013 20:11:16 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Thu, 21 Mar 2013 14:11:17 GMT
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B0%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Thu, 21 Mar 2013 14:32:00 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22momo%22+AND+creator:%28ende%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Thu, 21 Mar 2013 20:32:00 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Thu, 21 Mar 2013 14:32:00 GMT
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B0%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Thu, 21 Mar 2013 14:35:44 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22momo%22+AND+creator:%28ende%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Thu, 21 Mar 2013 20:35:44 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Thu, 21 Mar 2013 14:35:45 GMT
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B0%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Thu, 21 Mar 2013 14:38:20 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22momo%22+AND+creator:%28ende%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Thu, 21 Mar 2013 20:38:20 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Thu, 21 Mar 2013 14:38:20 GMT
 recorded_with: VCR 2.4.0
