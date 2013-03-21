@@ -8,22 +8,24 @@ gemspec
 # jquery is used by the dummy application
 group :development, :test do
   platforms :jruby do
-    gem 'activerecord-jdbc-adapter', :require => false
-    gem 'jdbc-mysql', :require => false
+    gem 'activerecord-jdbc-adapter', "~> 1.2.9"
+    gem 'jdbc-mysql', "~> 5.1.24", :require => false
     gem 'jruby-rack'
     gem 'therubyrhino'
-    gem 'jruby-prof'
     gem 'jruby-openssl'
   end
 
   platforms :ruby do
-    gem 'mysql2'
-    gem 'therubyracer', "~> 0.10.0"
-    gem 'ruby-prof'
+    gem 'mysql2', "~> 0.3.11"
+    gem 'therubyracer', "~> 0.11.4"
   end
 
-  platforms :mri_19 do
-    gem 'debugger'
+  platforms :mri do
+    gem 'ruby-prof', "~> 0.13.0"
+    gem 'debugger', "~> 1.5.0"
+  end
+
+  platforms :rbx do
   end
 
   gem 'jquery-rails'
