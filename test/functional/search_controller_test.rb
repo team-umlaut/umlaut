@@ -3,7 +3,7 @@ class SearchControllerTest < ActionController::TestCase
   setup do
     @controller = SearchController.new
   end
-  
+
   test "index" do
     get :index
     assert_response :success

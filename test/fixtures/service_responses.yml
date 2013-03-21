@@ -110,7 +110,7 @@ service_response7:
     :debug_info: ! ' Target: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON ; SFX object ID: 110975413976006'
 
 service_response8:
-  service_id: GoogleBookSearch
+  service_id: DummyService
   display_text: Library holding
   url: http://holding.library.edu/DOCID
   notes: Some notes.
