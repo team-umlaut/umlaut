@@ -51,7 +51,7 @@ end
 
 if (cite[:isbn] && ! cite[:isbn].empty? ) %>
 <tr>
-  <td><div align="right" class="smallTextb">ISBN:</strong></div></td>
+  <td><div align="right" class="smallTextb"><strong>ISBN:</strong></div></td>
   <td><span class="smallText"><%= cite[:isbn] %></span></td>
 </tr>
 <%
@@ -60,7 +60,7 @@ end %>
 <% unless cite[:pub].blank?  %>
 <tr>
   <td><div align="right" class="smallTextb">Publisher:</div></td>
-  <td><span class="smallText"><%= cite[:pub] %> <td></tr>
+  <td><span class="smallText"><%= cite[:pub] %></span></td></tr>
 <% end %>
 
 <% unless cite[:date].blank? && cite[:volume].blank? && cite[:issue].blank? && cite[:page].blank? %>

@@ -1,5 +1,169 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-one:
-  id: 1
-two:
-  id: 2
+service_response1:
+  service_id: Worldcat
+  display_text: Find in other libraries
+  url: http://www.worldcat.org/issn/03624331
+  request_id: 80
+  service_type_value_name: highlighted_link
+  service_data: --- {}
+
+service_response2:
+  service_id: SFX
+  display_text: EBSCOhost Business Abstracts with Full Text
+  url: https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=bft&jn=3RAH&scope=site
+  request_id: 80
+  service_type_value_name: fulltext
+  service_data: |
+    --- 
+    :authentication: ''
+    :source: SFX/
+    :coverage: ! 'Available from 2011.'
+    :sfx_base_url: http://sfx.library.edu/local
+    :sfx_obj_index: 1
+    :sfx_target_index: 1
+    :sfx_request_id: '2567643'
+    :sfx_target_service_id: '3450000000000057'
+    :sfx_target_name: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON
+    :citation_volume:
+    :citation_issue:
+    :citation_spage:
+    :debug_info: ! ' Target: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON ; SFX object ID: 110975413976006'
+
+service_response3:
+  service_id: EmailExport
+  display_text: Email
+  request_id: 80
+  service_type_value_name: export_citation
+  service_data: |
+    ---
+    :link_supports_ajax_call: true
+
+service_response9:
+  service_id: TxtHoldingExport
+  display_text: Send to phone
+  request_id: 80
+  service_type_value_name: export_citation
+  service_data: |
+    ---
+    :link_supports_ajax_call: true
+
+service_response4:
+  service_id: SFX
+  display_text: EBSCOhost Newspaper Source Plus
+  url: http://search.ebscohost.com/login.aspx?direct=true&db=n5h&scope=site&jn=New+York+Times
+  request_id: 80
+  service_type_value_name: fulltext
+  service_data: |
+    --- 
+    :authentication: ''
+    :source: SFX/FT::NO_FILL_IN
+    :coverage: ! 'Available from 1985.'
+    :sfx_base_url: http://sfx.library.edu/local
+    :sfx_obj_index: 1
+    :sfx_target_index: 2
+    :sfx_request_id: '2567643'
+    :sfx_target_service_id: '1000000000003254'
+    :sfx_target_name: EBSCOHOST_NEWSPAPER_SOURCE_PLUS
+    :citation_volume:
+    :citation_issue:
+    :citation_spage:
+    :debug_info: ! ' Target: EBSCOHOST_NEWSPAPER_SOURCE_PLUS ; SFX object ID: 110975413976006'
+
+service_response5:
+  service_id: SFX
+  display_text: Proquest
+  url: http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=7818
+  request_id: 80
+  service_type_value_name: fulltext
+  service_data: |
+    --- 
+    :display_text: Proquest
+    :url: http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=7818
+
+service_response6:
+  service_id: Ulrichs
+  display_text: Periodical information
+  url: https://ulrichsweb.serialssolutions.com/api/openurl?issn=0362-4331
+  request_id: 80
+  service_type_value_name: highlighted_link
+  service_data: --- {}
+
+service_response7:
+  service_id: SFX
+  display_text: EBSCOhost Business Abstracts with Full Text
+  url: http://search.ebscohost.com/direct.asp?db=bft&jn=3RAH&scope=site
+  request_id: 80
+  service_type_value_name: fulltext
+  service_data: |
+    --- 
+    :authentication: ''
+    :source: SFX/
+    :coverage: ! 'Available from 2011.'
+    :sfx_base_url: http://sfx.library.edu/local
+    :sfx_obj_index: 1
+    :sfx_target_index: 1
+    :sfx_request_id: '2576884'
+    :sfx_target_service_id: '3450000000000057'
+    :sfx_target_name: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON
+    :citation_volume: 
+    :citation_issue: 
+    :citation_spage: 
+    :debug_info: ! ' Target: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON ; SFX object ID: 110975413976006'
+
+service_response8:
+  service_id: DummyService
+  display_text: Library holding
+  url: http://holding.library.edu/DOCID
+  notes: Some notes.
+  request_id: 80
+  service_type_value_name: holding
+  service_data: |
+    --- 
+    :title: The New York times
+    :author: ''
+    :status: Check Availability
+    :display_type: journal
+    :request_url: http://request.library.edu/DOCID
+    :call_number: (Call Number)
+    :collection: Library Holding
+    :collection_str: Library Holding
+    :coverage_str: This is the coverage information.
+    :coverage_str_array: 
+      - Coverage 1
+      - Coverage 2
+    :match_reliability: unsure
+
+service_response9:
+  service_id: InternetArchive
+  display_text: "the Internet Archive: Open Source Book"
+  url: "http://archive.org/details/MomoOvveroLarcanaStoriaDeiLadriDiTempoEDellaBambinaCheRestitu"
+  notes: 
+  request_id: 81
+  service_type_value_name: fulltext
+  service_data: |
+    ---
+    :match_reliability: unsure
+    :edition_str: Momo, ovvero l'arcana storia dei ladri di tempo e della bambina che
+      restituÃ¬ agli uomini il tempo trafugato
+
+service_response10:
+  service_id: SFX
+  display_text: Gale Cengage Newsstand
+  url: "http://find.galegroup.com/openurl/openurl?res_id=info%3Asid%2Fgale%3ASTND&rft.issn=1832-9373&req_dat=info%3Asid%2Fgale%3Augnid%3Anysl_me_newyorku&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&ctx_enc=info%3Aofi%3Aenc%3AUTF-8&url_ver=Z39.88-2004&rft.jtitle=Advocate+(Western+Australia,+Australia)"
+  notes: 
+  request_id: 82
+  service_type_value_name: fulltext
+  service_data: |
+    ---
+    :authentication: ''
+    :source: SFX/
+    :coverage: ! 'Available from 2009.'
+    :sfx_base_url: http://sfx.library.nyu.edu/sfxlcl41
+    :sfx_obj_index: 1
+    :sfx_target_index: 1
+    :sfx_request_id: '3766609'
+    :sfx_target_service_id: '1000000000003344'
+    :sfx_target_name: GALEGROUP_IT_NEWSSTAND
+    :citation_volume: 
+    :citation_issue: 
+    :citation_spage: 
+    :debug_info: ! ' Target: GALEGROUP_IT_NEWSSTAND ; SFX object ID: 2670000000017711'
