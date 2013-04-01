@@ -6,6 +6,8 @@ Bundler.require
 require "umlaut"
 require "sunspot_rails"
 
+require 'jquery-rails' # Oddly neccesary in our dummy app see http://www.ruby-forum.com/topic/2484569#1021529
+
 module Dummy
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
