@@ -35,17 +35,7 @@
   border-color: $borderColor;
 }
 
-@mixin response-element-margins-large {
-  margin-top: $baseLineHeight/4;
-  margin-left: $umlautIndentLarge;
+@mixin umlaut-indent {
+  margin-left: $umlautIndent;
 }
 
-@mixin response-element-margins-small {
-  margin-left: $umlautIndentSmall;
-}
-
-
-@mixin response-element-margins-none {
-  margin-top: 0;
-  margin-left: 0;
-}

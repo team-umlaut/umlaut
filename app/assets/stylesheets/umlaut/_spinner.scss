@@ -1,6 +1,6 @@
 .background_progress_spinner {
+  @include umlaut-indent;
   @extend .muted;
-  padding-left: $umlautIndentLarge; 
   line-height: 1.5em;
   img {
     vertical-align: bottom;

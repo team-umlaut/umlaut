@@ -25,28 +25,19 @@
 
 .response_list {
   .response_item  {
-    margin-left: $umlautIndentLarge;
     padding-bottom: 5px;
   }
 }
 
 // Content indents
 .umlaut-content-indent {
-  margin-left: $umlautIndentLarge;
+  @include umlaut-indent;
 }
 
 .umlaut-section {
   margin-top: $baseLineHeight;
 
-  // Response elements
-  [class^="response_"] {
-    @include response-element-margins-large;
-  }
 
-  // Don't indent response links
-  response_link {
-    @include response-element-margins-none;
-  }
 
   // Special looks for particular sections
   &.fulltext {
@@ -83,7 +74,7 @@
 
   &.holding {
     .umlaut-holdings {
-      padding-left: $umlautIndentLarge;
+      padding-left: $umlautIndent;
       border-top: 1px solid $umlautHoldingBorderColor;
       .umlaut-holding {
         padding: {
@@ -128,20 +119,21 @@
 }
 
 .section_prompt {
-  margin-left: $umlautIndentLarge;
   font-style: italic;
   margin-bottom: 8px;
 }
 
-.response_edition_warning {
-   color: gray;
+.response_edition_warning, .response_source {
+   @include umlaut-indent;
+   @extend .muted;
 }
 
-.response_source {
-  @extend .muted;
+.response_notes {
+  @include umlaut-indent;  
 }
 
 .debug_info {
+  @include umlaut-indent;
   @include umlaut-well($umlautDebugInfoBackgroundColor, $umlautDebugInfoBorderColor);
 }
 
@@ -155,16 +147,6 @@
   .umlaut-section {
     margin: 0.5em 1em;
     padding: 0 0.5em;
-
-    // Response elements
-    [class^="response_"] {
-      @include response-element-margins-large;
-    }
-
-    // Don't indent response links
-    response_link {
-      @include response-element-margins-none;
-    }
   }
 
   .umlaut-help-list {
