@@ -1,9 +1,6 @@
-// Bootstrap Variables
-$baseFontSize:                              12px !default;
-$fontSizeSmall:                             $baseFontSize - 1 !default;
-$fontSizeLarge:                             $baseFontSize + 2 !default;
-$baseLineHeight:                            12px !default;
-$linkColor:                                 #0066CC !default;
+// Bootstrap Variable over-rides
+// $linkColor:                                 #0066CC;
+
 // Umlaut Variables
 $umlautGrey:                                darken(whiteSmoke, 9%); // Basic grey
 $umlautAvailableColor:                      #00CC33 !default; // Available Color
