@@ -2,6 +2,10 @@ require 'test_helper'
 class SearchControllerTest < ActionController::TestCase
   setup do
     @controller = SearchController.new
+
+    # Weird, sorry internal implementation isn't great for testabiltiy
+    @search_page_size = @controller.class.class_variable_get("@@search_batch_size")
+    @az_page_size     = @controller.class.class_variable_get("@@az_batch_size")
   end
 
   test "index" do
@@ -21,7 +25,7 @@ class SearchControllerTest < ActionController::TestCase
     assert_select "title", "Find It | Journal titles that begin with &#x27;Account&#x27;"
     assert_select ".citationLinker", 1
     assert_select ".list", 1
-    assert_select ".list .citation", 5
+    assert_select ".list .citation", @search_page_size
     assert_select ".pagination", 2
     assert_select ".azNav", 0
   end
@@ -33,7 +37,7 @@ class SearchControllerTest < ActionController::TestCase
     assert_select "title", "Find It | Browse by Journal Title: A"
     assert_select ".citationLinker", 1
     assert_select ".list", 1
-    assert_select ".list .citation", 16
+    assert_select ".list .citation", @az_page_size
     assert_select ".pagination", 2
     assert_select ".azNav", 2
   end
