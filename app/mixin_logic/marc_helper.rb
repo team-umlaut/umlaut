@@ -222,7 +222,7 @@ module MarcHelper
     if options[:include_repro_info] && marc['533']
       marc['533'].subfields.each do |s|
         if ( s.code == 'a' )
-          parts.push('<em>' + s.value.gsub(/[^\w\s]/, '') + '</em>:'  )  
+          parts.push(s.value.gsub(/[^\w\s]/, '') + ':'  )  
         elsif (! options[:exclude_533_fields].include?( s.code ))
           parts.push(s.value)
         end       

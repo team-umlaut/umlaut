@@ -21,7 +21,7 @@ class SearchControllerTest < ActionController::TestCase
     assert_select "title", "Find It | Journal titles that begin with &#x27;Account&#x27;"
     assert_select ".umlaut-search", 1
     assert_select ".umlaut-results", 1
-    assert_select ".umlaut-results .umlaut-result", 5
+    assert_select ".umlaut-results .umlaut-result", :minimum => 1
     assert_select ".umlaut-pagination", 2
     assert_select ".umlaut-az", 0
   end
@@ -33,7 +33,7 @@ class SearchControllerTest < ActionController::TestCase
     assert_select "title", "Find It | Browse by Journal Title: A"
     assert_select ".umlaut-search", 1
     assert_select ".umlaut-results", 1
-    assert_select ".umlaut-results .umlaut-result", 16
+    assert_select ".umlaut-results .umlaut-result", :minimum => 1 
     assert_select ".umlaut-pagination", 2
     assert_select ".umlaut-az", 2
   end
