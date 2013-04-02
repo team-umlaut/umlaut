@@ -29,10 +29,17 @@
 }
 
 @mixin umlaut-well($backgroundColor, $borderColor) {
-  @extend .well;
-  @extend .well-small;
+  /* copied from bootstrap well, because we change parts, not worth
+     it to override, we change so much and well is so simple.  */
   background-color: $backgroundColor;
-  border-color: $borderColor;
+  min-height: 20px;
+
+  padding: 9px;
+  margin-left: -9px; /* so left edge of text still lines up */
+
+  border: 1px solid $borderColor;
+  @include border-radius($baseBorderRadius);
+  @include box-shadow(inset 0 1px 1px rgba(0,0,0,.05));
 }
 
 @mixin umlaut-indent {
