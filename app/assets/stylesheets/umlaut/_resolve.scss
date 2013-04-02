@@ -33,7 +33,7 @@
 }
 
 .umlaut-section {
-  margin: $baseLineHeight 0 ($baseLineHeight * 1.5) 0;  
+  margin: 0 0 ($baseLineHeight * 1.5) 0;  
   .section_heading h3 {
     /* semantically an h3, but make it sized an h4 */
     @extend h4;
@@ -174,9 +174,8 @@
     left: 1px solid $umlautSidebarBorderColor;
     bottom: 1px solid $umlautSidebarBorderColor;
   }
+  padding: $umlautIndent;
   background-color: $umlautSidebarBackgroundColor;
-
-  padding: 0 20px;
 
   .help-text-icon {
     display: inline-block;
