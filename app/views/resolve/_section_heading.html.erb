@@ -1,0 +1,16 @@
+<%# requires local :presenter with a SectionRenderer %>
+
+<% if presenter.show_heading? %>
+
+    <div class="section_heading">
+      <% if presenter.section_title %>
+        <h3><%= presenter.section_title %></h3>
+        <% if presenter.section_prompt %>
+          <p class="section_prompt">
+            <%= presenter.section_prompt %>
+          </p>
+        <% end %>
+      <% end %>
+    </div>
+
+<% end  %>

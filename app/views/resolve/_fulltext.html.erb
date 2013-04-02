@@ -5,7 +5,9 @@ all_responses = fulltext
 # order em with full fulltxt before title_level_fulltxt
 all_responses = fulltxt + title_level_fulltxt %>
 <div class="umlaut-section fulltext <%= unless fulltxt.blank? && title_level_fulltxt.blank?; 'umlaut-section-highlighted' ; end %>">
-  <%= renderer.render_heading %>
+
+  <%= render :partial => 'section_heading', :locals => {:presenter => renderer} %>
+  
   <div class="umlaut_section_content"><%=
     list_with_limit('umlaut_fulltext', all_responses, 
       :ul_class => "response_list", :limit => renderer.list_visible_limit ) do |item, index | %><%

@@ -35,7 +35,12 @@
 }
 
 .umlaut-section {
-  margin-top: $baseLineHeight;
+  margin: $baseLineHeight 0 ($baseLineHeight * 2) 0;  
+  .section_heading h3 {
+    /* semantically an h3, but make it sized an h4 */
+    @extend h4;
+    margin-top: 0;
+  }
 
 
 
@@ -111,11 +116,6 @@
 
 .umlaut-section-highlighted {
   @include umlaut-well($umlautHighlightedSectionBackgroundColor, $umlautHighlightedSectionBorderColor);
-  padding: 0.5em !important;
-  // Line responses up with collapse caret
-  .response_list {
-    margin-left: 4px;
-  }
 }
 
 .section_prompt {
@@ -144,13 +144,9 @@
   }
   background-color: $umlautSidebarBackgroundColor;
 
-  .umlaut-section {
-    margin: 0.5em 1em;
-    padding: 0 0.5em;
-  }
+  padding: 0 20px;
 
   .umlaut-help-list {
-    margin-top: .5em;
     text-align: right;
   }
 }
