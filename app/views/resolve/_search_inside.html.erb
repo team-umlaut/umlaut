@@ -18,21 +18,27 @@ if (search_providers.length > 0 and (not service_type_in_progress?('search_insid
 # TODO: Make this a helper function!
 %>
     <div class="umlaut_section_content">
-      <form target="_blank" action="<%= url_for(:controller=>'link_router', :action=>'index') %>">
-        <span class="source">
-          via <% 
-          if search_providers.length > 1 %>
-            <select name="id"><% 
-              search_providers.each do |st| %>
-                <option value="<%= st.id %>"><%= st.view_data[:display_text] %></option><%
-              end %>
-            </select><%
-          else  %>
+      <%= content_tag("form", :target => "_blank", :action => url_for(:controller=>'link_router', :action=>'index')) do %>
+
+        <div class="source input-prepend input-append">
+          <span class="add-on"> via </span> 
+
+          <% if search_providers.length > 1 %>
+            <%= select_tag("id", options_for_select(search_providers.collect {|st| [st.view_data[:display_text], st.id]}), 
+                            :class =>"input-medium id") %>
+          <% else %>
             <input type="hidden" name="id" value="<%= search_providers[0].id %>">
-            <%= search_providers[0].view_data[:display_text] %>:<% end %>
-        </span>
-        <input name="query" type="text" /> <input value="search" type="submit" class="btn">
-      </form>
+            <span class="add-on"><%= search_providers[0].view_data[:display_text] %></span>
+          <% end %>
+
+        </div>
+        <div class="source input-append">
+          <input name="query" type="text" /> 
+          <input value="search" type="submit" class="btn add-on">
+        </div>
+
+     
+      <% end %>
     </div>
   </div><%
 end

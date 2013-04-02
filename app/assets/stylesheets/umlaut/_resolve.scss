@@ -125,8 +125,12 @@
   }
 
   &.search_inside {
-    input[type="submit"].btn {
-      vertical-align: top;
+    .input-append .add-on, .input-prepend .add-on {
+      // can't figure out if this is a bug in bootstrap or what
+      height: auto;    
+    }
+    select.id {
+      @include border-radius(0 $inputBorderRadius $inputBorderRadius 0);
     }
   }
 }
