@@ -210,8 +210,7 @@
 
 
 
-  .resource-type {
-    @extend .muted;
+  .resource-type {    
     margin: 0;
     font-weight: bold;
   }
@@ -223,9 +222,7 @@
   .author-and-date {
     font-size: $baseFontSize * 1.25;
   }
-  .published-label {
-    @extend .muted;
-  }
+  
   .container-title {
     font-style: italic;
   }
@@ -239,7 +236,6 @@
       float: left;
       clear: left;
       font-weight: normal;
-      @extend .muted;        
       @include text-overflow();        
       width: ($umlautIndent * 10) - 20;
       @media (max-width: 767px) {
