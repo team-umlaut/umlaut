@@ -33,7 +33,7 @@
 }
 
 .umlaut-section {
-  margin: $baseLineHeight 0 ($baseLineHeight * 2) 0;  
+  margin: $baseLineHeight 0 ($baseLineHeight * 1.5) 0;  
   .section_heading h3 {
     /* semantically an h3, but make it sized an h4 */
     @extend h4;
