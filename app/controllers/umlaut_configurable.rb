@@ -261,7 +261,7 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "search_inside"
-        html_area :resource_info
+        html_area :main
         partial "search_inside"
         show_partial_only true
       end
