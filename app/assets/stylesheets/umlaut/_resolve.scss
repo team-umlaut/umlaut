@@ -237,7 +237,7 @@
       clear: left;
       font-weight: normal;
       @include text-overflow();        
-      width: ($umlautIndent * 10) - 20;
+      width: ($umlautIndent * 5) - 20;
       @media (max-width: 767px) {
         float: none;
         clear: none;
@@ -246,7 +246,7 @@
       }
     }
     dd {
-      margin-left: ($umlautIndent * 10);
+      margin-left: ($umlautIndent * 5);
       @media (max-width: 767px) {
         margin-left: 0;
       }
