@@ -13,18 +13,17 @@ class ResolveControllerTest < ActionController::TestCase
     assert_response :success
     assert_select "title", "Find It | The New York times"
     assert_select "h1", "Find It"
-    assert_select "h2", "Find Resource"
-    assert_select ".umlaut-main .umlaut-resource-info dl" do |dls|
+    assert_select "h2.title", "The New York times"
+
+    assert_select ".umlaut-main .umlaut-resource-info dl.citation-info" do |dls|
       assert_equal 1, dls.size
       dls.each do |dl|
-        assert_select dl, "dt", 2
+        assert_select dl, "dt", 1
         assert_select dl, "dt" do |dts|
-          assert dts.first, "Title:"
           assert dts.last, "ISSN:"
         end
-        assert_select dl, "dd", 2
+        assert_select dl, "dd", 1
         assert_select dl, "dd" do |dds|
-          assert dds.first, "The New York times"
           assert dds.last, "0362-4331"
         end
       end
