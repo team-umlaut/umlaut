@@ -1,62 +1,59 @@
-<%
-=begin
-  scotdalton's alternative partial for displaying holdings.
-=end
-# Get and display holdings
-holdings = holding.find_all{|response| response.service_type_value_name.eql? "holding"}
-unless holdings.empty? %>
-  <div class="container-fluid umlaut-holdings"><%
+<% holdings = holding.find_all{|response| response.service_type_value_name.eql? "holding"} %>
+
+<% unless holdings.empty? %>
+  <div class="umlaut-holdings"><%
     # Process each holding.
     holdings.each do |p|
       target = p.view_data %>
       <div class="umlaut-holding">
         <div class="row-fluid ">
-          <div class="span3"><%= target[:collection_str] %></div>
-          <div class="span4"><%= target[:call_number]%></div><%
-          # Set status class based on configured available statuses
+          <div class="span3 collection-str"><%= target[:collection_str] %></div>
+
+          <div class="span3 call-number"><%= target[:call_number]%></div>
+
+          <% # Set status class based on configured available statuses
           status_class = umlaut_config.holdings.available_statuses.include?(target[:status]) ? 'umlaut-available' : '' %>
-          <div class="span3 <%= status_class %>"><%= target[:status] %></div>
-          <div class="span2">
-            <%= link_to("More Info", {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"btn btn-success") %>
+
+          <div class="span3 holding-status <%= status_class %>"><%= target[:status] %></div>
+          
+          <div class="span3 holding-actions">
+            <%= link_to("More Info", {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"more-info btn btn-small btn-success") %>
             <% if target[:request_url] %>
-              <%= link_to("Request", target[:request_url], :target => "_blank", :class=>"btn btn-primary") %><br />
+              <%= link_to("Request", target[:request_url], :target => "_blank", :class=>"request btn btn-small btn-primary") %><br />
             <% end %>
           </div>
-        </div><%
-        # Display edition info
-        if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
-          <div class="row-fluid umlaut-holding-match-reliability">
-            <div class="span11 offset1">
+
+        </div>
+
+        <% if target[:match_reliability].present? && target[:match_reliability] != ServiceResponse::MatchExact %>
+          <div class="umlaut-holding-match-reliability">            
               <% unless target[:edition_str].blank? %>
                 <em class="note">Edition information</em> <%= target[:edition_str] %>
               <% else %>
                 <em class="note">May be alternate edition.</em>
-              <% end %>
-            </div>
-          </div><%
-        end
-        # Display notes
-        unless target[:notes].blank? %>
-          <div class="row-fluid umlaut-holding-notes">
-            <div class="span11 offset1"><%= target[:notes] %></div>
-          </div><%
-        end
-        # Display coverage
-        unless target[:coverage_str_array].blank? %>
-          <div class="row-fluid umlaut-holding-coverage">
-            <div class="span11 offset1"><%=
-              list_with_limit("copies_#{p.id}", target[:coverage_str_array]) do |item, index| %>
-                <li><%= item %></li><%
-              end %>
-            </div>
-          </div><%
-        end %>
-      </div><%
-    end %>
-  </div><%
-end
-# Process the case where holdings are empty
-if holdings.empty? %>
+              <% end %>            
+          </div>
+        <% end %>
+        
+        <% if target[:notes].present? %>
+          <div class="umlaut-holding-notes">
+            <%= target[:notes] %>
+          </div>
+        <% end %>
+        
+        <% if target[:coverage_str_array].present? %>
+          <div class="umlaut-holding-coverage">
+            <%= list_with_limit("copies_#{p.id}", target[:coverage_str_array]) do |item, index| %>
+                <li><%= item %></li>
+            <% end %>            
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<% if holdings.empty? %>
   <div class="umlaut-content-indent"><%
     # Get and display holding searches
     searches = holding.find_all{|response| response.service_type_value_name.eql? "holding_searches"}

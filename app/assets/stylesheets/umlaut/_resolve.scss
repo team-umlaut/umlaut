@@ -77,27 +77,51 @@
 
   &.holding {
     .umlaut-holdings {
-      padding-left: $umlautIndent;
-      border-top: 1px solid $umlautHoldingBorderColor;
       .umlaut-holding {
-        padding: {
-          top: .75em;
-          bottom: 0px;
-          left: .25em;
-          right: .25em;
-        }
-        &:first-child {
-          border-top: none;
-        }
-        &:nth-child(odd) {
+        padding: $baseLineHeight / 6;
+        margin-left: (-$baseLineHeight / 6);
+        margin-right: (-$baseLineHeight / 6);
+        &:nth-child(even) {
           background-color: $umlautHoldingHighlightBackgroundColor;
         }
-        a.btn {
-          display:block;
-          margin-bottom: .25em;
+      }
+      .collection-str {
+        font-weight: bold;
+      }
+      .umlaut-holding-notes {
+        @extend .muted;
+      }
+      .umlaut-holding-match-reliability, .umlaut-holding-notes, .umlaut-holding-coverage {
+        margin: ($baseLineHeight / 3) 0 ($baseLineHeight / 3) $umlautIndent;        
+      }
+      .holding-actions  {
+        .btn {
+          // Make em like a button-mini but with big text
+          font-size: $baseFontSize;
+          // and take up full column width
+          display: block;
+          margin-bottom: $baseLineHeight / 6;
+
+          @media (max-width: 767px) {
+            display: inline;            
+          }
+        }
+      }
+      @media (max-width: 767px) {
+        .row-fluid [class*="span"] {
+          min-height: 0;
+        }
+        .collection-str {
+          margin-bottom: ($baseLineHeight / 3);
+        }
+        .call-number, .holding-status, .holding-actions {
+          margin: ($baseLineHeight / 3) 0 ($baseLineHeight / 3) $umlautIndent;        
         }
       }
     }
+
+
+
   }
 
   &.search_inside {
@@ -287,12 +311,6 @@ a:not(:hover) .coverage_summary {
     .umlaut-section {
       margin-left: 0;
       padding-left: 0;
-
-      &.holding {
-        .umlaut-holdings {
-          padding-left: 0px;
-        }
-      }
     }
 
     .umlaut-help-list {
@@ -301,17 +319,4 @@ a:not(:hover) .coverage_summary {
   }
 }
 
-@media (min-width: 768px) and (max-width: 979px) {
-  .umlaut-section {
-    &.holding {
-      .umlaut-holdings {
-        .umlaut-holding {
-          a.btn {
-            padding-left: 3px;
-            padding-right: 3px;
-          }
-        }
-      }
-    }
-  }
-}
+
