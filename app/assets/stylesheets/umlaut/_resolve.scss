@@ -26,13 +26,18 @@
 .response_list {
   .response_item  {
     padding-bottom: 5px;
+    // Try to make line wrap respect space for icon/indent. 
+    padding-left: $umlautIndent;
+    text-indent: -$umlautIndent;
   }
 }
 
 // Content indents
 .umlaut-content-indent {
-  @include umlaut-indent;
+  margin-left: $umlautIndent;
 }
+
+
 
 .umlaut-section {
   margin: $baseLineHeight 0 ($baseLineHeight * 2) 0;  
@@ -117,17 +122,25 @@
   @extend .muted;
 }
 
-.response_edition_warning, .response_source {
-   @include umlaut-indent;
-   @extend .muted;
+// extra block-level elements inside a response_item
+// need to turn off the text-indent that inherits, don't actually
+// need any indent. 
+%indented-subitem {
+  //margin-left: $umlautIndent;
+  text-indent: 0;
 }
 
-.response_notes {
-  @include umlaut-indent;  
+.response_edition_warning, .response_source {
+  @extend %indented-subitem;
+  @extend .muted;
+}
+
+.response_notes, .response_coverage_statement {
+  @extend %indented-subitem;
 }
 
 .debug_info {
-  @include umlaut-indent;
+  @extend %indented-subitem;
   @include umlaut-well($umlautDebugInfoBackgroundColor, $umlautDebugInfoBorderColor);
 }
 

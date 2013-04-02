@@ -5,7 +5,10 @@
 $umlautGrey:                                darken(whiteSmoke, 9%); // Basic grey
 $umlautAvailableColor:                      #00CC33 !default; // Available Color
 $umlautUnavailableColor:                    red !default; // Unavailable Color
-$umlautIndent: 			                        $baseLineHeight /2 !default; // Indent for resolve items in main section
+
+// important that umlautIndent is exactly enough to indent past umlaut
+// list item icons in hanging indents
+$umlautIndent:  														20px !default;  
 // Overall Border and Background
 $umlautBorderColor:                         #EBB211 !default;
 $umlautBackgroundColor:                     #FFFDEA !default;

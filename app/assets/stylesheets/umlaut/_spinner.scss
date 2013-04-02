@@ -1,5 +1,5 @@
 .background_progress_spinner {
-  @include umlaut-indent;
+	margin-left: $umlautIndent;
   @extend .muted;
   line-height: 1.5em;
   img {
