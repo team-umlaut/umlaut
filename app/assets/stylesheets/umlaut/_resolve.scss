@@ -194,7 +194,7 @@
 
 
 
-  .resource_type {
+  .resource-type {
     @extend .muted;
     margin: 0;
     font-weight: bold;
@@ -205,13 +205,13 @@
     @extend h3;
     line-height: $baseLineHeight * 1.8;
   }
-  .author_and_date {
+  .author-and-date {
     font-size: $baseFontSize * 1.25;
   }
-  .published_label {
+  .published-label {
     @extend .muted;
   }
-  .container_title {
+  .container-title {
     font-style: italic;
   }
 

@@ -3,13 +3,13 @@ cite = @user_request.referent.to_citation
 @page_title = cite[:title] %>
 
 <% if @user_request.referent.type_of_thing.present? %>
-  <p class="resource_type"><%=@user_request.referent.type_of_thing.titlecase %></p>
+  <p class="resource-type"><%=@user_request.referent.type_of_thing.titlecase %></p>
 <% end %>
 
 <h2 class="title"><%= cite[:title] %></h2>
 
 <% if cite[:author].present? || cite[:date].present? %>
-  <p class="author_and_date">
+  <p class="author-and-date">
     <% if cite[:author].present? %>
       <span class="author"><%= cite[:author] %></span>
     <% end %>
@@ -27,7 +27,7 @@ cite = @user_request.referent.to_citation
 <p class="published_in">
   <% if [:container_title, :volume, :issue, :page].find {|k| cite[k].present? } %>
 
-    <span class="published_label">Published in <%= cite[:container_label] %></span> <span class="container_title">
+    <span class="published-label">Published in <%= cite[:container_label] %></span> <span class="container-title">
       <%= cite[:container_title] %></span>. 
   <% end %>
 
