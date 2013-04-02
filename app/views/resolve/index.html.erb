@@ -1,12 +1,13 @@
 <%= render :partial=>'background_updater' %>
 <div class="row-fluid">
+
   <div class="span8 umlaut-main"> 
     <h2>Find <%=@user_request.referent.type_of_thing.titlecase %></h2>
+
     <div class="umlaut-resource-info">
-      <div class="container-fluid">
-        <div class="row-fluid">
-          <%= render :partial=> "manually_entered_warning" %>
-          <div class="resource_info_sections span10">
+          <div class="resource_info_sections">
+            <%= render :partial=> "manually_entered_warning" %>
+
             <%= render :partial=>'citation' %>
             <% html_sections(:resource_info).each do |section| %>
               <%= content_tag "div", :id => section[:div_id] do %>
@@ -14,12 +15,11 @@
               <% end %>
             <% end %>
           </div>
-          <div id="cover_image" class="span2">
-            <%= render_section(html_section_by_div_id("cover_image")) %>
-          </div>
-        </div>
-      </div>
+          
+          <%= render_section(html_section_by_div_id("cover_image")) %>
+
     </div>
+
     <div class="main_response_list">
       <% html_sections(:main).each do |section| %>
         <%= content_tag "div", :id => section[:div_id] do %>
@@ -27,7 +27,8 @@
         <% end %>
       <% end %>
     </div>
-  </div>
+</div>
+
   <div class="span4 umlaut-sidebar">
     <% html_sections(:sidebar).each do |section| %>
       <%= content_tag "div", :id => section[:div_id] do %>

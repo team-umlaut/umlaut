@@ -156,18 +156,44 @@
 }
 
 .umlaut-resource-info {
-  @include umlaut-well($umlautResourceInfoBackgroundColor, $umlautResourceInfoBorderColor);
+  display: table;
+  width: 100%;
   padding-top: 0;
   padding-bottom: 0;
-  .resource_info_sections {
-    dl {
-      margin-top: .5em;
-      margin-bottom: .5em;
-      dt, dd {
-        padding-top: .25em;
+  @include clearfix(); 
+
+  .resource_info_sections, .umlaut-section.cover_image {
+    display:        table-cell;
+    vertical-align: top;
+    margin: $baseLineHeight;
+  }
+
+  /* IE7 and below, hide cover image entirely, since
+     we dont' have display:table to do it right. Use IE7 asterisk trick */
+  .umlaut-section.cover_image {
+    *display: none;
+  }
+
+  .umlaut-section.cover_image .umlaut_section_content {
+    text-align: right;
+    img.cover_image {
+      border: 1px solid $umlautHighlightedSectionBorderColor;
+
+      /* override to make cover smaller on smaller screens, 50% of
+      original in-style maxes.  */
+      @media (max-width: 900px) {
+        max-width:  100px !important;
+        max-height: 80px !important;
       }
     }
   }
+
+  .resource_info_sections {
+      dt, dd {
+        padding-top: .25em;
+      }
+  }
+
 }
 
 .umlaut-available {
@@ -193,10 +219,6 @@ a:not(:hover) .coverage_summary {
 }
 
 @media (max-width: 767px) {
-  #cover_image {
-    display: none;
-  }
-
   .umlaut-sidebar {
     @include umlaut-container-padding;
     background-color: $umlautMainBackgroundColor;
