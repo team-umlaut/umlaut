@@ -3,7 +3,8 @@
   @extend .muted;
   line-height: 1.5em;
   img {
-    vertical-align: bottom;
+    vertical-align: top;
+    margin-top: 1px;
   }
 }
 
