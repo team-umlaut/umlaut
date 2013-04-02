@@ -102,11 +102,6 @@
     }
   }
 
-  &.help {
-    @include umlaut-well($umlautHelpBackgroundColor, $umlautHelpBorderColor);
-    padding: 0.5em !important;
-  }
-
   &.search_inside {
     input[type="submit"].btn {
       vertical-align: top;
@@ -145,6 +140,22 @@
 
   padding: 0 20px;
 
+  .help-text-icon {
+    display: inline-block;
+    height: 100%;
+
+    font-size: $baseLineHeight * 1.85;
+    font-weight: bold;
+    float: left;
+    margin-right: 12px;
+    padding: $baseLineHeight * 0.5;
+    
+
+    background-color: $umlautHighlightedSectionBackgroundColor;
+    border: 1px solid $umlautHighlightedSectionBorderColor;    
+
+    @include border-radius($baseLineHeight * 2)
+  }
   .umlaut-help-list {
     text-align: right;
   }
