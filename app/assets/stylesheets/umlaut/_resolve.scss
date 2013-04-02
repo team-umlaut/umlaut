@@ -32,13 +32,6 @@
   }
 }
 
-// Content indents
-.umlaut-content-indent {
-  margin-left: $umlautIndent;
-}
-
-
-
 .umlaut-section {
   margin: $baseLineHeight 0 ($baseLineHeight * 2) 0;  
   .section_heading h3 {
@@ -128,6 +121,10 @@
 %indented-subitem {
   text-indent: 0;
   margin: ($baseLineHeight / 6) 0;
+}
+
+.umlaut-content-indent {
+  @extend %indented-subitem;
 }
 
 .response_edition_warning, .response_source, .response_coverage_statement {

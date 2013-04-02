@@ -86,7 +86,7 @@ module ResolveHelper
     # really goes to full HTML view.
     link_params[:action] = "index" if link_params[:action] == "partial_html_sections"
     return content_tag(:div, :class => "collapsible", :id => "collapse_#{id}") do
-      link_to(icon + heading, link_params, :class => "collapse-toggle", "data-target" => "##{id}", "data-toggle" => "collapse") +
+      link_to(icon + " " + heading, link_params, :class => "collapse-toggle", "data-target" => "##{id}", "data-toggle" => "collapse") +
         content_tag(:div, :id => id, :class => ["collapse"]<< body_class, &block)
     end
   end
