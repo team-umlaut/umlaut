@@ -130,12 +130,12 @@
   margin: ($baseLineHeight / 6) 0;
 }
 
-.response_edition_warning, .response_source {
+.response_edition_warning, .response_source, .response_coverage_statement {
   @extend %indented-subitem;
   @extend .muted;
 }
 
-.response_notes, .response_coverage_statement {
+.response_notes {
   @extend %indented-subitem;
 }
 
