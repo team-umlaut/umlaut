@@ -25,7 +25,7 @@
 
 .response_list {
   .response_item  {
-    padding-bottom: 5px;
+    margin-bottom: ($baseLineHeight / 2);
     // Try to make line wrap respect space for icon/indent. 
     padding-left: $umlautIndent;
     text-indent: -$umlautIndent;
@@ -126,8 +126,8 @@
 // need to turn off the text-indent that inherits, don't actually
 // need any indent. 
 %indented-subitem {
-  //margin-left: $umlautIndent;
   text-indent: 0;
+  margin: ($baseLineHeight / 6) 0;
 }
 
 .response_edition_warning, .response_source {
