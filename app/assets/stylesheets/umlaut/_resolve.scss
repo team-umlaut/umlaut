@@ -119,8 +119,7 @@
 }
 
 .section_prompt {
-  font-style: italic;
-  margin-bottom: 8px;
+  @extend .muted;
 }
 
 .response_edition_warning, .response_source {
