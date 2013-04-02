@@ -10,6 +10,17 @@ header {
   border: {
     bottom: 1px solid $umlautBorderColor;
   }
+  h1 {
+    //semantically an h1, but let's make it not so big, inspired
+    //by twitter's navbar styles, copied
+    display: block;
+  
+    margin: 0;
+    padding: 0;    
+    font-size: 20px;
+    font-weight: 200;
+    color: $navbarBrandColor;
+  }
 }
 
 footer {
