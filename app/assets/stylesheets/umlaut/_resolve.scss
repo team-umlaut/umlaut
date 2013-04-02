@@ -158,9 +158,9 @@
 .umlaut-resource-info {
   display: table;
   width: 100%;
-  padding-top: 0;
-  padding-bottom: 0;
   @include clearfix(); 
+  padding: $umlautIndent 0;
+
 
   .resource_info_sections, .umlaut-section.cover_image {
     display:        table-cell;
@@ -168,9 +168,11 @@
     margin: $baseLineHeight;
   }
 
-  /* IE7 and below, hide cover image entirely, since
-     we dont' have display:table to do it right. Use IE7 asterisk trick */
+
   .umlaut-section.cover_image {
+    padding-left: $umlautIndent * 2;
+    /* IE7 and below, hide cover image entirely, since
+     we dont' have display:table to do it right. Use IE7 asterisk trick */
     *display: none;
   }
 
@@ -188,10 +190,56 @@
     }
   }
 
-  .resource_info_sections {
-      dt, dd {
-        padding-top: .25em;
+  /* citation render styles */
+
+
+
+  .resource_type {
+    @extend .muted;
+    margin: 0;
+    font-weight: bold;
+  }
+  h2.title {  
+    margin-top: 0;
+    margin-bottom: 3px;
+    @extend h3;
+    line-height: $baseLineHeight * 1.8;
+  }
+  .author_and_date {
+    font-size: $baseFontSize * 1.25;
+  }
+  .published_label {
+    @extend .muted;
+  }
+  .container_title {
+    font-style: italic;
+  }
+
+  dl.citation-info {
+    /* based on dl-horizontal, but tweaked.  */
+    @include clearfix();   
+    margin-top: 10px;
+    margin-bottom: 10px;     
+    dt {      
+      float: left;
+      clear: left;
+      font-weight: normal;
+      @extend .muted;        
+      @include text-overflow();        
+      width: ($umlautIndent * 10) - 20;
+      @media (max-width: 767px) {
+        float: none;
+        clear: none;
+        width: auto;
+        text-align: left;
       }
+    }
+    dd {
+      margin-left: ($umlautIndent * 10);
+      @media (max-width: 767px) {
+        margin-left: 0;
+      }
+    }
   }
 
 }

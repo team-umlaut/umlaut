@@ -1,53 +1,63 @@
 <%
 cite = @user_request.referent.to_citation
 @page_title = cite[:title] %>
-<dl class="dl-horizontal">
-  <%= # Title
-  content_tag(:dt, "#{cite[:title_label]}:", :class => "title") +
-    content_tag(:dd, cite[:title], :class => "title") %>
-  <%= # Author
-  if cite[:author] and (not cite[:author].blank?)
-    content_tag(:dt, "Author:", :class => "author") +
-      content_tag(:dd, cite[:author], :class => "author")
-  end %>
-  <%= # Subtitle
-  if cite[:subtitle] and (not cite[:subtitle].blank?)
-    content_tag(:dt, "#{cite[:subtitle_label]}:", :class => "subtitle") +
-      content_tag(:dd, cite[:subtitle], :class => "subtitle")
-  end %>
-  <%= # ISSN
-  if cite[:issn] and (not cite[:issn].blank?)
-    content_tag(:dt, "ISSN:", :class => "issn") +
-      content_tag(:dd, cite[:issn], :class => "issn")
-  end %>
-  <%= # ISBN
-  if cite[:isbn] and (not cite[:isbn].blank?)
-    content_tag(:dt, "ISBN:", :class => "isbn") +
-      content_tag(:dd, cite[:isbn], :class => "isbn")
-  end %>
-  <%= # Publisher
-  if cite[:pub] and (not cite[:pub].blank?)
+
+<% if @user_request.referent.type_of_thing.present? %>
+  <p class="resource_type"><%=@user_request.referent.type_of_thing.titlecase %></p>
+<% end %>
+
+<h2 class="title"><%= cite[:title] %></h2>
+
+<% if cite[:author].present? || cite[:date].present? %>
+  <p class="author_and_date">
+    <% if cite[:author].present? %>
+      <span class="author"><%= cite[:author] %></span>
+    <% end %>
+
+    <% if cite[:author].present? && cite[:date].present? %>
+      <span class="sep">—</span>
+    <% end %>
+
+    <% if cite[:date].present? %>
+      <b class="date"><%= date_format(cite[:date]) %></b>
+    <% end %>
+  </p>
+<% end %>
+
+<p class="published_in">
+  <% if [:container_title, :volume, :issue, :page].find {|k| cite[k].present? } %>
+
+    <span class="published_label">Published in <%= cite[:container_label] %></span> <span class="container_title">
+      <%= cite[:container_title] %></span>. 
+  <% end %>
+
+  <% if cite[:volume].present? %>
+      <span class="volume">Volume <%= cite[:volume] %></span>.
+  <% end %>
+
+  <% if cite[:issue].present? %>
+      <span class="issue">Issue <%= cite[:issue] %></span>.
+  <% end %>
+
+  <% if cite[:page].present? %>
+      <span class="page">Page <%= cite[:page] %></span>.
+  <% end %>
+</p>
+
+<dl class="citation-info">
+  <%= if cite[:pub].present? 
     content_tag(:dt, "Publisher:", :class => "publisher") +
       content_tag(:dd, cite[:pub], :class => "publisher")
   end %>
-  <%= # Publishing info, etc.
-  if cite[:date] and (not cite[:date].blank?)
-    content_tag(:dt, "Published:", :class => "published") +
-      content_tag(:dd, date_format(cite[:date]), :class => "published")
+  <%= if cite[:issn].present?
+    content_tag(:dt, "ISSN:", :class => "issn") +
+      content_tag(:dd, cite[:issn], :class => "issn")
   end %>
-  <%= # Volume
-  if cite[:volume] and (not cite[:volume].blank?)
-    content_tag(:dt, "Volume:", :class => "volume") +
-      content_tag(:dd, cite[:volume], :class => "volume")
+  <%= if cite[:isbn].present?
+    content_tag(:dt, "ISBN:", :class => "isbn") +
+      content_tag(:dd, cite[:isbn], :class => "isbn")
   end %>
-  <%= # Issue
-  if cite[:issue] and (not cite[:issue].blank?)
-    content_tag(:dt, "Issue:", :class => "issue") +
-      content_tag(:dd, cite[:issue], :class => "issue")
-  end %>
-  <%= # Pages
-  if cite[:page] and (not cite[:page].blank?)
-    content_tag(:dt, "Page:", :class => "page") +
-      content_tag(:dd, cite[:page], :class => "page")
-  end %>
+
+  <%# todo, doi %>
+
 </dl>
