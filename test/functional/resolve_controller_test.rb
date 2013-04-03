@@ -46,8 +46,6 @@ class ResolveControllerTest < ActionController::TestCase
           # This record only has 1 holding
           assert_equal 1, holdings.size
           holdings.each do |holding|
-            # This holding has 3 rows.
-            assert_select holding, ".row-fluid", 4
             # Make sure the edition warning shows up.
             assert_select holding, ".umlaut-holding-match-reliability", 1
             # Make sure the coverage shows up.
