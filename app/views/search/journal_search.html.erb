@@ -1,5 +1,5 @@
 <h2><%= @page_title %></h2>
-<%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL', :class => "form-inline"})  %>
+<%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL', :class => "form-inline form-very-inline"})  %>
   <div class="umlaut-search">
     <fieldset>
       <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
@@ -20,8 +20,10 @@
           <%= options_for_select({"contains" => "contains", "begins with" => "begins", "exact match" => "exact"}, params["umlaut.title_search_type"])  %>
         </select>
       </div>
-      <%= submit_tag "Search", {:name=>"Generate_OpenURL2", :class => "btn"} %>
-      <%= link_to('More search options', {:controller=>'search'}, :class => "inline-help") %>
+      <div class="control-group">
+        <%= submit_tag "Search", {:name=>"Generate_OpenURL2", :class => "btn"} %>
+        <%= link_to('More search options', {:controller=>'search'}, :class => "inline-help") %>
+      </div>
     </fieldset>
   </div>
 </form>
