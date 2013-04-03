@@ -244,10 +244,8 @@
   h2.title {  
     margin-top: 0;
     @extend h3;
-    line-height: $baseLineHeight * 1.8;
-  }
-  .author-and-date {
-    font-size: $baseFontSize * 1.25;
+    line-height: $baseLineHeight * 1.6;
+    font-weight: normal;
   }
   
   .container-title {
