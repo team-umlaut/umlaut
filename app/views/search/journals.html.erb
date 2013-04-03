@@ -14,7 +14,7 @@
       <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
       <div class="control-group">
         <%= label :journal, :title, "Journal Title:", :class => "control-label" %>
-        <%= text_field :journal, :title, {:name=>'rft.jtitle', :class=>"title_search input-xlarge"} %>
+        <%= text_field :journal, :title, {:name=>'rft.jtitle', :class=>"title_search input-xlarge", :autocomplete => "off"} %>
         <select name="umlaut.title_search_type" class="title_search_type input-medium">
           <%= options_for_select({"contains" => "contains", "begins with" => "begins", "exact match" => "exact"}, params["umlaut.title_search_type"])  %>
         </select>
