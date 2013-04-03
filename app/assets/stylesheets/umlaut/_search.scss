@@ -5,6 +5,7 @@
   background-color: $umlautSearchBackgroundColor;
   margin-top: $baseLineHeight;
   margin-bottom: $baseLineHeight;
+  @include border-radius($baseBorderRadius);
 
   .row-fluid {
     margin-bottom: $baseLineHeight;
