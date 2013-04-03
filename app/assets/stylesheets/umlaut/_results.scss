@@ -6,21 +6,16 @@
 .umlaut-result {
   margin-bottom: $baseLineHeight/2;
   dl {
+    margin: 0;
     dt, dd {
-      padding-top: $baseLineHeight/2;
+      margin-bottom: $baseLineHeight/4;
     }
   }
 
-  padding: {
-    top: 2px;
-    bottom: 2px;
-    left: 2px;
-    right: 2px;
-  }
+  padding: $umlautIndent;
 
   .umlaut-citation-link {
     text-align: right;
-    padding-top: $baseLineHeight;
   }
 }
 
@@ -30,18 +25,8 @@
 
 @media (max-width: 767px) {
   .umlaut-result {
-    font-size: $baseFontSize*1.25;
-    line-height: $baseLineHeight*2;
-    dl {
-      dt, dd {
-        padding-top: $baseLineHeight;
-      }
-    }
-
     .umlaut-citation-link {
       text-align: left;
-      font-size: $baseFontSize*1.25;
-      line-height: $baseLineHeight*2;
     }
   }
 }
