@@ -1,5 +1,9 @@
 <div class="umlaut-az">
   <% group_list.each do |letter| %>
-  <%= link_to letter, :action=>"journal_list", :id=>letter%>
+  	<% if params[:id] == letter %>
+  		<%= content_tag "span", letter, :class => "active" %>
+  	<% else %>
+  		<%= link_to letter, {:action=>"journal_list", :id=>letter}  %>
+  	<% end %>
   <% end %>
 </div>
