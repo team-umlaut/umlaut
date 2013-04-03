@@ -59,12 +59,15 @@
   </div> 
   <%= submit_tag "Search", {:name=>"Generate_OpenURL2", :class => "btn"} %>
 </form>
-<h3 class="help-block umlaut-separator"><i class="umlaut_icons-famfamfam-help"></i> <span>Having Trouble?</span></h3>
-<p class="help-block">
-  Try entering less information about your article. If one piece of information is wrong, it could be causing the problem.
-</p>
-<% if umlaut_config.help_url %>
-  <p class="help-block">
-    For technical support, including access problems, please <a href="<%= umlaut_config.help_url %>">contact us</a>.
+
+<div class="umlaut-separator help-block">
+  <h3><span>Having Trouble?</span></h3>
+  <p>
+    Try entering less information about your article. If one piece of information is wrong, it could be causing the problem.
   </p>
-<% end %>
+  <% if umlaut_config.help_url %>
+    <p>
+      For technical support, including access problems, please <a href="<%= umlaut_config.help_url %>">contact us</a>.
+    </p>
+  <% end %>
+</div>
