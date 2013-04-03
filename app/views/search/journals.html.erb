@@ -4,7 +4,7 @@
   <div id="error" class="notice citationLinker"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
 <% end %>
 <h3>Looking for a specific journal or article</h3>
-<%= form_tag(@submit_hash, {:method => "get", :class => "OpenURL form-inline", :name => "OpenURL", :id=>"OpenURL"})  %>
+<%= form_tag(@submit_hash, {:method => "get", :class => "OpenURL form-inline form-very-inline", :name => "OpenURL", :id=>"OpenURL"})  %>
   <div class="umlaut-search">
     <fieldset>                                      
       <legend>Enter the journal title or the ISSN. If you have both the journal title and ISSN, use the ISSN.</legend>
@@ -13,14 +13,14 @@
       <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
       <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
       <div class="control-group">
-        <%= label :journal, :title, "Journal Title:" %>
+        <%= label :journal, :title, "Journal Title:", :class => "control-label" %>
         <%= text_field :journal, :title, {:name=>'rft.jtitle', :class=>"title_search input-xlarge"} %>
         <select name="umlaut.title_search_type" class="title_search_type input-medium">
           <%= options_for_select({"contains" => "contains", "begins with" => "begins", "exact match" => "exact"}, params["umlaut.title_search_type"])  %>
         </select>
       </div>
       <div class="control-group">
-        <%= label :journal, :isbn, "ISSN:" %>
+        <%= label :journal, :isbn, "ISSN:", :class=> "control-label" %>
         <%= text_field :journal, :isbn, {:name=>'rft.issn', :max_length => "9", :class=>"issn input-small"} %>
       </div>
     </fieldset>
@@ -29,21 +29,24 @@
     <fieldset>
       <legend>Optional information - Enter as much as you know of the following:</legend>
       <div class="control-group">
-        <label for="year">Date:</label>
+        <label for="year" class="control-label">Date:</label>
         <%= date %>
       </div>
       <div class="control-group">
-        <%= label :journal, :volume, "Volume:" %>
-        <%= text_field :journal, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume input-tiny"} %>
+        <span class="control-sub-group">
+          <%= label :journal, :volume, "Volume:", :class => "control-label" %>
+          <%= text_field :journal, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume input-tiny"} %>
+        </span>
+        <span class="control-sub-group">
+          <%= label :journal, :issue, "Issue:", :class => "control-label" %>
+          <%= text_field :journal, :issue, {:name=>'rft.issue', :class=>"issue input-tiny"} %>
+        </span>
+        <span class="control-sub-group">
+          <%= label :journal, :spage, "Start page:", :class => "control-label" %>
+          <%= text_field :journal, :spage, {:name=>'rft.spage', :class=>"spage input-tiny"} %>
+        </span>
       </div>
-      <div class="control-group">
-        <%= label :journal, :issue, "Issue:" %>
-        <%= text_field :journal, :issue, {:name=>'rft.issue', :class=>"issue input-tiny"} %>
-      </div>
-      <div class="control-group">
-        <%= label :journal, :spage, "Start page:" %>
-        <%= text_field :journal, :spage, {:name=>'rft.spage', :class=>"spage input-tiny"} %><br />
-      </div>
+      
       <div class="control-group">
         <label for="rft_id_type">DOI or Pubmed Identifier:</label>
         <select id="rft_id_type" name="rft_id_type" class="input-small">

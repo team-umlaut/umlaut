@@ -2,22 +2,30 @@ input[type="submit"] {
   @extend .btn;
 }
 
-.form-inline {
+/* Used on search form, our own .very-inline is added to form-inline, its 
+   SUPER inline, and allows multiple controls on a line, lined up well, with 
+   sub-groups of controls in span.control-sub-group */
+.form-inline.form-very-inline  {
   .control-group {
-    padding-left: .5em;
-    display: inline;
+    display: inline-block;
+    line-height: ($baseLineHeight * 2);
+    margin-right: $umlautIndent;
   }
+  .control-sub-group {
+    display: inline-block;
+    margin-right: $umlautIndent;
+  }
+  label, select, text-area, input, .uneditable-input {
+    vertical-align: bottom;
+  }
+  legend + .control-group {
+    margin-top: 0; //not sure why bootstrap did a margin here
+  }
+
 }
 
 @media (max-width: 767px) {
   .umlaut-citation-link {
     text-align: left;
-  }
-
-  .form-inline {
-    .control-group {
-      padding-left: 0;
-      display: block;
-    }
   }
 }
