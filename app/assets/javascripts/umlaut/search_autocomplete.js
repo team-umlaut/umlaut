@@ -72,7 +72,7 @@ jQuery(document).ready(function($) {
     highlighter: function(item) { 
       // Bootstrap updates the item as it passes through the callback chain
       // so this is a hack to ensure we get the proper values.
-      return "<strong id=\"" + item.object_id + "\" class=\"title\">"+ item.title + "</strong>"; 
+      return "<span id=\"" + item.object_id + "\" class=\"title\">"+ item.title + "</span>"; 
     },
     sorter: function(items) { return items },
     matcher: function(item) { return true; },
