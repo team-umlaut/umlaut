@@ -241,6 +241,7 @@
     @extend h3;
     line-height: $baseLineHeight * 1.6;
     font-weight: normal;
+    letter-spacing: -0.08em;
   }
   
   .container-title {
