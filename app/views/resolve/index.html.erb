@@ -15,7 +15,10 @@
             <% end %>
           </div>
           
-          <%= render_section(html_section_by_div_id("cover_image")) %>
+          <%# need a div here for ajax bg loader to put bg loaded cover into %>
+          <div id="cover_image">
+            <%= render_section(html_section_by_div_id("cover_image")) %>
+          </div>
 
     </div>
 
