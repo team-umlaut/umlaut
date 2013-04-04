@@ -171,12 +171,13 @@
   background-color: $umlautSidebarBackgroundColor;
 
   .help-text-icon {
-    display: inline-block;
     height: 100%;
 
     font-size: $baseLineHeight * 1.85;
     font-weight: bold;
     float: left;
+    clear: left;
+
     margin-right: 12px;
     padding: $baseLineHeight * 0.5;
     
@@ -184,10 +185,12 @@
     background-color: $umlautHighlightedSectionBackgroundColor;
     border: 1px solid $umlautHighlightedSectionBorderColor;    
 
-    @include border-radius($baseLineHeight * 2)
+    @include border-radius($baseLineHeight * 2);    
   }
-  .umlaut-help-list {
-    text-align: right;
+  .umlaut-section.help {
+    h3, ul.umlaut-help-list {
+      margin-left: 60px;
+    }
   }
 }
 
