@@ -32,12 +32,29 @@ module Umlaut::ControllerBehavior
   # Returns a Collection object with currently configured services.
   # Loads from Rails.root/config/umlaut_services.yml
   #
+  # &umlaut.service_group may be used to customize which services are loaded,
+  # else default.  &umlaut.service_group=-default turns off default. Can also
+  # list other groups, comma seperated. 
+  #
   # Local app can in theory override in local UmlautController to have
   # different custom behavior for calculating the collection, but this
   # is not entirely tested yet.
   def create_collection
-    # trim out ones with disabled:true
-    services = ServiceStore.config["default"]["services"].reject {|id, hash| hash && hash["disabled"] == true}
+    specified_groups = (params["specified_groups"].try {|str| str.split(",")}) || []
+
+    services = {}
+
+    unless specified_groups.delete "-default"
+      services.merge ServiceStore.config["default"]["services"]
+    end
+    
+    specified_groups.each do |group|
+      services.merge ServiceStore.config[params["umlaut.service_group"]]
+    end
+
+    # Remove any disabled ones
+    services = services.reject {|hash| hash && hash["disabled"] == true}
+
     return Collection.new(@user_request, services)
   end
   protected :create_collection
