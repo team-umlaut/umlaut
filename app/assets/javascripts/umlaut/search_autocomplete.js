@@ -35,6 +35,7 @@ jQuery(document).ready(function($) {
 
   // Search for the title with the current form. Only search
   // if there are more than two chars though!
+  //
   var search_title = function(query, process) {
     if (query.length > 2) {
       var form = this.$element.closest("form");
@@ -50,10 +51,24 @@ jQuery(document).ready(function($) {
     }
   }
 
+
+  var lookup_limit = 300; //ms 
+  // Uses a timer to only do a lookup at most once every
+  // 300ms . Based on rejected pull request at:
+  // https://github.com/twitter/bootstrap/pull/6320
+  var throttled_search_title = function(query, process) {
+    if(this.lookupTimer) {
+      clearTimeout(this.lookupTimer);
+    }
+
+    this.lookupTimer = setTimeout($.proxy(search_title, this, query, process), lookup_limit);
+    return this;
+  }
+
   $("input.title_search").typeahead({
     items: 10,
     minLength: 3,
-    source: search_title,
+    source: throttled_search_title,
     highlighter: function(item) { 
       // Bootstrap updates the item as it passes through the callback chain
       // so this is a hack to ensure we get the proper values.
