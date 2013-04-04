@@ -1,5 +1,30 @@
 /* search_autocomplete.js.  Add autocomplete to Umlaut journal title search. */
 jQuery(document).ready(function($) {
+
+
+ // We override typeahead's 'render' function to NOT have the first
+ // item selected. We simply copy and pasted it, and removed the line
+ // `items.first().addClass('active')`, then set the prototype to our
+ // own function. Yes, this changes typeahead globally, sorry we don't have
+ // a way to change it just for certain typeaheads. 
+ //
+ // The default first-item-selected behavior has been hated by users
+ // in the journal search scenario, since when they hit return they
+ // get it even if they didn't want it. 
+ var newRender = function(items) {
+      var that = this
+
+      items = $(items).map(function (i, item) {
+        i = $(that.options.item).attr('data-value', item)
+        i.find('a').html(that.highlighter(item))
+        return i[0]
+      })
+
+      this.$menu.html(items)
+      return this
+ };
+ $.fn.typeahead.Constructor.prototype.render = newRender;
+
   $(document).on("submit", "form.OpenURL", function() {
     var form = $(this);
     if ( form.find(".rft_title").val() != $(this).val()) {
