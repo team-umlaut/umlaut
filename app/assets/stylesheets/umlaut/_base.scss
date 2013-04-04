@@ -23,6 +23,14 @@ header {
   }
 }
 
+.umlaut-nav {
+  border-bottom: 1px solid $umlautNavBorderColor;
+  background-color: $umlautNavBackgroundColor;
+  padding: .5em;
+  text-align: right;
+}
+
+
 footer {
   @include umlaut-container-padding;
   margin: {
