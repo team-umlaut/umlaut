@@ -24,6 +24,16 @@ jQuery(document).ready(function($) {
       return this
  };
  $.fn.typeahead.Constructor.prototype.render = newRender;
+ // have to fix 'select' to accomodate possible no selection too
+ $.fn.typeahead.Constructor.prototype.select = function() {
+    var val = this.$menu.find('.active').attr('data-value');
+    if (val) {
+      this.$element
+        .val(this.updater(val))
+        .change();
+    }
+    return this.hide()
+ }
 
   $(document).on("submit", "form.OpenURL", function() {
     var form = $(this);
@@ -78,16 +88,18 @@ jQuery(document).ready(function($) {
     matcher: function(item) { return true; },
     updater: function(item) {
       // Get the selected item via our hack.
-      var selected_item = this.$menu.find('.active .title');
-      // We set the id attribute as the object id
-      var object_id = selected_item.attr("id");
-      // We set the inner text with the title
-      var title = selected_item.text();
-      var form = this.$element.closest("form");
-      form.find("input.rft_object_id").val(object_id);
-      form.find("input.rft_title").val(title);
-      form.find("select.title_search_type").val("exact");
-      return title;
+      var selected_item = this.$menu.find('.active .title');  
+      if (selected_item.length > 0) {
+        // We set the id attribute as the object id
+        var object_id = selected_item.attr("id");
+        // We set the inner text with the title
+        var title = selected_item.text();
+        var form = this.$element.closest("form");
+        form.find("input.rft_object_id").val(object_id);
+        form.find("input.rft_title").val(title);
+        form.find("select.title_search_type").val("exact");
+        return title;
+      }
     }
   });
 });
