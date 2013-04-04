@@ -175,10 +175,10 @@
 
     font-size: $baseLineHeight * 1.85;
     font-weight: bold;
-    float: left;
-    clear: left;
+    float: right;
+    clear: right;
 
-    margin-right: 12px;
+    margin-left: $umlautIndent;
     padding: $baseLineHeight * 0.5;
     
 
@@ -188,9 +188,7 @@
     @include border-radius($baseLineHeight * 2);    
   }
   .umlaut-section.help {
-    h3, ul.umlaut-help-list {
-      margin-left: 60px;
-    }
+    @include clearfix();    
   }
 }
 
