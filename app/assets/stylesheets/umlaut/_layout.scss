@@ -45,10 +45,6 @@ footer {
   }
 }
 
-.collapsible .collapse {
-  margin-top:  $baseLineHeight / 2; 
-}
-
 @media (max-width: 767px) {
   .umlaut-main-container-fluid {
     @include umlaut-container-padding;
