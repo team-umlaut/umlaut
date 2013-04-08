@@ -43,7 +43,7 @@
         
         <% if target[:coverage_str_array].present? %>
           <div class="umlaut-holding-coverage">
-            <%= list_with_limit("copies_#{p.id}", target[:coverage_str_array]) do |item, index| %>
+            <%= list_with_limit("copies_#{p.id}", target[:coverage_str_array], :limit => 4) do |item, index| %>
                 <li><%= item %></li>
             <% end %>            
           </div>
