@@ -251,6 +251,7 @@
   dl.citation-info {
     /* based on dl-horizontal, but tweaked.  */
     @include clearfix();   
+    @extend .muted; // subsidiary stuff, mute it
     margin-top: 10px;
     margin-bottom: 10px;     
     dt {      
