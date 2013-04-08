@@ -73,10 +73,7 @@
       .umlaut-holding {
         padding: $baseLineHeight / 6;
         margin-left: (-$baseLineHeight / 6);
-        margin-right: (-$baseLineHeight / 6);
-        &:nth-child(even) {
-          background-color: $umlautHoldingHighlightBackgroundColor;
-        }
+        margin-right: (-$baseLineHeight / 6);        
       }
       .collection-str {
         font-weight: bold;
@@ -91,25 +88,18 @@
         .btn {
           // Make em like a button-mini but with big text
           font-size: $baseFontSize;
-          // and take up full column width
-          display: block;
-          margin-bottom: $baseLineHeight / 6;
-
-          @media (max-width: 767px) {
-            display: inline;            
-          }
         }
       }
-      @media (max-width: 767px) {
-        .row-fluid [class*="span"] {
-          min-height: 0;
-        }
-        .collection-str {
-          margin-bottom: ($baseLineHeight / 3);
-        }
-        .call-number, .holding-status, .holding-actions {
-          margin: ($baseLineHeight / 3) 0 ($baseLineHeight / 3) $umlautIndent;        
-        }
+      .item_status_row {
+        min-height: 0;
+      }
+      .collection-str {        
+        margin: ($baseLineHeight / 3) 0 ($baseLineHeight / 3) 0;
+
+      }
+      .call-number, .holding-status, .holding-actions {
+        min-height: 0;
+        margin: ($baseLineHeight / 3) 0 ($baseLineHeight / 3) $umlautIndent;        
       }
     }
 
