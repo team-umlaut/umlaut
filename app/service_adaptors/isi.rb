@@ -18,6 +18,8 @@
 # http://scientific.thomson.com/scientific/techsupport/cpe/form.html.
 # to request a change.
 #
+# File support/outage tickets at http://ip-science.thomsonreuters.com/support/
+#
 # Note, as of 13 april 09, there's a bug in ISI where journal titles including
 # ampersands cause an error. We will catch those errors and output a 'warning'
 # instead of an 'error', since it's a known problem. 
