@@ -30,7 +30,10 @@
   .section_heading h3 {
     /* semantically an h3, but make it sized an h4 */
     @extend h4;
-    margin-top: 0;
+    margin-top: 0;    
+  }
+  .section-subheading {
+    @extend .muted;
   }
 
 

@@ -18,7 +18,7 @@ all_responses = fulltxt + title_level_fulltxt %>
         genre = @user_request.referent.metadata['genre']
         genre = "Journal" if genre && genre.downcase == 'article' %>
         </ul>
-        <div class="section_subheading">
+        <div class="section-subheading title-level-link-warning">
           <h4><%= genre ? genre.titlecase : "Title" %>-level Page Only</h4>
           <p><span class="notice">Can not link directly to citation. Dates or extent of coverage may be unknown.</span></p>
         </div>
