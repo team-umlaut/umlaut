@@ -12,16 +12,20 @@
   <body class="umlaut no-js">
     <div class="umlaut-container">
       <header id="header" class="header">
-        <h1><%= umlaut_config.app_name %></h1>
-      </header>
-      <% if permalink = current_permalink_url() %>
-        <nav class="umlaut-nav">          
+
+          <h1><%= umlaut_config.app_name %></h1>
+
+
+        <% if permalink = current_permalink_url() %>
           <div class="umlaut-permalink">URL: <%= link_to current_permalink_url, current_permalink_url %></div>
-        </nav>
-      <% end %>
+        <% end %>
+
+      </header>
+
       <div class="umlaut-main-container-fluid container-fluid <%= "umlaut-#{params[:controller]}-container" %>">
         <%= yield %>
       </div>
+
       <footer id="footer" class="footer">
         <%= render_service_credits %>
         <!-- links to aid in debugging openurls gone wrong when in production -->

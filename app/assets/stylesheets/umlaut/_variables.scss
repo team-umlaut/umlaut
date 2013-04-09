@@ -12,6 +12,9 @@ $umlautIndent:  														20px !default;
 // Overall Border and Background
 $umlautBorderColor:                         #EBB211 !default;
 $umlautBackgroundColor:                     #FFFDEA !default;
+// Header nav bar. 
+$umlautHeaderBackgroundColor:								#FCF1D4 !default;
+$umlautHeaderBorderColor:										$umlautBorderColor !default;
 // A-Z List
 $umlautAzLinkColor:                         $linkColor !default;
 $umlautAzBorderColor:                       #BBBBBB !default;
@@ -28,11 +31,11 @@ $umlautResultsBorderColor:                  $umlautGrey !default;
 $umlautResultsBackgroundColor:              $umlautBackgroundColor !default;
 // Permalink Border and Background
 $umlautNavBorderColor:			                $umlautBorderColor !default;
-$umlautNavBackgroundColor:  			          #FCF1D4 !default;
+$umlautNavBackgroundColor:  			          $umlautHeaderBackgroundColor!default;
 // Resolve Border and Backgrounds
 $umlautMainBackgroundColor:                 $umlautBackgroundColor !default;
 $umlautSidebarBorderColor:                  $umlautBorderColor !default;
-$umlautSidebarBackgroundColor:              #FCF1D4 !default;
+$umlautSidebarBackgroundColor:              $umlautHeaderBackgroundColor !default;
 // Resource Info Border and Backgrounds
 $umlautResourceInfoBorderColor:             $umlautGrey !default;
 $umlautResourceInfoBackgroundColor:         white !default;

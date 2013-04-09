@@ -21,28 +21,41 @@ body {
 
 header {
   @include umlaut-container-padding;
+  @include clearfix();    
+  background-color: $umlautHeaderBackgroundColor;
   border: {
-    bottom: 1px solid $umlautBorderColor;
+    bottom: 1px solid $umlautHeaderBorderColor;
+  }
+  padding: {
+    left: 40px;
+    right: 20px;
+  }
+  @media (max-width: 767px) {
+    padding: {
+      left: 20px;
+      right: 20px;
+    }
   }
   h1 {
     //semantically an h1, but let's make it not so big, inspired
     //by twitter's navbar styles, copied
-    display: block;
-  
-    margin: 0;
+    display: inline;
+    float: left;    
+    margin: 0 $umlautIndent 0 0;
     padding: 0;    
     font-size: 20px;
     font-weight: 200;
     color: $navbarBrandColor;
   }
+  line-height: 40px;
 }
 
-.umlaut-nav {
-  border-bottom: 1px solid $umlautNavBorderColor;
-  background-color: $umlautNavBackgroundColor;
-  padding: .5em;
+.umlaut-permalink {
   text-align: right;
+  @include text-overflow;
+  margin-left: $umlautIndent;
 }
+
 
 
 footer {
