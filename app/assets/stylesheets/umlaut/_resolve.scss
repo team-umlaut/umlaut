@@ -228,10 +228,9 @@
   }
   h2.title {  
     margin-top: 0;
-    @extend h3;
-    line-height: $baseLineHeight * 1.6;
-    font-weight: normal;
-    letter-spacing: -0.08em;
+    @extend h4;
+    line-height: $baseLineHeight * 1.4;
+    font-weight: normal;    
   }
   
   .container-title {
