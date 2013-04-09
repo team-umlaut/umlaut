@@ -1,10 +1,10 @@
-<div class="umlaut-section search_inside">
 <%
 search_providers = search_inside  
 # We don't show this block until ALL possible search inside tools
 # have been found. Too hard to deal with AJAX update of a DIV
 # that has a text input box in it otherwise. 
 if (search_providers.length > 0 and (not service_type_in_progress?('search_inside'))) %>
+  <div class="umlaut-section search_inside">
     <div class="section_heading">
       <h3>Search inside this <%= 
         thing = @user_request.referent.type_of_thing
@@ -43,8 +43,7 @@ if (search_providers.length > 0 and (not service_type_in_progress?('search_insid
   </div><%
 end
 # don't show the spinner unless it's identified as a book, otherwise too likely to be a false promise
-if (@user_request.referent.format == 'book' && service_type_in_progress?('search_inside')) %>  
-    <%= render(:partial => "background_progress", :locals => {:svc_type => "search_inside", 
-        :progress_message => "Looking for tools to search inside this #{@user_request.referent.type_of_thing}" }) %>
-<% end %>
-</div>
+if (@user_request.referent.format == 'book' && service_type_in_progress?('search_inside')) %><%= 
+  render(:partial => "background_progress", :locals => {:svc_type => "search_inside", 
+    :progress_message => "Looking for tools to search inside this #{@user_request.referent.type_of_thing}" }) %><%
+end %>
