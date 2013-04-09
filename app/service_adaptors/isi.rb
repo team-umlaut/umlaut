@@ -63,7 +63,16 @@ class Isi < Service
     
     
     begin
-      add_responses( request, isi_response )
+      #raise if it's an error HTTP response
+      isi_response.value
+    
+      response_xml = Nokogiri::XML(isi_response.body)    
+      # Check for errors.
+      if (error = (response_xml.at('val[@name = "error"]') || response_xml.at("error") || response_xml.at('null[@name = "error"]')))
+        raise IsiResponseException.new("ISI service reported error: #{error.inner_text}")      
+      end
+
+      add_responses( request, response_xml )
     rescue IsiResponseException => e
       # Is this the known problem with ampersands?
       # if so, output a warning, but report success not exception,
@@ -75,7 +84,14 @@ class Isi < Service
         return request.dispatched(self, true)
       else    
         # Log the error, return exception condition. 
-        Rails.logger.error("#{e.message} ; OpenURL: ?#{request.to_context_object.kev}")
+
+        error_parts = []
+        error_parts << "ISI URI: #{@api_url}"
+        error_parts << "Request XML: #{xml}"
+        error_parts << "ISI Response body: #{response_xml}"
+
+
+        Rails.logger.error("#{e.message} ; " + error_parts.join("\n     ") )
         return request.dispatched(self, false, e)
       end
     end
@@ -195,17 +211,8 @@ class Isi < Service
     return http.post(uri.request_uri, xml, headers)
   end
 
-  def add_responses(request, isi_response)
-    #raise if it's an error HTTP response
-    isi_response.value
-    
-    response_xml = Nokogiri::XML(isi_response.body)
-    
-    # Check for errors.
-    if (error = (response_xml.at('val[@name = "error"]') || response_xml.at("error") || response_xml.at('null[@name = "error"]')))
-     raise IsiResponseException.new("ISI service reported error: #{error.inner_text}")      
-    end
-    
+  def add_responses(request, response_xml)
+
     results = response_xml.at('map[@name ="cite_id"] map[@name="WOS"]')
     unless (results)
       error_message = "#{self.id}: "
