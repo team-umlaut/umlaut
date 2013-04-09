@@ -8,14 +8,14 @@ jQuery(document).ready(function($) {
     event.preventDefault();    
     return false;
   });
-  $(document).on("shown", ".collapse", function(event) {
+  $(document).on("show", ".collapse", function(event) {
       // Update the icon
       $(this).parent().find('.collapse-toggle i').removeClass("umlaut_icons-list-closed").addClass("umlaut_icons-list-open");
       // Update the action label
       $(this).parent().find(".expand_contract_action_label").text("Hide ");
 
   });
-  $(document).on("hidden", ".collapse", function(event) {
+  $(document).on("hide", ".collapse", function(event) {
       // Update the icon
       $(this).parent().find('.collapse-toggle i').removeClass("umlaut_icons-list-open").addClass("umlaut_icons-list-closed");
       // Update the action label
