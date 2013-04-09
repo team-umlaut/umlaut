@@ -14,12 +14,10 @@ all_responses = fulltxt + title_level_fulltxt %>
       # Display special warnign header if it's title-level only,
       # and it's an article or issue level link. Are we
       # at the beginning of title level display?
-      if (index == fulltxt.length && !title_level_request?)
-        genre = @user_request.referent.metadata['genre']
-        genre = "Journal" if genre && genre.downcase == 'article' %>
+      if (index == fulltxt.length && !title_level_request?) %>
         </ul>
         <div class="section-subheading title-level-link-warning">
-          <h4><%= genre ? genre.titlecase : "Title" %>-level Page Only</h4>
+          <h4><%= @user_request.referent.container_type_of_thing.titlecase %>-level Page Only</h4>
           <p><span class="notice">Can not link directly to citation. Dates or extent of coverage may be unknown.</span></p>
         </div>
         <ul class="response_list"><%

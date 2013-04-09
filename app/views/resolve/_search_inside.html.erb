@@ -7,11 +7,7 @@
   # TODO: Make this a helper function!?
   if (search_providers.length > 0 and (not service_type_in_progress?('search_inside'))) %>
     <div class="section_heading">
-      <h3>Search inside this <%= 
-        thing = @user_request.referent.type_of_thing
-        thing = 'journal' if thing == 'article'
-        thing %>
-      </h3>
+      <h3>Search inside this <%= @user_request.referent.container_type_of_thing %></h3>
     </div>
     <div class="umlaut_section_content">
       <%= content_tag("form", :target => "_blank", :action => url_for(:controller=>'link_router', :action=>'index')) do %>
@@ -37,7 +33,7 @@
   <% elsif (@user_request.referent.format == 'book' && service_type_in_progress?('search_inside')) %>
     <%# don't show the spinner unless it's identified as a book, otherwise too likely to be a false promise %>
     <%= render(:partial => "background_progress", :locals => {:svc_type => "search_inside", 
-      :progress_message => "Looking for tools to search inside this #{@user_request.referent.type_of_thing}" }) %>
+      :progress_message => "Looking for tools to search inside this #{@user_request.referent.container_type_of_thing}" }) %>
   <% end %>
 
 </div>

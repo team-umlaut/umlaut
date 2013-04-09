@@ -377,6 +377,17 @@ class Referent < ActiveRecord::Base
     return genre
   end
 
+  # Like type_of_thing, but if it's a contained item, give container name instead. 
+  # TODO: All of this should be I18n'd. 
+  def container_type_of_thing
+    case self.metadata["genre"]
+    when 'article'  then 'journal'
+    when 'bookitem' then 'book'
+    else self.metadata['genre']
+    end
+  end
+
+
   def remove_value(key)
     referent_values.find(:all, :conditions=> ['key_name =?', key]).each do |rv|
       referent_values.delete(rv)
