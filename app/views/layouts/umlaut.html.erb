@@ -11,16 +11,7 @@
   </head>
   <body class="umlaut no-js">
     <div class="umlaut-container">
-      <header id="header" class="header">
-
-          <h1><%= umlaut_config.app_name %></h1>
-
-
-        <% if permalink = current_permalink_url() %>
-          <div class="umlaut-permalink">URL: <%= link_to current_permalink_url, current_permalink_url %></div>
-        <% end %>
-
-      </header>
+      <%= render :partial => "umlaut/header" %>
 
       <div class="umlaut-main-container-fluid container-fluid <%= "umlaut-#{params[:controller]}-container" %>">
         <%= yield %>
