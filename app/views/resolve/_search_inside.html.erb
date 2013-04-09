@@ -1,22 +1,18 @@
-<%
-search_providers = search_inside  
-# We don't show this block until ALL possible search inside tools
-# have been found. Too hard to deal with AJAX update of a DIV
-# that has a text input box in it otherwise. 
-if (search_providers.length > 0 and (not service_type_in_progress?('search_inside'))) %>
-  <div class="umlaut-section search_inside">
+<div class="umlaut-section search_inside">
+  <%
+  search_providers = search_inside  
+  # We don't show this block until ALL possible search inside tools
+  # have been found. Too hard to deal with AJAX update of a DIV
+  # that has a text input box in it otherwise. 
+  # TODO: Make this a helper function!?
+  if (search_providers.length > 0 and (not service_type_in_progress?('search_inside'))) %>
     <div class="section_heading">
       <h3>Search inside this <%= 
         thing = @user_request.referent.type_of_thing
         thing = 'journal' if thing == 'article'
-        thing %></h3>
-    </div><%
-# We don't show the search box unless we have a search provider AND
-# we're completely done loading search providers. Too hard
-# to deal with AJAX updating of search providers without
-# interrupting user. 
-# TODO: Make this a helper function!
-%>
+        thing %>
+      </h3>
+    </div>
     <div class="umlaut_section_content">
       <%= content_tag("form", :target => "_blank", :action => url_for(:controller=>'link_router', :action=>'index')) do %>
 
@@ -35,15 +31,13 @@ if (search_providers.length > 0 and (not service_type_in_progress?('search_insid
         <div class="source input-append">
           <input name="query" type="text" /> 
           <input value="search" type="submit" class="btn add-on">
-        </div>
-
-     
+        </div>     
       <% end %>
     </div>
-  </div><%
-end
-# don't show the spinner unless it's identified as a book, otherwise too likely to be a false promise
-if (@user_request.referent.format == 'book' && service_type_in_progress?('search_inside')) %><%= 
-  render(:partial => "background_progress", :locals => {:svc_type => "search_inside", 
-    :progress_message => "Looking for tools to search inside this #{@user_request.referent.type_of_thing}" }) %><%
-end %>
+  <% elsif (@user_request.referent.format == 'book' && service_type_in_progress?('search_inside')) %>
+    <%# don't show the spinner unless it's identified as a book, otherwise too likely to be a false promise %>
+    <%= render(:partial => "background_progress", :locals => {:svc_type => "search_inside", 
+      :progress_message => "Looking for tools to search inside this #{@user_request.referent.type_of_thing}" }) %>
+  <% end %>
+
+</div>
