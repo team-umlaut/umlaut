@@ -7,10 +7,8 @@ body {
   margin: 0;
 }
 .container-fluid {
-  padding: {
-    left: 20px;
-    right: 20px;
-  }
+  @include umlaut-container-padding();
+  
   @media (max-width: 767px) {
     padding: {
       left: 0;
@@ -20,20 +18,19 @@ body {
 }
 
 header {
-  @include umlaut-container-padding;
   @include clearfix();    
   background-color: $umlautHeaderBackgroundColor;
   border: {
     bottom: 1px solid $umlautHeaderBorderColor;
   }
   padding: {
-    left: 40px;
-    right: 20px;
+    left: $containerPadding * 2;
+    right: $containerPadding;
   }
   @media (max-width: 767px) {
     padding: {
-      left: 20px;
-      right: 20px;
+      left: $containerPadding;
+      right: $containerPadding;
     }
   }
   h1 {
@@ -59,7 +56,16 @@ header {
 
 
 footer {
-  @include umlaut-container-padding;
+  padding: {
+    left: $containerPadding * 2;
+    right: $containerPadding;
+  }
+  @media (max-width: 767px) {
+    padding: {
+      left: $containerPadding;
+      right: $containerPadding;
+    }
+  }
   margin: {
     top: $baseLineHeight;
   }
