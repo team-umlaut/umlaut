@@ -24,7 +24,7 @@ input[type="submit"] {
 
 }
 
-@media (max-width: 767px) {
+@media (max-width: $umlautGridDissolveBreakpoint) {
   .umlaut-citation-link {
     text-align: left;
   }
