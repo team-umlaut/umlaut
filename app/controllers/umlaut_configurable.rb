@@ -258,19 +258,19 @@ module UmlautConfigurable
         show_heading false
         show_spinner false
       end
-      
-      add_resolve_sections! do
-        div_id "search_inside"
-        html_area :main
-        partial "search_inside"
-        show_partial_only true
-      end
-      
+            
       add_resolve_sections! do
         div_id "fulltext"    
         section_title "Online Access"
         html_area :main
         partial :fulltext
+        show_partial_only true
+      end
+
+      add_resolve_sections! do
+        div_id "search_inside"
+        html_area :main
+        partial "search_inside"
         show_partial_only true
       end
       
