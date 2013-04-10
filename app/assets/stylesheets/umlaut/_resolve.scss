@@ -121,6 +121,7 @@
 
 .umlaut-section-highlighted {
   @include umlaut-well($umlautHighlightedSectionBackgroundColor, $umlautHighlightedSectionBorderColor);
+  @include border-radius($umlautBorderRadiusExtraLarge);
 }
 
 .section_prompt {
@@ -158,7 +159,7 @@
   padding: $umlautIndent;
 
   border:  1px solid $umlautSidebarBorderColor;    
-  @include border-radius($baseBorderRadius);
+  @include border-radius($umlautBorderRadiusExtraLarge);
 
   background-color: $umlautSidebarBackgroundColor;
 
