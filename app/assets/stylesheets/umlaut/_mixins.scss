@@ -54,6 +54,8 @@
 
   padding: 9px;
   margin-left: -9px; /* so left edge of text still lines up */
+  margin-right: -9px;
+
 
   border: 1px solid $borderColor;
   @include border-radius($baseBorderRadius);
