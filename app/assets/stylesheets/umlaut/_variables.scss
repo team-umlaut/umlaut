@@ -1,14 +1,13 @@
-// Bootstrap Variable over-rides
+// Bootstrap Variable over-rides can go here
 // $linkColor:                                 #0066CC;
 
-// Umlaut Variables
+// misc colors
 $umlautGrey:                                darken(whiteSmoke, 9%); // Basic grey
 $umlautAvailableColor:                      #00CC33 !default; // Available Color
 $umlautUnavailableColor:                    red !default; // Unavailable Color
-
-// Used for page margins and between columns. 
+// container padding used for page margins/gutters and between columns. 
+// at large screens, sometimes *2. 
 $umlautContainerPadding:    20px !default;
-
 // important that umlautIndent is exactly enough to indent past umlaut
 // list item icons in hanging indents
 $umlautIndent:  														20px !default;  

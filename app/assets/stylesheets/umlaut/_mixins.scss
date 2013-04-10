@@ -1,7 +1,7 @@
 @mixin umlaut-container {
   // double left gutter/margin when big enough
   padding-left: $umlautContainerPadding * 2;
-  padding-right: $umlautContainerPadding;
+  padding-right: $umlautContainerPadding * 2;
   
   // get rid of double left margin at smaller
   @media (max-width: 767px) {
