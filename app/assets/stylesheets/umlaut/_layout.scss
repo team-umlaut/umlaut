@@ -8,6 +8,10 @@ body {
 }
 .container-fluid {
   @include umlaut-container();  
+  // max width and center beyond that
+  max-width: $umlautContainerMaxWidth;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 header {
