@@ -188,7 +188,7 @@
   display: table;
   width: 100%;
   @include clearfix(); 
-  padding: $umlautIndent 0;
+  padding: $umlautIndent 0 0 0;
 
 
   .resource_info_sections, .umlaut-section.cover_image {
