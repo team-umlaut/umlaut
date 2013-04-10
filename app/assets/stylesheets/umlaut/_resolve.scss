@@ -210,7 +210,7 @@
       *display: none;
 
       // override to make cover smaller on smaller screens
-      @media (max-width: 500px) {
+      @media (max-width: 550px) {
         max-width:  100px !important;
         max-height: 80px !important;
       }
@@ -253,7 +253,7 @@
       font-weight: normal;
       @include text-overflow();        
       width: ($umlautIndent * 5) - 20;
-      @media (max-width: 480px) {
+      @media (max-width: 767px) {
         float: none;
         clear: none;
         width: auto;
@@ -262,7 +262,7 @@
     }
     dd {
       margin-left: ($umlautIndent * 5);
-      @media (max-width: 480px) {
+      @media (max-width: 767px) {
         margin-left: 0;
       }
     }
@@ -292,7 +292,7 @@ a:not(:hover) .coverage_summary {
   color: black; 
 }
 
-@media (max-width: $umlautGridDissolveBreakpoint) {
+@media (max-width: 767px) {
   .umlaut-main {
     padding: 0;
   }

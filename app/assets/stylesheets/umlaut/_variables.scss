@@ -7,9 +7,8 @@ $umlautAvailableColor:                      #00CC33 !default; // Available Color
 $umlautUnavailableColor:                    red !default; // Unavailable Color
 // container padding used for page margins/gutters and between columns. 
 // at large screens, sometimes *2. 
-$umlautContainerPadding:    								20px !default;
-$umlautContainerMaxWidth:										1100px;
-$umlautGridDissolveBreakpoint:							680px;
+$umlautContainerPadding:    20px !default;
+$umlautContainerMaxWidth:		1100px;
 // important that umlautIndent is exactly enough to indent past umlaut
 // list item icons in hanging indents
 $umlautIndent:  														20px !default;  
