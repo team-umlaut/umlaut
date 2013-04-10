@@ -2,7 +2,7 @@
 failed_dispatches = failed_service_dispatches()
 unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
   <div id="service_errors_content">
-    <i class="umlaut_icons-famfamfam-error"></i> <span class="warning">Some content may not be included due to errors:</span>
+    <h5 class="warning"><i class="umlaut_icons-famfamfam-error"></i> Some content may not be included due to errors:</h5>
     <ul>
       <% failed_dispatches.each do | dispatch | %>
         <li class="text-small">
