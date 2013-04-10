@@ -31,6 +31,51 @@ module ResolveHelper
     render(:partial => "section_display", :locals => {:presenter => presenter })
   end
 
+  # Return an array of css classes that should be attached to an .umlaut_section
+  # generally 'umlaut-section', plus the section_id, plus possibly 
+  # 'umlaut-section-highlighted'. See #should_highlight_section?
+  #
+  # pass in:
+  # * current Umlaut Request object
+  # * string section id
+  # * array of umlaut ServiceResponses already fetched for this section. 
+  def section_css_classes(umlaut_request, section_id, response_list)
+    classes = ["umlaut-section", section_id]
+    classes << 'umlaut-section-highlighted' if should_highlight_section?(umlaut_request, section_id, response_list)
+    return classes
+  end
+
+  # Called by #section_css_classes. Decides if a section should get
+  # highlight styles. Default logic highlights fulltext if present,
+  # otherwise holdings/docdel sections (in some cases both even if holdings present,
+  # in some cases just docdel, depending on nature of resource.) This is
+  # something local institutions may want to supply custom logic for,
+  # over-ride this method. 
+  #
+  # This is VERY tricky to get right, BOTH becuase of local policy differences,
+  # AND becuase umlaut's concurrent service handling means things are changing
+  # all the time. Umlaut used to just highlight fulltext with responses, that's it.
+  # But we're trying something more sophisticated. You may want to over-ride with
+  # something simpler, or something better suited to local policies and conditions. 
+  def should_highlight_section?(umlaut_request, section_id, response_list)
+    case section_id
+    when "fulltext"
+      umlaut_request.get_service_type("fulltext").present?
+    when "holding"
+      umlaut_request.get_service_type("holding").present? && umlaut_request.get_service_type("fulltext").empty?
+    when "document_delivery"
+      # Only once fulltext and holdings are done being fetched. 
+      # If there's no fulltext or holdings, OR there's holdings, but
+      # it's a journal type thing, where we probably don't know if the
+      # particular volume/issue wanted is present. 
+      umlaut_request.get_service_type("fulltext").empty? && 
+      (! umlaut_request.service_types_in_progress?(["fulltext", "holding"])) && (
+        umlaut_request.get_service_type("holding").empty? || 
+        umlaut_request.referent.format == "journal"
+      )
+    end
+  end
+
   def app_name
     return umlaut_config.app_name
   end

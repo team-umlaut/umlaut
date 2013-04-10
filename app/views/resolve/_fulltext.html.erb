@@ -4,7 +4,7 @@ all_responses = fulltext
   all_responses.partition {|i| i.view_data[:coverage_checked] == false || i.view_data[:can_link_to_article] == false}      
 # order em with full fulltxt before title_level_fulltxt
 all_responses = fulltxt + title_level_fulltxt %>
-<div class="umlaut-section fulltext <%= unless fulltxt.blank? && title_level_fulltxt.blank?; 'umlaut-section-highlighted' ; end %>">
+<div class="<%= section_css_classes(@user_request, "fulltext", all_responses).join(" ") %>">
 
   <%= render :partial => 'section_heading', :locals => {:presenter => renderer, :force_render => true} %>
   

@@ -3,7 +3,7 @@
 # the render_section helper method in resolve_helper.rb
 if presenter.visible?
   unless presenter.show_partial_only? %>
-    <div class="umlaut-section <%= presenter.div_id %>">
+    <div class="<%= section_css_classes(@user_request, presenter.div_id, []).join(" ") %>">
 <% end %>
 
   <%= render :partial => 'section_heading', :locals => {:presenter => presenter} %>
