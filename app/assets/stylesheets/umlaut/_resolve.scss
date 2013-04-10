@@ -67,6 +67,9 @@
   }
 
   &.holding {
+    .response_item i {
+      @extend .umlaut_icons-famfamfam-book;
+    }
     .umlaut-holdings {
       .umlaut-holding {
         padding: $baseLineHeight / 6;
@@ -222,6 +225,7 @@
 
 
   .resource-type {    
+    @extend .muted;
     margin: 0;
     font-weight: bold;
   }

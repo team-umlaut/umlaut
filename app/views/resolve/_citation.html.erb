@@ -15,11 +15,11 @@ cite = @user_request.referent.to_citation
     <% end %>
 
     <% if cite[:author].present? && cite[:date].present? %>
-      <span class="sep">—</span>
+      <span class="sep">•</span>
     <% end %>
 
     <% if cite[:date].present? %>
-      <b class="date"><%= date_format(cite[:date]) %></b>
+      <span class="date"><%= date_format(cite[:date]) %></span>
     <% end %>
   </p>
 <% end %>
