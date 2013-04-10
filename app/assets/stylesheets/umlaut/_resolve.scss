@@ -190,6 +190,7 @@
   width: 100%;
   @include clearfix(); 
   padding: $umlautIndent 0 0 0;
+  margin-bottom: $umlautIndent;
 
 
   .resource_info_sections, .umlaut-section.cover_image {
