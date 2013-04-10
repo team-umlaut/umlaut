@@ -10,6 +10,15 @@
       right: $umlautContainerPadding;
     }
   }
+
+  // IE8 and other browsers without media query, 
+  // we need to keep it from getting too small,
+  // cause it won't use the styles for small. 
+  // we use a media query as 'feature detection' in our CSS
+  min-width: 600px;
+  @media (min-width: 0) {
+    min-width: 0;
+  }
 }
 
 @mixin umlaut_icons {
