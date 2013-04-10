@@ -6,6 +6,9 @@ $umlautGrey:                                darken(whiteSmoke, 9%); // Basic gre
 $umlautAvailableColor:                      #00CC33 !default; // Available Color
 $umlautUnavailableColor:                    red !default; // Unavailable Color
 
+// Used for page margins and between columns. 
+$umlautContainerPadding:    20px !default;
+
 // important that umlautIndent is exactly enough to indent past umlaut
 // list item icons in hanging indents
 $umlautIndent:  														20px !default;  

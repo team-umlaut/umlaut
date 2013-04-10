@@ -1,7 +1,15 @@
-$containerPadding:    20px !default;
-@mixin umlaut-container-padding {
-  padding-left: $containerPadding;
-  padding-right: $containerPadding;
+@mixin umlaut-container {
+  // double left gutter/margin when big enough
+  padding-left: $umlautContainerPadding * 2;
+  padding-right: $umlautContainerPadding;
+  
+  // get rid of double left margin at smaller
+  @media (max-width: 767px) {
+    padding: {
+      left: $umlautContainerPadding;
+      right: $umlautContainerPadding;
+    }
+  }
 }
 
 @mixin umlaut_icons {

@@ -7,32 +7,16 @@ body {
   margin: 0;
 }
 .container-fluid {
-  @include umlaut-container-padding();
-  
-  @media (max-width: 767px) {
-    padding: {
-      left: 0;
-      right: 0;
-    }
-  }
+  @include umlaut-container();  
 }
 
 header {
+  @include umlaut-container();
   @include clearfix();    
   background-color: $umlautHeaderBackgroundColor;
   border: {
     bottom: 1px solid $umlautHeaderBorderColor;
-  }
-  padding: {
-    left: $containerPadding * 2;
-    right: $containerPadding;
-  }
-  @media (max-width: 767px) {
-    padding: {
-      left: $containerPadding;
-      right: $containerPadding;
-    }
-  }
+  }    
   h1 {
     //semantically an h1, but let's make it not so big, inspired
     //by twitter's navbar styles, copied
@@ -56,16 +40,7 @@ header {
 
 
 footer {
-  padding: {
-    left: $containerPadding * 2;
-    right: $containerPadding;
-  }
-  @media (max-width: 767px) {
-    padding: {
-      left: $containerPadding;
-      right: $containerPadding;
-    }
-  }
+  @include umlaut-container();
   margin: {
     top: $baseLineHeight;
   }

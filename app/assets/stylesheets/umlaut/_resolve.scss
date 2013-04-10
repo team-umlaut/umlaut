@@ -6,8 +6,8 @@
 }
 
 // Main section styles
-.umlaut-main {
-  @include umlaut-container-padding;
+.umlaut-main {  
+  padding-right: $umlautContainerPadding;
   background-color: $umlautMainBackgroundColor;
 }
 
@@ -292,8 +292,12 @@ a:not(:hover) .coverage_summary {
 }
 
 @media (max-width: 767px) {
-  .umlaut-sidebar {
-    @include umlaut-container-padding;
+  .umlaut-main {
+    padding: 0;
+  }
+  .umlaut-sidebar {    
+    padding: 0;
+
     background-color: $umlautMainBackgroundColor;
     border: none;
     padding-top: 10px;
