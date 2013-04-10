@@ -17,14 +17,14 @@ $umlautBackgroundColor:                     #FFFDEA !default;
 // Header nav bar. 
 $umlautHeaderBackgroundColor:								#FCF1D4 !default;
 $umlautHeaderBorderColor:										$umlautBorderColor !default;
-// A-Z List
-$umlautAzLinkColor:                         $linkColor !default;
-$umlautAzBorderColor:                       #BBBBBB !default;
-$umlautAzBackgroundColor:                   $umlautBackgroundColor !default;
-$umlautAzHoverBackgroundColor:              #EEEEEE !default;
 // Search Border and Background
 $umlautSearchBorderColor:                   $umlautBorderColor !default;
 $umlautSearchBackgroundColor:               #EEEEEE !default;
+// A-Z List
+$umlautAzLinkColor:                         $linkColor !default;
+$umlautAzBorderColor:                       $umlautGrey !default;
+$umlautAzBackgroundColor:                   $umlautBackgroundColor !default;
+$umlautAzHoverBackgroundColor:              $umlautSearchBackgroundColor !default;
 // Auto Complete Border and Background
 $umlautAutoCompleteBorderColor:             $umlautGrey !default;
 $umlautAutoCompleteBackgroundColor:         $umlautGrey !default;
