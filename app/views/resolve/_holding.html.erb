@@ -19,7 +19,7 @@
             <div class="span6 call-number"><%= target[:call_number]%></div>
 
             <div class="holding-actions span6">
-              <%= link_to("More Info", {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"more-info btn btn-small btn-success") %>
+              <%= link_to("More Info", {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"more-info btn btn-small") %>
               <% if target[:request_url] %>
                 <%= link_to("Request", target[:request_url], :target => "_blank", :class=>"request btn btn-small btn-primary") %><br />
               <% end %>
