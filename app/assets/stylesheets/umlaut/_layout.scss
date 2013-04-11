@@ -21,6 +21,7 @@ header {
   border: {
     bottom: 1px solid $umlautHeaderBorderColor;
   }    
+  color: $navbarBrandColor;
   h1 {
     //semantically an h1, but let's make it not so big, inspired
     //by twitter's navbar styles, copied
@@ -30,7 +31,6 @@ header {
     padding: 0;    
     font-size: 20px;
     font-weight: 200;
-    color: $navbarBrandColor;
   }
   line-height: 40px;
 }
