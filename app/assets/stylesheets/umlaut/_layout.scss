@@ -14,7 +14,7 @@ body {
   margin-right: auto;
 }
 
-header {
+.header {
   @include umlaut-container();
   @include clearfix();    
   background-color: $umlautHeaderBackgroundColor;
@@ -43,7 +43,7 @@ header {
 
 
 
-footer {
+.footer {
   @include umlaut-container();
   margin: {
     top: $baseLineHeight;
