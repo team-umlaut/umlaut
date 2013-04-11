@@ -93,15 +93,14 @@
       }
       .item_status_row {
         min-height: 0;
-      }
-      .collection-str {        
-        margin: ($baseLineHeight / 3) 0 ($baseLineHeight / 3) 0;
-
-      }
-      .call-number, .holding-status, .holding-actions {
+      }  
+      .collection_str, .call-number, .holding-status, .holding-actions {
         min-height: 0;
-        margin: ($baseLineHeight / 3) 0 ($baseLineHeight / 3) $umlautIndent;        
+        margin-left: 0;
       }
+      .call-number, .holding-status, .holding-actions {        
+        padding-left: $umlautIndent;        
+      }    
     }
 
 
