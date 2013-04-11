@@ -25,7 +25,9 @@ module UmlautConfigurable
   # to initialize
   def self.set_default_configuration!(configuration)
     configuration.configure do
-      app_name 'Find It'
+      app_name 'Find It'  
+      # Different navbar title? Defaults to app_name    
+      header_title deferred! {|c| c.app_name}
       # URL to image to use for link resolver, OR name of image asset in local app. 
       #link_img_url "http//something"
       

@@ -2,7 +2,7 @@
     This partial is called by default umlaut layout.  %>
 
 <header id="header" class="header">
-  <h1><%= umlaut_config.app_name %></h1>
+  <h1><%= umlaut_config.header_title   %></h1>
 
 	<% if permalink = current_permalink_url() %>
   	<div class="umlaut-permalink">URL: <%= link_to current_permalink_url, current_permalink_url %></div>
