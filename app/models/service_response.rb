@@ -115,7 +115,7 @@ class ServiceResponse < ActiveRecord::Base
   def self.create_from_hash(hash)
     r = ServiceResponse.new
     r.take_key_values(hash)
-    return hash
+    return r
   end
 
   # Instantiates and returns a new Service associated with this response.
