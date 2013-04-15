@@ -6,7 +6,9 @@
   margin-top: $baseLineHeight;
   margin-bottom: $baseLineHeight;
   @include border-radius($baseBorderRadius);
-
+  legend {
+    border-color: $umlautSearchBorderColor;
+  }
   .row-fluid {
     margin-bottom: $baseLineHeight;
   }

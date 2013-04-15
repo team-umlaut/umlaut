@@ -1,60 +1,61 @@
-// Bootstrap Variable over-rides can go here
-// $linkColor:                                 #0066CC;
+// See also, possible umlaut theme over-ride of default bootstrap
+// variables in umalut.scss
 
-// misc colors
-$umlautGrey:                                darken(whiteSmoke, 9%); // Basic grey
-$umlautAvailableColor:                      #00CC33 !default; // Available Color
-$umlautUnavailableColor:                    red !default; // Unavailable Color
+// Basic colors, all other colors by default are defined in terms of these
+// Overall Border and Background
+$umlautBorderColor:                         #c7c7c7 !default; //#d1d1d1
+$umlautBackgroundColor:                     #f9f9f7 !default;
+$umlautAltBackgroundColor:									#e1e1e1 !default; // #dadada
+$umlautHighlightedBackgroundColor:					white   !default;
+$umlautAvailableColor:                      #00CC33 !default; // Available Color, used for text
+$umlautUnavailableColor:                    red 		!default; // Unavailable Color, used for text
+
+// Closer to old Umlaut colors, for nostaligia or for a change:
+// $umlautBorderColor:                         #ebb211;
+// $umlautBackgroundColor:                     #fffdea;
+// $umlautAltBackgroundColor:									#fcf1d4;
+// $umlautHighlightedBackgroundColor:					white;
+// $umlautHighlightedSectionBorderColor:				#dedede;
+// $umlautAvailableColor:                      #00CC33;
+// $umlautUnavailableColor:                    red;
+
+
 // container padding used for page margins/gutters and between columns. 
 // at large screens, sometimes *2. 
 $umlautContainerPadding:    20px !default;
-$umlautContainerMaxWidth:		1100px;
+$umlautContainerMaxWidth:		1100px !default;
 // important that umlautIndent is exactly enough to indent past umlaut
 // list item icons in hanging indents
 $umlautIndent:  														20px !default;  
-$umlautBorderRadiusExtraLarge:							12px;
-// Overall Border and Background
-$umlautBorderColor:                         #EBB211 !default;
-$umlautBackgroundColor:                     #FFFDEA !default;
+$umlautBorderRadiusExtraLarge:							12px !default;
+
 // Header nav bar. 
-$umlautHeaderBackgroundColor:								#FCF1D4 !default;
+$umlautHeaderBackgroundColor:								$umlautAltBackgroundColor !default;
 $umlautHeaderBorderColor:										$umlautBorderColor !default;
 // Search Border and Background
 $umlautSearchBorderColor:                   $umlautBorderColor !default;
-$umlautSearchBackgroundColor:               #EEEEEE !default;
+$umlautSearchBackgroundColor:               $umlautAltBackgroundColor !default;
 // A-Z List
 $umlautAzLinkColor:                         $linkColor !default;
-$umlautAzBorderColor:                       $umlautGrey !default;
+$umlautAzBorderColor:                       $umlautBorderColor !default;
 $umlautAzBackgroundColor:                   $umlautBackgroundColor !default;
 $umlautAzHoverBackgroundColor:              $umlautSearchBackgroundColor !default;
 // Auto Complete Border and Background
-$umlautAutoCompleteBorderColor:             $umlautGrey !default;
-$umlautAutoCompleteBackgroundColor:         $umlautGrey !default;
+$umlautAutoCompleteBorderColor:             $umlautAzBorderColor !default;
+$umlautAutoCompleteBackgroundColor:         $umlautHighlightedBackgroundColor !default;
 // Results Border and Background
-$umlautResultsBorderColor:                  $umlautGrey !default;
-$umlautResultsBackgroundColor:              $umlautBackgroundColor !default;
-// Permalink Border and Background
-$umlautNavBorderColor:			                $umlautBorderColor !default;
-$umlautNavBackgroundColor:  			          $umlautHeaderBackgroundColor!default;
+$umlautResultsBorderColor:                  $umlautAzBorderColor !default;
+$umlautResultsBackgroundColor:              $umlautAltBackgroundColor !default;
 // Resolve Border and Backgrounds
 $umlautMainBackgroundColor:                 $umlautBackgroundColor !default;
 $umlautSidebarBorderColor:                  $umlautBorderColor !default;
-$umlautSidebarBackgroundColor:              $umlautHeaderBackgroundColor !default;
-// Resource Info Border and Backgrounds
-$umlautResourceInfoBorderColor:             $umlautGrey !default;
-$umlautResourceInfoBackgroundColor:         white !default;
-// Help Border and Backgrounds
-$umlautHelpBorderColor:                     $umlautBorderColor !default;
-$umlautHelpBackgroundColor:                 $umlautBackgroundColor !default;
+$umlautSidebarBackgroundColor:              $umlautAltBackgroundColor !default;
 // Highlighted Sections Border and Backgrounds
-$umlautHighlightedSectionBorderColor:       $umlautGrey !default;
-$umlautHighlightedSectionBackgroundColor:   white !default;
-// Holdings Border and Backgrounds
-$umlautHoldingBorderColor:                  $umlautBorderColor !default;
-$umlautHoldingHighlightBackgroundColor:     $umlautSidebarBackgroundColor !default;
+$umlautHighlightedSectionBorderColor: 			$umlautBorderColor !default;
+$umlautHighlightedSectionBackgroundColor:   $umlautHighlightedBackgroundColor !default;
 // Resolve Errors Border and Backgrounds
-$umlautResolveErrorBorderColor:             $umlautGrey !default;
-$umlautResolveErrorBackgroundColor:         white !default;
+$umlautResolveErrorBorderColor:             $umlautBorderColor !default;
+$umlautResolveErrorBackgroundColor:         $umlautHighlightedBackgroundColor !default;
 // Debug Info Border and Backgrounds
-$umlautDebugInfoBorderColor:                $umlautGrey !default;
-$umlautDebugInfoBackgroundColor:            white !default;
+$umlautDebugInfoBorderColor:                $umlautBorderColor !default;
+$umlautDebugInfoBackgroundColor:            $umlautHighlightedBackgroundColor !default;
