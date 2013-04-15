@@ -72,9 +72,7 @@
     }
     .umlaut-holdings {
       .umlaut-holding {
-        padding: $baseLineHeight / 6;
-        margin-left: (-$baseLineHeight / 6);
-        margin-right: (-$baseLineHeight / 6);        
+        margin-bottom: $umlautIndent;
       }
       .collection-str {
         font-weight: bold;
