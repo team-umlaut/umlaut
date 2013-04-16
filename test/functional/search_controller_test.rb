@@ -8,7 +8,7 @@ class SearchControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_select "title", "Find It | Journals"
-    assert_select ".umlaut-search", 2
+    assert_select ".umlaut-search-form", 2
     assert_select ".umlaut-results", 0
   end
 
@@ -19,7 +19,7 @@ class SearchControllerTest < ActionController::TestCase
     get :journal_search, "rft.jtitle"=>"Account", "umlaut.title_search_type"=>"begins"
     assert_response :success
     assert_select "title", "Find It | Journal titles that begin with &#x27;Account&#x27;"
-    assert_select ".umlaut-search", 1
+    assert_select ".umlaut-search-form", 1
     assert_select ".umlaut-results", 1
     assert_select ".umlaut-results .umlaut-result", :minimum => 1
     assert_select ".umlaut-pagination", 2
@@ -31,7 +31,7 @@ class SearchControllerTest < ActionController::TestCase
     get :journal_list, :id => "A"
     assert_response :success
     assert_select "title", "Find It | Browse by Journal Title: A"
-    assert_select ".umlaut-search", 1
+    assert_select ".umlaut-search-form", 1
     assert_select ".umlaut-results", 1
     assert_select ".umlaut-results .umlaut-result", :minimum => 1 
     assert_select ".umlaut-pagination", 2
