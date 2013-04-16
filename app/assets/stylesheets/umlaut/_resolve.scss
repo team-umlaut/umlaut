@@ -137,7 +137,7 @@
   @extend %indented-subitem;
 }
 
-.response_edition_warning, .response_source, .response_coverage_statement {
+.response_edition_warning, .response_source, .response_coverage_statement, .response_notes {
   @extend %indented-subitem;
   @extend .muted;
 }
