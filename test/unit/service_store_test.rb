@@ -1,12 +1,8 @@
 require 'test_helper'
 class ServiceStoreTest < ActiveSupport::TestCase
-  setup :reset_service_store_classvars
-
-  teardown do
-    reset_service_store_classvars
-    ServiceStore.config
-    ServiceStore.service_definitions
-  end
+  setup :reset_service_store
+  teardown :reset_service_store, :force_lazy_load_service_store
+  
 
   test "missing umlaut services yaml" do
     FileUtils.mv(File.join(Rails.root, "config", "umlaut_services.yml"), File.join(Rails.root, "config", "umlaut_services.yml.moved"))
@@ -19,12 +15,33 @@ class ServiceStoreTest < ActiveSupport::TestCase
     assert_equal("default", sfx_definition["group"])
     assert_equal("default", ServiceStore.instantiate_service!(sfx_definition, nil).group)
   end
-  
-  def reset_service_store_classvars
-    # Reset ServiceStore class vars
-    ["services_config_list", "service_definitions"].each do |class_var|
-      class_var = "@@#{class_var}".to_sym
-      ServiceStore.remove_class_variable(class_var) if ServiceStore.class_variable_defined?(class_var)
-    end
+
+  test "manually set services" do
+    # force original from disk  to load
+    ServiceStore.config 
+    ServiceStore.service_definitions
+
+    # But then set our own instead
+    ServiceStore.config = {
+      "default" => {
+        "services" => {
+          "dummy" => {"type" => "DummyService", "priority" => 3}
+        }
+      }
+    }
+
+    assert_length 1, ServiceStore.service_definitions
+    assert_present ServiceStore.service_definition_for("dummy")
   end
+
+  
+  def reset_service_store
+    ServiceStore.reset!    
+  end
+  def force_lazy_load_service_store
+    ServiceStore.config
+    ServiceStore.service_definitions
+  end
+
+
 end
