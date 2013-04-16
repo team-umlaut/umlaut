@@ -36,26 +36,17 @@ module Umlaut::ControllerBehavior
   # else default.  &umlaut.service_group=-default turns off default. Can also
   # list other groups, comma seperated. 
   #
-  # Local app can in theory override in local UmlautController to have
-  # different custom behavior for calculating the collection, but this
-  # is not entirely tested yet.
+  # Local app that wants to automatically set services based on IP or other
+  # implicit parameters, should add a before_filter that determines proper
+  # service_group argument, and then sets it in params (or redirects). 
+  # Not entirely tested yet. 
   def create_collection
-    specified_groups = (params["specified_groups"].try {|str| str.split(",")}) || []
-
-    services = {}
-
-    unless specified_groups.delete "-default"
-      services.merge ServiceStore.config["default"]["services"]
-    end
-    
-    specified_groups.each do |group|
-      services.merge ServiceStore.config[params["umlaut.service_group"]]
-    end
-
-    # Remove any disabled ones
-    services = services.reject {|hash| hash && hash["disabled"] == true}
+    services = Collection.determine_services(params, ServiceStore)    
 
     return Collection.new(@user_request, services)
   end
   protected :create_collection
+
+
+
 end

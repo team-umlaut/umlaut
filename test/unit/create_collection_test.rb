@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
 
 # Umlaut::ControllerBehavior#create_collection
@@ -6,54 +6,80 @@ require File.dirname(__FILE__) + '/../test_helper'
 # Loads service definitions into a Collection object, based on services configuration
 # and current &umlaut.service_group param. Tests. 
 class CreateCollectionTest <  ActiveSupport::TestCase
-	setup :reset_service_store_classvars, :set_custom_service_setup
+  setup :set_custom_service_store
 
+  def set_custom_service_store
+    dummy = {"type" => "DummyService", "priority" => 3}
 
+    # This would normally be loaded as YAML, we're going to set it
+    # directly. 
+    service_declerations = {
+      "default" => {
+        "services" => {
+          "default_a"         => dummy.clone,
+          "default_b"         => dummy.clone,
+          "default_disabled"  => dummy.clone.merge("disabled" => true)
+        }
+      },
 
-	def set_custom_service_setup
-		dummy = {"type" => "DummyService", "priority" => 3}
+      "group1" => {
+        "services" => {
+          "group1_a"        => dummy.clone,
+          "group1_b"        => dummy.clone,
+          "group1_disabled"  => dummy.clone.merge("disabled" => true)
+        }
+      },      
 
-		# This would normally be loaded as YAML, we're going to set it
-		# directly. 
-		service_declerations = {
-			"default" => {
-				"services" => {
-					"default_a" 				=> dummy.clone,
-					"default_b" 				=> dummy.clone,
-					"default_disabled"  => dummy.clone.merge("disabled" => true)
-				}
-			},			
-			"group1" => {"services" =>
-				"group1_a" 				=> dummy.clone,
-				"group1_b" 				=> dummy.clone,
-				"group1_disabled"  => dummy.clone.merge("disabled" => true)
-			}},
-			"group2" => {"services" =>
-				"default_a" 				=> dummy.clone,
-				"default_b" 				=> dummy.clone,
-				"default_disabled"  => dummy.clone.merge("disabled" => true)
-			}}
-		}
+      "group2" => {
+        "services" => {
+          "group2_a"        => dummy.clone,
+          "group2_b"        => dummy.clone,
+          "group2_disabled"  => dummy.clone.merge("disabled" => true)
+        }
+      }
+    }
 
-		ServiceStore.class_variable_set("@@services_config_list", service_declerations)		
-	end
-
-  teardown do
-    reset_service_store_classvars
-    ServiceStore.config
-    ServiceStore.service_definitions
+    @service_store = ServiceStore.new
+    @service_store.config = service_declerations    
   end
 
-  def basic_test
+  def test_basic
+    service_list = Collection.determine_services({}, @service_store)
 
+    # default group services
+    assert_include service_list.keys, "default_a"
+    assert_include service_list.keys, "default_b"
+
+    # but not the disabled one
+    assert_not_include service_list.keys, "default_disabled"
+  
+    # No group1 or group2
+    assert_nil service_list.keys.find {|key| key.start_with? "group1"}
+    assert_nil service_list.keys.find {|key| key.start_with? "group2"}
   end
 
-  def reset_service_store_classvars
-    # Reset ServiceStore class vars
-    ["services_config_list", "service_definitions"].each do |class_var|
-      class_var = "@@#{class_var}".to_sym
-      ServiceStore.remove_class_variable(class_var) if ServiceStore.class_variable_defined?(class_var)
+  def test_add_groups
+    service_list = Collection.determine_services({"umlaut.service_group" => "group2,group1"}, @service_store)
+
+    ["default_a", "default_b", "group1_a", "group1_b", "group2_a", "group2_b"].each do |service_id|
+      assert_include service_list.keys, service_id
+    end
+
+    ["default_disabled", "group1_disabled", "group2_disabled"].each do |service_id|
+      assert_not_include service_list.keys, service_id
     end
   end
 
+  def test_add_group_no_default
+    service_list = Collection.determine_services({"umlaut.service_group" => "group1,-default"}, @service_store)
+
+    # does not include default ones
+    assert_nil service_list.keys.find {|id| id.start_with? "default_"}
+
+    # does include group1 ones
+    assert_include service_list.keys, "group1_a"
+    assert_include service_list.keys, "group1_b"
+  end
+
+  
 end

@@ -18,6 +18,29 @@ class Collection
   # configs
   attr_accessor :response_expire_interval, :response_expire_crontab_format, :background_service_timeout, :requeue_failedtemporary_services
   
+
+  # Returns a list of service definition hashes, from service_store, based
+  # on params["umlaut.service_group"]. If absent, just services in "default" group. 
+  # or comma seperated list of other groups to add on, and/or "-default" to remove default. 
+  def self.determine_services(params, service_store)
+    specified_groups = (params["umlaut.service_group"].try {|str| str.split(",")}) || []
+
+    services = {}
+
+    unless specified_groups.delete "-default"
+      services.merge! service_store.config["default"]["services"]
+    end
+    
+    specified_groups.each do |group|
+      services.merge! service_store.config[group]["services"]
+    end
+
+    # Remove any disabled ones    
+    services.reject! {|key, hash| hash && hash["disabled"] == true}
+
+    return services
+  end
+
   # a_umlaut_request is an UmlautRequest, representing a request for services for a context
   # object. 
   # service_hash is a hash of hashes with service definitions, as would 
