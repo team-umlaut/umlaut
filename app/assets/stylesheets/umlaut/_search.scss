@@ -1,13 +1,12 @@
-.umlaut-search {
-  font-size: 11px;
+.umlaut-search-form {  
   padding: 10px;
-  border: 1px solid $umlautSearchBorderColor;
-  background-color: $umlautSearchBackgroundColor;
+  border: 1px solid $umlautSearchFormBorderColor;
+  background-color: $umlautSearchFormBackgroundColor;
   margin-top: $baseLineHeight;
   margin-bottom: $baseLineHeight;
   @include border-radius($baseBorderRadius);
   legend {
-    border-color: $umlautSearchBorderColor;
+    border-color: $umlautSearchFormBorderColor;
   }
   .row-fluid {
     margin-bottom: $baseLineHeight;

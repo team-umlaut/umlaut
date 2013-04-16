@@ -5,7 +5,7 @@
 <% end %>
 <h3>Looking for a specific journal or article</h3>
 <%= form_tag(@submit_hash, {:method => "get", :class => "OpenURL form-inline form-very-inline", :name => "OpenURL", :id=>"OpenURL"})  %>
-  <div class="umlaut-search">
+  <div class="umlaut-search-form">
     <fieldset>                                      
       <legend>Enter the journal title or the ISSN. If you have both the journal title and ISSN, use the ISSN.</legend>
       <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
@@ -25,7 +25,7 @@
       </div>
     </fieldset>
   </div>
-  <div class="umlaut-search">
+  <div class="umlaut-search-form">
     <fieldset>
       <legend>Optional information - Enter as much as you know of the following:</legend>
       <div class="control-group">

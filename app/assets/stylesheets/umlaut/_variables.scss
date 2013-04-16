@@ -20,7 +20,7 @@ $umlautUnavailableColor:                    red 		!default; // Unavailable Color
 // $umlautUnavailableColor:                    red;
 
 // And another possibility
-// $umlautBackgroundColor:                     #FEF9ED;
+// $umlautBackgroundColor:                     #FEF9ED; #f8f3ea
 //  $umlautAltBackgroundColor:									#e1d3cc;
 // $umlautBorderColor:                         darken($umlautAltBackgroundColor, 10%);
 // $umlautHighlightedBackgroundColor:					white;
@@ -41,19 +41,22 @@ $umlautBorderRadiusExtraLarge:							12px !default;
 $umlautHeaderBackgroundColor:								$umlautAltBackgroundColor !default;
 $umlautHeaderBorderColor:										$umlautBorderColor !default;
 // Search Border and Background
-$umlautSearchBorderColor:                   $umlautBorderColor !default;
-$umlautSearchBackgroundColor:               $umlautAltBackgroundColor !default;
-// A-Z List
+$umlautSearchFormBackgroundColor:           $umlautAltBackgroundColor !default;
+$umlautSearchFormBorderColor:               $umlautBorderColor !default;
+// Search Results
+$umlautResultsBackgroundColor:              $umlautBackgroundColor !default;
+$umlautResultItemBackgroundColor:						$umlautAltBackgroundColor !default;
+$umlautResultItemBorderColor:								$umlautBorderColor !default;
+
+// A-Z List input -- actual list of A,B..Z buttons
 $umlautAzLinkColor:                         $linkColor !default;
 $umlautAzBorderColor:                       $umlautBorderColor !default;
 $umlautAzBackgroundColor:                   $umlautBackgroundColor !default;
-$umlautAzHoverBackgroundColor:              $umlautSearchBackgroundColor !default;
+$umlautAzHoverBackgroundColor:              $umlautAltBackgroundColor !default;
 // Auto Complete Border and Background
 $umlautAutoCompleteBorderColor:             $umlautAzBorderColor !default;
 $umlautAutoCompleteBackgroundColor:         $umlautHighlightedBackgroundColor !default;
-// Results Border and Background
-$umlautResultsBorderColor:                  $umlautAzBorderColor !default;
-$umlautResultsBackgroundColor:              $umlautAltBackgroundColor !default;
+
 // Resolve Border and Backgrounds
 $umlautMainBackgroundColor:                 $umlautBackgroundColor !default;
 $umlautSidebarBorderColor:                  $umlautBorderColor !default;

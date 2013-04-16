@@ -4,6 +4,8 @@
 }
 
 .umlaut-result {
+  background-color: $umlautResultItemBackgroundColor;
+  border-color:     $umlautResultItemBorderColor;
   margin-bottom: $baseLineHeight/2;
   dl {
     margin: 0;

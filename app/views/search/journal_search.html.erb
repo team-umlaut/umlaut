@@ -1,6 +1,6 @@
 <h2><%= @page_title %></h2>
 <%= form_tag({:controller=>'search', :action=>'journal_search'}, {:method=>'get', :name=>'OpenURL', :id=>'OpenURL', :class => "form-inline form-very-inline"})  %>
-  <div class="umlaut-search">
+  <div class="umlaut-search-form">
     <fieldset>
       <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
       <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
