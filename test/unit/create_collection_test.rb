@@ -81,5 +81,30 @@ class CreateCollectionTest <  ActiveSupport::TestCase
     assert_include service_list.keys, "group1_b"
   end
 
+
+
+  # A terrible way and place to test this, but our legacy code is tricky, currently
+  # consider this better than nothing. =  
+  #
+  # the Request.co_params_fingerprint must take account of new "umlaut.service_group", to make sure
+  # a cached request same but for different umlaut.service_group is NOT re-used
+  def test_params_fingerprint_includes_service_group
+
+    req_string = "/?issn=12345678&"
+    req     = ActionDispatch::TestRequest.new Rack::MockRequest.env_for(req_string)
+    req_sg1 = ActionDispatch::TestRequest.new Rack::MockRequest.env_for(req_string + "&umlaut.service_group=group1")
+    req_sg2 = ActionDispatch::TestRequest.new Rack::MockRequest.env_for(req_string + "&umlaut.service_group=groupother")
+
+    fingerprint     = Request.co_params_fingerprint(  Request.context_object_params req  )
+    fingerprint_sg1 = Request.co_params_fingerprint(  Request.context_object_params req_sg1  )
+    fingerprint_sg2 = Request.co_params_fingerprint(  Request.context_object_params req_sg2  )
+
+    assert_not_equal fingerprint, fingerprint_sg1
+    assert_not_equal fingerprint, fingerprint_sg2
+    assert_not_equal fingerprint_sg1, fingerprint_sg2
+  end
+
+
+
   
 end
