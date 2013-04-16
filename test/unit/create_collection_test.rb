@@ -81,7 +81,11 @@ class CreateCollectionTest <  ActiveSupport::TestCase
     assert_include service_list.keys, "group1_b"
   end
 
-
+  # Should this raise a clear error instead? For now, we ignore. 
+  def test_missing_service_group_ignored
+    # Not raise    
+    service_list = Collection.determine_services({"umlaut.service_group" => "non_existing_group"}, @service_store)
+  end
 
   # A terrible way and place to test this, but our legacy code is tricky, currently
   # consider this better than nothing. =  

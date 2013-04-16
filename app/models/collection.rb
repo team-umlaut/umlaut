@@ -32,7 +32,8 @@ class Collection
     end
     
     specified_groups.each do |group|
-      services.merge! service_store.config[group]["services"]
+      # If group not found, ignore. Should we raise a defined exception instead?
+      services.merge! service_store.config[group]["services"] if service_store.config[group].try {|hash| hash["services"]}
     end
 
     # Remove any disabled ones    
