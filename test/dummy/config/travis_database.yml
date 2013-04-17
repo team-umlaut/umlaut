@@ -32,7 +32,7 @@
 #   pool: 30
 
 development:
-  adapter: mysql2
+  adapter: <%= defined?(JRUBY_VERSION) ? "mysql" : "mysql2" %>
   encoding: utf8
   reconnect: false
   database: umlaut3_development
@@ -44,14 +44,14 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  adapter: mysql2
+  adapter: <%= defined?(JRUBY_VERSION) ? "mysql" : "mysql2" %>
   database: umlaut3_test
   pool: 5
   username: root
   encoding: utf8
 
 production:
-  adapter: mysql2
+  adapter: <%= defined?(JRUBY_VERSION) ? "mysql" : "mysql2" %>
   encoding: utf8
   reconnect: false
   database: umlaut3
@@ -69,7 +69,7 @@ production:
 # In this dummy app, the sfx_db configuation is used for SFX search testing.
 # DO NOT SET THIS FOR ANYTHING LIKE A REAL SFX DATABASE.
 sfx_db:
-  adapter: mysql2
+  adapter: <%= defined?(JRUBY_VERSION) ? "mysql" : "mysql2" %>
   database: sfxlcl41_test # or other sfx instance db
   username: root
   password: 
@@ -83,7 +83,7 @@ sfx_db:
 # This is used for SFX search testing.
 # DO NOT SET THIS FOR ANYTHING LIKE A REAL SFX DATABASE.
 sfx4_global:
-  adapter: mysql2
+  adapter: <%= defined?(JRUBY_VERSION) ? "mysql" : "mysql2" %>
   database: sfxglb41_test
   username: root
   password: 

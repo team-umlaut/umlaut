@@ -10,3 +10,5 @@ test/dummy/tmp/
 test/dummy/config/database.yml
 Gemfile.lock
 tmp/
+coverage/
+.rbx
