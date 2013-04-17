@@ -63,13 +63,16 @@ module Umlaut::Helper
   # Button for showing permalink, dynamically loaded
   # with js if neccesary. works with load_permalink.js
   def render_umlaut_permalink
-    content_tag("div", :class => "umlaut-permalink") do
-      render_umlaut_permalink_toggle +
-      render_umlaut_permalink_content
+    if @user_request 
+      content_tag("div", :class => "umlaut-permalink") do
+        render_umlaut_permalink_toggle +
+        render_umlaut_permalink_content
+      end
     end
   end
 
-  def render_umlaut_permalink_toggle
+  def render_umlaut_permalink_toggle    
+
     link_to({:action => "get_permalink", :"umlaut.request_id" => @user_request.id}, 
              :class => "umlaut-load-permalink btn btn-mini", 
              :data => {"umlaut-toggle-permalink"=>"true"}) do
