@@ -231,7 +231,7 @@ class SfxTargetRollUpTest < ActiveSupport::TestCase
       assert new_list.find {|r| r[:sfx_target_name] == "HIGHWIRE_PRESS_JOURNALS"}
     end
     
-    def test_roll_up_responses_yes_coverage_sensitive
+    def test_roll_up_responses_yes_coverage_sensitive_starts_with
       sfx = Sfx.new({'priority' => 1, 
                      'base_url' => "http://example.org",
                      'roll_up_prefixes' => ["EBSCOHOST_", "JSTOR_", "PROQUEST_", "NODATES_", "UNBOUNDED_"]
