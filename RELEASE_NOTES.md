@@ -10,7 +10,10 @@
 
 * New service for linking out to Google scholar search. 
 
-
+* On-demand permalinks
+	* Permalinks only created when asked for by user, with AJAX ui. 
+	* Delete the 'permalinks'	line from your config in controller/umlaut_controller.rb,
+	  it's no longer effective. 
 
 
 
