@@ -19,11 +19,18 @@ class Collection
   attr_accessor :response_expire_interval, :response_expire_crontab_format, :background_service_timeout, :requeue_failedtemporary_services
   
 
-  # Returns a list of service definition hashes, from service_store, based
-  # on params["umlaut.service_group"]. If absent, just services in "default" group. 
-  # or comma seperated list of other groups to add on, and/or "-default" to remove default. 
-  def self.determine_services(params, service_store)
-    specified_groups = (params["umlaut.service_group"].try {|str| str.split(",")}) || []
+  # Returns a list of service definition hashes.
+  # pass in :group => array of service groups. If absent, will use default group.
+  # If present, will still use default group unless includes "-default"
+  #
+  # Can also pass in :service_store => a service store instance (default ServiceStore.global_service_store)
+  def self.determine_services(params = {})
+    params = {
+      :service_store => ServiceStore.global_service_store,
+      :groups => []
+    }.merge(params)
+    specified_groups  = params[:groups]
+    service_store     = params[:service_store]
 
     services = {}
 

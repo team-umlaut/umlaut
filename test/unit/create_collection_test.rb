@@ -44,7 +44,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
   end
 
   def test_basic
-    service_list = Collection.determine_services({}, @service_store)
+    service_list = Collection.determine_services(:groups => [], :service_store => @service_store)
 
     # default group services
     assert_include service_list.keys, "default_a"
@@ -59,7 +59,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
   end
 
   def test_add_groups
-    service_list = Collection.determine_services({"umlaut.service_group" => "group2,group1"}, @service_store)
+    service_list = Collection.determine_services(:groups => %w[group2 group1], :service_store => @service_store)
 
     ["default_a", "default_b", "group1_a", "group1_b", "group2_a", "group2_b"].each do |service_id|
       assert_include service_list.keys, service_id
@@ -71,7 +71,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
   end
 
   def test_add_group_no_default
-    service_list = Collection.determine_services({"umlaut.service_group" => "group1,-default"}, @service_store)
+    service_list = Collection.determine_services(:groups => %w{group1 -default}, :service_store => @service_store)
 
     # does not include default ones
     assert_nil service_list.keys.find {|id| id.start_with? "default_"}
@@ -84,7 +84,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
   # Should this raise a clear error instead? For now, we ignore. 
   def test_missing_service_group_ignored
     # Not raise    
-    service_list = Collection.determine_services({"umlaut.service_group" => "non_existing_group"}, @service_store)
+    service_list = Collection.determine_services(:groups => %w{non_existing_group}, :service_store => @service_store)
   end
 
   # A terrible way and place to test this, but our legacy code is tricky, currently
