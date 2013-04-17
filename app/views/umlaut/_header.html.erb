@@ -4,7 +4,6 @@
 <div id="header" class="header">
   <h1><%= umlaut_config.header_title   %></h1>
 
-	<% if permalink = current_permalink_url() %>
-  	<div class="umlaut-permalink">URL: <%= link_to current_permalink_url, current_permalink_url %></div>
-  <% end %>
+  <%= render_umlaut_permalink %>
+	
 </div>

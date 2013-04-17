@@ -77,11 +77,7 @@ module UmlautConfigurable
       # hash, key is regexp to match a sid, value is filter object
       # (see lib/referent_filters )        
       add_referent_filters!( :match => /.*/, :filter => DissertationCatch.new ) 
-      
-      
-      # Create a permalink short URL for every request?
-      create_permalinks true
-        
+                  
       # skip_resolve_menu can be used to control 'direct' linking, skipping
       # the resolve menu to deliver a full text link or other resource
       # directly to the user.

@@ -35,13 +35,6 @@ body {
   line-height: 40px;
 }
 
-.umlaut-permalink {
-  text-align: right;
-  @include text-overflow;
-  margin-left: $umlautIndent;
-}
-
-
 
 .footer {
   @include umlaut-container();
