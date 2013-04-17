@@ -30,8 +30,9 @@ class Referent < ActiveRecord::Base
       
       rft.set_values_from_context_object(co)
 
-      # Default is 'ask', we only create for true, which is forced on.
-      if options[:permalink] == true
+      # Permalinks created on-demand later. But if set config to :force, can
+      # force old behavior. 
+      if options[:permalink] == :force
         permalink = Permalink.new_with_values!(rft, co.referrer.identifier)
       end
 
