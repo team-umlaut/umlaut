@@ -1,46 +1,37 @@
 <%=
-    # Set parameter for size, small|medium|large if you like
-  size ||= "medium"
-  fix_size ||= true
+# Set parameter for size, small|medium|large if you like
+size ||= "medium"
+fix_size ||= true
 
-  # small med and x-large correspond roughly to amazon sm, med and lg. 
-  # large corresponds roughly to google medium. Just one dimension to
-  # prevent disproportionate scaling. We use CSS so we can set maximums
-  # in BOTH dimensions but let aspect ratio remain the same. We put it
-  # inline so HTML Snippet API clients get images constrained to reasonable
-  # sizes without extra CSS. IE6 won't do max-height/max-width, sorry IE6, no
-  # way to accomodate you (trying to put a width and a max-width triggers
-  # weird IE8 bugs!). Best we can do.
-  #
-  # generally the 'max-height' is our operative maximum for ordinary ratios,
-  # but we let the width be more than the height for weird ratio'd covers
-  # that are wider than square. 
-  dimensions_style = { 
-            "small"       => "max-height: 80px; max-width: 100px;",
-            "medium"      => "max-height: 160px; max-width: 200px;",
-            "large"       => "max-height: 200px; max-width: 240px;",
-            "extra-large" => "max-height: 475px; max-width: 570px;"
-  }
+# small med and x-large correspond roughly to amazon sm, med and lg. 
+# large corresponds roughly to google medium. Just one dimension to
+# prevent disproportionate scaling. We use CSS so we can set maximums
+# in BOTH dimensions but let aspect ratio remain the same. We put it
+# inline so HTML Snippet API clients get images constrained to reasonable
+# sizes without extra CSS. IE6 won't do max-height/max-width, sorry IE6, no
+# way to accomodate you (trying to put a width and a max-width triggers
+# weird IE8 bugs!). Best we can do.
+#
+# generally the 'max-height' is our operative maximum for ordinary ratios,
+# but we let the width be more than the height for weird ratio'd covers
+# that are wider than square. 
+dimensions_style = { 
+          "small"       => "max-height: 80px; max-width: 100px;",
+          "medium"      => "max-height: 160px; max-width: 200px;",
+          "large"       => "max-height: 200px; max-width: 240px;",
+          "extra-large" => "max-height: 475px; max-width: 570px;" }
 
-
-
-  img_st = cover_image_response(size)
-  if img_st 
-      img_data = img_st.view_data
-      
-      img_params = {'src'=>img_data[:url],
-      'class'=>'cover_image',
-      'alt'=>h(img_data[:display_text])}
-      
-      # If we're in https mode, and the original url is http, use
-      # Umlaut proxy to avoid browser security warning. 
-      if (request.protocol != img_params['src'][0..6])
-        img_params['src'] = url_for(:controller => "resource", :action => "proxy", :id => img_st.id )
-      end
-      
-      img_params.merge!( "style" => dimensions_style[size]) if fix_size
-      
-      tag('img', img_params )
-      
- end %>
-      
+img_st = cover_image_response(size)
+if img_st 
+  img_data = img_st.view_data
+  img_params = {'src'=>img_data[:url],
+  'class'=>'cover_image',
+  'alt'=>h(img_data[:display_text])}
+  # If we're in https mode, and the original url is http, use
+  # Umlaut proxy to avoid browser security warning. 
+  if (request.protocol != img_params['src'][0..6])
+    img_params['src'] = url_for(:controller => "resource", :action => "proxy", :id => img_st.id )
+  end
+  img_params.merge!( "style" => dimensions_style[size]) if fix_size
+  tag('img', img_params )
+end %>

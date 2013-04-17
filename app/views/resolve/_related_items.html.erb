@@ -1,35 +1,20 @@
-<%
-   cited_by = get_service_type('cited_by')   
-   similar = get_service_type('similar')
-%>
-
-
-  <%= list_with_limit('umlaut_cited_by', 
-          cited_by, 
-          :ul_class => "related_items response_list") do |item, index |  %>           
-        <%= render(:partial => "standard_response_item", :object=> item, :locals => { :show_source => true, :li_class => "related_item"}) %>
-  <%    end %> 
-    
-  <%
-  if (cited_by.length > 0) && (similar.length > 0) %>
-    <!-- a little seperation for readability -->
-    <br class="seperator"/>
-  <% end %>
-
-  <%=  list_with_limit('umlaut_similar_items', 
-          similar, 
-          :ul_class =>"related_items response_list") do |item, index |  %>           
-        <%= render(:partial => "standard_response_item", :object=> item, :locals => { :show_source => true}) %>
-  <%    end %>
-  
-
-
-  <% if (!service_types_in_progress?([ServiceTypeValue['cited_by'], ServiceTypeValue['similar']])) && similar.empty? && cited_by.empty? %>
-    <ul class="related_items response_list">
-      <li><i>No related items found.</i></li>
-    </ul>
-  <% end %>
-
-
-
-
+<%-
+# Get cited by and similar services
+cited_by = get_service_type('cited_by')   
+similar = get_service_type('similar')
+# Render cited by services
+%><%= 
+list_with_limit('umlaut_cited_by', cited_by, :ul_class => "related_items response_list") do |item, index | %><%= 
+  render(:partial => "standard_response_item", :object=> item, :locals => { :show_source => true, :li_class => "related_item"}) %><%
+end 
+# Render similar services (Related items)
+%><%= 
+list_with_limit('umlaut_similar_items', similar, :ul_class =>"related_items response_list") do |item, index | %><%= 
+  render(:partial => "standard_response_item", :object=> item, :locals => { :show_source => true}) %><%
+end
+# If there are no related or cited by services, tell the user.
+if (!service_types_in_progress?([ServiceTypeValue['cited_by'], ServiceTypeValue['similar']])) && similar.empty? && cited_by.empty? -%>
+  <ul class="related_items response_list">
+    <li><em>No related items found.</em></li>
+  </ul><% 
+end %>

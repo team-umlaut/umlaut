@@ -1,0 +1,59 @@
+// Bootstrap does some weird things with body/container-fluid margin/padding
+// swapping it around at different sizes. We had trouble working with that,
+// so make it more consistent here. 
+body {
+  background-color: $umlautBackgroundColor;
+  padding: 0;
+  margin: 0;
+}
+.container-fluid {
+  @include umlaut-container();  
+  // max width and center beyond that
+  max-width: $umlautContainerMaxWidth;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header {
+  @include umlaut-container();
+  @include clearfix();    
+  background-color: $umlautHeaderBackgroundColor;
+  border: {
+    bottom: 1px solid $umlautHeaderBorderColor;
+  }    
+  color: $navbarBrandColor;
+  h1 {
+    //semantically an h1, but let's make it not so big, inspired
+    //by twitter's navbar styles, copied
+    display: inline;
+    float: left;    
+    margin: 0 $umlautIndent 0 0;
+    padding: 0;    
+    font-size: 20px;
+    font-weight: 200;
+  }
+  line-height: 40px;
+}
+
+.umlaut-permalink {
+  text-align: right;
+  @include text-overflow;
+  margin-left: $umlautIndent;
+}
+
+
+
+.footer {
+  @include umlaut-container();
+  margin: {
+    top: $baseLineHeight;
+  }
+  padding: {
+    top: 10px;
+    bottom: 10px;
+  }
+  border: {
+    top: 1px solid $umlautBorderColor;
+  }
+}
+

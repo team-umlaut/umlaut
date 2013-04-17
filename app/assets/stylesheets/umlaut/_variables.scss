@@ -1,0 +1,72 @@
+// See also, possible umlaut theme over-ride of default bootstrap
+// variables in umalut.scss
+
+// Basic colors, all other colors by default are defined in terms of these
+// Overall Border and Background
+$umlautBorderColor:                         #c7c7c7 !default; //#d1d1d1
+$umlautBackgroundColor:                     #f9f9f7 !default;
+$umlautAltBackgroundColor:									#e1e1e1 !default; // #dadada
+$umlautHighlightedBackgroundColor:					white   !default;
+$umlautAvailableColor:                      #00CC33 !default; // Available Color, used for text
+$umlautUnavailableColor:                    red 		!default; // Unavailable Color, used for text
+
+// Closer to old Umlaut colors, for nostaligia or for a change:
+// $umlautBorderColor:                         #ebb211;
+// $umlautBackgroundColor:                     #fffdea;
+// $umlautAltBackgroundColor:									#fcf1d4;
+// $umlautHighlightedBackgroundColor:					white;
+// $umlautHighlightedSectionBorderColor:				#dedede;
+// $umlautAvailableColor:                      #00CC33;
+// $umlautUnavailableColor:                    red;
+
+// And another possibility
+// $umlautBackgroundColor:                     #FEF9ED; #f8f3ea
+//  $umlautAltBackgroundColor:									#e1d3cc;
+// $umlautBorderColor:                         darken($umlautAltBackgroundColor, 10%);
+// $umlautHighlightedBackgroundColor:					white;
+// $umlautAvailableColor:                      #00CC33;
+// $umlautUnavailableColor:                    red;
+
+
+// container padding used for page margins/gutters and between columns. 
+// at large screens, sometimes *2. 
+$umlautContainerPadding:    20px !default;
+$umlautContainerMaxWidth:		1100px !default;
+// important that umlautIndent is exactly enough to indent past umlaut
+// list item icons in hanging indents
+$umlautIndent:  														20px !default;  
+$umlautBorderRadiusExtraLarge:							12px !default;
+
+// Header nav bar. 
+$umlautHeaderBackgroundColor:								$umlautAltBackgroundColor !default;
+$umlautHeaderBorderColor:										$umlautBorderColor !default;
+// Search Border and Background
+$umlautSearchFormBackgroundColor:           $umlautAltBackgroundColor !default;
+$umlautSearchFormBorderColor:               $umlautBorderColor !default;
+// Search Results
+$umlautResultsBackgroundColor:              $umlautBackgroundColor !default;
+$umlautResultItemBackgroundColor:						$umlautAltBackgroundColor !default;
+$umlautResultItemBorderColor:								$umlautBorderColor !default;
+
+// A-Z List input -- actual list of A,B..Z buttons
+$umlautAzLinkColor:                         $linkColor !default;
+$umlautAzBorderColor:                       $umlautBorderColor !default;
+$umlautAzBackgroundColor:                   $umlautBackgroundColor !default;
+$umlautAzHoverBackgroundColor:              $umlautAltBackgroundColor !default;
+// Auto Complete Border and Background
+$umlautAutoCompleteBorderColor:             $umlautAzBorderColor !default;
+$umlautAutoCompleteBackgroundColor:         $umlautHighlightedBackgroundColor !default;
+
+// Resolve Border and Backgrounds
+$umlautMainBackgroundColor:                 $umlautBackgroundColor !default;
+$umlautSidebarBorderColor:                  $umlautBorderColor !default;
+$umlautSidebarBackgroundColor:              $umlautAltBackgroundColor !default;
+// Highlighted Sections Border and Backgrounds
+$umlautHighlightedSectionBorderColor: 			$umlautBorderColor !default;
+$umlautHighlightedSectionBackgroundColor:   $umlautHighlightedBackgroundColor !default;
+// Resolve Errors Border and Backgrounds
+$umlautResolveErrorBorderColor:             $umlautBorderColor !default;
+$umlautResolveErrorBackgroundColor:         $umlautHighlightedBackgroundColor !default;
+// Debug Info Border and Backgrounds
+$umlautDebugInfoBorderColor:                $umlautBorderColor !default;
+$umlautDebugInfoBackgroundColor:            $umlautHighlightedBackgroundColor !default;

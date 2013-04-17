@@ -1,0 +1,315 @@
+.umlaut-main, .umlaut-sidebar {
+  ul {
+    margin-left: 0;
+    list-style: none;
+  }
+}
+
+// Main section styles
+.umlaut-main {  
+  padding-right: $umlautContainerPadding;
+  background-color: $umlautMainBackgroundColor;
+}
+
+.response_list {
+  .response_item  {
+    margin-bottom: ($baseLineHeight / 2);
+    // Try to make line wrap respect space for icon/indent. 
+    padding-left: $umlautIndent;
+    text-indent: -$umlautIndent;
+  }
+}
+
+.umlaut-section {
+  margin: 0 0 ($baseLineHeight * 1.5) 0;  
+  .section_heading h3 {
+    /* semantically an h3, but make it sized an h4 */
+    @extend h4;
+    margin-top: 0;    
+  }
+  .section-subheading {
+    @extend .muted;
+  }
+
+
+
+  // Special looks for particular sections
+  &.fulltext {
+    @include iconed-response;
+    .response_item i {
+      @extend .umlaut_icons-famfamfam-page-text;
+    }
+  }
+
+  &.audio {
+    @include iconed-response;
+    .response_item i {
+      @extend .umlaut_icons-famfamfam-page-sound;
+    }
+  }
+
+  &.excerpts {
+    @include iconed-response;
+    .response_item i {
+      @extend .umlaut_icons-famfamfam-book-open;
+    }
+  }
+
+  &.coins {
+    border: none;
+  }
+
+  &.document_delivery {
+    @include iconed-response;
+    .response_item i {
+      @extend .umlaut_icons-famfamfam-book-go;
+    }
+  }
+
+  &.holding {
+    .response_item i {
+      @extend .umlaut_icons-famfamfam-book;
+    }
+    .umlaut-holdings {
+      .umlaut-holding {
+        margin-bottom: $umlautIndent;
+      }
+      .collection-str {
+        font-weight: bold;
+      }
+      .umlaut-holding-notes {
+        @extend .muted;
+      }
+      .umlaut-holding-match-reliability, .umlaut-holding-notes, .umlaut-holding-coverage {
+        margin: ($baseLineHeight / 3) 0 ($baseLineHeight / 3) $umlautIndent;        
+      }
+      .holding-actions  {
+        .btn {
+          // Make em like a button-mini but with big text
+          font-size: $baseFontSize;
+        }
+      }
+      .item_status_row {
+        min-height: 0;
+      }  
+      .collection_str, .call-number, .holding-status, .holding-actions {
+        min-height: 0;
+        margin-left: 0;
+      }
+      .call-number, .holding-status, .holding-actions {        
+        padding-left: $umlautIndent;        
+      }    
+    }
+
+
+
+  }
+
+  &.search_inside {
+    .input-append .add-on, .input-prepend .add-on {
+      // can't figure out if this is a bug in bootstrap or what
+      height: auto;    
+    }
+    select.id {
+      @include border-radius(0 $inputBorderRadius $inputBorderRadius 0);
+    }
+  }
+}
+
+.umlaut-section-highlighted {
+  @include umlaut-well($umlautHighlightedSectionBackgroundColor, $umlautHighlightedSectionBorderColor);
+  @include border-radius($umlautBorderRadiusExtraLarge);
+}
+
+.section_prompt {
+  @extend .muted;
+}
+
+// extra block-level elements inside a response_item
+// need to turn off the text-indent that inherits, don't actually
+// need any indent. 
+%indented-subitem {
+  text-indent: 0;
+  margin: ($baseLineHeight / 6) 0;
+}
+
+.umlaut-content-indent {
+  @extend %indented-subitem;
+}
+
+.response_edition_warning, .response_source, .response_coverage_statement, .response_notes {
+  @extend %indented-subitem;
+  @extend .muted;
+}
+
+.response_notes {
+  @extend %indented-subitem;
+}
+
+.debug_info {
+  @extend %indented-subitem;
+  @include umlaut-well($umlautDebugInfoBackgroundColor, $umlautDebugInfoBorderColor);
+}
+
+.umlaut-sidebar {
+  margin-top: $umlautIndent;
+  padding: $umlautIndent;
+
+  border:  1px solid $umlautSidebarBorderColor;    
+  @include border-radius($umlautBorderRadiusExtraLarge);
+
+  background-color: $umlautSidebarBackgroundColor;
+
+  .help-text-icon {
+    height: 100%;
+
+    font-size: $baseLineHeight * 1.85;
+    font-weight: bold;
+    float: right;
+    clear: right;
+
+    margin-left: $umlautIndent;
+    padding: $baseLineHeight * 0.5;
+    
+
+    background-color: $umlautHighlightedSectionBackgroundColor;
+    border: 1px solid $umlautHighlightedSectionBorderColor;    
+
+    @include border-radius($baseLineHeight * 2);    
+  }
+  .umlaut-section.help {
+    @include clearfix();    
+  }
+}
+
+.umlaut-resource-info {
+  display: table;
+  width: 100%;
+  @include clearfix(); 
+  padding: $umlautIndent 0 0 0;
+  margin-bottom: $umlautIndent;
+
+
+  .resource_info_sections, .umlaut-section.cover_image {
+    display:        table-cell;
+    vertical-align: top;
+    margin: $baseLineHeight;
+    width: 100%;
+  }
+
+  .umlaut-section.cover_image .umlaut_section_content {
+    text-align: right;
+    img.cover_image {
+      border: 1px solid $umlautHighlightedSectionBorderColor;
+      margin-left: $umlautIndent;
+
+      // IE7 and below, hide cover image entirely, since
+      // we dont' have display:table to do it right. Use IE7 asterisk trick
+      *display: none;
+
+      // override to make cover smaller on smaller screens
+      @media (max-width: 550px) {
+        max-width:  100px !important;
+        max-height: 80px !important;
+      }
+      // and disappear on really small ones
+      @media (max-width: 340px) {
+        display: none;
+      }
+    }
+  }
+
+  /* citation render styles */
+
+
+
+  .resource-type {    
+    @extend .muted;
+    margin: 0;
+    font-weight: bold;
+  }
+  h2.title {  
+    margin-top: 0;
+    @extend h4;
+    line-height: $baseLineHeight * 1.1;
+    font-weight: normal;    
+  }
+  
+  .container-title {
+    font-style: italic;
+  }
+
+  dl.citation-info {
+    /* based on dl-horizontal, but tweaked.  */
+    @include clearfix();   
+    @extend .muted; // subsidiary stuff, mute it
+    margin-top: 10px;
+    margin-bottom: 10px;     
+    dt {      
+      float: left;
+      clear: left;
+      font-weight: normal;
+      @include text-overflow();        
+      width: ($umlautIndent * 5) - 20;
+      @media (max-width: 400px) {
+        float: none;
+        clear: none;
+        width: auto;
+        text-align: left;
+      }
+    }
+    dd {
+      margin-left: ($umlautIndent * 5);
+      @media (max-width: 400px) {
+        margin-left: 0;
+      }
+    }
+  }
+
+}
+
+.umlaut-available {
+  color: $umlautAvailableColor;
+  font-style: italic;
+  font-size: $baseFontSize;
+}
+
+.umlaut-unavailable {
+  color: $umlautUnavailableColor;
+  font-style: italic;
+  font-size: $baseFontSize;
+}
+
+// Resolve Errors
+#service_errors_content {
+  @include umlaut-well($umlautResolveErrorBackgroundColor, $umlautResolveErrorBorderColor);
+}
+
+a:not(:hover) .coverage_summary {
+  /* even though it's part of a hyperlink, we make it black for distinction */
+  color: black; 
+}
+
+@media (max-width: 767px) {
+  .umlaut-main {
+    padding: 0;
+  }
+  .umlaut-sidebar {    
+    padding: 0;
+
+    background-color: $umlautMainBackgroundColor;
+    border: none;
+    padding-top: 10px;
+
+    .umlaut-section {
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    .umlaut-help-list {
+      text-align: left;
+    }
+  }
+}
+
+

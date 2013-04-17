@@ -1,51 +1,44 @@
-<%   # Partial to display spinner for background services in progress. 
-     # Also degrades fairly nicely to non-javascript. 
-     #
-     # Pass in local variables as arguments (:locals param to render method):
-     #
-     # svc_type : String or ServiceTypeValue that we should be 
-     #    paying attention to. This or service_types is required. 
-     #
-     # svc_types: Array of Strings or ServiceTypeValue for multiple.
-     #
-     # div_id: id of div that progress content is put in. Optional, defaults
-     #   to "progress_#{svc_type.name}", good idea especially if it won't be
-     #   unique otherwise. 
-     # 
-     # current_set_empty: optional. defaults to false. If true, then 
-     #   the word 'more' won't be used in note to user, since it's not 'more'!
-     
-     # Strategy of this output: We start out outputting our non-js
-     # version. Then we immediately use js to over-write it with our
-     # js version. So js people get js, non get non, everyone is happy.
-     # Further investigation may need to be done to optimize specifically
-     # for JAWS (which is neither full js nor non js, but some js--right
-     # now I think they'll just get the non-js version, but we can do better.)
-   
-  svc_types = [] if svc_types.nil?
-  svc_types.push(svc_type).uniq! if defined?(svc_type) && ! svc_type.nil?
-  # convert any Strings to ServiceTypeValues. 
-  svc_types = svc_types.collect { |t| t.kind_of?(ServiceTypeValue) ? t : ServiceTypeValue[t] }
-  
-    
-  div_id = "progress_#{svc_types[0].name}" unless div_id
-  current_set_empty = false if current_set_empty.nil?
-  
-  item_name ||= svc_types[0].display_name_pluralize
-  progress_message ||= "Searching for #{current_set_empty ? "" : "more "} #{item_name}"
-%>
-
-<% # only display if there are more! 
- if service_types_in_progress?(svc_types) %>
-  <div id="<%= div_id %>" class="background_progress_spinner" >
-
-      <%= 
-      image_tag('spinner.gif', :alt =>"") %>
-      <span class="message"><%= progress_message %></span>
-      
-      <noscript>
+<%   
+# Partial to display spinner for background services in progress. 
+# Also degrades fairly nicely to non-javascript. 
+#
+# Pass in local variables as arguments (:locals param to render method):
+#
+# svc_type : String or ServiceTypeValue that we should be 
+#    paying attention to. This or service_types is required. 
+#
+# svc_types: Array of Strings or ServiceTypeValue for multiple.
+#
+# div_id: id of div that progress content is put in. Optional, defaults
+#   to "progress_#{svc_type.name}", good idea especially if it won't be
+#   unique otherwise. 
+# 
+# current_set_empty: optional. defaults to false. If true, then 
+#   the word 'more' won't be used in note to user, since it's not 'more'!
+# 
+# Strategy of this output: We start out outputting our non-js
+# version. Then we immediately use js to over-write it with our
+# js version. So js people get js, non get non, everyone is happy.
+# Further investigation may need to be done to optimize specifically
+# for JAWS (which is neither full js nor non js, but some js--right
+# now I think they'll just get the non-js version, but we can do better.)
+svc_types = [] if svc_types.nil?
+svc_types.push(svc_type).uniq! if defined?(svc_type) && ! svc_type.nil?
+# convert any Strings to ServiceTypeValues. 
+svc_types = svc_types.collect { |t| t.kind_of?(ServiceTypeValue) ? t : ServiceTypeValue[t] }
+div_id = "progress_#{svc_types[0].name}" unless div_id
+current_set_empty = false if current_set_empty.nil?
+item_name ||= svc_types[0].display_name_pluralize
+progress_message ||= "Searching for #{current_set_empty ? "" : "more "} #{item_name}"
+# only display if there are more! 
+if service_types_in_progress?(svc_types) %>
+  <div id="<%= div_id %>" class="background_progress_spinner">
+    <%= image_tag('spinner.gif', :alt =>"") %>
+    <span class="message"><%= progress_message %></span>
+    <noscript>
+      <div>
         <%= link_to "Load #{current_set_empty ? "" : "more"} #{item_name}.", {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %> 
-      </noscript>
-  </div>
-
-<% end %>
+      </div>
+    </noscript>
+  </div><%
+end %>

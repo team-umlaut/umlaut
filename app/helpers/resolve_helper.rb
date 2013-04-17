@@ -31,6 +31,51 @@ module ResolveHelper
     render(:partial => "section_display", :locals => {:presenter => presenter })
   end
 
+  # Return an array of css classes that should be attached to an .umlaut_section
+  # generally 'umlaut-section', plus the section_id, plus possibly 
+  # 'umlaut-section-highlighted'. See #should_highlight_section?
+  #
+  # pass in:
+  # * current Umlaut Request object
+  # * string section id
+  # * array of umlaut ServiceResponses already fetched for this section. 
+  def section_css_classes(umlaut_request, section_id, response_list)
+    classes = ["umlaut-section", section_id]
+    classes << 'umlaut-section-highlighted' if should_highlight_section?(umlaut_request, section_id, response_list)
+    return classes
+  end
+
+  # Called by #section_css_classes. Decides if a section should get
+  # highlight styles. Default logic highlights fulltext if present,
+  # otherwise holdings/docdel sections (in some cases both even if holdings present,
+  # in some cases just docdel, depending on nature of resource.) This is
+  # something local institutions may want to supply custom logic for,
+  # over-ride this method. 
+  #
+  # This is VERY tricky to get right, BOTH becuase of local policy differences,
+  # AND becuase umlaut's concurrent service handling means things are changing
+  # all the time. Umlaut used to just highlight fulltext with responses, that's it.
+  # But we're trying something more sophisticated. You may want to over-ride with
+  # something simpler, or something better suited to local policies and conditions. 
+  def should_highlight_section?(umlaut_request, section_id, response_list)
+    case section_id
+    when "fulltext"
+      umlaut_request.get_service_type("fulltext").present?
+    when "holding"
+      umlaut_request.get_service_type("holding").present? && umlaut_request.get_service_type("fulltext").empty?
+    when "document_delivery"
+      # Only once fulltext and holdings are done being fetched. 
+      # If there's no fulltext or holdings, OR there's holdings, but
+      # it's a journal type thing, where we probably don't know if the
+      # particular volume/issue wanted is present. 
+      umlaut_request.get_service_type("fulltext").empty? && 
+      (! umlaut_request.service_types_in_progress?(["fulltext", "holding"])) && (
+        umlaut_request.get_service_type("holding").empty? || 
+        umlaut_request.referent.format == "journal"
+      )
+    end
+  end
+
   def app_name
     return umlaut_config.app_name
   end
@@ -67,11 +112,9 @@ module ResolveHelper
   #  <% end %>
   def expand_contract_section(arg_heading, id, options={}, &block)
     expanded = (params["umlaut.show_#{id}"] == "true") || options[:initial_expand] || false
-    icon = image_tag( ( expanded ? "list_open.png" : "list_closed.png"),
-                       :alt => "",
-                       :class => "toggle_icon",
-                       :border => "0")
+    icon = content_tag(:i, nil, :class => [] << ( expanded ? "umlaut_icons-list-open" : "umlaut_icons-list-closed"))
     heading = content_tag(:span,( expanded ? "Hide " : "Show "), :class=>'expand_contract_action_label') + arg_heading
+    body_class = (expanded ? "in" : "")
     link_params = params.merge('umlaut.request_id' => @user_request.id,
       "umlaut.show_#{id}" => (! expanded).to_s,
       # Need to zero out format-related params for when we're coming
@@ -87,14 +130,9 @@ module ResolveHelper
     # Make sure a self-referencing link from partial_html_sections
     # really goes to full HTML view.
     link_params[:action] = "index" if link_params[:action] == "partial_html_sections"
-    return content_tag(:div, :class => "expand_contract_section") do
-      link_to( icon + heading, link_params,
-            :id => "#{id}_toggle_link",
-            :class => "expand_contract_toggle" ) + "\n" +
-        content_tag(:div, :id => id,
-                    :class => "expand_contract_content",
-                    :style => ("display: none;" unless expanded),
-                    &block)
+    return content_tag(:div, :class => "collapsible", :id => "collapse_#{id}") do
+      link_to(icon + " " + heading, link_params, :class => "collapse-toggle", "data-target" => "##{id}", "data-toggle" => "collapse") +
+        content_tag(:div, :id => id, :class => ["collapse"]<< body_class, &block)
     end
   end
 
@@ -205,6 +243,11 @@ module ResolveHelper
     umlaut_config.lookup!("resolve_sections", []).find do |defn|
       defn[:div_id] == div_id
     end
+  end
+
+  def item_icon(section_id)
+    sections_with_icons = ["fulltext", "audio", "excerpts"]
+    content_tag(:i, nil) if sections_with_icons.include? section_id
   end
 
   ##

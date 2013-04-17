@@ -1,26 +1,22 @@
-<div class="content">
-<h1>Loading complete information</h1>
-<p>Please wait, the following information is still loading. You will be automatically returned to the <%= app_name %> screen when finished.  
-  <div class="small_right_box">
-  <table>
-  <tr><th>Source</th><th>Content type</th></tr>
-    <% @user_request.services_in_progress.each do |service|  %>
-       <tr><td style="padding-right: 10px; vertical-align: top;"><strong><%= service.display_name %></strong></td>
-           <td> <%= service.service_types_generated.collect {|st| html_escape(st.display_name_pluralize) }.join('<br/>').html_safe %> </td>
-       </tr>
-    <% end %>
-  </table>
+<div>
+  <h1>Loading complete information</h1>
+  <p>Please wait, the following information is still loading. You will be automatically returned to the <%= app_name %> screen when finished.</p>
+  <div>
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th>Source</th>
+        <th>Content type</th>
+      </tr>
+      <% @user_request.services_in_progress.each do |service|  %>
+        <tr>
+          <td><strong><%= service.display_name %></strong></td>
+          <td><%= service.service_types_generated.collect {|st| html_escape(st.display_name_pluralize) }.join('<br/>').html_safe %></td>
+        </tr>
+      <% end %>
+    </table>
   </div>
-  
   <%= 
-    link_to( "View Current Results", url_for_with_co( 
-      {:action => 'index', 
-      :'umlaut.skip_resolve_menu' => 'false', 
-      'umlaut.request_id' => @user_request.id}, 
-      @user_request.to_context_object)
-    )
-   %>
+    link_to( "View Current Results", url_for_with_co(
+      {:action => 'index',:'umlaut.skip_resolve_menu' => 'false', 
+        'umlaut.request_id' => @user_request.id}, @user_request.to_context_object)) %>
 </div>
-
-                
-

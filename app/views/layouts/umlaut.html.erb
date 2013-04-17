@@ -1,49 +1,29 @@
 <!DOCTYPE html>
-<html lang="EN">
-<head>
-  <meta charset="utf-8">
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag 'application' %> 
+    <%= javascript_include_tag 'application' %>
+    <title><%= umlaut_title_text %></title>
+    <%= render_umlaut_head_content %>
+  </head>
+  <body class="umlaut no-js">
+    <div class="umlaut-container">
+      <%= render :partial => "umlaut/header" %>
 
-  <%= csrf_meta_tags %>
-    
-  <%= stylesheet_link_tag 'application' %> 
-  <%= javascript_include_tag 'application' %>
+      <div class="umlaut-main-container-fluid container-fluid <%= "umlaut-#{params[:controller]}-container" %>">
+        <%= yield %>
+      </div>
 
-  <title>
-    <%= umlaut_title_text %>    
-  </title>
-  
-  <%= render_umlaut_head_content %>
-   
-</head>
-<body>
-
-  <div class="umlaut container">
-  
-     <div id="header" class="header">
-        <h1><%= umlaut_config.app_name %></h1>
-     </div>
-  
-  
-     <% if permalink = current_permalink_url() %>
-       <div class="permalink_bar">
-         URL: <%= link_to current_permalink_url, current_permalink_url %>          
-       </div>
-     <% end %>
-  
-  
-      <%= yield %>
-   
-      <!-- even with nothing in it, footer neccesary for CSS clear=both -->
-     <div id="footer" class="footer">
+      <div id="footer" class="footer">
         <%= render_service_credits %>
         <!-- links to aid in debugging openurls gone wrong when in production -->
         <%= link_to_test_resolve %>
         <%= link_to_direct_sfx %>
         <%= link_to_toggle_debug_info %> 
-     </div>
-  
-  </div>
-
-</body>
+      </div>
+    </div>
+  </body>
 </html>
-

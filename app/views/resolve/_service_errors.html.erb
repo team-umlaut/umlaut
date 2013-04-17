@@ -1,29 +1,28 @@
-
 <% 
-         failed_dispatches = failed_service_dispatches()
-         unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
-         <div id="service_errors_content" class="small_right_box">
-
-
-               <span class="error_icon">(!)</span><span class="smallText">Some content may not be included due to errors:</span>
-        <ul>
-          <% failed_dispatches.each do | dispatch | %>
-            <li class="smallText">           
-            Some <i><%= dispatch.service.service_types_generated.collect { |type|
-               type.display_name_pluralize.downcase}.join(",") %></i>
-             from <a class="simple_visible_toggle"><strong><%= dispatch.service.display_name %>  </strong> </a>
-              <% exception_info = dispatch.exception_info %>
-                <div style="display: none;">
-                technical error information
-                <ul>
-                   <li> <%= exception_info[:class_name] if exception_info %> </li>
-                   <li> <%= exception_info[:message] if exception_info %> </li>
-                   <li> dispatched service id: <%= dispatch.id %>  </li>                    
-                </ul>
-                </div>
-            </li>
-          <% end %>
-        </ul>
-       <span class="clear"></span>
-       </div>
-       <% end %>
+failed_dispatches = failed_service_dispatches()
+unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
+  <div id="service_errors_content">
+    <h5 class="warning"><i class="umlaut_icons-famfamfam-error"></i> Some content may not be included due to errors:</h5>
+    <ul>
+      <% failed_dispatches.each do | dispatch | %>
+        <li class="text-small">
+          Some <strong><%= dispatch.service.service_types_generated.collect { |type|
+            type.display_name_pluralize.downcase}.join(",") %></strong>
+          from <a class="collapse-toggle" data-target="<%= "#failed_dispatch_#{dispatch.id}"%>" data-toggle="collapse"><strong><%= dispatch.service.display_name %></strong></a>
+          <% exception_info = dispatch.exception_info %>
+          <div id="<%= "failed_dispatch_#{dispatch.id}"%>" class="collapse">
+            <ul class="nav nav-list">
+              <li class="nav-header">Technical Error Information</li>
+              <%= content_tag("li") do
+                content_tag("pre", :class=>"pre-scrollable") do
+                  error_message = (exception_info) ? "#{exception_info[:class_name]}: #{exception_info[:message]}\n" : ""
+                  error_message + "dispatched service id: #{dispatch.id}"
+                end
+              end %>
+            </ul>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

@@ -1,0 +1,12 @@
+.background_progress_spinner {
+  @extend .muted;
+  img {
+    vertical-align: top;
+    margin-top: 1px;
+  }
+}
+
+.umlaut-resource-info .background_progress_spinner { 
+  padding-left: 24px;
+  padding-top: 8px;
+}

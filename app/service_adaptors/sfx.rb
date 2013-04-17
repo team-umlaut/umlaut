@@ -327,6 +327,8 @@ class Sfx < Service
 
           response_data[:url] = CGI.unescapeHTML((target/"./target_url").inner_text)
           response_data[:notes] = related_note.to_s + CGI.unescapeHTML((target/"./note").inner_text)
+          # Set the proxy boolean
+          response_data[:proxy] = CGI.unescapeHTML((target/"./proxy").inner_text).eql?("yes")
           response_data[:authentication] = CGI.unescapeHTML((target/"./authentication").inner_text)
           response_data[:source] = source
           response_data[:coverage] = coverage if coverage

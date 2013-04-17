@@ -25,7 +25,9 @@ module UmlautConfigurable
   # to initialize
   def self.set_default_configuration!(configuration)
     configuration.configure do
-      app_name 'Find It'
+      app_name 'Find It'  
+      # Different navbar title? Defaults to app_name    
+      header_title deferred! {|c| c.app_name}
       # URL to image to use for link resolver, OR name of image asset in local app. 
       #link_img_url "http//something"
       
@@ -204,6 +206,12 @@ module UmlautConfigurable
         #sfx_load_ignore_hosts  [/.*\.archive\.org/, /www\.netlibrary\.com/, 'www.loc.gov']
         sfx_load_ignore_hosts  []        
       end
+      
+      # config only relevant to holdings display
+      holdings do
+        # Holding statuses that should be styled as "Available"
+        available_statuses ["Not Charged", "Available"]
+      end
     
       # Output timing of service execution to logs
       log_service_timing (Rails.env == "development")
@@ -252,19 +260,19 @@ module UmlautConfigurable
         show_heading false
         show_spinner false
       end
-      
-      add_resolve_sections! do
-        div_id "search_inside"
-        html_area :resource_info
-        partial "search_inside"
-        show_partial_only true
-      end
-      
+            
       add_resolve_sections! do
         div_id "fulltext"    
         section_title "Online Access"
         html_area :main
         partial :fulltext
+        show_partial_only true
+      end
+
+      add_resolve_sections! do
+        div_id "search_inside"
+        html_area :main
+        partial "search_inside"
         show_partial_only true
       end
       

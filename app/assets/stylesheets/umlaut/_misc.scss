@@ -1,0 +1,33 @@
+.umlaut-separator {
+  border-top: 1px solid $umlautBorderColor;
+  padding-top: 15px;
+}
+
+.text-small {
+  font: {
+    size: $fontSizeSmall
+  }
+}
+
+.alert {
+  font-size: 125%;
+  li {
+    margin-top: 1em;
+  }
+}
+
+.collapsible .collapse {
+  margin-top:  $baseLineHeight / 2; 
+}
+
+/* Google Scholar Link: 
+   Make the example look like it does on google scholar: */
+.gscholar_example {
+   background: white;
+   color: blue;
+   font-variant: small-caps;
+}
+
+// even smaller than bootstrap's input-mini, for volume/issue/start page
+.input-tiny      { width: 45px; }
+

@@ -2,92 +2,58 @@
    # Displays a typical Umlaut response element in typical markup.
    # Pass in a ServiceType object for the response using Rails partial
    # :object or :collection convention
-   
    #optional argument, :locals => 
    #    :show_source => default false, if true display the source of the link
    show_source ||= false
-   
    service_response = standard_response_item # passed in via :object or :collection
    # passed in in :object or :collection 
    view_data = service_response.view_data
 %>
-
-<li class="response_item"> 
-
-  <!-- fancy schmancy ajax? But not if we're generating embed partials,
-       won't work. -->
-  <% if view_data[:link_supports_ajax_call]  
+<li class="response_item">
+  <%= content_tag :i, nil %>
+  <% 
+  # Fancy schmancy ajax? But not if we're generating embed partials, won't work.
   # Generate a hyperlink that will call our standard service action
   # due to special class for unobtrusive JS. 
-  %>
-      <%= link_to(view_data[:display_text], 
-              {:controller=>'link_router', 
-              :id=>service_response.id},
-              {:id => "svctype_link_#{service_response.id}",                
-              :target => "_blank",
-              :class => "ajax_window"}) %>
-  <% elsif (content = response_content(view_data )) 
-     #collapsible content on page
-  %>
-    <%= expand_contract_section(view_data[:display_text], "svc_id_#{service_response.id}") do %>
-      <div class="section_content_indent">
-        <%= content %>
-      </div>
-    <% end %>
-  
-  
-  <% else 
-    # Ordinary href link. 
-  %>      
-        
-  <%= link_to( {:controller=>'link_router', :id=>service_response.id}, 'target'=>"_blank", 'id' => "svctype_link_#{service_response.id}", 'class' => "response_link") do %>
-       <%= coverage_summary(view_data) %>
-       <%= view_data[:display_text] %> 
-    <% end %>
-  <% end %>
-
-<% if show_source %>
-  <div class="link_source">from <%= view_data[:source] || service_response.service.display_name %></div>
-<% end %>
-
-<% unless view_data[:coverage].blank? %>
-  <div class="response_coverage_statement">
-  <%= view_data[:coverage] %>
-  </div>
-<% end
-%>
-<% unless view_data[:notes].blank? %>
+  if view_data[:link_supports_ajax_call] %>
+    <%= link_to(view_data[:display_text], {:controller=>'link_router', :id=>service_response.id},
+          {:id => "svctype_link_#{service_response.id}", :target => "_blank", :class => "response_link ajax_window"}) %>
+  <% #Collapsible content on page 
+  elsif (content = response_content(view_data )) %>
+    <%= expand_contract_section(view_data[:display_text], 
+          "svc_id_#{service_response.id}") { content_tag(:div, content, :class => "umlaut-content-indent") } %>
+  <% # Ordinary href link
+  else %>      
+    <%= link_to({:controller=>'link_router', :id=>service_response.id}, 
+          {:id => "svctype_link_#{service_response.id}", :target=>"_blank", :class => "response_link"}) do %>
+      <%= coverage_summary(view_data) %>
+      <%= view_data[:display_text] %><%
+    end
+  end %>
+  <%= content_tag(:div, "from #{view_data[:source] || service_response.service.display_name}", :class => "response_source") if show_source %>
+  <%= content_tag(:div, view_data[:coverage], :class => "response_coverage_statement") unless view_data[:coverage].blank? %>
   <%-
     # legacy, the 'notes' field can take raw html, we need to leave it that way for
-    #now, but it's not great.
-    -%>
-  <div class="response_notes"><%= view_data[:notes].html_safe %></div>
-<% end %>
-<% unless view_data[:authentication].blank? %>
-  <div class="response_authentication_instructions"><strong>Authentication:</strong> <%= view_data[:authentication] %></div>
-<% end %>
-
-
-<% if (!view_data[:match_reliability].blank?) && view_data[:match_reliability] != ServiceResponse::MatchExact %>
-  <div class="edition_warning">
-    <% unless view_data[:edition_str].blank? %>
-      <em class="note label">Edition information</em> <%= view_data[:edition_str] %>
-    <% else %>
-      <em class="note label">May be alternate edition.</em>
-    <% end %>
-    
+    # now, but it's not great.
+  -%>
+  <%= content_tag(:div, view_data[:notes].html_safe, :class => "response_notes") unless view_data[:notes].blank? %>
+  <%= content_tag(:div, content_tag(:strong, "Authentication:") + " #{view_data[:authentication]}", 
+        :class => "response_authentication_instructions") unless view_data[:authentication].blank? %>
+  <%-
+    # If we're unsure if this is a match, show an edition "warning".
+    # If we have edition info from the service response, show that,
+    # otherwise, plainly state that this may be an alternate edition.
+  -%>
+  <%= (content_tag(:div, :class => "edition_warning") {
+        (view_data[:edition_str].blank?) ? 
+          content_tag(:em, "May be alternate edition.", :class => ["note"]) : 
+            (content_tag(:em, "Edition information",:class => ["note"]) + " #{view_data[:edition_str]}")
+        }) if ((not view_data[:match_reliability].blank?) && view_data[:match_reliability] != ServiceResponse::MatchExact) %>
+  <%-
+  # Debug info, hidden with explicit style, can be made visible with javascript.
+  -%>
+  <div class="debug_info" style="display:none">
+    <strong>Debug info:</strong> <%= service_response.service.service_id %>
+    <%= "; #{view_data[:debug_info]}" unless view_data[:debug_info].blank? %>
   </div>
-<% end %>
-
-<!-- debug info, hidden with CSS, can be made visible with javascript. -->
-<div class="debug_info" style="display:none">
-  <b>Debug info:</b> <%= service_response.service.service_id %>
-  
-  <% unless view_data[:debug_info].blank? %>
-    ; <%= view_data[:debug_info] %>
-  <% end %>
-
-</div>
-
-
 </li>

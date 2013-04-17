@@ -289,19 +289,19 @@ class Referent < ActiveRecord::Base
 
     if my_metadata['atitle'] && ! my_metadata['atitle'].blank?
       citation[:title] = my_metadata['atitle']
-      citation[:title_label], citation[:subtitle_label] = 
+      citation[:title_label], citation[:container_label] = 
         case my_metadata['genre']
-          when /article|journal|issue/ then ['Article Title', 'Journal Title']
-          when /bookitem|book/ then ['Chapter/Part Title', 'Book Title']
-          when /proceeding|conference/ then ['Proceeding Title', 'Conference Name']
-          when 'report' then ['Report Title','Report']    
+          when /article|journal|issue/ then ['Article Title', 'journal']
+          when /bookitem|book/ then ['Chapter/Part Title', 'book']
+          when /proceeding|conference/ then ['Proceeding Title', 'conference']
+          when 'report' then ['Report Title','report']    
           else
           if self.format == 'book'
-            ['Chapter/Part Title', 'Title']
+            ['Chapter/Part Title', 'book']
           elsif self.format == 'journal'
-            ['Article Title', 'Journal Title']
+            ['Article Title', 'journal']
           else # default fall through, use much what SFX uses. 
-            ['Title', 'Source']
+            ['Title', '']
           end
         end
       ['title','btitle','jtitle'].each do | t_type |
@@ -313,11 +313,11 @@ class Referent < ActiveRecord::Base
       end
     else      
       citation[:title_label] = case my_metadata["genre"]
-        when /article|journal|issue/ then 'Journal Title'
-        when /bookitem|book/ then 'Book Title'
-        when /proceeding|conference/ then 'Conference Name'
-        when 'report' then 'Report Title'
-        else'Title'
+        when /article|journal|issue/ then 'journal'
+        when /bookitem|book/ then 'book'
+        when /proceeding|conference/ then 'conference'
+        when 'report' then 'report'
+        else ''
       end
       ['title','btitle','jtitle'].each do | t_type |
         if ! my_metadata[t_type].blank?
@@ -372,12 +372,21 @@ class Referent < ActiveRecord::Base
   def type_of_thing
     genre = self.metadata["genre"]
     genre = nil if genre =~ /^unknown$/i
-    genre ||= "resource"
-
     genre = "book section" if genre =~ /^bookitem$/i
 
     return genre
   end
+
+  # Like type_of_thing, but if it's a contained item, give container name instead. 
+  # TODO: All of this should be I18n'd. 
+  def container_type_of_thing
+    case self.metadata["genre"]
+    when 'article'  then 'journal'
+    when 'bookitem' then 'book'
+    else self.metadata['genre']
+    end
+  end
+
 
   def remove_value(key)
     referent_values.find(:all, :conditions=> ['key_name =?', key]).each do |rv|
