@@ -15,6 +15,12 @@
 	* Delete the 'permalinks'	line from your config in controller/umlaut_controller.rb,
 	  it's no longer effective. 
 
+* Reduced default background AJAX poll wait times, for increased apparent
+  responsiveness. 
+
+* When upgrading Umlaut and making sure it breaks nothing for you, 
+  it would be a good time to run `bundle update` and update all gem
+  dependencies in your umlaut app to the latest and greatest. 
 
 
 ## Older
