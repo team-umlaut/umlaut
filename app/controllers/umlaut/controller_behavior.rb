@@ -44,14 +44,21 @@ module Umlaut::ControllerBehavior
   #
   # See https://github.com/team-umlaut/umlaut/wiki/Alternate-service-groups
   def create_collection
-    specified_groups = params["umlaut.service_group"] || []
-    specified_groups = [specified_groups] if specified_groups.kind_of?(String)
-
-    services = Collection.determine_services(:groups => specified_groups)    
-
+    services = Collection.determine_services(:groups => self.specified_service_groups.uniq )
     return Collection.new(@user_request, services)
   end
   protected :create_collection
+
+  # You might want to over-ride this method locally to calculate
+  # service_groups from IP addresses, local login/auth system, or
+  # other places, in addition to query param. 
+  def specified_service_groups(arg_params = params)    
+    specified_groups = params["umlaut.service_group"] || []
+    specified_groups = [specified_groups] if specified_groups.kind_of?(String)
+    
+    return specified_groups
+  end
+  protected :specified_service_groups
 
 
 
