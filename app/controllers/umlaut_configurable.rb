@@ -113,7 +113,12 @@ module UmlautConfigurable
       
       # How many seconds between updates of the background updater for background
       # services?
-      poll_wait_seconds 4
+      poll_wait_seconds 3
+      # The FIRST AJAX callback for bg tasks should be much quicker. So we
+      # get any bg tasks that executed nearly instantaneously, and on page
+      # refresh when bg is really all loaded on back-end, but still needs JS to 
+      # fetch it. 
+      initial_poll_wait_seconds 0.300
       
       # if a background service hasn't returned in this many seconds, consider
       # it failed. (May actually be slow, more likely raised an exception and

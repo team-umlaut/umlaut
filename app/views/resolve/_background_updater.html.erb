@@ -18,7 +18,7 @@ if (any_services_in_progress?) %>
       # Wait the designated number of seconds before kicking off the first bg 
       # update request. Future requests will be automatically made with delay. 
 %>
-      setTimeout(function() { updater.update(); }, <%= umlaut_config.lookup!("poll_wait_seconds", 4)*1000 %>);
+      setTimeout(function() { updater.update(); }, <%= umlaut_config.lookup!("initial_poll_wait_seconds", 4)*1000 %>);
     });
     //]]>
   </script><% 
