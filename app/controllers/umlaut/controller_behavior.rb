@@ -34,7 +34,8 @@ module Umlaut::ControllerBehavior
   #
   # &umlaut.service_group may be used to customize which services are loaded,
   # else default.  &umlaut.service_group=-default turns off default. Can also
-  # list other groups, in a single comma-seperated string, or a Rails param array. 
+  # list other groups: NOTE: Needs to be submitted as a rails array,
+  # &umlaut.service_group[]= 
   #
   # Local app that wants to automatically set services based on IP or other
   # implicit parameters, should add a before_filter that determines proper
@@ -44,10 +45,7 @@ module Umlaut::ControllerBehavior
   # See https://github.com/team-umlaut/umlaut/wiki/Alternate-service-groups
   def create_collection
     specified_groups = params["umlaut.service_group"] || []
-    # Take care of comma-seperated String
-    unless specified_groups.kind_of? Array
-      specified_groups = specified_groups.try {|str| str.split(",")}
-    end    
+    specified_groups = [specified_groups] if specified_groups.kind_of?(String)
 
     services = Collection.determine_services(:groups => specified_groups)    
 
