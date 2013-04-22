@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
 		var valueContainer = $("#umlaut-permalink-value");
 
 		if (! valueContainer.data("loaded")) {
-			valueContainer.html('<i class="stpinner"></i>').show();
+			valueContainer.html('<i class="spinner"></i>').show();
 
 			$.getJSON( originalLink.attr('href'), function(data) {
 				var href = data.permalink;
