@@ -45,6 +45,10 @@ default:
           
       
       # Priority c  : Background          
+
+      # Suggest that any background services that may produce `fulltext` responses
+      # be put in the same bg wave, to increase perceived responsiveness
+      # by ending the spinner in the fulltext area. 
       
       # Second half of Amazon. It's Slow to lookup highlighted_link and search_inside
       # availability, so we do it in a bg wave.  
@@ -83,19 +87,7 @@ default:
         type: GoogleBookSearch
         disabled: true
         priority: c        
-        api_key: 'YOUR_GBS_API_KEY'
-                
-      Ulrichs:
-        display_name: "Ulrich's Directory"
-        type: UlrichsLink
-        priority: c
-        
-      IsbnDb:
-        display_name: isbndb.com
-        disabled: true
-        type: IsbnDb
-        priority: c
-        access_key: YOUR_ISBNDB_ACCESS_KEY
+        api_key: 'YOUR_GBS_API_KEY'                
         
       InternetArchive:
         display_name: the Internet Archive
@@ -105,38 +97,9 @@ default:
         #num_results_for_types:
         #  audio: 0
 
-      
-      ScopusCitations:
-        type: Scopus
-        disabled: true
-        priority: c
-        json_api_key: YOUR_SCOPUS_API_KEY
-        partner_id: YOUR_SCOPUS_PARTNER_ID
-        link_salt_key: "YOUR_SCOPUS_LINK_SALT_KEY"
-        
-      # Web of Knowledge API has no api key, but your
-      # IP needs to be registered with them. See source docs
-      # for how. 
-      IsiCitations:
-        type: Isi
-        disabled: true
-        priority: c
-        
-      # Thomson JCR LAMR api has no api key, but your
-      # IP needs to be registered with them. Same registraiton
-      # as for ISI WoK generally. 
-      Jcr:
-        type: Jcr
-        disabled: true
-        priority: c
-        
-
-      
-      # Priority d
-                
       HathiTrust:
         type: HathiTrust
-        priority: d
+        priority: c
         # Uncomment to link through this 'internal' URL instead
         # of following permalinks. jrochkind does this to use
         # a WAYFless shibboleth login with EZProxy. 
@@ -151,12 +114,59 @@ default:
           existing_service: GoogleBookSearch
           existing_type: fulltext
           
+      
+ 
+        
+
+      
+      # Priority d
+
+      # You might be able to pack a lot of these in 'c' too, simultaneously.
+      # But to avoid trying to do too much at once, we put most 'see also'
+      # type services later, in 'd'. 
+
+      Ulrichs:
+        display_name: "Ulrich's Directory"
+        type: UlrichsLink
+        priority: d
+        
+      IsbnDb:
+        display_name: isbndb.com
+        disabled: true
+        type: IsbnDb
+        priority: d
+        access_key: YOUR_ISBNDB_ACCESS_KEY
+                
       EmailExport:
         type: EmailExport
         priority: d
         
       TxtHoldingExport:
         type: TxtHoldingExport
+        priority: d
+
+      ScopusCitations:
+        type: Scopus
+        disabled: true
+        priority: d
+        json_api_key: YOUR_SCOPUS_API_KEY
+        partner_id: YOUR_SCOPUS_PARTNER_ID
+        link_salt_key: "YOUR_SCOPUS_LINK_SALT_KEY"
+        
+      # Web of Knowledge API has no api key, but your
+      # IP needs to be registered with them. See source docs
+      # for how. 
+      IsiCitations:
+        type: Isi
+        disabled: true
+        priority: d
+        
+      # Thomson JCR LAMR api has no api key, but your
+      # IP needs to be registered with them. Same registraiton
+      # as for ISI WoK generally. 
+      Jcr:
+        type: Jcr
+        disabled: true
         priority: d
       
         
