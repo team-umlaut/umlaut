@@ -304,7 +304,7 @@ module UmlautConfigurable
         section_title "Request a copy from Inter-Library Loan"
         html_area :main
         visibility :responses_exist
-        bg_update false
+        #bg_update false
       end
       
       add_resolve_sections! do
