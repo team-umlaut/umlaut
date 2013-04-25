@@ -15,6 +15,10 @@
 	* Delete the 'permalinks'	line from your config in controller/umlaut_controller.rb,
 	  it's no longer effective. 
 
+* Better support for configuring multiple service groups, which can be
+  activated or de-activated for any given request. See 
+  https://github.com/team-umlaut/umlaut/wiki/Alternate-service-groups
+
 * Reduced default background AJAX poll wait times, for increased apparent
   responsiveness. 
 
