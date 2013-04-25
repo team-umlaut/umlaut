@@ -107,7 +107,7 @@ class Request < ActiveRecord::Base
     # Exclude params that are for Rails or Umlaut, and don't belong to the
     # context object. Except leave in umlaut.* keys that DO matter for
     # cacheability, like umlaut.institution (legacy) and umlaut.service_group
-    excluded_keys = ["action", "controller", "page", /\Aumlaut\.(?!(institution|service_group)\Z)/, 'rft.action', 'rft.controller']
+    excluded_keys = ["action", "controller", "page", /\Aumlaut\.(?!(institution|service_group\[\])\Z)/, 'rft.action', 'rft.controller']
     co_params.keys.each do |key|
       excluded_keys.each do |exclude|
         co_params.delete(key) if exclude === key;
@@ -412,6 +412,7 @@ class Request < ActiveRecord::Base
   #
   # Returns nil if there aren't any params to include in the fingerprint.
   def self.co_params_fingerprint(params)
+
     # Don't use ctx_time, consider two co's equal if they are equal but for ctx_tim. 
     # exclude cache-busting "_" key that JQuery adds. Fine to bust HTTP cache, but
     # don't want to it to force new Umlaut processing. 

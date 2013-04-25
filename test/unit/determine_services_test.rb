@@ -1,11 +1,11 @@
 require 'test_helper'
 
 
-# Umlaut::ControllerBehavior#create_collection
-#
+# ServiceStore.determine_services
+# 
 # Loads service definitions into a Collection object, based on services configuration
 # and current &umlaut.service_group param. Tests.
-class CreateCollectionTest <  ActiveSupport::TestCase
+class DetermineServicesTest <  ActiveSupport::TestCase
   setup :set_custom_service_store
 
   def set_custom_service_store
@@ -44,7 +44,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
   end
 
   def test_basic
-    service_list = Collection.determine_services(:groups => [], :service_store => @service_store)
+    service_list = @service_store.determine_services
 
     # default group services
     assert_include service_list.keys, "default_a"
@@ -59,7 +59,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
   end
 
   def test_add_groups
-    service_list = Collection.determine_services(:groups => %w[group2 group1], :service_store => @service_store)
+    service_list = @service_store.determine_services %w[group2 group1]
 
     ["default_a", "default_b", "group1_a", "group1_b", "group2_a", "group2_b"].each do |service_id|
       assert_include service_list.keys, service_id
@@ -71,7 +71,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
   end
 
   def test_add_group_no_default
-    service_list = Collection.determine_services(:groups => %w{group1 -default}, :service_store => @service_store)
+    service_list = @service_store.determine_services %w{group1 -default}
 
     # does not include default ones
     assert_nil service_list.keys.find {|id| id.start_with? "default_"}
@@ -84,13 +84,13 @@ class CreateCollectionTest <  ActiveSupport::TestCase
   # Should this raise a clear error instead? For now, we ignore.
   def test_missing_service_group_ignored
     # Not raise
-    service_list = Collection.determine_services(:groups => %w{non_existing_group}, :service_store => @service_store)
+    service_list = @service_store.determine_services %w{non_existing_group}
   end
 
   def test_multi_default_groups
     store = multi_default_group_store
 
-    service_list = Collection.determine_services(:groups => [], :service_store => store)
+    service_list = store.determine_services
 
     assert_include service_list.keys, "default_a"
     assert_include service_list.keys, "other_default_a"
@@ -99,7 +99,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
   def test_multi_default_disable
     store = multi_default_group_store
 
-    service_list = Collection.determine_services(:groups => %w{-other_default}, :service_store => store)
+    service_list = store.determine_services %w{-other_default}
 
     assert_include service_list.keys, "default_a"
     assert_not_include service_list.keys, "other_default_a"
@@ -115,8 +115,8 @@ class CreateCollectionTest <  ActiveSupport::TestCase
 
     req_string = "/?issn=12345678&"
     req     = ActionDispatch::TestRequest.new Rack::MockRequest.env_for(req_string)
-    req_sg1 = ActionDispatch::TestRequest.new Rack::MockRequest.env_for(req_string + "&umlaut.service_group=group1")
-    req_sg2 = ActionDispatch::TestRequest.new Rack::MockRequest.env_for(req_string + "&umlaut.service_group=groupother")
+    req_sg1 = ActionDispatch::TestRequest.new Rack::MockRequest.env_for(req_string + "&umlaut.service_group[]=group1")
+    req_sg2 = ActionDispatch::TestRequest.new Rack::MockRequest.env_for(req_string + "&umlaut.service_group[]=groupother")
 
     fingerprint     = Request.co_params_fingerprint(  Request.context_object_params req  )
     fingerprint_sg1 = Request.co_params_fingerprint(  Request.context_object_params req_sg1  )

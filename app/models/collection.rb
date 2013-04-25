@@ -19,40 +19,7 @@ class Collection
   attr_accessor :response_expire_interval, :response_expire_crontab_format, :background_service_timeout, :requeue_failedtemporary_services
 
 
-  # pass in :groups => array of service group ids. eg. ["group1", "-group2"]
-  #
-  # Returns a list of service definition hashes.
-  #
-  # Start with default group(s). Remove any that are mentioned with "-group_id" in
-  # the group list, add in any that are mentioned with "group_id"
-  #
-  # Can also pass in :service_store => a service store instance (default ServiceStore.global_service_store)
-  def self.determine_services(params = {})
-    params = {
-      :service_store => ServiceStore.global_service_store,
-      :groups => []
-    }.merge(params)
-    specified_groups  = params[:groups]
-    service_store     = params[:service_store]
-
-    services = {}
-
-    activated_service_groups = service_store.config.select do |group_id, group_definition|
-      ((group_id == "default" || group_definition["default"] == true)  ||
-      specified_groups.include?(group_id)) &&
-      ! specified_groups.include?("-#{group_id}")
-    end
-
-    activated_service_groups.each_pair do |group_id, group_definition|
-      services.merge! (group_definition["services"] || {})
-    end
-
-    # Remove any disabled services
-    services.reject! {|service_id, hash| hash && hash["disabled"] == true}
-
-    return services
-  end
-
+  
   # a_umlaut_request is an UmlautRequest, representing a request for services for a context
   # object.
   # service_hash is a hash of hashes with service definitions, as would
