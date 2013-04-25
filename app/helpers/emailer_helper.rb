@@ -1,5 +1,7 @@
 module EmailerHelper
   include ApplicationHelper
+  include Umlaut::Helper
+
 
   # returns a plain text short citation
   def brief_citation(request, options = {})

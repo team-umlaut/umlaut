@@ -1,91 +1,74 @@
-<% 
-=begin
-  jrochkind's alternative partial for displaying holdings. Displays more
-  information to deal with the more information we need to display from
-  our Horizon. In tabular format. Customized for JH's needs, but should
-  be usable by anyone. 
-=end
-%>
+<% holdings = holding.find_all{|response| response.service_type_value_name.eql? "holding" } %>
 
+<% unless holdings.empty? %>
+  <div class="umlaut-holdings"><%
+    # Process each holding.
+    holdings.each do |p|
+      target = p.view_data %>
+      <div class="umlaut-holding">
+        <div class="item_status_row">
+          <div class="collection-and-number row-fluid">
+            <div class="span6 collection-str"><%= target[:collection_str] %></div>
 
-<div class="section_content_indent">
-<% holdings = get_service_type('holding') %>
-<% unless holdings.empty? %>  
-  <table style="width: 100%">
-  <%
-  holdings.each do |p|
-    target = p.view_data
-  %>
-    <tr><td class="holding_heading_row"><h4><%= target[:collection_str] %></h4></td>
-        <td class="holding_heading_row"><span style="white-space: nowrap;"><%= target[:call_number]%></span></td>
-        
-        <% status_class = (target[:status] == "Not Charged" or target[:status] == "Available") ? 'available' : '' %> 
-        
-        <td class="holding_heading_row"><span class="<%= status_class %>"><%= target[:status]   %></span></td>
-        
-        <td class="holding_heading_row"><%= link_to(image_tag("more_info.gif", "border" => 0, "alt" => 'more info'), {:controller=>"link_router", :id=>p.id}, "target" => "_blank") %>
-        
-        <% if target[:request_url] %>
-          <br />       
-          <%= link_to( image_tag("request.gif", "border" => "0", "alt" => "request"),  target[:request_url], "target" => "_blank" ) %>      
+            <% # Set status class based on configured available statuses
+            status_class = umlaut_config.holdings.available_statuses.include?(target[:status]) ? 'umlaut-available' : '' %>
+            <div class="span6 holding-status <%= status_class %>"> <%= target[:status] %></div>
+          </div>
+
+          <div class="status-and-actions row-fluid">
+            <div class="span6 call-number"><%= target[:call_number]%></div>
+            
+            <div class="holding-actions span6">
+              <%= link_to("More info", {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"more-info btn btn-mini") %>
+              <% if target[:request_url] %>
+                <%= link_to("Request", target[:request_url], :target => "_blank", :class=>"request btn btn-mini btn-primary") %>
+              <% end %>
+            </div>
+           
+          </div>
+
+        </div>
+
+        <% if target[:match_reliability].present? && target[:match_reliability] != ServiceResponse::MatchExact %>
+          <div class="umlaut-holding-match-reliability">            
+              <% unless target[:edition_str].blank? %>
+                <em class="note">Edition information</em> <%= target[:edition_str] %>
+              <% else %>
+                <em class="note">May be alternate edition.</em>
+              <% end %>            
+          </div>
         <% end %>
         
-        </td>
-    </tr>    
-    
-    <% if (!target[:match_reliability].blank?) && target[:match_reliability] != ServiceResponse::MatchExact %>
-      <tr>
-        <td colspan="4">
-          <div class="section_content_indent edition_warning">
-            <% unless target[:edition_str].blank? %>
-              <em class="note label">Edition information</em> <%= target[:edition_str] %>
-            <% else %>
-              <em class="note label">May be alternate edition.</em>
-            <% end %>
+        <% if target[:notes].present? %>
+          <div class="umlaut-holding-notes">
+            <%= target[:notes] %>
           </div>
-        </td>
-      </tr>
+        <% end %>
+        
+        <% if target[:coverage_str_array].present? %>
+          <div class="umlaut-holding-coverage">
+            <%= list_with_limit("copies_#{p.id}", target[:coverage_str_array], :limit => 4) do |item, index| %>
+                <li><%= item %></li>
+            <% end %>            
+          </div>
+        <% end %>
+      </div>
     <% end %>
-    
-    <% unless target[:notes].blank? %>
-    <tr>
-    <td colspan="4"><div class="section_content_indent"><%= target[:notes] %></div> </td>
-    </tr>
-    <% end %>
-    
-    <% unless target[:coverage_str_array].blank? %>
-    <tr>
-      <td colspan="4">
-            
-            <%=              
-              list_with_limit("copies_#{p.id}", target[:coverage_str_array]) do |item, index|
-            %>
-              <li><%= item %></li>
-            <% end %>
-            
-      </td>
-    </tr>
-    <% end %>
-  <%
-  end %>
-  </table>
+  </div>
 <% end %>
 
-
-<% 
-if holdings.empty?
-   searches = get_service_type('holding_search')
-    searches.each do | result_st |
-      response = result_st.view_data %>
-      <p><%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %> </p>
-<% 
-   end
-end
-if (holdings.blank? && searches.blank? && ! service_types_in_progress?(['holding', 'holding_search']))
-%>
-<p class="notAvailable">Not Available </p>
-<%
-end %>
-
-
-</div>
+<% if holdings.empty? %>
+  <div class="umlaut-content-indent">
+    <% # Get and display holding searches        
+      searches = holding.find_all{|response| response.service_type_value_name.eql? "holding_search"}
+      searches.each do | result_st |
+        response = result_st.view_data %>
+        <p class="umlaut-holding-search"><%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %></p>
+    <% end %>
+    <% 
+    # Display "Not Available" if we've completed our service run and both holdings and holding searches are empty
+    if (holdings.blank? and searches.blank? and (not service_types_in_progress?(['holding', 'holding_search']))) %>
+      <p class="umlaut-unavailable">Not Available</p>
+    <% end %>
+  </div>
+<% end %>

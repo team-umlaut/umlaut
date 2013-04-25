@@ -115,7 +115,7 @@ class ServiceResponse < ActiveRecord::Base
   def self.create_from_hash(hash)
     r = ServiceResponse.new
     r.take_key_values(hash)
-    return hash
+    return r
   end
 
   # Instantiates and returns a new Service associated with this response.
@@ -154,9 +154,11 @@ class ServiceResponse < ActiveRecord::Base
   def take_key_values(hash)    
     # copy it, cause we're gonna modify it
     hash = hash.clone
+
     hash.each_pair do |key, value|
-      if ( self.class.built_in_fields.include?(key))
-        self.send(key.to_s + '=', value)
+      setter = "#{key.to_s}="      
+      if ( self.respond_to?(setter))
+        self.send(setter, value)
         hash.delete(key)
       end
     end

@@ -37,23 +37,23 @@
       unless n - prev > 1
         prev = n
         if ( n != @page )
-           links << ( link_to n, args.merge({'page' => n }) )
+           links << (content_tag :li, (link_to n, args.merge({'page' => n })), :class => "hidden-phone")
         else
-           links << ( content_tag :span, n )
+           links << (content_tag :li, (content_tag :span, n) )
         end
       else
         # ellipsis represents the gap between windows
         prev = n - 1
-        links << '...'
+        links <<  (content_tag :li, (content_tag :span, "&hellip;".html_safe), :class => "hidden-phone")
         redo
       end
     end
     
     # Next and previous buttons
-    links.unshift(link_to('Previous', args.merge({'page' => @page -1 }))) if @page > 1
-    links.push(link_to('Next', args.merge({'page' => @page + 1}))) if @page < total_pages
+    links.unshift( content_tag :li, (link_to('Previous', args.merge({'page' => @page -1 })))) if @page > 1
+    links.push( content_tag :li, (link_to('Next', args.merge({'page' => @page + 1})))) if @page < total_pages
 %>
-<%= content_tag :div, links.join(' ').html_safe %>
+<%= content_tag :ul, links.join(' ').html_safe %>
 <%
   end
 %>

@@ -1,7 +1,29 @@
 class DissertationCatch < ReferentFilter
    include MetadataHelper
 
-   @@da_issns = ['00959154', '00993123', '04194209', '04194217', '0420073X', '00993123', '10427279', '03076075']
+   # ISSNs taken from http://spotdocs.scholarsportal.info/display/sfxdocs/SFX+and+Dissertations
+   @@da_issns = []
+   @@da_issns << "00994375" # Microfilm abstracts
+   @@da_issns << "00993123" # Dissertation abstracts
+   @@da_issns << "0420073X" # Dissertation abstracts. B, The sciences and engineering
+   @@da_issns << "00959154" # Dissertation abstracts. A, The humanities and social sciences
+   @@da_issns << "04194209" # Dissertation abstracts. A, The humanities and social sciences
+   @@da_issns << "04194217" # Dissertation abstracts. A, The humanities and social sciences
+   @@da_issns << "03076075" # Dissertation abstracts international. C, European abstracts
+   @@da_issns << "10427279" # Dissertation abstracts international. C, Worldwide
+   @@da_issns << "00255106" # Masters abstracts
+   @@da_issns << "08989095" # Masters abstracts international
+   @@da_issns << "1086962X" # Dissertation summaries in mathematics
+   @@da_issns << "10644687" # Dissertation abstracts ondisc
+   @@da_issns << "03616657" # Comprehensive dissertation index. Supplement
+   @@da_issns << "10869700" # Dissertation summaries in chemical engineering
+   @@da_issns << "10869689" # Dissertation summaries in computer sciences
+   @@da_issns << "10869697" # Dissertation summaries in electrical engineering
+   @@da_issns << "10869670" # Dissertation summaries in mechanical engineering
+   # plus one more we've been using
+   @@da_issns << "00993123" # Dissertation Abstracts
+
+
    
   # input: ropenurl ContextObject
   # Is this a citation to a Dissertation Abstracts

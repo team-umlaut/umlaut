@@ -1,109 +1,73 @@
-  
-  
-  <div class="oneColumn">
-  <h1>Journals</h1>
-    
+<h2>Journals</h2>
 <%= render :partial=>"a_to_z" %>
-
-  <% if flash[:error] %>
-    <div id="error" class="notice citationLinker"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
-  <% end %>
-
-  <h2 class="cl_header">Looking for a specific journal or article</h2>
-
-
-                                  
-  <%= form_tag(@submit_hash, {:method=>'get', :class=>"OpenURL", :name=>'OpenURL', :id=>'OpenURL'})  %>
-  <div class="citationLinker">                                      
-
-      <input type=hidden name="rfr_id" value="info:sid/sfxit.com:citation"> 
-      <!-- <input type=hidden name="rfr_id" value="info:sid/umlaut"> -->
-
-      <table width="100%" border="0" cellspacing="0" cellpadding="5">
-        <tr>
-          <td colspan="3" valign="bottom"><strong>Enter
-              the journal title or the ISSN.
-              If you have both the journal
-              title
-      and ISSN, use the ISSN.</strong></td>
-        <input type="hidden" class="rft_title" name="rft.title">
-          <input type="hidden" class="rft_object_id" name="rft.object_id">
-          <input type="hidden" id="date" name="rft.date">
-        </tr>
-        <tr>
-
-                                            
-          <td width="89%">Journal Title:
-
-            <%= text_field :journal, :title, {:name=>'rft.jtitle', :autocomplete=>'off', :size=>'40', :class=>"title_search"} %>
-                    
-            
-            <select name="umlaut.title_search_type" class="sfx_title_search">
-              <option value="contains">contains</option>
-              <option value="begins">begins
-              with</option>
-              <option value="exact">exact match</option>
-            </select>
-            &nbsp;&nbsp;&nbsp;&nbsp;ISSN:
-            <input type=text name="rft.issn" size="10" maxlength="9">
-            
-           
-          </td>
-            
-        </tr>
-                                          
-    </table>
+<% if flash[:error] %>
+  <div id="error" class="notice citationLinker"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
+<% end %>
+<h3>Looking for a specific journal or article</h3>
+<%= form_tag(@submit_hash, {:method => "get", :class => "OpenURL form-inline form-very-inline", :name => "OpenURL", :id=>"OpenURL"})  %>
+  <div class="umlaut-search-form">
+    <fieldset>                                      
+      <legend>Enter the journal title or the ISSN. If you have both the journal title and ISSN, use the ISSN.</legend>
+      <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
+      <%= hidden_field_tag "rft.date", "" %> 
+      <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
+      <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
+      <div class="control-group">
+        <%= label :journal, :title, "Journal Title:", :class => "control-label" %>
+        <%= text_field :journal, :title, {:name=>'rft.jtitle', :class=>"title_search input-xlarge", :autocomplete => "off"} %>
+        <select name="umlaut.title_search_type" class="title_search_type input-medium">
+          <%= options_for_select({"contains" => "contains", "begins with" => "begins", "exact match" => "exact"}, params["umlaut.title_search_type"])  %>
+        </select>
+      </div>
+      <div class="control-group">
+        <%= label :journal, :isbn, "ISSN:", :class=> "control-label" %>
+        <%= text_field :journal, :isbn, {:name=>'rft.issn', :max_length => "9", :class=>"issn input-small"} %>
+      </div>
+    </fieldset>
   </div>
-  <div class="citationLinker">
-    <table width="100%" border="0" cellspacing="0" cellpadding="5">
-      <tr>
-        <td><strong>Optional information - Enter as much as you know of the following: </strong></td>
-      </tr>
-      <tr>
-       
-        <td width="46%">Date: 
-          <%= date %>
-          &nbsp;&nbsp;&nbsp;Volume:
-          <input type=text name="rft.volume" size="5" maxlength="5" value="" class='volume'>&nbsp;&nbsp;&nbsp;Issue:
-          <input type=text name="rft.issue" size="5" value="" class="issue">
-          &nbsp;&nbsp;&nbsp;Start page:
-          <input type=text name="rft.spage" size="5" value="" class='spage'>
-</td>
+  <div class="umlaut-search-form">
+    <fieldset>
+      <legend>Optional information - Enter as much as you know of the following:</legend>
+      <div class="control-group">
+        <label for="year" class="control-label">Date:</label>
+        <%= date %>
+      </div>
+      <div class="control-group">
+        <span class="control-sub-group">
+          <%= label :journal, :volume, "Volume:", :class => "control-label" %>
+          <%= text_field :journal, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume input-tiny"} %>
+        </span>
+        <span class="control-sub-group">
+          <%= label :journal, :issue, "Issue:", :class => "control-label" %>
+          <%= text_field :journal, :issue, {:name=>'rft.issue', :class=>"issue input-tiny"} %>
+        </span>
+        <span class="control-sub-group">
+          <%= label :journal, :spage, "Start page:", :class => "control-label" %>
+          <%= text_field :journal, :spage, {:name=>'rft.spage', :class=>"spage input-tiny"} %>
+        </span>
+      </div>
       
-      </tr>
-      <tr>
-        <td><strong>DOI or Pubmed Identifier: </strong></td>
-      </tr>
-      <tr>
-        <td>
-
-          <select name='rft_id_type'>
-            <option value='doi'>DOI:</option>
-            <option value='pmid'>PMID:</option>
-          </select>&nbsp;&nbsp;&nbsp;
-           <input name="rft_id_value" type=text value="" size=25>
-        </td>
-      </tr>      
-    </table>
+      <div class="control-group">
+        <label for="rft_id_type">DOI or Pubmed Identifier:</label>
+        <select id="rft_id_type" name="rft_id_type" class="input-small">
+          <option value="doi">DOI:</option>
+          <option value="pmid">PMID:</option>
+        </select>
+        <input name="rft_id_value"  type="text" value="">
+      </div>
+    </fieldset>
   </div> 
-    <p class="cl_submit">
+  <%= submit_tag "Search", {:name=>"Generate_OpenURL2", :class => "btn"} %>
+</form>
 
-      <input type="submit" name="Generate_OpenURL2" value="Search">
-    </p>
-                                      </form>
-<div class="line2"></div>
-<p><strong><span id="helpicon">?</span> Having
-    Trouble?</strong></p>
-<p>&nbsp;</p>
-<ul class="bullets">
-  <li>Try entering less information
-    about your article. If one piece of information is wrong, it could be causing
-    the problem.</li>
+<div class="umlaut-separator help-block">
+  <h3><span>Having Trouble?</span></h3>
+  <p>
+    Try entering less information about your article. If one piece of information is wrong, it could be causing the problem.
+  </p>
   <% if umlaut_config.help_url %>
-  <li>For technical support, including access problems, please <a href="<%= umlaut_config.help_url %>">contact us</a>.</li>
+    <p>
+      For technical support, including access problems, please <a href="<%= umlaut_config.help_url %>">contact us</a>.
+    </p>
   <% end %>
-  </ul>
-
-<p>&nbsp;</p>
-<!--close oneColumn-->
-  </div>
+</div>

@@ -24,15 +24,15 @@ module ExportEmailHelper
   end
 
   def validation_error(errors)
-    return content_tag(:div, :class => "validation_errors") do
-      return content_tag(:span, "Please provide the following:") + 
-        content_tag(:ul) do 
-          e = "".html_safe
-          errors.each do |error|
-            e << content_tag(:li, error)
-          end
-          e
+    validation_errors = content_tag(:div, :class => "alert alert-error") do
+      content_tag(:span, "Please provide the following:") + content_tag(:ul) do 
+        e = "".html_safe
+        errors.each do |error|
+          e << content_tag(:li, error)
         end
+        e
+      end
     end
+    validation_errors
   end
 end

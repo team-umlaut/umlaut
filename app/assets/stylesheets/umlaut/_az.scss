@@ -1,0 +1,29 @@
+// Az links based on bootstrap pagination, but tweaked, among other
+// things to wrap better. a-z links are ridiculous, but expected by
+// our users. 
+.umlaut-az {
+  @include clearfix;
+  a, span {
+    float: left;
+    margin-bottom: $baseLineHeight / 4;
+    margin-right: $baseLineHeight / 4;
+    @include border-radius(4px);
+    padding: 4px 8px;
+    border: 1px solid $umlautAzBorderColor;
+    line-height: $baseLineHeight;
+    text-decoration: none;
+    color: $umlautAzLinkColor;
+    background-color: $paginationBackground;
+    &:hover {
+      background-color: $paginationActiveBackground;
+    }
+
+    &.active {
+      background-color: transparent;
+      color: inherit;
+      &:hover {
+      background-color: transparent;;
+      }
+    }
+  }
+}

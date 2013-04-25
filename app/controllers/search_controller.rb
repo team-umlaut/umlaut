@@ -102,6 +102,11 @@ class SearchController < UmlautController
       # 0 hits, do it too.
       redirect_to(  url_for_with_co({:controller => 'resolve'}, @search_context_object) )
     end
+    @page_title = 'Journal titles that '
+    @page_title +=
+      (params["umlaut.title_search_type"] == "begins") ?
+        'begin with ' : 'contain '
+    @page_title += "'" + params['rft.jtitle'] + "'"
   end
 
   # Used for browse-by-letter
@@ -115,6 +120,8 @@ class SearchController < UmlautController
     if @end_result_num > @hits
       @end_result_num = @hits
     end
+    # TODO: Make page titles configurable
+    @page_title = "Browse by Journal Title: #{params['id']}"
     # Use our ordinary search displayer to display
     # It'll notice the action and do just a bit of special stuff.
     render(:template => "search/journal_search")

@@ -313,18 +313,6 @@ class SectionRenderer
     (! show_partial_only?) && @options[:show_heading]
   end
   
-  def render_heading
-    content_tag(:div, :class=>"section_heading") 
-    
-    output = ''
-
-      output <<= '<div class="section_heading">' 
-      (output <<= '<h3>' << CGI::escapeHTML(section_title) << '</h3>') if section_title      
-      (output <<= '<p class="section_prompt">' << CGI::escapeHTML(section_prompt) << '</p>') if section_prompt      
-      output <<= '</div>'
-      
-    output.html_safe
-  end
 
   def show_spinner?
     (! show_partial_only?) && @options[:show_spinner] &&

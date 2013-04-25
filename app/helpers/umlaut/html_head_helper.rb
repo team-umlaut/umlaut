@@ -29,4 +29,5 @@ module Umlaut::HtmlHeadHelper
   def umlaut_title_text
     umlaut_config.app_name + (@page_title ? " | #{@page_title}" : "")
   end
+  
 end

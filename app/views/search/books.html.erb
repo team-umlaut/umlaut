@@ -1,103 +1,35 @@
-  <div class="oneColumn">
-  <h1>Books</h1>
-
-<%= form_tag({:controller=>'resolve', :action=>@submit_action}, {:method=>'get'}) %>
-  <div class="citationLinker">                                      
-
-<input type=hidden name="url_ver" value="Z39.88-2004">
-<input type=hidden name="url_ctx_fmt" value="info:ofi/fmt:kev:mtx:ctx">
-<input type=hidden name="ctx_ver" value="Z39.88-2004">
-<input type=hidden name="rfr_id" value="info:sid/umlaut.code4lib.org:citation">
-<input type=hidden name="rft_val_fmt" value="info:ofi/fmt:kev:mtx:book">
-<input type=hidden name="rft.genre" value="book">
-
-<table>
-                                </tr>
-                                    <td align="right" >book title</td>
-
-                                    <td><input
-                                            type=text
-                                            name="rft.btitle"
-                                            size="33"
-                                            value=""></td>
-                                </tr>
-                                <tr>
-                                    <td align="right" >year</td>
-                                    <td>
-                                        <input type=text name="rft.date" size="10" value="">
-                                                                            </td>
-                                </tr>
-
-                                <tr>
-                                    <td align="right" >volume</td>
-                                    <td>
-                                        <input
-                                            type=text
-                                            name="rft.volume"
-                                            size="5"
-                                            maxlength="5"
-                                            value="">
-                                        part <input
-                                                type=text
-                                                name="rft.part"
-                                                size="5"
-                                                value="">
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="right" >isbn</td>
-                                    <td>
-                                        <input
-                                            type=text
-                                            name="rft.isbn"
-                                            size="17"
-                                            maxlength="17"
-                                            value="">
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td align="right" >author</td>
-                                    <td>
-                                        <table border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td >last name</td>
-                                                <td >first name</td>
-
-                                                <td >initials</td>
-                                            </tr>
-                                            <tr>
-                                                <td><input
-                                                        type=text
-                                                        name="rft.aulast"
-                                                        size="12"
-                                                        value=""></td>
-                                                <td><input
-                                                        type=text
-                                                        name="rft.aufirst"
-                                                        size="10"
-                                                        value=""></td>
-                                                <td><input
-                                                        type=text
-                                                        name="rft.auinit"
-                                                        size="4"
-                                                        value=""></td>
-                                            </tr>
-                                        </table>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="80%" align="right">
-                                      &nbsp;               
-                                    </td>
-                                    <td colspan="20%" align="right">
-                                        <input type="submit"  value="search"></td>
-                                    </td>
-
-                                </tr>
-                            </table>
-</div>                        
-</form>
+<div class="oneColumn">
+  <h2>Books</h2>
+  <%= form_tag({:controller=>'resolve', :action=>@submit_action}, {:method=>'get'}) %>
+    <fieldset class="citationLinker">                                      
+      <%= hidden_field_tag "rfr_id", "info:sid/umlaut.code4lib.org:citation" %> 
+      <%= hidden_field_tag "url_ver", "Z39.88-2004" %> 
+      <%= hidden_field_tag "url_ctx_fmt", "info:ofi/fmt:kev:mtx:ctx" %> 
+      <%= hidden_field_tag "ctx_ver", "Z39.88-2004" %> 
+      <%= hidden_field_tag "rft_val_fmt", "info:ofi/fmt:kev:mtx:book" %> 
+      <%= hidden_field_tag "rft.genre", "book" %> 
+      <%= label :book, :title, "Book Title:" %>
+      <%= text_field :book, :title, {:name=>'rft.btitle', :class=>"title_search"} %>
+      <%= label :book, :date, "Year:" %>
+      <%= text_field :book, :date, {:name=>'rft.date', :class=>"date"} %>
+      <%= label :book, :volume, "Volume:" %>
+      <%= text_field :book, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume"} %>
+      <%= label :book, :part, "Part:" %>
+      <%= text_field :book, :part, {:name=>'rft.part', :class=>"part"} %>
+      <%= label :book, :isbn, "ISBN:" %>
+      <%= text_field :book, :isbn, {:name=>'rft.isbn', :max_length => "17", :class=>"isbn"} %>
+    </fieldset>
+    <fieldset class="citationLinker">                                      
+      <legend>Author</legend>
+      <%= label :book, :aulast, "Last Name:" %>
+      <%= text_field :book, :aulast, {:name=>'rft.aulast', :class=>"aulast"} %>
+      <%= label :book, :aufirst, "First Name:" %>
+      <%= text_field :book, :aufirst, {:name=>'rft.aufirst', :class=>"aufirst"} %>
+      <%= label :book, :auinit, "Initials:" %>
+      <%= text_field :book, :auinit, {:name=>'rft.auinit', :class=>"auinit"} %>
+    </fieldset>
+    <fieldset>                                      
+      <%= submit_tag "Search", :class => "btn" %>
+    </fieldset>
+  </form>
 </div>

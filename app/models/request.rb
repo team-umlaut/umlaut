@@ -91,7 +91,7 @@ class Request < ActiveRecord::Base
   # We pull out a hash of request params (get and post) that
   # define a context object. We use CGI::parse instead of relying
   # on Rails parsing because rails parsing ignores multiple params
-  # with same key value, which is legal in CGI.
+  # with same key value, which is legal in CGI and is sometimes used in OpenURLs. 
   #
   # So in general values of this hash will be an array.
   # ContextObject.new_from_form_vars is good with that. 

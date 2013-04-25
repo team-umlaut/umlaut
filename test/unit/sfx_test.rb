@@ -32,5 +32,7 @@ class SfxTest < ActiveSupport::TestCase
     nytimes_request.service_responses.reload
     assert_equal 10, nytimes_request.service_responses.size
     first_service_response = nytimes_request.service_responses.first
+    assert_not_nil(first_service_response.view_data[:proxy], "Proxy is nil")
+    assert(first_service_response.view_data[:proxy], "Proxy is false")
   end
 end

@@ -231,7 +231,7 @@ class SfxTargetRollUpTest < ActiveSupport::TestCase
       assert new_list.find {|r| r[:sfx_target_name] == "HIGHWIRE_PRESS_JOURNALS"}
     end
     
-    def test_roll_up_responses_yes_coverage_sensitive
+    def test_roll_up_responses_yes_coverage_sensitive_starts_with
       sfx = Sfx.new({'priority' => 1, 
                      'base_url' => "http://example.org",
                      'roll_up_prefixes' => ["EBSCOHOST_", "JSTOR_", "PROQUEST_", "NODATES_", "UNBOUNDED_"]
@@ -277,93 +277,93 @@ class SfxTargetRollUpTest < ActiveSupport::TestCase
     # for journal Science, but then modding to exhibit various kinds
     # of coverage overlap to test them all. 
     @@svc_list_example_science = [
-        ServiceResponse.create_from_hash(:display_text => "JSTOR Early Journal Content",
+        { :display_text => "JSTOR Early Journal Content",
           :sfx_target_name => "JSTOR_EARLY_JOURNAL_CONTENT_FREE",
           :coverage_begin_date => Date.new(1880,1,1),
           :coverage_end_date => Date.new(1922,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "JSTOR_LIFE_SCIENCES_COLLECTION",
+        },
+        { :display_text => "JSTOR_LIFE_SCIENCES_COLLECTION",
           :sfx_target_name => "JSTOR_LIFE_SCIENCES_COLLECTION",
           :coverage_begin_date => Date.new(1880,1,1),
           :coverage_end_date => Date.new(2007,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "EBSCOHOST_ACADEMIC_SEARCH_COMPLETE",
+        },
+        { :display_text => "EBSCOHOST_ACADEMIC_SEARCH_COMPLETE",
           :sfx_target_name => "EBSCOHOST_ACADEMIC_SEARCH_COMPLETE",
           :coverage_begin_date => Date.new(1997,1,1),
           :coverage_end_date => Date.new(2010,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "EBSCOHOST_HEALTH_SOURCE_NURSING_ACADEMIC",
+        },
+        { :display_text => "EBSCOHOST_HEALTH_SOURCE_NURSING_ACADEMIC",
           :sfx_target_name => "EBSCOHOST_HEALTH_SOURCE_NURSING_ACADEMIC",
           :coverage_begin_date => Date.new(1997,1,1),
           :coverage_end_date => Date.new(2004,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "EBSCOHOST_MAS_ULTRA_SCHOOL_EDITION",
+        },
+        { :display_text => "EBSCOHOST_MAS_ULTRA_SCHOOL_EDITION",
           :sfx_target_name => "EBSCOHOST_MAS_ULTRA_SCHOOL_EDITION",
           :coverage_begin_date => Date.new(1997,1,1),
           :coverage_end_date => Date.new(2006,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "EBSCOHOST_MASTERFILE_PREMIER",
+        },
+        { :display_text => "EBSCOHOST_MASTERFILE_PREMIER",
           :sfx_target_name => "EBSCOHOST_MASTERFILE_PREMIER",
           :coverage_begin_date => Date.new(1997,1,1),
           :coverage_end_date => Date.new(2004,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "HIGHWIRE_PRESS_JOURNALS",
+        },
+        { :display_text => "HIGHWIRE_PRESS_JOURNALS",
           :sfx_target_name => "HIGHWIRE_PRESS_JOURNALS",
           :coverage_begin_date => Date.new(1997,1,1),
           :coverage_end_date => Date.new(2006,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "PROQUEST_CENTRAL_NEW_PLATFORM",
+        },
+        { :display_text => "PROQUEST_CENTRAL_NEW_PLATFORM",
           :sfx_target_name => "PROQUEST_CENTRAL_NEW_PLATFORM",
           :coverage_begin_date => Date.new(1988,1,1),
           :coverage_end_date => Date.new(2005,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "PROQUEST_ENGINEERING_JOURNALS_NEW_PLATFORM",
+        },
+        { :display_text => "PROQUEST_ENGINEERING_JOURNALS_NEW_PLATFORM",
           :sfx_target_name => "PROQUEST_ENGINEERING_JOURNALS_NEW_PLATFORM",
           :coverage_begin_date => Date.new(1980,1,1),
           :coverage_end_date => Date.new(2000,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "PROQUEST_MEDLINE_WITH_FULLTEXT",
+        },
+        { :display_text => "PROQUEST_MEDLINE_WITH_FULLTEXT",
           :sfx_target_name => "PROQUEST_MEDLINE_WITH_FULLTEXT",
           :coverage_begin_date => Date.new(1988,1,1),
           :coverage_end_date => Date.new(2005,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "GALEGROUP_GREENR",
+        },
+        { :display_text => "GALEGROUP_GREENR",
           :sfx_target_name => "GALEGROUP_GREENR",
           :coverage_begin_date => Date.new(1983,1,1),
           :coverage_end_date => Date.new(2005,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "GALEGROUP_BIOGRAPHY_IN_CONTEXT",
+        },
+        { :display_text => "GALEGROUP_BIOGRAPHY_IN_CONTEXT",
           :sfx_target_name => "GALEGROUP_GREENR",
           :coverage_begin_date => Date.new(1983,1,1),
           :coverage_end_date => Date.new(2005,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "no dates no prefix does not raise",
+        },
+        { :display_text => "no dates no prefix does not raise",
           :sfx_target_name => "UNRELATED_WHATEVER"
-          ),
-        ServiceResponse.create_from_hash(:display_text => "prefix, two no dates 1",
+        },
+        { :display_text => "prefix, two no dates 1",
           :sfx_target_name => "NODATES_ONE"
-          ),
-        ServiceResponse.create_from_hash(:display_text => "prefix, two no dates 2",
+        },
+        { :display_text => "prefix, two no dates 2",
           :sfx_target_name => "NODATES_TWO"
-          ),
-        ServiceResponse.create_from_hash(:display_text => "prefix, two no dates 3",
+        },
+        { :display_text => "prefix, two no dates 3",
           :sfx_target_name => "NODATES_THREE"
-          ),
-        ServiceResponse.create_from_hash(:display_text => "UNBOUNDED_ONE",
+        },
+        { :display_text => "UNBOUNDED_ONE",
           :sfx_target_name => "UNBOUNDED_ONE",
           :coverage_begin_date => nil,
           :coverage_end_date => Date.new(2005,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "UNBOUNDED_TWO",
+        },
+        { :display_text => "UNBOUNDED_TWO",
           :sfx_target_name => "UNBOUNDED_TWO",
           :coverage_begin_date => Date.new(1983,1,1),
           :coverage_end_date => Date.new(2005,12,31)
-          ),
-        ServiceResponse.create_from_hash(:display_text => "UNBOUNDED_THREE",
+        },
+        { :display_text => "UNBOUNDED_THREE",
           :sfx_target_name => "UNBOUNDED_THREE",
           :coverage_begin_date => Date.new(2000,1,1),
           :coverage_end_date => nil
-          )
+        }
       ]
   
 end

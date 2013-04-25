@@ -25,7 +25,9 @@ module UmlautConfigurable
   # to initialize
   def self.set_default_configuration!(configuration)
     configuration.configure do
-      app_name 'Find It'
+      app_name 'Find It'  
+      # Different navbar title? Defaults to app_name    
+      header_title deferred! {|c| c.app_name}
       # URL to image to use for link resolver, OR name of image asset in local app. 
       #link_img_url "http//something"
       
@@ -75,11 +77,7 @@ module UmlautConfigurable
       # hash, key is regexp to match a sid, value is filter object
       # (see lib/referent_filters )        
       add_referent_filters!( :match => /.*/, :filter => DissertationCatch.new ) 
-      
-      
-      # Create a permalink short URL for every request?
-      create_permalinks true
-        
+                  
       # skip_resolve_menu can be used to control 'direct' linking, skipping
       # the resolve menu to deliver a full text link or other resource
       # directly to the user.
@@ -115,7 +113,12 @@ module UmlautConfigurable
       
       # How many seconds between updates of the background updater for background
       # services?
-      poll_wait_seconds 4
+      poll_wait_seconds 3
+      # The FIRST AJAX callback for bg tasks should be much quicker. So we
+      # get any bg tasks that executed nearly instantaneously, and on page
+      # refresh when bg is really all loaded on back-end, but still needs JS to 
+      # fetch it. 
+      initial_poll_wait_seconds 0.300
       
       # if a background service hasn't returned in this many seconds, consider
       # it failed. (May actually be slow, more likely raised an exception and
@@ -204,6 +207,12 @@ module UmlautConfigurable
         #sfx_load_ignore_hosts  [/.*\.archive\.org/, /www\.netlibrary\.com/, 'www.loc.gov']
         sfx_load_ignore_hosts  []        
       end
+      
+      # config only relevant to holdings display
+      holdings do
+        # Holding statuses that should be styled as "Available"
+        available_statuses ["Not Charged", "Available"]
+      end
     
       # Output timing of service execution to logs
       log_service_timing (Rails.env == "development")
@@ -252,19 +261,19 @@ module UmlautConfigurable
         show_heading false
         show_spinner false
       end
-      
-      add_resolve_sections! do
-        div_id "search_inside"
-        html_area :resource_info
-        partial "search_inside"
-        show_partial_only true
-      end
-      
+            
       add_resolve_sections! do
         div_id "fulltext"    
         section_title "Online Access"
         html_area :main
         partial :fulltext
+        show_partial_only true
+      end
+
+      add_resolve_sections! do
+        div_id "search_inside"
+        html_area :main
+        partial "search_inside"
         show_partial_only true
       end
       
@@ -295,7 +304,7 @@ module UmlautConfigurable
         section_title "Request a copy from Inter-Library Loan"
         html_area :main
         visibility :responses_exist
-        bg_update false
+        #bg_update false
       end
       
       add_resolve_sections! do

@@ -13,20 +13,23 @@ class ResolveControllerTest < ActionController::TestCase
     assert_response :success
     assert_select "title", "Find It | The New York times"
     assert_select "h1", "Find It"
-    assert_select "h1", "Find Resource"
-    assert_select ".umlaut_resolve .main_column .resource_info table table#citation" do |citation_tables|
-      assert_equal 1, citation_tables.size
-      citation_tables.each do |citation_table|
-        assert_select citation_table, "tr", 2
-        assert_select citation_table, "tr" do |trs|
-          assert_select trs.first, "td.largeTextb", :count => 1, :text => "Title:"
-          assert_select trs.first, "td.largeText", :count => 1, :text => "The New York times"
-          assert_select trs.last, "td div.smallTextb", :count => 1, :text => "ISSN:"
-          assert_select trs.last, "td span.smallText", :count => 1, :text => "0362-4331"
+    assert_select "h2.title", "The New York times"
+
+    assert_select ".umlaut-main .umlaut-resource-info dl.citation-info" do |dls|
+      assert_equal 1, dls.size
+      dls.each do |dl|
+        assert_select dl, "dt", 1
+        assert_select dl, "dt" do |dts|
+          assert dts.last, "ISSN:"
+        end
+        assert_select dl, "dd", 1
+        assert_select dl, "dd" do |dds|
+          assert dds.last, "0362-4331"
         end
       end
     end
-    assert_select ".umlaut_resolve .main_column .umlaut_section.fulltext" do |sections|
+    # puts @response.body
+    assert_select ".umlaut-main .umlaut-section.fulltext" do |sections|
       assert_equal 1, sections.size
       sections.each do |section|
         assert_select section, ".response_list", 1
@@ -35,19 +38,32 @@ class ResolveControllerTest < ActionController::TestCase
         end
       end
     end
-    assert_select ".umlaut_resolve .main_column .umlaut_section.holding" do |sections|
+    assert_select ".umlaut-main .umlaut-section.holding" do |sections|
       assert_equal 1, sections.size
       sections.each do |section|
-        assert_select section, "table", 1
+        assert_select section, ".umlaut-holdings", 1
+        assert_select section, ".umlaut-holdings .umlaut-holding" do |holdings|
+          # This record only has 1 holding
+          assert_equal 1, holdings.size
+          holdings.each do |holding|
+            # Make sure the edition warning shows up.
+            assert_select holding, ".umlaut-holding-match-reliability", 1
+            # Make sure the coverage shows up.
+            assert_select holding, ".umlaut-holding-coverage", 1
+            assert_select holding, ".umlaut-holding-coverage li", 2
+            # Make sure the notes show up.
+            assert_select holding, ".umlaut-holding-notes", 1
+          end
+        end
       end
     end
-    assert_select ".umlaut_resolve .sidebar .umlaut_section.export_citation" do |sections|
+    assert_select ".umlaut-sidebar .umlaut-section.export_citation" do |sections|
       assert_equal 1, sections.size
       sections.each do |section|
         assert_select section, ".response_list", 1
       end
     end
-    assert_select ".umlaut_resolve .sidebar .umlaut_section.highlighted_link" do |sections|
+    assert_select ".umlaut-sidebar .umlaut-section.highlighted_link" do |sections|
       assert_equal 1, sections.size
       sections.each do |section|
         assert_select section, ".response_list", 1

@@ -27,6 +27,22 @@ class ResolveController < UmlautController
     end
   end
 
+  # Return permalink for request, creating one if it doesn't already exist.
+  # Usually called by AJAX, to create on-demand permalink. 
+  def get_permalink
+    unless current_permalink_url
+      permalink = Permalink.new_with_values!(@user_request.referent, @user_request.referrer_id)            
+      @user_request.referent.permalinks << permalink
+    end
+
+    respond_to do |format|
+      format.html 
+      format.json do         
+        render :json => {:permalink => current_permalink_url}
+      end
+    end    
+  end
+
   # inputs an OpenURL request into the system and stores it, but does
   # NOT actually dispatch services to provide a response. Will usually
   # be called by software, not a human browser. Sometimes

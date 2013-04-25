@@ -302,11 +302,12 @@ module MetadataHelper
   end
 
   # Look at weird bad OpenURLs, use heuristics to see if the 'title' probably
-  # represents a journal rather than a book. 
-  def title_is_serial?(rft)
-    (rft.format != "book" &&
-    ( ! rft.metadata['jtitle'].blank?) &&
-    rft.metadata['btitle'].blank?)    
+  # represents a journal rather than a book. A guess at best, based on the bad
+  # data we've seen, sigh. 
+  def title_is_serial?(rft)    
+    rft.format != "book" &&
+    ( rft.metadata['jtitle'].present? || %w{journal article}.include?(rft.metadata["genre"]) ) &&
+    rft.metadata['btitle'].blank?
   end
   
 end

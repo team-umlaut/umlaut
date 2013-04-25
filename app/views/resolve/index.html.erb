@@ -1,73 +1,47 @@
-
 <%= render :partial=>'background_updater' %>
+<div class="row-fluid">
 
- 
-<div class="umlaut_resolve"> <!-- actual wrapper for both columns -->
-  <div class="main_column"> 
-
-  
-    <h1>Find <%=@user_request.referent.type_of_thing.titlecase %></h1>
+  <div class="span8 umlaut-main"> 
     
-    <div class="resource_info">
-      <table width="100%" cellpadding="3" cellspacing="0">
-        <tr>
-          <td>      
+    <div class="umlaut-resource-info">
+          <div class="resource_info_sections">
+            <%= render :partial=> "manually_entered_warning" %>
+
             <%= render :partial=>'citation' %>
-  
-            <div class="resource_info_sections">
-              <% html_sections(:resource_info).each do |section|
-              %>
-                <%= content_tag "div", :id => section[:div_id] do %>
-                  <%= render_section(section) %>
-                <% end %>
+            <% html_sections(:resource_info).each do |section| %>
+              <%= content_tag "div", :id => section[:div_id] do %>
+                <%= render_section(section) %>
               <% end %>
-            </div>
-            
-          </td>
+            <% end %>
+          </div>
           
-          <td align='right'>
-            <div id="cover_image">
-              <%= render_section(html_section_by_div_id("cover_image")) %>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </div>  
-    
-    
+          <%# need a div here for ajax bg loader to put bg loaded cover into %>
+          <div id="cover_image">
+            <%= render_section(html_section_by_div_id("cover_image")) %>
+          </div>
+
+    </div>
+
     <div class="main_response_list">
-      <% html_sections(:main).each do |section|
-      %>
+      <% html_sections(:main).each do |section| %>
         <%= content_tag "div", :id => section[:div_id] do %>
           <%= render_section(section) %>
         <% end %>
       <% end %>
     </div>
-  
-  <!--close mainColumn-->
-  </div>
-  
-  <div id="rightColumn" class="sidebar">
-  
-      <% html_sections(:sidebar).each do |section|
-      %>
-        <%= content_tag "div", :id => section[:div_id] do %>
-          <%= render_section(section) %>
-        <% end %>
+</div>
+
+  <div class="span4 umlaut-sidebar">
+    <% html_sections(:sidebar).each do |section| %>
+      <%= content_tag "div", :id => section[:div_id] do %>
+        <%= render_section(section) %>
       <% end %>
-  
-    <!-- service errors -->
+    <% end %>
     <div id="service_errors">
       <% html_sections(:service_errors).each do |section| %>
         <%= render_section(section) %>
       <% end %>
     </div>
-    
   </div>
-  
-
-<!-- close bothColumns --> 
-</div> 
-
-
-
+  <%= render :partial=>"modal" %>
+</div>

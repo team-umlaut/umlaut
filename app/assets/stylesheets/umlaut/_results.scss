@@ -1,0 +1,34 @@
+.umlaut-results {
+  @extend .umlaut-separator;
+   background-color: $umlautResultsBackgroundColor;
+}
+
+.umlaut-result {
+  background-color: $umlautResultItemBackgroundColor;
+  border-color:     $umlautResultItemBorderColor;
+  margin-bottom: $baseLineHeight/2;
+  dl {
+    margin: 0;
+    dt, dd {
+      margin-bottom: $baseLineHeight/4;
+    }
+  }
+
+  padding: $umlautIndent;
+
+  .umlaut-citation-link {
+    text-align: right;
+  }
+}
+
+.umlaut-pagination {
+  font-size: 125%;
+}
+
+@media (max-width: 767px) {
+  .umlaut-result {
+    .umlaut-citation-link {
+      text-align: left;
+    }
+  }
+}
