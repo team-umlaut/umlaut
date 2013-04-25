@@ -82,12 +82,6 @@
       .umlaut-holding-match-reliability, .umlaut-holding-notes, .umlaut-holding-coverage {
         margin: ($baseLineHeight / 3) 0 ($baseLineHeight / 3) $umlautIndent;        
       }
-      .holding-actions  {
-        .btn {
-          // Make em like a button-mini but with big text
-          font-size: $baseFontSize;
-        }
-      }
       .item_status_row {
         min-height: 0;
       }  
