@@ -7,7 +7,7 @@
 
 // Main section styles
 .umlaut-main {  
-  padding-right: $umlautContainerPadding;
+  padding-right: ($umlautContainerPadding * 2);
 }
 
 .response_list {
