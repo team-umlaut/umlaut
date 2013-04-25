@@ -9,6 +9,10 @@
   # all options are neccesarily listed as examples here, see source
   # or source-generated docs for more info.   
 
+  # The services in the 'default' group are loaded every time. 
+  # You can optionally create other groups of services, that can be loaded
+  # by URL query params, or based on other request params. More info?
+
 default:
     services:
       

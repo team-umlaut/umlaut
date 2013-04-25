@@ -1,4 +1,5 @@
 require 'digest/md5'
+require 'cgi'
 
 # An ActiveRecord which represents a parsed OpenURL resolve service request,
 # and other persistent state related to Umlaut's handling of that OpenURL 
@@ -24,6 +25,9 @@ class Request < ActiveRecord::Base
   # options[:allow_create] => false, will not create a new request, return
   # nil if no existing request can be found. 
   def self.find_or_create(params, session, a_rails_request, options = {} )
+
+
+
     # Pull out the http params that are for the context object,
     # returning a CGI::parse style hash, customized for what
     # ContextObject.new_from_form_vars wants. 
@@ -47,8 +51,15 @@ class Request < ActiveRecord::Base
     request_id = nil if req == nil
 
     # Serialized fingerprint of openurl http params, suitable for looking
-    # up in the db to see if we've seen it before. 
-    param_fingerprint = self.co_params_fingerprint( co_params )
+    # up in the db to see if we've seen it before. We got our co_params
+    # direct from parsing path ourselves, but in case a before_filter
+    # added in certain other params after that, we want to merge them in
+    # too. 
+    fingerprintable_params = co_params.merge(
+      {"umlaut.service_group" => params["umlaut.service_group"]}.delete_if {|k, v| v.blank?} 
+    )
+    param_fingerprint = self.co_params_fingerprint( fingerprintable_params )
+    
     client_ip = params['req.ip'] || a_rails_request.remote_ip()
     
     unless (req || params["umlaut.force_new_request"] == "true" || param_fingerprint.blank? )
@@ -86,8 +97,7 @@ class Request < ActiveRecord::Base
   # ContextObject.new_from_form_vars is good with that. 
   # Exception is url_ctx_fmt and url_ctx_val, which we'll
   # convert to single values, because ContextObject wants it so. 
-  def self.context_object_params(a_rails_request)
-    require 'cgi'
+  def self.context_object_params(a_rails_request)   
     
     # GET params
     co_params = CGI::parse( a_rails_request.query_string )    
@@ -102,9 +112,9 @@ class Request < ActiveRecord::Base
     co_params.delete(nil)
 
     # Exclude params that are for Rails or Umlaut, and don't belong to the
-    # context object. Except leave in umlaut.institution, that matters for
-    # cachability. 
-    excluded_keys = ["action", "controller", "page", /^umlaut\.(?!institution)/, 'rft.action', 'rft.controller']
+    # context object. Except leave in umlaut.* keys that DO matter for
+    # cacheability, like umlaut.institution (legacy) and umlaut.service_group
+    excluded_keys = ["action", "controller", "page", /\Aumlaut\.(?!(institution|service_group\[\])\Z)/, 'rft.action', 'rft.controller']
     co_params.keys.each do |key|
       excluded_keys.each do |exclude|
         co_params.delete(key) if exclude === key;
@@ -409,6 +419,7 @@ class Request < ActiveRecord::Base
   #
   # Returns nil if there aren't any params to include in the fingerprint.
   def self.co_params_fingerprint(params)
+
     # Don't use ctx_time, consider two co's equal if they are equal but for ctx_tim. 
     # exclude cache-busting "_" key that JQuery adds. Fine to bust HTTP cache, but
     # don't want to it to force new Umlaut processing. 

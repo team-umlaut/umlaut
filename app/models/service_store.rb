@@ -91,6 +91,32 @@ class ServiceStore
     return service_definitions[service_id]
   end
 
+  # pass in array of service group ids. eg. ["group1", "-group2"]
+  #
+  # Returns a list of service definition hashes.
+  #
+  # Start with default group(s). Remove any that are mentioned with "-group_id" in
+  # the group list, add in any that are mentioned with "group_id"
+  def determine_services(specified_groups = [])    
+    services = {}
+
+    activated_service_groups = self.config.select do |group_id, group_definition|
+      ((group_id == "default" || group_definition["default"] == true)  ||
+      specified_groups.include?(group_id)) &&
+      ! specified_groups.include?("-#{group_id}")
+    end
+
+    activated_service_groups.each_pair do |group_id, group_definition|
+      services.merge! (group_definition["services"] || {})
+    end
+
+    # Remove any disabled services
+    services.reject! {|service_id, hash| hash && hash["disabled"] == true}
+
+    return services
+  end
+
+
   # pass in string unique key OR a service definition hash,
   # and a current UmlautRequest.
   # get back instantiated Service object.
