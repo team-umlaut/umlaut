@@ -4,7 +4,7 @@ require 'test_helper'
 # Umlaut::ControllerBehavior#create_collection
 #
 # Loads service definitions into a Collection object, based on services configuration
-# and current &umlaut.service_group param. Tests. 
+# and current &umlaut.service_group param. Tests.
 class CreateCollectionTest <  ActiveSupport::TestCase
   setup :set_custom_service_store
 
@@ -12,7 +12,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
     dummy = {"type" => "DummyService", "priority" => 3}
 
     # This would normally be loaded as YAML, we're going to set it
-    # directly. 
+    # directly.
     service_declerations = {
       "default" => {
         "services" => {
@@ -28,7 +28,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
           "group1_b"        => dummy.clone,
           "group1_disabled"  => dummy.clone.merge("disabled" => true)
         }
-      },      
+      },
 
       "group2" => {
         "services" => {
@@ -40,7 +40,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
     }
 
     @service_store = ServiceStore.new
-    @service_store.config = service_declerations    
+    @service_store.config = service_declerations
   end
 
   def test_basic
@@ -52,7 +52,7 @@ class CreateCollectionTest <  ActiveSupport::TestCase
 
     # but not the disabled one
     assert_not_include service_list.keys, "default_disabled"
-  
+
     # No group1 or group2
     assert_nil service_list.keys.find {|key| key.start_with? "group1"}
     assert_nil service_list.keys.find {|key| key.start_with? "group2"}
@@ -81,14 +81,33 @@ class CreateCollectionTest <  ActiveSupport::TestCase
     assert_include service_list.keys, "group1_b"
   end
 
-  # Should this raise a clear error instead? For now, we ignore. 
+  # Should this raise a clear error instead? For now, we ignore.
   def test_missing_service_group_ignored
-    # Not raise    
+    # Not raise
     service_list = Collection.determine_services(:groups => %w{non_existing_group}, :service_store => @service_store)
   end
 
+  def test_multi_default_groups
+    store = multi_default_group_store
+
+    service_list = Collection.determine_services(:groups => [], :service_store => store)
+
+    assert_include service_list.keys, "default_a"
+    assert_include service_list.keys, "other_default_a"
+  end
+
+  def test_multi_default_disable
+    store = multi_default_group_store
+
+    service_list = Collection.determine_services(:groups => %w{-other_default}, :service_store => store)
+
+    assert_include service_list.keys, "default_a"
+    assert_not_include service_list.keys, "other_default_a"
+  end
+
+
   # A terrible way and place to test this, but our legacy code is tricky, currently
-  # consider this better than nothing. =  
+  # consider this better than nothing. =
   #
   # the Request.co_params_fingerprint must take account of new "umlaut.service_group", to make sure
   # a cached request same but for different umlaut.service_group is NOT re-used
@@ -109,6 +128,36 @@ class CreateCollectionTest <  ActiveSupport::TestCase
   end
 
 
+  def multi_default_group_store
+    dummy = {"type" => "DummyService", "priority" => 3}
 
-  
+    service_declerations = {
+      "default" => {
+        "services" => {
+          "default_a"         => dummy.clone,
+          "default_b"         => dummy.clone,
+          "default_disabled"  => dummy.clone.merge("disabled" => true)
+        }
+      },
+
+      "other_default" => {
+        "default"  => true,
+        "services" => {
+          "other_default_a"        => dummy.clone
+        }
+      },
+
+      "extra_group" => {
+        "services" => {
+          "extra_group_a"        => dummy.clone,
+        }
+      }
+    }
+
+    store = ServiceStore.new
+    store.config = service_declerations
+
+    return store
+  end
+
 end
