@@ -51,8 +51,15 @@ class Request < ActiveRecord::Base
     request_id = nil if req == nil
 
     # Serialized fingerprint of openurl http params, suitable for looking
-    # up in the db to see if we've seen it before. 
-    param_fingerprint = self.co_params_fingerprint( co_params )
+    # up in the db to see if we've seen it before. We got our co_params
+    # direct from parsing path ourselves, but in case a before_filter
+    # added in certain other params after that, we want to merge them in
+    # too. 
+    fingerprintable_params = co_params.merge(
+      {"umlaut.service_group" => params["umlaut.service_group"]}.delete_if {|k, v| v.blank?} 
+    )
+    param_fingerprint = self.co_params_fingerprint( fingerprintable_params )
+    
     client_ip = params['req.ip'] || a_rails_request.remote_ip()
     
     unless (req || params["umlaut.force_new_request"] == "true" || param_fingerprint.blank? )
