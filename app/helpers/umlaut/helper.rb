@@ -65,7 +65,7 @@ module Umlaut::Helper
   def render_umlaut_permalink
     if @user_request 
       content_tag("div", :class => "umlaut-permalink") do
-        render_umlaut_permalink_toggle +
+        render_umlaut_permalink_toggle + 
         render_umlaut_permalink_content
       end
     end
@@ -76,7 +76,7 @@ module Umlaut::Helper
     link_to({:action => "get_permalink", :"umlaut.request_id" => @user_request.id}, 
              :class => "umlaut-load-permalink btn btn-mini", 
              :data => {"umlaut-toggle-permalink"=>"true"}) do
-        content_tag("i") + "Short link"
+        content_tag("i") + " Short link"
     end
   end
 
