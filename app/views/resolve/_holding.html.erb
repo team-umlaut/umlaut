@@ -8,18 +8,18 @@
       <div class="umlaut-holding">
         <div class="item_status_row">
           <div class="collection-and-number row-fluid">
-            <div class="span8 collection-str"><i class="umlaut_icons-famfamfam-book"></i> 
+            <div class="span7 collection-str"><i class="umlaut_icons-famfamfam-book"></i> 
 <%= target[:collection_str] %></div>
 
             <% # Set status class based on configured available statuses
             status_class = umlaut_config.holdings.available_statuses.include?(target[:status]) ? 'umlaut-available' : '' %>
-            <div class="span4 holding-status <%= status_class %>"> <%= target[:status] %></div>
+            <div class="span5 holding-status <%= status_class %>"> <%= target[:status] %></div>
           </div>
 
           <div class="status-and-actions row-fluid">
-            <div class="span8 call-number"><%= target[:call_number]%></div>
+            <div class="span7 call-number"><%= target[:call_number]%></div>
             
-            <div class="holding-actions span4">
+            <div class="holding-actions span5">
               <%= link_to("More info", {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"more-info btn btn-mini") %>
               <% if target[:request_url] %>
                 <%= link_to("Request", target[:request_url], :target => "_blank", :class=>"request btn btn-mini btn-primary") %>
