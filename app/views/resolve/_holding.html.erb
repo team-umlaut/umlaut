@@ -8,7 +8,8 @@
       <div class="umlaut-holding">
         <div class="item_status_row">
           <div class="collection-and-number row-fluid">
-            <div class="span6 collection-str"><%= target[:collection_str] %></div>
+            <div class="span6 collection-str"><i class="umlaut_icons-famfamfam-book"></i> 
+<%= target[:collection_str] %></div>
 
             <% # Set status class based on configured available statuses
             status_class = umlaut_config.holdings.available_statuses.include?(target[:status]) ? 'umlaut-available' : '' %>

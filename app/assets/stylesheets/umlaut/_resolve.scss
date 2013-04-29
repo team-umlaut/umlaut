@@ -75,6 +75,9 @@
       }
       .collection-str {
         font-weight: bold;
+        //leave room for book icon
+        padding-left: $umlautIndent;
+        text-indent: -$umlautIndent;
       }
       .umlaut-holding-notes {
         @extend .muted;
