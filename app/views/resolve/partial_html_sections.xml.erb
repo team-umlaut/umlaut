@@ -16,6 +16,7 @@
        <% end %>
     </included_services>
     <service_load_complete value="<%= ! renderer.services_in_progress?  %>" />
+    <etag><%= renderer.section_etag %></etag>
     <response_count value="<%= renderer.responses_list.length %>" />
     <html_content>
       <%=  with_format("html") do 

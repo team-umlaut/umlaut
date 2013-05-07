@@ -413,6 +413,29 @@ class SectionRenderer
     @options[:section_prompt]
   end
 
+  # For a given resonse type section, returns a string that will change 
+  # if the rendered HTML has changed, HTTP etag style. 
+  #
+  # Output in API responses, used by partial html updater
+  # to know if a section needs to be updated on page. 
+  #
+  # tag is created by appending:
+  # * the progress status for the section (in progress or not)
+  # * The current visibility status of the section
+  # * Number of responses in section
+  # * the timestamp of most recent response in section, if any. 
+  def section_etag
+    parts = []
+
+    parts << self.services_in_progress?.to_s
+    parts << self.visible?.to_s
+    parts << responses_list.length
+    max = responses_list.max_by {|response| response.created_at}    
+    parts << (max ? max.created_at.utc.strftime("%Y-%m-%d-%H:%M:%S") : "")
+
+    return parts.join("_")
+  end
+
 
   protected
 
