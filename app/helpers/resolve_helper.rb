@@ -191,7 +191,7 @@ module ResolveHelper
         content_tag(:ul, :class=>options[:ul_class]) do
           safe_join(
             hidden_list.enum_for(:each_with_index).collect do |item, index|
-              yield(item, index + options[:limit])
+              yield(item, index + options[:limit] - 1)
             end, " \n    "
           )
         end
