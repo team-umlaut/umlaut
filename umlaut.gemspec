@@ -38,8 +38,8 @@ Gem::Specification.new do |s|
   s.add_dependency "bootstrap-sass", "~> 2.3.0" # used for bootstrap
 
   s.add_development_dependency "single_test", "~> 0.5.1"
-  s.add_development_dependency "uglifier", "~> 1.3.0"
-  s.add_development_dependency "vcr", "~> 2.4.0"
-  s.add_development_dependency "webmock", "~> 1.9.0"
+  s.add_development_dependency "uglifier", "~> 1.3"
+  s.add_development_dependency "vcr", "~> 2.5.0"
+  s.add_development_dependency "webmock", "~> 1.11.0"
   s.add_development_dependency "sunspot_rails", "~> 2.0.0" # add sunspot support in development
 end
