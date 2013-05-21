@@ -1,5 +1,8 @@
 // Bootstrap Variable over-rides can go here
 
+// We make lightGray used for .muted slightly darker than
+//default #999
+$grayLight: #888;
 
 @import "bootstrap";
 @import "bootstrap-responsive";
