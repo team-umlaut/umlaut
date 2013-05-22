@@ -17,13 +17,7 @@
         <%= yield %>
       </div>
 
-      <div id="footer" class="footer">
-        <%= render_service_credits %>
-        <!-- links to aid in debugging openurls gone wrong when in production -->
-        <%= link_to_test_resolve %>
-        <%= link_to_direct_sfx %>
-        <%= link_to_toggle_debug_info %> 
-      </div>
+      <%= render :partial => "umlaut/footer" %>
     </div>
   </body>
 </html>
