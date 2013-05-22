@@ -2,7 +2,12 @@
     This partial is called by default umlaut layout.  %>
 
 <div id="footer" class="footer">
+  <% if umlaut_config.footer_credit.present? %>
+    <%= umlaut_config.footer_credit %> | 
+  <% end %>
+
   <%= render_service_credits %>
+  
   <!-- links to aid in debugging openurls gone wrong when in production -->
   <%= link_to_test_resolve %>
   <%= link_to_direct_sfx %>

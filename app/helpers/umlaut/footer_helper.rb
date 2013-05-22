@@ -11,10 +11,6 @@ module Umlaut::FooterHelper
     if @collection
       content = "".html_safe
             
-      if umlaut_config.footer_credit
-        content << umlaut_config.footer_credit + " | "
-      end
-      
       content << "Powered by ".html_safe + link_to("Umlaut", "https://github.com/team-umlaut/umlaut") + ". ".html_safe
       
       credit_segments = []
