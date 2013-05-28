@@ -88,7 +88,7 @@ module Umlaut::Helper
         :class=> "umlaut-permalink-value",  
         :style => "display: none;",
         :'data-loaded' => current_permalink_url.present? ) do
-      link_to(current_permalink_url, current_permalink_url) if current_permalink_url
+      link_to(current_permalink_url, current_permalink_url, :class => "umlaut-permalink-value-link") if current_permalink_url
     end
   end
 

@@ -36,7 +36,14 @@
 }
 
 .umlaut-permalink-value {
-  @include text-overflow;
+    color: $grayDark;
+    @include text-overflow;
+}
+.umlaut-permalink-value-link {  
+  background-color: $umlautBackgroundColor;
+  border-radius: $borderRadiusSmall;
+  border: 1px solid $btnBorder;
+  padding: 3px 6px;  
 }
 
 .umlaut-load-permalink i {
