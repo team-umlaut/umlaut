@@ -65,6 +65,14 @@
     }
   }
 
+  &.related_items {
+    // Margin between the 'cited by' and 'similar' lists
+    .response_list + .response_list {
+      margin-top: $baseLineHeight * 1.5;
+    }
+
+  }
+
   &.holding {
     .response_item i {
       @extend .umlaut_icons-famfamfam-book;
