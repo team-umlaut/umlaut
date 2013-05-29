@@ -84,11 +84,13 @@ module Umlaut::Helper
   # and loaded with content AJAXy.
   def render_umlaut_permalink_content
     content_tag("div", 
-        :id => "umlaut-permalink-value",
-        :class=> "umlaut-permalink-value",  
+        :id => "umlaut-permalink-container",
+        :class=> "umlaut-permalink-container",  
         :style => "display: none;",
         :'data-loaded' => current_permalink_url.present? ) do
-      link_to(current_permalink_url, current_permalink_url, :class => "umlaut-permalink-value-link") if current_permalink_url
+      content_tag("span", :class => "umlaut-permalink-content") do
+        link_to(current_permalink_url, current_permalink_url) if current_permalink_url
+      end
     end
   end
 

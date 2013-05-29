@@ -5,14 +5,14 @@ jQuery(document).ready(function($) {
 		event.preventDefault();
 
 		var originalLink   = $(this)
-		var valueContainer = $("#umlaut-permalink-value");
+		var valueContainer = $("#umlaut-permalink-container");
 
 		if (! valueContainer.data("loaded")) {
-			valueContainer.html('<i class="spinner"></i>').show();
+			valueContainer.html('<span class="umlaut-permalink-content"><i class="spinner"></i></span>').show();
 
 			$.getJSON( originalLink.attr('href'), function(data) {
 				var href = data.permalink;
-				var a = $("<a/>");
+				var a = $("<a class='umlaut-permalink-content'/>");
 				a.attr("href", href);
 				a.text(href);
 				valueContainer.html(a).data("loaded", true).show();

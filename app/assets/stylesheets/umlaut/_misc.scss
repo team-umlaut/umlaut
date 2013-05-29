@@ -35,15 +35,18 @@
   margin-left: $umlautIndent;
 }
 
-.umlaut-permalink-value {
+.umlaut-permalink-container {
     color: $grayDark;
     @include text-overflow;
 }
-.umlaut-permalink-value-link {  
+.umlaut-permalink-content {  
   background-color: $umlautBackgroundColor;
   border-radius: $borderRadiusSmall;
   border: 1px solid $btnBorder;
   padding: 3px 6px;  
+  .spinner {
+    vertical-align: baseline;
+  }
 }
 
 .umlaut-load-permalink i {
