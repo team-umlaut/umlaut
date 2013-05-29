@@ -20,20 +20,6 @@ module Umlaut
  *= require 'umlaut'
  *}
         end
-        append_to_file("app/assets/stylesheets/application.css") do
-          %q{
-
-  /*  Umlaut needs a jquery-ui theme CSS. Here's an easy way to get one,
-   *  you can replace with another theme. 
-   *
-   *  Note, CSS @import needs to be the first line in a CSS file. This will
-   *  become so if 'require_self' is included above, as the FIRST sprockets
-   *  require, and this @import line is the first non-comment line in this
-   *  file.
-   */
-   @import url(//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css);
-          }
-        end
       else
         say_status("skipped", "Your application.css already references Umlaut", :yellow)
       end

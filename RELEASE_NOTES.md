@@ -2,6 +2,8 @@
 
 * Major visual redesign, based on bootstrap, responsive on small screens	
   * If you have local CSS customizations, you will probably need to redesign and reapply them
+  * Check your local app/assets/application.css, REMOVE any references to jquery-ui
+    that Umlaut may have added, no longer needed.
   * If you have a local Rails layout, you will probably want to compare to current
   	Umlaut default layout, and redo yours based on that. 
 	* Check any local customizations of CSS or visual design before upgrading in production. 
