@@ -96,11 +96,9 @@
       .item_status_row {
         min-height: 0;
       }  
-      .collection_str, .call-number, .holding-status, .holding-actions {
-        margin-left: 0;
-        @media (max-width: 767px) {
-          min-height: 0;
-        }
+      .collection-str, .call-number, .holding-status, .holding-actions {
+        margin-left: 0;        
+        min-height: 0;        
       }
       .call-number, .holding-status, .holding-actions {        
         padding-left: $umlautIndent;        
