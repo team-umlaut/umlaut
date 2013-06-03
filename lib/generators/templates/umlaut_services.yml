@@ -237,15 +237,3 @@ default:
         # list them in array here:
         #exclude: [ host.unversity.edu, otherhost.somewhere.com]
         
-        
-      # Use of SFX api means that SFX can no longer keep statistics on
-      # clickthroughs. This link out filter will attempt to fake SFX into
-      # thinking a direct click happened when user clicks on an SFX link
-      # via Umlaut.  This is VERY fragile logic, required reverse engineering
-      # SFX and faking it out, still doesn't work all the time. But works
-      # much of the time. 
-      SFX_backchannel_record:
-        disabled: true
-        type: SfxBackchannelRecord
-        task: link_out_filter
-        priority: 6
