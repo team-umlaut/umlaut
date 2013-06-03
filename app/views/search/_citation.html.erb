@@ -61,8 +61,8 @@
     end %>
     <%= # Pages
     if ref_meta.has_key?("spage")
-      page = ref_meta["spage"]
-      page << " - #{ref_meta["epage"]}" if ref_meta.has_key?("epage")
+      pages = ref_meta["spage"]
+      pages = "#{pages} - #{ref_meta["epage"]}" if ref_meta.has_key?("epage")
       content_tag(:dt, "Page:", :class => "page") +
         content_tag(:dd, pages, :class => "page")
     end %>
