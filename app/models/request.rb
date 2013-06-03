@@ -162,17 +162,7 @@ class Request < ActiveRecord::Base
   end
 
 
-  # See can_dispatch below, you probably want that instead.
-  # This method checks to see if a particular service has been dispatched, and
-  # is succesful or in progress---that is, if this method returns false,
-  # you might want to dispatch the service (again). If it returns true though,
-  # don't, it's been done. 
-  def dispatched?(service)
-    ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.service_id})
-    # Return true if it exists and is any value but FailedTemporary.
-    # FailedTemporary, it's worth running again, the others we shouldn't. 
-    return (! ds.nil?) && (ds.status != DispatchedService::FailedTemporary)
-  end
+
   # Someone asks us if it's okay to dispatch this guy. Only if it's
   # marked as Queued, or Failed---otherwise it should be already working,
   # or done. 
@@ -180,6 +170,36 @@ class Request < ActiveRecord::Base
     ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.service_id})
     
     return ds.nil? || (ds.status == DispatchedService::Queued) || (ds.status == DispatchedService::FailedTemporary)        
+  end
+
+  # Sets a DispatchedService object attached to this Request, for given
+  # service, marked InProgress -- but only if existing DispatchedService object did
+  # not already exist,  or existed and was marked Queued or FailedTemporary.  
+  # Returns true if was able to register as InProgress for given service, 
+  # otherwise false. 
+  #
+  # Wrapped in a connection_pool.with_connection, safe for calling from threaded
+  # context. 
+  def register_in_progress(service)
+    ActiveRecord::Base.connection_pool.with_connection do
+      ds = self.find_dispatch_object( service )
+      if ds
+        # Already existed, need to update atomically, only if it's got
+        # a compatible existing status. 
+        updated_count = self.dispatched_services.where(:id => ds.id, 
+          :status => [DispatchedService::Queued || DispatchedService::FailedTemporary] ).
+          update_all(:status => DispatchedService::InProgress)
+        
+        return (updated_count > 0)
+      else
+        # create new one, if race condition happened in between `find` above and now,
+        # we might wind up with a constraint violation raised, sorry. 
+        ds= self.new_dispatch_object!(service, DispatchedService::InProgress)
+        ds.save!
+        return true
+      end          
+    
+    end
   end
 
 

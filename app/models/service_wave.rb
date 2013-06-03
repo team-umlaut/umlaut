@@ -24,20 +24,8 @@ class ServiceWave
   
   # Safe to call in a thread. Returns true or false depending on
   # whether dispatch should proceed. 
-  def prepare_dispatch!(request, service, session_id)
-    can_dispatch = false
-    
-    Request.connection_pool.with_connection do
-      if request.can_dispatch?( service)
-        # Mark this service as in progress in the dispatch table.
-        request.dispatched( service, DispatchedService::InProgress )
-        # remember the rails session id. 
-        service.session_id = session_id
-        
-        can_dispatch = true      
-      end
-    end
-    return can_dispatch
+  def prepare_dispatch!(request, service)            
+    return request.register_in_progress(service)                    
   end
 
   def handle(request, session_id)
@@ -80,7 +68,7 @@ class ServiceWave
             end
             
   
-            if prepare_dispatch!(local_request, local_service, session_id)                          
+            if prepare_dispatch!(local_request, local_service)
               local_service.handle_wrapper(local_request)
             else
               Rails.logger.info("NOT launching service #{local_service.service_id},  level #{@priority_level}, request #{local_request.id}: not in runnable state") if @log_timing
@@ -107,7 +95,7 @@ class ServiceWave
         end
       else # not threaded
         begin
-          if prepare_dispatch!(request, service, session_id)                          
+          if prepare_dispatch!(request, service)
               service.handle_wrapper(request)
           else
               Rails.logger.info("NOT launching service #{service.service_id},  level #{@priority_level}, request #{request.id}: not in runnable state") if @log_timing

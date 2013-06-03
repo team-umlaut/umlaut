@@ -33,7 +33,6 @@
 
 class Service
   attr_reader :priority, :service_id, :url, :task, :status, :name, :group
-  attr_writer :session_id
   attr_accessor :request
   @@required_params_for_subclass = {} # initialize class var
 
@@ -169,14 +168,7 @@ class Service
   end
 
 
-  def session_id
-    unless (@session_id)
-      raise Exception.new("This service has not been initialized with a request!") unless request
-      
-      @session_id = request.session_id
-    end
-    return @session_id
-  end
+
 
  # This method is called by Umlaut when user clicks on a service response. 
  # Default implementation here just returns response['url']. You can
