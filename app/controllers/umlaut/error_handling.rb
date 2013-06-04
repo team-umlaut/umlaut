@@ -1,4 +1,3 @@
-# A mix-in for Rails controllers with some standard error recovery
 # logic.
 module Umlaut::ErrorHandling
   extend ActiveSupport::Concern
@@ -13,11 +12,18 @@ module Umlaut::ErrorHandling
   end
 
   def handle_general_error(exception)
+
     log_error_with_context(exception)
     @page_title = "Error!"
     # Only render this if we haven't done anything else
-    # e.g. if some other gem may be handling its own errors
-    render "error", :status => 500 unless performed?
+    # e.g. if some other gem may be handling its own errors    
+    unless performed?  
+      if params[:format] == "html"
+        render "error", :status => 500  
+      else
+        render :text => "Unexpected fatal error, has been logged.", :status => 500
+      end
+    end
   end
   protected :handle_general_error
 
