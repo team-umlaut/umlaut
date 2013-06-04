@@ -286,7 +286,7 @@ class Referent < ActiveRecord::Base
     # keep calling it. profiling shows it DOES make a difference. 
     my_metadata = self.metadata
 
-    if my_metadata['atitle'] && ! my_metadata['atitle'].blank?
+    if my_metadata['atitle'].present?
       citation[:title] = my_metadata['atitle']
       citation[:title_label], citation[:container_label] = 
         case my_metadata['genre']
@@ -382,7 +382,7 @@ class Referent < ActiveRecord::Base
     case self.metadata["genre"]
     when 'article'  then 'journal'
     when 'bookitem' then 'book'
-    else self.metadata['genre']
+    else self.metadata['genre'] || self.format
     end
   end
 
