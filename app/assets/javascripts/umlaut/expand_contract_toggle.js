@@ -1,9 +1,10 @@
 /* expand_contract_toggle.js: Support for show more/hide more in lists of umlaut content.
+  
+  Expand/collapse elements are already controlled via Bootstrap toggle,
+  this just adds some additional behavior in hooks to change our labels
+  and disclosure icons appropriately, and prevent following non-js href links. 
 */
 jQuery(document).ready(function($) {
-  $(".collapse_toggle").each(function(){
-    $(this).collapse('toggle');
-  });
   $(document).on("click", ".collapse-toggle", function(event) {
     event.preventDefault();    
     return false;
@@ -23,3 +24,4 @@ jQuery(document).ready(function($) {
 
   });
 });
+
