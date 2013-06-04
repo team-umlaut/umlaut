@@ -21,7 +21,13 @@
    will combine with expand_contract_toggle.js above to completely implement. */
 
 jQuery(document).ready(function($) {
-	$(".collapse").hide();
+	
+	// In ordinary umlaut bootstrap collapsible, it automatically hides
+	// .collapse, but not with display:none. For our replacement here,
+	// we need to make sure it's initially hidden with display:none, 
+	// we'll add a style to do so.
+	$('html > head').append($('<style> .collapse { display:none; }</style>'));
+
 
   $(document).on("click", ".collapse-toggle", function(event) {  	
   	content = $( $(this).attr('data-target') );
