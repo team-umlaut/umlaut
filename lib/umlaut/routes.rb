@@ -78,7 +78,7 @@ module Umlaut
           # Note: This route will make all actions in this controller accessible via GET requests.
           # We do make sure to prevent resolve/index/:id, should always be resolve/index?id=foo, 
           # to keep OpenURLs good, and avoid errors with DOI's with slashes in em etc. 
-          match 'resolve/index(.:format)' => "resolve#index"
+          match 'resolve(.:format)' => "resolve#index"
           match 'resolve(/:action(/:id(.:format)))' => "resolve"
         end
       end
