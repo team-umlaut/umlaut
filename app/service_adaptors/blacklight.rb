@@ -155,6 +155,7 @@ class Blacklight < Service
   # Send a CQL request for any identifiers present. 
   # Ask for for an atom response with embedded marc21 back. 
   def blacklight_precise_search_url(request, format = "marc")
+
     # Add search clauses for our identifiers, if we have them and have a configured search field for them. 
     clauses = []
     added = []
@@ -209,10 +210,8 @@ class Blacklight < Service
     # phrase search for title, just raw dismax for author
     # Embed quotes inside the quoted value, need to backslash-quote for CQL,
     # and backslash the backslashes for ruby literal. 
-    clauses.push("#{@bl_fields["title"]} = \"\\\"#{title}\\\"\"")    
-    clauses.push("#{@bl_fields["author"]} = \"#{author}\"") if author
-    
-
+    clauses.push("#{@bl_fields["title"]} = \"\\\"#{remove_quotes_for_phrase_value title}\\\"\"")    
+    clauses.push("#{@bl_fields["author"]} = \"#{remove_quotes_for_phrase_value author}\"") if author
     
     url = base_url + "?search_field=#{@cql_search_field}&content_format=#{options[:content_format]}&q=#{CGI.escape(clauses.join(" AND "))}"
 
@@ -223,6 +222,16 @@ class Blacklight < Service
     
     return url
   end
+
+  # We're putting a value inside of CQL double quotes. What if
+  # it has double quote literal in it already? Will be a CQL syntax
+  # error if we do nothing. Can we escape it somehow? CQL is really
+  # unclear, we're ALREADY backslash escaping the phrase quotes themselves!
+  # We just replace them with space, should work for our actual indexing. 
+  def remove_quotes_for_phrase_value(str)
+    str.gsub('"', " ")
+  end
+
 
   # Takes a url that will return atom response of dlf_expanded content.
   # Adds Umlaut "holding" ServiceResponses for dlf_expanded, as appropriate.
