@@ -76,7 +76,9 @@ module Umlaut
           # ResolveController still uses rails 2.0 style 'wildcard' routes, 
           # TODO tighten this up to only match what oughta be matched.           
           # Note: This route will make all actions in this controller accessible via GET requests.
-          
+          # We do make sure to prevent resolve/index/:id, should always be resolve/index?id=foo, 
+          # to keep OpenURLs good, and avoid errors with DOI's with slashes in em etc. 
+          match 'resolve/index(.:format)' => "resolve#index"
           match 'resolve(/:action(/:id(.:format)))' => "resolve"
         end
       end
