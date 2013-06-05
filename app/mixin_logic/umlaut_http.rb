@@ -91,7 +91,10 @@ module UmlautHttp
          
          return http_fetch(response['location'], options)
       else
-        response.value if options[:raise_on_http_error_code]        
+        if options[:raise_on_http_error_code] 
+          Rails.logger.warn("UmlautHttp#http_fetch: unexpected non-successful response: #{uri}: #{response}") unless response.is_a?(Net::HTTPSuccess)
+          response.value 
+        end
         return response
       end
   end
