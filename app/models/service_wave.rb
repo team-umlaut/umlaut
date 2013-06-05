@@ -85,7 +85,7 @@ class ServiceWave
             
             # Log it too, although experience shows it may never make it to the 
             # log for mysterious reasons. 
-            Rails.logger.error(TermColor.color("Umlaut: Threaded service raised exception.", :red, true) + " Service: #{service.service_id}, #{e.class} #{e.message}\n  #{e.backtrace.join("\n  ")}")
+            Rails.logger.error(TermColor.color("Umlaut: Threaded service raised exception.", :red, true) + " Service: #{service.service_id}, #{e.class} #{e.message}. Backtrace:\n  #{e.backtrace.join("\n  ")}")
             
             # And stick it in a thread variable too
             Thread.current[:exception] = e                      
