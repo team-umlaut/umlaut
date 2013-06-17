@@ -9,6 +9,7 @@
 	* Check any local customizations of CSS or visual design before upgrading in production. 
 	* Check [Customizing on wiki](https://github.com/team-umlaut/umlaut/wiki/Customizing) for
 	  any updated 3.1 relevant instructions. 
+  * Check updated wiki page on [Customizing](https://github.com/team-umlaut/umlaut/wiki/Customizing)  Umlaut. 
 
 * New service for linking out to Google scholar search. 
 
