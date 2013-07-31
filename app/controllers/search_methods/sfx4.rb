@@ -40,7 +40,7 @@ module SearchMethods
     end
 
     # Needs to return ContextObjects
-    def find_by_title                  
+    def find_by_title
       connection = sfx4_db_connection
       query_match_clause = case search_type_param
         when "contains"
@@ -51,8 +51,12 @@ module SearchMethods
           end
           # Then make each term required, but stemmed. Seems to match SFX4, 
           # and more importantly give us decent results. 
+          #
+          # For reasons we can't entirely tell, the wildcard "*" on terms of less
+          # than 2 causes false negatives. Otherwise we use it to be consistent
+          # with SFX. This reverse-engineering is full of pitfalls.
           query = terms.collect do |term|
-            "+" + connection.quote_string(term) + "*"
+            "+" + connection.quote_string(term) + (term.length > 2 ? "*" : "")
           end.join(" ")
           "MATCH (TS.TITLE_SEARCH) AGAINST ('#{query}' IN BOOLEAN MODE)"
         when "begins"
