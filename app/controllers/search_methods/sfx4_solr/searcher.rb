@@ -28,24 +28,52 @@ module SearchMethods
       end
 
       def _search_by_title(query, search_type, page=1)
+        # 20 per page
+        # TODO: Make this configurable
+        per_page = 20
+        # Upcase the query since SFX normalizes titles
+        # by doing the same.
+        query = query.upcase
+        # Remove "the", "a", and "an" from the query
+        # so that a search for "the economist" and a 
+        # search for "economist" return the same results.
+        # Seems to be remotely similar to how SFX works
+        # though I'm not sure if that's the best example
+        # to follow.
+        [/^THE /, /^AN? /].each do |article|
+          query.gsub! article, ""
+        end
+        # Sunspot DSL per search type
         search = case search_type
           when "contains"
             az_title_klass.search {
               keywords query, :fields => [:title]
+              # Order by relevance, since we can
+              order_by(:score, :desc)
+              # Order by title after relevance
               order_by(:title_sort, :asc)
-              paginate(:page => page, :per_page => 20)
+              # Pagination
+              paginate(:page => page, :per_page => per_page)
             }
           when "begins"
             az_title_klass.search {
               with(:title_exact).starting_with(query)
+              # Order by relevance, since we can
+              order_by(:score, :desc)
+              # Order by title after relevance
               order_by(:title_sort, :asc)
-              paginate(:page => page, :per_page => 20)
+              # Pagination
+              paginate(:page => page, :per_page => per_page)
             }
           else # exact
             az_title_klass.search {
               with(:title_exact, query)
+              # Order by relevance, since we can
+              order_by(:score, :desc)
+              # Order by title after relevance
               order_by(:title_sort, :asc)
-              paginate(:page => page, :per_page => 20)
+              # Pagination
+              paginate(:page => page, :per_page => per_page)
             }
           end
       end
