@@ -34,7 +34,7 @@ class BxTest < ActiveSupport::TestCase
     # Get the returned 'similar' service responses
     similars = coffeemakers_request.get_service_type('similar')
 
-    # Should be 1 similar service response
-    assert_equal(5, similars.length)
+    # There should be 5 'similar' service responses
+    assert_equal(5, similars.length, "Ack. Similar responses have gone awry!")
   end
 end

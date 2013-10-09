@@ -22,11 +22,10 @@ Setting up a Request is a bit of a pain, but here are the steps.
 
 1. Create a referent  
    Add a [referent](/team-umlaut/umlaut/blob/master/test/fixtures/referents.yml),
-   which can have atitle, title, issn, isbn, year, volume e.g.
+   which can have atitle, title, issn, isbn, year, volume
    
         coffeemakers:
           atitle: "A blend of different tastes: the language of coffeemakers"
-          title: '
           issn: 0265-8135
           year: 1998
           volume: 25
@@ -36,7 +35,7 @@ Setting up a Request is a bit of a pain, but here are the steps.
    [referent values](/team-umlaut/umlaut/blob/master/test/fixtures/referent_values.yml),
    so we need to create those in order to handle pesky details like normalization.
    Referent values can have referent, key\_name, value, normalized\_value,
-   metadata (flag), private_data(flag) e.g.
+   metadata (flag), private_data(flag)
    
         coffeemakers1:
           referent: coffeemakers
@@ -86,5 +85,42 @@ Setting up a Request is a bit of a pain, but here are the steps.
         coffeemakers:
           referent: coffeemakers
 ## Writing Your Tests
-Once you have your request defined, you can 
+Once you have your request defined, you can test your service.
 
+Assuming you've read the 
+[wiki section on testing](https://github.com/team-umlaut/umlaut/wiki/Developing#automated-testing),
+first you'll need to create a new service.
+The best way to do this is to pass a config Hash into the `new` method
+
+    bx_token = ENV['BX_TOKEN'] || 'BX_TOKEN'
+    config = { 
+      "service_id" => "Bx", 
+      "priority" => "1",
+      "token" => bx_token
+    }
+    @bx_service_adaptor = Bx.new(config)
+
+__Please note__ that `service_id` and `priority` are required by Umlaut.
+
+Then you'll want to get your request fixture and call the `handle` method on
+your service adaptor
+
+    # Get the relevant request fixture
+    coffeemakers_request = requests(:coffeemakers)
+
+    @bx_service_adaptor.handle(coffeemakers_request)
+
+After calling handle, you'll want to see if you got any responses back from your
+service adaptor.  Make sure to go back to the database to get the latest
+
+    # Refresh with the latest from the DB after handling the service.
+    coffeemakers_request.dispatched_services.reset
+    coffeemakers_request.service_responses.reset
+
+    # Get the returned 'similar' service responses
+    similars = coffeemakers_request.get_service_type('similar')
+
+And then test some stuff
+
+    # There should be 5 'similar' service responses
+    assert_equal(5, similars.length, "Ack. Similar responses have gone awry!")
