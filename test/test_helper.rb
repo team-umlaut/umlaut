@@ -78,6 +78,7 @@ VCR.configure do |c|
   c.hook_into :webmock 
   c.register_request_matcher(:uri_without_ctx_tim, &without_ctx_tim)
   # c.debug_logger = $stderr
+  c.filter_sensitive_data("BX_TOKEN") { ENV['BX_TOKEN'] } unless ENV['BX_TOKEN'].blank?
 end
 
 # Silly way to not have to rewrite all our tests if we

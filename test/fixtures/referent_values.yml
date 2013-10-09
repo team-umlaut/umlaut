@@ -465,3 +465,43 @@ advocate4:
   metadata: true
   value: 2670000000017711
   private_data: false
+
+coffeemakers1:
+  referent: coffeemakers
+  key_name: format
+  value: journal
+  normalized_value: journal
+  metadata: false
+  private_data: false
+  
+coffeemakers2:
+  referent: coffeemakers
+  key_name: genre
+  value: article
+  normalized_value: article
+  metadata: true
+  private_data: false
+
+coffeemakers3:
+  referent: coffeemakers
+  key_name: atitle
+  value: "A blend of different tastes: the language of coffeemakers"
+  normalized_value: "a blend of different tastes: the language of coffeemakers"
+  metadata: true
+  private_data: false
+
+coffeemakers4:
+  referent: coffeemakers
+  key_name: issn
+  value: "0265-8135"
+  normalized_value: "0265-8135"
+  metadata: true
+  private_data: false
+
+coffeemakers5:
+  referent: coffeemakers
+  key_name: volume
+  value: 25
+  normalized_value: 25
+  metadata: true
+  private_data: false

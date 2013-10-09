@@ -44,3 +44,7 @@ advocate:
   id: 82
   referent: advocate
   referrer_id: info:sid/sfxit.com:citation
+
+coffeemakers:
+  referent: coffeemakers
+  

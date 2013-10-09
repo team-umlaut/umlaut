@@ -30,11 +30,9 @@ class Bx < Service
     format = "rss"
     bx_url = "#{@base_url}?res_dat=format%3D#{format}%26source%3D#{@source}%26token%3D#{@token}%26maxRecords%3D#{@max_records}%26threshold%3D#{@threshold}%26baseUrl%3D#{@openurl_base}&#{request.to_context_object.kev}"
     response = open(bx_url)
-    Rails.logger.debug("bX URL #{bx_url.inspect}")
     response_xml_str = response.read
-    Rails.logger.debug("bX Response #{response_xml_str.inspect}")
     response_xml = Nokogiri::XML(response_xml_str)
-    response_xml.search("//item") do |item|
+    response_xml.search("//item").each do |item|
       title = item.at("title").inner_text
       author = item.at("author").inner_text
       display_text = (author.nil?)? "#{title}" : "#{author}; #{title}"
