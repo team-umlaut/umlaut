@@ -13,7 +13,7 @@ Requests tie together
 [Dispatched Services](/team-umlaut/umlaut/blob/master/app/models/dispatched_service.rb)
 (the services that get kicked off), and
 [Service Responses](/team-umlaut/umlaut/blob/master/app/models/dispatched_service.rb)
-(the responses from those kicked of services).
+(the responses from those kicked off services).
 
 Since service adaptors handle Requests, in order to test that a service adaptor works
 correctly, we need to set up a request that will trigger the service.
