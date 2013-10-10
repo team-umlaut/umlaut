@@ -24,8 +24,6 @@ class BxTest < ActiveSupport::TestCase
   test_with_cassette("article that has recommendations", :bx, :match_requests_on => [:method, :uri_without_ctx_tim]) do
     # Get the relevant request fixture
     coffeemakers_request = requests(:coffeemakers)
-p coffeemakers_request.referent.inspect
-p coffeemakers_request.referent.referent_values.inspect
     @bx_service_adaptor.handle(coffeemakers_request)
 
     # Refresh with the latest from the DB after handling the service.

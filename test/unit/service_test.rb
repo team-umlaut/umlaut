@@ -24,7 +24,7 @@ class ServiceTest < ActiveSupport::TestCase
 
   def setup
     @dummy_config =  {"priority" => 1, "service_id" => "DummyService"}
-    @umlaut_request = requests(:simple_request)
+    @umlaut_request = requests(:simple)
   end
 
   test "preempted by wildcard other type" do

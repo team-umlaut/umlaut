@@ -8,7 +8,7 @@ class CollectionTest < ActiveSupport::TestCase
       # set of services? Have to set em in ServiceStore too, as in general
       # things passed to new Collection are expected to be in ServiceStore
       @services = ServiceStore.config["default"]["services"]
-      @request = requests(:simple_request)
+      @request = requests(:simple)
     end
     
     def test_collection_instantiate

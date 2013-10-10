@@ -1,6 +1,6 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 nytimes:
-  referent_id: 2
+  referent: nytimes
 
 expired_referent:
   context_obj_serialized: |
