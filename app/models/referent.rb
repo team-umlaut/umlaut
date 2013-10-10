@@ -264,7 +264,7 @@ class Referent < ActiveRecord::Base
 
     # Got to initialize the referent entity properly for our format.
     # OpenURL sucks, this is confusing, yes. 
-    fmt_uri = "info:ofi/fmt:xml:xsd:#{self.format}"
+    fmt_uri = 'info:ofi/fmt:xml:xsd:' + self.format
     co.referent = OpenURL::ContextObjectEntity.new_from_format( fmt_uri )
     rft = co.referent
     
