@@ -6,7 +6,7 @@
 require 'test_helper'
 class BxTest < ActiveSupport::TestCase
   extend TestWithCassette
-  fixtures :requests, :referents
+  fixtures :requests, :referents, :referent_values
 
   def setup
     bx_token = ENV['BX_TOKEN'] || 'BX_TOKEN'
