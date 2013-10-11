@@ -34,7 +34,7 @@ class Bx < Service
     response_xml_str = response.read
     Rails.logger.debug("bX Response #{response_xml_str.inspect}")
     response_xml = Nokogiri::XML(response_xml_str)
-    response_xml.search("//item") do |item|
+    response_xml.search("//item").each do |item|
       title = item.at("title").inner_text
       author = item.at("author").inner_text
       display_text = (author.nil?)? "#{title}" : "#{author}; #{title}"
