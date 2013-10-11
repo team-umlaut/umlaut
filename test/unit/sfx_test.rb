@@ -16,6 +16,7 @@ class SfxTest < ActiveSupport::TestCase
   end
   
   # Use VCR to provide a deterministic SFX search.
+  # Ignore ctx_time in the URL for VCR matching purposes
   # TODO: Check more of the response
   test_with_cassette("nytimes by issn", :sfx, :match_requests_on => [:method, :uri_without_ctx_tim]) do
     nytimes_request = requests(:nytimes)

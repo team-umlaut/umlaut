@@ -9,7 +9,8 @@ class ResolveControllerTest < ActionController::TestCase
   end
   
   test_with_cassette("nytimes by issn", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
-    get :index, "umlaut.request_id" => 80
+    umlaut_request = requests(:nytimes)
+    get :index, "umlaut.request_id" => umlaut_request.id
     assert_response :success
     assert_select "title", "Find It | The New York times"
     assert_select "h1", "Find It"

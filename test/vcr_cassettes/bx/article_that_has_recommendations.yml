@@ -1,0 +1,65 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://recommender.service.exlibrisgroup.com/service/recommender/openurl?ctx_enc=info:ofi/enc:UTF-8&ctx_id=&ctx_tim=2013-10-09T14:28:02-04:00&ctx_ver=Z39.88-2004&res_dat=format=rss%26source=global%26token=BX_TOKEN%26maxRecords=5%26threshold=50%26baseUrl=/resolve&rft.atitle=A%20blend%20of%20different%20tastes:%20the%20language%20of%20coffeemakers&rft.genre=article&rft.issn=0265-8135&rft.volume=25&rft_val_fmt=info:ofi/fmt:kev:mtx:journal&url_ctx_fmt=info:ofi/fmt:kev:mtx:ctx&url_ver=Z39.88-2004
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      X-Powered-By:
+      - ! 'Servlet 2.4; JBoss-4.2.3.GA (build: SVNTag=JBoss_4_2_3_GA date=200807181417)/JBossWeb-2.0'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Wed, 09 Oct 2013 18:28:02 GMT
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<rss xmlns:bx=\"http://bx.exlibrisgroup.com/docs/schema/bx\"
+        version=\"2.0\">\r\n  <channel>\r\n    <title>A blend of different tastes:
+        The language of coffeemakers. Environment and planning. B, Planning &amp;
+        design</title>\r\n    <link>/resolve?ctx_ver=Z39.88-2004&amp;rft_val_fmt=info:ofi/fmt:kev:mtx:article&amp;rft.atitle=A%20blend%20of%20different%20tastes:%20The%20language%20of%20coffeemakers.&amp;rft.aufirst=M.&amp;rft.auinit=M&amp;rft.auinit1=M&amp;rft.aulast=Agarwal&amp;rft.au=Agarwal,%20M.&amp;rft.eissn=1472-3417&amp;rft.epage=226&amp;rft.genre=article&amp;rft.issn=0265-8135&amp;rft.issue=2&amp;rft.jtitle=Environment%20and%20planning.%20B,%20Planning%20&amp;%20design&amp;rft.date=1998&amp;rft.spage=205&amp;rft.volume=25&amp;rfr_id=info:sid/www.exlibrisgroup.com:bx-target&amp;rft.object_id=urn:sfxid:954925499107&amp;rft_dat=bxResourceId%3D17428593%26bxSetId%3D1113810068%26bxSeedId%3D17428593</link>\r\n
+        \   <description />\r\n    <copyright>Copyright 2008-2009 Ex Libris Group</copyright>\r\n
+        \   <pubDate>Wed, 09 Oct 2013 17:39:52 GMT</pubDate>\r\n    <item>\r\n      <title>Managing
+        New Product Definition in Highly Dynamic Environments. Management science</title>\r\n
+        \     <link>/resolve?ctx_ver=Z39.88-2004&amp;rft_val_fmt=info:ofi/fmt:kev:mtx:article&amp;rft.atitle=Managing%20New%20Product%20Definition%20in%20Highly%20Dynamic%20Environments&amp;rft.aufirst=Shantunu&amp;rft.auinit=S&amp;rft.auinit1=S&amp;rft.aulast=Bhattacharya&amp;rft.au=Bhattacharya,%20Shantunu&amp;rft.doi=10.2307/779711&amp;rft.eissn=1526-5501&amp;rft.genre=article&amp;rft.issn=0025-1909&amp;rft.issue=11&amp;rft.jtitle=Management%20science&amp;rft.pages=S50-S64&amp;rft.date=1998&amp;rft.spage=50&amp;rft.volume=44&amp;rfr_id=info:sid/www.exlibrisgroup.com:bx-target&amp;rft.object_id=urn:sfxid:954921352320&amp;rft_dat=bxResourceId%3D3438475%26bxSetId%3D1113810068%26bxSeedId%3D17428593</link>\r\n
+        \     <pubDate>Mon, 19 Sep 2011 08:17:15 GMT</pubDate>\r\n      <author>Bhattacharya,
+        Shantunu</author>\r\n      <guid isPermaLink=\"false\">urn:bx:3438475</guid>\r\n
+        \     <bx:score>96</bx:score>\r\n    </item>\r\n    <item>\r\n      <title>Product
+        Development Decisions: A Review of the Literature. Management science</title>\r\n
+        \     <link>/resolve?ctx_ver=Z39.88-2004&amp;rft_val_fmt=info:ofi/fmt:kev:mtx:article&amp;rft.atitle=Product%20Development%20Decisions:%20A%20Review%20of%20the%20Literature&amp;rft.aufirst=V&amp;rft.auinit=V&amp;rft.auinit1=V&amp;rft.aulast=Krishnan&amp;rft.au=Krishnan,%20V&amp;rft.doi=10.1287/mnsc.47.1.1.10668&amp;rft.eissn=1526-5501&amp;rft.epage=21&amp;rft.genre=article&amp;rft.issn=0025-1909&amp;rft.issue=1&amp;rft.jtitle=Management%20science&amp;rft.pages=1-21&amp;rft.date=2001&amp;rft.spage=1&amp;rft.volume=47&amp;rfr_id=info:sid/www.exlibrisgroup.com:bx-target&amp;rft.object_id=urn:sfxid:954921352320&amp;rft_dat=bxResourceId%3D1085624%26bxSetId%3D1113810068%26bxSeedId%3D17428593</link>\r\n
+        \     <pubDate>Sat, 02 May 2009 22:26:19 GMT</pubDate>\r\n      <author>Krishnan,
+        V</author>\r\n      <guid isPermaLink=\"false\">urn:bx:1085624</guid>\r\n
+        \     <bx:score>82</bx:score>\r\n    </item>\r\n    <item>\r\n      <title>Performance
+        Assessment of the Lead User Idea-Generation Process for New Product Development.
+        Management science</title>\r\n      <link>/resolve?ctx_ver=Z39.88-2004&amp;rft_val_fmt=info:ofi/fmt:kev:mtx:article&amp;rft.atitle=Performance%20Assessment%20of%20the%20Lead%20User%20Idea-Generation%20Process%20for%20New%20Product%20Development&amp;rft.aufirst=Gary&amp;rft.auinit=GL&amp;rft.auinit1=G&amp;rft.auinitm=L&amp;rft.aulast=Lilien&amp;rft.au=Lilien,%20Gary%20L&amp;rft.doi=10.1287/mnsc.48.8.1042.171&amp;rft.eissn=1526-5501&amp;rft.epage=1059&amp;rft.genre=article&amp;rft.issn=0025-1909&amp;rft.issue=8&amp;rft.jtitle=Management%20science&amp;rft.pages=1042-1059&amp;rft.date=2003&amp;rft.spage=1042&amp;rft.volume=48&amp;rfr_id=info:sid/www.exlibrisgroup.com:bx-target&amp;rft.object_id=urn:sfxid:954921352320&amp;rft_dat=bxResourceId%3D1082722%26bxSetId%3D1113810068%26bxSeedId%3D17428593</link>\r\n
+        \     <pubDate>Sat, 02 May 2009 22:21:08 GMT</pubDate>\r\n      <author>Lilien,
+        Gary L</author>\r\n      <guid isPermaLink=\"false\">urn:bx:1082722</guid>\r\n
+        \     <bx:score>75</bx:score>\r\n    </item>\r\n    <item>\r\n      <title>Marketing,
+        Business Processes, and Shareholder Value: An Organizationally Embedded View
+        of Marketing Activities and the Discipline of Marketing. The Journal of marketing</title>\r\n
+        \     <link>/resolve?ctx_ver=Z39.88-2004&amp;rft_val_fmt=info:ofi/fmt:kev:mtx:article&amp;rft.atitle=Marketing,%20Business%20Processes,%20and%20Shareholder%20Value:%20An%20Organizationally%20Embedded%20View%20of%20Marketing%20Activities%20and%20the%20Discipline%20of%20Marketing&amp;rft.aufirst=Rajendra%20K.&amp;rft.auinit=RK&amp;rft.auinit1=R&amp;rft.auinitm=K&amp;rft.aulast=Srivastava&amp;rft.au=Srivastava,%20Rajendra%20K.%20K&amp;rft.doi=10.2307/1252110&amp;rft.eissn=1547-7185&amp;rft.epage=179&amp;rft.genre=article&amp;rft.issn=0022-2429&amp;rft.issue=4&amp;rft.jtitle=The%20Journal%20of%20marketing&amp;rft.pages=168-179&amp;rft.date=1999&amp;rft.spage=168&amp;rft.volume=63&amp;rfr_id=info:sid/www.exlibrisgroup.com:bx-target&amp;rft.object_id=urn:sfxid:954921349279&amp;rft_dat=bxResourceId%3D946439%26bxSetId%3D1113810068%26bxSeedId%3D17428593</link>\r\n
+        \     <pubDate>Tue, 29 Mar 2011 16:55:53 GMT</pubDate>\r\n      <author>Srivastava,
+        Rajendra K. K</author>\r\n      <guid isPermaLink=\"false\">urn:bx:946439</guid>\r\n
+        \     <bx:score>75</bx:score>\r\n    </item>\r\n    <item>\r\n      <title>Making
+        Sense in Hypercompetitive Environments: A Cognitive Explanation for the Persistence
+        of High Velocity Competition. Organization science</title>\r\n      <link>/resolve?ctx_ver=Z39.88-2004&amp;rft_val_fmt=info:ofi/fmt:kev:mtx:article&amp;rft.atitle=Making%20Sense%20in%20Hypercompetitive%20Environments:%20A%20Cognitive%20Explanation%20for%20the%20Persistence%20of%20High%20Velocity%20Competition&amp;rft.aufirst=C%20Bogner&amp;rft.auinit=WC&amp;rft.auinit1=C&amp;rft.auinitm=C&amp;rft.aulast=Bogner&amp;rft.au=Bogner,%20C%20Bogner%20C&amp;rft.doi=10.1287/orsc.11.2.212.12511&amp;rft.eissn=1526-5455&amp;rft.epage=226&amp;rft.genre=article&amp;rft.issn=1047-7039&amp;rft.issue=2&amp;rft.jtitle=Organization%20science&amp;rft.pages=212-226&amp;rft.date=2000&amp;rft.spage=212&amp;rft.volume=11&amp;rfr_id=info:sid/www.exlibrisgroup.com:bx-target&amp;rft.object_id=urn:sfxid:954921418483&amp;rft_dat=bxResourceId%3D935977%26bxSetId%3D1113810068%26bxSeedId%3D17428593</link>\r\n
+        \     <pubDate>Tue, 05 May 2009 01:46:30 GMT</pubDate>\r\n      <author>Bogner,
+        C Bogner C</author>\r\n      <guid isPermaLink=\"false\">urn:bx:935977</guid>\r\n
+        \     <bx:score>75</bx:score>\r\n    </item>\r\n  </channel>\r\n</rss>\r\n\r\n"
+    http_version: 
+  recorded_at: Wed, 09 Oct 2013 18:28:02 GMT
+recorded_with: VCR 2.5.0

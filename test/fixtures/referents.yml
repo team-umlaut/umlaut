@@ -1,23 +1,17 @@
 # Referent fixtures
 frankenstein:
   isbn: "9780393964585"
-  atitle: ""
   title: "frankenstein : the 1818 text, contexts, nineteenth-century responses, modern criticism"
-  id: 1
-  issn: ""
   year: "1997"
-  volume: ""
-  created_at: 2008-06-28 16:15:27 -04:00
 
 nytimes:
-  id: 2
   issn: 0362-4331
   title: The New York times
 
-simple_request_referent:
+simple:
   issn: "0098-7484"
 
-critical_inquiry_referent:
+critical_inquiry:
   title: "Critical inquiry"
   issn: "0093-1896"
 
@@ -31,3 +25,10 @@ momo:
 advocate:
   title: Advocate
   issn: 1832-9373
+
+coffeemakers:
+  atitle: "A blend of different tastes: the language of coffeemakers"
+  title: 'Environment and planning B, Planning and design'
+  issn: 0265-8135
+  year: 1998
+  volume: 25

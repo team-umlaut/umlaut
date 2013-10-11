@@ -2,7 +2,7 @@ service_response1:
   service_id: Worldcat
   display_text: Find in other libraries
   url: http://www.worldcat.org/issn/03624331
-  request_id: 80
+  request: nytimes
   service_type_value_name: highlighted_link
   service_data: --- {}
 
@@ -10,7 +10,7 @@ service_response2:
   service_id: SFX
   display_text: EBSCOhost Business Abstracts with Full Text
   url: https://ezproxy.library.edu/login?url=http://search.ebscohost.com/direct.asp?db=bft&jn=3RAH&scope=site
-  request_id: 80
+  request: nytimes
   service_type_value_name: fulltext
   service_data: |
     --- 
@@ -31,7 +31,7 @@ service_response2:
 service_response3:
   service_id: EmailExport
   display_text: Email
-  request_id: 80
+  request: nytimes
   service_type_value_name: export_citation
   service_data: |
     ---
@@ -40,7 +40,7 @@ service_response3:
 service_response9:
   service_id: TxtHoldingExport
   display_text: Send to phone
-  request_id: 80
+  request: nytimes
   service_type_value_name: export_citation
   service_data: |
     ---
@@ -50,7 +50,7 @@ service_response4:
   service_id: SFX
   display_text: EBSCOhost Newspaper Source Plus
   url: http://search.ebscohost.com/login.aspx?direct=true&db=n5h&scope=site&jn=New+York+Times
-  request_id: 80
+  request: nytimes
   service_type_value_name: fulltext
   service_data: |
     --- 
@@ -72,7 +72,7 @@ service_response5:
   service_id: SFX
   display_text: Proquest
   url: http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=7818
-  request_id: 80
+  request: nytimes
   service_type_value_name: fulltext
   service_data: |
     --- 
@@ -83,7 +83,7 @@ service_response6:
   service_id: Ulrichs
   display_text: Periodical information
   url: https://ulrichsweb.serialssolutions.com/api/openurl?issn=0362-4331
-  request_id: 80
+  request: nytimes
   service_type_value_name: highlighted_link
   service_data: --- {}
 
@@ -91,7 +91,7 @@ service_response7:
   service_id: SFX
   display_text: EBSCOhost Business Abstracts with Full Text
   url: http://search.ebscohost.com/direct.asp?db=bft&jn=3RAH&scope=site
-  request_id: 80
+  request: nytimes
   service_type_value_name: fulltext
   service_data: |
     --- 
@@ -114,7 +114,7 @@ service_response8:
   display_text: Library holding
   url: http://holding.library.edu/DOCID
   notes: Some notes.
-  request_id: 80
+  request: nytimes
   service_type_value_name: holding
   service_data: |
     --- 
@@ -137,7 +137,7 @@ service_response9:
   display_text: "the Internet Archive: Open Source Book"
   url: "http://archive.org/details/MomoOvveroLarcanaStoriaDeiLadriDiTempoEDellaBambinaCheRestitu"
   notes: 
-  request_id: 81
+  request: momo
   service_type_value_name: fulltext
   service_data: |
     ---
@@ -150,7 +150,7 @@ service_response10:
   display_text: Gale Cengage Newsstand
   url: "http://find.galegroup.com/openurl/openurl?res_id=info%3Asid%2Fgale%3ASTND&rft.issn=1832-9373&req_dat=info%3Asid%2Fgale%3Augnid%3Anysl_me_newyorku&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&ctx_enc=info%3Aofi%3Aenc%3AUTF-8&url_ver=Z39.88-2004&rft.jtitle=Advocate+(Western+Australia,+Australia)"
   notes: 
-  request_id: 82
+  request: advocate
   service_type_value_name: fulltext
   service_data: |
     ---
