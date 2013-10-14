@@ -1,5 +1,9 @@
 # encoding: UTF-8
 require 'test_helper'
+
+require 'uri'
+require 'rack/utils'
+
 class ResolveControllerTest < ActionController::TestCase
   extend TestWithCassette
   fixtures :requests, :referents, :referent_values, :dispatched_services, :service_responses
@@ -70,6 +74,23 @@ class ResolveControllerTest < ActionController::TestCase
         assert_select section, ".response_list", 1
       end
     end
+  end
+
+  test_with_cassette("POSTed OpenURL redirects to GET", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
+    # an actual post request Gale GREENr was sending us
+    pparams = {"genre"=>"article", "sid"=>"gale:GRNR", "__char_set"=>"utf8", "spage"=>"138", "issn"=>"0016-7398", "issue"=>"2", "pid"=>"info:sid/gale:ugnid:balt85423", "date"=>"2010", "aulast"=>"Hedley, Peter J.", "au"=>"Hedley, Peter J.", "atitle"=>"Evolution of the Irrawaddy delta region since 1850.(Report)", "title"=>"The Geographical Journal", "aufirst"=>"Hedley, Peter J.", "volume"=>"176"}
+    post(:index, pparams)
+
+    assert_response :redirect
+
+    redirect_uri = URI.parse(@response.redirect_url)
+
+    assert_equal "/resolve", redirect_uri.path    
+
+    # Redirected params is a subset of pparams, pparams can have extra
+    # stuff maybe, we don't care. 
+    redirected_params = Rack::Utils.parse_nested_query redirect_uri.query
+    assert  (redirected_params.to_a - pparams.to_a).empty?, "Redirected params include all of original POSTed params"
   end
 
   test_with_cassette("fulltext with edition warning", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do

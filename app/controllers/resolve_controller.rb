@@ -5,6 +5,12 @@
 class ResolveController < UmlautController
   before_filter :init_processing
 
+  # We need to NOT require a CSRF token on post to #index,
+  # to allow POSTed OpenURLs
+  protect_from_forgery :except => :index
+  # POST'ed OpenURLs are a mess, redirect them to GETs
+  before_filter :post_to_get, :only => :index
+
   # Init processing will look at this list, and for actions mentioned,
   # will not create a @user_request if an existing one can't be found.
   # Used for actions meant only to deal with existing requests.
@@ -129,13 +135,21 @@ class ResolveController < UmlautController
 
   protected
 
+  def post_to_get
+    if request.method == "POST"
+      redirect_to url_for(params)
+    end
+  end
+
   # Retrives or sets up the relevant Umlaut Request, and returns it.
-  def init_processing
+  def init_processing    
     # intentionally trigger creation of session if it didn't already exist
     # because we need to track session ID for caching. Can't find any
     # way to force session creation without setting a value in session,
     # so we do this weird one.
     session[nil] = nil
+
+
 
     # We have to clean the params of bad char encoding bytes, or it causes
     # no end of problems later. We can't just refuse to process, sources
