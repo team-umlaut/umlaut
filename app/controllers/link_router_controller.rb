@@ -25,6 +25,8 @@ class LinkRouterController < UmlautController
     redirect_to calculate_url_for_response(svc_response)
   end
 
+  protected
+
   # Used to calculate a destination/target url for an Umlaut response item.
   #
   # Pass in a ServiceType join object (not actually a ServiceResponse, sorry)
@@ -38,6 +40,8 @@ class LinkRouterController < UmlautController
   def calculate_url_for_response(svc_response)
     svc = ServiceStore.instantiate_service!(svc_response.service_id, nil)
     destination =  svc.response_url(svc_response, params)
+
+    raise_missing_url!(svc_response) if destination.blank?
 
     # if response_url returned a string, it's an external url and we're
     # done. If it's something else, usually a hash, then pass it to
@@ -59,4 +63,15 @@ class LinkRouterController < UmlautController
     end
   end
   protected :calculate_url_for_response
+end
+
+def raise_missing_url!(service_response)
+  svc_rsp_id  = service_response.try(:id)
+  service_id  = service_response.try(:service_id)
+  type        = service_response.try(:service_type_value_name)
+  text        = service_response.try(:display_text)
+  request_id  = service_response.try(:request).try(:id)
+  request_url = service_response.try(:request).try(:http_env).try {|h| h["REQUEST_URI"] }
+
+  raise ArgumentError.new("LinkRouterController#index missing URL to redirect to for ServiceResponse:#{svc_rsp_id} (#{service_id}/#{type}/#{text}) from original request url: #{request_url}")
 end
