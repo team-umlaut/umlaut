@@ -88,5 +88,5 @@ https://github.com/team-umlaut/umlaut/
 ## Listserv
 
 You can join the umlaut listserv at:
-http://rubyforge.org/mail/?group_id=4382
+https://groups.google.com/forum/#!forum/umlaut-software
 
