@@ -1,34 +1,46 @@
-// Some code to re-size our window to config defined minimum height/width
-//     We have little control over what size a content provider generates a
-//     window for a link resolver. Often it's too small. So we resize in
-//     js.
+/*
+  ensure_window_size.js:
+    Some code to re-size our window to config defined minimum height/width.
+    We have little control over what size a content provider generates a
+    window for a link resolver. Often it's too small. So we resize in
+    js.
 
-// Some browsers won't let us resize the window though. Oh well, we try. 
-// Those that wont' let us just silently no-op. 
-
-jQuery(document).ready(function($) {    
-  var min_width = <%= UmlautController.umlaut_config.lookup!('minimum_window_width', 0).to_i %>;
-  var min_height = <%= UmlautController.umlaut_config.lookup!('minimum_window_height', 0).to_i %>;
-
+    Some browsers won't let us resize the window though. Oh well, we try.
+    Those that wont' let us just silently no-op.
+*/
+/*
+  Checked via jslint with the proceding configuration
+*/
+/*jslint browser: true*/
+/*jslint sloppy: true*/
+/*jslint passfail: false*/
+/*jslint regexp: true*/
+/*jslint plusplus: true*/
+/*jslint indent: 2*/
+/*global jQuery*/
+jQuery(document).ready(function ($) {
+  var minWidth, minHeight, origWidth, origHeight, widthDiff, heightDiff;
+  minWidth = <%= UmlautController.umlaut_config.lookup!('minimum_window_width', 0).to_i %>;
+  minHeight = <%= UmlautController.umlaut_config.lookup!('minimum_window_height', 0).to_i %>;
   // Default to something huge, so if we fail in getting dimensions,
-  // we won't resize. 
-  var orig_width = 100000; 
-  var orig_height = 100000;
-  
-  // JQuery document viewport width/height 
-  
-  orig_width = $(window).width();
-  orig_height = $(window).height();
-  
-  
-  
-  width_diff = min_width - orig_width;
-  height_diff = min_height - orig_height;
-  
-  if (width_diff < 0) { width_diff = 0 }
-  if (height_diff < 0) { height_diff = 0 }
-  
-  if (width_diff >0 || height_diff > 0) {
-    window.resizeBy(width_diff, height_diff)
+  // we won't resize.
+  origWidth = 100000;
+  origHeight = 100000;
+  // JQuery document viewport width/height
+  origWidth = $(window).width();
+  origHeight = $(window).height();
+  // The difference
+  widthDiff = minWidth - origWidth;
+  heightDiff = minHeight - origHeight;
+  // Set difference to 0 if less than 0
+  if (widthDiff < 0) {
+    widthDiff = 0;
+  }
+  if (heightDiff < 0) {
+    heightDiff = 0;
+  }
+  // Resize
+  if (widthDiff > 0 || heightDiff > 0) {
+    window.resizeBy(widthDiff, heightDiff);
   }
 });
