@@ -48,6 +48,9 @@
     if (context_object == undefined)
       context_object = "";      
     
+    // Remove query string (if present)
+    umlaut_base = umlaut_base.replace(/\?.*$/, '')
+    // Remove trailing slash
     umlaut_base = umlaut_base.replace(/\/$/,'');
     this.umlaut_uri =  umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=json&' + context_object;
         
