@@ -137,12 +137,14 @@ module MarcHelper
   # Take a ruby Marc Field object representing an 856 field,
   # decide what umlaut service type value to map it to. Fulltext, ToC, etc.
   # This is neccesarily a heuristic guess, Marc doesn't have enough granularity
-  # to really let us know for sure. 
+  # to really let us know for sure --
+  # although if indicator2 is '2' for 'related resource', we decide it is
+  # NOT fulltext. 
   def service_type_for_856(field, options)
     options[:default_service_type] ||= "fulltext_title_level"
 
-    # LC records here at hopkins have "Table of contents only" in the 856$3
-      # Think that's a convention from LC? 
+      # LC records here at hopkins have "Table of contents only" in the 856$3
+      # Think that's a convention from LC?
       if (field['3'] && field['3'].downcase =~ /table of contents( only)?/)
         return "table_of_contents"
       elsif (field['3'] && field['3'].downcase =~ /description/)
@@ -155,6 +157,8 @@ module MarcHelper
       elsif ( field['u'] =~ /www\.loc\.gov/ )
         # Any other loc.gov link, we know it's not full text, don't put
         # it in full text field, put it as "see also". 
+        return "highlighted_link"
+      elsif field.indicator2 == '2' # 'related resource'
         return "highlighted_link"
       else
         return options[:default_service_type]
