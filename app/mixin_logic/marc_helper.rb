@@ -3,37 +3,37 @@
 module MarcHelper
 
   # Takes an array of ruby MARC objects, adds ServiceResponses
-  # for the 856 links contained. 
+  # for the 856 links contained.
   # Returns a hash of arrays of ServiceResponse objects added, keyed
-  # by service type value string. 
+  # by service type value string.
   def add_856_links(request, marc_records, options = {})
     options[:default_service_type] ||= "fulltext"
     options[:match_reliability] ||= ServiceResponse::MatchExact
 
     responses_added = Hash.new
-    
+
     # Keep track of urls to avoid putting the exact same url in twice
     urls_seen = Array.new
-    
+
     marc_records.each do |marc_xml|
-    
+
       marc_xml.find_all {|f| '856' === f.tag}.each do |field|
         # Might have more than one $u, in which case we want to
         # possibly add each of them. Might have 0 $u in which case
-        # we skip. 
-        field.subfields.find_all {|sf| sf.code == 'u'}.each do |sf|        
-          url = sf.value 
-          
+        # we skip.
+        field.subfields.find_all {|sf| sf.code == 'u'}.each do |sf|
+          url = sf.value
+
           # Already got it from another catalog record?
           next if urls_seen.include?(url)
-  
-          # Trying to avoid duplicates with SFX/link resolver. 
+
+          # Trying to avoid duplicates with SFX/link resolver.
            skip = should_skip_856_link?(request, marc_xml, url)
            next if skip
-          
+
           urls_seen.push(url)
-          
-          
+
+
           display_name = nil
           if field['y']
             display_name = field['y']
@@ -50,46 +50,46 @@ module MarcHelper
           # But if we've got a $3, the closest MARC comes to a field
           # that explains what this actually IS, use that too please.
           display_name = field['3'] + ' from ' + display_name if field['3']
-  
-          # Build the response. 
-          
+
+          # Build the response.
+
           response_params = {:service=>self, :display_text=>display_name, :url=>url}
-          # get all those $z subfields and put em in notes.      
+          # get all those $z subfields and put em in notes.
           response_params[:url] = url
-    
+
           # subfield 3 is being used for OCA records loaded in our catalog.
           response_params[:notes] =
           field.subfields.collect {|f| f.value if (f.code == 'z') }.compact.join('; ')
-  
+
           is_journal = (marc_xml.leader[7,1] == 's')
-          unless ( field['3'] || ! is_journal ) # subfield 3 is in fact some kind of coverage note, usually 
-            response_params[:notes] += "; " unless response_params[:notes].blank? 
+          unless ( field['3'] || ! is_journal ) # subfield 3 is in fact some kind of coverage note, usually
+            response_params[:notes] += "; " unless response_params[:notes].blank?
             response_params[:notes] += "Dates of coverage unknown."
           end
-  
-          
+
+
           unless ( options[:match_reliability] == ServiceResponse::MatchExact )
             response_params[:match_reliability] = options[:match_reliability]
-  
+
             response_params[:edition_str] = edition_statement(marc_xml)
           end
-  
+
           # Figure out the right service type value for this, fulltext, ToC,
           # whatever.
-          response_params[:service_type_value] = service_type_for_856( field, options ) 
-  
+          response_params[:service_type_value] = service_type_for_856( field, options )
+
           # fulltext urls from MARC are always marked as specially stupid.
           response_params[:coverage_checked] = false
           response_params[:can_link_to_article] = false
-  
+
           # Some debugging info, add the 001 bibID if we have one.
-          
+
           response_params[:debug_info] = "BibID: #{marc_xml['001'].value}" if marc_xml['001']
-  
-          
+
+
           # Add the response
           response = request.add_service_response(response_params)
-          
+
           responses_added[response_params[:service_type_value]] ||= Array.new
           responses_added[response_params[:service_type_value]].push(response)
         end
@@ -118,17 +118,17 @@ module MarcHelper
   # SFX. We use MARC leader byte 7 to tell if it's a journal. Confusing enough?
   # Not yet!  Even if it is a journal, if this isn't an article-level
   # cite and there are no other full text already provided, we
-  # still include. 
+  # still include.
   def should_skip_856_link?(request, marc_record, url)
      is_journal = (marc_record.leader[7,1] == 's')
-     
+
      sfx_controlled = SfxUrl.sfx_controls_url?(url)
-     
+
      # Do NOT skip if it's a title-level citation with no
-     # existing full text entries. 
-     not_title_level_empty = !(  request.title_level_citation? &&     
-                    request.get_service_type("fulltext").length == 0  
-                 ) 
+     # existing full text entries.
+     not_title_level_empty = !(  request.title_level_citation? &&
+                    request.get_service_type("fulltext").length == 0
+                 )
 
      result = ( is_journal && sfx_controlled  && not_title_level_empty )
      return result
@@ -139,45 +139,45 @@ module MarcHelper
   # This is neccesarily a heuristic guess, Marc doesn't have enough granularity
   # to really let us know for sure --
   # although if indicator2 is '2' for 'related resource', we decide it is
-  # NOT fulltext. 
+  # NOT fulltext.
   def service_type_for_856(field, options)
     options[:default_service_type] ||= "fulltext_title_level"
 
-      # LC records here at hopkins have "Table of contents only" in the 856$3
-      # Think that's a convention from LC?
-      if (field['3'] && field['3'].downcase =~ /table of contents( only)?/)
-        return "table_of_contents"
-      elsif (field['3'] && field['3'].downcase =~ /description/)
-        # If it contains the word 'description', it's probably an abstract.
-        # That's the best we can do, sadly. 
-        return "abstract"
-      elsif (field['3'] && field['3'].downcase == 'sample text')
-        # LC records often include these links. 
-        return "excerpts"
-      elsif ( field['u'] =~ /www\.loc\.gov/ )
-        # Any other loc.gov link, we know it's not full text, don't put
-        # it in full text field, put it as "see also". 
-        return "highlighted_link"
-      elsif field.indicator2 == '2' # 'related resource'
-        return "highlighted_link"
-      else
-        return options[:default_service_type]
-      end
+    # LC records here at hopkins have "Table of contents only" in the 856$3
+    # Think that's a convention from LC?
+    if (field['3'] && field['3'].downcase =~ /table of contents( only)?/)
+      return "table_of_contents"
+    elsif (field['3'] && field['3'].downcase =~ /description/)
+      # If it contains the word 'description', it's probably an abstract.
+      # That's the best we can do, sadly.
+      return "abstract"
+    elsif (field['3'] && field['3'].downcase == 'sample text')
+      # LC records often include these links.
+      return "excerpts"
+    elsif ( field['u'] =~ /www\.loc\.gov/ )
+      # Any other loc.gov link, we know it's not full text, don't put
+      # it in full text field, put it as "see also".
+      return "highlighted_link"
+    elsif field.indicator2 == '2' # 'related resource'
+      return "highlighted_link"
+    else
+      return options[:default_service_type]
+    end
   end
 
   # A MARC record has two dates in it, date1 and date2. Exactly
   # what they represent is something of an esoteric mystery.
-  # But this will return them both, in an array. 
+  # But this will return them both, in an array.
   def get_years(marc)
     array = []
-    
-    # no marc 008? Weird, but okay. 
-    return array unless marc['008'] 
-    
+
+    # no marc 008? Weird, but okay.
+    return array unless marc['008']
+
     date1 = marc['008'].value[7,4]
     date1.strip! if date1
     array.push(date1) unless date1.blank?
-    
+
     date2 = marc['008'].value[11,4]
     date2.strip! if date2
     array.push(date2) unless date2.blank?
@@ -190,9 +190,9 @@ module MarcHelper
     marc['245'].find_all {|sf| sf.code == "a" || sf.code == "b" || sf.code == "k"}.collect {|sf| sf.text}.join(" ").sub(/\s*[;:\/.,]\s*$/)
   end
 
-  
+
   # From a marc record, get a string useful to display for identifying
-  # which edition/version of a work this represents. 
+  # which edition/version of a work this represents.
   def edition_statement(marc, options = {})
     options[:include_repro_info] ||= true
     options[:exclude_533_fields] = ['7','f','b', 'e']
@@ -200,7 +200,7 @@ module MarcHelper
     parts = Array.new
 
     return "" unless marc
-    
+
     #245$h GMD
     unless ( marc['245'].blank? || marc['245']['h'].blank? )
       parts.push('(' + marc['245']['h'].gsub(/[^\w\s]/, '').strip.titlecase + ')')
@@ -211,7 +211,7 @@ module MarcHelper
       parts.push( marc['250']['a'] ) unless marc['250']['a'].blank?
       parts.push( marc['250']['b'] ) unless marc['250']['b'].blank?
     end
-    
+
     # 260
     if ( marc['260'])
       if (marc['260']['b'] =~ /s\.n\./)
@@ -221,18 +221,18 @@ module MarcHelper
       end
       parts.push( marc['260']['c'] ) unless marc['260']['c'].blank?
     end
-      
+
     # 533
     if options[:include_repro_info] && marc['533']
       marc['533'].subfields.each do |s|
         if ( s.code == 'a' )
-          parts.push(s.value.gsub(/[^\w\s]/, '') + ':'  )  
+          parts.push(s.value.gsub(/[^\w\s]/, '') + ':'  )
         elsif (! options[:exclude_533_fields].include?( s.code ))
           parts.push(s.value)
-        end       
+        end
       end
     end
-      
+
     return nil if parts.length == 0
 
     return parts.join(' ')
@@ -240,24 +240,24 @@ module MarcHelper
 
   # AACR2 "General Material Designation" . While these are (I think?)
   # controlled, it's actually really hard to find the list. Maybe they're
-  # only semi-controlled. 
+  # only semi-controlled.
   # ONE list can be found here: http://www.oclc.org/bibformats/en/onlinecataloging/default.shtm#BCGFECEG
   def gmd_values
-    # 'computer file' is an old one that may still be found in data. 
-    return ['activity card', 
+    # 'computer file' is an old one that may still be found in data.
+    return ['activity card',
 'art original','art reproduction','braille','chart','diorama','electronic resource','computer file', 'filmstrip','flash card','game','globe','kit','manuscript','map','microform','microscope slides','model','motion picture','music','picture','realia','slide','sound recording','technical drawing','text','toy','transparency','videorecording']
   end
 
   # removes something that looks like an AACR2 GMD in square brackets from
-  # the string. Pretty kludgey. 
+  # the string. Pretty kludgey.
   def strip_gmd(arg_string, options = {})
     options[:replacement] ||= ':'
-    
+
     gmd_values.each do |gmd_val|
       arg_string = arg_string.sub(/\[#{gmd_val}( \((tactile|braile|large print)\))?\]/, options[:replacement])
     end
     return arg_string
   end
 
-  
+
 end
