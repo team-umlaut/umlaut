@@ -74,6 +74,13 @@ class ResolveControllerTest < ActionController::TestCase
         assert_select section, ".response_list", 1
       end
     end
+    assert_select ".umlaut-sidebar .umlaut-section.help" do |sections|
+      assert_equal 1, sections.size
+      sections.each do |section|
+        assert_select section, ".section_heading h3", { :count => 1, :text => "Question? Problem? Contact:" }
+        assert_select section, ".response_list", 1
+      end
+    end
   end
 
   test_with_cassette("POSTed OpenURL redirects to GET", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
