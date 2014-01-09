@@ -11,7 +11,7 @@ if (any_services_in_progress?) %>
   <script type="text/javascript">
     //<![CDATA[
     jQuery(document).ready(function($) {
-      var updater = new Umlaut.HtmlUpdater("<%= root_url %>",  "umlaut.request_id=<%= @user_request.id %>");<%
+      var updater = new Umlaut.HtmlUpdater("<%= root_url %>",  "umlaut.request_id=<%= user_request.id %>");<%
       bg_update_sections.collect do |section| %>
         updater.add_section_target({ umlaut_section_id: "<%= section[:div_id]  %>"  });<%
       end

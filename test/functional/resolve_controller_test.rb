@@ -19,7 +19,6 @@ class ResolveControllerTest < ActionController::TestCase
     assert_select "title", "Find It | The New York times"
     assert_select "h1", "Find It"
     assert_select "h2.title", "The New York times"
-
     assert_select ".umlaut-main .umlaut-resource-info dl.citation-info" do |dls|
       assert_equal 1, dls.size
       dls.each do |dl|
@@ -39,6 +38,7 @@ class ResolveControllerTest < ActionController::TestCase
       sections.each do |section|
         assert_select section, ".response_list", 1
         assert_select section, ".response_list" do |response_lists|
+          assert_select section, ".section_heading h3", { :count => 1, :text => "Online Access" }
           assert_select section, "li.response_item", 4
         end
       end
@@ -65,12 +65,14 @@ class ResolveControllerTest < ActionController::TestCase
     assert_select ".umlaut-sidebar .umlaut-section.export_citation" do |sections|
       assert_equal 1, sections.size
       sections.each do |section|
+        assert_select section, ".section_heading h3", { :count => 1, :text => "Export tool" }
         assert_select section, ".response_list", 1
       end
     end
     assert_select ".umlaut-sidebar .umlaut-section.highlighted_link" do |sections|
       assert_equal 1, sections.size
       sections.each do |section|
+        assert_select section, ".section_heading h3", { :count => 1, :text => "See also" }
         assert_select section, ".response_list", 1
       end
     end

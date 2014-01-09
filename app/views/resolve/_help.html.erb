@@ -1,5 +1,5 @@
   <div class="help-text-icon">?</div>
-  <%= render :partial => 'section_heading', :locals => {:presenter => renderer, :force_render => true} %>
+  <%= render 'section_heading', :presenter => renderer, :force_render => true %>
   <ul class="response_list umlaut-help-list">
     <% help.each do |help|
       value_hash = help.view_data %>
