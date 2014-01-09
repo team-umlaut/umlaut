@@ -167,3 +167,15 @@ service_response10:
     :citation_issue: 
     :citation_spage: 
     :debug_info: ! ' Target: GALEGROUP_IT_NEWSSTAND ; SFX object ID: 2670000000017711'
+
+service_response11:
+  service_id: SFX
+  display_text: Ask a Librarian
+  url: "http://library.edu/ask"
+  notes: 
+  request: nytimes
+  service_type_value_name: help
+  service_data: |
+    --- 
+    :display_text: Ask a Librarian
+    :url: http://library.edu/ask

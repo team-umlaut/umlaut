@@ -321,6 +321,7 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "help"
+        section_title "Question? Problem? Contact:"
         html_area :sidebar
         bg_update false
         partial "help"

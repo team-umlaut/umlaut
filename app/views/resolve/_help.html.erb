@@ -1,20 +1,13 @@
-	<div class="help-text-icon">?</div>
-
-	<div class="section_heading">
-		<h3>
-			Question? Problem? Contact:
-		</h3>
-	</div>
-
-	<ul class="response_list umlaut-help-list">
-		<% help.each do |help|
-		  value_hash = help.view_data %>
-		  <li><%= link_to value_hash[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %>
-		  <% unless value_hash[:note].blank? %> 
-		    <br />
-		    <%= value_hash[:note] %>
-		  <% end %>
-		  </li>    
-		<% end %>
-	</ul>
-
+  <div class="help-text-icon">?</div>
+  <%= render :partial => 'section_heading', :locals => {:presenter => renderer, :force_render => true} %>
+  <ul class="response_list umlaut-help-list">
+    <% help.each do |help|
+      value_hash = help.view_data %>
+      <li><%= link_to value_hash[:display_text], {:controller=>'link_router', :id=>help.id}, 'target'=>"_blank" %>
+      <% unless value_hash[:note].blank? %> 
+        <br />
+        <%= value_hash[:note] %>
+      <% end %>
+      </li>    
+    <% end %>
+  </ul>
