@@ -12,7 +12,7 @@
     <div class="umlaut_section_content">
       <%= content_tag("form", :target => "_blank", :action => url_for(:controller=>'link_router', :action=>'index')) do %>
 
-        <div class="source input-prepend input-append">
+        <div class="search-inside-source input-prepend input-append">
           <span class="add-on"> via </span> 
 
           <% if search_providers.length > 1 %>
@@ -24,7 +24,7 @@
           <% end %>
 
         </div>
-        <div class="source input-append">
+        <div class="search-inside-query input-append">
           <input name="query" type="text" /> 
           <input value="search" type="submit" class="btn add-on">
         </div>     
