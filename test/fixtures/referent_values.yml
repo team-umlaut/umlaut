@@ -487,3 +487,36 @@ coffeemakers5:
   normalized_value: "25"
   metadata: true
   private_data: false
+
+manually_entered1:
+  referent: manually_entered
+  normalized_value: ""
+  key_name: object_id
+  metadata: true
+  value: ""
+  private_data: false
+
+manually_entered2:
+  referent: manually_entered
+  normalized_value: journal
+  key_name: format
+  metadata: false
+  value: journal
+  private_data: false
+
+manually_entered3:
+  referent: manually_entered
+  key_name: genre
+  value: article
+  normalized_value: article
+  metadata: true
+  private_data: false
+
+manually_entered4:
+  referent: manually_entered
+  normalized_value: entry manual
+  key_name: jtitle
+  metadata: true
+  value: Entry Manual
+  private_data: false
+

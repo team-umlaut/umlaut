@@ -1,25 +1,27 @@
-<%- 
+<%-
 # Include this partial to put the background updater device on your page.
 # This actually just sets up the Umlaut JQuery background updater, for
-# unobtrusive adding of background html content to menu page.  
--%><%
-# only include if we have any background services. We could check to make
+# unobtrusive adding of background html content to menu page.
+
+# Only include if we have any background services. We could check to make
 # sure we only have background services we care about, but it's more work--
 # the updater will only run ONCE at most wrongly, then the
-# background_update action will stop it. 
-if (any_services_in_progress?) %>
+# background_update action will stop it.
+-%>
+<% if (any_services_in_progress?) %>
   <script type="text/javascript">
     //<![CDATA[
-    jQuery(document).ready(function($) {
-      var updater = new Umlaut.HtmlUpdater("<%= root_url %>",  "umlaut.request_id=<%= user_request.id %>");<%
-      bg_update_sections.collect do |section| %>
-        updater.add_section_target({ umlaut_section_id: "<%= section[:div_id]  %>"  });<%
-      end
-      # Wait the designated number of seconds before kicking off the first bg 
-      # update request. Future requests will be automatically made with delay. 
-%>
-      setTimeout(function() { updater.update(); }, <%= umlaut_config.lookup!("initial_poll_wait_seconds", 4)*1000 %>);
+    jQuery(document).ready(function ($) {
+      var updater = new Umlaut.HtmlUpdater("<%= root_url %>", "umlaut.request_id=<%= user_request.id %>");
+      <% bg_update_sections.collect do |section| %>
+        updater.add_section_target({ umlaut_section_id: "<%= section[:div_id] %>" });
+      <% end %>
+      <%-
+        # Wait the designated number of seconds before kicking off the first bg
+        # update request. Future requests will be automatically made with delay.
+      -%>
+      setTimeout(function () { updater.update(); }, <%= umlaut_config.lookup!("initial_poll_wait_seconds", 4)*1000 %>);
     });
     //]]>
-  </script><% 
-end %>
+  </script>
+<% end %>
