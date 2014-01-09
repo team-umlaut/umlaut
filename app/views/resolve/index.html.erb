@@ -1,27 +1,21 @@
-<%= render :partial=>'background_updater' %>
+<%= render 'background_updater', :user_request => @user_request %>
 <div class="row-fluid">
-
   <div class="span8 umlaut-main"> 
-    
     <div class="umlaut-resource-info">
-          <div class="resource_info_sections">
-            <%= render :partial=> "manually_entered_warning" %>
-
-            <%= render :partial=>'citation' %>
-            <% html_sections(:resource_info).each do |section| %>
-              <%= content_tag "div", :id => section[:div_id] do %>
-                <%= render_section(section) %>
-              <% end %>
-            <% end %>
-          </div>
-          
-          <%# need a div here for ajax bg loader to put bg loaded cover into %>
-          <div id="cover_image">
-            <%= render_section(html_section_by_div_id("cover_image")) %>
-          </div>
-
+      <div class="resource_info_sections">
+        <%= render 'manually_entered_warning', :user_request => @user_request %>
+        <%= render 'citation', :user_request => @user_request %>
+        <% html_sections(:resource_info).each do |section| %>
+          <%= content_tag "div", :id => section[:div_id] do %>
+            <%= render_section(section) %>
+          <% end %>
+        <% end %>
+      </div>
+      <%# need a div here for ajax bg loader to put bg loaded cover into %>
+      <div id="cover_image">
+        <%= render_section(html_section_by_div_id("cover_image")) %>
+      </div>
     </div>
-
     <div class="main_response_list">
       <% html_sections(:main).each do |section| %>
         <%= content_tag "div", :id => section[:div_id] do %>
@@ -29,8 +23,7 @@
         <% end %>
       <% end %>
     </div>
-</div>
-
+  </div>
   <div class="span4 umlaut-sidebar">
     <% html_sections(:sidebar).each do |section| %>
       <%= content_tag "div", :id => section[:div_id] do %>
@@ -43,5 +36,5 @@
       <% end %>
     </div>
   </div>
-  <%= render :partial=>"modal" %>
+  <%= render 'modal' %>
 </div>

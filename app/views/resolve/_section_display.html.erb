@@ -1,37 +1,35 @@
-<% 
+<%-
 # You generally shoudln't call this partial directly, it's called through
 # the render_section helper method in resolve_helper.rb
-if presenter.visible?
-  unless presenter.show_partial_only? %>
+-%>
+<% if presenter.visible? %>
+  <% unless presenter.show_partial_only? %>
     <div class="<%= section_css_classes(@user_request, presenter.div_id, []).join(" ") %>">
-<% end %>
-
-  <%= render :partial => 'section_heading', :locals => {:presenter => presenter} %>
-
-  <%  unless presenter.show_partial_only? %>
-  <div class="umlaut_section_content"><%
-  end
-  if presenter.custom_partial? %><%= 
-    render(presenter.content_render_hash) %><%
-  elsif presenter.list_visible_limit %><%= 
-    list_with_limit("#{presenter.div_id}_list_with_limit", presenter.responses_list, 
-      :limit => presenter.list_visible_limit, :ul_class => "response_list #{presenter.div_id}") do |item, index| %><%= 
-        render(presenter.item_render_hash(item)) %><% 
-      end 
-  elsif presenter.responses_list.length == 0 && ! presenter.services_in_progress?%>
+  <% end %>
+  <%= render 'section_heading', :presenter => presenter %>
+  <% unless presenter.show_partial_only? %>
+    <div class="umlaut_section_content">
+  <% end %>
+  <% if presenter.custom_partial? %>
+    <%= render presenter.content_render_hash %>
+  <% elsif presenter.list_visible_limit %>
+    <%= list_with_limit("#{presenter.div_id}_list_with_limit", presenter.responses_list,
+        :limit => presenter.list_visible_limit, :ul_class => "response_list #{presenter.div_id}") do |item, index|
+          render presenter.item_render_hash(item)
+        end %>
+  <% elsif presenter.responses_list.length == 0 && ! presenter.services_in_progress? %>
     <ul class="response_list">
       <li>None available.</li>
-    </ul><%
-  else %>
-    <ul class="response_list <%= presenter.div_id %>"><%= 
-      render( presenter.content_render_hash ) %>
-    </ul><%
-  end 
-  if presenter.show_spinner? %><%= 
-    render(presenter.spinner_render_hash) %><%
-  end 
-  unless presenter.show_partial_only? %>
-    </div>
-</div><% 
-  end
-end %>
+    </ul>
+  <% else %>
+    <ul class="response_list <%= presenter.div_id %>">
+      <%= render presenter.content_render_hash %>
+    </ul>
+  <% end %>
+  <% if presenter.show_spinner? %>
+    <%= render presenter.spinner_render_hash %>
+  <% end %>
+  <% unless presenter.show_partial_only? %>
+    </div></div>
+  <% end %>
+<% end %>

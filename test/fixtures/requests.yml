@@ -40,3 +40,7 @@ advocate:
 
 coffeemakers:
   referent: coffeemakers
+
+manually_entered:
+  referent: manually_entered
+  referrer_id: info:sid/sfxit.com:citation

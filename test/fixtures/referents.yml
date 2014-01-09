@@ -32,3 +32,6 @@ coffeemakers:
   issn: 0265-8135
   year: 1998
   volume: 25
+
+manually_entered:
+  title: Entry Manual

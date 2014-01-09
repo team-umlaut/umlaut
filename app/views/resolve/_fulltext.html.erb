@@ -1,32 +1,34 @@
 <%
 all_responses = fulltext
-(title_level_fulltxt, fulltxt) = 
-  all_responses.partition {|i| i.view_data[:coverage_checked] == false || i.view_data[:can_link_to_article] == false}      
+(title_level_fulltxt, fulltxt) = all_responses.partition do |i| 
+  i.view_data[:coverage_checked] == false || i.view_data[:can_link_to_article] == false
+end
 # order em with full fulltxt before title_level_fulltxt
-all_responses = fulltxt + title_level_fulltxt %>
+all_responses = fulltxt + title_level_fulltxt
+%>
 <div class="<%= section_css_classes(@user_request, "fulltext", all_responses).join(" ") %>">
-
-  <%= render :partial => 'section_heading', :locals => {:presenter => renderer, :force_render => true} %>
-  
-  <div class="umlaut_section_content"><%=
-    list_with_limit('umlaut_fulltext', all_responses, 
-      :ul_class => "response_list", :limit => renderer.list_visible_limit ) do |item, index | %><%
-      # Display special warnign header if it's title-level only,
-      # and it's an article or issue level link. Are we
-      # at the beginning of title level display?
-      if (index == fulltxt.length && !title_level_request?) %>
+  <%= render 'section_heading', :presenter => renderer, :force_render => true %>
+  <div class="umlaut_section_content">
+    <%= list_with_limit('umlaut_fulltext', all_responses,
+      :ul_class => "response_list", :limit => renderer.list_visible_limit ) do |item, index | %>
+      <%-
+        # Display special warning header if it's title-level only,
+        # and it's an article or issue level link. Are we
+        # at the beginning of title level display?
+      -%>
+      <% if (index == fulltxt.length && !title_level_request?) %>
         </ul>
         <div class="section-subheading title-level-link-warning">
           <h4><%= (@user_request.referent.container_type_of_thing || "Container").titlecase %>-level Page Only</h4>
           <p><span class="notice">Can not link directly to citation. Dates or extent of coverage may be unknown.</span></p>
         </div>
-        <ul class="response_list"><%
-      end %>    
-      <%= render(:partial => "standard_response_item", :object=> item) %><%
-    end
-    if (fulltxt.empty? && title_level_fulltxt.empty? && !service_type_in_progress?('fulltext')) %>
-      <p class="umlaut-unavailable umlaut-content-indent">Not Available</p><%
-    end %>
-    <%= render( renderer.spinner_render_hash) if renderer.services_in_progress? %>
+        <ul class="response_list">
+      <% end %>
+      <%= render :partial => "standard_response_item", :object => item %>
+    <% end %>
+    <% if (fulltxt.empty? && title_level_fulltxt.empty? && !service_type_in_progress?('fulltext')) %>
+      <p class="umlaut-unavailable umlaut-content-indent">Not Available</p>
+    <% end %>
+    <%= render renderer.spinner_render_hash if renderer.services_in_progress? %>
   </div>
 </div>
