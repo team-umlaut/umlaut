@@ -37,4 +37,26 @@ class SearchControllerTest < ActionController::TestCase
     assert_select ".umlaut-pagination", 2
     assert_select ".umlaut-az", 1
   end
+
+  test "journal list pagination" do
+    return unless Sfx4::Local::AzTitle.connection_configured?
+    # Awkward stubbing, since creating enough test data is a pain
+    # Store the original az batch size class variable in a local variable
+    original_az_batch_size = SearchController.class_variable_get(:@@az_batch_size)
+    # Then override it with the stub, we reset it down below.
+    SearchController.class_variable_set(:@@az_batch_size, 5)
+    get :journal_list, :id => "A"
+    assert_response :success
+    assert_select ".umlaut-pagination" do |paginations|
+      paginations.each do |pagination|
+        assert_select pagination, "ul > li > a:not(.next)" do |anchors|
+          anchors.each_with_index do |anchor, index|
+            assert_equal("/journal_list/A/#{index+2}", anchor.attributes["href"])
+          end
+        end
+      end
+    end
+    # Reset the az batch size class variable
+    SearchController.class_variable_set(:@@az_batch_size, original_az_batch_size)
+  end
 end
