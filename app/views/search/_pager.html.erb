@@ -50,8 +50,8 @@
     end
     
     # Next and previous buttons
-    links.unshift( content_tag :li, (link_to('Previous', args.merge({'page' => @page -1 })))) if @page > 1
-    links.push( content_tag :li, (link_to('Next', args.merge({'page' => @page + 1})))) if @page < total_pages
+    links.unshift( content_tag :li, (link_to('Previous', args.merge({'page' => @page -1 }), :class => "prev"))) if @page > 1
+    links.push( content_tag :li, (link_to('Next', args.merge({'page' => @page + 1}), :class => "next"))) if @page < total_pages
 %>
 <%= content_tag :ul, links.join(' ').html_safe %>
 <%
