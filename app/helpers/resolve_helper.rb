@@ -261,8 +261,8 @@ module ResolveHelper
       return nil
     end
 
-    start   = response[:coverage_begin_date].try(:year) || I18n.t("umlaut.coverage_summary.open_start", :default => "first")
-    finish  = response[:coverage_end_date].try(:year) || I18n.t("umlaut.coverage_summary.open_end", :default => "latest")
+    start   = response[:coverage_begin_date].try(:year) || I18n.t("umlaut.coverage_summary.open_start", :default => t(:first))
+    finish  = response[:coverage_end_date].try(:year) || I18n.t("umlaut.coverage_summary.open_end", :default => t(:latest))
 
     content_tag("span", :class=>"coverage_summary") do
       "#{start} – #{finish}:"

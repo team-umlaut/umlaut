@@ -14,7 +14,7 @@ module EmailerHelper
     rv << title
     rv << "\n"
     if cite[:author]
-      rv << "Author: " if options[:include_labels]
+      rv << "#{t :author}:" if options[:include_labels]
       rv << cite[:author].strip
       rv << "\n"
     end
@@ -25,11 +25,11 @@ module EmailerHelper
     end
     pub = []
     pub << date_format(cite[:date]) unless cite[:date].blank?
-    pub << 'Vol: '+cite[:volume].strip unless cite[:volume].blank?
-    pub << 'Iss: '+cite[:issue].strip unless cite[:issue].blank?
-    pub << 'p. '+cite[:page].strip unless cite[:page].blank?
+    pub << "#{t :vol }: " + cite[:volume].strip unless cite[:volume].blank?
+    pub << "#{t :iss}: " + cite[:issue].strip unless cite[:issue].blank?
+    pub << "#{t :p}. " + cite[:page].strip unless cite[:page].blank?
     if pub.length > 0
-      rv << "Published: " if options[:include_labels]
+      rv << "#{t :published}: " if options[:include_labels]
       rv << pub.join('  ')
     end
     return rv

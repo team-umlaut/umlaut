@@ -20,9 +20,9 @@
             <div class="span7 call-number"><%= target[:call_number]%></div>
             
             <div class="holding-actions span5">
-              <%= link_to("More info", {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"more-info btn btn-mini") %>
+              <%= link_to(t(:more_info), {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"more-info btn btn-mini") %>
               <% if target[:request_url] %>
-                <%= link_to("Request", target[:request_url], :target => "_blank", :class=>"request btn btn-mini btn-primary") %>
+                <%= link_to(t(:request), target[:request_url], :target => "_blank", :class=>"request btn btn-mini btn-primary") %>
               <% end %>
             </div>
            
@@ -33,9 +33,9 @@
         <% if target[:match_reliability].present? && target[:match_reliability] != ServiceResponse::MatchExact %>
           <div class="umlaut-holding-match-reliability">            
               <% unless target[:edition_str].blank? %>
-                <em class="note">Edition information</em> <%= target[:edition_str] %>
+                <em class="note"><%=t(:edition_info)%></em> <%= target[:edition_str] %>
               <% else %>
-                <em class="note">May be alternate edition.</em>
+                <em class="note"><%t(:maybe_alt_edition)%></em>
               <% end %>            
           </div>
         <% end %>
@@ -60,16 +60,16 @@
 
 <% if holdings.empty? %>
   <div class="umlaut-content-indent">
-    <% # Get and display holding searches        
+    <% # Get and display holding searches
       searches = holding.find_all{|response| response.service_type_value_name.eql? "holding_search"}
       searches.each do | result_st |
         response = result_st.view_data %>
         <p class="umlaut-holding-search"><%= link_to response[:display_text], {:controller=>'link_router', :id=>result_st.id}, 'target'=>"_blank" %></p>
     <% end %>
-    <% 
+    <%
     # Display "Not Available" if we've completed our service run and both holdings and holding searches are empty
     if (holdings.blank? and searches.blank? and (not service_types_in_progress?(['holding', 'holding_search']))) %>
-      <p class="umlaut-unavailable">Not Available</p>
+      <p class="umlaut-unavailable"><%=t(:not_available)%></p>
     <% end %>
   </div>
 <% end %>

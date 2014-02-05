@@ -27,7 +27,7 @@ all_responses = fulltxt + title_level_fulltxt
       <%= render :partial => "standard_response_item", :object => item %>
     <% end %>
     <% if (fulltxt.empty? && title_level_fulltxt.empty? && !service_type_in_progress?('fulltext')) %>
-      <p class="umlaut-unavailable umlaut-content-indent">Not Available</p>
+      <p class="umlaut-unavailable umlaut-content-indent"><%= t(:not_available) %></p>
     <% end %>
     <%= render renderer.spinner_render_hash if renderer.services_in_progress? %>
   </div>

@@ -29,7 +29,7 @@ svc_types = svc_types.collect { |t| t.kind_of?(ServiceTypeValue) ? t : ServiceTy
 div_id = "progress_#{svc_types[0].name}" unless div_id
 current_set_empty = false if current_set_empty.nil?
 item_name ||= svc_types[0].display_name_pluralize
-progress_message ||= "Searching for #{current_set_empty ? "" : "more "} #{item_name}"
+progress_message ||= "#{t(:searching_for)}#{current_set_empty ? "" : "more "} #{t(item_name, :default => item_name)}"
 # only display if there are more! 
 if service_types_in_progress?(svc_types) %>
   <div id="<%= div_id %>" class="background_progress_spinner">

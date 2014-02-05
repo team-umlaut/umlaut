@@ -11,26 +11,31 @@
 %>
 <li class="response_item">
   <%= content_tag :i, nil %>
-  <% 
+  <%
+    # Note we're sending default options for i18n since some display_text values
+    # are generic (e.g. 'Periodical Information') and should be translated, while
+    # others are resource names (e.g. a journal package name) and should not be translated
+  %>
+  <%
   # Fancy schmancy ajax? But not if we're generating embed partials, won't work.
   # Generate a hyperlink that will call our standard service action
-  # due to special class for unobtrusive JS. 
+  # due to special class for unobtrusive JS.
   if view_data[:link_supports_ajax_call] %>
-    <%= link_to(view_data[:display_text], {:controller=>'link_router', :id=>service_response.id},
+    <%= link_to(t(view_data[:display_text], :default => view_data[:display_text]), {:controller=>'link_router', :id=>service_response.id},
           {:id => "svctype_link_#{service_response.id}", :target => "_blank", :class => "response_link ajax_window"}) %>
   <% #Collapsible content on page 
   elsif (content = response_content(view_data )) %>
-    <%= expand_contract_section(view_data[:display_text], 
+    <%= expand_contract_section(t(view_data[:display_text], :default => view_data[:display_text]),
           "svc_id_#{service_response.id}") { content_tag(:div, content, :class => "umlaut-content-indent") } %>
   <% # Ordinary href link
-  else %>      
+  else %>
     <%= link_to({:controller=>'link_router', :id=>service_response.id}, 
           {:id => "svctype_link_#{service_response.id}", :target=>"_blank", :class => "response_link"}) do %>
       <%= coverage_summary(view_data) %>
-      <%= view_data[:display_text] %><%
+      <%= t(view_data[:display_text], :default => view_data[:display_text]) %><%
     end
   end %>
-  <%= content_tag(:div, "from #{view_data[:source] || service_response.service.display_name}", :class => "response_source") if show_source %>
+  <%= content_tag(:div, "#{t(:from)} #{view_data[:source] || service_response.service.display_name}", :class => "response_source") if show_source %>
   <%= content_tag(:div, view_data[:coverage], :class => "response_coverage_statement") unless view_data[:coverage].blank? %>
   <%-
     # legacy, the 'notes' field can take raw html, we need to leave it that way for
@@ -46,8 +51,8 @@
   -%>
   <%= (content_tag(:div, :class => "edition_warning") {
         (view_data[:edition_str].blank?) ? 
-          content_tag(:em, "May be alternate edition.", :class => ["note"]) : 
-            (content_tag(:em, "Edition information",:class => ["note"]) + " #{view_data[:edition_str]}")
+          content_tag(:em, t(:maybe_alt_edition), :class => ["note"]) :
+            (content_tag(:em, t(:edition_info),:class => ["note"]) + " #{view_data[:edition_str]}")
         }) if ((not view_data[:match_reliability].blank?) && view_data[:match_reliability] != ServiceResponse::MatchExact) %>
   <%-
   # Debug info, hidden with explicit style, can be made visible with javascript.

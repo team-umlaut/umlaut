@@ -3,7 +3,7 @@
 class TxtHoldingExport < AjaxExport
 
   def initialize(config)
-    @display_text = "Send to phone"
+    @display_text = 'send_to_phone'
     @form_controller = "export_email"
     @form_action = "txt"
     # providers is a hash of:

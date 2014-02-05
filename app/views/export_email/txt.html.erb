@@ -2,18 +2,18 @@
   <%
   unless @user_request.nil? %>
     <%= form_tag( {:controller => "export_email", :action => "send_txt", :id => params[:id]}, :class => "form-inline" ) do %>
-      <h2>Send the title and location of an item to your mobile phone</h2>
+      <h2><%= t :txt_export_header %></h2>
       <%= validation_error flash[:alert] if flash[:alert] %>
       <fieldset>
-        <legend>Title: <%= h(brief_citation(@user_request)) %></legend>
-        <%= label_tag('number', 'Enter your mobile phone number:') %>
+        <legend><%= "#{t :title}: #{h(brief_citation(@user_request))}" %></legend>
+        <%= label_tag('number', t(:enter_your_number)) %>
         <%= text_field_tag('number', params[:number], :size => 14) %>
-        <small><em>10 digit US cell phone number</em></small><br />
-        <%= label_tag('provider', 'Select your provider:') %>
+        <small><em><%= t :number_format_description %> </em></small><br />
+        <%= label_tag('provider', t(:select_provider)) %>
         <% providers = @svc_response.service.instance_variable_get("@providers") %>
         <%= select_tag "provider", options_for_select(providers.sort, params[:provider]) %>
         <% holdings = @user_request.get_service_type('holding', {}) %>
-        <p>Choose the item you want to send:</p>
+        <p><%= t :choose_item_to_send %></p>
         <ul><%
           holdings.each do |p|
             target = p.view_data %>
@@ -23,8 +23,8 @@
             </li><%
           end %>
         </ul>
-        <small><em>Note: charges may apply if your service plan does not cover unlimited texting</em></small>
-        <%= submit_tag 'Send!', :class => "btn btn-inverse" %>
+        <small><em><%= t :charges_may_apply %></em></small>
+        <%= submit_tag t :send, :class => "btn btn-inverse" %>
       </fieldset><%
     end
   end %>

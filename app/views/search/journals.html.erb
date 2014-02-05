@@ -1,22 +1,22 @@
-<h2>Journals</h2>
+<h2><%=t :Journals%></h2>
 <%= render :partial=>"a_to_z" %>
 <% if flash[:error] %>
   <div id="error" class="notice citationLinker"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
 <% end %>
-<h3>Looking for a specific journal or article</h3>
+<h3><%=t :journals_subheader%></h3>
 <%= form_tag(@submit_hash, {:method => "get", :class => "OpenURL form-inline form-very-inline", :name => "OpenURL", :id=>"OpenURL"})  %>
   <div class="umlaut-search-form">
     <fieldset>                                      
-      <legend>Enter the journal title or the ISSN. If you have both the journal title and ISSN, use the ISSN.</legend>
+      <legend><%=t :search_instructions%></legend>
       <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
       <%= hidden_field_tag "rft.date", "" %> 
       <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
       <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
       <div class="control-group">
-        <%= label :journal, :title, "Journal Title:", :class => "control-label" %>
+        <%= label :journal, :title, t(:journal_title) + ':', :class => "control-label" %>
         <%= text_field :journal, :title, {:name=>'rft.jtitle', :class=>"title_search input-xlarge", :autocomplete => "off"} %>
         <select name="umlaut.title_search_type" class="title_search_type input-medium">
-          <%= options_for_select({"contains" => "contains", "begins with" => "begins", "exact match" => "exact"}, params["umlaut.title_search_type"])  %>
+          <%= options_for_select({t(:contains) => "contains", t(:begins_with) => "begins", t(:exact_match) => "exact"}, params["umlaut.title_search_type"])  %>
         </select>
       </div>
       <div class="control-group">
@@ -27,28 +27,28 @@
   </div>
   <div class="umlaut-search-form">
     <fieldset>
-      <legend>Optional information - Enter as much as you know of the following:</legend>
+      <legend><%=t :search_optional_info %></legend>
       <div class="control-group">
-        <label for="year" class="control-label">Date:</label>
+        <label for="year" class="control-label"><%=t(:date_label).titleize + ':'%></label>
         <%= date %>
       </div>
       <div class="control-group">
         <span class="control-sub-group">
-          <%= label :journal, :volume, "Volume:", :class => "control-label" %>
+          <%= label :journal, :volume, t(:volume).titleize + ':', :class => "control-label" %>
           <%= text_field :journal, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume input-tiny"} %>
         </span>
         <span class="control-sub-group">
-          <%= label :journal, :issue, "Issue:", :class => "control-label" %>
+          <%= label :journal, :issue, t(:issue).titleize + ':', :class => "control-label" %>
           <%= text_field :journal, :issue, {:name=>'rft.issue', :class=>"issue input-tiny"} %>
         </span>
         <span class="control-sub-group">
-          <%= label :journal, :spage, "Start page:", :class => "control-label" %>
+          <%= label :journal, :spage, t(:start_page).titleize + ':', :class => "control-label" %>
           <%= text_field :journal, :spage, {:name=>'rft.spage', :class=>"spage input-tiny"} %>
         </span>
       </div>
       
       <div class="control-group">
-        <label for="rft_id_type">DOI or Pubmed Identifier:</label>
+        <label for="rft_id_type"><%=t(:doi_or_pubmed_id) + ':'%></label>
         <select id="rft_id_type" name="rft_id_type" class="input-small">
           <option value="doi">DOI:</option>
           <option value="pmid">PMID:</option>
@@ -57,13 +57,13 @@
       </div>
     </fieldset>
   </div> 
-  <%= submit_tag "Search", {:name=>"Generate_OpenURL2", :class => "btn"} %>
+  <%= submit_tag t(:search), {:name=>"Generate_OpenURL2", :class => "btn"} %>
 </form>
 
 <div class="umlaut-separator help-block">
-  <h3><span>Having Trouble?</span></h3>
+  <h3><span><%= t :having_trouble %></span></h3>
   <p>
-    Try entering less information about your article. If one piece of information is wrong, it could be causing the problem.
+    <%= t :having_trouble_message %>
   </p>
   <% if umlaut_config.help_url %>
     <p>
