@@ -1,10 +1,9 @@
 <%
 # Get the citation from the user request
 cite = user_request.referent.to_citation
-# Set the page title to the citation's title
 @page_title = cite[:title] %>
 <% if user_request.referent.type_of_thing.present? %>
-  <p class="resource-type"><%= user_request.referent.type_of_thing.titlecase %></p>
+  <p class="resource-type"><%=t(user_request.referent.type_of_thing).titlecase %></p>
 <% end %>
 <h2 class="title"><%= cite[:title] %></h2>
 <% if cite[:author].present? || cite[:date].present? %>
@@ -22,17 +21,18 @@ cite = user_request.referent.to_citation
 <% end %>
 <p class="published_in">
   <% if [:container_title, :volume, :issue, :page].find {|k| cite[k].present? } %>
-    <span class="published-label">Published in <%= cite[:container_label] %></span>
+
+    <span class="published-label"><%="#{t(:published_in)} #{t(cite[:container_label])}"%></span> 
     <span class="container-title"><%= cite[:container_title] %></span>. 
   <% end %>
   <% if cite[:volume].present? %>
-    <span class="volume">Volume <%= cite[:volume] %></span>.
+      <span class="volume"><%="#{t(:volume).titlecase} #{cite[:volume]}" %></span>.
   <% end %>
   <% if cite[:issue].present? %>
-    <span class="issue">Issue <%= cite[:issue] %></span>.
+      <span class="issue"><%="#{t(:issue).titlecase}  #{cite[:issue]}" %></span>.
   <% end %>
   <% if cite[:page].present? %>
-    <span class="page">Page <%= cite[:page] %></span>.
+      <span class="page"><%="#{t(:page).titlecase} #{cite[:page]}" %></span>.
   <% end %>
 </p>
 <dl class="citation-info">

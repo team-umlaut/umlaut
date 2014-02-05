@@ -8,28 +8,28 @@
       <%= hidden_field_tag "ctx_ver", "Z39.88-2004" %> 
       <%= hidden_field_tag "rft_val_fmt", "info:ofi/fmt:kev:mtx:book" %> 
       <%= hidden_field_tag "rft.genre", "book" %> 
-      <%= label :book, :title, "Book Title:" %>
+      <%= label :book, :title, t(:book_title) + ':'%>
       <%= text_field :book, :title, {:name=>'rft.btitle', :class=>"title_search"} %>
-      <%= label :book, :date, "Year:" %>
+      <%= label :book, :date, t(:year) + ':' %>
       <%= text_field :book, :date, {:name=>'rft.date', :class=>"date"} %>
-      <%= label :book, :volume, "Volume:" %>
+      <%= label :book, :volume, t(:volume) + ':' %>
       <%= text_field :book, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume"} %>
-      <%= label :book, :part, "Part:" %>
+      <%= label :book, :part, t(:part) + ':' %>
       <%= text_field :book, :part, {:name=>'rft.part', :class=>"part"} %>
       <%= label :book, :isbn, "ISBN:" %>
       <%= text_field :book, :isbn, {:name=>'rft.isbn', :max_length => "17", :class=>"isbn"} %>
     </fieldset>
     <fieldset class="citationLinker">                                      
       <legend>Author</legend>
-      <%= label :book, :aulast, "Last Name:" %>
+      <%= label :book, :aulast, t(:last_name) + ':'%>
       <%= text_field :book, :aulast, {:name=>'rft.aulast', :class=>"aulast"} %>
-      <%= label :book, :aufirst, "First Name:" %>
+      <%= label :book, :aufirst, t(:first_name) + ':'%>
       <%= text_field :book, :aufirst, {:name=>'rft.aufirst', :class=>"aufirst"} %>
-      <%= label :book, :auinit, "Initials:" %>
+      <%= label :book, :auinit, t(:initials) + ':'%>
       <%= text_field :book, :auinit, {:name=>'rft.auinit', :class=>"auinit"} %>
     </fieldset>
     <fieldset>                                      
-      <%= submit_tag "Search", :class => "btn" %>
+      <%= submit_tag t(:search), :class => "btn" %>
     </fieldset>
   </form>
 </div>

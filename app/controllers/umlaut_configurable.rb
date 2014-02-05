@@ -264,7 +264,7 @@ module UmlautConfigurable
             
       add_resolve_sections! do
         div_id "fulltext"    
-        section_title "Online Access"
+        section_title :online_access
         html_area :main
         partial :fulltext
         show_partial_only true
@@ -279,7 +279,7 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "excerpts"
-        section_prompt "A limited preview which may include table of contents, index, and other selected pages."
+        section_prompt :excerpt_prompt
         html_area :main
         list_visible_limit 5
         visibility :responses_exist
@@ -301,7 +301,7 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "document_delivery"
-        section_title "Request a copy from Inter-Library Loan"
+        section_title :request_from_interlibrary
         html_area :main
         visibility :responses_exist
         #bg_update false
@@ -345,15 +345,15 @@ module UmlautConfigurable
         div_id "export_citation"
         html_area :sidebar
         visibility :in_progress
-        item_name_plural "Export tools"
+        item_name_plural :export_tools
       end
       
       add_resolve_sections! do
         div_id "related_items"
         html_area :sidebar
         partial "related_items"
-        section_title "More like this"
-        item_name_plural "Related Items"
+        section_title :more_like_this
+        item_name_plural :related_items
         # custom visibility, show it for item-level cites,
         # or if we actually have some
         visibility(  lambda do |renderer|
@@ -366,7 +366,7 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "highlighted_link"
-        section_title "See also"
+        section_title :see_also
         html_area :sidebar
         visibility :in_progress
         partial_locals( :show_source => true )

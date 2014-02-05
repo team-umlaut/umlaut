@@ -204,7 +204,7 @@ class HathiTrust < Service
         
         request.add_service_response(
             :service=>self, 
-            :display_text=>"Search inside some volumes",           
+            :display_text=> :search_inside_some_vols,
             :url=> record["recordURL"],
             :service_type_value => :highlighted_link             
         )   
@@ -259,7 +259,7 @@ class HathiTrust < Service
   
   def excerpt_note_for(record)
     return nil unless record["titles"].kind_of?(Array)
-    "Some volumes of: #{record["titles"].first}"
+    "#{t(:some_volumes_of)}: #{record["titles"].first}"
   end
   
   def is_serial_part?(item)

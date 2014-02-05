@@ -7,13 +7,13 @@
   # TODO: Make this a helper function!?
   if (search_providers.length > 0 and (not service_type_in_progress?('search_inside'))) %>
     <div class="section_heading">
-      <h3>Search inside this <%= @user_request.referent.container_type_of_thing %></h3>
+      <h3><%="#{t(:search_inside_this)} #{t(@user_request.referent.container_type_of_thing)}" %></h3>
     </div>
     <div class="umlaut_section_content">
       <%= content_tag("form", :target => "_blank", :action => url_for(:controller=>'link_router', :action=>'index')) do %>
 
         <div class="search-inside-source input-prepend input-append">
-          <span class="add-on"> via </span> 
+          <span class="add-on"> <%=t :via %></span>
 
           <% if search_providers.length > 1 %>
             <%= select_tag("id", options_for_select(search_providers.collect {|st| [st.view_data[:display_text], st.id]}), 
@@ -26,14 +26,14 @@
         </div>
         <div class="search-inside-query input-append">
           <input name="query" type="text" /> 
-          <input value="search" type="submit" class="btn add-on">
+          <input value="<%=t :search %>" type="submit" class="btn add-on">
         </div>     
       <% end %>
     </div>
   <% elsif (@user_request.referent.format == 'book' && service_type_in_progress?('search_inside')) %>
     <%# don't show the spinner unless it's identified as a book, otherwise too likely to be a false promise %>
     <%= render(:partial => "background_progress", :locals => {:svc_type => "search_inside", 
-      :progress_message => "Looking for tools to search inside this #{@user_request.referent.container_type_of_thing}" }) %>
+      :progress_message => "#{t :search_inside_progress_message} #{@user_request.referent.container_type_of_thing}" }) %>
   <% end %>
 
 </div>

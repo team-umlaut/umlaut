@@ -14,25 +14,25 @@ module SearchHelper
     if ref_meta['genre'].blank?
       case @current_context_object.referent.format 
       when  'book'
-        result.atitle = 'Chapter/Part Title'
+        result.atitle = t(:chapter_title)
       when @current_context_object.referent.format == 'journal'
-        result.atitle = 'Article Title'
+        result.atitle = t(:article_title)
       end
-      result.title = 'Title'      
+      result.title = t(:title)
     else
       case ref_meta["genre"]
       when /article|journal|issue/
-        result.atitle = 'Article Title'
-        result.title = 'Journal Title'
+        result.atitle = t(:article_title)
+        result.title = t(:journal_title)
       when /bookitem|book/
-        result.atitle = 'Chapter/Part Title'
-        result.title = 'Book Title'
+        result.atitle = t(:chapter_title)
+        result.title = t(:book_title)
       when /proceeding|conference/
-        result.atitle = 'Proceeding Title'
-        result.title = 'Conference Name'
+        result.atitle = t(:proceeding_title)
+        result.title = t(:conference_name)
       when 'report'
-        result.atitle = 'Report Title'
-        result.title = 'Report'
+        result.atitle = t(:report_title)
+        result.title = t(:report)
       end
     end
     return result    
@@ -40,7 +40,7 @@ module SearchHelper
   
   # A-Z buttons in search page
   def group_list
-    group_list ||= ('A'..'Z').to_a.push('0-9').push('Other')  
+    group_list ||= ('A'..'Z').to_a.push('0-9').push(t(:other))
   end
 
   # Date dropdowns in search page

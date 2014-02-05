@@ -17,7 +17,22 @@ require 'umlaut_configurable'
 # additional helpers to over-ride Umlaut helpers if needed. 
 class UmlautController < ApplicationController
     include Umlaut::ControllerBehavior
-        
+
+    # Code to enable localisation
+
+    before_filter :set_locale
+
+    # if no locale is set, will default to default_locale (i.e. en)
+    def set_locale
+      I18n.locale = params['umlaut.locale'.to_sym] || I18n.default_locale
+    end
+
+    # ensure locale is always included in any internal links
+    def default_url_options(options={})
+      { 'umlaut.locale'.to_sym => I18n.locale }
+    end
+
+
     # Some suggested configuration. More config keys
     # are available, see UmlautConfigurable.set_default_configuration!
     # implementation for list. Configuration actually uses
@@ -60,6 +75,9 @@ class UmlautController < ApplicationController
       # How many seconds between updates of the background updater for background
       # services?
       # poll_wait_seconds 4
+
+      # uncomment this line to show localisation selector
+      localisation_enabled true
       
       # Configuration for the 'search' functions -- A-Z lookup
       # and citation entry. 

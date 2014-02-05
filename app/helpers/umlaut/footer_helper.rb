@@ -11,7 +11,7 @@ module Umlaut::FooterHelper
     if @collection
       content = "".html_safe
             
-      content << "Powered by ".html_safe + link_to("Umlaut", "https://github.com/team-umlaut/umlaut") + ". ".html_safe
+      content << t(:powered_by).html_safe + " " + link_to("Umlaut", "https://github.com/team-umlaut/umlaut") + ". ".html_safe
       
       credit_segments = []
       
@@ -31,9 +31,9 @@ module Umlaut::FooterHelper
       
       
       if credit_segments.length > 0
-        content << "Using services from ".html_safe
-        content << credit_segments.join(", ").html_safe
-        content << " and others.".html_safe
+        content << t(:using_services_from).html_safe + ' '
+        content << credit_segments.join(', ').html_safe
+        content << ' ' + t(:and_others).html_safe + '.'
       end
       
       return content

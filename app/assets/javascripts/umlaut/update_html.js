@@ -44,16 +44,14 @@
 
   // Define an object constructor on the global window object
   // For our UmlautHtmlUpdater object. 
-  function HtmlUpdater(umlaut_base, context_object) {
+  function HtmlUpdater(snippets_url, context_object) {
     if (context_object == undefined)
-      context_object = "";      
-    
-    // Remove query string (if present)
-    umlaut_base = umlaut_base.replace(/\?.*$/, '')
-    // Remove trailing slash
-    umlaut_base = umlaut_base.replace(/\/$/,'');
-    this.umlaut_uri =  umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=json&' + context_object;
-        
+      context_object = "";
+
+    //remove any trailing slash or param
+    snippets_url = snippets_url.replace(/\/$/,'');
+    this.umlaut_uri =  snippets_url + '&' + context_object;
+
     this.section_targets = [];
            
     this.add_section_target = function(config) {

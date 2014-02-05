@@ -7,7 +7,10 @@ module Umlaut::Helper
   include Umlaut::FooterHelper
   include Umlaut::HtmlHeadHelper
   
-  
+  # get a url for the html sections api including any default parameters
+  def get_html_sections_url
+    url_for :controller => 'resolve', :action => 'partial_html_sections', 'umlaut.response_format' => 'json'
+  end
   
   # pass in an OpenURL::ContextObject, outputs a link.
   def resolver_link(context_object, params={})
@@ -76,7 +79,7 @@ module Umlaut::Helper
     link_to({:action => "get_permalink", :"umlaut.request_id" => @user_request.id}, 
              :class => "umlaut-load-permalink btn btn-mini", 
              :data => {"umlaut-toggle-permalink"=>"true"}) do
-        content_tag("i") + " Short link"
+        content_tag("i") + " #{t(:short_link)}"
     end
   end
 
@@ -94,5 +97,40 @@ module Umlaut::Helper
     end
   end
 
-  
+  # Create dropdown if we have multiple locales, link if just two
+  def render_locale_selector
+    num_locales = I18n.config.available_locales.size
+    if num_locales > 2
+      render_locale_dropdown
+    elsif num_locales == 2
+      render_locale_link
+    end
+  end
+
+  # create a link for the non-active locale
+  def render_locale_link
+    locales = I18n.config.available_locales
+    other_locale = (locales - [I18n.locale]).pop
+    link_to t(other_locale), params.merge('umlaut.locale'.to_sym => other_locale)
+  end
+
+  # Create a dropdown with the current language at the top
+  def render_locale_dropdown
+    locale_options = Array.new
+    #make sure the locales display with their titles
+    I18n.config.available_locales.each do |loc|
+      locale_options.push([t(loc), loc])
+    end
+    form_tag({controller: params[:controller], action: params[:action]}, {method: "get"} ) do
+      #output select tag with language options, current language set to selected
+      concat(select_tag('umlaut.locale'.to_sym, options_for_select(locale_options, I18n.locale), onchange: 'this.form.submit()'))
+       # send the url params as hidden fields
+       params.each do |param|
+         unless param[0] == 'controller' || param[0] == 'action' || param[0] == 'umlaut.locale'
+           concat(hidden_field_tag("#{param[0]}", "#{param[1]}"))
+         end
+       end
+    end
+  end
+
 end

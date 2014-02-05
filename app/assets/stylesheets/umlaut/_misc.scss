@@ -55,6 +55,13 @@
   margin-top: 2px;
 }
 
+.umlaut-locale-selector {
+  text-align: right;
+  form {
+    margin: 10px 0px 0px;
+  }
+}
+
 // Used to conveniently add a mini spinner to page with
 // JS, usually by adding an <i class='spinner'></i>
 .spinner {

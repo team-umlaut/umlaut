@@ -2,17 +2,17 @@
 failed_dispatches = failed_service_dispatches()
 unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
   <div id="service_errors_content">
-    <h5 class="warning"><i class="umlaut_icons-famfamfam-error"></i> Some content may not be included due to errors:</h5>
+    <h5 class="warning"><i class="umlaut_icons-famfamfam-error"></i> <%= t :service_errors_title %></h5>
     <ul>
       <% failed_dispatches.each do | dispatch | %>
         <li class="text-small">
-          Some <strong><%= dispatch.service.service_types_generated.collect { |type|
-            type.display_name_pluralize.downcase}.join(",") %></strong>
-          from <a class="collapse-toggle" data-target="<%= "#failed_dispatch_#{dispatch.id}"%>" data-toggle="collapse"><strong><%= dispatch.service.display_name %></strong></a>
+          <%= t :services_missing %><strong> <%= dispatch.service.service_types_generated.collect { |type|
+            t(type.display_name_pluralize, :default => type.display_name_pluralize).downcase}.join(", ")%></strong>
+          <%= t :from %> <a class="collapse-toggle" data-target="<%= "#failed_dispatch_#{dispatch.id}"%>" data-toggle="collapse"><strong><%= dispatch.service.display_name %></strong></a>
           <% exception_info = dispatch.exception_info %>
           <div id="<%= "failed_dispatch_#{dispatch.id}"%>" class="collapse">
             <ul class="nav nav-list">
-              <li class="nav-header">Technical Error Information</li>
+              <li class="nav-header"><%= t :technical_error_info %></li>
               <%= content_tag("li") do
                 content_tag("pre", :class=>"pre-scrollable") do
                   error_message = (exception_info) ? "#{exception_info[:class_name]}: #{exception_info[:message]}\n" : ""
