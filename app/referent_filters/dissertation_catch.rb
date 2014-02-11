@@ -25,14 +25,14 @@ class DissertationCatch < ReferentFilter
 
 
    
-  # input: ropenurl ContextObject
+  # input: Umlaut Referent object
   # Is this a citation to a Dissertation Abstracts
   # issn, or do we otherwise think it's a dissertation citation? Then change
   # it to a dissertation citation. 
   def filter(referent)
     issn = get_identifier(:urn, "issn", referent)
-
     return unless issn
+
     
     # normalize removing hyphen
     issn.gsub!('-', '')
@@ -43,10 +43,16 @@ class DissertationCatch < ReferentFilter
       referent.enhance_referent("genre", "dissertation")
   
       metadata = referent.metadata
+
       # Reset it's title to the dissertation title
-      title = metadata['atitle'] || metadata['title']
-      referent.enhance_referent("btitle", title)
-      referent.enhance_referent("title", title, true, false, :overwrite => true)
+      title = if metadata['atitle'].present?
+        metadata['atitle']
+      elsif metadata['title'].present?
+        metadata['title']
+      end
+      referent.enhance_referent("btitle", title) if title.present?
+      referent.enhance_referent("title", title, true, false, :overwrite => true) if title.present?
+
       # Now erase titles that do not apply 
       referent.remove_value("atitle")
       referent.remove_value("jtitle")
