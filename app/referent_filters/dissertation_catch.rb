@@ -33,7 +33,6 @@ class DissertationCatch < ReferentFilter
     issn = get_identifier(:urn, "issn", referent)
     return unless issn
 
-    
     # normalize removing hyphen
     issn.gsub!('-', '')
     
@@ -66,6 +65,7 @@ class DissertationCatch < ReferentFilter
       referent.remove_value("issue_start")
       referent.remove_value("spage")
       referent.remove_value("epage")
+      referent.remove_value("pages")
     end
 
   end
