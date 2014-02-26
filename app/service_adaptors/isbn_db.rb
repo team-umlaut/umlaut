@@ -22,7 +22,7 @@ class IsbnDb < Service
   end
 
   def initialize(config)
-    @timeout = 7
+    @timeout = 3
     @display_text = "Compare online prices"
     @display_name = "ISBNdb.com"
     
