@@ -29,7 +29,14 @@ default:
         disabled: true
         display_name: Find It       
         base_url: YOUR_SFX_BASE_URL
-        priority: 3      
+        priority: 3
+
+      # blind link to price comparison site AllBooks.com. 
+      # just a blind link with no API pre-check, will be near
+      # instantaneous to calculate. 
+      AllBooksDotCom:
+        type: AllBooksDotCom
+        priority: 3
       
         
       # First half of Amazon, run in foreground, get metadata and cover images.
@@ -134,13 +141,6 @@ default:
         type: UlrichsLink
         priority: d
         
-      IsbnDb:
-        display_name: isbndb.com
-        disabled: true
-        type: IsbnDb
-        priority: d
-        access_key: YOUR_ISBNDB_ACCESS_KEY
-                
       EmailExport:
         type: EmailExport
         priority: d

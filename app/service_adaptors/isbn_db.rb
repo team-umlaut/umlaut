@@ -4,7 +4,8 @@
 #
 # By default makes an API request in advance to check if book is available, and thus requires
 # an API key.  However, ISBNdb seems no longer as reliable as it once was there. 
-# You may not want to use ISBNdb at all.
+# You may not want to use ISBNdb at all, see AllBooksDotCom as an alternative
+# (although with no pre-check for hits.)
 #
 # jrochkind talked to the operators of isbndb and got a very high traffic limit
 # (instead of the default free 500 requests/day), for free. You could try the
