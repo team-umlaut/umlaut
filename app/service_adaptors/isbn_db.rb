@@ -2,6 +2,10 @@
 # info for online sellers. There are potentially other services we could
 # make use of there in the future too.
 #
+# By default makes an API request in advance to check if book is available, and thus requires
+# an API key.  However, ISBNdb seems no longer as reliable as it once was there. 
+# You may not want to use ISBNdb at all.
+#
 # jrochkind talked to the operators of isbndb and got a very high traffic limit
 # (instead of the default free 500 requests/day), for free. You could try the
 # same. 
