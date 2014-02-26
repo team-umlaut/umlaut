@@ -48,7 +48,7 @@ class ResourceController < UmlautController
     # And send the actual result out
     render(:text => remote_response.read)
   rescue Timeout::Error, Errno::ECONNREFUSED, Errno::ETIMEDOUT => e
-    msg                = "#{e.inspect}: waiting for image proxy from `#{url_str}`; returning broken image"
+    msg                = "#{e.inspect}: waiting for image proxy from `#{url_str}`; timeout is currently set to #{HttpTimeout}s; returning broken image"
     relevant_backtrace = e.backtrace.find_all {|line| line =~ /umlaut/}
 
     logger.warn("#{msg}\n  #{relevant_backtrace.join("\n  ")}")
