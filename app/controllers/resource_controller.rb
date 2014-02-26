@@ -7,6 +7,11 @@
 # an open proxy with the security problems that would cause.
 class ResourceController < UmlautController
   require 'open-uri'
+  require 'timeout'
+
+  # seconds to wait for thing were proxying. Yeah, fairly big num seems neccesary
+  # for Amazon at least.
+  HttpTimeout = 4
 
   # We really ought to _stream_ the remote response to our client, but I
   # couldn't get that to work how I wanted in Rails2. Even using
@@ -25,7 +30,11 @@ class ResourceController < UmlautController
     end
 
     proxied_headers = proxy_headers( request, uri.host )
-    remote_response = open(uri, 'rb', proxied_headers)
+
+    # open-uri :read_timeout is not behaving reliably, resort to Timeout.timeout
+    # should we just be using raw Net::Http and give up on open-uri? remember
+    # to update timeout exceptions in rescue below if you change.
+    remote_response = Timeout.timeout(HttpTimeout) {  open(uri, 'rb', proxied_headers) }
 
     # copy certain headers to our proxied response
     ["Content-Type", "Cache-Control", "Expires", "Content-Length", "Last-Modified", "Etag", "Date"].each do |key|
@@ -33,10 +42,19 @@ class ResourceController < UmlautController
       # rack doens't like it if we set a nil value here.
       response.headers[key] = value unless value.blank?
     end
+
     response.headers["X-Original-Url"] = url_str
 
     # And send the actual result out
     render(:text => remote_response.read)
+  rescue Timeout::Error, Errno::ECONNREFUSED, Errno::ETIMEDOUT => e
+    msg                = "#{e.inspect}: waiting for image proxy from `#{url_str}`; returning broken image"
+    relevant_backtrace = e.backtrace.find_all {|line| line =~ /umlaut/}
+
+    logger.warn("#{msg}\n  #{relevant_backtrace.join("\n  ")}")
+
+    response.headers['X-Original-Url'] = url_str
+    render :text => msg, :status => 504
   end
 
   protected
