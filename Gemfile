@@ -22,11 +22,14 @@ group :development, :test do
 
   platforms :mri do
     gem 'ruby-prof', "~> 0.13.0"
-    gem 'debugger', "~> 1.5.0"
   end
 
   gem 'jquery-rails'
   gem "activerecord-import"
+end
+
+group :debug do
+  gem 'debugger', :platform => :mri
 end
 
 # Add coveralls for testing.
