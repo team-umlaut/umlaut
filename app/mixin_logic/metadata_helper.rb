@@ -301,6 +301,43 @@ module MetadataHelper
     return nil
   end
 
+  def get_month(rft)
+    if rft.metadata['date'] =~ /\d\d\d\d\-(\d\d?)/
+      return $1
+    elsif rft.metadata['month']
+      # some link generators use an illegal 'month' parameter
+      return rft.metadata['month']
+    else
+      return nil
+    end
+  end
+
+  # uses `spage` or tries to parse `pages`
+  def get_spage(rft)
+    if rft.metadata['spage'].present?
+      return rft.metadata['spage']
+    elsif rft.metadata['pages'] =~ /\A *(.*?) *\-.*\Z/
+      return $1
+    elsif rft.metadata['pages'].present?
+      return rft.metadata['pages']
+    else
+      return nil
+    end
+  end
+
+  # uses `epage` or tries to parse `pages`
+  def get_epage(rft)
+    if rft.metadata['epage'].present?
+      return rft.metadata['epage']
+    elsif rft.metadata['pages'] =~ /\A.*\- *(.*) *\Z/
+      return $1
+    elsif rft.metadata['pages'].present?
+      return rft.metadata['pages']
+    else
+      return nil
+    end
+  end
+
   # Look at weird bad OpenURLs, use heuristics to see if the 'title' probably
   # represents a journal rather than a book. A guess at best, based on the bad
   # data we've seen, sigh. 
