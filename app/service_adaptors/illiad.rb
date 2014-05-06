@@ -11,6 +11,12 @@ require 'openurl'
 # off ILLiad target(s) in SFX (or configure Umlaut SFX adapter to ignore them), 
 # and use this instead. 
 #
+# # Pre-empting
+#
+# You may want to show ILLiad links only if there is no fulltext, or only if there
+# is no fulltext from a certain service. You can use Umlaut's standard service
+# pre-emption configuration for that. (Example needed.)
+#
 # # Config parameters
 # ## Required
 # 
