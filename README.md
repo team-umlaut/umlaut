@@ -24,7 +24,7 @@ advertise/recommend to it's users.
 
 Umlaut strives to supply links that take the user in as few clicks as possible to the service listed, without ever listing 'blind links' that you first have to click on to find out whether they are available. Umlaut pre-checks things when neccesary to only list services, with any needed contextual info, such that the user knows what they get when they click on it. Save the time of the user.
 
-[What do you mean by all this?](https://github.com/team-umlaut/umlaut/wiki/What-is-Umlaut-anyway)
+[What do you mean by all this?](https://github.com/team-umlaut/umlaut/wiki/What-is-Umlaut-anyway%3F)
 
 Umlaut is distributed as a ruby Rails engine gem. It's a very heavyweight engine,
 the point of distro'ing as a gem is to make it easy to keep local 
