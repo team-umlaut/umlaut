@@ -85,43 +85,43 @@ class Scopus2Test < ActiveSupport::TestCase
     assert_equal "ISBN(\"1234567890\")", scopus_query
   end
 
-  # # Live test, with VCR recording
-  # test_with_cassette("live test with result", :scopus) do    
-  #   umlaut_request = make_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939&issn=0012-3706")
+  # Live test, with VCR recording
+  test_with_cassette("live test with result", :scopus) do    
+    umlaut_request = make_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939&issn=0012-3706")
       
-  #   @service.handle_wrapper(umlaut_request)
+    @service.handle_wrapper(umlaut_request)
 
-  #   cited_by_responses = umlaut_request.service_responses.find_all {|r| r.service_type_value_name == "cited_by"}
-  #   assert_length 1, cited_by_responses
+    cited_by_responses = umlaut_request.service_responses.find_all {|r| r.service_type_value_name == "cited_by"}
+    assert_length 1, cited_by_responses
     
-  #   cited_by_response = cited_by_responses.first
-  #   assert_match URI::regexp, cited_by_response.url, "cited_by has valid url"
-  #   assert_present cited_by_response.display_text
+    cited_by_response = cited_by_responses.first
+    assert_match URI::regexp, cited_by_response.url, "cited_by has valid url"
+    assert_present cited_by_response.display_text
 
-  #   similar_responses = umlaut_request.service_responses.find_all {|r| r.service_type_value_name == "similar"}
-  #   assert_length 2, similar_responses
+    similar_responses = umlaut_request.service_responses.find_all {|r| r.service_type_value_name == "similar"}
+    assert_length 2, similar_responses
 
-  #   similar_responses.each do |similar_response|
-  #     assert_match URI::regexp, similar_response.url, "similar-type response has valid url"
-  #     assert_present similar_response.display_text, "similar-type response has display_text"
-  #   end
+    similar_responses.each do |similar_response|
+      assert_match URI::regexp, similar_response.url, "similar-type response has valid url"
+      assert_present similar_response.display_text, "similar-type response has display_text"
+    end
 
-  #   dispatch = umlaut_request.dispatched_services.find {|ds| ds.service_id == @service.service_id}
-  #   assert_present dispatch
-  #   assert_equal DispatchedService::Successful, dispatch.status
-  # end
+    dispatch = umlaut_request.dispatched_services.find {|ds| ds.service_id == @service.service_id}
+    assert_present dispatch
+    assert_equal DispatchedService::Successful, dispatch.status
+  end
 
-  # test_with_cassette("live test with no hits", :scopus) do
-  #   umlaut_request = make_umlaut_request("/resolve?sid=google&atitle=adfadfadf&title=adfadf&volume=4900&issue=700&date=1900&spage=93900&issn=0012-3706")
+  test_with_cassette("live test with no hits", :scopus) do
+    umlaut_request = make_umlaut_request("/resolve?sid=google&atitle=adfadfadf&title=adfadf&volume=4900&issue=700&date=1900&spage=93900&issn=0012-3706")
 
-  #   @service.handle_wrapper(umlaut_request)
+    @service.handle_wrapper(umlaut_request)
 
-  #   assert_length 0, umlaut_request.service_responses
+    assert_length 0, umlaut_request.service_responses
 
-  #   dispatch = umlaut_request.dispatched_services.find {|ds| ds.service_id == @service.service_id}
-  #   assert_present dispatch
-  #   assert_equal DispatchedService::Successful, dispatch.status
-  # end
+    dispatch = umlaut_request.dispatched_services.find {|ds| ds.service_id == @service.service_id}
+    assert_present dispatch
+    assert_equal DispatchedService::Successful, dispatch.status
+  end
 
   test_with_cassette("live trigger scopus error", :scopus) do
     # Make a new service object that we mock to send a back request to Scopus, so

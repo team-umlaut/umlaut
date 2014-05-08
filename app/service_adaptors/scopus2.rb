@@ -126,7 +126,7 @@ class Scopus2 < Service
 
     response = http_fetch(url, :headers => headers, :raise_on_http_error_code => false)
 
-    if response.code != 200
+    unless response.kind_of? Net::HTTPSuccess
       # error, sometimes we have info in XML <service-error>
       xml = begin
         Nokogiri::XML(response.body)

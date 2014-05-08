@@ -21,11 +21,11 @@ http_interactions:
       X-Els-Status:
       - NO_SEARCH_RESULTS(Result set was empty)
       X-Els-Reqid:
-      - 000001458afaadb1-21cccdb
+      - 000001458afaadb1-220e6ff
       X-Els-Apikey:
       - DUMMY_API_KEY
       X-Els-Transid:
-      - 4f867582-6aa5-4f6a-a689-0a0dceac0c21
+      - 495f47aa-0aef-4cd2-889d-18e8c466779d
       Allow:
       - GET
       Content-Type:
@@ -33,9 +33,9 @@ http_interactions:
       Content-Length:
       - '1001'
       Date:
-      - Thu, 08 May 2014 15:53:12 GMT
+      - Thu, 08 May 2014 17:49:28 GMT
       X-Re-Ref:
-      - 1 2054316331
+      - 1 440851037
       P3p:
       - CP="IDC DSP LAW ADM DEV TAI PSA PSD IVA IVD CON HIS TEL OUR DEL SAM OTR IND
         OTC"
@@ -48,5 +48,5 @@ http_interactions:
         startPage="0"/><link ref="self" href="http://api.elsevier.com:80/content/search/index:SCOPUS?start=0&amp;count=25&amp;apiKey=DUMMY_API_KEY&amp;query=VOLUME%28%224900%22%29+AND+ISSUE%28%22700%22%29+AND+PAGEFIRST%28%2293900%22%29++AND+%28ISSN%28%2200123706%22%29+OR+EISSN%28%2200123706%22%29%29"
         type="application/xml"/><entry><error>Result set was empty</error></entry></search-results>
     http_version: 
-  recorded_at: Thu, 08 May 2014 15:53:12 GMT
+  recorded_at: Thu, 08 May 2014 17:49:29 GMT
 recorded_with: VCR 2.5.0

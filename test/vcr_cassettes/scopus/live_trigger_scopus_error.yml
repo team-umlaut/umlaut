@@ -21,11 +21,11 @@ http_interactions:
       X-Els-Status:
       - INVALID_INPUT(Unable to translate query provided)
       X-Els-Reqid:
-      - 000001458afaadb1-21e17cd
+      - 000001458ad94e47-221faa3
       X-Els-Apikey:
       - DUMMY_API_KEY
       X-Els-Transid:
-      - 34494ebb-008e-438b-b107-ab65e929d597
+      - 31f73f96-ec26-4ccf-8404-0fa010688248
       Allow:
       - GET
       Content-Type:
@@ -33,11 +33,11 @@ http_interactions:
       Content-Length:
       - '156'
       Date:
-      - Thu, 08 May 2014 16:27:57 GMT
+      - Thu, 08 May 2014 17:49:31 GMT
       X-Cnection:
       - close
       X-Re-Ref:
-      - 1 -154749808
+      - 1 444135611
       P3p:
       - CP="IDC DSP LAW ADM DEV TAI PSA PSD IVA IVD CON HIS TEL OUR DEL SAM OTR IND
         OTC"
@@ -46,5 +46,5 @@ http_interactions:
       string: ! "<service-error>\n\t<status>\n\t\t<statusCode>INVALID_INPUT</statusCode>\n\t\t<statusText>Unable
         to translate query provided</statusText>\n\t</status>\n</service-error>"
     http_version: 
-  recorded_at: Thu, 08 May 2014 16:27:58 GMT
+  recorded_at: Thu, 08 May 2014 17:49:32 GMT
 recorded_with: VCR 2.5.0
