@@ -1,0 +1,50 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.elsevier.com/content/search/index:SCOPUS?apiKey=DUMMY_API_KEY&query=DOI(
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Server:
+      - api.elsevier.com  9999
+      X-Els-Status:
+      - INVALID_INPUT(Unable to translate query provided)
+      X-Els-Reqid:
+      - 000001458afaadb1-21e17cd
+      X-Els-Apikey:
+      - DUMMY_API_KEY
+      X-Els-Transid:
+      - 34494ebb-008e-438b-b107-ab65e929d597
+      Allow:
+      - GET
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '156'
+      Date:
+      - Thu, 08 May 2014 16:27:57 GMT
+      X-Cnection:
+      - close
+      X-Re-Ref:
+      - 1 -154749808
+      P3p:
+      - CP="IDC DSP LAW ADM DEV TAI PSA PSD IVA IVD CON HIS TEL OUR DEL SAM OTR IND
+        OTC"
+    body:
+      encoding: US-ASCII
+      string: ! "<service-error>\n\t<status>\n\t\t<statusCode>INVALID_INPUT</statusCode>\n\t\t<statusText>Unable
+        to translate query provided</statusText>\n\t</status>\n</service-error>"
+    http_version: 
+  recorded_at: Thu, 08 May 2014 16:27:58 GMT
+recorded_with: VCR 2.5.0

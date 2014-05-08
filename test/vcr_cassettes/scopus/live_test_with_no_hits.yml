@@ -1,0 +1,52 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.elsevier.com/content/search/index:SCOPUS?apiKey=DUMMY_API_KEY&query=VOLUME(%224900%22)%20AND%20ISSUE(%22700%22)%20AND%20PAGEFIRST(%2293900%22)%20%20AND%20(ISSN(%2200123706%22)%20OR%20EISSN(%2200123706%22))
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - api.elsevier.com  9999
+      X-Els-Status:
+      - NO_SEARCH_RESULTS(Result set was empty)
+      X-Els-Reqid:
+      - 000001458afaadb1-21cccdb
+      X-Els-Apikey:
+      - DUMMY_API_KEY
+      X-Els-Transid:
+      - 4f867582-6aa5-4f6a-a689-0a0dceac0c21
+      Allow:
+      - GET
+      Content-Type:
+      - application/atom+xml;charset=UTF-8
+      Content-Length:
+      - '1001'
+      Date:
+      - Thu, 08 May 2014 15:53:12 GMT
+      X-Re-Ref:
+      - 1 2054316331
+      P3p:
+      - CP="IDC DSP LAW ADM DEV TAI PSA PSD IVA IVD CON HIS TEL OUR DEL SAM OTR IND
+        OTC"
+    body:
+      encoding: US-ASCII
+      string: <search-results xmlns="http://www.w3.org/2005/Atom" xmlns:atom="http://www.w3.org/2005/Atom"
+        xmlns:prism="http://prismstandard.org/namespaces/basic/2.0/" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
+        xmlns:dc="http://purl.org/dc/elements/1.1/"><opensearch:totalResults>0</opensearch:totalResults><opensearch:startIndex>0</opensearch:startIndex><opensearch:itemsPerPage>0</opensearch:itemsPerPage><opensearch:Query
+        role="request" searchTerms="VOLUME%28%224900%22%29+AND+ISSUE%28%22700%22%29+AND+PAGEFIRST%28%2293900%22%29++AND+%28ISSN%28%2200123706%22%29+OR+EISSN%28%2200123706%22%29%29"
+        startPage="0"/><link ref="self" href="http://api.elsevier.com:80/content/search/index:SCOPUS?start=0&amp;count=25&amp;apiKey=DUMMY_API_KEY&amp;query=VOLUME%28%224900%22%29+AND+ISSUE%28%22700%22%29+AND+PAGEFIRST%28%2293900%22%29++AND+%28ISSN%28%2200123706%22%29+OR+EISSN%28%2200123706%22%29%29"
+        type="application/xml"/><entry><error>Result set was empty</error></entry></search-results>
+    http_version: 
+  recorded_at: Thu, 08 May 2014 15:53:12 GMT
+recorded_with: VCR 2.5.0

@@ -1,26 +1,23 @@
 # Service adapter plug-in.
 #
-# NOTE: This is based on deprecated Scopus API's, Scopus will take them
-# away 31 December 2014. Please see scopus2.rb instead which uses
-# new Scopus API's. 
 # 
 # PURPOSE: Includes "cited by", "similar articles" and "more by these authors"
-# links from scopus. Also will throw in an abstract from Scopus if found. 
+# links from scopus. 
 #
 # LIMTATIONS: You must be a Scopus customer for these links generated to work
-# for your users at all! Off-campus users should be going through ezproxy, see
+# for your users at all! Off-campus users should be probably going through ezproxy, see
 # the EZProxy plug-in.
 # Must find a match in scopus, naturally. "cited by" will only
 # be included if Scopus has non-0 "cited by" links. But there's no good way
 # to precheck similar/more-by for this, so they are provided blind and may
 # result in 0 hits.  You can turn them off if you like, with @include_similar,
 # and @include_more_by_authors. 
+# Abstracts are not used because it seems to violate Scopus terms of service
+# to use them. 
 #
-# REGISTERING:  This plug in actually has to use two seperate Scopus APIs.
-# For the first, the scopus 'json' search api, you must regsiter and get an
-# api key from scopus, which you can do here:
-# http://searchapi.scopus.com
-# Then include as @json_api_key in service config.
+# REGISTERING:  Register for a Scopus API key at: 
+# http://www.developers.elsevier.com/action/devprojects?pageOrigin=cmsPage&zone=topNavBar
+# Look for "Register a new site" button at the bottom right of the page. 
 #
 # For the second Scopus API, you theoretically need a Scopus "PartnerID" and
 # corresponding "release number", in @partner_id and @scopus_release
@@ -34,20 +31,37 @@
 # which is currently not used by this code, but @link_salt_key is reserved
 # for it in case added functionality does later. 
 #
-class Scopus < Service
-  require  'open-uri'
-  require 'multi_json'
+# SCOPUS USEFUL URLS:
+#
+# api key register: http://www.developers.elsevier.com/action/devprojects?pageOrigin=cmsPage&zone=topNavBar 
+#
+# 'content policies' terms of use: http://www.developers.elsevier.com/cms/content-apis 
+#
+# API overview docs: http://www.developers.elsevier.com/cms/content-apis 
+#
+# Various other api docs? Confused myself as to organization here. 
+#
+# * http://www.developers.elsevier.com/devcms/content-api-search-request
+# * http://www.developers.elsevier.com/devcms/content/search-fields-overview
+# * http://api.elsevier.com/content/search/#d0n14606
+#
+# Some API recommendations for federated search: http://www.developers.elsevier.com/cms/restful-api-federated-search
+#
+class Scopus2 < Service
+  require 'umlaut_http'
+  require 'nokogiri'
   
   include ActionView::Helpers::SanitizeHelper
   
   include MetadataHelper
   include UmlautHttp
   
-  required_config_params :json_api_key
+  required_config_params :api_key
+
+  attr_accessor :scopus_search_base
 
   def service_types_generated
     types = []
-    types.push( ServiceTypeValue[:abstract]) if @include_abstract
     types.push( ServiceTypeValue[:cited_by] ) if @include_cited_by
     types.push( ServiceTypeValue[:abstract] ) if @include_abstract
     types.push( ServiceTypeValue[:similar] ) if @include_similar
@@ -60,9 +74,8 @@ class Scopus < Service
     #defaults
     @display_name = "Scopus"
     @registered_referer
-    @scopus_search_base = 'http://www.scopus.com/scsearchapi/search.url'
+    @scopus_search_base = 'http://api.elsevier.com/content/search/index:SCOPUS'
     
-    @include_abstract = true
     @include_cited_by = true
     @include_similar = true
     @include_more_by_authors = true
@@ -89,58 +102,79 @@ class Scopus < Service
     super(config)
   end
 
+  def xml_namespaces
+    @xml_namespaces ||= 
+      { "atom"        => "http://www.w3.org/2005/Atom",
+        "dc"          => "http://purl.org/dc/elements/1.1/",
+        "opensearch"  => "http://a9.com/-/spec/opensearch/1.1/",
+        "prism"       => "http://prismstandard.org/namespaces/basic/2.0/"
+      }
+  end
+
   def handle(request)
-    scopus_search = scopus_search(request)
+    scopus_query = scopus_query(request)
 
     # we can't make a good query, nevermind. 
-    return request.dispatched(self, true) if scopus_search.blank? 
-
+    return request.dispatched(self, true) if scopus_query.blank? 
     
-    # The default fields returned dont' include the eid (Scopus unique id) that we need, so we'll supply our own exhaustive list of &fields=
-    url = 
-    "#{@scopus_search_base}?devId=#{@json_api_key}&search=#{scopus_search}&callback=findit_callback&fields=title,doctype,citedbycount,inwardurl,sourcetitle,issn,vol,issue,page,pubdate,eid,scp,doi,firstAuth,authlist,affiliations,abstract";
+    url = scopus_url(scopus_query)
+    
     
     # Make the call.
-    headers = {}
+    headers = {"Accept" => "application/xml"}
     headers["Referer"] = @registered_referer if @registered_referer 
 
-    response = open(url, headers).read    
+    response = http_fetch(url, :headers => headers, :raise_on_http_error_code => false)
+
+    if response.code != 200
+      # error, sometimes we have info in XML <service-error>
+      xml = begin
+        Nokogiri::XML(response.body)
+      rescue Exception
+        nil
+      end
     
-    # Okay, Scopus insists on using a jsonp technique to embed the json array in
-    # a procedure call. We don't want that, take the actual content out of it's
-    # jsonp wrapper. 
-    response =~ /^\w*findit_callback\((.*)\);?$/
-    response = $1;
+      code, message = nil, nil
+      if xml && error = xml.at_xpath("./service-error")
+        code    = error.at_xpath("./status/statusCode")
+        message = error.at_xpath("./status/statusText")
+      end
+      e = StandardError.new("Scopus returned error: #{code}: #{message}: scopus query: #{url}")
+      return request.dispatched(self, DispatchedService::FailedFatal, e)
+    end
+
+    xml      = Nokogiri::XML(response.body)
     
     # Take the first hit from scopus's results, hope they relevancy ranked it
-    # well. For DOI/pmid search, there should ordinarly be only one hit!
-    results = MultiJson.load(response)
+    # well. For DOI/pmid search, there should ordinarly be only one hit!    
+    first_hit = xml.at_xpath("//atom:entry[1]", xml_namespaces)
 
-    if ( results["ERROR"])
-      Rails.logger.error("Error from Scopus API: #{results["ERROR"].inspect}   openurl: ?#{request.referent.to_context_object.kev}")
-      return request.dispatched(self, false)
-    end
+    # Weirdly, a zero-hit result has one <atom:entry> containing an
+    # <atom:error> (Sic). Could other kinds of errors be reported that
+    # way too? Maybe. Better check just in case, ugh. 
+    if first_hit && (error = first_hit.at_xpath("./atom:error", xml_namespaces))      
+        scopus_message = error.text
 
-    # For reasons not clear to me, the JSON data structures vary.
-    first_hit = nil
-    if ( results["PartOK"])
-      first_hit = results["PartOK"]["Results"][0]
-    elsif ( results["OK"] )
-      first_hit = results["OK"]["Results"][0]
-    else
-      # error. 
-    end
+        if scopus_message == "Result set was empty"
+          # Just zero hits, no big deal, but nothing to do. 
+          return request.dispatched(self, true)
+        else
+          # real error, log it. 
+          e = StandardError.new("Scopus returned error: #{error.text}: scopus query: #{url}")
+          return request.dispatched(self, DispatchedService::FailedFatal, e)
+        end
+    end 
 
-    if ( first_hit )
+    if first_hit
+      if first_hit && (error = first_hit.at_xpath("./atom:error", xml_namespaces))      
+        e = StandardError.new("Scopus returned error: #{error.text}")
+        return request.dispatched(self, DispatchedService::FailedFatal, e)
+      end 
     
-      if (@include_cited_by && first_hit["citedbycount"].to_i > 0)
-        add_cited_by_response(first_hit, request)
+      if (@include_cited_by)
+        try_add_cited_by_response(first_hit, request)
       end
   
-      if (@include_abstract && first_hit["abstract"])
-        add_abstract(first_hit, request)
-      end
-
       if (@include_similar)
         url = more_like_this_url(first_hit)
         # Pre-checking for actual hits not currently working, disabled.
@@ -170,22 +204,26 @@ class Scopus < Service
     return request.dispatched(self, true)
   end
 
-  # Comes up with a scopus advanced search query intended to find the exact
+  
+  # Returns a scopus advanced search query intended to find the exact
   # known item identified by this citation.
+  #
+  # NOT uri-escaped yet, make sure to uri-escape before putting it in a uri
+  # param! 
   #
   # Will try to use DOI or PMID if available. Otherwise
   # will use issn/year/vol/iss/start page if available.
   # In some cases may resort to author/title. 
-  def scopus_search(request)
+  def scopus_query(request)
     
     if (doi = get_doi(request.referent))
-      return CGI.escape( "DOI(#{phrase(doi)})" )
+      return "DOI(#{phrase(doi)})"
     elsif (pmid = get_pmid(request.referent))
-      return CGI.escape( "PMID(#{phrase(pmid)})" )
+      return "PMID(#{phrase(pmid)})"
     elsif (isbn = get_isbn(request.referent))
       # I don't think scopus has a lot of ISBN-holding citations, but
       # it allows search so we might as well try. 
-      return CGI.escape( "ISBN(#{phrase(isbn)})" )
+      return "ISBN(#{phrase(isbn)})"
     else            
       # Okay, we're going to try to do it on issn/vol/issue/page.
       # If we don't have issn, we'll reluctantly use journal title
@@ -202,10 +240,14 @@ class Scopus < Service
         else
           query += " AND EXACTSRCTITLE(#{phrase(metadata['jtitle'])})"
         end
-        return CGI.escape(query)
-      end
-      
+        return query
+      end      
     end
+    return nil
+  end
+
+  def scopus_url(query)
+    "#{@scopus_search_base}?apiKey=#{CGI.escape @api_key}&query=#{CGI.escape query}"
   end
   
   # backslash escapes any double quotes, and embeds string in scopus
@@ -216,51 +258,36 @@ class Scopus < Service
 
   # Input is a ruby hash that came from the scopus JSON, representing
   # a single hit. We're going to add this as a result. 
-  def add_cited_by_response(result, request)
+  def try_add_cited_by_response(result, request)
     # While scopus provides an "inwardurl" in the results, this just takes
     # us to the record detail page. We actually want to go RIGHT to the
     # list of cited-by items. So we create our own, based on Scopus's
     # reversed engineered predictable URLs. 
 
-    count = result["citedbycount"]
+    count_str = result.at_xpath("atom:citedby-count/text()", xml_namespaces).to_s
+    count_i   = count_str.to_i
+
+    return if count_i < 1
+    
     label = ServiceTypeValue[:cited_by].display_name_pluralize.downcase.capitalize    
-      if count && count == 1
+      if count_i == 1
         label = ServiceTypeValue[:cited_by].display_name.downcase.capitalize
       end
     cited_by_url = cited_by_url( result )
     
     request.add_service_response(:service=>self, 
-      :display_text => "#{count} #{label}", 
-      :count=> count, 
+      :display_text => "#{count_str} #{label}", 
+      :count=> count_i, 
       :url => cited_by_url, 
       :service_type_value => :cited_by)
-
   end
 
-  def add_abstract(first_hit, request)
-
-    return if first_hit["abstract"].blank?
-    
-    request.add_service_response( 
-      :service=>self, 
-      :display_text => "Abstract from #{@display_name}", 
-      :content => sanitize(first_hit["abstract"]), 
-      :content_html_safe => true,
-      :url => detail_url(first_hit), 
-      :service_type_value => :abstract)
-  end
-
-  def detail_url(hash)
-    url = hash["inwardurl"]
-    # for some reason ampersand's in query string have wound up double escaped
-    # and need to be fixed.
-    url = url.gsub(/\&amp\;/, '&')
-
-    return url
+  def eid_from_hit(result)
+    result.at_xpath("atom:eid/text()", xml_namespaces).to_s
   end
 
   def cited_by_url(result)
-    eid = CGI.escape(result["eid"])    
+    eid = CGI.escape( eid_from_hit(result) )    
     #return "#{@scopus_cited_by_base}?eid=#{eid}&src=s&origin=recordpage"
     # Use the new scopus direct link format!
     return "#{@inward_cited_by_url}?partnerID=#{@partner_id}&rel=#{@scopus_release}&eid=#{eid}"
@@ -269,8 +296,8 @@ class Scopus < Service
 
   def more_like_this_url(result, options = {})
     options[:type] ||= @more_like_this_type
-    
-    eid = CGI.escape(result["eid"])
+    eid = CGI.escape eid_from_hit(result)
+
     return "#{@inward_more_like_url}?partnerID=#{@partner_id}&rel=#{@scopus_release}&eid=#{eid}&mltType=#{options[:type]}"
   end
 

@@ -1,0 +1,62 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.elsevier.com/content/search/index:SCOPUS?apiKey=DUMMY_API_KEY&query=VOLUME(%2249%22)%20AND%20ISSUE(%227%22)%20AND%20PAGEFIRST(%22939%22)%20%20AND%20(ISSN(%2200123706%22)%20OR%20EISSN(%2200123706%22))
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - api.elsevier.com  9999
+      X-Els-Status:
+      - OK
+      X-Els-Reqid:
+      - 000001458afaadb1-218f486
+      X-Els-Apikey:
+      - DUMMY_API_KEY
+      X-Els-Transid:
+      - 086c55e9-fb92-4c61-83f2-3e8ab7299d18
+      Allow:
+      - GET
+      Content-Type:
+      - application/xml;charset=UTF-8
+      Content-Length:
+      - '2625'
+      Date:
+      - Thu, 08 May 2014 14:22:24 GMT
+      X-Re-Ref:
+      - 1 901832669
+      P3p:
+      - CP="IDC DSP LAW ADM DEV TAI PSA PSD IVA IVD CON HIS TEL OUR DEL SAM OTR IND
+        OTC"
+    body:
+      encoding: US-ASCII
+      string: ! '<?xml version="1.0" encoding="UTF-8"?><search-results xmlns="http://www.w3.org/2005/Atom"
+        xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:prism="http://prismstandard.org/namespaces/basic/2.0/"><opensearch:totalResults>1</opensearch:totalResults><opensearch:startIndex>0</opensearch:startIndex><opensearch:itemsPerPage>1</opensearch:itemsPerPage><opensearch:Query
+        role="request" searchTerms="VOLUME%28%2249%22%29+AND+ISSUE%28%227%22%29+AND+PAGEFIRST%28%22939%22%29++AND+%28ISSN%28%2200123706%22%29+OR+EISSN%28%2200123706%22%29%29"
+        startPage="0"/><link href="http://api.elsevier.com:80/content/search/index:scopus?start=0&amp;count=25&amp;apiKey=DUMMY_API_KEY&amp;query=VOLUME%28%2249%22%29+AND+ISSUE%28%227%22%29+AND+PAGEFIRST%28%22939%22%29++AND+%28ISSN%28%2200123706%22%29+OR+EISSN%28%2200123706%22%29%29"
+        ref="self" title="alt abstract link" type="application/xml"/><link href="http://api.elsevier.com:80/content/search/index:scopus?start=0&amp;count=25&amp;apiKey=DUMMY_API_KEY&amp;query=VOLUME%28%2249%22%29+AND+ISSUE%28%227%22%29+AND+PAGEFIRST%28%22939%22%29++AND+%28ISSN%28%2200123706%22%29+OR+EISSN%28%2200123706%22%29%29"
+        ref="first" title="alt abstract link" type="application/xml"/><entry><link
+        href="http://api.elsevier.com/content/abstract/scopus_id:33745938780" ref="self"
+        title="alt abstract link"/><link href="http://www.scopus.com/inward/record.url?partnerID=HzOxMe3b&amp;scp=33745938780"
+        ref="scopus" title="alt abstract link"/><link href="http://www.scopus.com/inward/citedby.url?partnerID=HzOxMe3b&amp;scp=33745938780"
+        ref="scopus-citedby" title="alt abstract link"/><prism:url>http://api.elsevier.com/content/abstract/scopus_id:33745938780</prism:url><dc:identifier>SCOPUS_ID:33745938780</dc:identifier><eid>2-s2.0-33745938780</eid><dc:title>Practice
+        parameters for sigmoid diverticulitis</dc:title><dc:creator>Rafferty, J.</dc:creator><prism:publicationName>Diseases
+        of the Colon and Rectum</prism:publicationName><prism:issn>00123706</prism:issn><prism:eIssn>15300358</prism:eIssn><prism:volume>49</prism:volume><prism:issueIdentifier>7</prism:issueIdentifier><prism:pageRange>939-944</prism:pageRange><prism:coverDate>2006-07-01</prism:coverDate><prism:coverDisplayDate>July
+        2006</prism:coverDisplayDate><prism:doi>10.1007/s10350-006-0578-2</prism:doi><citedby-count>304</citedby-count><pubmed-id>16741596</pubmed-id><prism:aggregationType>Journal</prism:aggregationType><subtype>re</subtype><subtypeDescription>Review</subtypeDescription></entry></search-results>
+
+'
+    http_version: 
+  recorded_at: Thu, 08 May 2014 14:22:25 GMT
+recorded_with: VCR 2.5.0
