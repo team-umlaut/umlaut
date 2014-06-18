@@ -1,0 +1,14 @@
+<%- 
+    text, css_class = nil, nil
+    [:alert_success, :alert_info, :alert_error].each do |key|
+        if flash[key]
+            text = flash[key]
+            css_class = key.to_s.parameterize
+        end
+    end
+-%>
+<% if text %>
+    <div class="alert <%= css_class %>">
+        <%= text %>
+    </div>
+<% end %>
