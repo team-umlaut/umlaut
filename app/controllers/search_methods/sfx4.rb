@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'nokogiri'
 module SearchMethods
   module Sfx4
@@ -56,6 +57,7 @@ module SearchMethods
           # than 2 causes false negatives. Otherwise we use it to be consistent
           # with SFX. This reverse-engineering is full of pitfalls.
           query = terms.collect do |term|
+            term = replace_problem_tokens(term)
             "+" + connection.quote_string(term) + (term.length > 2 ? "*" : "")
           end.join(" ")
           "MATCH (TS.TITLE_SEARCH) AGAINST ('#{query}' IN BOOLEAN MODE)"
@@ -130,6 +132,19 @@ module SearchMethods
         ctx
       end
       return [context_objects, total_hits]
+    end
+
+    # Query sanitising - remove bad characters from query
+    # (mimics SFX default behaviour - SFX stores them like this
+    # for sorting purposes)
+    # Note - this method is not complete, more substitutions may
+    # be necessary see the relevant Diacritics file in your SFX config
+    # directory for more details
+    def replace_problem_tokens(term)
+      term.gsub!('æ', 'a1')
+      term.gsub!('å', 'a2')
+
+      term
     end
 
     # Used for clicks on A, B, C, 0-9, etc. 
