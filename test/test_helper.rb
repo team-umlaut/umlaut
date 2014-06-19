@@ -95,3 +95,16 @@ end
 def assert_length(size, list)
   assert_equal size, list.length, "Expected size of #{size} for #{list}"
 end
+
+
+# Methods you can use to make a mocked up Rails Request and corersponding Umlaut Request
+# Pass in a URL, absolute or partial, eg "/resolve?isbn=X"
+def fake_rails_request(umlaut_url)  
+  # hard to figure out how to mock a request, this seems to work
+  ActionController::TestRequest.new(Rack::MockRequest.env_for(umlaut_url))    
+end
+
+def fake_umlaut_request(umlaut_url)
+  rails_request = fake_rails_request(umlaut_url)
+  Request.find_or_create(rails_request.params, {}, rails_request)
+end

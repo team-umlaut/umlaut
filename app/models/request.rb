@@ -16,6 +16,8 @@ class Request < ActiveRecord::Base
   # responses show up first
   has_many :service_responses, :order => 'id ASC' 
 
+  has_many :clickthroughs
+
   belongs_to :referent, :include => :referent_values
   # holds a hash representing submitted http params
   serialize :http_env
@@ -35,6 +37,7 @@ class Request < ActiveRecord::Base
     
     # Create a context object from our http params
     context_object = OpenURL::ContextObject.new_from_form_vars( co_params )
+
     # Sometimes umlaut puts in a 'umlaut.request_id' parameter.
     # first look by that, if we have it, for an existing request.  
     request_id = params['umlaut.request_id']

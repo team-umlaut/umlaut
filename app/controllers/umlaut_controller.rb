@@ -111,6 +111,12 @@ class UmlautController < ApplicationController
 
       end
 
+      # You can use Umlaut's built-in feedback form if you want
+      # See https://github.com/team-umlaut/umlaut/wiki/Umlaut's-Feedback-Form
+      # feedback do
+      #    main_library {:email_address => "dummy@example.org", :label => "Main Library"}
+      # end
+
       # Advanced topic, you can declaratively configure
       # what sections of the resolve page are output where
       # and how using resolve_sections and add_resolve_sections!

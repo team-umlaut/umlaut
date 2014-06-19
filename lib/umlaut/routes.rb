@@ -31,7 +31,7 @@ module Umlaut
     end
 
     def default_route_sets
-      [:root, :permalinks, :a_z, :resolve, :open_search, :link_router, :export_email, :resources, :search, :javascript]
+      [:root, :permalinks, :a_z, :resolve, :open_search, :link_router, :export_email, :resources, :search, :javascript, :feedback]
     end
 
     module RouteSets
@@ -149,6 +149,13 @@ module Umlaut
           
           
           match 'images/spinner.gif' => redirect("/assets/spinner.gif")
+        end
+      end
+
+      def feedback
+        add_routes do |options|
+          get 'feedback(/:request_id)', :to => "feedback#new", :as => "feedback"
+          post 'feedback(/:request_id)' => 'feedback#create'
         end
       end
       
