@@ -12,8 +12,8 @@
 <%= brief_citation(@umlaut_request, :include_labels => true) %>
 <%= citation_identifiers(@umlaut_request) %>
 <%- if @umlaut_request.referent.permalinks.present? -%>
-Permalink: <%= url_for(:controller=>"store",    
-        :id=>@umlaut_request.referent.permalinks.first.id,
+Permalink: <%= url_for(:controller=>"store",        
+        :id=> @umlaut_request.referent.permalinks.first.id,
         :only_path => false, :host => @host) %>
 
 Original Source: <%= @umlaut_request.referrer_id %>
@@ -25,5 +25,5 @@ No citation supplied.
 <%- if @umlaut_request -%>
 ** Full URL **
 
-<%= @umlaut_request.http_env["REQUEST_URI"] %>
+<%= url_for @umlaut_request.http_env["REQUEST_URI"]  %>
 <%- end -%>
