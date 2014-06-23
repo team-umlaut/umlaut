@@ -21,9 +21,3 @@ Original Source: <%= @umlaut_request.referrer_id %>
 <%- else -%>
 No citation supplied.
 <%- end -%>
-
-<%- if @umlaut_request -%>
-** Full URL **
-
-<%= url_for @umlaut_request.http_env["REQUEST_URI"]  %>
-<%- end -%>
