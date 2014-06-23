@@ -1,5 +1,4 @@
-<h1>Contact Us</h1>
-<p>Send us questions, problems, or comments</p>
+<h1>Contact Us <small>Send us questions, problems, or comments</small></h1>
 
 <%= form_tag(feedback_path(params[:request_id], :contact_id => params[:contact_id]) , :method => :post, :class => "feedback-form form-horizontal") do %>
     
@@ -20,7 +19,7 @@
     <div class="control-group">
         <label class="control-label" for="feedback">Question or Comment</label>
         <div class="controls">
-          <textarea id="feedback" name="feedback" class="input-xxlarge" rows=></textarea>
+          <textarea id="feedback" name="feedback" class="input-xxlarge" rows=6></textarea>
         </div>
     </div>
 
