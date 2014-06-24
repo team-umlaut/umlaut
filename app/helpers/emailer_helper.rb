@@ -8,7 +8,7 @@ module EmailerHelper
     options[:include_labels] ||= false
     rv =""
     cite = request.referent.to_citation
-    title = truncate(cite[:title].strip, :length => 70,  :seperator => '...')
+    title = truncate(cite[:title].strip, :length => 70,  :separator => ' ')
 
     rv << (cite[:title_label].strip + ": ")if options[:include_labels] && cite[:title_label]
     rv << title
