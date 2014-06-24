@@ -7,11 +7,6 @@ module Umlaut::Helper
   include Umlaut::FooterHelper
   include Umlaut::HtmlHeadHelper
   
-  # get a url for the html sections api including any default parameters
-  def get_html_sections_url
-    url_for :controller => 'resolve', :action => 'partial_html_sections', 'umlaut.response_format' => 'json'
-  end
-  
   # pass in an OpenURL::ContextObject, outputs a link.
   def resolver_link(context_object, params={})
     
