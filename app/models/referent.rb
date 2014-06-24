@@ -280,6 +280,8 @@ class Referent < ActiveRecord::Base
   end
 
   # Creates a hash for use in View code to display a citation
+  #
+  # Crazy if/else tree logic, should be refactored, needs more tests first prob. 
   def to_citation
     citation = {}
     # call self.metadata once and use the array for efficiency, don't
@@ -290,7 +292,7 @@ class Referent < ActiveRecord::Base
       citation[:title] = my_metadata['atitle']
       citation[:title_label], citation[:container_label] = 
         case my_metadata['genre']
-          when /article|journal|issue/ then ['Article Title', 'journal']
+          when /article|journal|issue/ then ['Article Title', 'Journal']
           when /bookitem|book/ then ['Chapter/Part Title', 'book']
           when /proceeding|conference/ then ['Proceeding Title', 'conference']
           when 'report' then ['Report Title','report']    
@@ -298,7 +300,7 @@ class Referent < ActiveRecord::Base
           if self.format == 'book'
             ['Chapter/Part Title', 'book']
           elsif self.format == 'journal'
-            ['Article Title', 'journal']
+            ['Article Title', 'Journal']
           else # default fall through, use much what SFX uses. 
             ['Title', '']
           end
@@ -312,11 +314,11 @@ class Referent < ActiveRecord::Base
       end
     else      
       citation[:title_label] = case my_metadata["genre"]
-        when /article|journal|issue/ then 'journal'
-        when /bookitem|book/ then 'book'
-        when /proceeding|conference/ then 'conference'
-        when 'report' then 'report'
-        else ''
+        when /article|journal|issue/i then 'Journal'
+        when /bookitem|book/i then 'Book'
+        when /proceeding|conference/i then 'Conference'
+        when 'report' then 'Report'
+        else nil
       end
       ['title','btitle','jtitle'].each do | t_type |
         if ! my_metadata[t_type].blank?
@@ -326,7 +328,7 @@ class Referent < ActiveRecord::Base
       end      
     end
     # add publisher for books
-    if (my_metadata['genre'] == 'book')
+    if (my_metadata['genre'] =~ /book/i)
       citation[:pub] = my_metadata['pub'] unless my_metadata['pub'].blank?
     end
 
@@ -336,21 +338,22 @@ class Referent < ActiveRecord::Base
     ['volume','issue','date'].each do | key |
       citation[key.to_sym] = my_metadata[key]
     end
-    if ! my_metadata["au"].blank?
-      citation[:author] = my_metadata["au"]
+
+    if my_metadata["au"].present?
+      citation[:author] = my_metadata["au"].strip
     elsif my_metadata["aulast"]
-      citation[:author] = my_metadata["aulast"]
-      if ! my_metadata["aufirst"].blank?
-        citation[:author] += ',	'+my_metadata["aufirst"]
+      citation[:author] = my_metadata["aulast"].strip
+      if my_metadata["aufirst"].present?
+        citation[:author] += ', '+my_metadata["aufirst"].strip
       else
-        if ! my_metadata["auinit"].blank?
-          citation[:author] += ',	'+my_metadata["auinit"]
+        if my_metadata["auinit"].present?
+          citation[:author] += ', '+my_metadata["auinit"].strip
         else
-          if ! my_metadata["auinit1"].blank?
-            citation[:author] += ',	'+my_metadata["auinit1"]
+          if my_metadata["auinit1"].present?
+            citation[:author] += ', '+my_metadata["auinit1"].strip
           end
-          if ! my_metadata["auinitm"].blank?
-            citation[:author] += my_metadata["auinitm"]
+          if my_metadata["auinitm"].present?
+            citation[:author] += my_metadata["auinitm"].strip
           end
         end
       end

@@ -9,7 +9,8 @@ module EmailerHelper
     rv =""
     cite = request.referent.to_citation
     title = truncate(cite[:title].strip, :length => 70,  :seperator => '...')
-    rv << (cite[:title_label].strip + ": ")if options[:include_labels]
+
+    rv << (cite[:title_label].strip + ": ")if options[:include_labels] && cite[:title_label]
     rv << title
     rv << "\n"
     if cite[:author]
@@ -18,7 +19,7 @@ module EmailerHelper
       rv << "\n"
     end
     if cite[:subtitle]
-      rv << (cite[:subtitle_label].strip + ": ") if options[:include_labels]
+      rv << (cite[:subtitle_label].strip + ": ") if options[:include_labels] && cite[:subtitle_label]
       rv << cite[:subtitle].strip
       rv << "\n"
     end
@@ -32,5 +33,18 @@ module EmailerHelper
       rv << pub.join('  ')
     end
     return rv
+  end
+
+  def citation_identifiers(request, options = {})
+    citation = request.referent.to_citation
+    str = ""
+
+    str << "ISSN: #{citation[:issn]}\n" if citation[:issn]
+    str << "ISBN: #{citation[:isbn]}\n" if citation[:isbn]
+    citation[:identifiers].each do |identifier|
+      str << "#{identifier}\n"
+    end
+
+    return str
   end
 end

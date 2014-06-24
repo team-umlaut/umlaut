@@ -1,0 +1,16 @@
+<div class="help-text-icon">?</div>
+<%= render 'section_heading', :presenter => renderer, :force_render => true %>
+
+<ul class="response_list umlaut-help-list">
+<% umlaut_config.feedback.contacts.each_pair do |key, config| %>
+    <li>
+        <% if config[:link_out] %>
+            <%# simply link out to somewhere outside of umlaut %>
+            <%= link_to config[:label], config[:link_out] %>
+        <% else %>
+            <%# link to our feedback form %>
+            <%= link_to config[:label], feedback_path(umlaut_request.id, :contact_id => key) %>
+        <% end %>
+    </li>
+<% end %>
+</ul>
