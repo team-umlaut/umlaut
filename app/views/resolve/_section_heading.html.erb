@@ -3,7 +3,7 @@
 <% if presenter.show_heading? || local_assigns[:force_render] == true %>
   <div class="section_heading">
     <% if presenter.section_title %>
-      <h3><%= t(presenter.section_title) %></h3>
+      <h3><%= presenter.section_title %></h3>
       <% if presenter.section_prompt %>
         <p class="section_prompt">
           <%= presenter.section_prompt %>

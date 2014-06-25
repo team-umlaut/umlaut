@@ -253,7 +253,19 @@ module UmlautConfigurable
           list
         end
       end
-      
+
+      ##########
+      #
+      # Names of these sections can be given in Rails i18n, under key
+      #   umlaut.display_sections.#{section_div_id}.title
+      # If not given there, will be automatically calculated from
+      # the display_name of the ServiceType Value included. 
+      #
+      # Optional sub-head prompts can also be given in i18n, under
+      #   umlaut.display_sections.#{section_div_id}.prompt
+      #
+      ###########
+
       add_resolve_sections! do
         div_id "cover_image"
         partial "cover_image"
@@ -264,7 +276,6 @@ module UmlautConfigurable
             
       add_resolve_sections! do
         div_id "fulltext"    
-        section_title :online_access
         html_area :main
         partial :fulltext
         show_partial_only true
@@ -279,7 +290,6 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "excerpts"
-        section_prompt :excerpt_prompt
         html_area :main
         list_visible_limit 5
         visibility :responses_exist
@@ -301,7 +311,6 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "document_delivery"
-        section_title :request_from_interlibrary
         html_area :main
         visibility :responses_exist
         #bg_update false
@@ -321,7 +330,6 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "help"
-        section_title "Question? Problem? Contact:"
         html_area :sidebar
         bg_update false
         partial "help"
@@ -352,7 +360,6 @@ module UmlautConfigurable
         div_id "related_items"
         html_area :sidebar
         partial "related_items"
-        section_title :more_like_this
         item_name_plural :related_items
         # custom visibility, show it for item-level cites,
         # or if we actually have some
@@ -366,7 +373,6 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "highlighted_link"
-        section_title :see_also
         html_area :sidebar
         visibility :in_progress
         partial_locals( :show_source => true )
