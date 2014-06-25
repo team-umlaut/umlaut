@@ -23,30 +23,30 @@ cite = user_request.referent.to_citation
 <p class="published_in">
   <% if [:container_title, :volume, :issue, :page].find {|k| cite[k].present? } %>
 
-    <span class="published-label"><%="#{t(:published_in)} #{cite[:container_label]}"%></span> 
+    <span class="published-label"><%="#{t('umlaut.citation.published_in')} #{cite[:container_label]}"%></span> 
     <span class="container-title"><%= cite[:container_title] %></span>. 
   <% end %>
   <% if cite[:volume].present? %>
-      <span class="volume"><%="#{t(:volume).titlecase} #{cite[:volume]}" %></span>.
+      <span class="volume"><%="#{t('umlaut.citation.volume').titlecase} #{cite[:volume]}" %></span>.
   <% end %>
   <% if cite[:issue].present? %>
-      <span class="issue"><%="#{t(:issue).titlecase}  #{cite[:issue]}" %></span>.
+      <span class="issue"><%="#{t('umlaut.citation.issue').titlecase}  #{cite[:issue]}" %></span>.
   <% end %>
   <% if cite[:page].present? %>
-      <span class="page"><%="#{t(:page).titlecase} #{cite[:page]}" %></span>.
+      <span class="page"><%="#{t('umlaut.citation.page').titlecase} #{cite[:page]}" %></span>.
   <% end %>
 </p>
 <dl class="citation-info">
   <%= if cite[:pub].present? 
-    content_tag(:dt, "Publisher:", :class => "publisher") +
+    content_tag(:dt, "#{t('umlaut.citation.publisher')}:", :class => "publisher") +
       content_tag(:dd, cite[:pub], :class => "publisher")
   end %>
   <%= if cite[:issn].present?
-    content_tag(:dt, "ISSN:", :class => "issn") +
+    content_tag(:dt, "#{t('umlaut.citation.issn')}:", :class => "issn") +
       content_tag(:dd, cite[:issn], :class => "issn")
   end %>
   <%= if cite[:isbn].present?
-    content_tag(:dt, "ISBN:", :class => "isbn") +
+    content_tag(:dt, "#{t('umlaut.citation.isbn')}:", :class => "isbn") +
       content_tag(:dd, cite[:isbn], :class => "isbn")
   end %>
   <%# todo, doi %>
