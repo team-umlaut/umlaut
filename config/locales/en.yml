@@ -5,15 +5,26 @@ en:
   language_name: English  
   umlaut:
     citation:
+      published: "Published"
       published_in: "Published in"
       title_label: Title
+      author_label: Author
+      author:
+        last: Last Name
+        first: First Name
       title_of_x: "%{x} Title"
       volume: Volume
+      volume_abbr: Vol
       issue: Issue
+      issue_abbr: Iss
       page: Page
+      page_abbr: "p."
+      start_page: Start Page
       publisher: Publisher
       issn: ISSN
       isbn: ISBN
+      doi: DOI
+      pmid: PMID
       genre:
         # Keys are all valid OpenURL 'genre' values from book, journal, or
         # dissertation formats -- plus the formats 'book', 'article', 'dissertation'
@@ -30,60 +41,33 @@ en:
         preprint: Pre-print
         dissertation: Dissertation        
         unknown: "" # Intentionally left blank, no label
+    search:
+      journals_page_name: Journals
+      journals_page_subhead: "Looking for a specific journal or article"
+      journals_instructions: "Enter the journal title or the ISSN. If you have both the journal title and ISSN, use the ISSN."
+      search_optional_info: 'Optional information - Enter as much as you know of the following:'
+      browse_by_jtitle: 'Browse by Journal Title: %{query}'
+      journal_title: Journal Title
+      contains: contains
+      begins_with: begins with
+      exact_match: exact match
+      date_label: Date
+      doi_or_pubmed_label: DOI or Pubmed Identifier
+      action_label: Search
+      having_trouble_heading: Having Trouble?
+      having_trouble_message: "Try entering less information about your article. If one piece of information is wrong, it could be causing the problem."
+      more_search_options: More search options
+      showing_results: "Showing results %{start} through %{until} of %{total}"
+      previous: Previous
+      next: Next
+      note: 'Note'
+      other_titles_might: "Alternate titles might have matched your search terms"
+      browse_other: "Other"
 
 
 
-  Journals: Journals
-  other: Other
-  journals_subheader: Looking for a specific journal or article
-  search_instructions: Enter the journal title or the ISSN. If you have both the journal title and ISSN, use the ISSN.
-  journal_title: Journal Title
-  contains: contains
-  begins_with: begins with
-  exact_match: exact match
-  search_optional_info: 'Optional information - Enter as much as you know of the following:'
-  date_label: date
 
-  start_page: start page
-  vol: Vol
-  iss: Iss
-  p: p
-  doi_or_pubmed_id: DOI or Pubmed Identifier
-  search: Search
-  having_trouble: Having Trouble?
-  having_trouble_message: Try entering less information about your article. If one piece of information is wrong, it could be causing the problem.
-  date:
-    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
-    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
-  datetime:
-    prompts:
-      month: Month
-      day: Day
-      year: Year
-  browse_by_jtitle: 'Browse by Journal Title:'
-  more_search_options: More search options
-  showing_results: Showing results %{start} through %{until} of %{total}
-  note: 'Note:'
-  other_titles_might: Alternate titles might have matched your search terms
-  previous: Previous
-  next: Next
-  chapter_title: Chapter/Part Title
-  article_title: Article Title
-  book_title: Book Title
-  proceeding_title: Proceeding Title
-  conference_name: Conference Name
-  report_title: Report Title
-  report: Report
-  author: Author
-  published: Published
-  title: Title
-  part: Part
-  article: article
-  journal: journal
-  
-  last_name: Last Name
-  first_name: First Name
-  initials: Initials
+
   online_access: Online Access
   not_available: Not Available
   request_from_interlibrary: Request a copy from Inter-Library Loan
