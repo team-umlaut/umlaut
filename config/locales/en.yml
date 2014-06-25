@@ -67,6 +67,8 @@ en:
     # keyed by section id. If not given in i18n here, the name will be 
     # automatically taken from the display_name of the first ServiceTypeValue
     # included, if any. 
+    #
+    # There may be additional keys used custom to that section as well. 
     display_sections:
       fulltext:
         title: Online Access
@@ -80,6 +82,11 @@ en:
         title: See also
       excerpts:
         prompt: "A limited preview which may include table of contents, index, and other selected pages."
+      search_inside:
+        search_inside_this_x: "Search inside this %{x}"
+        via: via
+        progress_message: Looking for tools to search inside this
+        action_label: search
 
 
 
@@ -120,9 +127,6 @@ en:
   latest: latest
   some_volumes_of: Some volumes of
   search_inside_some_vols: Search inside some volumes
-  search_inside_this: Search inside this
-  via: via
-  search_inside_progress_message: Looking for tools to search inside this
   loading: loading
   close: close
   email_export_header: Email the title and locations
