@@ -16,28 +16,7 @@ require 'umlaut_configurable'
 # methods from Umlaut::ControllerBehavior if desired. Or add
 # additional helpers to over-ride Umlaut helpers if needed. 
 class UmlautController < ApplicationController
-    include Umlaut::ControllerBehavior
-
-    # Code to enable localisation
-
-    before_filter :set_locale
-
-    # if no locale is set, will default to default_locale (i.e. en)
-    def set_locale
-      I18n.locale = params['umlaut.locale'.to_sym] || I18n.default_locale
-    end
-
-    # ensure locale is always included in any internal links
-    def default_url_options(*arguments)
-      if I18n.locale == I18n.default_locale
-        # Don't add in param for default locale
-        super
-      else
-        super.merge({ 'umlaut.locale'.to_sym => I18n.locale })
-      end
-    end
-
-
+    include Umlaut::ControllerBehavior    
     # Some suggested configuration. More config keys
     # are available, see UmlautConfigurable.set_default_configuration!
     # implementation for list. Configuration actually uses
