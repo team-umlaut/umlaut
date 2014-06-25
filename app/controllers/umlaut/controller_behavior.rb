@@ -2,6 +2,9 @@
 # so that we can generate a local UmlautController that includes
 # this module, and local app can configure or over-ride default behavior.
 #
+#
+# This is really only intended to be included'd by UmlautController;
+# other controllers may sub-class UmlautController
 module Umlaut::ControllerBehavior
   extend ActiveSupport::Concern
 
@@ -13,7 +16,33 @@ module Umlaut::ControllerBehavior
     controller.helper Umlaut::Helper # global umlaut view helpers
     # init default configuration values
     UmlautConfigurable.set_default_configuration!(controller.umlaut_config)
+    # Set locale from request param
+    controller.before_filter :set_locale
   end
+
+
+  # Set the current locale based on request param umlaut.locale
+  # Local app can override this in UmlautController if you'd like to
+  # base locale on HTTP headers or IP address or other things. 
+  def set_locale
+    I18n.locale = params['umlaut.locale'.to_sym] || I18n.default_locale
+  end
+
+  # Rails over-ride to ensure locale is always included in
+  # generated URLs. We choose to explicitly include locale's
+  # only for non-default locale. 
+  # Local app may override this in UmlautController to make
+  # other choices. 
+  def default_url_options(*arguments)
+    if I18n.locale == I18n.default_locale
+      # Don't add in param for default locale
+      super
+    else
+      super.merge({ 'umlaut.locale'.to_sym => I18n.locale })
+    end
+  end
+
+
 
   # Returns the search layout name unless this is an XML HTTP Request.
   def search_layout_except_xhr
