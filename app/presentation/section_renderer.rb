@@ -63,6 +63,8 @@
 #   ServiceTypeValue["fulltext"]
 #
 # * The section will be displayed with stock heading block including a title
+#   from Rails i18n under key `umlaut.display_sections.#{section_id}.title`,
+#   or if not there then 
 #   constructed from the display_name of ServiceTypeValue["fulltext"], or 
 #   in general the display_name of the first ServiceTypeValue included
 #   in this section.
@@ -102,10 +104,17 @@
 #
 # === Customizing heading display
 #
-# You can supply a title for the section that's different than what would
+# Using Rails i18n, you can supply a title for the section that's different than what would
 # be guessed from it's ServiceTypeValues. You can also supply a prompt.
 #
-#   {:div_id =>"excerpts", :section_title=>"Lots of good stuff", :section_prompt => "Limited previes and excerpts."}
+#   {:div_id =>"excerpts"}
+#
+# In your config/locales/en.yml (or other language):
+#    umlaut:
+#      display_sections:
+#         excerpts:
+#           title: "Really great Excerpts"
+#           prompt: "Click on them to see them, far out!"
 #
 # You can also suppress display of the stock section heading at all:
 #   {:show_heading => false, ...}
@@ -231,7 +240,7 @@ class SectionRenderer
   #            generally as unique ID for the section.
   # * [service_type_values] ServiceTypeValue's that this section contains.
   #                         defaults to [ServiceTypeValue[div_id]]
-  # * [section_title] Title for the section. Defaults to 
+  # * [section_title] (DEPRECATED, use Rails i18n) Title for the section. Defaults to 
   #                   service_type_values.first.display_name
   # * [section_prompt] Prompt. Default nil.
   # * [show_heading] Show the heading section at all. Default true.
@@ -405,12 +414,49 @@ class SectionRenderer
     @options[:list_visible_limit]
   end
   
+  # Display title of the section can come from several places, in order
+  # of precedence:
+  #   * 1. (DEPRECATED) :section_title key in config hash. Prefer i18n instead. 
+  #   * 2. Rails i18n, under key 'umlaut.display_sections.#{section_id}.title'
+  #   * 3. If not given, as a default we use the display_name of the first ServiceTypeValue
+  #        object included in this section's results. 
+  #  If still blank after all those lookups, then no section title. Set a section title
+  #  to the empty string in i18n to force no section title. 
   def section_title
-    @options[:section_title]
+    section_title = nil
+
+    if @options.has_key? :section_title
+      # deprecation warning? Not sure the right way to do that. 
+      section_title = @options[:section_title]
+    else
+      section_title = I18n.t("title", :scope => "umlaut.display_sections.#{self.div_id}", 
+        :default => Proc.new {
+          # Fill in calculatable-defaults
+          if (service_type_values.length > 0)
+            service_type_values.first.display_name
+          else
+            ""
+          end
+      })
+    end
+
+    section_title = nil if section_title.blank?
+    return section_title
   end
 
+  # Optional section prompt, from Rails i18n key `umlaut.display_sections.#{section_div_id}.prompt`
+  # Deprecated legacy, you can force with :section_prompt key in section config hash. 
   def section_prompt
-    @options[:section_prompt]
+    prompt = nil
+
+    if @options.has_key?(:section_prompt)
+      prompt = @options[:section_prompt]
+    else
+      prompt = I18n.t("prompt", :scope => "umlaut.display_sections.#{self.div_id}", :default => "")
+    end
+    
+    prompt = nil if prompt.blank?
+    return prompt
   end
 
   # For a given resonse type section, returns a string that will change 
@@ -450,15 +496,7 @@ class SectionRenderer
     
 
     # service type value default to same name as section_id
-    @options[:service_type_values] ||= [@section_id]
-
-    
-    # Fill in calculatable-defaults
-    if (service_type_values.length > 0)
-      @options = {:section_title => 
-                    service_type_values.first.display_name
-                  }.merge(@options)
-    end
+    @options[:service_type_values] ||= [@section_id]    
 
     # Partials to display. Default to _standard_response_item item partial.
     if ( @options[:partial] == true)

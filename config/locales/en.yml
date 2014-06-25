@@ -63,22 +63,43 @@ en:
       note: 'Note'
       other_titles_might: "Alternate titles might have matched your search terms"
       browse_other: "Other"
-
+    # Names and optionally sub-head prompts for umlaut display sections, 
+    # keyed by section id. If not given in i18n here, the name will be 
+    # automatically taken from the display_name of the first ServiceTypeValue
+    # included, if any. 
+    display_sections:
+      fulltext:
+        title: Online Access
+      document_delivery:
+        title: Request a copy from Inter-Library Loan
+      help:
+        title: 'Question? Problem? Contact:'
+      related_items:
+        title: Related Items
+      highlighted_link:
+        title: See also
+      excerpts:
+        prompt: "A limited preview which may include table of contents, index, and other selected pages."
 
 
 
 
   online_access: Online Access
-  not_available: Not Available
   request_from_interlibrary: Request a copy from Inter-Library Loan
-  more_like_this: More like this
+  help_header: 'Question? Problem? Contact:'
   related_items: Related Items
   see_also: See also
+  excerpt_prompt: "A limited preview which may include table of contents, index, and other selected pages."
+
+
+
+  not_available: Not Available
+  
+  more_like_this: More like this
   export_tools: Export tools
   cover_images: Cover Images
   help_links: Help Links
   web_results: Web Results
-  excerpt_prompt: "A limited preview which may include table of contents, index, and other selected pages."
   copies_in_library: Copies in Library
   electronic_version: Electronic Version
   electronic_versions: Electronic Versions
@@ -118,7 +139,6 @@ en:
   short_link: Short link
   no_item_found_warning: 'Warning: %{app_name} does not know about a %{format_searched} with this name. Please check your entry'
   sent: sent
-  help_header: 'Question? Problem? Contact:'
   powered_by: Powered by
   using_services_from: Using services from
   and_others: and others
