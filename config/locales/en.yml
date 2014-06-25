@@ -3,8 +3,7 @@
 
 en:
   hello: Hello world
-  en: English
-  da: Dansk
+  language_name: English  
   Journals: Journals
   other: Other
   journals_subheader: Looking for a specific journal or article
