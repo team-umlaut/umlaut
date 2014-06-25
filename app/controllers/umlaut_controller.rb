@@ -50,8 +50,9 @@ class UmlautController < ApplicationController
       # typo?
       # entry_not_in_kb_warning true
 
-      # uncomment this line to show localisation selector
-      # localisation_enabled true
+      # uncomment this line to show localization (language) selector
+      # in default umlaut layout header. 
+      # show_localization_selector true
 
       # rfr_ids used for umlaut generated pages.
       # rfr_ids do
