@@ -106,7 +106,7 @@ module Umlaut::Helper
   def render_locale_link
     locales = I18n.config.available_locales
     other_locale = (locales - [I18n.locale]).pop
-    link_to t(other_locale), params.merge('umlaut.locale'.to_sym => other_locale)
+    link_to t(:language_name, :locale => other_locale), params.merge(:'umlaut.locale' => other_locale)
   end
 
   # Create a dropdown with the current language at the top
@@ -114,7 +114,7 @@ module Umlaut::Helper
     locale_options = Array.new
     #make sure the locales display with their titles
     I18n.config.available_locales.each do |loc|
-      locale_options.push([t(loc), loc])
+      locale_options.push([t('language_name', :locale => loc), loc])
     end
     form_tag({controller: params[:controller], action: params[:action]}, {method: "get"} ) do
       #output select tag with language options, current language set to selected

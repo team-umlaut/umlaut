@@ -1,7 +1,6 @@
 da:
   hello: Hej med dig!
-  en: English
-  da: Dansk
+  language_name: Dansk
   Journals: E-Tidsskrifter
   other: Andet
   journals_subheader: Leder du efter en bestemt tidsskrift eller artikel?
