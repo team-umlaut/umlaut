@@ -28,8 +28,13 @@ class UmlautController < ApplicationController
     end
 
     # ensure locale is always included in any internal links
-    def default_url_options(options={})
-      { 'umlaut.locale'.to_sym => I18n.locale }
+    def default_url_options(*arguments)
+      if I18n.locale == I18n.default_locale
+        # Don't add in param for default locale
+        super
+      else
+        super.merge({ 'umlaut.locale'.to_sym => I18n.locale })
+      end
     end
 
 
