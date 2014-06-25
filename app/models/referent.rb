@@ -360,13 +360,12 @@ class Referent < ActiveRecord::Base
 
     key = metadata["genre"]
     key = self.format if key.blank?
+    key = key.downcase
 
     if key == "journal" && metadata['atitle'].present?
       key = 'article'
     end
-
-    key = key.downcase
-
+    
     label = I18n.t(key, :scope => "umlaut.citation.genre", :default => "")
     label = nil if label.blank?
 

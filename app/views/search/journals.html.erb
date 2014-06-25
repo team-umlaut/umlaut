@@ -1,22 +1,22 @@
-<h2><%=t :Journals%></h2>
+<h2><%= t('umlaut.search.journals_page_name') %></h2>
 <%= render :partial=>"a_to_z" %>
 <% if flash[:error] %>
   <div id="error" class="notice citationLinker"><strong>(!) Problems:</strong> <%= flash[:error] %></div>
 <% end %>
-<h3><%=t :journals_subheader%></h3>
+<h3><%=t('umlaut.search.journals_page_subhead') %></h3>
 <%= form_tag(@submit_hash, {:method => "get", :class => "OpenURL form-inline form-very-inline", :name => "OpenURL", :id=>"OpenURL"})  %>
   <div class="umlaut-search-form">
     <fieldset>                                      
-      <legend><%=t :search_instructions%></legend>
+      <legend><%=t 'umlaut.search.journals_instructions' %></legend>
       <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
       <%= hidden_field_tag "rft.date", "" %> 
       <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
       <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
       <div class="control-group">
-        <%= label :journal, :title, t(:journal_title) + ':', :class => "control-label" %>
+        <%= label :journal, :title, t('umlaut.search.journal_title') + ':', :class => "control-label" %>
         <%= text_field :journal, :title, {:name=>'rft.jtitle', :class=>"title_search input-xlarge", :autocomplete => "off"} %>
         <select name="umlaut.title_search_type" class="title_search_type input-medium">
-          <%= options_for_select({t(:contains) => "contains", t(:begins_with) => "begins", t(:exact_match) => "exact"}, params["umlaut.title_search_type"])  %>
+          <%= options_for_select({t('umlaut.search.contains') => "contains", t('umlaut.search.begins_with') => "begins", t('umlaut.search.exact_match') => "exact"}, params["umlaut.title_search_type"])  %>
         </select>
       </div>
       <div class="control-group">
@@ -27,43 +27,43 @@
   </div>
   <div class="umlaut-search-form">
     <fieldset>
-      <legend><%=t :search_optional_info %></legend>
+      <legend><%=t 'umlaut.search.search_optional_info' %></legend>
       <div class="control-group">
-        <label for="year" class="control-label"><%=t(:date_label).titleize + ':'%></label>
-        <%= date %>
+        <label for="year" class="control-label"><%=t('umlaut.search.date_label') + ':'%></label>
+        <%= search_date_select %>
       </div>
       <div class="control-group">
         <span class="control-sub-group">
-          <%= label :journal, :volume, t(:volume).titleize + ':', :class => "control-label" %>
+          <%= label :journal, :volume, t('umlaut.citation.volume').titleize + ':', :class => "control-label" %>
           <%= text_field :journal, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume input-tiny"} %>
         </span>
         <span class="control-sub-group">
-          <%= label :journal, :issue, t(:issue).titleize + ':', :class => "control-label" %>
+          <%= label :journal, :issue, t('umlaut.citation.issue').titleize + ':', :class => "control-label" %>
           <%= text_field :journal, :issue, {:name=>'rft.issue', :class=>"issue input-tiny"} %>
         </span>
         <span class="control-sub-group">
-          <%= label :journal, :spage, t(:start_page).titleize + ':', :class => "control-label" %>
+          <%= label :journal, :spage, t('umlaut.citation.start_page').titleize + ':', :class => "control-label" %>
           <%= text_field :journal, :spage, {:name=>'rft.spage', :class=>"spage input-tiny"} %>
         </span>
       </div>
       
       <div class="control-group">
-        <label for="rft_id_type"><%=t(:doi_or_pubmed_id) + ':'%></label>
+        <label for="rft_id_type"><%=t('umlaut.search.doi_or_pubmed_label') + ':'%></label>
         <select id="rft_id_type" name="rft_id_type" class="input-small">
-          <option value="doi">DOI:</option>
-          <option value="pmid">PMID:</option>
+          <option value="doi"><%= t('umalut.citation.doi', :default => "DOI") %></option>
+          <option value="pmid"><%= t('umlaut.citation.pmid', :default => "PMID" ) %> </option>
         </select>
         <input name="rft_id_value"  type="text" value="">
       </div>
     </fieldset>
   </div> 
-  <%= submit_tag t(:search), {:name=>"Generate_OpenURL2", :class => "btn"} %>
+  <%= submit_tag t('umlaut.search.action_label'), {:name=>"Generate_OpenURL2", :class => "btn"} %>
 </form>
 
 <div class="umlaut-separator help-block">
-  <h3><span><%= t :having_trouble %></span></h3>
+  <h3><span><%= t 'umlaut.search.having_trouble_heading' %></span></h3>
   <p>
-    <%= t :having_trouble_message %>
+    <%= t 'umlaut.search.having_trouble_message' %>
   </p>
   <% if umlaut_config.help_url %>
     <p>

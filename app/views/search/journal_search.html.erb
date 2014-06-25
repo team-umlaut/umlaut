@@ -14,15 +14,15 @@
         <%= hidden_field_tag key, value %>
       <% end %>
       <div class="control-group">
-        <%= label :journal, :title, t(:journal_title) + ':' %>
+        <%= label :journal, :title, t('umlaut.search.journal_title') + ':' %>
         <%= text_field :journal, :title, {:name=>'rft.jtitle', :value=>params['rft.jtitle'], :class=>"title_search input-xlarge", :autocomplete => "off"} %>
         <select name="umlaut.title_search_type" class="title_search_type input-medium">
-          <%= options_for_select({t(:contains) => "contains", t(:begins_with) => "begins", t(:exact_match) => "exact"}, params["umlaut.title_search_type"])  %>
+          <%= options_for_select({t('umlaut.search.contains') => "contains", t('umlaut.search.begins_with') => "begins", t('umlaut.search.exact_match') => "exact"}, params["umlaut.title_search_type"])  %>
         </select>
       </div>
       <div class="control-group">
-        <%= submit_tag t(:search), {:name=>"Generate_OpenURL2", :class => "btn"} %>
-        <%= link_to(t(:more_search_options), {:controller=>'search'}, :class => "inline-help") %>
+        <%= submit_tag t('umlaut.search.action_label'), {:name=>"Generate_OpenURL2", :class => "btn"} %>
+        <%= link_to(t('umlaut.search.more_search_options'), {:controller=>'search'}, :class => "inline-help") %>
       </div>
     </fieldset>
   </div>
@@ -31,10 +31,10 @@
   <%= render :partial=>"a_to_z" %>
 <% end %>
 <% unless @hits == 0%>
-  <h3><%= t( :showing_results, start: @start_result_num, until:  @end_result_num, total: @hits) %></h3>
+  <h3><%= t( 'umlaut.search.showing_results', start: @start_result_num, until:  @end_result_num, total: @hits) %></h3>
 <% end %>
 <% if params["rft.jtitle"] %>
-  <div class="note"><em><strong><%= t :note %></strong><%= t :other_titles_might %> </em></div>
+  <div class="note"><em><strong><%= t 'umlaut.search.note' %>:</strong> <%= t 'umlaut.search.other_titles_might' %> </em></div>
 <% end %>
 <div class='umlaut-pagination pagination'>
   <%= render :partial=>'pager' %>

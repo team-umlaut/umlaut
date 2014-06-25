@@ -41,7 +41,7 @@ class SearchController < UmlautController
   end
 
   def index
-    @page_title = t(:Journals)
+    @page_title = t('umlaut.search.journals_page_name')
     journals()
   end
 
@@ -120,7 +120,7 @@ class SearchController < UmlautController
     if @end_result_num > @hits
       @end_result_num = @hits
     end
-    @page_title = t(:browse_by_jtitle) + " #{params['id']}"
+    @page_title = t('umlaut.search.browse_by_jtitle', :query => params['id'])
     # Use our ordinary search displayer to display
     # It'll notice the action and do just a bit of special stuff.
     render(:template => "search/journal_search")
