@@ -19,7 +19,7 @@ class ReferentToCitationTest < Test::Unit::TestCase
     assert_equal "The monk",      cit_hash[:title]
     assert_equal "1797",          cit_hash[:date]
     assert_equal "Lewis, M. G.",  cit_hash[:author]
-    assert_equal "Book",    cit_hash[:title_label]
+    assert_equal "Book Title",    cit_hash[:title_label]
     assert_equal "Printed by William Porter", cit_hash[:pub]
   end
 

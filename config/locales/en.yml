@@ -1,9 +1,31 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-en:
-  hello: Hello world
+en:    
   language_name: English  
+  umlaut:
+    citation:
+      title_label: "Title"
+      title_of_x: "%{x} Title"
+      genre:
+        # Keys are all valid OpenURL 'genre' values from book, journal, or
+        # dissertation formats -- plus the formats 'book', 'article', 'dissertation'
+        # themselves. Values, what to call these things?
+        book: Book
+        bookitem: Book Section
+        conference: Conference
+        proceeding: Proceeding
+        report: Report
+        document: Document
+        journal: Journal
+        issue: Issue
+        article: Article
+        preprint: Pre-print
+        dissertation: Dissertation        
+        unknown: "" # Intentionally left nil, no label
+
+
+
   Journals: Journals
   other: Other
   journals_subheader: Looking for a specific journal or article

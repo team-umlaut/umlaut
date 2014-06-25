@@ -1,3 +1,5 @@
+require 'i18n'
+
 # Note: There are a few actual attributes stored as Columns in referent --
 # these were originally used for identifying a Referent identifying the
 # 'same thing' as an incoming OpenURL, to re-use it. But we don't re-use
@@ -281,7 +283,8 @@ class Referent < ActiveRecord::Base
 
   # Creates a hash for use in View code to display a citation
   #
-  # Crazy if/else tree logic, should be refactored, needs more tests first prob. 
+  # TODO, move to_citation, type_of_thing, and container_type_of_thing OUT
+  # of Refernet, to helper module or own class. 
   def to_citation
     citation = {}
     # call self.metadata once and use the array for efficiency, don't
@@ -290,43 +293,24 @@ class Referent < ActiveRecord::Base
 
     if my_metadata['atitle'].present?
       citation[:title] = my_metadata['atitle']
-      citation[:title_label], citation[:container_label] = 
-        case my_metadata['genre']
-          when /article|journal|issue/ then ['Article Title', 'Journal']
-          when /bookitem|book/ then ['Chapter/Part Title', 'book']
-          when /proceeding|conference/ then ['Proceeding Title', 'conference']
-          when 'report' then ['Report Title','report']    
-          else
-          if self.format == 'book'
-            ['Chapter/Part Title', 'book']
-          elsif self.format == 'journal'
-            ['Article Title', 'Journal']
-          else # default fall through, use much what SFX uses. 
-            ['Title', '']
-          end
-        end
       ['title','btitle','jtitle'].each do | t_type |
-        if ! my_metadata[t_type].blank?
-          citation[:subtitle] = my_metadata[t_type]
-          citation[:container_title] = my_metadata[t_type]
+        if my_metadata[t_type].present?
+          citation[:container_title] = my_metadata[t_type]      
           break
         end
       end
-    else      
-      citation[:title_label] = case my_metadata["genre"]
-        when /article|journal|issue/i then 'Journal'
-        when /bookitem|book/i then 'Book'
-        when /proceeding|conference/i then 'Conference'
-        when 'report' then 'Report'
-        else nil
-      end
+    else # only top-level thing, no sub-thing
       ['title','btitle','jtitle'].each do | t_type |
-        if ! my_metadata[t_type].blank?
+        if my_metadata[t_type].present?
           citation[:title] = my_metadata[t_type]
           break
         end
       end      
     end
+
+    citation[:title_label] = I18n.t("umlaut.citation.title_of_x", :x =>  self.type_of_thing, :default => "umlaut.citation.title_label")
+    citation[:container_label] = self.container_type_of_thing    
+
     # add publisher for books
     if (my_metadata['genre'] =~ /book/i)
       citation[:pub] = my_metadata['pub'] unless my_metadata['pub'].blank?
@@ -372,21 +356,35 @@ class Referent < ActiveRecord::Base
   end
 
   def type_of_thing
-    genre = self.metadata["genre"]
-    genre = nil if genre =~ /^unknown$/i
-    genre = "book section" if genre =~ /^bookitem$/i
+    metadata = self.metadata
 
-    return genre
+    key = metadata["genre"]
+    key = self.format if key.blank?
+
+    if key == "journal" && metadata['atitle'].present?
+      key = 'article'
+    end
+
+    key = key.downcase
+
+    label = I18n.t(key, :scope => "umlaut.citation.genre", :default => "")
+    label = nil if label.blank?
+
+    return label
   end
 
   # Like type_of_thing, but if it's a contained item, give container name instead. 
-  # TODO: All of this should be I18n'd. 
   def container_type_of_thing
-    case self.metadata["genre"]
-    when 'article'  then 'journal'
-    when 'bookitem' then 'book'
-    else self.metadata['genre'] || self.format
+    i18n_key = case self.metadata['genre']    
+      when 'article'  then 'journal'
+      when 'bookitem' then 'book'
+      else self.metadata['genre'] || self.format
     end
+
+    label = I18n.t(i18n_key, :scope => "umlaut.citation.genre", :default => "")
+    label = nil if label.blank?
+
+    return label
   end
 
 
