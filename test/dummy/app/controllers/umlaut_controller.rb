@@ -61,7 +61,7 @@ class UmlautController < ApplicationController
       # poll_wait_seconds 4
 
       # uncomment this line to show localisation selector
-      localisation_enabled true
+      show_localization_selector true
       
       # Configuration for the 'search' functions -- A-Z lookup
       # and citation entry. 
