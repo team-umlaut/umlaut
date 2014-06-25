@@ -5,14 +5,21 @@ en:
   language_name: English  
   umlaut:
     citation:
-      title_label: "Title"
+      published_in: "Published in"
+      title_label: Title
       title_of_x: "%{x} Title"
+      volume: Volume
+      issue: Issue
+      page: Page
+      publisher: Publisher
+      issn: ISSN
+      isbn: ISBN
       genre:
         # Keys are all valid OpenURL 'genre' values from book, journal, or
         # dissertation formats -- plus the formats 'book', 'article', 'dissertation'
         # themselves. Values, what to call these things?
         book: Book
-        bookitem: Book Section
+        bookitem: Book Chapter
         conference: Conference
         proceeding: Proceeding
         report: Report
@@ -22,7 +29,7 @@ en:
         article: Article
         preprint: Pre-print
         dissertation: Dissertation        
-        unknown: "" # Intentionally left nil, no label
+        unknown: "" # Intentionally left blank, no label
 
 
 
@@ -36,8 +43,7 @@ en:
   exact_match: exact match
   search_optional_info: 'Optional information - Enter as much as you know of the following:'
   date_label: date
-  volume: volume
-  issue: issue
+
   start_page: start page
   vol: Vol
   iss: Iss
@@ -69,14 +75,12 @@ en:
   report_title: Report Title
   report: Report
   author: Author
-  publisher: Publisher
   published: Published
-  page: 'Page:'
   title: Title
   part: Part
   article: article
   journal: journal
-  published_in: Published in
+  
   last_name: Last Name
   first_name: First Name
   initials: Initials
