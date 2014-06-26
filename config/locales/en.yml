@@ -97,33 +97,71 @@ en:
         via: via
         progress_message: Looking for tools to search inside this
         action_label: search
+    # Names to call various types of service response objects. 
+    # While we use a format consistent with standard i18n pluralization
+    # rules, we don't actually use the standard i18n plurlization algorithm
+    # at present. Instead, provide the key "one" for singular name;
+    # OPTIONALLY provide the key "other" for pluralized name, otherwise
+    # standard Rails pluralization inflector will be used. No support is currently
+    # provided for locales with more complex pluralization rules. 
+    service_type_names:
+      default: 
+        one: Result
+        other: Results
+      fulltext:
+        one: Electronic Version
+      holding:
+        one: Copy in Library
+        other: Copies in Library
+      document_delivery:
+        one: Request Service
+      help:
+        one: Help Link
+      abstract:
+        one: Abstract
+      table_of_contents:
+        one: Table of Contents
+        other: Tables of Contents
+      cover_image:
+        one: Cover Image
+      # "See also" links to known destinations, like Amazon or OCLC
+      highlighted_link:
+        one: See Also Link
+      # Link to search holdings, generally with a count given, ie "5 possible matches". 
+      holding_search:
+        one: Copy in Library
+        other: Copies in Library
+      audio:
+        one: Digital Audio
+        other: Digital Audio
+      # A search inside tool, presented with a search box for user. 
+      search_inside:
+        one: Search Inside Tool
+      referent_enhance:
+        one: More Information Link
+        other: More Information Links
+      excerpts:
+        one: Limited Excerpt
+        other: Limited Excerpts
+      cited_by:
+        one: Article that cites this
+        other: Articles that cite this
+      # Used by ISI and Scopus at present. Maybe more later. 
+      # "More like this" links. 
+      similar:
+        one: "Similar Article"
+      export_citation:
+        one: Export Tool
+      primo_source:
+        one: Primo Source
 
 
-
-
-  online_access: Online Access
-  request_from_interlibrary: Request a copy from Inter-Library Loan
-  help_header: 'Question? Problem? Contact:'
-  related_items: Related Items
-  see_also: See also
-  excerpt_prompt: "A limited preview which may include table of contents, index, and other selected pages."
 
 
 
   not_available: Not Available
   
-  more_like_this: More like this
-  export_tools: Export tools
-  cover_images: Cover Images
-  help_links: Help Links
-  web_results: Web Results
-  copies_in_library: Copies in Library
-  electronic_version: Electronic Version
-  electronic_versions: Electronic Versions
-  request_services: Request Services
-  see_also_links: Related content
-  abstracts: abstracts
-  tables_of_content: Tables of content
+
   send_to_phone: Send to phone
   email: Email
   more_info: More info
@@ -153,9 +191,12 @@ en:
   short_link: Short link
   no_item_found_warning: 'Warning: %{app_name} does not know about a %{format_searched} with this name. Please check your entry'
   sent: sent
+  
+
   powered_by: Powered by
   using_services_from: Using services from
   and_others: and others
+
   service_errors_title: 'Some content may not be included due to errors:'
   services_missing: 'Services missing:'
   technical_error_info: Technical Error Information
