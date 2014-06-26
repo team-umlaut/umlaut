@@ -65,6 +65,8 @@ en:
       other_titles_might: "Alternate titles might have matched your search terms"
       browse_other: "Other"
     resolve:
+      edition_info: Edition information
+      maybe_alt_edition: May be alternate edition
       background_load:
         # 'initial' vs 'more': Different messages depending on whether some items are
         # already loaded (maybe already in the foreground)
@@ -184,8 +186,6 @@ en:
   email: Email
   more_info: More info
   request: Request
-  edition_info: Edition information
-  maybe_alt_edition: May be alternate edition
   ulrichs_link_name: Periodical information
   worldcat_link_name: Find in other libraries
   first: first

@@ -35,7 +35,7 @@
       <%= t(view_data[:display_text], :default => view_data[:display_text]) %><%
     end
   end %>
-  <%= content_tag(:div, "#{t(:from)} #{view_data[:source] || service_response.service.display_name}", :class => "response_source") if show_source %>
+  <%= content_tag(:div, "#{t('umlaut.from_service')} #{view_data[:source] || service_response.service.display_name}", :class => "response_source") if show_source %>
   <%= content_tag(:div, view_data[:coverage], :class => "response_coverage_statement") unless view_data[:coverage].blank? %>
   <%-
     # legacy, the 'notes' field can take raw html, we need to leave it that way for
@@ -51,8 +51,8 @@
   -%>
   <%= (content_tag(:div, :class => "edition_warning") {
         (view_data[:edition_str].blank?) ? 
-          content_tag(:em, t(:maybe_alt_edition), :class => ["note"]) :
-            (content_tag(:em, t(:edition_info),:class => ["note"]) + " #{view_data[:edition_str]}")
+          content_tag(:em, t('umlaut.resolve.maybe_alt_edition'), :class => ["note"]) :
+            (content_tag(:em, t('umlaut.resolve.edition_info'),:class => ["note"]) + " #{view_data[:edition_str]}")
         }) if ((not view_data[:match_reliability].blank?) && view_data[:match_reliability] != ServiceResponse::MatchExact) %>
   <%-
   # Debug info, hidden with explicit style, can be made visible with javascript.
