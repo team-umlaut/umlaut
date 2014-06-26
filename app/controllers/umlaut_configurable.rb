@@ -353,14 +353,12 @@ module UmlautConfigurable
         div_id "export_citation"
         html_area :sidebar
         visibility :in_progress
-        item_name_plural :export_tools
       end
       
       add_resolve_sections! do
         div_id "related_items"
         html_area :sidebar
         partial "related_items"
-        item_name_plural :related_items
         # custom visibility, show it for item-level cites,
         # or if we actually have some
         visibility(  lambda do |renderer|

@@ -129,8 +129,15 @@
 #   {:show_spinner => false, ...}
 #
 # By default, the spinner displays what type of thing it's waiting on, guessing
-# from the ServiceTypeValue configured. If you want to specify this item name:
-#   {:item_name_plural => "Related Items", ...}
+# from the ServiceTypeValue configured. If you want to specify this item name, 
+# use Rails i18n under the section_id in config/locales/en.yml, generally
+# using a plural name:
+#
+#     umlaut:
+#       display_sections:
+#         excerpts:
+#           load_more_item_name: "amazing excerpts"
+#   
 #
 # === Customizing visibility of section
 #
@@ -246,9 +253,6 @@ class SectionRenderer
   # * [show_heading] Show the heading section at all. Default true.
   # * [show_spinner] Show a stock spinner for bg action for service_type_values.
   #                  default true.
-  # * [item_name_plural] Pluralized name of the objects included, used in
-  #                       spinner message. Default 
-  #                       service_type_values.first.display_name_pluralize
   # * [visibilty] What logic to use to decide whether to show the section at
   #               all. true|false|:any_services|:in_progress|:responses_exist|:complete_with_responses|(lambda object)
   # * [list_visible_limit] Use list_with_limit to limit initially displayed
@@ -332,11 +336,15 @@ class SectionRenderer
   # a spinner for this section. Called by section_display partial,
   # nobody else should need to call it. 
   def spinner_render_hash
+    custom_item_name = I18n.t("load_more_item_name", :scope => "umlaut.display_sections.#{self.div_id}", :default => "")
+    custom_item_name = nil if custom_item_name.blank?
+
     { :partial => "background_progress",
       :locals =>{ :svc_types => service_type_values,
                   :div_id => "progress_#{@section_id}",
                   :current_set_empty => responses_empty?,
-                  :item_name => @options[:item_name_plural]}
+                  :item_name => custom_item_name
+                }
     }
   end
   

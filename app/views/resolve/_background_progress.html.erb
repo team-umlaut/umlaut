@@ -1,4 +1,4 @@
-<%   
+<%#
 # Partial to display spinner for background services in progress. 
 # Also degrades fairly nicely to non-javascript. 
 #
@@ -22,22 +22,41 @@
 # Further investigation may need to be done to optimize specifically
 # for JAWS (which is neither full js nor non js, but some js--right
 # now I think they'll just get the non-js version, but we can do better.)
+%>
+
+<%
 svc_types = [] if svc_types.nil?
 svc_types.push(svc_type).uniq! if defined?(svc_type) && ! svc_type.nil?
 # convert any Strings to ServiceTypeValues. 
 svc_types = svc_types.collect { |t| t.kind_of?(ServiceTypeValue) ? t : ServiceTypeValue[t] }
 div_id = "progress_#{svc_types[0].name}" unless div_id
 current_set_empty = false if current_set_empty.nil?
+
 item_name ||= svc_types[0].display_name_pluralize
-progress_message ||= "#{t(:searching_for)}#{current_set_empty ? "" : "more "} #{t(item_name, :default => item_name)}"
-# only display if there are more! 
+
+progress_message ||= if current_set_empty
+    I18n.t("umlaut.resolve.background_load.progress_initial", :x => item_name)
+else
+    I18n.t("umlaut.resolve.background_load.progress_more", :x => item_name)
+end
+
+
+load_message ||= if current_set_empty
+    I18n.t("umlaut.resolve.background_load.load_initial", :x => item_name)
+else
+    I18n.t("umlaut.resolve.background_load.load_more", :x => item_name)
+end
+%>
+
+
+<% # only display if there are more! 
 if service_types_in_progress?(svc_types) %>
   <div id="<%= div_id %>" class="background_progress_spinner">
     <%= image_tag('spinner.gif', :alt =>"") %>
     <span class="message"><%= progress_message %></span>
     <noscript>
       <div>
-        <%= link_to "Load #{current_set_empty ? "" : "more"} #{item_name}.", {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %> 
+        <%= link_to load_message, {:action => "background_status", :"umlaut.request_id" => @user_request.id, :"umlaut.skip_resolve_menu" => params['umlaut.skip_resolve_menu']} %> 
       </div>
     </noscript>
   </div><%
