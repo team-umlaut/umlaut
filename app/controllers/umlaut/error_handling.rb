@@ -18,7 +18,7 @@ module Umlaut::ErrorHandling
     # Only render this if we haven't done anything else
     # e.g. if some other gem may be handling its own errors    
     unless performed?  
-      if params[:format] == "html"
+      if request.format.html?
         render "error", :status => 500  
       else
         render :text => "Unexpected fatal error, has been logged.", :status => 500
