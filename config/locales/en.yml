@@ -86,7 +86,7 @@ en:
       help:
         title: 'Question? Problem? Contact:'
       related_items:
-        title: Related Items
+        title: More like this
         load_more_item_name: related items
       highlighted_link:
         title: See also
