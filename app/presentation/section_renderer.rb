@@ -439,9 +439,9 @@ class SectionRenderer
     else
       section_title = I18n.t("title", :scope => "umlaut.display_sections.#{self.div_id}", 
         :default => Proc.new {
-          # Fill in calculatable-defaults
+          # Look up from service_type name if possible as default
           if (service_type_values.length > 0)
-            service_type_values.first.display_name
+            service_type_values.first.display_name_pluralize.titlecase
           else
             ""
           end

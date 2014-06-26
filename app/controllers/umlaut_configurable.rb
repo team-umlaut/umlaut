@@ -303,7 +303,6 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "holding"
-        section_title ServiceTypeValue[:holding].display_name_pluralize
         html_area :main
         partial 'holding'
         service_type_values ["holding","holding_search"]

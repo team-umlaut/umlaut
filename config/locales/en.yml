@@ -119,54 +119,54 @@ en:
     # provided for locales with more complex pluralization rules. 
     service_type_names:
       default: 
-        one: Result
-        other: Results
+        one: result
+        other: results
       fulltext:
-        one: Electronic Version
+        one: electronic version
       holding:
-        one: Copy in Library
-        other: Copies in Library
+        one: copy in library
+        other: copies in library
       document_delivery:
-        one: Request Service
+        one: request rervice
       help:
-        one: Help Link
+        one: help link
       abstract:
-        one: Abstract
+        one: abstract
       table_of_contents:
-        one: Table of Contents
-        other: Tables of Contents
+        one: table of contents
+        other: tables of contents
       cover_image:
-        one: Cover Image
+        one: cover image
       # "See also" links to known destinations, like Amazon or OCLC
       highlighted_link:
-        one: See Also Link
+        one: see also link
       # Link to search holdings, generally with a count given, ie "5 possible matches". 
       holding_search:
-        one: Copy in Library
-        other: Copies in Library
+        one: copy in library
+        other: copies in library
       audio:
-        one: Digital Audio
-        other: Digital Audio
+        one: digital audio
+        other: digital audio
       # A search inside tool, presented with a search box for user. 
       search_inside:
-        one: Search Inside Tool
+        one: search inside tool
       referent_enhance:
-        one: More Information Link
-        other: More Information Links
+        one: more information link
+        other: more information links
       excerpts:
-        one: Limited Excerpt
-        other: Limited Excerpts
+        one: limited excerpt
+        other: limited excerpts
       cited_by:
-        one: Article that cites this
-        other: Articles that cite this
+        one: article that cites this
+        other: articles that cite this
       # Used by ISI and Scopus at present. Maybe more later. 
       # "More like this" links. 
       similar:
-        one: "Similar Article"
+        one: "similar article"
       export_citation:
-        one: Export Tool
+        one: export tool
       primo_source:
-        one: Primo Source
+        one: primo source
 
 
 
