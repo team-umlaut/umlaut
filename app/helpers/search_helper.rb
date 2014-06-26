@@ -30,7 +30,7 @@ module SearchHelper
     c_key = type_of_thing_key
     c_key = 'journal' if c_key == "article"
     c_key = 'book'    if c_key == "bookitem"
-    result.title =  I18n.t(i18n_key, :scope => "umlaut.citation.genre", :default => "")
+    result.title =  I18n.t(c_key, :scope => "umlaut.citation.genre", :default => "")
 
     return result    
   end
