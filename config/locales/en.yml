@@ -4,6 +4,7 @@
 en:    
   language_name: English  
   umlaut:
+    from_service: from
     citation:
       published: "Published"
       published_in: "Published in"
@@ -71,7 +72,19 @@ en:
         load_more: "Load more %{x}."
         progress_initial: "Searching for %{x}"
         progress_more: "Searching for more %{x}"
-
+    error:
+      header: "Sorry, something has gone wrong."
+      try_one_of_options: 'Please try one of the following options'
+      try_reenter_url: If you entered this URL yourself, please check your URL for errors.
+      try_again_prompt_html:  'Sometimes it works to just %{link}. It may be a temporary problem which will be resolved if you come back later.'
+      try_again: try again
+      to_report_a_problem_html: "For more help, or to report a problem, please feel free to %{contact_link}"
+      contact_us_for_help: contact us for help
+      try_backup_resolver: try your request against backup link resolver
+      if_doesnt_work_html: "If that doesn't work, %{link}"
+      service_errors_title: 'Some content may not be included due to errors:'
+      services_missing: 'Some'
+      technical_error_info: Technical Error Information
     # Names and optionally sub-head prompts for umlaut display sections, 
     # keyed by section id. If not given in i18n here, the name will be 
     # automatically taken from the display_name of the first ServiceTypeValue
@@ -170,7 +183,6 @@ en:
   maybe_alt_edition: May be alternate edition
   ulrichs_link_name: Periodical information
   worldcat_link_name: Find in other libraries
-  from: from
   first: first
   latest: latest
   some_volumes_of: Some volumes of
@@ -197,14 +209,4 @@ en:
   using_services_from: Using services from
   and_others: and others
 
-  service_errors_title: 'Some content may not be included due to errors:'
-  services_missing: 'Services missing:'
-  technical_error_info: Technical Error Information
-  error_header: Sorry, something has gone wrong.
-  try_one_of_options: 'Please try one of the following options:'
-  try_reenter_url: If you entered this URL yourself, please check your URL for errors.
-  try_again:  'Sometimes it works to just %{link}. It may be a temporary problem which will be resolved if you come back later.'
-  if_doesnt_work: "If that doesn't work:"
-  try_backup_resolver: Try your request against backup link resolver
-  to_report_a_problem: For more help, or to report a problem, please feel free to
-  contact_us_for_help: Contact us for help
+  
