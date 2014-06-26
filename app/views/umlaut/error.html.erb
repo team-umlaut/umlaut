@@ -3,35 +3,34 @@
 <div class="error_section">
 
     <div class="heading">
-      <h1><%= t :error_header %></h1>
+      <h1><%= t "umlaut.error.header" %></h1>
     </div>
 
-    <h2><%= t :try_one_of_options %></h2>
+    <h2><%= t 'umlaut.error.try_one_of_options' %></h2>
      <ol>       
-          <li><%= t :try_reenter_url %></li>
+          <li><%= t 'umlaut.error.try_reenter_url' %></li>
                     
                
           <% if params[:controller] # Unless this is really a 404 and we had no controller.
           %>
-            <li><%= t(:try_again, link: link_to "try again", params) %></li>
-          <% end %>
-          
+            <li><%= t('umlaut.error.try_again_prompt_html', link: link_to(t("umlaut.error.try_again"), params)) %></li>
+          <% end %>          
+
           <% if ( umlaut_config.lookup!("sfx.sfx_base_url") && 
                   params[:controller] == "resolve" && 
                   params[:action] == "index")  %>
-            <li><%= t :if_doesnt_work %><%=
-                link_to(t :try_backup_resolver,
+            <li><%= t 'umlaut.error.if_doesnt_work_html', :link => 
+                link_to(t('umlaut.error.try_backup_resolver'),
                   umlaut_config.sfx.sfx_base_url.chomp("?") + '?' + 
                   (request.fullpath.split("?")[1] || "") +
-                  '&sfx.ignore_date_threshold=1') %> 
+                  '&sfx.ignore_date_threshold=1') 
+                  %> 
             </li>          
           <% end %>
         
-          
-          
           <% if umlaut_config.help_url %>
-          <li><%= t :to_report_a_problem
-            link_to t :contact_us_for_help, umlaut_config.help_url
+          <li><%= t 'umlaut.error.to_report_a_problem_html', :contact_link => 
+            link_to(t('umlaut.error.contact_us_for_help'), umlaut_config.help_url)
             %>.</li>
           <% end %>
           
