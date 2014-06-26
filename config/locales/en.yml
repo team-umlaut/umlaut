@@ -28,7 +28,7 @@ en:
       genre:
         # Keys are all valid OpenURL 'genre' values from book, journal, or
         # dissertation formats -- plus the formats 'book', 'article', 'dissertation'
-        # themselves. Values, what to call these things?
+        # themselves. Map to user-displayable name of this type of thing. 
         book: Book
         bookitem: Book Chapter
         conference: Conference
@@ -63,6 +63,15 @@ en:
       note: 'Note'
       other_titles_might: "Alternate titles might have matched your search terms"
       browse_other: "Other"
+    resolve:
+      background_load:
+        # 'initial' vs 'more': Different messages depending on whether some items are
+        # already loaded (maybe already in the foreground)
+        load_initial: "Load %{x}."
+        load_more: "Load more %{x}."
+        progress_initial: "Searching for %{x}"
+        progress_more: "Searching for more %{x}"
+
     # Names and optionally sub-head prompts for umlaut display sections, 
     # keyed by section id. If not given in i18n here, the name will be 
     # automatically taken from the display_name of the first ServiceTypeValue
@@ -78,6 +87,7 @@ en:
         title: 'Question? Problem? Contact:'
       related_items:
         title: Related Items
+        load_more_item_name: related items
       highlighted_link:
         title: See also
       excerpts:
@@ -157,4 +167,3 @@ en:
   try_backup_resolver: Try your request against backup link resolver
   to_report_a_problem: For more help, or to report a problem, please feel free to
   contact_us_for_help: Contact us for help
-  searching_for: Searching for
