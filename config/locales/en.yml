@@ -85,6 +85,11 @@ en:
       service_errors_title: 'Some content may not be included due to errors:'
       services_missing: 'Some'
       technical_error_info: Technical Error Information
+    misc:
+      powered_by_umlaut: Powered by
+      credits_html: "Using services from %{credits} and others"
+
+
     # Names and optionally sub-head prompts for umlaut display sections, 
     # keyed by section id. If not given in i18n here, the name will be 
     # automatically taken from the display_name of the first ServiceTypeValue
@@ -203,10 +208,4 @@ en:
   short_link: Short link
   no_item_found_warning: 'Warning: %{app_name} does not know about a %{format_searched} with this name. Please check your entry'
   sent: sent
-  
-
-  powered_by: Powered by
-  using_services_from: Using services from
-  and_others: and others
-
   
