@@ -4,19 +4,15 @@ require 'yaml'
 # This model is the actual list of valid service types. Not ActiveRecord,
 # just load from config files into memory (loaded on file load). 
 #
-# ServiceTypeValues have human-displayable names, that are controlled by Rails I18n. 
+# ServiceTypeValues have human-displayable names, that are controlled by Rails I18n, 
+# using standard Rails I18n pluralization forms, so for instance:
 #
 # For a ServiceTypeValue with name 'fulltext', key in i18n at 'umlaut.service_type_names.fulltext.one'
-# represents the singular (non-plural) name of objects of this ServiceTypeValue. 
+# represents the singular (non-plural) name of objects of this ServiceTypeValue, and
+# 'umlaut.service_type_names.fulltext.other' is the plural name. 
 #
-# By default, the Rails pluralization inflector will be used to come up with the plural name. 
-# But you can override with an I18n key (eg) "umlaut.service_type_names.fulltext.other"
-#
-# Note that these i18n translation keys follow the pattern of the built-in Rails I18n
-# pluralization, but we don't actually use built-in pluralization algorithm, because
-# we allow for a default using the Rails .pluralize inflector. We may move to built-in
-# I18n pluralization in the future, especially if we need to support languages with more
-# complex pluralization rules, that we aren't doing now. 
+# Other languages may have more complex pluralization rules, but Umlaut at present only
+# looks up a plural form for 10 items, so 'other' is probably all that is used. 
 class ServiceTypeValue   
   attr_accessor :name, :id
   attr_writer :display_name, :display_name_plural
@@ -38,17 +34,16 @@ class ServiceTypeValue
   end
 
   def display_name
-    I18n.t("one", :scope => "umlaut.service_type_names.#{self.name}", :default => :"umlaut.service_type_names.default.one")
+    I18n.t(self.name, :scope => "umlaut.service_type_names", :default => :default, :count => 1)
   end
   
+  # Some languages may have multiple plural forms, but Umlaut at
+  # present is not sophisticated enough to use em all, we just look up
+  # the plural form for 10 items -- most Umlaut use of plural form
+  # is for either zero or indetermininate number. But it still may need
+  # enhancing. 
   def display_name_pluralize
-    plural_hash = I18n.t(self.name, :scope => "umlaut.service_type_names", :default => "")
-    if plural_hash.kind_of? Hash
-      return plural_hash[:other] if plural_hash[:other]
-      return plural_hash[:one].pluralize(I18n.locale)
-    else
-      return I18n.t("umlaut.service_type_names.default.other")
-    end
+    I18n.t(self.name, :scope => "umlaut.service_type_names", :default => :default, :count => 10)
   end
 
   @@distro_conf_file = File.join(Umlaut::Engine.root, "db", "orig_fixed_data", "service_type_values.yml")
