@@ -4,7 +4,6 @@
 en:    
   language_name: English  
   umlaut:
-    from_service: from
     citation:
       published: "Published"
       published_in: "Published in"
@@ -65,6 +64,7 @@ en:
       other_titles_might: "Alternate titles might have matched your search terms"
       browse_other: "Other"
     resolve:
+      from_service: from
       edition_info: Edition information
       maybe_alt_edition: May be alternate edition
       background_load:

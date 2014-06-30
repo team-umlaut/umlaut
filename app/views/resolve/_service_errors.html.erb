@@ -8,7 +8,7 @@ unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
         <li class="text-small">
           <%= t 'umlaut.error.services_missing' %><strong> <%= dispatch.service.service_types_generated.collect { |type|
             type.display_name_pluralize}.join(", ")%></strong>
-          <%= t 'umlaut.from_service' %> <a class="collapse-toggle" data-target="<%= "#failed_dispatch_#{dispatch.id}"%>" data-toggle="collapse"><strong><%= dispatch.service.display_name %></strong></a>
+          <%= t 'umlaut.resolve.from_service' %> <a class="collapse-toggle" data-target="<%= "#failed_dispatch_#{dispatch.id}"%>" data-toggle="collapse"><strong><%= dispatch.service.display_name %></strong></a>
           <% exception_info = dispatch.exception_info %>
           <div id="<%= "failed_dispatch_#{dispatch.id}"%>" class="collapse">
             <ul class="nav nav-list">
