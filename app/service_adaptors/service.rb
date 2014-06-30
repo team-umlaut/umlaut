@@ -115,11 +115,12 @@ class Service
     raise Exception.new("#{self.class}: #link_out_filter must be implemented by Service concrete sub-class with task link_out_filter!")
   end
 
-  
-  def display_name
-    # If no display_name is set, default to the id string. Not a good idea,
-    # but hey. 
-    return @display_name ||= self.service_id    
+  # Name of this service, like "Amazon", or "OCLC Worldcat". 
+  # First tries to look up an i18n translation using #translate, if not
+  # found, uses a @display_name set in this service, if still not found
+  # uses service_id for lack of anything else. 
+  def display_name    
+    self.translate("display_name", @display_name || self.service_id)
   end
 
 

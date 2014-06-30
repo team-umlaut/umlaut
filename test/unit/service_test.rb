@@ -23,6 +23,7 @@ class ServiceTest < ActiveSupport::TestCase
   end
 
   def setup
+    I18n.reload! 
     @dummy_config =  {"priority" => 1, "service_id" => "DummyService", "type" => "DummyServiceClass"}
     @umlaut_request = requests(:simple)
   end
@@ -59,5 +60,9 @@ class ServiceTest < ActiveSupport::TestCase
 
       assert_equal "default_value", service.translate("missing_key", "default_value")
     end
+  end
+
+  test "#display_name" do
+
   end
 end
