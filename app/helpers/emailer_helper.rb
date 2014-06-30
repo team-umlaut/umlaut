@@ -18,9 +18,9 @@ module EmailerHelper
       rv << cite[:author].strip
       rv << "\n"
     end
-    if cite[:subtitle]
-      rv << (cite[:subtitle_label].strip + ": ") if options[:include_labels] && cite[:subtitle_label]
-      rv << cite[:subtitle].strip
+    if cite[:container_title]
+      rv << (cite[:container_label].strip + ": ") if options[:include_labels] && cite[:container_label].present?
+      rv << cite[:container_title].strip
       rv << "\n"
     end
     pub = []
