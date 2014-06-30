@@ -118,35 +118,40 @@ en:
         progress_message: Looking for tools to search inside this
         action_label: search
     # Names to call various types of service response objects. 
-    # While we use a format consistent with standard i18n pluralization
-    # rules, we don't actually use the standard i18n plurlization algorithm
-    # at present. Instead, provide the key "one" for singular name;
-    # OPTIONALLY provide the key "other" for pluralized name, otherwise
-    # standard Rails pluralization inflector will be used. No support is currently
-    # provided for locales with more complex pluralization rules. 
+    # We use standard Rails i18n pluralization functionality, with
+    # keys for 'one' and 'other' -- for English at least 'other' is
+    # plural form, other languages may sometimes require more plural form
+    # variants, but Umlaut at present may only use the plural form for 10 or
+    # more items anyhow. 
     service_type_names:
       default: 
         one: result
         other: results
       fulltext:
         one: electronic version
+        other: electronic versions
       holding:
         one: copy in library
         other: copies in library
       document_delivery:
-        one: request rervice
+        one: request service
+        other: request services
       help:
         one: help link
+        other: help links
       abstract:
         one: abstract
+        other: abstracts
       table_of_contents:
         one: table of contents
         other: tables of contents
       cover_image:
         one: cover image
+        other: cover images
       # "See also" links to known destinations, like Amazon or OCLC
       highlighted_link:
         one: see also link
+        other: see also links
       # Link to search holdings, generally with a count given, ie "5 possible matches". 
       holding_search:
         one: copy in library
@@ -157,6 +162,7 @@ en:
       # A search inside tool, presented with a search box for user. 
       search_inside:
         one: search inside tool
+        other: search_inside_tools
       referent_enhance:
         one: more information link
         other: more information links
@@ -170,10 +176,13 @@ en:
       # "More like this" links. 
       similar:
         one: "similar article"
+        other: "similar articles"
       export_citation:
         one: export tool
+        other: export tools
       primo_source:
         one: primo source
+        other: primo sources
 
 
 

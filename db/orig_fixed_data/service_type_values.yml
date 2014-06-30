@@ -1,3 +1,8 @@
+# display_name and display_name_plural are old deprecated; Rails i18n is now
+# used for display names. See service_type_values.rb.
+#
+# Which makes this file at present just a list of names and ids; if we had
+# to do it over, we'd do this differently. 
 fulltext:
   id: 1
   display_name: electronic_version
