@@ -183,6 +183,15 @@ class Service
    return url
  end
 
+ # Look up an i18n key scoped to this service: 
+ # * First look for translation under `umlaut.services.#{service_id.underscore}.key`
+ # * If not found, look for translation under `umlaut.services.type.#{service_class_name.underscore}`
+ # * If still not found, pass in optional default, otherwise you'll get I18n
+ #    configured failure behavior. 
+ def translate(key, default = nil)
+    I18n.t("umlaut.services.#{self.service_id.underscore}.#{key}", 
+      :default => [:"umlaut.services.type.#{self.class.name.underscore}.#{key}", default])
+ end
 
  # Pre-emption hashes specify a combination of existing responses or
  # service executions that can pre-empt this service. Can specify
