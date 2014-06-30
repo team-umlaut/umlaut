@@ -69,7 +69,7 @@
     <%
     # Display "Not Available" if we've completed our service run and both holdings and holding searches are empty
     if (holdings.blank? and searches.blank? and (not service_types_in_progress?(['holding', 'holding_search']))) %>
-      <p class="umlaut-unavailable"><%=t(:not_available)%></p>
+      <p class="umlaut-unavailable"><%=t('umlaut.resolve.not_available')%></p>
     <% end %>
   </div>
 <% end %>
