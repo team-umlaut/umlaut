@@ -77,7 +77,7 @@ class ResolveControllerTest < ActionController::TestCase
     assert_select ".umlaut-sidebar .umlaut-section.export_citation" do |sections|
       assert_equal 1, sections.size
       sections.each do |section|
-        assert_select section, ".section_heading h3", { :count => 1, :text => "Export tool" }
+        assert_select section, ".section_heading h3", { :count => 1, :text => ServiceTypeValue.find("export_citation").display_name_pluralize.titlecase }
         assert_select section, ".response_list", 1
       end
     end
