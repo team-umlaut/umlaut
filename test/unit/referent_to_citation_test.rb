@@ -40,6 +40,33 @@ class ReferentToCitationTest < Test::Unit::TestCase
     assert_equal "Madsbad, S", cit_hash[:author]
     assert_equal "152", cit_hash[:page]
     assert_equal ["info:doi/10.1016/S2213-8587(13)70218-3"], cit_hash[:identifiers]
-
   end
+
+  def test_type_of_thing
+    I18n.locale = "en"
+
+    ref = make_test_referent("&genre=dissertation&title=Foo&au=Smith")
+    assert_equal I18n.t("umlaut.citation.genre.dissertation"), ref.type_of_thing
+    assert_equal I18n.t("umlaut.citation.genre.dissertation"), ref.container_type_of_thing
+
+    ref = make_test_referent("rft_val_fmt=info:ofi/fmt:kev:mtx:dissertation&title=Foo")
+    assert_equal I18n.t("umlaut.citation.genre.dissertation"), ref.type_of_thing
+
+    ref = make_test_referent("sid=google&auinit=S&aulast=Madsbad&atitle=Mechanisms+of+changes+in+glucose+metabolism+and+bodyweight+after+bariatric+surgery&id=doi:10.1016/S2213-8587(13)70218-3&title=The+Lancet+Diabetes+%26+Endocrinology&volume=2&issue=2&date=2014&spage=152&issn=2213-8587")
+    assert_equal I18n.t("umlaut.citation.genre.article"), ref.type_of_thing
+    assert_equal I18n.t("umlaut.citation.genre.journal"), ref.container_type_of_thing
+
+    ref = make_test_referent("genre=bookitem&atitle=a+chapter&title=a+book")
+    assert_equal I18n.t("umlaut.citation.genre.bookitem"), ref.type_of_thing
+    assert_equal I18n.t("umlaut.citation.genre.book"), ref.container_type_of_thing
+
+    ref = make_test_referent("genre=unknown&atitle=a+chapter&title=a+book")
+    assert_nil ref.type_of_thing
+    assert_nil ref.container_type_of_thing
+
+    ref = make_test_referent("genre=invalid_made_up&atitle=a+chapter&title=a+book")
+    assert_nil ref.type_of_thing
+    assert_nil ref.container_type_of_thing
+  end
+
 end
