@@ -25,7 +25,7 @@ class ResolveControllerTest < ActionController::TestCase
       assert_equal 1, scripts.size
       # Make sure we have an HtmlUpdater in our script
       scripts.each do |script|
-        assert_match /var updater = new Umlaut.HtmlUpdater\("http:\/\/test\.host\/", "umlaut\.request_id=#{umlaut_request.id}"\);/, script.to_s
+        assert_match /var updater = new Umlaut.HtmlUpdater\("http:\/\/test\.host\/", "umlaut\.request_id=#{umlaut_request.id}", "en"\);/, script.to_s
       end
     end
     # Citation section assertions
