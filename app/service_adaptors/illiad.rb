@@ -15,7 +15,30 @@ require 'openurl'
 #
 # You may want to show ILLiad links only if there is no fulltext, or only if there
 # is no fulltext from a certain service. You can use Umlaut's standard service
-# pre-emption configuration for that. (Example needed.)
+# pre-emption configuration for that. 
+#
+# Do not produce ILLiad links if there are ANY fulltext links already produced
+# in the request. In umlaut_services.yml:
+#
+#     illiad:
+#       type: Illiad
+#       priority: 4
+#       preempted_by:
+#         existing_type: fulltext
+#
+# Or, preempt ILLiad links only if there are fulltext links created by SFX
+# specifically (assume "SFX" is the id of your sfx service in umlaut_services.yml)
+#
+#     illiad:
+#       type: Illiad
+#       priority: 4
+#       preempted_by:
+#         existing_service: SFX
+#         existing_type: fulltext
+#
+# Pre-emption can only take account of services already generated before ILLiad
+# service is triggered, so you'd want to make sure to give ILLiad a priority greater
+# than the services you want to potentially preempt it. 
 #
 # # Config parameters
 # ## Required
