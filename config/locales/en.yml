@@ -41,6 +41,9 @@ en:
         preprint: Pre-print
         dissertation: Dissertation        
         unknown: "" # Intentionally left blank, no label
+      coverage_summary:
+        open_start: "first"
+        open_end: "latest"
     search:
       journals_page_name: Journals
       journals_page_subhead: "Looking for a specific journal or article"
@@ -64,6 +67,7 @@ en:
       other_titles_might: "Alternate titles might have matched your search terms"
       browse_other: "Other"
     resolve:
+      not_available: Not Available
       from_service: from
       edition_info: Edition information
       maybe_alt_edition: May be alternate edition
@@ -90,6 +94,14 @@ en:
     misc:
       powered_by_umlaut: Powered by
       credits_html: "Using services from %{credits} and others"
+      loading: loading
+      close: close
+    permalink:
+      name: Short link
+      back: Back
+
+
+
 
 
     # Names and optionally sub-head prompts for umlaut display sections, 
@@ -188,7 +200,6 @@ en:
 
 
 
-  not_available: Not Available
   
 
   send_to_phone: Send to phone
@@ -197,16 +208,11 @@ en:
   request: Request
   ulrichs_link_name: Periodical information
   worldcat_link_name: Find in other libraries
-  first: first
-  latest: latest
   some_volumes_of: Some volumes of
   search_inside_some_vols: Search inside some volumes
-  loading: loading
-  close: close
   email_export_header: Email the title and locations
   enter_your_email: 'Enter your email address:'
   send: Send!
-  back: back
   txt_export_header: Send the title and location of an item to your mobile phone
   enter_your_number: 'Enter your mobile phone number:'
   select_provider: 'Select your provider:'
@@ -214,7 +220,6 @@ en:
   charges_may_apply: 'Note: charges may apply if your service plan does not cover unlimited texting'
   number_format_description: 10 digit US cell phone number
   text_sent: Sent to %{number}.
-  short_link: Short link
   no_item_found_warning: 'Warning: %{app_name} does not know about a %{format_searched} with this name. Please check your entry'
   sent: sent
   
