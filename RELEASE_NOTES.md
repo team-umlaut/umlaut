@@ -1,3 +1,14 @@
+## 3.3.0
+
+* New ILLiad service
+* New Scopus2 service based on new non-deprecated Scopus API
+* New built-in Umlaut user feedback functionality
+* Assorted bugfixes
+
+## 3.2.0
+
+* Assorted bugfixes and refactoring
+
 ## 3.1.0
 
 * Major visual redesign, based on bootstrap, responsive on small screens	
