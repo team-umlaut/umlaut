@@ -120,7 +120,7 @@ class Service
   # found, uses a @display_name set in this service, if still not found
   # uses service_id for lack of anything else. 
   def display_name    
-    self.translate("display_name", @display_name || self.service_id)
+    self.translate("display_name", :default => @display_name || self.service_id)
   end
 
 
@@ -184,14 +184,20 @@ class Service
    return url
  end
 
- # Look up an i18n key scoped to this service: 
+ # Look up an i18n key scoped to this service, first under the unique ID of
+ # the service, then under the service class name:
  # * First look for translation under `umlaut.services.#{service_id.underscore}.key`
- # * If not found, look for translation under `umlaut.services.type.#{service_class_name.underscore}`
+ # * If not found, look for translation under `umlaut.services.#{service_class_name.underscore}`
  # * If still not found, pass in optional default, otherwise you'll get I18n
  #    configured failure behavior. 
- def translate(key, default = nil)
-    I18n.t("umlaut.services.#{self.service_id.underscore}.#{key}", 
-      :default => [:"umlaut.services.type.#{self.class.name.underscore}.#{key}", default])
+ #
+ # second arg is options that can be passed to standard I18n.t, including defaults
+ # and template arguments. 
+ def translate(key, options = {})
+    # Modify/add options[:default] to look up under class name too
+    options[:default] = [:"umlaut.services.#{self.class.name.underscore}.#{key}"].concat(Array( options[:default] ))
+
+    I18n.t("umlaut.services.#{self.service_id.underscore}.#{key}", options)
  end
 
  # Pre-emption hashes specify a combination of existing responses or
