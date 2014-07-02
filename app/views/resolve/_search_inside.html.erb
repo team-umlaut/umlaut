@@ -7,7 +7,7 @@
   # TODO: Make this a helper function!?
   if (search_providers.length > 0 and (not service_type_in_progress?('search_inside'))) %>
     <div class="section_heading">
-      <%= content_tag :h3, t('umlaut.display_sections.search_inside.search_inside_this_x', :x => @user_request.referent.container_type_of_thing.downcase) %>      
+      <%= content_tag :h3, t('umlaut.display_sections.search_inside.search_inside_this_x', :x => @user_request.referent.container_type_of_thing.try(:downcase)) %>      
     </div>
     <div class="umlaut_section_content">
       <%= content_tag("form", :target => "_blank", :action => url_for(:controller=>'link_router', :action=>'index')) do %>
