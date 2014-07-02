@@ -74,7 +74,7 @@ module Umlaut::Helper
     link_to({:action => "get_permalink", :"umlaut.request_id" => @user_request.id}, 
              :class => "umlaut-load-permalink btn btn-mini", 
              :data => {"umlaut-toggle-permalink"=>"true"}) do
-        content_tag("i") + " #{t(:short_link)}"
+        content_tag("i") + " #{t('umlaut.permalink.name')}"
     end
   end
 
