@@ -3,15 +3,15 @@
   unless @user_request.nil?
     cite = @user_request.referent.to_citation %>
     <%= form_tag({:controller => "export_email", :action => "send_email", :id => params[:id]}, :class => "form-inline" ) do  %>
-      <h2><%=t :email_export_header %></h2>
+      <h2><%=t 'umlaut.services.email_export.header' %></h2>
       <%= validation_error flash[:alert] if flash[:alert] %>
       <fieldset>
-        <legend><%= "#{t(:title)}: #{h(cite[:title])} / #{h(cite[:author])}" %></legend>
+        <legend><%= t('umlaut.citation.title_label') %>: <%= cite[:title] %> / <%= cite[:author] %></legend>
         <div class="control-group">
-          <%= label_tag 'email', t(:enter_your_email) %>
+          <%= label_tag 'email', t('umlaut.services.email.enter_your_email') %>
           <%= text_field_tag 'email', params[:email], :class => "input-xlarge" %>
         </div>
-        <%= submit_tag t :send, :class => "btn btn-inverse" %>
+        <%= submit_tag t('umlaut.services.email_export.send_action'), :class => "btn btn-inverse" %>
       </fieldset><%
     end
   end %>

@@ -132,8 +132,19 @@ en:
         display_text: Find in other libraries
       txt_holding_export:
         display_text: Send to phone
+        header: Send the title and location of an item to your mobile phone
+        enter_your_number: 'Enter your mobile phone number'
+        number_format_description: '10 digit US cell phone number'
+        select_provider: 'Select your provider'
+        choose_item_to_send: 'Choose the item you want to send'
+        charges_may_apply: 'Note: charges may apply if your service plan does not cover unlimited texting'
+        send_action: Send
+        text_sent: "Sent to %{number}."
       email_export:
         display_text: Email
+        header: Email the title and locations
+        enter_your_email: 'Enter your email address'
+        send_action: Send
       ulrichs_link: 
         display_text: Periodical information
       hathi_trust:
@@ -191,7 +202,7 @@ en:
       # A search inside tool, presented with a search box for user. 
       search_inside:
         one: search inside tool
-        other: search_inside_tools
+        other: search inside tools
       referent_enhance:
         one: more information link
         other: more information links
@@ -213,25 +224,4 @@ en:
         one: primo source
         other: primo sources
 
-
-
-
-
-  
-
-  more_info: More info
-  request: Request
-  some_volumes_of: Some volumes of #hathitrust notes
-  email_export_header: Email the title and locations
-  enter_your_email: 'Enter your email address:'
-  send: Send!
-  txt_export_header: Send the title and location of an item to your mobile phone
-  enter_your_number: 'Enter your mobile phone number:'
-  select_provider: 'Select your provider:'
-  choose_item_to_send: 'Choose the item you want to send:'
-  charges_may_apply: 'Note: charges may apply if your service plan does not cover unlimited texting'
-  number_format_description: 10 digit US cell phone number
-  text_sent: Sent to %{number}.
-  no_item_found_warning: 'Warning: %{app_name} does not know about a %{format_searched} with this name. Please check your entry'
-  sent: sent
-  
+  some_volumes_of: Some volumes of #hathitrust notes  

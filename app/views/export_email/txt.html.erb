@@ -2,18 +2,18 @@
   <%
   unless @user_request.nil? %>
     <%= form_tag( {:controller => "export_email", :action => "send_txt", :id => params[:id]}, :class => "form-inline" ) do %>
-      <h2><%= t :txt_export_header %></h2>
+      <h2><%= @svc_response.service.translate 'header' %></h2>
       <%= validation_error flash[:alert] if flash[:alert] %>
       <fieldset>
-        <legend><%= "#{t :title}: #{h(brief_citation(@user_request))}" %></legend>
-        <%= label_tag('number', t(:enter_your_number)) %>
+        <legend><%= t 'umlaut.citation.title_label' %>: <%= brief_citation(@user_request) %></legend>
+        <%= label_tag('number', @svc_response.service.translate('enter_your_number')) %>
         <%= text_field_tag('number', params[:number], :size => 14) %>
-        <small><em><%= t :number_format_description %> </em></small><br />
-        <%= label_tag('provider', t(:select_provider)) %>
+        <small><em><%= @svc_response.service.translate 'number_format_description' %> </em></small><br />
+        <%= label_tag('provider', @svc_response.service.translate('select_provider')) %>
         <% providers = @svc_response.service.instance_variable_get("@providers") %>
         <%= select_tag "provider", options_for_select(providers.sort, params[:provider]) %>
         <% holdings = @user_request.get_service_type('holding', {}) %>
-        <p><%= t :choose_item_to_send %></p>
+        <p><%= @svc_response.service.translate 'choose_item_to_send' %></p>
         <ul><%
           holdings.each do |p|
             target = p.view_data %>
@@ -23,8 +23,8 @@
             </li><%
           end %>
         </ul>
-        <small><em><%= t :charges_may_apply %></em></small>
-        <%= submit_tag t :send, :class => "btn btn-inverse" %>
+        <small><em><%= @svc_response.service.translate 'charges_may_apply' %></em></small>
+        <%= submit_tag @svc_response.service.translate 'send_action', :class => "btn btn-inverse" %>
       </fieldset><%
     end
   end %>
