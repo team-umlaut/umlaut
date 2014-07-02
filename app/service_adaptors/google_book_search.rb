@@ -296,8 +296,6 @@ class GoogleBookSearch < Service
   # We only create a fulltext service response if we have a full view.
   # We create only as many full views as are specified in config.
   def create_fulltext_service_response(request, data)
-    display_name = @display_name
-
     full_views = find_entries(data, ViewFullValue)
     return nil if full_views.empty?
     
@@ -308,7 +306,8 @@ class GoogleBookSearch < Service
           
       request.add_service_response(
           :service => self, 
-          :display_text => display_name, 
+          :display_text => @display_name, 
+          :display_text_i18n => "display_name",
           :url => remove_query_context(uri),           
           :service_type_value =>  :fulltext  
       )
@@ -328,6 +327,7 @@ class GoogleBookSearch < Service
       request.add_service_response( 
         :service => self,
         :display_text=>@display_name,
+        :display_text_i18n => "display_name",
         :url=> remove_query_context(url),
         :service_type_value => :search_inside
        )                  
@@ -358,16 +358,21 @@ class GoogleBookSearch < Service
     if (viewability == ViewPartialValue && 
         url = iv["volumeInfo"]["previewLink"])
       display_text = @display_name
+      display_text_i18n = "display_name"
       type = ServiceTypeValue[:excerpts]
     else
       url = url = iv["volumeInfo"]["infoLink"]
       display_text = "Book Information"
+      display_text_i18n = "book_information"
       type = ServiceTypeValue[:highlighted_link]
     end
+
+
     request.add_service_response( 
         :service=>self,    
         :url=> remove_query_context(url),
         :display_text=>display_text,
+        :display_text_i18n => display_text_i18n,
         :service_type_value => type    
      )
   end

@@ -15,7 +15,8 @@ class Worldcat < Service
     # defaults
     @suppress_precheck = false # it seems unneccesary to pre-check worldcat, it's mostly ALWAYS a positive hit. And pre-checking against worldcat is running into Worldcat's rate limiting defenses. If neccesary, you can turn this off. Really, we should be using the Worldcat API anyway. 
     @base_url = 'http://www.worldcat.org/'
-    @display_text = :worldcat_link_name
+    @display_text = 'Find in other libraries'
+    @display_text_i18n = 'display_text'
     @display_name = 'OCLC WorldCat.org'
     
     @credits = {
@@ -107,7 +108,8 @@ class Worldcat < Service
     request.add_service_response(
       :service=>self, 
       :url=>worldcat_uri.to_s,
-      :display_text=>@display_text, 
+      :display_text=>@display_text,
+      :display_text_i18n => @display_text_i18n,
       :service_type_value => :highlighted_link
       )
     

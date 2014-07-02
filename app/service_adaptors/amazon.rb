@@ -239,7 +239,8 @@ class Amazon < Service
       unless ( desc_text.blank? )
         request.add_service_response(
           :service=>self, 
-          :display_text => "Description from Amazon.com", 
+          :display_text => "Description from Amazon.com",
+          :display_text_i18n => "description", 
           :url => item_url, 
           :key=>'abstract', 
           :value_string=>asin, 
@@ -332,6 +333,7 @@ class Amazon < Service
         request.add_service_response( 
           :service => self,
           :display_text=>@display_name,
+          :display_text_i18n => "display_name",
           :url=> inside_base,
           :service_type_value => :search_inside
          )   
@@ -348,7 +350,8 @@ class Amazon < Service
             :service=>self,
             :url => inside_base, 
             :asin=>asin,
-            :display_text => @display_name,            
+            :display_text => @display_name,
+            :display_text_i18n => "display_name",
             :service_type_value => 'excerpts')
          
       elsif ( @service_types.include?("highlighted_link"))
@@ -363,7 +366,8 @@ class Amazon < Service
             :service=>self,
             :url => amazon_page, 
             :asin=>asin,
-            :display_text => @display_text,            
+            :display_text => @display_text,
+            :display_text_i18n => "display_text",
             :service_type_value => 'highlighted_link')
       end
       

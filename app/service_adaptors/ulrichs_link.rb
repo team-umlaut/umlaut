@@ -3,7 +3,7 @@
 # Does not actually look up first to make sure there are results, it's
 # a blind link.
 # config params:
-# link_name: Name to put on the link. Defaults to "Periodical Information from Ulrich's Directory". 
+# display_text: Name to put on the link. Defaults to "Periodical information". Can also be changed via i18n tranlsations. 
 class UlrichsLink < Service
 
   def initialize(config)
@@ -16,7 +16,8 @@ class UlrichsLink < Service
     @base_url ||= "https://ulrichsweb.serialssolutions.com/api/openurl?issn="
     # Old one
     #@base_url ||= "http://www.ulrichsweb.com/ulrichsweb/Search/call_fullCitation.asp?/vendor_redirect.asp?oVendor=#{@vendor}&oIssn="
-    @link_name = "Periodical information"
+    @display_text ||= "Periodical information"
+    @display_text_i18n ||= "display_text"
   end
   
   def service_types_generated
@@ -25,14 +26,13 @@ class UlrichsLink < Service
 
   def handle(request)
     unless (request.referent.issn.blank?)
-      display_text = @link_name
-
       url = url_for_issn( request.referent.issn )
       
       request.add_service_response(
         :service=>self, 
         :url=>url, 
-        :display_text=>display_text,
+        :display_text=>@display_text,
+        :display_text_i18n => @display_text_i18n,
         :service_type_value => :highlighted_link)
     end
 
