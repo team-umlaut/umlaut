@@ -196,6 +196,7 @@ end
 class ServiceResponseDataValues
   def initialize(arg_service_response)
     @service_response = arg_service_response
+    translate_simple_i18n!
   end
 
   def [](key)        
@@ -211,6 +212,21 @@ class ServiceResponseDataValues
       @service_response.send(key.to_s+'=', value)
     else
       @service_response.service_data[key] = value
+    end
+  end
+
+  protected
+  # replaces :display_text and :notes with simple i18n key lookups
+  # iff :display_text_i18n and :notes_i18n are defined
+  #
+  # i18n lookups use Service.translate, to use standard scopes for
+  # this service. 
+  def translate_simple_i18n!
+    if key = self[:display_text_i18n]
+      self[:display_text] = @service_response.service.translate(key, :default => self[:display_text])
+    end
+    if key = self[:notes_i18n]
+      self[:notes] = @service_response.service.translate(key, :default => self[:notes])
     end
   end
   

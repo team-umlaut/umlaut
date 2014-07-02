@@ -149,7 +149,6 @@ class HathiTrust < Service
   def create_fulltext_service_response(request, items)
     return nil if items.empty?
     
-    display_name = @display_name
     count = 0
     
     items.each do |item|         
@@ -160,7 +159,8 @@ class HathiTrust < Service
       
       request.add_service_response(
           :service=>self, 
-          :display_text=>display_name,           
+          :display_text=> @display_name,
+          :display_text_i18n => "display_name",
           :url=> direct_url_to(item), 
           :notes=> note_for(item), 
           :service_type_value => :fulltext 
@@ -186,7 +186,8 @@ class HathiTrust < Service
         
       request.add_service_response(
           :service=>self, 
-          :display_text=>@display_name,           
+          :display_text=> @display_name,
+          :display_text_i18n => "display_name",
           :url=> record["recordURL"],
           :notes => excerpt_note_for(record),
           :service_type_value => :excerpts
@@ -204,7 +205,8 @@ class HathiTrust < Service
         
         request.add_service_response(
             :service=>self, 
-            :display_text=> :search_inside_some_vols,
+            :display_text=> "Search inside some volumes",
+            :display_text_i18n => "search_inside_some_vols",
             :url=> record["recordURL"],
             :service_type_value => :highlighted_link             
         )   
@@ -231,7 +233,8 @@ class HathiTrust < Service
 
     request.add_service_response( 
         :service => self,
-        :display_text=>@display_name,
+        :display_text=> @display_name,
+        :display_text_i18n => "display_name",
         :url=> direct_url,
         :service_type_value => :search_inside
        )

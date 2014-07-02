@@ -129,6 +129,29 @@ en:
         via: via
         progress_message: Looking for tools to search inside this
         action_label: search
+    services:
+      worldcat:
+        display_text: Find in other libraries
+      txt_holding_export:
+        display_text: Send to phone
+      email_export:
+        display_text: Email
+      ulrichs_link: 
+        display_text: Periodical information
+      hathi_trust:
+        search_inside_some_vols: Search inside some volumes
+      google_scholar_link:
+        display_text: Look for article on Google Scholar
+        notes_html: "This article <b>may</b> be available on the public web, look for links labelled <span class='gscholar_example'>[html]</span> or <span class='gscholar_example'>[pdf]</span>"
+      google_book_search:
+        book_information: "Book information"
+      amazon:
+        display_text: "Amazon's page"
+        description: "Description from Amazon.com"
+
+
+
+
     # Names to call various types of service response objects. 
     # We use standard Rails i18n pluralization functionality, with
     # keys for 'one' and 'other' -- for English at least 'other' is
@@ -202,14 +225,9 @@ en:
 
   
 
-  send_to_phone: Send to phone
-  email: Email
   more_info: More info
   request: Request
-  ulrichs_link_name: Periodical information
-  worldcat_link_name: Find in other libraries
-  some_volumes_of: Some volumes of
-  search_inside_some_vols: Search inside some volumes
+  some_volumes_of: Some volumes of #hathitrust notes
   email_export_header: Email the title and locations
   enter_your_email: 'Enter your email address:'
   send: Send!

@@ -146,6 +146,7 @@ class InternetArchive < Service
           request.add_service_response(
             :service => self,
             :display_text=> @display_name,
+            :display_text_i18n => "display_name",
             :url => direct_url.to_s,
             :service_type_value => :search_inside
           )
@@ -170,6 +171,7 @@ class InternetArchive < Service
         request.add_service_response(
             :service=>self, 
             :display_text=>display_name, 
+            :display_text_i18n => "display_name",
             :url=>create_result_url(result),
             :match_reliability => ServiceResponse::MatchUnsure,
             :edition_str => edition_str(result),
