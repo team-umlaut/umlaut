@@ -60,7 +60,7 @@
     umlaut_base = umlaut_base.replace(/\/$/,'');
     this.umlaut_uri =  umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=json&' + context_object;
     if (locale)
-      this.umlaut_uri = "&umlaut.locale=" + locale;
+      this.umlaut_uri += "&umlaut.locale=" + locale;
 
     this.section_targets = [];
            
