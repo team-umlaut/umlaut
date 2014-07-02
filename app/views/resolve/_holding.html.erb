@@ -20,9 +20,9 @@
             <div class="span7 call-number"><%= target[:call_number]%></div>
             
             <div class="holding-actions span5">
-              <%= link_to(t(:more_info), {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"more-info btn btn-mini") %>
+              <%= link_to(t('umlaut.holding.more_info'), {:controller=>"link_router", :id=>p.id}, :target => "_blank", :class=>"more-info btn btn-mini") %>
               <% if target[:request_url] %>
-                <%= link_to(t(:request), target[:request_url], :target => "_blank", :class=>"request btn btn-mini btn-primary") %>
+                <%= link_to(t('umlaut.holding.request'), target[:request_url], :target => "_blank", :class=>"request btn btn-mini btn-primary") %>
               <% end %>
             </div>
            
@@ -33,9 +33,9 @@
         <% if target[:match_reliability].present? && target[:match_reliability] != ServiceResponse::MatchExact %>
           <div class="umlaut-holding-match-reliability">            
               <% unless target[:edition_str].blank? %>
-                <em class="note"><%=t(:edition_info)%></em> <%= target[:edition_str] %>
+                <em class="note"><%=t('umlaut.resolve.edition_info')%></em> <%= target[:edition_str] %>
               <% else %>
-                <em class="note"><%t(:maybe_alt_edition)%></em>
+                <em class="note"><%t('umlaut.resolve.maybe_alt_edition')%></em>
               <% end %>            
           </div>
         <% end %>
