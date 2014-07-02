@@ -99,11 +99,9 @@ en:
     permalink:
       name: Short link
       back: Back
-
-
-
-
-
+    holding:
+      more_info: More info
+      request: Request
     # Names and optionally sub-head prompts for umlaut display sections, 
     # keyed by section id. If not given in i18n here, the name will be 
     # automatically taken from the display_name of the first ServiceTypeValue
@@ -148,10 +146,6 @@ en:
       amazon:
         display_text: "Amazon's page"
         description: "Description from Amazon.com"
-
-
-
-
     # Names to call various types of service response objects. 
     # We use standard Rails i18n pluralization functionality, with
     # keys for 'one' and 'other' -- for English at least 'other' is
