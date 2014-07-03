@@ -124,35 +124,6 @@ class Service
   end
 
 
-  # Pass this method a ServiceResponse object, it will return a hash-like object of 
-  # display values, for the view. Implementation is usually in sub-class, by
-  # means of a set of methods "to_[service type name]" implemented in sub-class
-  #. parseResponse will find those. Subclasses will not generally override
-  # view_data_from_service_type, although they can for complete custom
-  # handling. Make sure to return a Hash or hash-like (duck-typed) object.
-  def view_data_from_service_type(service_response)
-  
-    service_type_code = service_response.service_type_value.name
-    
-    begin
-      # try to call a method named "to_#{service_type_code}", implemented by sub-class
-      self.send("to_#{service_type_code}", service_response)
-    rescue NoMethodError 
-    # No to_#{response_type} method? How about the catch-all method?
-    # If not implemented in sub-class, we have a VERY basic
-    # default implementation in this class. 
-        self.send("response_to_view_data", service_response)
-    end
-  end
-
-  # Default implementation to take a ServiceResponse and parse
-  # into a hash of values useful to the view. Basic implementation
-  # just asks ServiceResposne for it's data_values object, which
-  # contains all ServiceResponse data (including arbitrary keys serialized
-  # in the hash) in an object with the hash accessor method [] . 
-  def response_to_view_data(service_response)
-      return service_response.data_values
-  end
 
   # Sub-class can call class method like:
   #  required_config_params  :symbol1, :symbol2, symbol3
