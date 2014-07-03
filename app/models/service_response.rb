@@ -122,13 +122,7 @@ class ServiceResponse < ActiveRecord::Base
   def service
     @service ||= ServiceStore.instantiate_service!( self.service_id, nil )
   end
-  
-  # Returns a hash or hash-like object with properties for the service response. 
-  def view_data
-    self.service.view_data_from_service_type(self)
-  end
-  
-  
+    
   def service_data
     # Fix weird-ass char encoding bug with AR serialize and hashes.
     # https://github.com/rails/rails/issues/6538
@@ -152,81 +146,61 @@ class ServiceResponse < ActiveRecord::Base
   
 
   def take_key_values(hash)    
-    # copy it, cause we're gonna modify it
-    hash = hash.clone
-
     hash.each_pair do |key, value|
       setter = "#{key.to_s}="      
       if ( self.respond_to?(setter))
         self.send(setter, value)
-        hash.delete(key)
+      else
+        self.service_data[key] = value
       end
     end
-    # What's left is arbitrary key/values that go in service_data
-    init_service_data(hash)
   end
 
-  def init_service_data(hash)
-    hash.each {|key, value| data_values[key] = value} if hash
-  end
 
-  def data_values    
+  def view_data    
     # Lazy load, and store a reference. Don't worry, ruby
     # GC handles circular references no problem. 
-    unless (@data_values_proxy)  
-      @data_values_proxy = ServiceResponseDataValues.new(self)
+    unless (@data_values)  
+      h = HashWithIndifferentAccess.new
+      ServiceResponse.built_in_fields.each do |key|
+        h[key] = self.send(key)
+      end
+      h.merge!(self.service_data.deep_dup)
+
+      # Handle requested i18n translations
+      translate_simple_i18n!(h)
+
+      # Optional additional transformation provided by service?
+      if service.respond_to? :transform_view_data
+        h = service.transform_view_data(h)
+      end
+
+      # Doesn't protect modifying nested structures, but
+      # protects from some problems. 
+      h.freeze 
+      @data_values = h
     end
-    return @data_values_proxy;
+    return @data_values;
   end
+  # old name now duplicate
+  alias_method :data_values, :view_data
 
   def self.built_in_fields
     @@built_in_fields
   end
   
-
-  
-end
-
-# A proxy-like class, to provide hash-like access to all arbitrary
-# key/value pairs stored in a ServiceResponse, whether they key/value
-# is stored in an ActiveRecord attribute (#built_in_fields) or in
-# the serialized hash in the service_data attribute. 
-# Symbols passed in will be 'normalized' to strings before being used as keys.
-# So symbols and strings are interchangeable. Normally, keys should be symbols.
-class ServiceResponseDataValues
-  def initialize(arg_service_response)
-    @service_response = arg_service_response
-    translate_simple_i18n!
-  end
-
-  def [](key)        
-    if ServiceResponse.built_in_fields.include?(key)
-      return @service_response.send(key)
-    else
-      return @service_response.service_data[key]
-    end
-  end
-
-  def []=(key, value)
-    if(ServiceResponse.built_in_fields.include?(key))
-      @service_response.send(key.to_s+'=', value)
-    else
-      @service_response.service_data[key] = value
-    end
-  end
-
   protected
   # replaces :display_text and :notes with simple i18n key lookups
   # iff :display_text_i18n and :notes_i18n are defined
   #
   # i18n lookups use Service.translate, to use standard scopes for
   # this service. 
-  def translate_simple_i18n!
-    if key = self[:display_text_i18n]
-      self[:display_text] = @service_response.service.translate(key, :default => self[:display_text])
+  def translate_simple_i18n!(hash)
+    if key = hash[:display_text_i18n]
+      hash[:display_text] = self.service.translate(key, :default => hash[:display_text])
     end
     if key = self[:notes_i18n]
-      self[:notes] = @service_response.service.translate(key, :default => self[:notes])
+      hash[:notes] = self.service.translate(key, :default => hash[:notes])
     end
   end
   
