@@ -71,6 +71,7 @@ en:
       from_service: from
       edition_info: Edition information
       maybe_alt_edition: May be alternate edition
+      not_found_warning: "Warning: %{app_name} does not know about a %{resource_type} with this name. Please check your entry."
       background_load:
         # 'initial' vs 'more': Different messages depending on whether some items are
         # already loaded (maybe already in the foreground)
