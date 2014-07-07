@@ -8,7 +8,8 @@ class ServiceResponseTest < Test::Unit::TestCase
       :service_id => "DummyService",
       :display_text => "Display text",
       :notes => "notes",
-      :my_own_key => "my_own_key"
+      :my_own_key => "my_own_key",
+      :service_type_value => :fulltext
     )
 
     assert_equal "Display text", sr.view_data[:display_text]
@@ -19,6 +20,9 @@ class ServiceResponseTest < Test::Unit::TestCase
 
     assert_equal "my_own_key", sr.view_data[:my_own_key]
     assert_equal "my_own_key", sr.view_data['my_own_key']
+
+    assert sr.view_data[:service_type_value].present?
+    assert_equal "fulltext", sr.view_data[:service_type_value]
   end
 
   # A service that does nothing!
