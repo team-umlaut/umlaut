@@ -30,7 +30,9 @@
 # A link_out_filter service defines link_out_filter(request, url). If service
 # returns a new url from filter_url, that's the url the user will be directed
 # to. If service returns original url or nil, original url will still be used. 
-
+#
+# See documentation at ServiceResponse regarding how a service generates
+# ServiceResponses to respond to a user request. 
 class Service
   attr_reader :priority, :service_id, :url, :task, :status, :name, :group
   attr_accessor :request
