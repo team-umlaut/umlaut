@@ -233,14 +233,15 @@ class ServiceResponse < ActiveRecord::Base
 
 
   def view_data    
-    # Lazy load, and store a reference. Don't worry, ruby
-    # GC handles circular references no problem. 
     unless (@data_values)  
       h = HashWithIndifferentAccess.new
       ServiceResponse.built_in_fields.each do |key|
         h[key] = self.send(key)
       end
       h.merge!(self.service_data.deep_dup)
+
+      # add in service_type_value
+      h[:service_type_value] = self.service_type_value_name
 
       # Handle requested i18n translations
       translate_simple_i18n!(h)
