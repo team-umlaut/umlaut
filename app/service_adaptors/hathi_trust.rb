@@ -162,7 +162,8 @@ class HathiTrust < Service
           :display_text=> @display_name,
           :display_text_i18n => "display_name",
           :url=> direct_url_to(item), 
-          :notes=> note_for(item), 
+          :add_i18n_notes => "single_volume", # signal for transform_view_data
+          :source_for_i18n => item['orig'],
           :service_type_value => :fulltext 
       )
       count += 1
@@ -183,13 +184,16 @@ class HathiTrust < Service
     full_ids.each do |recordId|
       record = ht_json.values.first["records"][recordId]
       next unless record && record["recordURL"]
-        
+    
+      record_title = record["titles"].first if record["titles"].kind_of?(Array)
+    
       request.add_service_response(
           :service=>self, 
           :display_text=> @display_name,
           :display_text_i18n => "display_name",
           :url=> record["recordURL"],
-          :notes => excerpt_note_for(record),
+          :add_i18n_notes => "partial_volume", # signal for transform_view_data
+          :title_for_i18n => record_title,
           :service_type_value => :excerpts
       )
     end
@@ -251,19 +255,17 @@ class HathiTrust < Service
       item['itemURL']
     end
   end
-  
-  def note_for(item)
-    if item['orig']
-      "Digitized from #{item['orig']}"
-    else
-      nil
+
+  def transform_view_data(hash)
+    if hash[:add_i18n_notes] == "single_volume"
+      hash[:notes] = translate("note_for_single_vol", :source => (hash[:source_for_i18n] || ""))
+    elsif hash[:add_i18n_notes] == "partial_volume"
+      hash[:notes] = translate("note_for_multi_vol", :title => (hash[:title_for_i18n] || ""))
     end
+
+    return hash
   end
   
-  def excerpt_note_for(record)
-    return nil unless record["titles"].kind_of?(Array)
-    "#{t(:some_volumes_of)}: #{record["titles"].first}"
-  end
   
   def is_serial_part?(item)
     # if it's got enumCron, then it's just part of a serial,
