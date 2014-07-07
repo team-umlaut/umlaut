@@ -149,6 +149,8 @@ en:
         display_text: Periodical information
       hathi_trust:
         search_inside_some_vols: Search inside some volumes
+        note_for_single_vol: "Digitized from %{source}"
+        note_for_multi_vol: "Some volumes of: %{title}"
       google_scholar_link:
         display_text: Look for article on Google Scholar
         notes_html: "This article <b>may</b> be available on the public web, look for links labelled <span class='gscholar_example'>[html]</span> or <span class='gscholar_example'>[pdf]</span>"
