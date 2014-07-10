@@ -31,7 +31,7 @@ class SearchController < UmlautController
   @@az_batch_size = 20
   @@autocomplete_limit = 15
 
-  layout :layout_name, :except => [ :opensearch, :opensearch_description ]
+  layout :layout_name
 
   before_filter :normalize_params
 
@@ -142,10 +142,6 @@ class SearchController < UmlautController
       end
    end
    render :text => @titles.to_json, :content_type => "application/json"
-  end
-
-  def opensearch_description
-    @headers['Content-Type'] = 'application/opensearchdescription+xml'
   end
 
   protected
