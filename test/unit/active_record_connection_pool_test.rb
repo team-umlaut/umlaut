@@ -4,6 +4,7 @@
 # See https://github.com/rails/rails/issues/5330
 
 require 'test_helper'
+require 'test/unit'
 
 class ActiveRecordConnectionPoolTest < Test::Unit::TestCase
 
