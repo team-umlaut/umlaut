@@ -1,8 +1,6 @@
 module Sfx4
   module Local
     class Base < ActiveRecord::Base
-      attr_accessible
-
       # Was a SFX DB connection set in database.yml to connect directly to sfx?
       def self.connection_configured?
         config = ActiveRecord::Base.configurations["sfx_db"]

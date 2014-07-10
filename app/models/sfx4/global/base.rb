@@ -1,8 +1,6 @@
 module Sfx4
   module Global
     class Base < ActiveRecord::Base
-      attr_accessible
-
       # Was a SFX Global DB connection set in database.yml to connect directly to sfx?
       def self.connection_configured?
         config = ActiveRecord::Base.configurations["sfx4_global"]
