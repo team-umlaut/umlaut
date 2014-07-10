@@ -70,8 +70,9 @@ module Umlaut::Helper
   end
 
   def render_umlaut_permalink_toggle    
-
-    link_to({:action => "get_permalink", :"umlaut.request_id" => @user_request.id}, 
+    link_to({:controller => "resolve", 
+             :action => "get_permalink", 
+             :"umlaut.request_id" => @user_request.id}, 
              :class => "umlaut-load-permalink btn btn-mini", 
              :data => {"umlaut-toggle-permalink"=>"true"}) do
         content_tag("i") + " #{t('umlaut.permalink.name')}"

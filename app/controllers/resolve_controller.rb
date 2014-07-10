@@ -49,28 +49,7 @@ class ResolveController < UmlautController
     end    
   end
 
-  # inputs an OpenURL request into the system and stores it, but does
-  # NOT actually dispatch services to provide a response. Will usually
-  # be called by software, not a human browser. Sometimes
-  # it's useful to do this as a first step before redirecting the user
-  # to the actual resolve action for the supplied request--for instance,
-  # when the OpenURL metadata comes in a POST and can't be redirected.
-  def register_request
-    # init before filter already took care of setting up the request.
-    @user_request.save!
-
-    # Return data in headers allowing client to redirect user
-    # to view actual response.
-    headers["x-umlaut-request_id"] = @user_request.id
-    headers["x-umlaut-resolve_url"] = url_for( :controller => 'resolve', 'umlaut.request_id'.to_sym => @user_request.id )
-    headers["x-umlaut-permalink_url"] = current_permalink_url()
-
-    # Return empty body. Once we have the xml response done,
-    # this really ought to return an xml response, but with
-    # no service responses yet available.
-    render(:nothing => true)
-  end
-
+  
   # Useful for developers, generate a coins. Start from
   # search/journals?umlaut.display_coins=true
   # or search/books?umlaut.display_coins=true
@@ -129,11 +108,10 @@ class ResolveController < UmlautController
     api_render()
   end
 
-  def rescue_action_in_public(exception)
-    render(:template => "error/resolve_error", :status => 500 )
-  end
-
   protected
+
+
+
 
   def post_to_get
     if request.method == "POST"

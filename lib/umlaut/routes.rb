@@ -44,7 +44,7 @@ module Umlaut
       
       def permalinks
         add_routes do |options|
-          match 'go/:id' => 'store#index'
+          get 'go/:id' => 'store#index'
         end
       end
   
@@ -53,17 +53,17 @@ module Umlaut
       def a_z
         add_routes do |options|
           # Special one for alpha list
-          match 'journal_list(/:id(/:page))' => 'search#journal_list', :defaults => { :page => '1', :id => 'A' }
+          get 'journal_list(/:id(/:page))' => 'search#journal_list', :defaults => { :page => '1', :id => 'A' }
           
           
           # Catch redirected from SFX A-Z and citation linker urls
           # v2 A-Z links redirected to umlaut, point to journal_list
           # code in journal_list filter picks out SFX URL vars for
           # letter. 
-          match '/resolve/azlist/default' => 'search#journal_list', :page => 1, :id => 'A'
+          get '/resolve/azlist/default' => 'search#journal_list', :page => 1, :id => 'A'
           
           # SFX v3 A-Z list url format
-          match 'resolve/az' => 'search#journal_list', :page => 1, :id => 'A'          
+          get 'resolve/az' => 'search#journal_list', :page => 1, :id => 'A'          
         end
       end
       
@@ -73,63 +73,59 @@ module Umlaut
         
       def resolve
         add_routes do |options|
+          # Prevent resolve/index/:id, should always be resolve/index?id=foo, 
+          # to keep OpenURLs good, and avoid errors with DOI's with slashes in em etc. 
+          get 'resolve(.:format)' => "resolve#index"
+
           # ResolveController still uses rails 2.0 style 'wildcard' routes, 
           # TODO tighten this up to only match what oughta be matched.           
-          # Note: This route will make all actions in this controller accessible via GET requests.
-          # We do make sure to prevent resolve/index/:id, should always be resolve/index?id=foo, 
-          # to keep OpenURLs good, and avoid errors with DOI's with slashes in em etc. 
-          match 'resolve(.:format)' => "resolve#index"
-          match 'resolve(/:action(/:id(.:format)))' => "resolve"
+          # Note: This route will make all actions in this controller accessible via GET requests.          
+          get 'resolve(/:action(/:id(.:format)))' => "resolve"
+
+          get 'resolve/get_permalink'
+          match 'resolve/display_coins', :via => [:get, :post]
+          get 'resolve/background_status'
+          get 'resolve/partial_html_sections'
+          get 'resolve/api'
         end
       end
       
       def open_search
         add_routes do |options|
-          # OpenSearchController still uses rails 2.0 style 'wildcard' routes, 
-          # TODO tighten this up to only match what oughta be matched.           
-          # Note: This route will make all actions in this controller accessible via GET requests.
-          
-          match 'open_search(/:action(/:id(.:format)))' => "open_search"
+          get 'open_search(/index)' => "open_search#index"
         end
       end
       
       def link_router
         add_routes do |options|
-          # LinkRouterController still uses rails 2.0 style 'wildcard' routes, 
-          # TODO tighten this up to only match what oughta be matched.           
-          # Note: This route will make all actions in this controller accessible via GET requests.
-          
-          match 'link_router(/:action(/:id(.:format)))' => "link_router"
+          get 'link_router(/index)' => "link_router#index"
         end
       end
       
       def export_email
         add_routes do |options|
-          # ExportEmailController still uses rails 2.0 style 'wildcard' routes, 
-          # TODO tighten this up to only match what oughta be matched.           
-          # Note: This route will make all actions in this controller accessible via GET requests.
-          
-          match 'export_email(/:action(/:id(.:format)))' => "export_email"
+          get  'export_email/email'      => "export_email#email"
+          post 'export_email/send_email' => "export_email#send_email"
+
+          get  'export_email/txt'      => "export_email#email"
+          post 'export_email/send_txt'   => "export_email#send_txt"
         end
       end
       
       def resources
         add_routes do |options|
-          # ResourceController still uses rails 2.0 style 'wildcard' routes, 
-          # TODO tighten this up to only match what oughta be matched.           
-          # Note: This route will make all actions in this controller accessible via GET requests.
-          
-          match 'resource(/:action(/:id(.:format)))' => "resource"
+          get 'resource/proxy'
         end
       end
       
       def search
         add_routes do |options|
-          # SearchController still uses rails 2.0 style 'wildcard' routes, 
-          # TODO tighten this up to only match what oughta be matched.           
-          # Note: This route will make all actions in this controller accessible via GET requests.
-          
-          match 'search(/:action(/:id(.:format)))' => "search"
+          get 'search(/index)' => "search#index"
+          get 'search/journals'
+          get 'search/books'
+          get 'search/journal_search'
+          get 'search/journal_list'
+          get 'search/auto_complete_for_journal_title'
         end
       end
       
@@ -140,15 +136,15 @@ module Umlaut
           # Intentionally non-fingerprinted, most efficient thing
           # we can do in this case is let the web server take care
           # of Last-modified-by etc headers. 
-          match 'javascripts/jquery/umlaut/update_html.js' => redirect("/assets/umlaut/update_html.js", :status => 301)
+          get 'javascripts/jquery/umlaut/update_html.js' => redirect("/assets/umlaut/update_html.js", :status => 301)
           
           # The loader doens't work _exactly_ like the new umlaut-ui.js, but
           # it's close enough that it'll work better redirecting than just
           # 404'ing. 
-          match 'js_helper/loader' => redirect("/assets/umlaut_ui.js")
+          get 'js_helper/loader' => redirect("/assets/umlaut_ui.js")
           
           
-          match 'images/spinner.gif' => redirect("/assets/spinner.gif")
+          get 'images/spinner.gif' => redirect("/assets/spinner.gif")
         end
       end
 
@@ -162,7 +158,7 @@ module Umlaut
       def admin
         add_routes do |options|
           namespace "admin" do
-            match 'service_errors(/:service_id)' => "service_errors#index"
+            get 'service_errors(/:service_id)' => "service_errors#index"
           end
         end
       end

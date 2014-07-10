@@ -3,9 +3,7 @@ class ExportEmailController < UmlautController
   before_filter :load_objects
   layout :search_layout_except_xhr
 
-  def load_objects
-    @svc_response = ServiceResponse.find(params[:id])
-    @user_request = @svc_response.request if @svc_response
+  def email
   end
 
   def send_email
@@ -18,6 +16,9 @@ class ExportEmailController < UmlautController
       flash[:alert] = email_validation_error
       render :email and return
     end
+  end
+
+  def txt
   end
 
   def send_txt
@@ -35,7 +36,13 @@ class ExportEmailController < UmlautController
     end
   end
 
-  private
+  protected
+
+  def load_objects
+    @svc_response = ServiceResponse.find(params[:id])
+    @user_request = @svc_response.request if @svc_response
+  end
+
   def valid_txt_number?
     ((not @number.blank?) && @number.length == 10)
   end
