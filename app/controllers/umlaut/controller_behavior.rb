@@ -47,7 +47,7 @@ module Umlaut::ControllerBehavior
   # Returns the search layout name unless this is an XML HTTP Request.
   def search_layout_except_xhr
     @layout_name ||= (request.xhr? || params["X-Requested-With"] == "XmlHttpRequest") ?
-      nil : umlaut_config.search_layout
+      false : umlaut_config.search_layout
   end
   protected :search_layout_except_xhr
 
