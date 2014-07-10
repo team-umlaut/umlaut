@@ -42,10 +42,10 @@ class Referent < ActiveRecord::Base
       rft.referent_values.each do | val |
         rft.atitle = val.normalized_value if val.key_name == 'atitle' and val.metadata?
         rft.title = val.normalized_value if val.key_name.match(/^[bj]?title$/) and val.metadata? 
-        rft.issn = val.normalized_value if val.key_name == 'issn' and val.metadata?
-        rft.isbn = val.normalized_value if val.key_name == 'isbn' and val.metadata?      
+        rft.issn = val.normalized_value.gsub(/[^\d]/, '')[0,8] if val.key_name == 'issn' and val.metadata?
+        rft.isbn = val.normalized_value.gsub(/[^\d]/, '')[0,13] if val.key_name == 'isbn' and val.metadata?      
         rft.volume = val.normalized_value if val.key_name == 'volume' and val.metadata?
-        rft.year = val.normalized_value if val.key_name == 'date' and val.metadata?
+        rft.year = val.normalized_value.gsub(/[^\d]/, '')[0,4] if val.key_name == 'date' and val.metadata?
       end
       rft.save!
 
