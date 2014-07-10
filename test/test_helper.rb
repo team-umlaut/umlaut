@@ -1,10 +1,11 @@
+ENV["RAILS_ENV"] ||= "test"
+require File.expand_path('../dummy/config/environment', __FILE__)
+require 'rails/test_help'
+
 require 'coveralls'
 Coveralls.wear!
-# Configure Rails Environment
-ENV["RAILS_ENV"] = "test"
 
-require File.expand_path("../dummy/config/environment.rb",  __FILE__)
-require "rails/test_help"
+
 ActiveSupport::TestCase.fixture_path = File.expand_path("../fixtures", __FILE__) 
 
 Rails.backtrace_cleaner.remove_silencers!
@@ -16,6 +17,8 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 ActiveSupport::Deprecation.debug = true
 
 class ActiveSupport::TestCase
+  ActiveRecord::Migration.check_pending!
+  
   # Load SFX 4 fixtures only if we are explicitly creating a mock_instance
   # which should really only be the case for travis-ci.org
   def self.sfx4_fixtures(*fixture_names)
