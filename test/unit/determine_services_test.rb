@@ -47,11 +47,11 @@ class DetermineServicesTest <  ActiveSupport::TestCase
     service_list = @service_store.determine_services
 
     # default group services
-    assert_include service_list.keys, "default_a"
-    assert_include service_list.keys, "default_b"
+    assert service_list.keys.include? "default_a"
+    assert service_list.keys.include? "default_b"
 
     # but not the disabled one
-    assert_not_include service_list.keys, "default_disabled"
+    refute service_list.keys.include? "default_disabled"
 
     # No group1 or group2
     assert_nil service_list.keys.find {|key| key.start_with? "group1"}
@@ -62,11 +62,11 @@ class DetermineServicesTest <  ActiveSupport::TestCase
     service_list = @service_store.determine_services %w[group2 group1]
 
     ["default_a", "default_b", "group1_a", "group1_b", "group2_a", "group2_b"].each do |service_id|
-      assert_include service_list.keys, service_id
+      assert service_list.keys.include? service_id
     end
 
     ["default_disabled", "group1_disabled", "group2_disabled"].each do |service_id|
-      assert_not_include service_list.keys, service_id
+      refute service_list.keys.include? service_id
     end
   end
 
@@ -77,8 +77,8 @@ class DetermineServicesTest <  ActiveSupport::TestCase
     assert_nil service_list.keys.find {|id| id.start_with? "default_"}
 
     # does include group1 ones
-    assert_include service_list.keys, "group1_a"
-    assert_include service_list.keys, "group1_b"
+    assert service_list.keys.include? "group1_a"
+    assert service_list.keys.include? "group1_b"
   end
 
   # Should this raise a clear error instead? For now, we ignore.
@@ -92,8 +92,8 @@ class DetermineServicesTest <  ActiveSupport::TestCase
 
     service_list = store.determine_services
 
-    assert_include service_list.keys, "default_a"
-    assert_include service_list.keys, "other_default_a"
+    assert service_list.keys.include? "default_a"
+    assert service_list.keys.include? "other_default_a"
   end
 
   def test_multi_default_disable
@@ -101,8 +101,8 @@ class DetermineServicesTest <  ActiveSupport::TestCase
 
     service_list = store.determine_services %w{-other_default}
 
-    assert_include service_list.keys, "default_a"
-    assert_not_include service_list.keys, "other_default_a"
+    assert service_list.keys.include? "default_a"
+    refute service_list.keys.include? "other_default_a"
   end
 
 
