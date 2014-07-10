@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 require 'aws_product_sign'
-
+require 'test/unit'
 # Example used for testing is from
 # http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/rest-signature.html
 # Although that example itself has some bugs as of 12 may 09 doh.
