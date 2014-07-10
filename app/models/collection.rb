@@ -193,8 +193,7 @@ class Collection
               end
             end
 
-            umlaut_request.dispatched_services.delete(ds)
-            ds.destroy
+            umlaut_request.dispatched_services.destroy(ds)            
           end
       end
 
