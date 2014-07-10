@@ -5,19 +5,19 @@ source "http://rubygems.org"
 # development dependencies will be added by default to the :development group.
 gemspec
 
-# jquery is used by the dummy application
 group :development, :test do
+
   platforms :jruby do
-    gem 'activerecord-jdbc-adapter', "~> 1.2.9"
-    gem 'jdbc-mysql', "~> 5.1.24", :require => false
+    gem 'activerecord-jdbc-adapter', "~> 1.2", ">= 1.2.9"
+    gem 'jdbc-mysql', ">= 5.1.24", :require => false
     gem 'jruby-rack'
     gem 'therubyrhino'
     gem 'jruby-openssl'
   end
 
   platforms :ruby do
-    gem 'mysql2', "~> 0.3.11"
-    gem 'therubyracer', "~> 0.11.4"
+    gem 'mysql2', ">= 0.3.11"
+    gem 'therubyracer', ">= 0.11"
   end
 
   platforms :mri do
