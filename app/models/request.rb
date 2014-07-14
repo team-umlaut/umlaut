@@ -427,7 +427,7 @@ class Request < ActiveRecord::Base
   end
 
   def find_dispatch_object(service)
-    return self.dispatched_services.find(:first, :conditions=>{:service_id => service.service_id})
+    return self.dispatched_services.where(:service_id => service.service_id).first
   end
 
   # Input is a CGI::parse style of HTTP params (array values)
