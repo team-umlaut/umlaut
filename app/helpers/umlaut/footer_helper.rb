@@ -63,9 +63,9 @@ module Umlaut::FooterHelper
     options = {:text => "[D]", :title => "Toggle on-screen debug info"}.merge(options)
     
     text = options.delete(:text)
-    javascript = " jQuery('.debug_info').toggle();"  
+    options[:onclick] ||= " jQuery('.debug_info').toggle();"  
   
-    return link_to_function(text, javascript, options)  
+    return link_to(text, "#", options)  
   end
 
 end
