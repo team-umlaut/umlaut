@@ -115,7 +115,7 @@ class Referent < ActiveRecord::Base
   def ensure_value!(key_name, value)
      normalized_value = ReferentValue.normalize(value)
      
-     rv = ReferentValue.where(referent_id => self.id,
+     rv = ReferentValue.where(:referent_id => self.id,
                               :key_name => key_name,
                               :normalized_value => normalized_value ).first
       unless (rv)
