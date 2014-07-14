@@ -387,7 +387,7 @@ class Referent < ActiveRecord::Base
 
 
   def remove_value(key)
-    referent_values.find(:all, :conditions=> ['key_name =?', key]).each do |rv|
+    referent_values.where(:key_name => key).to_a.each do |rv|
       rv.delete
       referent_values.delete(rv)
     end    
