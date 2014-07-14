@@ -14,11 +14,21 @@ Rails.backtrace_cleaner.remove_silencers!
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 # Complete stack trace with deprecation warnings from rails
-ActiveSupport::Deprecation.debug = true
+#ActiveSupport::Deprecation.debug = true
+#ActiveSupport::Deprecation.silenced = true
+
+# Fix stack traces to include Umlaut source lines
+#Rails.backtrace_cleaner.remove_silencers!
+#app_dirs_pattern = /^\/?(app|config|lib|test)/
+#Rails.backtrace_cleaner.add_silencer do |line|
+#  require 'debugger'
+#  debugger if line =~ /umlaut/
+#  line =~ app_dirs_pattern 
+#end
 
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
-  
+
   # Load SFX 4 fixtures only if we are explicitly creating a mock_instance
   # which should really only be the case for travis-ci.org
   def self.sfx4_fixtures(*fixture_names)
@@ -99,6 +109,19 @@ def assert_length(size, list)
   assert_equal size, list.length, "Expected size of #{size} for #{list}"
 end
 
+# We want to put assert_present and assert_blank back, they were
+# useful, why did minitest deprecate it?
+module ActiveSupport::Testing::Assertions
+  def assert_present(object, message=nil)
+    message ||= "#{object.inspect} is blank"
+    assert object.present?, message
+  end
+
+  def assert_blank(object, message=nil)
+    message ||= "#{object.inspect} is not blank"
+    assert object.blank?, message
+  end
+end
 
 # Methods you can use to make a mocked up Rails Request and corersponding Umlaut Request
 # Pass in a URL, absolute or partial, eg "/resolve?isbn=X"
