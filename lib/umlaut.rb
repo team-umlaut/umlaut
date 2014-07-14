@@ -18,6 +18,12 @@ module Umlaut
     initializer "#{engine_name}.asset_pipeline" do |app|
       app.config.assets.precompile << 'umlaut/update_html.js'
       app.config.assets.precompile << "umlaut_ui.js"
-    end    
+    end
+    
+    # Patch with fixed 'fair' version of ConnectionPool, see 
+    # active_record_patch/connection_pool.rb
+    #initializer("#{engine_name}.patch_connection_pool", :before => "active_record.initialize_database") do |app|
+      load File.join(self.root, "active_record_patch", "connection_pool.rb")
+    #end
   end
 end
