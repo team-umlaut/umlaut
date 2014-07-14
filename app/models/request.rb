@@ -14,11 +14,11 @@ class Request < ActiveRecord::Base
   # added to the db comes first. Less confusing to have a consistent order.
   # Also lets installation be sure services run first will have their
   # responses show up first
-  has_many :service_responses, :order => 'id ASC' 
+  has_many :service_responses, lambda { order('id ASC') }
 
   has_many :clickthroughs
 
-  belongs_to :referent, :include => :referent_values
+  belongs_to :referent, lambda { includes(:referent_values) }
   # holds a hash representing submitted http params
   serialize :http_env
 

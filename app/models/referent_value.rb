@@ -1,5 +1,5 @@
 class ReferentValue < ActiveRecord::Base
-  belongs_to :referent, :include => :referent_values
+  belongs_to :referent, lambda { includes :referent_values }
 
   # Class method to normalize a string for normalized_value attribute. 
   # Right now normalization is just downcasing. Only
