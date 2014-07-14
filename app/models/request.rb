@@ -262,9 +262,9 @@ class Request < ActiveRecord::Base
 
   # Methods to look at status of dispatched services
   def failed_service_dispatches
-    return self.dispatched_services.find(:all, 
-      :conditions => ['status IN (?, ?)', 
-      DispatchedService::FailedTemporary, DispatchedService::FailedFatal])
+    return self.dispatched_services.where(
+      :status => [DispatchedService::FailedTemporary, DispatchedService::FailedFatal]
+    ).to_a
   end
 
   # Returns array of Services in progress or queued. Intentionally
@@ -342,16 +342,11 @@ class Request < ActiveRecord::Base
 
     if ( options[:refresh])
       ActiveRecord::Base.connection_pool.with_connection do
-        return self.service_responses.find(:all,
-                                :conditions =>
-                                  ["service_type_value_name = ?",
-                                  svc_type_obj.name ]   
-                                )
+        return self.service_responses.where(["service_type_value_name = ?", svc_type_obj.name ]).to_a
       end
     else
       # find on an assoc will go to db, unless we convert it to a plain
-      # old array first.
-      
+      # old array first.      
       return self.service_responses.to_a.find_all { |response|
         response.service_type_value == svc_type_obj }      
     end
@@ -393,7 +388,7 @@ class Request < ActiveRecord::Base
       
     rft = nil
     if ( params['umlaut.referent_id'])
-       rft = Referent.find(:first, :conditions => {:id => params['umlaut.referent_id']})
+       rft = Referent.find(:id => params['umlaut.referent_id']).first
     end
 
    
