@@ -107,7 +107,7 @@ module Umlaut
           get  'export_email/email'      => "export_email#email"
           post 'export_email/send_email' => "export_email#send_email"
 
-          get  'export_email/txt'      => "export_email#email"
+          get  'export_email/txt'      => "export_email#txt"
           post 'export_email/send_txt'   => "export_email#send_txt"
         end
       end
