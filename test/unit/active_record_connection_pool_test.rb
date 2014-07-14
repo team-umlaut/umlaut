@@ -20,17 +20,17 @@ class ActiveRecordConnectionPoolTest < Test::Unit::TestCase
 
             reserved_thread_ids = ActiveRecord::Base.connection_pool.instance_variable_get(:@reserved_connections)
 
-            assert reserved_thread_ids.has_key?( Thread.current.object_id ), "thread should be in reserved connections"
+            assert reserved_thread_ids.keys.include?( Thread.current.object_id ), "thread should be in reserved connections"
           end
           reserved_thread_ids = ActiveRecord::Base.connection_pool.instance_variable_get(:@reserved_connections)
-          assert !reserved_thread_ids.has_key?( Thread.current.object_id ), "thread should not be in reserved connections"
+          assert !reserved_thread_ids.keys.include?( Thread.current.object_id ), "thread should not be in reserved connections"
         end
         aThread.join
 
         ActiveRecord::Base.connection_pool.checkin main_thread_conn
 
         reserved_thread_ids = ActiveRecord::Base.connection_pool.instance_variable_get(:@reserved_connections)
-        assert !reserved_thread_ids.has_key?( aThread.object_id ), "thread should not be in reserved connections"
+        assert !reserved_thread_ids.keys.include?( aThread.object_id ), "thread should not be in reserved connections"
       end
   
 end
