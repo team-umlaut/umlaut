@@ -75,7 +75,9 @@ class ServiceWave
             end
             
            
-          rescue Exception => e
+          rescue StandardError => e
+            raise e if e.kind_of? VCR::Errors::UnhandledHTTPRequestError
+
             # We may not be able to access ActiveRecord because it may
             # have been an AR connection error, perhaps out of connections
             # in the pool. So log and record in non-AR ways. 
