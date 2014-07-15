@@ -24,6 +24,7 @@ default:
         type: Sfx
         display_name: Find It       
         base_url: http://sfx.library.edu/local
+        disabled: true
         priority: 3      
         roll_up_prefixes:
           - 'EBSCOHOST_'
