@@ -65,7 +65,8 @@ class Collection
 
     dispatch_foreground!(queued_service_ids)
 
-    dispatch_background!(queued_service_ids)
+    # return main thread for background services.
+    return dispatch_background!(queued_service_ids)
   end
 
   # Call prepare_for_dispatch! first, the return value from that call
@@ -134,7 +135,7 @@ class Collection
         # and logged to db as well as logfile if possible, only bugs in ServiceWave
         # itself should wind up caught here.
         Thread.current[:exception] = e
-        logger.error("Background Service execution exception: #{e}\n\n   " + clean_backtrace(e).join("\n"))
+        logger.error("Background Service execution exception: #{e}\n\n   " + Rails.backtrace_cleaner.clean(e.backtrace).join("\n"))
       end
     end
   end
@@ -155,6 +156,7 @@ class Collection
     # Go through currently dispatched services, looking for timed out
     # services -- services still in progress that have taken too long,
     # as well as service responses that are too old to be used.
+
     queued_service_ids = []
     DispatchedService.transaction do
       umlaut_request.dispatched_services.each do | ds |
