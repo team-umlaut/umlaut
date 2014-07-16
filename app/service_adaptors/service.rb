@@ -229,12 +229,13 @@ class Service
         end
       else
         # Check service responses
-        preemption = 
-          uml_request.service_responses.to_a.find do |response|
-          ( other_type == "*" || other_type == "+" ||
-            response.service_type_value.name == other_type)  &&
-          ( service == "*" ||
-            response.service_id == service)         
+        preemption = Request.connection_pool.with_connection do 
+            uml_request.service_responses.to_a.find do |response|
+            ( other_type == "*" || other_type == "+" ||
+              response.service_type_value.name == other_type)  &&
+            ( service == "*" ||
+              response.service_id == service)         
+          end
         end
       end
       break if preemption
