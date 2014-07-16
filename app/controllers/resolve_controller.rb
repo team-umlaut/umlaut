@@ -20,7 +20,9 @@ class ResolveController < UmlautController
   layout :resolve_layout, :except => [:partial_html_sections]
 
   def index
-    self.service_dispatch()
+    # saving the bg Thread object mostly so testing environment
+    # can wait on it. 
+    @bg_thread = self.service_dispatch()
     # check for menu skipping configuration. link is a ServiceResponse
     link = should_skip_menu
     if ( ! link.nil? )
@@ -108,8 +110,15 @@ class ResolveController < UmlautController
     api_render()
   end
 
-  protected
+  # Not an action method. Used only in test environment, get the Thread object executing
+  # background services, so you can #join on it to wait for bg
+  # services to complete. 
+  def bg_thread
+    @bg_thread
+  end
 
+
+  protected
 
 
 
