@@ -4,6 +4,21 @@ require 'test_helper'
 require 'uri'
 require 'rack/utils'
 
+#
+# Note on testing the resolve controller: Making a request to ResolveController#index will
+# fire off a background thread (which fires off more bg threads) to dispatch background services. 
+#
+# If you don't wait on these, they will be going on in the background of possible subsequent
+# tests, which is messy. And more painfully, they'll wind up making http requests OUTSIDE
+# of the VCR block, since the VCR block ends with the threads still going on their own. 
+#
+# So it's important to wait on them before ending the VCR block or otherwise going on. 
+# Immediately after doing an HTTP interaction, you can get the bg thread by:
+#
+#     bg_thread = @controller.bg_thread
+#
+# (Do this before making another HTTP interaction which will reset @controller). 
+# Then you can wait on it by `bg_thread.join`. 
 class ResolveControllerTest < ActionController::TestCase
   extend TestWithCassette
   fixtures :requests, :referents, :referent_values, :dispatched_services, :service_responses
@@ -15,6 +30,10 @@ class ResolveControllerTest < ActionController::TestCase
   test_with_cassette("nytimes by issn", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
     umlaut_request = requests(:nytimes)
     get :index, "umlaut.request_id" => umlaut_request.id
+
+    # Wait on all bg services
+    @controller.bg_thread.join
+    
     assert_response :success
     assert_select "title", "Find It | The New York times"
     assert_select "h1", "Find It"
@@ -128,6 +147,7 @@ class ResolveControllerTest < ActionController::TestCase
   test_with_cassette("fulltext with edition warning", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
     umlaut_request = requests(:momo)
     get(:index, {'umlaut.request_id' => umlaut_request.id})
+
     assert_response :success
     assert_select 'div#fulltext ul.response_list li.response_item' do |elements|
       assert_equal(1, elements.size)
@@ -137,6 +157,9 @@ class ResolveControllerTest < ActionController::TestCase
           :text => "Edition information Momo, ovvero l&#39;arcana storia dei ladri di tempo e della bambina che restituÃ¬ agli uomini il tempo trafugato"}
       end
     end
+
+    # Wait on all bg services
+    @controller.bg_thread.join
   end
 
   test_with_cassette("no holdings", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
@@ -152,6 +175,9 @@ class ResolveControllerTest < ActionController::TestCase
     end
     # Assert no holdings
     assert_select 'div#holding div.umlaut-holdings', :count => 0
+
+    # Wait on all bg services
+    @controller.bg_thread.join
   end
 
   test_with_cassette("manually entered", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
@@ -165,5 +191,8 @@ class ResolveControllerTest < ActionController::TestCase
         assert_select error_div, 'i.umlaut_icons-famfamfam-error', 1
       end
     end
+
+    # Wait on all bg services
+    @controller.bg_thread.join
   end
 end

@@ -60,6 +60,8 @@ class Collection
   #
   # Sets all services in collection to have a 'queued' status if appropriate.
   # Then actually executes the services that are dispatchable (queued).
+  #
+  # Returns the Thread object used for dispatching background services
   def dispatch_services!
     queued_service_ids = prepare_for_dispatch!
 
@@ -97,6 +99,8 @@ class Collection
   # marked queued in the DispatchedService table.
   #
   # Will run such services in background priority waves.
+  #
+  # Returns the Thread object used for dispatching background services. 
   def dispatch_background!(queued_service_ids)
     # Now we do some crazy magic, start a Thread to run our background
     # services. We are NOT going to wait for this thread to join,
