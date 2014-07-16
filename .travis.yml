@@ -5,6 +5,10 @@ rvm:
   - jruby-19mode
   # - rbx-19mode
   - 2.0.0
+matrix:
+  include:
+    - rvm: jruby
+      env: JRUBY_OPTS="--2.0"
 before_script:
   - mysql -e 'create database umlaut3_test;'
   - mysql -e 'create database sfxlcl41_test;'
