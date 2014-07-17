@@ -1,0 +1,274 @@
+---
+http_interactions:
+- request:
+    method: head
+    uri: http://www.extranet.elsevier.com/inca_covers_store/issn/22138587.gif
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Microsoft-IIS/5.0
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Thu, 17 Jul 2014 14:52:32 GMT
+      Content-Type:
+      - image/gif
+      Accept-Ranges:
+      - bytes
+      Last-Modified:
+      - Thu, 17 Jan 2013 22:11:40 GMT
+      Etag:
+      - ! '"8018fe9ffff4cd1:e38"'
+      Content-Length:
+      - '9029'
+    body:
+      encoding: US-ASCII
+      string: ''
+    http_version: 
+  recorded_at: Thu, 17 Jul 2014 14:52:32 GMT
+- request:
+    method: get
+    uri: http://www.scopus.com/scsearchapi/search.url?callback=findit_callback&devId=YOUR_SCOPUS_API_KEY&fields=title,doctype,citedbycount,inwardurl,sourcetitle,issn,vol,issue,page,pubdate,eid,scp,doi,firstAuth,authlist,affiliations,abstract&search=DOI(%2210.1016/S2213-8587(13)70218-3%22)
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Date:
+      - Thu, 17 Jul 2014 14:52:32 GMT
+      Server:
+      - www.scopus.com  700
+      Location:
+      - http://searchapi.scopus.com/search.url?devId=YOUR_SCOPUS_API_KEY&search=DOI%28%2210.1016%2FS2213-8587%2813%2970218-3%22%29&callback=findit_callback&fields=title,doctype,citedbycount,inwardurl,sourcetitle,issn,vol,issue,page,pubdate,eid,scp,doi,firstAuth,authlist,affiliations,abstract
+      Cache-Control:
+      - max-age=1
+      Expires:
+      - Thu, 17 Jul 2014 14:52:33 GMT
+      Vary:
+      - Accept-Encoding, User-Agent
+      Content-Length:
+      - '504'
+      Content-Type:
+      - text/html; charset=iso-8859-1
+      X-Re-Ref:
+      - 1 -899026141
+      P3p:
+      - CP="IDC DSP LAW ADM DEV TAI PSA PSD IVA IVD CON HIS TEL OUR DEL SAM OTR IND
+        OTC"
+    body:
+      encoding: US-ASCII
+      string: ! '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>301 Moved Permanently</title>
+
+        </head><body>
+
+        <h1>Moved Permanently</h1>
+
+        <p>The document has moved <a href="http://searchapi.scopus.com/search.url?devId=YOUR_SCOPUS_API_KEY&amp;search=DOI%28%2210.1016%2FS2213-8587%2813%2970218-3%22%29&amp;callback=findit_callback&amp;fields=title,doctype,citedbycount,inwardurl,sourcetitle,issn,vol,issue,page,pubdate,eid,scp,doi,firstAuth,authlist,affiliations,abstract">here</a>.</p>
+
+        </body></html>
+
+'
+    http_version: 
+  recorded_at: Thu, 17 Jul 2014 14:52:32 GMT
+- request:
+    method: get
+    uri: http://searchapi.scopus.com/search.url?callback=findit_callback&devId=YOUR_SCOPUS_API_KEY&fields=title,doctype,citedbycount,inwardurl,sourcetitle,issn,vol,issue,page,pubdate,eid,scp,doi,firstAuth,authlist,affiliations,abstract&search=DOI(%2210.1016/S2213-8587(13)70218-3%22)
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 17 Jul 2014 14:52:33 GMT
+      Server:
+      - searchapi.scopus.com  9999
+      Content-Length:
+      - '130'
+      Content-Type:
+      - application/json;charset=UTF-8
+      X-Re-Ref:
+      - 1 -898946800
+      P3p:
+      - CP="IDC DSP LAW ADM DEV TAI PSA PSD IVA IVD CON HIS TEL OUR DEL SAM OTR IND
+        OTC"
+    body:
+      encoding: US-ASCII
+      string: findit_callback({"ERROR":{"Errors":["You have entered an invalid developer
+        ID.\n Please check the developer ID and try again."]}})
+    http_version: 
+  recorded_at: Thu, 17 Jul 2014 14:52:33 GMT
+- request:
+    method: head
+    uri: http://images.serialssolutions.com/ulrichs/22138587.gif
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Length:
+      - '9420'
+      Content-Type:
+      - image/gif
+      Last-Modified:
+      - Fri, 06 Dec 2013 16:32:51 GMT
+      Accept-Ranges:
+      - bytes
+      Etag:
+      - ! '"4c5aecea0f2ce1:1db9"'
+      Server:
+      - Microsoft-IIS/6.0
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Thu, 17 Jul 2014 14:52:33 GMT
+    body:
+      encoding: US-ASCII
+      string: ''
+    http_version: 
+  recorded_at: Thu, 17 Jul 2014 14:52:33 GMT
+- request:
+    method: post
+    uri: https://ws.isiknowledge.com/cps/xrpc
+    body:
+      encoding: UTF-8
+      string: ! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<request xmlns=\"http://www.isinet.com/xrpc41\"
+        src=\"app.id=Umlaut\">\n  <fn name=\"LinksAMR.retrieve\">\n    <list>\n      <map/>\n
+        \     <map>\n        <list name=\"WOS\">\n          <val>timesCited</val>\n
+        \         <val>ut</val>\n          <val>doi</val>\n          <val>sourceURL</val>\n
+        \         <val>citingArticlesURL</val>\n          <val>relatedRecordsURL</val>\n
+        \       </list>\n      </map>\n      <map>\n        <map name=\"cite_id\">\n
+        \         <val name=\"doi\">10.1016/S2213-8587(13)70218-3</val>\n          <val
+        name=\"stitle\">The Lancet Diabetes &amp; Endocrinology</val>\n          <val
+        name=\"issn\">2213-8587</val>\n          <val name=\"atitle\">Mechanisms of
+        changes in glucose metabolism and bodyweight after bariatric surgery</val>\n
+        \         <val name=\"year\">2014</val>\n          <val name=\"vol\">2</val>\n
+        \         <val name=\"issue\">2</val>\n          <val name=\"spage \">152</val>\n
+        \       </map>\n      </map>\n    </list>\n  </fn>\n</request>\n"
+    headers:
+      Content-Type:
+      - application/xml
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 17 Jul 2014 14:52:33 GMT
+      Server:
+      - Apache/2.0.63 (Unix) mod_ssl/2.0.63 OpenSSL/0.9.8h ESTI-Router/4.8.0.4
+      Content-Length:
+      - '273'
+      Content-Type:
+      - text/xml;charset=UTF-8
+    body:
+      encoding: US-ASCII
+      string: ! '<?xml version="1.0" encoding="UTF-8" ?>
+
+        <response xmlns="http://www.isinet.com/xrpc41" src="app.id=Umlaut">
+
+        <fn name="LinksAMR.retrieve" rc="Server.authentication">
+
+        <error code="Server.authentication">No Links AMR entitlement found for IP
+        Address</error>
+
+        </fn>
+
+        </response>
+
+'
+    http_version: 
+  recorded_at: Thu, 17 Jul 2014 14:52:33 GMT
+- request:
+    method: post
+    uri: https://ws.isiknowledge.com/cps/xrpc
+    body:
+      encoding: UTF-8
+      string: ! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<request xmlns=\"http://www.isinet.com/xrpc41\"
+        src=\"app.id=Umlaut\">\n  <fn name=\"LinksAMR.retrieve\">\n    <list>\n      <map/>\n
+        \     <map>\n        <list name=\"JCR\">\n          <val>impactGraphURL</val>\n
+        \       </list>\n      </map>\n      <map>\n        <map name=\"cite_id\">\n
+        \         <val name=\"issn\">2213-8587</val>\n          <val name=\"stitle\">The
+        Lancet Diabetes &amp; Endocrinology</val>\n        </map>\n      </map>\n
+        \   </list>\n  </fn>\n</request>\n"
+    headers:
+      Content-Type:
+      - application/xml
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 17 Jul 2014 14:52:33 GMT
+      Server:
+      - Apache/2.0.63 (Unix) mod_ssl/2.0.63 OpenSSL/0.9.8h ESTI-Router/4.8.0.4
+      Content-Length:
+      - '273'
+      Content-Type:
+      - text/xml;charset=UTF-8
+    body:
+      encoding: US-ASCII
+      string: ! '<?xml version="1.0" encoding="UTF-8" ?>
+
+        <response xmlns="http://www.isinet.com/xrpc41" src="app.id=Umlaut">
+
+        <fn name="LinksAMR.retrieve" rc="Server.authentication">
+
+        <error code="Server.authentication">No Links AMR entitlement found for IP
+        Address</error>
+
+        </fn>
+
+        </response>
+
+'
+    http_version: 
+  recorded_at: Thu, 17 Jul 2014 14:52:33 GMT
+recorded_with: VCR 2.5.0

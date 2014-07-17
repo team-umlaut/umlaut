@@ -1,6 +1,12 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
 class CollectionTest < ActiveSupport::TestCase
+    self.use_transactional_fixtures = false
+    extend TestWithCassette
+
+
+
+
     fixtures :requests, :referents, :referent_values, :sfx_urls
      
     def setup
@@ -34,6 +40,7 @@ class CollectionTest < ActiveSupport::TestCase
     end
 
     def test_service_level
+
       collection = Collection.new(@request , @services)
 
       services = collection.instantiate_services!(:level => 'c')
@@ -69,7 +76,36 @@ class CollectionTest < ActiveSupport::TestCase
 
       null_services = collection.instantiate_services!(:task => :no_such_task, :level => 1)
 
-      assert_equal [], null_services
-      
+      assert_equal [], null_services      
     end
+
+    # Allowing new episodes because some of our outgoing requests in current
+    # demo config are to non-existing hostnames, which VCR can't properly record. 
+    test_with_cassette("live dispatch", :collection, :record => :new_episodes, :match_requests_on => [:method, :uri_without_ctx_tim]) do        
+      request = fake_umlaut_request('/resolve?sid=google&auinit=S&aulast=Madsbad&atitle=Mechanisms+of+changes+in+glucose+metabolism+and+bodyweight+after+bariatric+surgery&id=doi:10.1016/S2213-8587(13)70218-3&title=The+Lancet+Diabetes+%26+Endocrinology&volume=2&issue=2&date=2014&spage=152&issn=2213-8587')
+
+      collection = Collection.new(request , @services)
+      # We don't care about exceptions for now
+      collection.forward_background_exceptions = false
+
+      bg_thread = collection.dispatch_services!
+
+      # some are still in background
+      bg_thread.join
+
+      # Check to make sure all services were recorded as
+      # dispatched, and with a completion status. We don't care
+      # if they were succesful or not, we're not testing the actual
+      # services, and some may have failed lacking api keys etc. We just
+      # care they are registered as finished. 
+
+      @services.each do |service|
+        dispatch = request.dispatched_services.to_a.find {|ds| ds.service_id = service[0]}
+
+        assert_present dispatch, "Dispatch not recorded for #{service[0]}"
+
+        assert dispatch.completed?, "Dispatch status '#{dispatch.status}' is not a finished status for #{service[0]}"
+      end
+    end   
+
 end
