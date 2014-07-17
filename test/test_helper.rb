@@ -14,7 +14,7 @@ Rails.backtrace_cleaner.remove_silencers!
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 # Complete stack trace with deprecation warnings from rails
-#ActiveSupport::Deprecation.debug = true
+ActiveSupport::Deprecation.debug = true
 #ActiveSupport::Deprecation.silenced = true
 
 # Fix stack traces to include Umlaut source lines
@@ -25,6 +25,9 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 #  debugger if line =~ /umlaut/
 #  line =~ app_dirs_pattern 
 #end
+
+require 'collection'
+Collection.forward_background_exceptions = true
 
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
