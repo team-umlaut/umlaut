@@ -103,7 +103,6 @@ class ServiceWave
             # log for mysterious reasons. 
             log_msg = TermColor.color("Umlaut: Threaded service raised exception.", :red, true) + " Service: #{service.service_id}, #{e.class} #{e.message}. Backtrace:\n  #{e.backtrace.join("\n  ")}"
             Rails.logger.error(log_msg)
-            $stderr.puts log_msg if Rails.env.test?
             
             # And stick it in a thread variable too
             Thread.current[:exception] = e    

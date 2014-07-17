@@ -12,13 +12,15 @@ require 'cron_tab' # for understanding CronTab format for expiring responses.
 # foreground and background, making sure no service is run twice if it's
 # already in progress, timing out expired services, etc.
 class Collection
-
   attr_accessor :umlaut_request
   attr_accessor :logger
   # configs
   attr_accessor :response_expire_interval, :response_expire_crontab_format, :background_service_timeout, :requeue_failedtemporary_services
 
-
+  # generally only set to true in testing, can be set for the whole class
+  # or for particular Collection instances. 
+  class_attribute :forward_background_exceptions
+  self.forward_background_exceptions = true
   
   # a_umlaut_request is an UmlautRequest, representing a request for services for a context
   # object.
@@ -140,6 +142,13 @@ class Collection
         # itself should wind up caught here.
         Thread.current[:exception] = e
         logger.error("Background Service execution exception: #{e}\n\n   " + Rails.backtrace_cleaner.clean(e.backtrace).join("\n"))
+
+        # One exception is in test environment, when we may be intentionally
+        # trying to get exceptions to propagate up from ServiceWave to here,
+        # and then onward, in order to be caught by tests. 
+        if self.forward_background_exceptions
+          raise e
+        end
       end
     end
   end
