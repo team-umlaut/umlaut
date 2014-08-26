@@ -22,6 +22,7 @@ require 'openurl'
 #
 #     illiad:
 #       type: Illiad
+#       base_url: http://ill.university.edu/site/illiad.dll/OpenURL
 #       priority: 4
 #       preempted_by:
 #         existing_type: fulltext
@@ -31,6 +32,7 @@ require 'openurl'
 #
 #     illiad:
 #       type: Illiad
+#       base_url: http://ill.university.edu/site/illiad.dll/OpenURL
 #       priority: 4
 #       preempted_by:
 #         existing_service: SFX
