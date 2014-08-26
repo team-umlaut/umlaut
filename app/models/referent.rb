@@ -17,9 +17,9 @@ class Referent < ActiveRecord::Base
   has_many :referent_values
   has_many :permalinks
 
-  # Does call save! on referent created.
-  # :permalink => false if you already have a permalink and don't
-  # need to create one. Caller should attach that permalink to this referent!
+  # Pass in :permalink => :force to force creation of a permalink, otherwise
+  # no permalink is created by this method, one can be lazily created when
+  # needed. 
   def self.create_by_context_object(co, options = {})    
     self.clean_up_context_object(co)    
     
