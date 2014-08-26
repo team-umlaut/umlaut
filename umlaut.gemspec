@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
     f =~ %r{^(\./)?test/dummy/config/database[^ ]*\.yml}
   end
 
-  s.add_dependency "rails", ">= 3.2.12", "< 4.1" 
+  s.add_dependency "rails", ">= 3.2.12", "< 4.1"
   s.add_dependency "jquery-rails"               # our built in JS uses jquery
 
   # nokogiri needs to be on or greater than version 1.5.3:
@@ -42,4 +42,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "vcr", "~> 2.5.0"
   s.add_development_dependency "webmock", "~> 1.11.0"
   s.add_development_dependency "sunspot_rails", "~> 2.0.0" # add sunspot support in development
+  # We don't specify a version right now for minitest, cause rails 4.0 and 4.1 need incompatible
+  # versions, argh. 
+  s.add_development_dependency "minitest"
 end

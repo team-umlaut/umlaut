@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ServiceResponseTest < Test::Unit::TestCase
+class ServiceResponseTest < ActiveSupport::TestCase
 
   def test_view_data
     sr = ServiceResponse.new
