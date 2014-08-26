@@ -231,6 +231,7 @@ class Request < ActiveRecord::Base
   #
   # Safe to call in thread, uses connection pool checkout. 
   def add_service_response(response_data)
+
     raise ArgumentError.new("missing required `:service` key") unless response_data[:service].kind_of?(Service)
     raise ArgumentError.new("missing required `:service_type_value` key") unless response_data[:service_type_value]
     
@@ -244,15 +245,16 @@ class Request < ActiveRecord::Base
   
       type_value =  response_data.delete(:service_type_value)
       type_value = ServiceTypeValue[type_value.to_s] unless type_value.kind_of?(ServiceTypeValue)      
-      svc_resp.service_type_value = type_value
-  
-      svc_resp.request = self
+      svc_resp.service_type_value = type_value  
       
       # response_data now includes actual key/values for the ServiceResponse
       # send em, take_key_values takes care of deciding which go directly
       # in columns, and which in serialized hash. 
       svc_resp.take_key_values( response_data )
             
+      # Not sure if the save! is really needed after we add it like this, but
+      # we're confused. 
+      self.service_responses << svc_resp
       svc_resp.save!    
     end
       
