@@ -1,13 +1,13 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 require 'aws_product_sign'
-require 'test/unit'
+
 # Example used for testing is from
 # http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/rest-signature.html
 # Although that example itself has some bugs as of 12 may 09 doh.
 # it's output isn't actually valid.
 #
-class AwsProductSignTest < Test::Unit::TestCase
+class AwsProductSignTest < ActiveSupport::TestCase
 
   def setup
     @example_params = {
@@ -61,7 +61,7 @@ class AwsProductSignTest < Test::Unit::TestCase
   def test_add_signature
     new_params = @test_obj.add_signature( @example_params )
 
-    assert_not_nil( new_params["Timestamp"], "Adds timestamp" )
+    refute_nil( new_params["Timestamp"], "Adds timestamp" )
     assert_equal( @access_key, new_params["AWSAccessKeyId"], "Adds access key")
     assert_equal("F3xmBlY91rML36hkQTZn/N2Bk3ABIVB8NI+e/JCYpDQ=" ,     
         new_params["Signature"],
@@ -75,7 +75,7 @@ class AwsProductSignTest < Test::Unit::TestCase
 
     @test_obj.add_signature!(params)
 
-    assert_not_nil( params["Signature"], "Mutates input")
+    refute_nil( params["Signature"], "Mutates input")
     
   end
 

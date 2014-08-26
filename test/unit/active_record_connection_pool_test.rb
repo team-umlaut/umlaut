@@ -1,8 +1,7 @@
-
 require 'test_helper'
-require 'test/unit'
+require 'minitest/unit'
 
-class ActiveRecordConnectionPoolTest < Test::Unit::TestCase
+class ActiveRecordConnectionPoolTest < ActiveSupport::TestCase
 
   # Test that the bug in AR ConnectionPool is fixed, either becuase of a local
   # patch (temporarily in config/initializers/patch/connection_pool.rb)

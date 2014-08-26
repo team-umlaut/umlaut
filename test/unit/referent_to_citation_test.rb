@@ -2,7 +2,7 @@ require 'test_helper'
 
 # Some basic tests for referent.to_citation, which returns a hash of various citation
 # information. 
-class ReferentToCitationTest < Test::Unit::TestCase
+class ReferentToCitationTest < ActiveSupport::TestCase
   # referent = make_test_referent("title=foo&au=bar&genre=book")
   def make_test_referent(openurl_kev)
     co = OpenURL::ContextObject.new_from_kev( openurl_kev )
