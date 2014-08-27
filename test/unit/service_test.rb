@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ServiceTest < ActiveSupport::TestCase
-  fixtures :requests
-
   # A service that does nothing!
   class DummyService < Service
     def handle(request)
@@ -25,7 +23,7 @@ class ServiceTest < ActiveSupport::TestCase
   def setup
     I18n.reload! 
     @dummy_config =  {"priority" => 1, "service_id" => "MyDummyService", "type" => "DummyService"}
-    @umlaut_request = requests(:simple)
+    @umlaut_request = fake_umlaut_request("/resolve?genre=journal&issn=0098-7484")
   end
 
   test "preempted by wildcard other type" do

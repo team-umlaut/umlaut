@@ -1,7 +1,5 @@
 require 'test_helper'
-class WorldCatTest < ActiveSupport::TestCase  
-  fixtures :requests, :referents
-  
+class WorldCatTest < ActiveSupport::TestCase    
   def setup    
   end
 end
