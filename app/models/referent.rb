@@ -225,12 +225,7 @@ class Referent < ActiveRecord::Base
   end
   
   def format
-    self.referent_values
-    self.referent_values.each { | val |    
-      if val.key_name == 'format'
-        return val.value
-      end
-    }    
+    self.referent_values.to_a.find { | val | val.key_name == 'format'}.value
   end
 
   # Some shortcuts for pulling out/manipulating specific especially
