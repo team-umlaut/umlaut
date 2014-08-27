@@ -4,7 +4,6 @@
 require 'test_helper'
 class GoogleBookSearchTest < ActiveSupport::TestCase  
   extend TestWithCassette
-  fixtures :requests, :referents
   
   def setup    
     @gbs_default = ServiceStore.instantiate_service!("GoogleBookSearch", nil)
@@ -12,6 +11,7 @@ class GoogleBookSearchTest < ActiveSupport::TestCase
     @data_frankenstein = 
       {"totalItems"=>1, "kind"=>"books#volumes", "items"=>[{"accessInfo"=>{"embeddable"=>true, "webReaderLink"=>"http://books.google.com/books/reader?id=QKgVAAAAYAAJ&as_pt=BOOKS&printsec=frontcover&output=reader&source=gbs_api", "epub"=>{"isAvailable"=>true, "downloadLink"=>"http://books.google.com/books/download/Frankenstein.epub?id=QKgVAAAAYAAJ&output=epub&source=gbs_api"}, "viewability"=>"ALL_PAGES", "publicDomain"=>true, "country"=>"US", "pdf"=>{"isAvailable"=>true, "downloadLink"=>"http://books.google.com/books/download/Frankenstein.pdf?id=QKgVAAAAYAAJ&output=pdf&sig=ACfU3U3nhOFhUroWh_b-nMaAulaAV6kjlw&source=gbs_api"}, "textToSpeechPermission"=>"ALLOWED", "accessViewStatus"=>"FULL_PUBLIC_DOMAIN"}, "searchInfo"=>{"textSnippet"=>"FRANKENSTEIN or The Modern Prometheus CHAPTER I. I Am by birth a Genevese; and <br>  my family is one of the most distinguished of that republic. My ancestors had <br>  been for many years counselors and syndics; and my father had filled several <b>...</b>"}, "etag"=>"TUqYf+e+c9k", "kind"=>"books#volume", "volumeInfo"=>{"infoLink"=>"http://books.google.com/books?id=QKgVAAAAYAAJ&dq=OCLC2364071&as_pt=BOOKS&source=gbs_api", "contentVersion"=>"0.0.1.0.full.3", "categories"=>["Fiction"], "title"=>"Frankenstein", "printType"=>"BOOK", "ratingsCount"=>279, "subtitle"=>"or, the Modern Prometheus", "previewLink"=>"http://books.google.com/books?id=QKgVAAAAYAAJ&printsec=frontcover&dq=OCLC2364071&as_pt=BOOKS&cd=1&source=gbs_api", "imageLinks"=>{"smallThumbnail"=>"http://bks6.books.google.com/books?id=QKgVAAAAYAAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api", "thumbnail"=>"http://bks6.books.google.com/books?id=QKgVAAAAYAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"}, "pageCount"=>332, "language"=>"en", "canonicalVolumeLink"=>"http://books.google.com/books/about/Frankenstein.html?id=QKgVAAAAYAAJ", "averageRating"=>4.0, "authors"=>["Mary Wollstonecraft Shelley"], "industryIdentifiers"=>[{"type"=>"OTHER", "identifier"=>"PRNC:32101064790353"}], "publishedDate"=>"1922"}, "saleInfo"=>{"isEbook"=>true, "saleability"=>"FREE", "country"=>"US"}, "id"=>"QKgVAAAAYAAJ", "selfLink"=>"https://www.googleapis.com/books/v1/volumes/QKgVAAAAYAAJ"}]}      
     
+    @frankenstein_request = fake_umlaut_request("/resolve?isbn=9780393964585&oclcnum=33045872&aufirst=Mary&auinitm=Wollstonecraft&aulast=Shelley&btitle=Frankenstein+%3A+the+1818+text%2C+contexts%2C+nineteenth-century+responses%2C+modern+criticism&date=1997&edition=1st+ed.&genre=book&place=New+York&pub=W.W.+Norton")
   end
 
   def test_initialize_minimum
@@ -23,9 +23,8 @@ class GoogleBookSearchTest < ActiveSupport::TestCase
     assert_equal('standard', gbs.task)
   end
   
-  def test_get_bibkeys
-    f = referents(:frankenstein)
-    keys = @gbs_default.get_bibkeys(f)
+  def test_get_bibkeys    
+    keys = @gbs_default.get_bibkeys(@frankenstein_request.referent)
     expected = CGI.escape('isbn:9780393964585 OR "OCLC33045872"')
     assert_equal(expected, keys)
   end
@@ -37,17 +36,16 @@ class GoogleBookSearchTest < ActiveSupport::TestCase
   # UPDATE: Use VCR to provide a deterministic GBS search.
   # TODO: Check more of the response
   test_with_cassette("frankenstein by OCLC number", :google_book_search) do
-    hashified_response = @gbs_default.do_query('OCLC2364071', requests(:frankenstein))
+    hashified_response = @gbs_default.do_query('OCLC2364071', @frankenstein_request)
     assert_not_nil hashified_response
     assert_not_nil hashified_response["totalItems"]
     assert_operator hashified_response["totalItems"], :>, 0 
   end
 
   def test_create_fulltext_service_response
-    # frankenstein's got fulltext now. 
-    request = requests(:frankenstein)
+    # frankenstein's got fulltext now.     
     fulltext_shown = 
-      @gbs_default.create_fulltext_service_response(request, @data_frankenstein)
+      @gbs_default.create_fulltext_service_response(@frankenstein_request, @data_frankenstein)
     assert(fulltext_shown)
   end
 
