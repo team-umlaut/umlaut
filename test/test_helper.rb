@@ -59,7 +59,7 @@ class ActiveSupport::TestCase
           #Find class from table name
           klass = sfx4_module.const_get table.classify
           connection ||= klass.connection
-          class_names[klass.table_name.downcase.to_sym] = klass.name
+          class_names[klass.table_name.downcase.to_sym] = klass
         end
         # Table names are just the keys of the class names
         table_names = class_names.keys.collect{|t| t.to_s.upcase}
@@ -67,7 +67,7 @@ class ActiveSupport::TestCase
         ActiveRecord::FixtureSet.create_fixtures(path, table_names, class_names){connection}.first.fixtures
       end
     else
-      warn  "Skipping SFX4 fixtures since the SFX DB specified is not a mock instance."
+      warn  "\n!!!Skipping SFX4 fixtures since the SFX DB specified is not a mock instance.!!!\n"
     end
   end
   
