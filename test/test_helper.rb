@@ -1,5 +1,9 @@
 ENV["RAILS_ENV"] ||= "test"
+
 require File.expand_path('../dummy/config/environment', __FILE__)
+#require 'engine_cart'
+#EngineCart.load_application!
+
 require 'rails/test_help'
 require 'minitest/unit'
 
@@ -60,7 +64,7 @@ class ActiveSupport::TestCase
         # Table names are just the keys of the class names
         table_names = class_names.keys.collect{|t| t.to_s.upcase}
         # Create and Instantiate Fixtures
-        ActiveRecord::Fixtures.create_fixtures(path, table_names, class_names){connection}.first.fixtures
+        ActiveRecord::FixtureSet.create_fixtures(path, table_names, class_names){connection}.first.fixtures
       end
     else
       warn  "Skipping SFX4 fixtures since the SFX DB specified is not a mock instance."
