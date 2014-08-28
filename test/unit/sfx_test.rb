@@ -4,7 +4,6 @@
 require 'test_helper'
 class SfxTest < ActiveSupport::TestCase
   extend TestWithCassette
-  fixtures :requests, :referents, :dispatched_services, :service_responses
   
   def setup    
     @sfx_default = ServiceStore.instantiate_service!("SFX", nil)
@@ -19,7 +18,10 @@ class SfxTest < ActiveSupport::TestCase
   # Ignore ctx_time in the URL for VCR matching purposes
   # TODO: Check more of the response
   test_with_cassette("nytimes by issn", :sfx, :match_requests_on => [:method, :uri_without_ctx_tim]) do
-    nytimes_request = requests(:nytimes)
+    #nytimes_request = requests(:nytimes)
+
+    nytimes_request = fake_umlaut_request("/resolve?format=journal&genre=journal&jtitle=The+New+York+times&issn=0362-4331")
+
     # Clear request
     nytimes_request.service_responses.each do |service_response|
       service_response.destroy
