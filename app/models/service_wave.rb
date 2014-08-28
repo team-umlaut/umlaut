@@ -109,7 +109,7 @@ class ServiceWave
 
             # And try to re-raise if it's one we really don't want to swallow. 
             # Sorry, a mess. 
-            raise e if e.kind_of? VCR::Errors::UnhandledHTTPRequestError
+            raise e if defined?(VCR::Errors::UnhandledHTTPRequestError) && e.kind_of?(VCR::Errors::UnhandledHTTPRequestError)
           ensure
             Rails.logger.info(TermColor.color("Umlaut: Completed service #{local_service.service_id}", :yellow)+ ",  level #{@priority_level}, request #{local_request && local_request.id}: in #{Time.now - service_start}.") if @log_timing
           end
