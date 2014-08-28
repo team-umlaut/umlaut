@@ -170,7 +170,7 @@ class Request < ActiveRecord::Base
   # marked as Queued, or Failed---otherwise it should be already working,
   # or done. 
   def can_dispatch?(service)
-    ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.service_id})
+    ds= self.dispatched_services.where(:service_id => service.service_id).first
     
     return ds.nil? || (ds.status == DispatchedService::Queued) || (ds.status == DispatchedService::FailedTemporary)        
   end
@@ -390,7 +390,7 @@ class Request < ActiveRecord::Base
       
     rft = nil
     if ( params['umlaut.referent_id'])
-       rft = Referent.find(:id => params['umlaut.referent_id']).first
+       rft = Referent.where(:id => params['umlaut.referent_id']).first
     end
 
    

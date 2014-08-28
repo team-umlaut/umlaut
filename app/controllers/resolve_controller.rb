@@ -188,10 +188,7 @@ class ResolveController < UmlautController
       # Services to skip for?
       skip[:service_types].each do | service |
         service = ServiceTypeValue[service] unless service.kind_of?(ServiceTypeValue)
-        candidates =
-        @user_request.service_responses.find(:all,
-          :conditions => ["service_type_value_name = ?", service.name])
-        return_value = candidates.first
+        return_value = @user_request.service_responses.where(:service_type_value_name => service.name).first
       end
 
       # But wait, make sure it's included in :services if present.
