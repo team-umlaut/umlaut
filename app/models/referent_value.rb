@@ -6,9 +6,7 @@ class ReferentValue < ActiveRecord::Base
   # metadata values should be normalized (ie, not 'identifier' or 'format').
   # identifier and format shoudl be stored in normalized_value unchanged.
   def self.normalize(input)
-      # 'mb_chars' is neccesary for unicode.
-      # normalized_value column only holds 254 bytes.. 
-      return input.mb_chars.downcase.to_s[0..254]
+      return input.scrub.downcase.to_s[0..254]
   end
   
 end
