@@ -36,8 +36,9 @@ module ActiveRecord
           msg = "Implicit ActiveRecord checkout attempted when Thread :force_explicit_connections set!"
 
           # I want to make SURE I see this error in test output, even though
-          # in some cases my code is swallowing the exception. 
-          if Rails.env.test?
+          # in some cases my code is swallowing the exception. Unless silenced,
+          # probably only in the unit test of this function itself
+          if Rails.env.test? && (Thread.current[:ar_implicit_checkout_warning_silenced] != true)
             $stderr.puts msg
           end
 

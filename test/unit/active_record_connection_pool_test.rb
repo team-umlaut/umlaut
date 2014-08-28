@@ -37,8 +37,12 @@ class ActiveRecordConnectionPoolTest < ActiveSupport::TestCase
 
   # Our own monkey-patched behavior
   def test_forbid_implicit_checkout
-    assert_raises(ActiveRecord::ImplicitConnectionForbiddenError) do
+    assert_raises(ActiveRecord::ImplicitConnectionForbiddenError) do      
       t = Thread.new do
+        # Avoid warning to console for implicit checkout, we're doing it on
+        # purpose for testing. 
+        Thread.current[:ar_implicit_checkout_warning_silenced] = true
+        
         ActiveRecord::Base.forbid_implicit_checkout_for_thread!
         ActiveRecord::Base.connection
       end
