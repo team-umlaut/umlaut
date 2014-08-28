@@ -142,7 +142,7 @@ class ResolveController < UmlautController
     # no end of problems later. We can't just refuse to process, sources
     # do send us bad bytes, I'm afraid.
     params.values.each do |v|
-      EnsureValidEncoding.ensure_valid_encoding!(v, :invalid => :replace)
+      v.scrub!
     end
     # Create an UmlautRequest object.
     options = {}
