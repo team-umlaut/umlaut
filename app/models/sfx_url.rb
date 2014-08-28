@@ -29,7 +29,7 @@ class SfxUrl < ActiveRecord::Base
       # If URI was malformed, just punt and say no.
       return false unless host    
       
-      return SfxUrl.find(:all, :conditions => ["url = ?", host]).length > 0
+      return SfxUrl.count(:url => host) > 0
     end
   end
 end
