@@ -6,6 +6,7 @@ class RequestTest < ActiveSupport::TestCase
 
   test "add_service_response" do
     request = fake_umlaut_request("/resolve?title=foo&author=bar")
+    request.service_responses.to_a
     service = DummyService.new("priority" => 3, "service_id" => "DummyService")
 
     request.add_service_response(
