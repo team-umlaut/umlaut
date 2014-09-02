@@ -237,8 +237,7 @@ class Request < ActiveRecord::Base
     
     svc_resp = nil
     ActiveRecord::Base.connection_pool.with_connection do
-      svc_resp = ServiceResponse.new
-
+      svc_resp = self.service_responses.build
       
       svc_resp.service_id = response_data[:service].service_id
       response_data.delete(:service)
@@ -252,9 +251,6 @@ class Request < ActiveRecord::Base
       # in columns, and which in serialized hash. 
       svc_resp.take_key_values( response_data )
             
-      # Not sure if the save! is really needed after we add it like this, but
-      # we're confused. 
-      self.service_responses << svc_resp
       svc_resp.save!    
     end
       
