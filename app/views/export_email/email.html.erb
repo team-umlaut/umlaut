@@ -7,11 +7,11 @@
       <%= validation_error flash[:alert] if flash[:alert] %>
       <fieldset>
         <legend><%= t('umlaut.citation.title_label') %>: <%= cite[:title] %> / <%= cite[:author] %></legend>
-        <div class="control-group">
+        <div class="form-group">
           <%= label_tag 'email', t('umlaut.services.email.enter_your_email') %>
           <%= text_field_tag 'email', params[:email], :class => "input-xlarge" %>
         </div>
-        <%= submit_tag t('umlaut.services.email_export.send_action'), :class => "btn btn-inverse" %>
+        <%= submit_tag t('umlaut.services.email_export.send_action'), :class => "btn btn-primary" %>
       </fieldset><%
     end
   end %>

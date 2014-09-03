@@ -38,7 +38,7 @@ body {
 
 .footer {
   @include umlaut-container();
-  @extend .muted;
+  @extend .text-muted;
   margin: {
     top: $line-height-computed;
   }

@@ -4,7 +4,7 @@
 %>
 
 <% if display_not_found_warning?(user_request) %>
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <i class="umlaut_icons-famfamfam-error"/>
         <%= t("umlaut.resolve.not_found_warning", :app_name => umlaut_config.app_name, :resource_type => user_request.referent.container_type_of_thing.downcase) %>
     </div>
