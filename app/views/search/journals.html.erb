@@ -12,14 +12,14 @@
       <%= hidden_field_tag "rft.date", "" %> 
       <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
       <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 
-      <div class="control-group">
+      <div class="form-group">
         <%= label :journal, :title, t('umlaut.search.journal_title') + ':', :class => "control-label" %>
         <%= text_field :journal, :title, {:name=>'rft.jtitle', :class=>"title_search input-xlarge", :autocomplete => "off"} %>
         <select name="umlaut.title_search_type" class="title_search_type input-medium">
           <%= options_for_select({t('umlaut.search.contains') => "contains", t('umlaut.search.begins_with') => "begins", t('umlaut.search.exact_match') => "exact"}, params["umlaut.title_search_type"])  %>
         </select>
       </div>
-      <div class="control-group">
+      <div class="form-group">
         <%= label :journal, :isbn, "ISSN:", :class=> "control-label" %>
         <%= text_field :journal, :isbn, {:name=>'rft.issn', :max_length => "9", :class=>"issn input-small"} %>
       </div>
@@ -28,11 +28,11 @@
   <div class="umlaut-search-form">
     <fieldset>
       <legend><%=t 'umlaut.search.search_optional_info' %></legend>
-      <div class="control-group">
+      <div class="form-group">
         <label for="year" class="control-label"><%=t('umlaut.search.date_label') + ':'%></label>
         <%= search_date_select %>
       </div>
-      <div class="control-group">
+      <div class="form-group">
         <span class="control-sub-group">
           <%= label :journal, :volume, t('umlaut.citation.volume').titleize + ':', :class => "control-label" %>
           <%= text_field :journal, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume input-tiny"} %>
@@ -47,7 +47,7 @@
         </span>
       </div>
       
-      <div class="control-group">
+      <div class="form-group">
         <label for="rft_id_type"><%=t('umlaut.search.doi_or_pubmed_label') + ':'%></label>
         <select id="rft_id_type" name="rft_id_type" class="input-small">
           <option value="doi"><%= t('umalut.citation.doi', :default => "DOI") %></option>
@@ -57,7 +57,7 @@
       </div>
     </fieldset>
   </div> 
-  <%= submit_tag t('umlaut.search.action_label'), {:name=>"Generate_OpenURL2", :class => "btn"} %>
+  <%= submit_tag t('umlaut.search.action_label'), {:name=>"Generate_OpenURL2", :class => "btn btn-default"} %>
 </form>
 
 <div class="umlaut-separator help-block">

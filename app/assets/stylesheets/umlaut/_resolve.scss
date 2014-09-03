@@ -27,7 +27,7 @@
     margin-top: 0;    
   }
   .section-subheading {
-    @extend .muted;
+    @extend .text-muted;
   }
 
 
@@ -88,7 +88,7 @@
         text-indent: -$umlautIndent;
       }
       .umlaut-holding-notes {
-        @extend .muted;
+        @extend .text-muted;
       }
       .umlaut-holding-match-reliability, .umlaut-holding-notes, .umlaut-holding-coverage {
         margin: ($line-height-computed / 3) 0 ($line-height-computed / 3) $umlautIndent;        
@@ -110,7 +110,7 @@
   }
 
   &.search_inside {
-    .input-append .add-on, .input-prepend .add-on {
+    .input-group .input-group-addon {
       // can't figure out if this is a bug in bootstrap or what
       height: auto;    
     }
@@ -126,7 +126,7 @@
 }
 
 .section_prompt {
-  @extend .muted;
+  @extend .text-muted;
 }
 
 // extra block-level elements inside a response_item
@@ -143,7 +143,7 @@
 
 .edition_warning, .response_source, .response_coverage_statement, .response_notes {
   @extend %indented-subitem;
-  @extend .muted;
+  @extend .text-muted;
 }
 
 .response_notes {
@@ -228,7 +228,7 @@
 
 
   .resource-type {    
-    @extend .muted;
+    @extend .text-muted;
     margin: 0;    
   }
   h2.title {  
@@ -245,7 +245,7 @@
   dl.citation-info {
     /* based on dl-horizontal, but tweaked.  */
     @include clearfix();   
-    @extend .muted; // subsidiary stuff, mute it
+    @extend .text-muted; // subsidiary stuff, mute it
     margin-top: 10px;
     margin-bottom: 10px;     
     dt {      

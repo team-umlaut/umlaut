@@ -13,15 +13,15 @@
       <% params.slice("rft.date", "__year", "__month", "__day", "rft.volume", "rft.issue", "rft.spage").each_pair do |key, value| %>
         <%= hidden_field_tag key, value %>
       <% end %>
-      <div class="control-group">
+      <div class="form-group">
         <%= label :journal, :title, t('umlaut.search.journal_title') + ':' %>
         <%= text_field :journal, :title, {:name=>'rft.jtitle', :value=>params['rft.jtitle'], :class=>"title_search input-xlarge", :autocomplete => "off"} %>
         <select name="umlaut.title_search_type" class="title_search_type input-medium">
           <%= options_for_select({t('umlaut.search.contains') => "contains", t('umlaut.search.begins_with') => "begins", t('umlaut.search.exact_match') => "exact"}, params["umlaut.title_search_type"])  %>
         </select>
       </div>
-      <div class="control-group">
-        <%= submit_tag t('umlaut.search.action_label'), {:name=>"Generate_OpenURL2", :class => "btn"} %>
+      <div class="form-group">
+        <%= submit_tag t('umlaut.search.action_label'), {:name=>"Generate_OpenURL2", :class => "btn btn-default"} %>
         <%= link_to(t('umlaut.search.more_search_options'), {:controller=>'search'}, :class => "inline-help") %>
       </div>
     </fieldset>

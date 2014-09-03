@@ -3,8 +3,8 @@
   ref_meta = @current_context_object.referent.metadata  
   labels = referent_labels
 %>
-<div class="row-fluid">
-  <dl class="dl-horizontal span8">
+<div class="row">
+  <dl class="dl-horizontal col-md-8">
         <%= # Article Title
     if ref_meta.has_key?("atitle") and (not ref_meta["atitle"].blank?)
       content_tag(:dt, labels.atitle, :class => "atitle") +
@@ -67,7 +67,7 @@
         content_tag(:dd, pages, :class => "page")
     end %>
   </dl>
-  <div class="umlaut-citation-link span3">
+  <div class="umlaut-citation-link col-md-4">
     <%= resolver_link(@current_context_object, {:target => search_result_target_window}) %>
   </div>
 </div>
