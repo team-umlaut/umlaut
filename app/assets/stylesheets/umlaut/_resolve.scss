@@ -85,6 +85,11 @@
       @extend .umlaut_icons-famfamfam-book;
     }
     .umlaut-holdings {
+      .row {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
       .umlaut-holding {
         margin-bottom: $umlautIndent;
       }
