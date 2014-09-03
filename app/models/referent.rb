@@ -109,60 +109,44 @@ class Referent < ActiveRecord::Base
   end
 
 
-  # Find or create a ReferentValue object hanging off this
-  # Referent, with given key name and value. key_name can
-  # be 'identifier', 'format', or any metadata key.
-  def ensure_value!(key_name, value)
-     normalized_value = ReferentValue.normalize(value)
-     
-     rv = ReferentValue.where(:referent_id => self.id,
-                              :key_name => key_name,
-                              :normalized_value => normalized_value ).first
-      unless (rv)
-        rv = ReferentValue.new
-        rv.referent = self
-        
-        rv.key_name = key_name
-        rv.value = value
-        rv.normalized_value = normalized_value
-        
-        if key_name == "private_data"
-          rv.private_data = true
-        elsif key_name != "identifier" && key_name != "format"
-          rv.metadata = true
-        end
-
-        rv.save!
-      end
-      return rv
+  # private use. Adds a referent_value and returns it, does NOT persist
+  # it to db. referent_value is constructed with ActiveRecord build, and
+  # will be saved when Referent (self) is saved, works on persisted or
+  # unpersisted Referent. 
+  def build_referent_value(key_name, value)
+    return self.referent_values.build(
+      :key_name         => key_name, 
+      :value            => value, 
+      :normalized_value => ReferentValue.normalize(value),
+      :private_data     => (key_name == "private_data"),
+      :metadata         => (key_name != "identifier" && key_name != "format")
+    )
   end
+
   
   # Populate the referent_values table with a ropenurl contextobject object
+  # Note, does NOT save self, self may still be unsaved. 
   def set_values_from_context_object(co)
-    
     rft = co.referent
-
   
     # Multiple identifiers are possible! 
     rft.identifiers.each do |id_string|
-      ensure_value!('identifier', id_string)            
+      build_referent_value('identifier', id_string)            
     end
     if rft.format
-      ensure_value!('format', rft.format)
+      build_referent_value('format', rft.format)
     end
     if rft.private_data
       # this comes in as "pid" or "rft_dat", we store it in
       # our database as "private_data", sorry, easiest way to
       # fit this in at the moment. 
-      ensure_value!("private_data", rft.private_data)
+      build_referent_value("private_data", rft.private_data)
     end
     
     rft.metadata.each { | key, value |
-      next unless value
-      ensure_value!( key, value)      
-    }
-
-    
+      next unless value.present?
+      build_referent_value( key, value)      
+    }    
   end
 
   # pass in a Referent, or a ropenurl ContextObjectEntity that has a metadata
