@@ -25,7 +25,7 @@
   font-size: 125%;
 }
 
-@media (max-width: 767px) {
+@media (max-width: $screen-sm-min) {
   .umlaut-result {
     .umlaut-citation-link {
       text-align: left;
