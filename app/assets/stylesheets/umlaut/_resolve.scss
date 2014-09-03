@@ -304,6 +304,17 @@ a:not(:hover) .coverage_summary {
 }
 
 @media (max-width: $screen-sm-min) {
+  /* hacky taking account of bootstrap3, without a major refactor
+    of our css for it */
+  .umlaut-main-container-fluid .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .umlaut-sidebar-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .umlaut-main {
     padding: 0;
   }
