@@ -11,4 +11,15 @@
   .row {
     margin-bottom: $line-height-computed;
   }
+
+  .form-control.year, .form-control.month, .form-control.day, .form-control.doi {
+    width: 90px;
+  }
+  label {
+    font-weight: normal;
+  }
+
+  input.title_search {
+    width: 20em;
+  }
 }

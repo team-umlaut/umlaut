@@ -15,7 +15,7 @@
     color: $umlautAzLinkColor;
     background-color: $pagination-bg;
     &:hover {
-      background-color: $pagination-active-bg;
+      background-color: $pagination-hover-bg;
     }
 
     &.active {
