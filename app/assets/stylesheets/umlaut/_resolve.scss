@@ -21,6 +21,11 @@
   }
 }
 
+/* bold section headings only in main column */
+.umlaut-main .umlaut-section h3 {
+  font-weight: bold;
+}
+
 .umlaut-section {
   margin: 0 0 ($line-height-computed * 1.5) 0;  
   .section_heading h3 {
