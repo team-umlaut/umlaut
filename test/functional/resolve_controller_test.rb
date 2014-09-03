@@ -184,7 +184,7 @@ class ResolveControllerTest < ActionController::TestCase
     umlaut_request = requests(:manually_entered)
     get(:index, {'umlaut.request_id' => umlaut_request.id})
     assert_response :success
-    assert_select('.resource_info_sections > div.alert.alert-error',
+    assert_select('.resource_info_sections > div.alert.alert-danger',
       {:text => "Warning: Find It does not know about a journal with this name. Please check your entry."}) do |error_divs|
       assert_equal 1, error_divs.size, "More than one error div"
       error_divs.each do |error_div|
