@@ -12,7 +12,7 @@
 
 .response_list {
   .response_item  {
-    margin-bottom: ($baseLineHeight / 2);
+    margin-bottom: ($line-height-computed / 2);
     // Try to make line wrap respect space for icon/indent. 
     padding-left: $umlautIndent;
     text-indent: -$umlautIndent;
@@ -20,7 +20,7 @@
 }
 
 .umlaut-section {
-  margin: 0 0 ($baseLineHeight * 1.5) 0;  
+  margin: 0 0 ($line-height-computed * 1.5) 0;  
   .section_heading h3 {
     /* semantically an h3, but make it sized an h4 */
     @extend h4;
@@ -68,7 +68,7 @@
   &.related_items {
     // Margin between the 'cited by' and 'similar' lists
     .response_list + .response_list {
-      margin-top: $baseLineHeight * 1.5;
+      margin-top: $line-height-computed * 1.5;
     }
 
   }
@@ -91,7 +91,7 @@
         @extend .muted;
       }
       .umlaut-holding-match-reliability, .umlaut-holding-notes, .umlaut-holding-coverage {
-        margin: ($baseLineHeight / 3) 0 ($baseLineHeight / 3) $umlautIndent;        
+        margin: ($line-height-computed / 3) 0 ($line-height-computed / 3) $umlautIndent;        
       }
       .item_status_row {
         min-height: 0;
@@ -115,14 +115,14 @@
       height: auto;    
     }
     select.id {
-      @include border-radius(0 $inputBorderRadius $inputBorderRadius 0);
+      border-radius: 0 $input-border-radius $input-border-radius 0;
     }
   }
 }
 
 .umlaut-section-highlighted {
   @include umlaut-well($umlautHighlightedSectionBackgroundColor, $umlautHighlightedSectionBorderColor);
-  @include border-radius($umlautBorderRadiusExtraLarge);
+  border-radius: $umlautBorderRadiusExtraLarge;
 }
 
 .section_prompt {
@@ -134,7 +134,7 @@
 // need any indent. 
 %indented-subitem {
   text-indent: 0;
-  margin: ($baseLineHeight / 6) 0;
+  margin: ($line-height-computed / 6) 0;
 }
 
 .umlaut-content-indent {
@@ -160,26 +160,26 @@
   padding: $umlautIndent;
 
   border:  1px solid $umlautSidebarBorderColor;    
-  @include border-radius($umlautBorderRadiusExtraLarge);
+  border-radius: $umlautBorderRadiusExtraLarge;
 
   background-color: $umlautSidebarBackgroundColor;
 
   .help-text-icon {
     height: 100%;
 
-    font-size: $baseLineHeight * 1.85;
+    font-size: $line-height-base * 1.85;
     font-weight: bold;
     float: right;
     clear: right;
 
     margin-left: $umlautIndent;
-    padding: $baseLineHeight * 0.5;
+    padding: $line-height-computed * 0.5;
     
 
     background-color: $umlautHighlightedSectionBackgroundColor;
     border: 1px solid $umlautHighlightedSectionBorderColor;    
 
-    @include border-radius($baseLineHeight * 2);    
+    border-radius: ($line-height-computed * 2);    
   }
   .umlaut-section.help {
     @include clearfix();    
@@ -197,7 +197,7 @@
   .resource_info_sections, .umlaut-section.cover_image {
     display:        table-cell;
     vertical-align: top;
-    margin: $baseLineHeight;
+    margin: $line-height-computed;
     width: 100%;
   }
 
@@ -234,7 +234,7 @@
   h2.title {  
     margin-top: 0;
     @extend h4;
-    line-height: $baseLineHeight * 1.1;
+    line-height: $line-height-base * 1.1;
     font-weight: normal;    
   }
   
@@ -273,12 +273,12 @@
 
 .umlaut-available {
   color: $umlautAvailableColor;
-  font-size: $baseFontSize;
+  font-size: $font-size-base;
 }
 
 .umlaut-unavailable {
   color: $umlautUnavailableColor;
-  font-size: $baseFontSize;
+  font-size: $font-size-base;
 }
 
 // Resolve Errors

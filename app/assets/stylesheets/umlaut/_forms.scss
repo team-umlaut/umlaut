@@ -8,7 +8,7 @@ input[type="submit"] {
 .form-inline.form-very-inline  {
   .control-group {
     display: inline-block;
-    line-height: ($baseLineHeight * 2);
+    line-height: ($line-height-base * 2);
     margin-right: $umlautIndent;
   }
   .control-sub-group {

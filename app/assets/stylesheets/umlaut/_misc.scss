@@ -5,7 +5,7 @@
 
 .text-small {
   font: {
-    size: $fontSizeSmall
+    size: $font-size-small
   }
 }
 
@@ -17,7 +17,7 @@
 }
 
 .collapsible .collapse {
-  margin-top:  $baseLineHeight / 2; 
+  margin-top:  $line-height-computed / 2; 
 }
 
 /* Google Scholar Link: 
@@ -36,13 +36,13 @@
 }
 
 .umlaut-permalink-container {
-    color: $grayDark;
+    color: $gray-dark;
     @include text-overflow;
 }
 .umlaut-permalink-content {  
   background-color: $umlautBackgroundColor;
-  border-radius: $borderRadiusSmall;
-  border: 1px solid $btnBorder;
+  border-radius: $border-radius-small;
+  border: 1px solid $btn-default-border;
   padding: 3px 6px;  
   .spinner {
     vertical-align: baseline;
@@ -68,7 +68,6 @@
   display: inline-block;
   width: 16px;
   height: 16px;
-  @include ie7-restore-right-whitespace();
   line-height: 16px;
   vertical-align: top;
   margin-top: 1px;  

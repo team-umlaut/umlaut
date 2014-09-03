@@ -6,11 +6,11 @@
 .umlaut-result {
   background-color: $umlautResultItemBackgroundColor;
   border-color:     $umlautResultItemBorderColor;
-  margin-bottom: $baseLineHeight/2;
+  margin-bottom: $line-height-computed/2;
   dl {
     margin: 0;
     dt, dd {
-      margin-bottom: $baseLineHeight/4;
+      margin-bottom: $line-height-computed/4;
     }
   }
 
