@@ -21,7 +21,7 @@ body {
   border: {
     bottom: 1px solid $umlautHeaderBorderColor;
   }    
-  color: $navbarBrandColor;
+  color: $navbar-default-brand-color;
   h1 {
     //semantically an h1, but let's make it not so big, inspired
     //by twitter's navbar styles, copied
@@ -40,7 +40,7 @@ body {
   @include umlaut-container();
   @extend .muted;
   margin: {
-    top: $baseLineHeight;
+    top: $line-height-computed;
   }
   padding: {
     top: 10px;
