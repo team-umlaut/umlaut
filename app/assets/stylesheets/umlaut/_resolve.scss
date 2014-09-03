@@ -12,7 +12,7 @@
 
 .response_list {
   padding-left: 0;
-  
+
   .response_item  {
     margin-bottom: ($line-height-computed / 2);
     // Try to make line wrap respect space for icon/indent. 
@@ -293,7 +293,7 @@ a:not(:hover) .coverage_summary {
   color: black; 
 }
 
-@media (max-width: 767px) {
+@media (max-width: $screen-sm-min) {
   .umlaut-main {
     padding: 0;
   }

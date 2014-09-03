@@ -4,7 +4,7 @@
   padding-right: $umlautContainerPadding * 2;
   
   // get rid of double left margin at smaller
-  @media (max-width: 767px) {
+  @media (max-width: $screen-sm-min) {
     padding: {
       left: $umlautContainerPadding;
       right: $umlautContainerPadding;
