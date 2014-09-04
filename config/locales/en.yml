@@ -134,7 +134,7 @@ en:
       txt_holding_export:
         display_text: Send to phone
         header: Send the title and location of an item to your mobile phone
-        enter_your_number: 'Enter your mobile phone number'
+        enter_your_number: 'Your mobile phone number'
         number_format_description: '10 digit US cell phone number'
         select_provider: 'Select your provider'
         choose_item_to_send: 'Choose the item you want to send'
@@ -144,7 +144,7 @@ en:
       email_export:
         display_text: Email
         header: Email the title and locations
-        enter_your_email: 'Enter your email address'
+        enter_your_email: 'Your Email Address'
         send_action: Send
       ulrichs_link: 
         display_text: Periodical information
