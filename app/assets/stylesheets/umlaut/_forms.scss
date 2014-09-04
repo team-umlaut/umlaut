@@ -26,7 +26,12 @@ input[type="submit"] {
  width: 5em; 
 }
 
-/* This seems to be a bug in bootstrap 3.2.0.1... */
+/* These seems to be a bug in bootstrap 3.2.0.1... */
 input[type=submit].btn-default {
   border-color: $btn-default-border;
+}
+input.btn-primary[type="submit"]:hover, input[type="submit"].btn-primary:focus {
+  color: white;
+  background-color: #3071a9;
+  border-color: #285e8e;
 }
