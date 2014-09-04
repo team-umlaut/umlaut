@@ -140,7 +140,7 @@ en:
         choose_item_to_send: 'Choose the item you want to send'
         charges_may_apply: 'Note: charges may apply if your service plan does not cover unlimited texting'
         send_action: Send
-        text_sent: "Sent to %{number}."
+        text_sent: "Sent to %{number}"
       email_export:
         display_text: Email
         header: Email the title and locations
