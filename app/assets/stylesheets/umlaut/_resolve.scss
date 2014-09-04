@@ -244,7 +244,7 @@
   h2.title {  
     margin-top: 0;
     @extend h4;
-    line-height: $line-height-base * 1.1;
+    line-height: $line-height-computed * 1.1;
     font-weight: normal;    
   }
   
