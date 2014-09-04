@@ -14,7 +14,7 @@ class SfxUrl < ActiveRecord::Base
     ActiveRecord::Base.connection_pool.with_connection do
       # Does it match any of our supplementary configged strings or regexps?
       UmlautController.umlaut_config.lookup!("sfx.additional_sfx_controlled_urls", []).each do |test|
-        '===' # will match a regexp or equality on a string
+        # '===' will match a regexp or equality on a string
         return true if test === url
       end
       
@@ -29,7 +29,7 @@ class SfxUrl < ActiveRecord::Base
       # If URI was malformed, just punt and say no.
       return false unless host    
       
-      return SfxUrl.count(:url => host) > 0
+      return SfxUrl.where(:url => host).count > 0
     end
   end
 end
