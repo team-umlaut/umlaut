@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Uses ISI Web of Knowledge to generates links to "cited by" and "similar"
+# Uses ISI Web of Science to generates links to "cited by" and "similar"
 # articles.
 #
 # REQUIREMENTS: You must be an ISI customer if you want these links to actually
@@ -39,7 +39,7 @@ class Isi < Service
   def initialize(config)
     #defaults
     @wos_app_name = "Umlaut"
-    @display_name = "Web of Knowledge\xc2\xae" # trademark symbol
+    @display_name = "Web of Science\xc2\xae" # trademark symbol
     @api_url = "https://ws.isiknowledge.com/cps/xrpc"
     @include_cited_by = true
     @include_similar = true
