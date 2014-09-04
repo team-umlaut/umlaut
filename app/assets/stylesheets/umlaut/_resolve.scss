@@ -179,7 +179,8 @@
   .help-text-icon {
     height: 100%;
 
-    font-size: $line-height-base * 1.85;
+    font-size: $line-height-computed * 1.85;
+    line-height: 20px;
     font-weight: bold;
     float: right;
     clear: right;
