@@ -157,7 +157,7 @@ default:
         partner_id: YOUR_SCOPUS_PARTNER_ID
         link_salt_key: "YOUR_SCOPUS_LINK_SALT_KEY"
         
-      # Web of Knowledge API has no api key, but your
+      # Web of Science API has no api key, but your
       # IP needs to be registered with them. See source docs
       # for how. 
       IsiCitations:
