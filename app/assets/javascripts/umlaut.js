@@ -9,6 +9,10 @@
 // if the manifest chain ends up 'require'ing twice because
 // it's mentioned in local manifest, sprockets is smart enough. 
 //= require jquery
+
+// We're using a local bootstrap3-typeahead.js, to restore bootstrap2-style
+//= require bootstrap3-typeahead
+
 //= require bootstrap/transition
 //= require bootstrap/modal
 //   #require bootstrap/typeahead
