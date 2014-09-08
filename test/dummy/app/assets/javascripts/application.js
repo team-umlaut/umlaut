@@ -11,6 +11,3 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
-
-// We're using a local bootstrap3-typeahead.js, to restore bootstrap2-style
-//= require bootstrap3-typeahead
