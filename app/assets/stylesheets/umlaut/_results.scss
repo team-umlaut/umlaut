@@ -3,6 +3,10 @@
    background-color: $umlautResultsBackgroundColor;
 }
 
+.umlaut-search-container .pagination {
+  margin: 10px 0;
+}
+
 .umlaut-result {
   background-color: $umlautResultItemBackgroundColor;
   border-color:     $umlautResultItemBorderColor;
@@ -19,10 +23,6 @@
   .umlaut-citation-link {
     text-align: right;
   }
-}
-
-.umlaut-pagination {
-  font-size: 125%;
 }
 
 @media (max-width: $screen-sm-min) {
