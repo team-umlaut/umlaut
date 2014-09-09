@@ -2,30 +2,36 @@ input[type="submit"] {
   @extend .btn;
 }
 
-/* Used on search form, our own .very-inline is added to form-inline, its 
-   SUPER inline, and allows multiple controls on a line, lined up well, with 
-   sub-groups of controls in span.control-sub-group */
-.form-inline.form-very-inline  {
-  .control-group {
-    display: inline-block;
-    line-height: ($baseLineHeight * 2);
+/* sub-groups of controls in span.control-sub-group */
+.form-inline {
+   .form-group {
+    //display: inline-block;
+    line-height: ($line-height-base * 2);
     margin-right: $umlautIndent;
   }
   .control-sub-group {
     display: inline-block;
     margin-right: $umlautIndent;
   }
-  label, select, text-area, input, .uneditable-input {
-    vertical-align: bottom;
-  }
-  legend + .control-group {
-    margin-top: 0; //not sure why bootstrap did a margin here
-  }
-
 }
 
-@media (max-width: 767px) {
+@media (max-width: $screen-sm-min) {
   .umlaut-citation-link {
     text-align: left;
   }
+}
+
+// even smaller than bootstrap's input-mini, for volume/issue/start page
+.form-inline .form-control.input-tiny, .input-tiny {
+ width: 5em; 
+}
+
+/* These seems to be a bug in bootstrap 3.2.0.1... */
+input[type=submit].btn-default {
+  border-color: $btn-default-border;
+}
+input.btn-primary[type="submit"]:hover, input[type="submit"].btn-primary:focus {
+  color: white;
+  background-color: #3071a9;
+  border-color: #285e8e;
 }

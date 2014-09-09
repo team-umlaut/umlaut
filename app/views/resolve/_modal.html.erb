@@ -1,19 +1,23 @@
-<div id="modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 class="ajax-loader" style="display:none"><%=t('umlaut.misc.loading').titlecase%></h3>
-    <h3 class="content"></h3>
-  </div>
-  <div class="modal-body">
-    <div class="ajax-loader" style="display:none">
-      <div class="progress progress-striped active">
-        <div class="bar" style="width: 95%;"></div>
+<div id="modal" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 class="ajax-loader" style="display:none"><%=t('umlaut.misc.loading').titlecase%></h3>
+        <h4 class="modal-title" data-role='modal-title-content'></h4>
+      </div>
+      <div class="modal-body">
+        <div class="ajax-loader" style="display:none">
+          <div class="progress progress-striped active">
+            <div class="bar" style="width: 95%;"></div>
+          </div>
+        </div>
+        <div class="content" data-role='modal-body-content'></div>
+      </div>
+      <div class="modal-footer">
+        <span class="content" data-role='modal-footer-content'></span>
+        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><%=t('umlaut.misc.close').titlecase%></button>
       </div>
     </div>
-    <div class="content"></div>
-  </div>
-  <div class="modal-footer">
-    <span class="content"></span>
-    <button class="btn" data-dismiss="modal" aria-hidden="true"><%=t('umlaut.misc.close').titlecase%></button>
   </div>
 </div>

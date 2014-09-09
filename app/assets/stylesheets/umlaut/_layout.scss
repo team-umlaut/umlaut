@@ -10,8 +10,6 @@ body {
   @include umlaut-container();  
   // max width and center beyond that
   max-width: $umlautContainerMaxWidth;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .header {
@@ -21,7 +19,7 @@ body {
   border: {
     bottom: 1px solid $umlautHeaderBorderColor;
   }    
-  color: $navbarBrandColor;
+  color: $navbar-default-brand-color;
   h1 {
     //semantically an h1, but let's make it not so big, inspired
     //by twitter's navbar styles, copied
@@ -31,6 +29,7 @@ body {
     padding: 0;    
     font-size: 20px;
     font-weight: 200;
+    line-height: 40px;
   }
   line-height: 40px;
 }
@@ -38,9 +37,9 @@ body {
 
 .footer {
   @include umlaut-container();
-  @extend .muted;
+  @extend .text-muted;
   margin: {
-    top: $baseLineHeight;
+    top: $line-height-computed;
   }
   padding: {
     top: 10px;

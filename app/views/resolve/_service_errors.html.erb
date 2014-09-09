@@ -3,7 +3,7 @@ failed_dispatches = failed_service_dispatches()
 unless ( failed_dispatches.nil? || failed_dispatches.empty? ) %>
   <div id="service_errors_content">
     <h5 class="warning"><i class="umlaut_icons-famfamfam-error"></i> <%= t 'umlaut.error.service_errors_title' %></h5>
-    <ul>
+    <ul class="list-unstyled">
       <% failed_dispatches.each do | dispatch | %>
         <li class="text-small">
           <%= t 'umlaut.error.services_missing' %><strong> <%= dispatch.service.service_types_generated.collect { |type|

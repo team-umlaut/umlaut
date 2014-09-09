@@ -37,14 +37,14 @@
       unless n - prev > 1
         prev = n
         if ( n != @page )
-           links << (content_tag :li, (link_to n, args.merge({'page' => n })), :class => "hidden-phone")
+           links << (content_tag :li, (link_to n, args.merge({'page' => n })), :class => "hidden-xs")
         else
-           links << (content_tag :li, (content_tag :span, n) )
+           links << (content_tag :li, (content_tag :span, n), :class => "active" )
         end
       else
         # ellipsis represents the gap between windows
         prev = n - 1
-        links <<  (content_tag :li, (content_tag :span, "&hellip;".html_safe), :class => "hidden-phone")
+        links <<  (content_tag :li, (content_tag :span, "&hellip;".html_safe), :class => "hidden-xs disabled")
         redo
       end
     end
@@ -53,7 +53,7 @@
     links.unshift( content_tag :li, (link_to(t('umlaut.search.previous'), args.merge({'page' => @page -1 })))) if @page > 1
     links.push( content_tag :li, (link_to(t('umlaut.search.next'), args.merge({'page' => @page + 1})))) if @page < total_pages
 %>
-<%= content_tag :ul, links.join(' ').html_safe %>
+<%= content_tag :ul, links.join(' ').html_safe, :class => "pagination" %>
 <%
   end
 %>

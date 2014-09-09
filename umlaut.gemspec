@@ -33,8 +33,8 @@ Gem::Specification.new do |s|
   s.add_dependency "multi_json"                 # use best locally installed json gem for json parsing
   s.add_dependency "confstruct", "~> 0.2"       # used for our configuration object
   s.add_dependency "scrub_rb"                   # used for correcting bad char enc bytes in input, polyfill pre ruby 2.1
-  s.add_dependency "bootstrap-sass", "~> 2.3.0" # used for bootstrap
-  s.add_dependency "sass-rails", ">= 3.2.3"      # umlaut uses sass stylesheets
+  s.add_dependency "bootstrap-sass", "~> 3.2"   # used for bootstrap
+  s.add_dependency "sass-rails", ">= 3.2.5"      # umlaut uses sass stylesheets
   
 
   s.add_development_dependency "single_test", "~> 0.5.1"

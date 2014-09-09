@@ -2,21 +2,21 @@
 
 <%= form_tag(feedback_path(params[:request_id], :contact_id => params[:contact_id]) , :method => :post, :class => "feedback-form form-horizontal") do %>
     
-    <div class="control-group">
+    <div class="form-group">
         <label class="control-label" for="name">Your Name</label>
         <div class="controls">
           <input type="text" id="name" name="name">
         </div>
     </div>
 
-    <div class="control-group">
+    <div class="form-group">
         <label class="control-label" for="email">Your Email</label>
         <div class="controls">
           <input type="text" id="email" name="email">
         </div>
     </div>
 
-    <div class="control-group">
+    <div class="form-group">
         <label class="control-label" for="feedback">Question or Comment</label>
         <div class="controls">
           <textarea id="feedback" name="feedback" class="input-xxlarge" rows=6></textarea>
@@ -24,9 +24,9 @@
     </div>
 
 
-    <div class="control-group">
+    <div class="form-group">
         <div class="controls">
-          <button type="submit" class="btn">Send</button>
+          <button type="submit" class="btn btn-default">Send</button>
         </div>
     </div>
     

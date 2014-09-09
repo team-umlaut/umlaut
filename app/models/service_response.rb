@@ -179,8 +179,8 @@ class ServiceResponse < ActiveRecord::Base
   #MatchAltEdition = 'edition'
   #MatchAltWork = 'work'
 
-  def initialize(params = nil)
-    super(params)
+  def initialize(*args)
+    super
     self.service_data = {} unless self.service_data
   end
   

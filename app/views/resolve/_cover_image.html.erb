@@ -16,10 +16,10 @@ fix_size ||= true
 # but we let the width be more than the height for weird ratio'd covers
 # that are wider than square. 
 dimensions_style = { 
-          "small"       => "max-height: 80px; max-width: 100px;",
-          "medium"      => "max-height: 160px; max-width: 200px;",
-          "large"       => "max-height: 200px; max-width: 240px;",
-          "extra-large" => "max-height: 475px; max-width: 570px;" }
+          "small"       => "max-height: 80px; max-width: 100px; box-sizing: content-box;",
+          "medium"      => "max-height: 160px; max-width: 200px; box-sizing: content-box;",
+          "large"       => "max-height: 200px; max-width: 240px; box-sizing: content-box;",
+          "extra-large" => "max-height: 475px; max-width: 570px; box-sizing: content-box;" }
 
 img_st = cover_image_response(size)
 if img_st 

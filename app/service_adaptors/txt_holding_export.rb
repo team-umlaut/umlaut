@@ -10,7 +10,7 @@ class TxtHoldingExport < AjaxExport
     # providers is a hash of:
     # user-presentable-string => hostname for email to txt service. 
     @providers = {
-     "Cingular/AT&T" => "cingularme.com",
+     "AT&T" => "txt.att.net",
      "Nextel" => "messaging.nextel.com",     
      "Sprint" => "messaging.sprintpcs.com",
      "T-Mobile"=> "tmomail.net",

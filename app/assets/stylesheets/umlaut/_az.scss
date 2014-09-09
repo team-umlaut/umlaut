@@ -5,17 +5,17 @@
   @include clearfix;
   a, span {
     float: left;
-    margin-bottom: $baseLineHeight / 4;
-    margin-right: $baseLineHeight / 4;
-    @include border-radius(4px);
+    margin-bottom: $line-height-computed / 4;
+    margin-right: $line-height-computed / 4;
+    border-radius: 4px;
     padding: 4px 8px;
     border: 1px solid $umlautAzBorderColor;
-    line-height: $baseLineHeight;
+    line-height: $line-height-base;
     text-decoration: none;
     color: $umlautAzLinkColor;
-    background-color: $paginationBackground;
+    background-color: $pagination-bg;
     &:hover {
-      background-color: $paginationActiveBackground;
+      background-color: $pagination-hover-bg;
     }
 
     &.active {

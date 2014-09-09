@@ -1,6 +1,7 @@
 <div class="oneColumn">
-  <h2>Books</h2>
-  <%= form_tag({:controller=>'resolve', :action=>@submit_action}, {:method=>'get'}) %>
+
+  <h1>Books</h1>
+  <%= form_tag({:controller=>'resolve', :action=>@submit_action}, {:method=>'get', :class=>"form-horizontal"}) %>
     <fieldset class="citationLinker">                                      
       <%= hidden_field_tag "rfr_id", "info:sid/umlaut.code4lib.org:citation" %> 
       <%= hidden_field_tag "url_ver", "Z39.88-2004" %> 
@@ -8,26 +9,67 @@
       <%= hidden_field_tag "ctx_ver", "Z39.88-2004" %> 
       <%= hidden_field_tag "rft_val_fmt", "info:ofi/fmt:kev:mtx:book" %> 
       <%= hidden_field_tag "rft.genre", "book" %> 
-      <%= label :book, :title, t('umlaut.citation.title_of_x', :x => t('umlaut.citation.genre.book')) %>
-      <%= text_field :book, :title, {:name=>'rft.btitle', :class=>"title_search"} %>
-      <%= label :book, :date, t('datetime.prompts.year')  %>
-      <%= text_field :book, :date, {:name=>'rft.date', :class=>"date"} %>
-      <%= label :book, :volume, t('umlaut.citation.volume')  %>
-      <%= text_field :book, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume"} %>
-      <%= label :book, :part, t('umlaut.citation.title_of_x', :x => t('umlaut.citation.genre.bookitem'))   %>
-      <%= text_field :book, :part, {:name=>'rft.part', :class=>"part"} %>
-      <%= label :book, :isbn, t('umlaut.citation.isbn') %>
-      <%= text_field :book, :isbn, {:name=>'rft.isbn', :max_length => "17", :class=>"isbn"} %>
+
+
+      <div class="form-group">
+        <%= label :book, :title, t('umlaut.citation.title_of_x', :x => t('umlaut.citation.genre.book')), :class => "control-label col-sm-3" %>
+        <div class="col-sm-9">
+          <%= text_field :book, :title, {:name=>'rft.btitle', :class=>"title_search form-control"} %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= label :book, :date, t('datetime.prompts.year'), :class=> "control-label col-sm-3"  %>
+        <div class="col-sm-9">
+          <%= text_field :book, :date, {:name=>'rft.date', :class=>"date form-control"} %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= label :book, :volume, t('umlaut.citation.volume'), :class=>"control-label col-sm-3"  %>
+        <div class="col-sm-9">
+          <%= text_field :book, :volume, {:name=>'rft.volume', :max_length => "5", :class=>"volume form-control"} %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= label :book, :part, t('umlaut.citation.title_of_x', :x => t('umlaut.citation.genre.bookitem'))   , :class => "control-label col-sm-3" %>
+        <div class="col-sm-9">
+          <%= text_field :book, :part, {:name=>'rft.part', :class=>"part form-control"} %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= label :book, :isbn, t('umlaut.citation.isbn'), :class => "control-label col-sm-3" %>
+        <div class="col-sm-9">
+          <%= text_field :book, :isbn, {:name=>'rft.isbn', :max_length => "17", :class=>"isbn form-control"} %>
+        </div>
+      </div>
     </fieldset>
+
     <fieldset class="citationLinker">                                      
       <legend>Author</legend>
-      <%= label :book, :aulast, t('umlaut.citation.author.last') %>
-      <%= text_field :book, :aulast, {:name=>'rft.aulast', :class=>"aulast"} %>
-      <%= label :book, :aufirst, t('umlaut.citation.author.first') %>
-      <%= text_field :book, :aufirst, {:name=>'rft.aufirst', :class=>"aufirst"} %>
+
+      <div class="form-group">
+        <%= label :book, :aulast, t('umlaut.citation.author.last'), :class => "control-label col-sm-3" %>
+        <div class="col-sm-9">
+          <%= text_field :book, :aulast, {:name=>'rft.aulast', :class=>"aulast form-control"} %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= label :book, :aufirst, t('umlaut.citation.author.first'), :class => "control-label col-sm-3" %>
+        <div class="col-sm-9">
+          <%= text_field :book, :aufirst, {:name=>'rft.aufirst', :class=>"aufirst form-control"} %>
+        </div>
+      </div>
+
     </fieldset>
+
     <fieldset>                                      
-      <%= submit_tag t('umlaut.search.action_label'), :class => "btn" %>
+      <div class="col-sm-offset-3 col-sm-9">
+        <%= submit_tag t('umlaut.search.action_label'), :class => "btn btn-default" %>
+      </div>
     </fieldset>
   </form>
 </div>

@@ -2,17 +2,18 @@
   <%
   unless @user_request.nil?
     cite = @user_request.referent.to_citation %>
-    <%= form_tag({:controller => "export_email", :action => "send_email", :id => params[:id]}, :class => "form-inline" ) do  %>
-      <h2><%=t 'umlaut.services.email_export.header' %></h2>
+    <%= form_tag({:controller => "export_email", :action => "send_email", :id => params[:id]}, :class => "form-horizontal" ) do  %>
+      <h4 class="modal-title"><%=t 'umlaut.services.email_export.header' %></h4>
       <%= validation_error flash[:alert] if flash[:alert] %>
-      <fieldset>
-        <legend><%= t('umlaut.citation.title_label') %>: <%= cite[:title] %> / <%= cite[:author] %></legend>
-        <div class="control-group">
-          <%= label_tag 'email', t('umlaut.services.email.enter_your_email') %>
-          <%= text_field_tag 'email', params[:email], :class => "input-xlarge" %>
+        <h4><%= cite[:title] %> / <%= cite[:author] %></h4>
+        <div class="form-group">
+          <%= label_tag 'email', t('umlaut.services.email_export.enter_your_email'), :class => "control-label col-xs-4" %>
+          <div class="col-xs-8">
+            <%= text_field_tag 'email', params[:email], :class => "form-control" %>
+          </div>
         </div>
-        <%= submit_tag t('umlaut.services.email_export.send_action'), :class => "btn btn-inverse" %>
-      </fieldset><%
+        <%= submit_tag t('umlaut.services.email_export.send_action'), :class => "btn btn-primary" %>
+      <%
     end
   end %>
 </div>

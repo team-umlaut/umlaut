@@ -175,6 +175,7 @@ module ResolveHelper
     # for limit.
     options = {:limit => options} unless options.kind_of?(Hash)
     options[:limit] ||= 5
+    options[:ul_class] ||= "list-unstyled"
     return "" if list.empty?
     visible_list  = (list.length > options[:limit]) ? list.slice(0, options[:limit]-1) : list
     hidden_list   = (list.length > options[:limit]) ? list.slice((options[:limit]-1)..list.length-1) : []
