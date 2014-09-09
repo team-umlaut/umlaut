@@ -133,11 +133,11 @@ class ServiceWave
       aThread.join
 
       if aThread[:exception] 
-        debugger if Rails.env.development?
+        debugger if ENV["UMLAUT_AUTO_DEBUGGER"]
         begin
           request.dispatched(aThread[:service], DispatchedService::FailedFatal, aThread[:exception])
         rescue Exception => e
-          debugger if Rails.env.development?
+          debugger if ENV["UMLAUT_AUTO_DEBUGGER"]
           raise e
         end
       end
