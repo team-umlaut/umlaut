@@ -60,10 +60,10 @@ module Umlaut
           # v2 A-Z links redirected to umlaut, point to journal_list
           # code in journal_list filter picks out SFX URL vars for
           # letter. 
-          get '/resolve/azlist/default' => 'search#journal_list', :page => 1, :id => 'A'
+          get '/resolve/azlist/default' => 'search#journal_list', :page => '1', :id => 'A'
           
           # SFX v3 A-Z list url format
-          get 'resolve/az' => 'search#journal_list', :page => 1, :id => 'A'          
+          get 'resolve/az' => 'search#journal_list', :page => '1', :id => 'A'
         end
       end
       
