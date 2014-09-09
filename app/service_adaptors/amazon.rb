@@ -75,8 +75,8 @@ class Amazon < Service
 
     # Only a few service types can get by without an aws call
     if (! @make_aws_call &&
-          @service_types.find {|type|  ! ["highlighted_link"].include?(type) }  )
-      raise Exception.new("You can only set make_aws_call == false on the definition of an Amazon service adaptor when the adaptor is also set to generate no service responses other than highlighted_link")
+          @service_types.find {|type|  ! ["search_inside", "highlighted_link", "excerpts"].include?(type)} )
+        raise Exception.new("You can only set make_aws_call == false on the definition of an Amazon service adaptor when the adaptor is also set to generate no service responses other than highlighted_link, search_inside, and excerpts")
     end
   end
 
