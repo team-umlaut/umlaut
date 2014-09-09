@@ -124,7 +124,7 @@ module Umlaut
           get 'search/journals'
           get 'search/books'
           get 'search/journal_search'
-          get 'search/journal_list'
+          get 'search/journal_list', :to => redirect("/journal_list")
           get 'search/auto_complete_for_journal_title'
         end
       end
