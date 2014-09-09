@@ -203,7 +203,7 @@ class Amazon < Service
 
     # Store the asin in the referent as non-metadata private data, so
     # a future background service can use it. Store as a urn identifier.
-    request.referent.enhance_referent("identifier", "urn:asin:#{asin}") unless asin.blank?
+    request.referent.add_identifier("urn:asin:#{asin}") unless asin.blank?
 
     return_hash[:asin] = asin
     
