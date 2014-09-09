@@ -1,17 +1,18 @@
 require 'aws_product_sign'
+require 'httpclient'
 
 #
-#   As of Aug 15 2009, Amazon API calls will require a secret key from Amazon.
-#   If you are unable to get such an account/key, this service can still be used
-#   for certain functions by setting 'make_aws_call' to false, and configuring
-#   'service_types' to only include one or more of:  ["search_inside",
-#   "highlighted_link", "excerpts"]
-#   Other services, such as enhance_referent and cover_image require api access.
+#   AWS API account is required. NOTE: You may want to the API Terms of Service
+#     and make sure you feel comfortable with them. 
 #
 #   More about registering for and finding your AWS access key and secret key
 #   can be found here:
 # http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/AWSCredentials.html
 # http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/ViewingCredentials.html
+#
+# NOTE: Discovery of :search_inside and :excerpts links requires screen-scraping
+#       an Amazon back-end endpoint.  If you are uncomfortable with this mode of
+#       access, disable those service types, or do not use this adapter. 
 #
 #
 #   services.yml params:
@@ -42,6 +43,7 @@ class Amazon < Service
   
   include MetadataHelper
   include ActionView::Helpers::SanitizeHelper
+  include UmlautHttp
   
   required_config_params :url, :api_key, :associate_tag
   attr_reader :url
@@ -50,8 +52,6 @@ class Amazon < Service
     # defaults
     @url = 'http://webservices.amazon.com/onca/xml'     
     @reader_base_url = 'http://www.amazon.com/gp/reader/'
-    # Old version non-lightboxed, whcih doesn't work very well anymore.     
-    # @reader_base_url = 'http://www.amazon.com/gp/sitbv3/reader/'
     @display_name = "Amazon.com"
     @display_text = "Amazon's page"
     @service_types = ["abstract", "highlighted_link", "cover_image", "search_inside", "referent_enhance", "excerpts"]
@@ -75,8 +75,8 @@ class Amazon < Service
 
     # Only a few service types can get by without an aws call
     if (! @make_aws_call &&
-          @service_types.find {|type|  ! ["search_inside", "highlighted_link", "excerpts"].include?(type) }  )
-      raise Exception.new("You can only set make_aws_call == false on the definition of an Amazon service adaptor when the adaptor is also set to generate no service responses other than highlighted_link, search_inside, and excerpts")
+          @service_types.find {|type|  ! ["highlighted_link"].include?(type) }  )
+      raise Exception.new("You can only set make_aws_call == false on the definition of an Amazon service adaptor when the adaptor is also set to generate no service responses other than highlighted_link")
     end
   end
 
@@ -309,30 +309,39 @@ class Amazon < Service
       # need it for.
       if ( @service_types.include?("highlighted_link") ||
            @service_types.include?("search_inside"))
-        inside_base = @reader_base_url + asin
-        # lame screen-scrape for search inside availability. We need to
-        # distinguish between no results, "look inside", and "search inside".
-        response = open(inside_base).read
-
-        # This regexp only suitable for screen-scraping the old-style "sitbv3"
-        # reader page screen
-        if (response.include?("<div class='sitb-pop-search'>"))
-          # then we have search_inside. I think this always includes 'look', but
-          # we'll test seperate for that. 
-          search_inside= true
-        end
         
-        if (response.include?('<a href="/gp/reader/'))
-          # then we have look inside, not neccesarily search.  
-          look_inside = true
+        
+        # Checking an Amazon JSON url endpoint which can tell us whether
+        # we have search-inside or look-inside
+        client      = HTTPClient.new()
+        client.transparent_gzip_decompression = true
+        client.connect_timeout  = 3
+        client.send_timeout     = 3
+        client.receive_timeout  = 3
+
+        service_url = "http://www.amazon.com/gp/search-inside/service-data"
+        form_vars   = {"method" => "getBookData", "asin" => asin}
+        headers     = proxy_like_headers(request).merge("Accept" => "application/json, text/javascript, */*; q=0.01")
+
+        response    = client.post service_url, form_vars, headers
+        hash        = JSON.parse(response.body)
+
+        if hash["searchable"].to_s == "true"
+          search_inside= true          
         end
+
+        if hash["litbPages"].kind_of?(Array) && hash["litbPages"].length > 0
+          look_inside = true
+        end        
       end
+
+      reader_url = @reader_base_url + asin
 
       if ( @service_types.include?("search_inside") && search_inside )
         request.add_service_response( 
           :service => self,
           :display_text=>@display_name,
-          :url=> inside_base,
+          :url=> reader_url,
           :service_type_value => :search_inside
          )   
       end
@@ -346,7 +355,7 @@ class Amazon < Service
                          
          request.add_service_response(
             :service=>self,
-            :url => inside_base, 
+            :url => reader_url, 
             :asin=>asin,
             :display_text => @display_name,            
             :service_type_value => 'excerpts')
