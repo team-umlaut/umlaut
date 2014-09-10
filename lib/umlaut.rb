@@ -43,8 +43,6 @@ module Umlaut
       # Silence what Rails silenced, UNLESS it looks like
       # it's from Umlaut engine
       Rails.backtrace_cleaner.add_silencer do |line|
-        $stderr.puts "BACKTRACE LINE: ::#{line}#::"
-
         (line !~ Rails::BacktraceCleaner::APP_DIRS_PATTERN) &&
         (line !~ /^#{engine_root_regex}/  ) &&
         (line !~ /^#{engine_name} /)
