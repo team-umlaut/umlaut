@@ -300,7 +300,7 @@ class SectionRenderer
       @responses = {}
       service_type_values.each do |st|
         @responses[st.name] = @umlaut_request.get_service_type(st) 
-      end
+      end      
     end
     @responses
   end
@@ -414,7 +414,7 @@ class SectionRenderer
   # if they've completed without doing so?.         
   def any_services?
     nil != @umlaut_request.dispatched_services.to_a.find do |ds|
-        ! (service_type_values & ds.service.service_types_generated ).empty? 
+        ! (service_type_values & ds.can_generate_service_types ).empty? 
     end
   end
 

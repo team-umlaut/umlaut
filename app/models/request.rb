@@ -342,18 +342,32 @@ class Request < ActiveRecord::Base
   # :refresh=>true will force a trip to the db to get latest values.
   # otherwise, association is used.  
   def get_service_type(svc_type, options = {})    
+
+
     svc_type_obj = (svc_type.kind_of?(ServiceTypeValue)) ? svc_type : ServiceTypeValue[svc_type]
 
-    if ( options[:refresh])
+    responses = if ( options[:refresh])
       ActiveRecord::Base.connection_pool.with_connection do
-        return self.service_responses.where(["service_type_value_name = ?", svc_type_obj.name ]).to_a
+        self.service_responses.where(["service_type_value_name = ?", svc_type_obj.name ]).to_a
       end
     else
       # find on an assoc will go to db, unless we convert it to a plain
       # old array first.      
-      return self.service_responses.to_a.find_all { |response|
+      self.service_responses.to_a.find_all { |response|
         response.service_type_value == svc_type_obj }      
     end
+
+    # Filter out any services with ID's not currently registered in
+    # ServiceStore    
+    (responses, excluded_responses) = responses.partition do |r|
+      ServiceStore.service_definition_for(r.service_id).present?
+    end    
+    if excluded_responses.present?
+      Rails.logger.warn("ServiceResponses skipped for unknown service_ids: " + 
+        excluded_responses.collect {|s| s.service_id}.uniq.join(","))
+    end
+    
+    return responses
   end
   
   

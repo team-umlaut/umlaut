@@ -27,6 +27,19 @@ class DispatchedService < ActiveRecord::Base
     @service ||= ServiceStore.instantiate_service!( self.service_id, request )
   end
 
+  # Calls service.service_type_generated, but cautious of service_id
+  # that is no longer in the ServiceStore
+  #
+  # Note, this means all service types that could possibly be generated
+  # by this service, not those that actually have been
+  def can_generate_service_types
+    if ServiceStore.service_definition_for( self.service_id ) 
+      service.service_types_generated
+    else
+      []
+    end
+  end
+
   # For old-time's sake, true can be used for Succesful
   # and false can be used for FailedTemporary (that keeps
   # previous semantics for false intact). 

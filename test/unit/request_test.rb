@@ -30,4 +30,19 @@ class RequestTest < ActiveSupport::TestCase
 
   end
 
+  test "get_service_type_with_bum_response" do
+    request = fake_umlaut_request("/resolve?title=foo&author=bar")
+    request.add_service_response(
+      :service => Service.new('service_id' => "NO_SUCH", "priority" => 3),      
+      :service_type_value => :highlighted_link
+    )
+    request.add_service_response(
+      :service => ServiceStore.instantiate_service!('DummyService', request),
+      :service_type_value => :highlighted_link
+    )
+
+    assert_length 1, request.get_service_type(:highlighted_link)
+
+  end
+
 end
