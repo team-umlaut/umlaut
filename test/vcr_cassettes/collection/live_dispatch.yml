@@ -271,4 +271,41 @@ http_interactions:
 '
     http_version: 
   recorded_at: Thu, 17 Jul 2014 14:52:33 GMT
+- request:
+    method: get
+    uri: http://recommender.service.exlibrisgroup.com/service/recommender/openurl?ctx_enc=info:ofi/enc:UTF-8&ctx_id=&ctx_tim=2014-09-10T16:44:10-04:00&ctx_ver=Z39.88-2004&req.ip=0.0.0.0&res_dat=format=rss%26source=global%26token=fake%26maxRecords=5%26threshold=50%26baseUrl=/resolve&rfr_id=info:sid/google&rft.atitle=Mechanisms%20of%20changes%20in%20glucose%20metabolism%20and%20bodyweight%20after%20bariatric%20surgery&rft.auinit=S&rft.aulast=Madsbad&rft.date=2014&rft.issn=2213-8587&rft.issue=2&rft.spage=152&rft.title=The%20Lancet%20Diabetes%20%26%20Endocrinology&rft.volume=2&rft_id=info:doi/10.1016/S2213-8587(13)70218-3&rft_val_fmt=info:ofi/fmt:kev:mtx:journal&url_ctx_fmt=info:ofi/fmt:kev:mtx:ctx&url_ver=Z39.88-2004
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 401
+      message: invalid token value
+    headers:
+      Set-Cookie:
+      - JSESSIONID=7AE7898C983AC2DC161A7B79E7DC4205; Path=/
+      Content-Type:
+      - text/html;charset=ISO-8859-1
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Wed, 10 Sep 2014 20:44:10 GMT
+      Server:
+      - bX recommender
+    body:
+      encoding: US-ASCII
+      string: ! "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"
+        \"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<meta http-equiv=\"Content-Type\"
+        content=\"text/html; charset=UTF-8\">\n<title>Error 401</title>\n<link href=\"/service/css/error.css\"
+        rel=\"stylesheet\" type=\"text/css\" />\n</head>\n<body>\n<div id=\"topbarContainer\">\n\t<div
+        id=\"topbar\">\n\t\t<div id=\"logo\" class=\"logo\">\n\t\t\t<a href=\"/service/images/logo.gif\"><img
+        src=\"/service/images/logo.gif\" alt=\"ExLibris Logo\" /></a>\n\t\t</div>\n\t</div>\n</div>\n<br></br><br></br><br></br><br></br><br></br>\n<center><p
+        style=\"padding: 0px 15px 0px 15px\">bX recommender HTTP Error 401 Unauthorized\n</p></center>\n</body>\n</html>"
+    http_version: 
+  recorded_at: Wed, 10 Sep 2014 20:44:11 GMT
 recorded_with: VCR 2.5.0
