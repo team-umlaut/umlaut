@@ -88,17 +88,17 @@ def word_wrap(text, options = {})
 end
 
 def post_install_message!
-  $stdout.puts "\n#{" " * 15}Umlaut installed, now:\n\n"
+  $stdout.puts "\n#{" " * 8}Umlaut installed, now:\n\n"
 
   $stdout.puts  word_wrap("After setting up your 'development' database in `config/databases.yml`, run `rake db:migrate`", 
-      :line_width => 60, :indent => 15)
+      :line_width => 70, :indent => 8)
 
-  $stdout.puts "\n\n"
+  $stdout.puts "\n"
 
   $stdout.puts word_wrap("Then configure your app in `config/umlaut_services.yml` and `app/controllers/umlaut_controller.rb`",
-    :line_width => 60, :indent => 15)
+    :line_width => 70, :indent => 8)
 
-  $stdout.puts "\n\n"
+  $stdout.puts "\n"
 end
 
 
