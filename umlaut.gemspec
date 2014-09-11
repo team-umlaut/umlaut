@@ -20,6 +20,8 @@ Gem::Specification.new do |s|
     f =~ %r{^(\./)?test/dummy/config/database[^ ]*\.yml}
   end
 
+  s.executables  = ["umlaut"]
+
   s.add_dependency "rails", ">= 3.2.12", "< 4.2"
   s.add_dependency "jquery-rails"               # our built in JS uses jquery
 
