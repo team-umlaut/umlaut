@@ -13,6 +13,8 @@ gem_spec_str =
 
 append_file "Gemfile", gem_spec_str
 
+generate "umlaut:remove_turbolinks"
+
 generate "umlaut:install"
   
 # future rails will offer an after_bundle hook we could use for
