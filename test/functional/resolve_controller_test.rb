@@ -4,6 +4,11 @@ require 'test_helper'
 require 'uri'
 require 'rack/utils'
 
+# This test is a mess, and tests a weird setup involving fixtures such that the request
+# tested already has some (but not neccesarily all) services completed and service response
+# objects created.  Testing the resolve controller is hard, with it's threading and it's
+# standard use of services that make HTTP calls. I tried to change this into something
+# reasonable (perhaps using only MockServices), but failed in the time I had available for now.
 #
 # Note on testing the resolve controller: Making a request to ResolveController#index will
 # fire off a background thread (which fires off more bg threads) to dispatch background services. 
@@ -20,6 +25,10 @@ require 'rack/utils'
 # (Do this before making another HTTP interaction which will reset @controller). 
 # Then you can wait on it by `bg_thread.join`. 
 class ResolveControllerTest < ActionController::TestCase
+  # Transactional fixtures are a problem for the multi-threaded stuff
+  # happening. Really, we should stop using fixtures. 
+  self.use_transactional_fixtures = false
+
   extend TestWithCassette
   fixtures :requests, :referents, :referent_values, :dispatched_services, :service_responses
 
