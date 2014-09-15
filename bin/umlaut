@@ -7,18 +7,35 @@
 # template. The rails application template basically just runs the
 # umlaut generator.
 
-# We intentionally do NOT `require 'umlaut'` here, no need to load it all. 
 
-require 'umlaut/version'
+# Add the lib path from the copy of Umlaut we're in to the load path, so we
+# can find umlaut/version. Normally when run from rubygems not neccesary,
+# but helpful in testing running from a checked out copy. 
+umlaut_lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(umlaut_lib) if File.directory?(umlaut_lib) && !$LOAD_PATH.include?(umlaut_lib)
+
+# We intentionally do NOT `require 'umlaut'` here, no need to load it all. 
 
 require 'optparse'
 require 'ostruct'
 require 'shellwords'
 
 def run
-  command = command_line( parse_options! )
+  options = parse_options!
+  command = command_line( options )
 
-  puts "\n#{command}\n\n"
+  puts "\n"
+
+  if options.umlaut_path
+    # Only way to pass arg to the generator is with an ENV variable, needs
+    # to be ABSOLUTE path, cause relative will end up relative to generated
+    # Gemfile, not current command CWD. 
+    expanded = File.expand_path options.umlaut_path
+    ENV["UMLAUT_GEM_PATH"] = expanded
+    puts "UMLAUT_GEM_PATH=#{expanded}"
+  end
+
+  puts "#{command}\n\n"
 
   system command
 
@@ -34,16 +51,16 @@ end
 def parse_options!
   options = OpenStruct.new
   parser = OptionParser.new do |opts|
-    opts.banner = "Usage: umlaut your_app_name"
+    opts.banner = "Usage: umlaut your_app_name [--umlaut-path PATH]"
 
     opts.separator ""
     opts.separator "Umlaut #{Umlaut::VERSION}"
     opts.separator ""
     opts.separator "Specific options:"
 
-    #opts.on("--umlaut-path PATH", "Path to local umlaut to use") do |umlaut_path|
-    #  options.umlaut_path = umlaut_path
-    #end
+    opts.on("--umlaut-path PATH", "Gemfile :path to local umlaut") do |umlaut_path|
+      options.umlaut_path = umlaut_path
+    end
 
     opts.on_tail("-h", "--help", "Show this message") do
       $stderr.puts opts
