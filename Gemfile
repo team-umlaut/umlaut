@@ -17,7 +17,7 @@ group :development, :test do
 
   platforms :ruby do
     gem 'mysql2', ">= 0.3.11"
-    gem 'therubyracer', ">= 0.11"
+    #gem 'therubyracer', ">= 0.11"
   end
 
   platforms :mri do
