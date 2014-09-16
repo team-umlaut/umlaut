@@ -80,17 +80,3 @@ sfx_db:
   # If in doubt set :mock_instance => false
   mock_instance: true
 
-# This is used for SFX search testing.
-# DO NOT SET THIS FOR ANYTHING LIKE A REAL SFX DATABASE.
-sfx4_global:
-  adapter: <%= defined?(JRUBY_VERSION) ? "mysql" : "mysql2" %>
-  database: sfxglb41_test
-  username: root
-  password: 
-  pool: 5
-  encoding: utf8
-  # :mock_instance is used for SFX search testing.
-  # DO NOT SET :mock_instance TO TRUE FOR ANYTHING LIKE A REAL SFX DATABASE.
-  # If in doubt set :mock_instance => false
-  mock_instance: true
-
