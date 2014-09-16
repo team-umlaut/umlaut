@@ -44,23 +44,28 @@ class ActiveSupport::TestCase
     # which should really only be the case for travis-ci.org
     if (sfx4_mock_instance?)
       warn "Loading SFX4 fixtures."
-      sfx4s = ["Global", "Local"]
-      sfx4s.each do |sfx4|
-        # Get the db module associate with this sfx4 instance
-        sfx4_module = Sfx4.const_get(sfx4.to_sym)
-        # Get the connection from the :Base class for each sfx4
-        # Set the path
-        path = "#{File.dirname(__FILE__)}/fixtures/#{sfx4_module.to_s.underscore}"
-        # Get class names hash of table_name => class_name
-        class_names = {}
-        connection = nil
-        fixture_names.collect{|t|t.to_s}.each do |table| 
-          next unless sfx4_module.const_defined?(table.classify)
-          #Find class from table name
-          klass = sfx4_module.const_get table.classify
-          connection ||= klass.connection
-          class_names[klass.table_name.downcase.to_sym] = klass
-        end
+      sfx4s = ["Local"]
+
+      # Get the db module associate with this sfx4 instance
+      # Get the connection from the :Base class for each sfx4
+      # Set the path
+      path = "#{File.dirname(__FILE__)}/fixtures/sfx4/local"
+
+      # Get class names hash of table_name => class_name
+      class_names = {}
+      connection = nil
+
+      fixture_names.collect{|t|t.to_s}.each do |table| 
+
+        require "sfx4/local/#{table}" rescue nil
+
+        next unless Sfx4::Local.const_defined?(table.classify)
+        #Find class from table name
+        klass = Sfx4::Local.const_get table.classify
+        connection ||= klass.connection
+
+        class_names[klass.table_name.downcase.to_sym] = klass
+
         # Table names are just the keys of the class names
         table_names = class_names.keys.collect{|t| t.to_s.upcase}
         # Create and Instantiate Fixtures
@@ -73,9 +78,7 @@ class ActiveSupport::TestCase
   
   def self.sfx4_mock_instance?
     (Sfx4::Local::Base.connection_configured? and
-      Sfx4::Local::Base.connection_config[:mock_instance] and 
-        Sfx4::Global::Base.connection_configured? and
-          Sfx4::Global::Base.connection_config[:mock_instance])
+      Sfx4::Local::Base.connection_config[:mock_instance])
   end
 end
 
