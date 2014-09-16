@@ -50,7 +50,7 @@ The Rails/Umlaut super-concise expert summary is:
 ** it will add the umlaut gem to your app
 ** and it will run umlaut's generator to add a couple more files to your app, equivalent of `$ rails generate umlaut:install`
 
-
+* set up your db in config/databases.yml and run `rake db:migrate`
 * configuration in `./config/umlaut_services.yml` and `./app/controllers/umlaut_controller.rb` 
 
 * Umlaut uses multi-threaded concurrency in a way incompatible with development-mode class reloading. You need cache_classes=false even in dev, the Umlaut install generator changes this for you.
