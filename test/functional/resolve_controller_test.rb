@@ -4,11 +4,12 @@ require 'test_helper'
 require 'uri'
 require 'rack/utils'
 
-# This test is a mess, and tests a weird setup involving fixtures such that the request
-# tested already has some (but not neccesarily all) services completed and service response
-# objects created.  Testing the resolve controller is hard, with it's threading and it's
-# standard use of services that make HTTP calls. I tried to change this into something
-# reasonable (perhaps using only MockServices), but failed in the time I had available for now.
+# This test is kind of a mess. Testing the resolve controller is hard, with it's threading and it's
+# standard use of services that make HTTP calls. 
+#
+# We are not testing a 'live' request, but instead mocking already returned service responses,
+# and testing with DummyServices. Could be refactored further to have the DummyServices
+# actually returning responses instead of loading them into the DB ourselves. 
 #
 # Note on testing the resolve controller: Making a request to ResolveController#index will
 # fire off a background thread (which fires off more bg threads) to dispatch background services. 
@@ -29,9 +30,27 @@ class ResolveControllerTest < ActionController::TestCase
 
   setup do
     @controller = ResolveController.new
+
+    # Set it up with a fake Service Collection, so it will go quick and won't
+    # try to contact any external resources. We mock all our service responses
+    # anyhow.  Right now we can only use ID's that already exist in the umlaut_services.yml
+    # though. 
+    @controller.extend(Module.new do 
+      def create_collection
+        services = {
+          "DummyService" => {
+            "type" => "DummyService",
+            "priority" => 'c'
+          }
+        }        
+        return Collection.new(@user_request, services)
+      end
+      protected :create_collection
+    end)
+
   end
 
-  test_with_cassette("nytimes by issn", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
+  test("nytimes by issn") do
     umlaut_request = nytimes_request!
 
     get :index, "umlaut.request_id" => umlaut_request.id
@@ -132,7 +151,7 @@ class ResolveControllerTest < ActionController::TestCase
     end
   end
 
-  test_with_cassette("POSTed OpenURL redirects to GET", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
+  test("POSTed OpenURL redirects to GET") do
     # an actual post request Gale GREENr was sending us
     pparams = {"genre"=>"article", "sid"=>"gale:GRNR", "__char_set"=>"utf8", "spage"=>"138", "issn"=>"0016-7398", "issue"=>"2", "pid"=>"info:sid/gale:ugnid:balt85423", "date"=>"2010", "aulast"=>"Hedley, Peter J.", "au"=>"Hedley, Peter J.", "atitle"=>"Evolution of the Irrawaddy delta region since 1850.(Report)", "title"=>"The Geographical Journal", "aufirst"=>"Hedley, Peter J.", "volume"=>"176"}
     post(:index, pparams)
@@ -149,7 +168,7 @@ class ResolveControllerTest < ActionController::TestCase
     assert  (redirected_params.to_a - pparams.to_a).empty?, "Redirected params include all of original POSTed params"
   end
 
-  test_with_cassette("fulltext with edition warning", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
+  test("fulltext with edition warning") do
     umlaut_request = fake_umlaut_request("?aufirst=Michael&aulast=Ende&btitle=Momo&genre=book&isbn=038519093X&pub=Doubleday")
     umlaut_request.service_responses.build(
       service_id: "InternetArchive",
@@ -176,7 +195,7 @@ class ResolveControllerTest < ActionController::TestCase
     @controller.bg_thread.join
   end
 
-  test_with_cassette("no holdings", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
+  test("no holdings") do
     umlaut_request = fake_umlaut_request("/?issn=1832-9373&jtitle=Advocate&rfr_id=info%3Asid%2Fsfxit.com%3Acitation&object_id=2670000000017711")
     umlaut_request.service_responses.build(
       service_id: "SFX", 
@@ -203,7 +222,7 @@ class ResolveControllerTest < ActionController::TestCase
     @controller.bg_thread.join
   end
 
-  test_with_cassette("manually entered", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
+  test("manually entered") do
     umlaut_request = fake_umlaut_request("?genre=article&jtitle=Entry+Manual&rfr_id=info%3Asid%2Fsfxit.com%3Acitation")
 
     get(:index, {'umlaut.request_id' => umlaut_request.id})
