@@ -39,15 +39,17 @@ https://github.com/team-umlaut/umlaut/wiki/Installation.
 
 The Rails/Umlaut super-concise expert summary is:
 
-* Rails 3.1+ (but not yet tested with Rails 4), ruby 1.9.3. 
+* Rails 3.2+ (Rails 4.1+ highly recommended, Rails 3's days are numbered), 
+* ruby 1.9.3+ (Consider ruby 2.0 or 2.1, 1.9.3's days are numbered)
 
-* gem 'umlaut'
+* `$ gem install umlaut`
+* Then run the umlaut app generator:  `$ umlaut my_new_app`
+** That will make a new rails app
+** without spring or turbolinks
+** using mysql (sqlite3 does not work for umlaut)
+** it will add the umlaut gem to your app
+** and it will run umlaut's generator to add a couple more files to your app, equivalent of `$ rails generate umlaut:install`
 
-* `bundle install`
-    
-* `$ rails generate umlaut:install`
-
-* mysql database strongly encouraged, sqlite3 probably won't work. 
 
 * configuration in `./config/umlaut_services.yml` and `./app/controllers/umlaut_controller.rb` 
 
@@ -65,7 +67,7 @@ in your application's Gemfile in order to get the described functionality.
 
 ## Developing
 
-Only spotty test coverage, sorry, but we're trying to improve. Don't trust
+Some test coverage not yet complete, but we're trying to improve. Don't trust
 if all tests pass everythings good, but if tests fail, that's an unacceptable
 commit. Try to add tests with new features, although we understand when
 nobody can figure out a good way to test (esp our legacy architecture). 
@@ -89,4 +91,3 @@ https://github.com/team-umlaut/umlaut/
 
 You can join the umlaut listserv at:
 https://groups.google.com/forum/#!forum/umlaut-software
-
