@@ -32,71 +32,7 @@ class ResolveControllerTest < ActionController::TestCase
   end
 
   test_with_cassette("nytimes by issn", :resolve, :match_requests_on => [:method, :uri_without_ctx_tim]) do
-    umlaut_request = fake_umlaut_request("?title=The+New+York+times&issn=0362-4331")
-    # This test was written for a request with some already existing
-    # service responses. It is a weird way to test, but I couldn't untangle it at the moment. 
-    umlaut_request.service_responses.build(
-      service_id: "SFX", 
-      display_text: "EBSCOhost Newspaper Source Plus", 
-      url: "http://search.ebscohost.com/login.aspx?direct=true&db=n5h&scope=site&jn=New+York+Times", 
-      service_data: {:coverage=>"Available from 1985.", }, 
-      service_type_value_name: "fulltext"
-    )
-    umlaut_request.service_responses.build(
-      service_id: "DummyService", 
-      display_text: "Library holding", 
-      url: "http://holding.library.edu/DOCID", 
-      notes: "Some notes.", 
-      service_data: {:title=>"The New York times", :status=>"Check Availability", :display_type=>"journal", :request_url=>"http://request.library.edu/DOCID", :call_number=>"(Call Number)", :collection=>"Library Holding", :collection_str=>"Library Holding", :coverage_str_array=>["Coverage 1", "Coverage 2"], :match_reliability=>"unsure"}, 
-      service_type_value_name: "holding"
-    )
-    umlaut_request.service_responses.build(
-      service_id: "SFX", 
-      display_text: "EBSCOhost Business Abstracts with Full Text", 
-      url: "http://search.ebscohost.com/direct.asp?db=bft&jn=3...",
-      service_data: {:authentication=>"", :source=>"SFX/", :coverage=>"Available from 2011.", :sfx_base_url=>"http://sfx.library.edu/local", :sfx_obj_index=>1, :sfx_target_index=>1, :sfx_request_id=>"2576884", :sfx_target_service_id=>"3450000000000057", :sfx_target_name=>"EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON", :citation_volume=>nil, :citation_issue=>nil, :citation_spage=>nil, :debug_info=>" Target: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON ; SFX object ID: 110975413976006"}, 
-      service_type_value_name: "fulltext"
-    )
-    umlaut_request.service_responses.build(
-      service_id: "EmailExport", 
-      display_text: "Email", 
-      service_data: {:link_supports_ajax_call=>true},
-      service_type_value_name: "export_citation"
-    )
-    umlaut_request.service_responses.build(
-      service_id: "SFX", 
-      display_text: "Ask a Librarian", 
-      url: "http://library.edu/ask", 
-      service_data: {:display_text=>"Ask a Librarian", :url=>"http://library.edu/ask"}, 
-      service_type_value_name: "help"
-    )
-    umlaut_request.service_responses.build(
-      service_id: "SFX",
-      display_text: "EBSCOhost Business Abstracts with Full Text",
-      url: "https://ezproxy.library.edu/login?url=http://searc...",
-      service_data: {:authentication=>"", :source=>"SFX/", :coverage=>"Available from 2011.", :sfx_base_url=>"http://sfx.library.edu/local", :sfx_obj_index=>1, :sfx_target_index=>1, :sfx_request_id=>"2567643", :sfx_target_service_id=>"3450000000000057", :sfx_target_name=>"EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON", :citation_volume=>nil, :citation_issue=>nil, :citation_spage=>nil, :debug_info=>" Target: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON ; SFX object ID: 110975413976006"}, 
-      service_type_value_name: "fulltext"
-    )
-    umlaut_request.service_responses.build(
-      service_id: "Ulrichs", 
-      display_text: "Periodical information", 
-      url: "https://ulrichsweb.serialssolutions.com/api/openur...", 
-      service_type_value_name: "highlighted_link"
-    )
-    umlaut_request.service_responses.build(
-      service_id: "Ulrichs",
-      display_text: "Periodical information",
-      url: "https://ulrichsweb.serialssolutions.com/api/openur...", 
-      service_type_value_name: "highlighted_link"
-    )
-    umlaut_request.service_responses.build(
-      service_id: "SFX", 
-      display_text: "Proquest",
-      url: "http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&c...",
-      service_data: {:display_text=>"Proquest", :url=>"http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=7818"},
-      service_type_value_name: "fulltext"
-    )
-    umlaut_request.save!
+    umlaut_request = nytimes_request!
 
     get :index, "umlaut.request_id" => umlaut_request.id
 
@@ -282,5 +218,74 @@ class ResolveControllerTest < ActionController::TestCase
 
     # Wait on all bg services
     @controller.bg_thread.join
+  end
+
+  def nytimes_request!
+    umlaut_request = fake_umlaut_request("?title=The+New+York+times&issn=0362-4331")
+
+    umlaut_request.service_responses.build(
+      service_id: "SFX", 
+      display_text: "EBSCOhost Newspaper Source Plus", 
+      url: "http://search.ebscohost.com/login.aspx?direct=true&db=n5h&scope=site&jn=New+York+Times", 
+      service_data: {:coverage=>"Available from 1985.", }, 
+      service_type_value_name: "fulltext"
+    )
+    umlaut_request.service_responses.build(
+      service_id: "DummyService", 
+      display_text: "Library holding", 
+      url: "http://holding.library.edu/DOCID", 
+      notes: "Some notes.", 
+      service_data: {:title=>"The New York times", :status=>"Check Availability", :display_type=>"journal", :request_url=>"http://request.library.edu/DOCID", :call_number=>"(Call Number)", :collection=>"Library Holding", :collection_str=>"Library Holding", :coverage_str_array=>["Coverage 1", "Coverage 2"], :match_reliability=>"unsure"}, 
+      service_type_value_name: "holding"
+    )
+    umlaut_request.service_responses.build(
+      service_id: "SFX", 
+      display_text: "EBSCOhost Business Abstracts with Full Text", 
+      url: "http://search.ebscohost.com/direct.asp?db=bft&jn=3...",
+      service_data: {:authentication=>"", :source=>"SFX/", :coverage=>"Available from 2011.", :sfx_base_url=>"http://sfx.library.edu/local", :sfx_obj_index=>1, :sfx_target_index=>1, :sfx_request_id=>"2576884", :sfx_target_service_id=>"3450000000000057", :sfx_target_name=>"EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON", :citation_volume=>nil, :citation_issue=>nil, :citation_spage=>nil, :debug_info=>" Target: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON ; SFX object ID: 110975413976006"}, 
+      service_type_value_name: "fulltext"
+    )
+    umlaut_request.service_responses.build(
+      service_id: "EmailExport", 
+      display_text: "Email", 
+      service_data: {:link_supports_ajax_call=>true},
+      service_type_value_name: "export_citation"
+    )
+    umlaut_request.service_responses.build(
+      service_id: "SFX", 
+      display_text: "Ask a Librarian", 
+      url: "http://library.edu/ask", 
+      service_data: {:display_text=>"Ask a Librarian", :url=>"http://library.edu/ask"}, 
+      service_type_value_name: "help"
+    )
+    umlaut_request.service_responses.build(
+      service_id: "SFX",
+      display_text: "EBSCOhost Business Abstracts with Full Text",
+      url: "https://ezproxy.library.edu/login?url=http://searc...",
+      service_data: {:authentication=>"", :source=>"SFX/", :coverage=>"Available from 2011.", :sfx_base_url=>"http://sfx.library.edu/local", :sfx_obj_index=>1, :sfx_target_index=>1, :sfx_request_id=>"2567643", :sfx_target_service_id=>"3450000000000057", :sfx_target_name=>"EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON", :citation_volume=>nil, :citation_issue=>nil, :citation_spage=>nil, :debug_info=>" Target: EBSCOHOST_BUSINESS_ABSTRACTS_FULL_TEXT_WILSON ; SFX object ID: 110975413976006"}, 
+      service_type_value_name: "fulltext"
+    )
+    umlaut_request.service_responses.build(
+      service_id: "Ulrichs", 
+      display_text: "Periodical information", 
+      url: "https://ulrichsweb.serialssolutions.com/api/openur...", 
+      service_type_value_name: "highlighted_link"
+    )
+    umlaut_request.service_responses.build(
+      service_id: "Ulrichs",
+      display_text: "Periodical information",
+      url: "https://ulrichsweb.serialssolutions.com/api/openur...", 
+      service_type_value_name: "highlighted_link"
+    )
+    umlaut_request.service_responses.build(
+      service_id: "SFX", 
+      display_text: "Proquest",
+      url: "http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&c...",
+      service_data: {:display_text=>"Proquest", :url=>"http://proquest.umi.com/pqdweb?RQT=318&VName=PQD&clientid=9269&pmid=7818"},
+      service_type_value_name: "fulltext"
+    )
+    umlaut_request.save!
+
+    return umlaut_request
   end
 end
