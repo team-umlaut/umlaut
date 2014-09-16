@@ -15,6 +15,7 @@ umlaut_lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
 $LOAD_PATH.unshift(umlaut_lib) if File.directory?(umlaut_lib) && !$LOAD_PATH.include?(umlaut_lib)
 
 # We intentionally do NOT `require 'umlaut'` here, no need to load it all. 
+require 'umlaut/version'
 
 require 'optparse'
 require 'ostruct'
