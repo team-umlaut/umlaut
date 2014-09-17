@@ -1,4 +1,5 @@
 require 'cron_tab' # for understanding CronTab format for expiring responses.
+require 'confstruct'
 
 # A Collection object encapsulates a given UmlautRequest, and a given
 # list of Umlaut services that should be run off that request.
