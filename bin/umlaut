@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+
 # This is a command line executable installed as part of the umlaut gem. 
 
 # All it does is install a new umlaut rails app, by simply running
@@ -14,12 +15,16 @@
 umlaut_lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
 $LOAD_PATH.unshift(umlaut_lib) if File.directory?(umlaut_lib) && !$LOAD_PATH.include?(umlaut_lib)
 
-# We intentionally do NOT `require 'umlaut'` here, no need to load it all. 
-require 'umlaut/version'
 
 require 'optparse'
 require 'ostruct'
 require 'shellwords'
+
+
+# We intentionally do NOT `require 'umlaut'` here, no need to load it all, but
+# we need the version and RAILS_COMPAT_SPEC
+require 'umlaut/version'
+
 
 def run
   options = parse_options!
@@ -46,7 +51,7 @@ end
 def command_line(options)
   umlaut_template_path = File.expand_path(File.dirname(__FILE__) + '/../lib/generators/umlaut_app_template.rb')
 
-  return "rails new -d mysql --skip-spring #{options.app_path} -m #{umlaut_template_path}"
+  return "rails _#{options.rails_version}_ new -d mysql --skip-spring #{options.app_path} -m #{umlaut_template_path}"
 end
 
 def parse_options!
@@ -89,6 +94,12 @@ def parse_options!
     exit 1
   end  
 
+  # Trick bundler into telling us the most recent installed
+  # version of Rails compatible with this version of Umlaut
+  gem 'rails', *Umlaut::RAILS_COMPAT_SPEC
+  require 'rails/version'
+  options.rails_version = Rails::VERSION::STRING
+
   return options
 end
 
@@ -118,6 +129,7 @@ def post_install_message!
 
   $stdout.puts "\n"
 end
+
 
 
 run

@@ -22,7 +22,9 @@ Gem::Specification.new do |s|
 
   s.executables  = ["umlaut"]
 
-  s.add_dependency "rails", ">= 3.2.12", "< 4.2"
+  # We keep our rails compatibility in a constant in umlaut/version.rb,
+  # so we can use it in our app generator too. 
+  s.add_dependency "rails", *Umlaut::RAILS_COMPAT_SPEC
   s.add_dependency "jquery-rails"               # our built in JS uses jquery
 
   # nokogiri needs to be on or greater than version 1.5.3:
