@@ -17,7 +17,10 @@ group :development, :test do
 
   platforms :ruby do
     gem 'mysql2', ">= 0.3.11"
-    gem 'therubyracer', ">= 0.11"
+    # the ruby racer needed for running app tests on platforms
+    # without javascript runtime found. 0.12 is having a hard
+    # time installing on my OSX, 0.11.x is good enough for these purposes. 
+    gem 'therubyracer', "~> 0.11.0"
   end
 
   platforms :mri do
