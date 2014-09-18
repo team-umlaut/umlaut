@@ -14,7 +14,7 @@
 
         <div class="search-inside-source form-group">
             <%=t 'umlaut.display_sections.search_inside.via' %>        
-            <% if false && search_providers.length > 1 %>
+            <% if search_providers.length > 1 %>
               <%= select_tag("id", options_for_select(search_providers.collect {|st| [st.view_data[:display_text], st.id]}), 
                               :class =>"form-control id") %>
             <% else %>
