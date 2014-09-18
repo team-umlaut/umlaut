@@ -6,6 +6,8 @@
 [![Coverage Status](https://coveralls.io/repos/team-umlaut/umlaut/badge.png?branch=master)](https://coveralls.io/r/team-umlaut/umlaut)
 <!--[![Security Status](http://rails-brakeman.com/team-umlaut/umlaut.png)](http://rails-brakeman.com/team-umlaut/umlaut)-->
 
+(Umlaut 4.0.0.beta1 is out, and this README refers to Umlaut 4.x, and we recommend starting with Umlaut 4.x even though it's only in beta. Install with `gem install umlaut --pre`)
+
 Umlaut is software for libraries (the kind with books). 
 
 It could be described as a front-end layer on top of an existing OpenURL 
