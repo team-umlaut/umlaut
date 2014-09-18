@@ -14,8 +14,6 @@ module UmlautConfigurable
     class_attribute :umlaut_config
     helper_method :umlaut_config
     self.umlaut_config = Confstruct::Configuration.new
-        
-    
   end
    
 
@@ -113,7 +111,7 @@ module UmlautConfigurable
       
       # How many seconds between updates of the background updater for background
       # services?
-      poll_wait_seconds 3
+      poll_wait_seconds 2.2
       # The FIRST AJAX callback for bg tasks should be much quicker. So we
       # get any bg tasks that executed nearly instantaneously, and on page
       # refresh when bg is really all loaded on back-end, but still needs JS to 
