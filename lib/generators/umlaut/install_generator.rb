@@ -11,17 +11,17 @@ module Umlaut
     
     def config_cache_classes
       guarded(:config_cache_classes) do
-        /^((\s*)config\.cache_classes +\= +false\s*)$/
-        gsub_file("config/environments/development.rb", /^(\s*)config\.cache_classes +\= +false\s*$/) do |match|
+        
+        gsub_file("config/environments/development.rb", /^(\s*)config\.eager_load *\= *false\s*$/) do |match|
           # for some reason we can't make access to $1 in here from the above
           # regexp work, so we need to match again
           match =~ /^(\s*)/        
           <<-EOS
 #{$1}#
-#{$1}# UMLAUT: Umlaut's use of threading is not compatible with class
-#{$1}# reloading, even in development. Umlaut requires true here.
-#{$1}# Rails 3.2 _might_ let you get away with false when it comes out.
-#{$1}config.cache_classes = true
+#{$1}# UMLAUT: Umlaut's use of threading makes Rails dev-mode class reloading tricky
+#{$1}# It seems to be be mostly okay with cache_classes=false AND eager_load=true
+#{$1}# but beware of editing files while background requests are running. 
+#{$1}config.eager_loading = true
             EOS
         end
       end
