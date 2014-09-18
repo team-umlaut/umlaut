@@ -204,7 +204,7 @@ class Referent < ActiveRecord::Base
 
   def add_identifier(id)
     unless ( identifiers.find{|i| i == id}  )
-      Referent.with_connection do 
+      Referent.connection_pool.with_connection do 
         self.referent_values.create(:key_name => 'identifier', :value => id, :normalized_value => ReferentValue.normalize(id), :metadata => false, :private_data => false).save!            
       end
     end

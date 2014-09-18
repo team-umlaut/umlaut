@@ -28,6 +28,14 @@ class ReferentTest < ActiveSupport::TestCase
     assert_equal "new title", rvs.first.value
   end
 
+  def test_add_identifier
+    referent = Referent.new
+    referent.save
+
+    referent.add_identifier("urn:isbn:123")
+    assert referent.identifiers.any? { |i| i == "urn:isbn:123" }
+  end
+
   def test_create_by_context_object
     url = "url_ver=Z39.88-2004&url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&ctx_ver=Z39.88-2004&ctx_tim=2014-09-03T09%3A56%3A22-04%3A00&ctx_id=&ctx_enc=info%3Aofi%2Fenc%3AUTF-8&rft.genre=article&rft.au=Chen%2C+Yu-Hui&rft.date=2009-05-01&rft.volume=60&rft.issue=5&rft.spage=953&rft.jtitle=Journal+of+the+American+Society+for+Information+Science+%26+Technology&rft.issn=15322882&rft.pub=Wiley-Blackwell&rft.atitle=An+exploration+into+the+practices+of+library+Web+usability+in+ARL+academic+libraries.&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&rft_id=info%3Adoi%2F10.1002%2Fasi.21032&rfr_id=http%3A%2F%2Fcatalyst.library.jhu.edu%2Fsearch%2Farticles"
     co  = OpenURL::ContextObject.new_from_kev(url)    
