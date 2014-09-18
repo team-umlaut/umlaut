@@ -44,8 +44,8 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "single_test", "~> 0.5.1"
   s.add_development_dependency "uglifier", "~> 1.3"
-  s.add_development_dependency "vcr", "~> 2.5.0"
-  s.add_development_dependency "webmock", "~> 1.11.0"
+  s.add_development_dependency "vcr", "~> 2.9"
+  s.add_development_dependency "webmock", "~> 1.18"
   # We don't specify a version right now for minitest, cause rails 4.0 and 4.1 need incompatible
   # versions, argh. 
   s.add_development_dependency "minitest"
