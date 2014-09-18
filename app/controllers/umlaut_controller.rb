@@ -1,5 +1,4 @@
 require 'umlaut'
-require 'umlaut_configurable'
 
 # Superclass for all Umlaut controllers, to hold default behavior,
 # also hold global configuration. It's a superclass rather than a module,
