@@ -64,8 +64,12 @@ def parse_options!
     opts.separator ""
     opts.separator "Specific options:"
 
-    opts.on("--umlaut-path PATH", "Gemfile :path to local umlaut") do |umlaut_path|
+    opts.on("-u", "--umlaut-path PATH", "Gemfile :path to local umlaut") do |umlaut_path|
       options.umlaut_path = umlaut_path
+    end
+
+    opts.on("-r", "--rails-version VERSION", "Rails version to use to install") do |rails_version|
+      options.rails_version = rails_version
     end
 
     opts.on_tail("-h", "--help", "Show this message") do
@@ -76,7 +80,7 @@ def parse_options!
 
   begin
     parser.parse!
-  rescue OptionParser::InvalidOption => e
+  rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
     $stderr.puts "\n#{e.message}\n\n"
     $stderr.puts parser
     exit 1
@@ -94,11 +98,13 @@ def parse_options!
     exit 1
   end  
 
-  # Trick bundler into telling us the most recent installed
-  # version of Rails compatible with this version of Umlaut
-  gem 'rails', *Umlaut::RAILS_COMPAT_SPEC
-  require 'rails/version'
-  options.rails_version = Rails::VERSION::STRING
+  unless options.rails_version 
+    # Trick bundler into telling us the most recent installed
+    # version of Rails compatible with this version of Umlaut
+    gem 'rails', *Umlaut::RAILS_COMPAT_SPEC
+    require 'rails/version'
+    options.rails_version = Rails::VERSION::STRING
+  end
 
   return options
 end
