@@ -16,8 +16,7 @@ require 'umlaut_configurable'
 # methods from Umlaut::ControllerBehavior if desired. Or add
 # additional helpers to over-ride Umlaut helpers if needed. 
 class UmlautController < ApplicationController
-    include Umlaut::ControllerBehavior
-        
+    include Umlaut::ControllerBehavior    
     # Some suggested configuration. More config keys
     # are available, see UmlautConfigurable.set_default_configuration!
     # implementation for list. Configuration actually uses
@@ -60,6 +59,9 @@ class UmlautController < ApplicationController
       # How many seconds between updates of the background updater for background
       # services?
       # poll_wait_seconds 4
+
+      # uncomment this line to show localisation selector
+      show_localization_selector true
       
       # Configuration for the 'search' functions -- A-Z lookup
       # and citation entry. 

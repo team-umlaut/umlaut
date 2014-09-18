@@ -2,7 +2,7 @@
 http_interactions: 
   - request: 
       method: get
-      uri: http://sfx.library.edu/local?ctx_enc=info:ofi/enc:UTF-8&ctx_id=&ctx_tim=2012-11-29T12:35:22-05:00&ctx_ver=Z39.88-2004&rft.coden=NYTIAO&rft.eissn=1553-8095&rft.genre=journal&rft.issn=0362-4331&rft.jtitle=The%20New%20York%20times&rft.language=eng&rft.lccn=sn%2078004456%20&rft.object_id=110975413976006&rft.object_type=NEWSPAPER&rft.place=New-York%20%5BN.Y.%5D&rft.pub=%5BH.J.%20Raymond%20%26%20Co.%5D&rft.stitle=NEW%20YORK%20TIMES&rft.title=The%20New%20York%20times&rft_val_fmt=info:ofi/fmt:kev:mtx:journal&sfx.ignore_date_threshold=1&sfx.response_type=multi_obj_xml&sfx.show_availability=1&url_ctx_fmt=info:ofi/fmt:kev:mtx:ctx&url_ver=Z39.88-2004
+      uri: http://sfx.library.edu/local?ctx_enc=info:ofi/enc:UTF-8&ctx_id=&ctx_tim=2014-08-28T14:18:32-04:00&ctx_ver=Z39.88-2004&req.ip=0.0.0.0&rft.genre=journal&rft.issn=03624331&rft.jtitle=The%20New%20York%20times&rft_val_fmt=info:ofi/fmt:kev:mtx:journal&sfx.ignore_date_threshold=1&sfx.response_type=multi_obj_xml&sfx.show_availability=1&url_ctx_fmt=info:ofi/fmt:kev:mtx:ctx&url_ver=Z39.88-2004
       body: 
         string: ""
       headers: 

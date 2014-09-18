@@ -4,6 +4,17 @@ require 'nokogiri'
 class ListWithLimitTest < ActionView::TestCase
   include ResolveHelper
   
+  # Have to override url_for to supply a default controller, so
+  # routing won't complain for our tests -- we don't actually
+  # want/need to test routing here, we just need to stop routing
+  # from complaining. This is very hacky yes. 
+  def url_for(*args)
+    if args.first.kind_of? Hash
+      args.first[:controller] ||= "resolve"
+    end
+    super
+  end
+
   def setup
     @user_request = Request.new(:id => 999999)
   end

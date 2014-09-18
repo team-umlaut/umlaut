@@ -18,6 +18,7 @@ class AjaxExport < Service
       
     request.add_service_response(:service=>self, 
       :display_text => @display_text,
+      :display_text_i18n => @display_text_i18n,
       :link_supports_ajax_call => true,
       :notes=> @note,
       :service_type_value => 'export_citation'  )

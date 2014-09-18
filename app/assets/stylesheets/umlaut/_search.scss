@@ -2,13 +2,24 @@
   padding: 10px;
   border: 1px solid $umlautSearchFormBorderColor;
   background-color: $umlautSearchFormBackgroundColor;
-  margin-top: $baseLineHeight;
-  margin-bottom: $baseLineHeight;
-  @include border-radius($baseBorderRadius);
+  margin-top: $line-height-computed;
+  margin-bottom: $line-height-computed;
+  border-radius: $border-radius-base;
   legend {
     border-color: $umlautSearchFormBorderColor;
   }
-  .row-fluid {
-    margin-bottom: $baseLineHeight;
+  .row {
+    margin-bottom: $line-height-computed;
+  }
+
+  .form-control.year, .form-control.month, .form-control.day, .form-control.doi {
+    width: 90px;
+  }
+  label {
+    font-weight: normal;
+  }
+
+  input.title_search {
+    width: 20em;
   }
 }

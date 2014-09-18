@@ -31,7 +31,7 @@ $umlautUnavailableColor:                    #FF3E00 !default; // Unavailable Col
 // container padding used for page margins/gutters and between columns. 
 // at large screens, sometimes *2. 
 $umlautContainerPadding:    20px !default;
-$umlautContainerMaxWidth:		1100px !default;
+$umlautContainerMaxWidth:		1100px + ($umlautContainerPadding * 4)!default;
 // important that umlautIndent is exactly enough to indent past umlaut
 // list item icons in hanging indents
 $umlautIndent:  														20px !default;  
@@ -49,7 +49,7 @@ $umlautResultItemBackgroundColor:						$umlautAltBackgroundColor !default;
 $umlautResultItemBorderColor:								$umlautBorderColor !default;
 
 // A-Z List input -- actual list of A,B..Z buttons
-$umlautAzLinkColor:                         $linkColor !default;
+$umlautAzLinkColor:                         $link-color !default;
 $umlautAzBorderColor:                       $umlautBorderColor !default;
 $umlautAzBackgroundColor:                   $umlautBackgroundColor !default;
 $umlautAzHoverBackgroundColor:              $umlautAltBackgroundColor !default;

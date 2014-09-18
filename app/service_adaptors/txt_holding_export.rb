@@ -3,13 +3,14 @@
 class TxtHoldingExport < AjaxExport
 
   def initialize(config)
-    @display_text = "Send to phone"
+    @display_text = 'Send to phone'
+    @display_text_i18n = "display_text"
     @form_controller = "export_email"
     @form_action = "txt"
     # providers is a hash of:
     # user-presentable-string => hostname for email to txt service. 
     @providers = {
-     "Cingular/AT&T" => "cingularme.com",
+     "AT&T" => "txt.att.net",
      "Nextel" => "messaging.nextel.com",     
      "Sprint" => "messaging.sprintpcs.com",
      "T-Mobile"=> "tmomail.net",

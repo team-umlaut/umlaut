@@ -253,7 +253,19 @@ module UmlautConfigurable
           list
         end
       end
-      
+
+      ##########
+      #
+      # Names of these sections can be given in Rails i18n, under key
+      #   umlaut.display_sections.#{section_div_id}.title
+      # If not given there, will be automatically calculated from
+      # the display_name of the ServiceType Value included. 
+      #
+      # Optional sub-head prompts can also be given in i18n, under
+      #   umlaut.display_sections.#{section_div_id}.prompt
+      #
+      ###########
+
       add_resolve_sections! do
         div_id "cover_image"
         partial "cover_image"
@@ -264,7 +276,6 @@ module UmlautConfigurable
             
       add_resolve_sections! do
         div_id "fulltext"    
-        section_title "Online Access"
         html_area :main
         partial :fulltext
         show_partial_only true
@@ -279,7 +290,6 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "excerpts"
-        section_prompt "A limited preview which may include table of contents, index, and other selected pages."
         html_area :main
         list_visible_limit 5
         visibility :responses_exist
@@ -293,7 +303,6 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "holding"
-        section_title ServiceTypeValue[:holding].display_name_pluralize
         html_area :main
         partial 'holding'
         service_type_values ["holding","holding_search"]
@@ -301,7 +310,6 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "document_delivery"
-        section_title "Request a copy from Inter-Library Loan"
         html_area :main
         visibility :responses_exist
         #bg_update false
@@ -321,7 +329,6 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "help"
-        section_title "Question? Problem? Contact:"
         html_area :sidebar
         bg_update false
         partial "help"
@@ -345,15 +352,12 @@ module UmlautConfigurable
         div_id "export_citation"
         html_area :sidebar
         visibility :in_progress
-        item_name_plural "Export tools"
       end
       
       add_resolve_sections! do
         div_id "related_items"
         html_area :sidebar
         partial "related_items"
-        section_title "More like this"
-        item_name_plural "Related Items"
         # custom visibility, show it for item-level cites,
         # or if we actually have some
         visibility(  lambda do |renderer|
@@ -366,7 +370,6 @@ module UmlautConfigurable
       
       add_resolve_sections! do
         div_id "highlighted_link"
-        section_title "See also"
         html_area :sidebar
         visibility :in_progress
         partial_locals( :show_source => true )

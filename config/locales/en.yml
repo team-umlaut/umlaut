@@ -1,5 +1,228 @@
-en:
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:    
+  language_name: English  
   umlaut:
-    coverage_summary:
-      open_start: "first"
-      open_end: "latest"
+    citation:
+      published: "Published"
+      published_in: "Published in"
+      title_label: Title
+      author_label: Author
+      author:
+        last: Last Name
+        first: First Name
+      title_of_x: "%{x} Title"
+      volume: Volume
+      volume_abbr: Vol
+      issue: Issue
+      issue_abbr: Iss
+      page: Page
+      page_abbr: "p."
+      start_page: Start Page
+      publisher: Publisher
+      issn: ISSN
+      isbn: ISBN
+      doi: DOI
+      pmid: PMID
+      genre:
+        # Keys are all valid OpenURL 'genre' values from book, journal, or
+        # dissertation formats -- plus the formats 'book', 'article', 'dissertation'
+        # themselves. Map to user-displayable name of this type of thing. 
+        book: Book
+        bookitem: Book Chapter
+        conference: Conference
+        proceeding: Proceeding
+        report: Report
+        document: Document
+        journal: Journal
+        issue: Issue
+        article: Article
+        preprint: Pre-print
+        dissertation: Dissertation        
+        unknown: "" # Intentionally left blank, no label
+      coverage_summary:
+        open_start: "first"
+        open_end: "latest"
+    search:
+      journals_page_name: Journals
+      journals_page_subhead: "Looking for a specific journal or article"
+      journals_instructions: "Enter the journal title or the ISSN. If you have both the journal title and ISSN, use the ISSN."
+      search_optional_info: 'Optional information - Enter as much as you know of the following:'
+      browse_by_jtitle: 'Browse by Journal Title: %{query}'
+      journal_title: Journal Title
+      contains: contains
+      begins_with: begins with
+      exact_match: exact match
+      date_label: Date
+      doi_or_pubmed_label: DOI or Pubmed Identifier
+      action_label: Search
+      having_trouble_heading: Having Trouble?
+      having_trouble_message: "Try entering less information about your article. If one piece of information is wrong, it could be causing the problem."
+      more_search_options: More search options
+      showing_results: "Showing results %{start} through %{until} of %{total}"
+      previous: Previous
+      next: Next
+      note: 'Note'
+      other_titles_might: "Alternate titles might have matched your search terms"
+      browse_other: "Other"
+    resolve:
+      not_available: Not Available
+      from_service: from
+      edition_info: Edition information
+      maybe_alt_edition: May be alternate edition
+      not_found_warning: "Warning: %{app_name} does not know about a %{resource_type} with this name. Please check your entry."
+      background_load:
+        # 'initial' vs 'more': Different messages depending on whether some items are
+        # already loaded (maybe already in the foreground)
+        load_initial: "Load %{x}."
+        load_more: "Load more %{x}."
+        progress_initial: "Searching for %{x}"
+        progress_more: "Searching for more %{x}"
+    error:
+      header: "Sorry, something has gone wrong."
+      try_one_of_options: 'Please try one of the following options'
+      try_reenter_url: If you entered this URL yourself, please check your URL for errors.
+      try_again_prompt_html:  'Sometimes it works to just %{link}. It may be a temporary problem which will be resolved if you come back later.'
+      try_again: try again
+      to_report_a_problem_html: "For more help, or to report a problem, please feel free to %{contact_link}"
+      contact_us_for_help: contact us for help
+      try_backup_resolver: try your request against backup link resolver
+      if_doesnt_work_html: "If that doesn't work, %{link}"
+      service_errors_title: 'Some content may not be included due to errors:'
+      services_missing: 'Some'
+      technical_error_info: Technical Error Information
+    misc:
+      powered_by_umlaut: Powered by
+      credits_html: "Using services from %{credits} and others"
+      loading: loading
+      close: close
+    permalink:
+      name: Short link
+      back: Back
+    holding:
+      more_info: More info
+      request: Request
+    # Names and optionally sub-head prompts for umlaut display sections, 
+    # keyed by section id. If not given in i18n here, the name will be 
+    # automatically taken from the display_name of the first ServiceTypeValue
+    # included, if any. 
+    #
+    # There may be additional keys used custom to that section as well. 
+    display_sections:
+      fulltext:
+        title: Online Access
+      document_delivery:
+        title: Request a copy from Inter-Library Loan
+      help:
+        title: 'Question? Problem? Contact:'
+      related_items:
+        title: More like this
+        load_more_item_name: related items
+      highlighted_link:
+        title: See also
+      excerpts:
+        prompt: "A limited preview which may include table of contents, index, and other selected pages."
+      search_inside:
+        search_inside_this_x: "Search inside this %{x}"
+        via: via
+        progress_message: Looking for tools to search inside this
+        action_label: search
+    services:
+      worldcat:
+        display_text: Find in other libraries
+      txt_holding_export:
+        display_text: Send to phone
+        header: Send the title and location of an item to your mobile phone
+        enter_your_number: 'Your mobile phone number'
+        number_format_description: '10 digit US cell phone number'
+        select_provider: 'Select your provider'
+        choose_item_to_send: 'Choose the item you want to send'
+        charges_may_apply: 'Note: charges may apply if your service plan does not cover unlimited texting'
+        send_action: Send
+        text_sent: "Sent to %{number}"
+      email_export:
+        display_text: Email
+        header: Email the title and locations
+        enter_your_email: 'Your Email Address'
+        send_action: Send
+      ulrichs_link: 
+        display_text: Periodical information
+      hathi_trust:
+        search_inside_some_vols: Search inside some volumes
+        note_for_single_vol: "Digitized from %{source}"
+        note_for_multi_vol: "Some volumes of: %{title}"
+      google_scholar_link:
+        display_text: Look for article on Google Scholar
+        notes_html: "This article <b>may</b> be available on the public web, look for links labelled <span class='gscholar_example'>[html]</span> or <span class='gscholar_example'>[pdf]</span>"
+      google_book_search:
+        book_information: "Book information"
+      amazon:
+        display_text: "Amazon's page"
+        description: "Description from Amazon.com"
+    # Names to call various types of service response objects. 
+    # We use standard Rails i18n pluralization functionality, with
+    # keys for 'one' and 'other' -- for English at least 'other' is
+    # plural form, other languages may sometimes require more plural form
+    # variants, but Umlaut at present may only use the plural form for 10 or
+    # more items anyhow. 
+    service_type_names:
+      default: 
+        one: result
+        other: results
+      fulltext:
+        one: electronic version
+        other: electronic versions
+      holding:
+        one: copy in library
+        other: copies in library
+      document_delivery:
+        one: request service
+        other: request services
+      help:
+        one: help link
+        other: help links
+      abstract:
+        one: abstract
+        other: abstracts
+      table_of_contents:
+        one: table of contents
+        other: tables of contents
+      cover_image:
+        one: cover image
+        other: cover images
+      # "See also" links to known destinations, like Amazon or OCLC
+      highlighted_link:
+        one: see also link
+        other: see also links
+      # Link to search holdings, generally with a count given, ie "5 possible matches". 
+      holding_search:
+        one: copy in library
+        other: copies in library
+      audio:
+        one: digital audio
+        other: digital audio
+      # A search inside tool, presented with a search box for user. 
+      search_inside:
+        one: search inside tool
+        other: search inside tools
+      referent_enhance:
+        one: more information link
+        other: more information links
+      excerpts:
+        one: limited excerpt
+        other: limited excerpts
+      cited_by:
+        one: article that cites this
+        other: articles that cite this
+      # Used by ISI and Scopus at present. Maybe more later. 
+      # "More like this" links. 
+      similar:
+        one: "similar article"
+        other: "similar articles"
+      export_citation:
+        one: export tool
+        other: export tools
+      primo_source:
+        one: primo source
+        other: primo sources

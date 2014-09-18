@@ -4,7 +4,6 @@ require 'rails/all'
 
 Bundler.require
 require "umlaut"
-require "sunspot_rails"
 
 require 'jquery-rails' # Oddly neccesary in our dummy app see http://www.ruby-forum.com/topic/2484569#1021529
 
@@ -43,6 +42,8 @@ module Dummy
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    config.secret_key_base = "adfadf"
   end
 end
 

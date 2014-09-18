@@ -31,7 +31,7 @@ class SearchController < UmlautController
   @@az_batch_size = 20
   @@autocomplete_limit = 15
 
-  layout :layout_name, :except => [ :opensearch, :opensearch_description ]
+  layout :layout_name
 
   before_filter :normalize_params
 
@@ -41,7 +41,7 @@ class SearchController < UmlautController
   end
 
   def index
-    @page_title = "Journals"
+    @page_title = t('umlaut.search.journals_page_name')
     journals()
   end
 
@@ -120,8 +120,7 @@ class SearchController < UmlautController
     if @end_result_num > @hits
       @end_result_num = @hits
     end
-    # TODO: Make page titles configurable
-    @page_title = "Browse by Journal Title: #{params['id']}"
+    @page_title = t('umlaut.search.browse_by_jtitle', :query => params['id'])
     # Use our ordinary search displayer to display
     # It'll notice the action and do just a bit of special stuff.
     render(:template => "search/journal_search")
@@ -143,10 +142,6 @@ class SearchController < UmlautController
       end
    end
    render :text => @titles.to_json, :content_type => "application/json"
-  end
-
-  def opensearch_description
-    @headers['Content-Type'] = 'application/opensearchdescription+xml'
   end
 
   protected

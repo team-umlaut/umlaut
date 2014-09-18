@@ -62,11 +62,27 @@ class ServiceWave
           
           begin
             local_request = Request.connection_pool.with_connection do
-              # pre-load all relationships so no ActiveRecord activity will be
-              # needed later to see em. 
-              Request.includes(:referent, :service_responses, :dispatched_services).find(request_id)
+              # We are attempting to pre-load all relationships, both for efficiency,
+              # and so our thread can use them all without needing to checkout
+              # an ActiveRecord connection. 
+              req = Request.includes({:referent => :referent_values}, :service_responses, :dispatched_services).find(request_id)
+
+              # It turns out even though referent.referent_values is loaded from the db, on first
+              # access Rails will still access #connection, triggering a checkout. We force
+              # that to happen here, in our with_connection, so it won't happen later. 
+              #
+              # Yeah, this is a hacky mess, ActiveRecord isn't happy using it the way we are. 
+              # Should we just surround all of handle_wrapper in a with_connection checkout?
+              # Maybe. But it would require more connections in the pool to have those
+              # longer checkouts. 
+              req.referent.referent_values
+              req.service_responses
+              req.dispatched_services
+
+              req
             end
-            
+
+              
   
             if prepare_dispatch!(local_request, local_service)
               local_service.handle_wrapper(local_request)
@@ -75,7 +91,7 @@ class ServiceWave
             end
             
            
-          rescue Exception => e
+          rescue StandardError => e
             # We may not be able to access ActiveRecord because it may
             # have been an AR connection error, perhaps out of connections
             # in the pool. So log and record in non-AR ways. 
@@ -85,10 +101,15 @@ class ServiceWave
             
             # Log it too, although experience shows it may never make it to the 
             # log for mysterious reasons. 
-            Rails.logger.error(TermColor.color("Umlaut: Threaded service raised exception.", :red, true) + " Service: #{service.service_id}, #{e.class} #{e.message}. Backtrace:\n  #{e.backtrace.join("\n  ")}")
+            log_msg = TermColor.color("Umlaut: Threaded service raised exception.", :red, true) + " Service: #{service.service_id}, #{e.class} #{e.message}. Backtrace:\n  #{e.backtrace.join("\n  ")}"
+            Rails.logger.error(log_msg)
             
             # And stick it in a thread variable too
-            Thread.current[:exception] = e                      
+            Thread.current[:exception] = e    
+
+            # And try to re-raise if it's one we really don't want to swallow. 
+            # Sorry, a mess. 
+            raise e if defined?(VCR::Errors::UnhandledHTTPRequestError) && e.kind_of?(VCR::Errors::UnhandledHTTPRequestError)
           ensure
             Rails.logger.info(TermColor.color("Umlaut: Completed service #{local_service.service_id}", :yellow)+ ",  level #{@priority_level}, request #{local_request && local_request.id}: in #{Time.now - service_start}.") if @log_timing
           end
@@ -112,11 +133,11 @@ class ServiceWave
       aThread.join
 
       if aThread[:exception] 
-        debugger if Rails.env.development?
+        debugger if ENV["UMLAUT_AUTO_DEBUGGER"]
         begin
           request.dispatched(aThread[:service], DispatchedService::FailedFatal, aThread[:exception])
         rescue Exception => e
-          debugger if Rails.env.development?
+          debugger if ENV["UMLAUT_AUTO_DEBUGGER"]
           raise e
         end
       end

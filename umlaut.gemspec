@@ -20,27 +20,33 @@ Gem::Specification.new do |s|
     f =~ %r{^(\./)?test/dummy/config/database[^ ]*\.yml}
   end
 
-  s.add_dependency "rails", "~> 3.2.12"         # require a secure rails
+  s.executables  = ["umlaut"]
+
+  # We keep our rails compatibility in a constant in umlaut/version.rb,
+  # so we can use it in our app generator too. 
+  s.add_dependency "rails", *Umlaut::RAILS_COMPAT_SPEC
   s.add_dependency "jquery-rails"               # our built in JS uses jquery
 
   # nokogiri needs to be on or greater than version 1.5.3:
   # https://github.com/tenderlove/nokogiri/issues/638
   s.add_dependency "nokogiri", ">= 1.5.3"       # for XML parsing
-  s.add_dependency "openurl", ">= 0.5.0"        # for OpenURL parsing and creating
+  s.add_dependency "openurl", "~> 1.0"         # for OpenURL parsing and creating
   s.add_dependency "httpclient", "~> 2.4"
   s.add_dependency "marc", ">= 0.5.0", "< 1.1"  # for parsing Marc files in catalog/ils adaptors
   s.add_dependency "isbn", "~> 2.0.9"           # used by amazon among others
   s.add_dependency "htmlentities"               # used by SFX adapter to unescape &ent;s
-  # Remember to generate a faster json adapter into app gemfile, rather than just multi_json lowest common denominator.
   s.add_dependency "multi_json"                 # use best locally installed json gem for json parsing
   s.add_dependency "confstruct", "~> 0.2"       # used for our configuration object
-  s.add_dependency "ensure_valid_encoding"      # used for correcting bad char enc bytes in input
-  s.add_dependency "sass-rails", "~> 3.2.6"     # used for sass
-  s.add_dependency "bootstrap-sass", "~> 2.3.0" # used for bootstrap
+  s.add_dependency "scrub_rb", ">= 1.0.1", "<2" # used for correcting bad char enc bytes in input, polyfill pre ruby 2.1
+  s.add_dependency "bootstrap-sass", "~> 3.2"   # used for bootstrap
+  s.add_dependency "sass-rails", ">= 3.2.5"     # umlaut uses sass stylesheets
+  
 
   s.add_development_dependency "single_test", "~> 0.5.1"
   s.add_development_dependency "uglifier", "~> 1.3"
   s.add_development_dependency "vcr", "~> 2.5.0"
   s.add_development_dependency "webmock", "~> 1.11.0"
-  s.add_development_dependency "sunspot_rails", "~> 2.0.0" # add sunspot support in development
+  # We don't specify a version right now for minitest, cause rails 4.0 and 4.1 need incompatible
+  # versions, argh. 
+  s.add_development_dependency "minitest"
 end

@@ -7,56 +7,53 @@ module SearchHelper
   end
 
   # pass in an openurl context obj.
-  # return an OpenStruct with atitle_label, title_label
+  # return an OpenStruct with :atitle and :title labels
+  #
+  # Uses i18n
+  #
+  # Much of this duplicates Referent.type_thing_name and container_type_of_thing, 
+  # although we don't have a Referent here, that logic should be combined. TODO
   def referent_labels(context_obj = @current_context_object)
     ref_meta = context_obj.referent.metadata
     result = OpenStruct.new
-    if ref_meta['genre'].blank?
-      case @current_context_object.referent.format 
-      when  'book'
-        result.atitle = 'Chapter/Part Title'
-      when @current_context_object.referent.format == 'journal'
-        result.atitle = 'Article Title'
-      end
-      result.title = 'Title'      
-    else
-      case ref_meta["genre"]
-      when /article|journal|issue/
-        result.atitle = 'Article Title'
-        result.title = 'Journal Title'
-      when /bookitem|book/
-        result.atitle = 'Chapter/Part Title'
-        result.title = 'Book Title'
-      when /proceeding|conference/
-        result.atitle = 'Proceeding Title'
-        result.title = 'Conference Name'
-      when 'report'
-        result.atitle = 'Report Title'
-        result.title = 'Report'
-      end
+
+    type_of_thing_key = ref_meta['genre']
+    type_of_thing_key = context_obj.referent.format if type_of_thing_key.blank?
+    type_of_thing_key = type_of_thing_key.downcase
+
+    a_key = type_of_thing_key
+    if a_key == "journal" && ref_meta['atitle'].present?
+      a_key = "article"
     end
+    result.atitle = I18n.t(a_key, :scope => "umlaut.citation.genre", :default => "")
+
+    c_key = type_of_thing_key
+    c_key = 'journal' if c_key == "article"
+    c_key = 'book'    if c_key == "bookitem"
+    result.title =  I18n.t(c_key, :scope => "umlaut.citation.genre", :default => "")
+
     return result    
   end
   
   # A-Z buttons in search page
   def group_list
-    group_list ||= ('A'..'Z').to_a.push('0-9').push('Other')  
+    group_list ||= ('A'..'Z').to_a.push('0-9').push(t('umlaut.search.browse_other'))
   end
 
   # Date dropdowns in search page
-  def date
+  def search_date_select
     years + months + days
   end
 
   def years
-    select_year(nil, {:prompt => true, :start_year => Date.today.year, :end_year => 1950}, {:name => "__year", :class=>"year input-small"})
+    select_year(nil, {:prompt => true, :start_year => Date.today.year, :end_year => 1950}, {:name => "__year", :class=>"year form-control"})
   end
 
   def months
-    select_month(nil, {:prompt => true, :use_short_month => true}, {:name => "__month", :class=>"month input-small"})
+    select_month(nil, {:prompt => true, :use_short_month => true}, {:name => "__month", :class=>"month form-control"})
   end
 
   def days
-    select_day(nil, {:prompt => true}, {:name => "__day", :class=>"day input-small"})
+    select_day(nil, {:prompt => true}, {:name => "__day", :class=>"day form-control"})
   end
 end

@@ -14,11 +14,17 @@ class Request < ActiveRecord::Base
   # added to the db comes first. Less confusing to have a consistent order.
   # Also lets installation be sure services run first will have their
   # responses show up first
-  has_many :service_responses, :order => 'id ASC' 
+  if Rails::VERSION::MAJOR >= 4
+    has_many :service_responses, lambda { order('id ASC') }
+    belongs_to :referent, lambda { includes(:referent_values) }
+  else
+    # Get rid of this when we stop supporting Rails3
+    has_many :service_responses, :order => 'id ASC'
+    belongs_to :referent, :include => :referent_values
+  end
 
   has_many :clickthroughs
 
-  belongs_to :referent, :include => :referent_values
   # holds a hash representing submitted http params
   serialize :http_env
 
@@ -170,7 +176,7 @@ class Request < ActiveRecord::Base
   # marked as Queued, or Failed---otherwise it should be already working,
   # or done. 
   def can_dispatch?(service)
-    ds= self.dispatched_services.find(:first, :conditions=>{:service_id => service.service_id})
+    ds= self.dispatched_services.where(:service_id => service.service_id).first
     
     return ds.nil? || (ds.status == DispatchedService::Queued) || (ds.status == DispatchedService::FailedTemporary)        
   end
@@ -231,22 +237,20 @@ class Request < ActiveRecord::Base
   #
   # Safe to call in thread, uses connection pool checkout. 
   def add_service_response(response_data)
+
     raise ArgumentError.new("missing required `:service` key") unless response_data[:service].kind_of?(Service)
     raise ArgumentError.new("missing required `:service_type_value` key") unless response_data[:service_type_value]
     
     svc_resp = nil
     ActiveRecord::Base.connection_pool.with_connection do
-      svc_resp = ServiceResponse.new
-
+      svc_resp = self.service_responses.build
       
       svc_resp.service_id = response_data[:service].service_id
       response_data.delete(:service)
   
       type_value =  response_data.delete(:service_type_value)
       type_value = ServiceTypeValue[type_value.to_s] unless type_value.kind_of?(ServiceTypeValue)      
-      svc_resp.service_type_value = type_value
-  
-      svc_resp.request = self
+      svc_resp.service_type_value = type_value  
       
       # response_data now includes actual key/values for the ServiceResponse
       # send em, take_key_values takes care of deciding which go directly
@@ -262,9 +266,9 @@ class Request < ActiveRecord::Base
 
   # Methods to look at status of dispatched services
   def failed_service_dispatches
-    return self.dispatched_services.find(:all, 
-      :conditions => ['status IN (?, ?)', 
-      DispatchedService::FailedTemporary, DispatchedService::FailedFatal])
+    return self.dispatched_services.where(
+      :status => [DispatchedService::FailedTemporary, DispatchedService::FailedFatal]
+    ).to_a
   end
 
   # Returns array of Services in progress or queued. Intentionally
@@ -338,23 +342,32 @@ class Request < ActiveRecord::Base
   # :refresh=>true will force a trip to the db to get latest values.
   # otherwise, association is used.  
   def get_service_type(svc_type, options = {})    
+
+
     svc_type_obj = (svc_type.kind_of?(ServiceTypeValue)) ? svc_type : ServiceTypeValue[svc_type]
 
-    if ( options[:refresh])
+    responses = if ( options[:refresh])
       ActiveRecord::Base.connection_pool.with_connection do
-        return self.service_responses.find(:all,
-                                :conditions =>
-                                  ["service_type_value_name = ?",
-                                  svc_type_obj.name ]   
-                                )
+        self.service_responses.where(["service_type_value_name = ?", svc_type_obj.name ]).to_a
       end
     else
       # find on an assoc will go to db, unless we convert it to a plain
-      # old array first.
-      
-      return self.service_responses.to_a.find_all { |response|
+      # old array first.      
+      self.service_responses.to_a.find_all { |response|
         response.service_type_value == svc_type_obj }      
     end
+
+    # Filter out any services with ID's not currently registered in
+    # ServiceStore    
+    (responses, excluded_responses) = responses.partition do |r|
+      ServiceStore.service_definition_for(r.service_id).present?
+    end    
+    if excluded_responses.present?
+      Rails.logger.warn("ServiceResponses skipped for unknown service_ids: " + 
+        excluded_responses.collect {|s| s.service_id}.uniq.join(","))
+    end
+    
+    return responses
   end
   
   
@@ -393,7 +406,7 @@ class Request < ActiveRecord::Base
       
     rft = nil
     if ( params['umlaut.referent_id'])
-       rft = Referent.find(:first, :conditions => {:id => params['umlaut.referent_id']})
+       rft = Referent.where(:id => params['umlaut.referent_id']).first
     end
 
    
@@ -427,7 +440,7 @@ class Request < ActiveRecord::Base
   end
 
   def find_dispatch_object(service)
-    return self.dispatched_services.find(:first, :conditions=>{:service_id => service.service_id})
+    return self.dispatched_services.where(:service_id => service.service_id).first
   end
 
   # Input is a CGI::parse style of HTTP params (array values)

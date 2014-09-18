@@ -1,6 +1,6 @@
 <%= render 'background_updater', :user_request => @user_request %>
-<div class="row-fluid">
-  <div class="span8 umlaut-main"> 
+<div class="row">
+  <div class="col-sm-8 umlaut-main"> 
     <div class="umlaut-resource-info">
       <div class="resource_info_sections">
         <%= render 'manually_entered_warning', :user_request => @user_request %>
@@ -24,16 +24,18 @@
       <% end %>
     </div>
   </div>
-  <div class="span4 umlaut-sidebar">
-    <% html_sections(:sidebar).each do |section| %>
-      <%= content_tag "div", :id => section[:div_id] do %>
-        <%= render_section(section) %>
+  <div class="col-sm-4 umlaut-sidebar-container">
+    <div class="umlaut-sidebar">
+      <% html_sections(:sidebar).each do |section| %>
+        <%= content_tag "div", :id => section[:div_id] do %>
+          <%= render_section(section) %>
+        <% end %>
       <% end %>
-    <% end %>
-    <div id="service_errors">
-      <% html_sections(:service_errors).each do |section| %>
-        <%= render_section(section) %>
-      <% end %>
+      <div id="service_errors">
+        <% html_sections(:service_errors).each do |section| %>
+          <%= render_section(section) %>
+        <% end %>
+      </div>
     </div>
   </div>
   <%= render 'modal' %>

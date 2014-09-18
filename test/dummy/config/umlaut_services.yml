@@ -24,6 +24,7 @@ default:
         type: Sfx
         display_name: Find It       
         base_url: http://sfx.library.edu/local
+        disabled: true
         priority: 3      
         roll_up_prefixes:
           - 'EBSCOHOST_'
@@ -248,3 +249,11 @@ default:
         type: SfxBackchannelRecord
         task: link_out_filter
         priority: 6
+
+      # Needs to be here for bx_test.rb, but this isn't a full definition
+      Bx:
+        disabled: true
+        type: Bx
+        priority: 3
+        token: fake
+

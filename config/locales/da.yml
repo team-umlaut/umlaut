@@ -1,0 +1,122 @@
+da:
+  hello: Hej med dig!
+  language_name: Dansk
+  Journals: E-Tidsskrifter
+  other: Andet
+  journals_subheader: Leder du efter en bestemt tidsskrift eller artikel?
+  search_instructions: Indsæt tidsskriftets titel eller ISSN nummeret. Hvis du har begge dele, brug ISSN nummeret.
+  journal_title: Tidsskrift navn
+  contains: indeholder
+  begins_with: starter med
+  exact_match: præcis
+  search_optional_info: 'Ekstra information - Indtast så meget som du kender af følgende:'
+  volume: volumen
+  vol: vol
+  iss: nr
+  p: s
+  date_label: dato
+  issue: nummer
+  start_page: start side
+  doi_or_pubmed_id: DOI eller Pubmed identifier
+  search: Søg
+  having_trouble: Problemer?
+  having_trouble_message: Prøv at indtaste mindre data. Hvis en værdi er forkert, kunne det sagtens skabe problemer.
+  date:
+    month_names: [~, januar, februar, marts, april, maj, juni, juli, august, september, oktober, november, december]
+    abbr_month_names: [~, jan, feb, mar, apr, maj, jun, jul, aug, sep, okt, nov, dec]
+  datetime:
+    prompts:
+      month: Måned
+      day: Dag
+      year: År
+  browse_by_jtitle:  'Browse efter tidsskrift navn:'
+  more_search_options: Flere søgemuligheder
+  showing_results: Her vises fra %{start} til %{until} af %{total}
+  note: 'Bemærk:'
+  other_titles_might: Andre poster kunne muligvis passe med din søgekriterier
+  previous: forrige side
+  next: næste side
+  chapter_title: Chapter/Part Title
+  article_title: Article Title
+  book_title: Book Title
+  proceeding_title: Proceeding Title
+  conference_name: Conference Name
+  report_title: Report Title
+  report: Report
+  author: Forfatter
+  publisher: Udgiver
+  published: Udgivet
+  page: side
+  title: Titel
+  part: Part
+  article: artikel
+  journal: tidsskrift
+  published_in: Udgivet i
+  last_name: Efternavn
+  first_name: Fornavn
+  initials: Initialer
+  online_access: Online Adgang
+  not_available: Ikke tilgængelig
+  request_from_interlibrary: Lån fra biblioteket
+  more_like_this: Lignende værker
+  related_items: Relaterede poster
+  see_also: Se også
+  export_tools: Export værktøjer
+  excerpt_prompt: En begrænset visning som muligvis indeholder indeholdsfortegnelse, indeks, og andre sider.
+  copies_in_library: Eksemplarer på biblioteket
+  electronic_version: Elektronisk udgave
+  electronic_versions: Elektronisk udgaver
+  request_services: Bestillings muligheder
+  see_also_links: Relaterede indhold
+  abstracts: resuméer
+  tables_of_content: indholdsfortegnelser
+  cover_images: omslagsbilleder
+  help_links: Hjælp links
+  web_results: Online resultater
+  send_to_phone: Send til mobil
+  email: Email
+  more_info: Mere info
+  request: Anmode
+  edition_info: Udgave information
+  maybe_alt_edition: May be alternate edition
+  ulrichs_link_name: Oplysning om tidsskriftet
+  worldcat_link_name: Find på andre biblioteker
+  from: fra
+  first: tidligste
+  latest: seneste
+  Abstract: Abstrakt
+  some_volumes_of: Nogle volumer af
+  search_inside_some_vols: Søg i nogle volumer
+  search_inside_this: Søg i denne
+  via: ved
+  search_inside_progress_message: Søger efter værktøjer for at søge i
+  loading: loading
+  close: luk
+  email_export_header: Email titlen og lokationer
+  enter_your_email: 'Indtast din emailaddresse:'
+  send: 'Send!'
+  back: tilbage
+  txt_export_header: Send titlen og lokation af posten til din mobil
+  enter_your_number: 'Indtast dit telefonnummer'
+  select_provider: 'Vælg dit netværk:'
+  choose_item_to_send: 'Vælg posten du gerne vil sende:'
+  charges_may_apply: Bemærk! gebyr bliver trukket hvis din service ikke dækker ubegrænset beskeder.
+  number_format_description: 8 cifre dansk mobilnummer
+  text_sent: Sendt til %{number}.
+  short_link: Kort link
+  no_item_found_warning: 'Bemærk: %{app_name} har ikke nogen %{format_searched} med dette navn. Venligst kontrollere din søgning.'
+  sent: sendt
+  help_header: 'Hvis du har spørgsmåle eller problemer, kontakt:'
+  powered_by: Leveret af
+  using_services_from: Med tjenester fra
+  and_others: og andre
+  service_errors_title: 'På grund af fejl kan der muligvis mangler noget indhold:'
+  services_missing: 'Manglende servicer:'
+  technical_error_info: Oplysning om den tekniske fejl
+  error_header: Beklager, der er opstået en fejl
+  try_one_of_options: 'Prøv en af de følgende muligheder:'
+  try_reenter_url: Hvis du selv har indtastet URLen, tjek den for fejl.
+  if_doesnt_work: 'Hvis ikke det virker:'
+  try_backup_resolver: Prøv din forespørgsel igen mod vores backup resolver.
+  to_report_a_problem: Hvis du vil have mere hjælp eller meld en fejl, må du gerne
+  searching_for: Leder efter

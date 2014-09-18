@@ -30,7 +30,9 @@
 # A link_out_filter service defines link_out_filter(request, url). If service
 # returns a new url from filter_url, that's the url the user will be directed
 # to. If service returns original url or nil, original url will still be used. 
-
+#
+# See documentation at ServiceResponse regarding how a service generates
+# ServiceResponses to respond to a user request. 
 class Service
   attr_reader :priority, :service_id, :url, :task, :status, :name, :group
   attr_accessor :request
@@ -115,43 +117,15 @@ class Service
     raise Exception.new("#{self.class}: #link_out_filter must be implemented by Service concrete sub-class with task link_out_filter!")
   end
 
-  
-  def display_name
-    # If no display_name is set, default to the id string. Not a good idea,
-    # but hey. 
-    return @display_name ||= self.service_id    
+  # Name of this service, like "Amazon", or "OCLC Worldcat". 
+  # First tries to look up an i18n translation using #translate, if not
+  # found, uses a @display_name set in this service, if still not found
+  # uses service_id for lack of anything else. 
+  def display_name    
+    self.translate("display_name", :default => @display_name || self.service_id)
   end
 
 
-  # Pass this method a ServiceResponse object, it will return a hash-like object of 
-  # display values, for the view. Implementation is usually in sub-class, by
-  # means of a set of methods "to_[service type name]" implemented in sub-class
-  #. parseResponse will find those. Subclasses will not generally override
-  # view_data_from_service_type, although they can for complete custom
-  # handling. Make sure to return a Hash or hash-like (duck-typed) object.
-  def view_data_from_service_type(service_response)
-  
-    service_type_code = service_response.service_type_value.name
-    
-    begin
-      # try to call a method named "to_#{service_type_code}", implemented by sub-class
-      self.send("to_#{service_type_code}", service_response)
-    rescue NoMethodError 
-    # No to_#{response_type} method? How about the catch-all method?
-    # If not implemented in sub-class, we have a VERY basic
-    # default implementation in this class. 
-        self.send("response_to_view_data", service_response)
-    end
-  end
-
-  # Default implementation to take a ServiceResponse and parse
-  # into a hash of values useful to the view. Basic implementation
-  # just asks ServiceResposne for it's data_values object, which
-  # contains all ServiceResponse data (including arbitrary keys serialized
-  # in the hash) in an object with the hash accessor method [] . 
-  def response_to_view_data(service_response)
-      return service_response.data_values
-  end
 
   # Sub-class can call class method like:
   #  required_config_params  :symbol1, :symbol2, symbol3
@@ -183,6 +157,21 @@ class Service
    return url
  end
 
+ # Look up an i18n key scoped to this service, first under the unique ID of
+ # the service, then under the service class name:
+ # * First look for translation under `umlaut.services.#{service_id.underscore}.key`
+ # * If not found, look for translation under `umlaut.services.#{service_class_name.underscore}`
+ # * If still not found, pass in optional default, otherwise you'll get I18n
+ #    configured failure behavior. 
+ #
+ # second arg is options that can be passed to standard I18n.t, including defaults
+ # and template arguments. 
+ def translate(key, options = {})
+    # Modify/add options[:default] to look up under class name too
+    options[:default] = [:"umlaut.services.#{self.class.name.underscore}.#{key}"].concat(Array( options[:default] ))
+
+    I18n.t("umlaut.services.#{self.service_id.underscore}.#{key}", options)
+ end
 
  # Pre-emption hashes specify a combination of existing responses or
  # service executions that can pre-empt this service. Can specify
@@ -240,12 +229,13 @@ class Service
         end
       else
         # Check service responses
-        preemption = 
-          uml_request.service_responses.to_a.find do |response|
-          ( other_type == "*" || other_type == "+" ||
-            response.service_type_value.name == other_type)  &&
-          ( service == "*" ||
-            response.service_id == service)         
+        preemption = Request.connection_pool.with_connection do 
+            uml_request.service_responses.to_a.find do |response|
+            ( other_type == "*" || other_type == "+" ||
+              response.service_type_value.name == other_type)  &&
+            ( service == "*" ||
+              response.service_id == service)         
+          end
         end
       end
       break if preemption

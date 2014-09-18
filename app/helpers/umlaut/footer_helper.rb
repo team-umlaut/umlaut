@@ -11,7 +11,7 @@ module Umlaut::FooterHelper
     if @collection
       content = "".html_safe
             
-      content << "Powered by ".html_safe + link_to("Umlaut", "https://github.com/team-umlaut/umlaut") + ". ".html_safe
+      content << t('umlaut.misc.powered_by_umlaut').html_safe + " " + link_to("Umlaut", "https://github.com/team-umlaut/umlaut") + ". ".html_safe
       
       credit_segments = []
       
@@ -31,9 +31,7 @@ module Umlaut::FooterHelper
       
       
       if credit_segments.length > 0
-        content << "Using services from ".html_safe
-        content << credit_segments.join(", ").html_safe
-        content << " and others.".html_safe
+        content << t("umlaut.misc.credits_html", :credits => safe_join(credit_segments, ", "))
       end
       
       return content
@@ -65,9 +63,9 @@ module Umlaut::FooterHelper
     options = {:text => "[D]", :title => "Toggle on-screen debug info"}.merge(options)
     
     text = options.delete(:text)
-    javascript = " jQuery('.debug_info').toggle();"  
+    options[:onclick] ||= " jQuery('.debug_info').toggle();"  
   
-    return link_to_function(text, javascript, options)  
+    return link_to(text, "#", options)  
   end
 
 end

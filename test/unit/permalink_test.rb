@@ -1,8 +1,10 @@
 require 'test_helper'
 class PermalinkTest < ActiveSupport::TestCase
   fixtures :referents, :referent_values
-  test "new with values" do
-    referent = referents(:nytimes)
+  test "new with values" do    
+    request  = fake_umlaut_request("/resolve?format=journal&issn=0362-4331&jtitle=The+New+York+times&sid=info%3Asid%2Fsfxit.com%3Acitation")
+    referent = request.referent
+
     permalink = nil
     assert_difference('Permalink.count') {
       permalink = Permalink.new_with_values!(referent, "info:sid/sfxit.com:citation")

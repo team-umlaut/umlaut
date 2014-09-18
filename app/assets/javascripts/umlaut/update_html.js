@@ -44,16 +44,24 @@
 
   // Define an object constructor on the global window object
   // For our UmlautHtmlUpdater object. 
-  function HtmlUpdater(umlaut_base, context_object) {
+  //
+  // Third 'locale' arg is optional locale string eg 'en', 'de'
+  //
+  // Note this object is used by external sites as part of the JQuery updater
+  // javascript API. This is API, which has to be callable by non-Umlaut sites.
+  // Try not to change the method signature in incompatible ways. 
+  function HtmlUpdater(umlaut_base, context_object, locale) {
     if (context_object == undefined)
-      context_object = "";      
-    
+      context_object = "";
+
     // Remove query string (if present)
     umlaut_base = umlaut_base.replace(/\?.*$/, '')
     // Remove trailing slash
     umlaut_base = umlaut_base.replace(/\/$/,'');
     this.umlaut_uri =  umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=json&' + context_object;
-        
+    if (locale)
+      this.umlaut_uri += "&umlaut.locale=" + locale;
+
     this.section_targets = [];
            
     this.add_section_target = function(config) {

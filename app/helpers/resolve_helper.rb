@@ -175,6 +175,7 @@ module ResolveHelper
     # for limit.
     options = {:limit => options} unless options.kind_of?(Hash)
     options[:limit] ||= 5
+    options[:ul_class] ||= "list-unstyled"
     return "" if list.empty?
     visible_list  = (list.length > options[:limit]) ? list.slice(0, options[:limit]-1) : list
     hidden_list   = (list.length > options[:limit]) ? list.slice((options[:limit]-1)..list.length-1) : []
@@ -261,8 +262,8 @@ module ResolveHelper
       return nil
     end
 
-    start   = response[:coverage_begin_date].try(:year) || I18n.t("umlaut.coverage_summary.open_start", :default => "first")
-    finish  = response[:coverage_end_date].try(:year) || I18n.t("umlaut.coverage_summary.open_end", :default => "latest")
+    start   = response[:coverage_begin_date].try(:year) || I18n.t("umlaut.citation.coverage_summary.open_start")
+    finish  = response[:coverage_end_date].try(:year) || I18n.t("umlaut.citation.coverage_summary.open_end")
 
     content_tag("span", :class=>"coverage_summary") do
       "#{start} – #{finish}:"

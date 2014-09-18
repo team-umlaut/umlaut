@@ -20,7 +20,9 @@ class ResolveController < UmlautController
   layout :resolve_layout, :except => [:partial_html_sections]
 
   def index
-    self.service_dispatch()
+    # saving the bg Thread object mostly so testing environment
+    # can wait on it. 
+    @bg_thread = self.service_dispatch()
     # check for menu skipping configuration. link is a ServiceResponse
     link = should_skip_menu
     if ( ! link.nil? )
@@ -49,28 +51,7 @@ class ResolveController < UmlautController
     end    
   end
 
-  # inputs an OpenURL request into the system and stores it, but does
-  # NOT actually dispatch services to provide a response. Will usually
-  # be called by software, not a human browser. Sometimes
-  # it's useful to do this as a first step before redirecting the user
-  # to the actual resolve action for the supplied request--for instance,
-  # when the OpenURL metadata comes in a POST and can't be redirected.
-  def register_request
-    # init before filter already took care of setting up the request.
-    @user_request.save!
-
-    # Return data in headers allowing client to redirect user
-    # to view actual response.
-    headers["x-umlaut-request_id"] = @user_request.id
-    headers["x-umlaut-resolve_url"] = url_for( :controller => 'resolve', 'umlaut.request_id'.to_sym => @user_request.id )
-    headers["x-umlaut-permalink_url"] = current_permalink_url()
-
-    # Return empty body. Once we have the xml response done,
-    # this really ought to return an xml response, but with
-    # no service responses yet available.
-    render(:nothing => true)
-  end
-
+  
   # Useful for developers, generate a coins. Start from
   # search/journals?umlaut.display_coins=true
   # or search/books?umlaut.display_coins=true
@@ -129,11 +110,17 @@ class ResolveController < UmlautController
     api_render()
   end
 
-  def rescue_action_in_public(exception)
-    render(:template => "error/resolve_error", :status => 500 )
+  # Not an action method. Used only in test environment, get the Thread object executing
+  # background services, so you can #join on it to wait for bg
+  # services to complete. 
+  def bg_thread
+    @bg_thread
   end
 
+
   protected
+
+
 
   def post_to_get
     if request.method == "POST"
@@ -155,7 +142,7 @@ class ResolveController < UmlautController
     # no end of problems later. We can't just refuse to process, sources
     # do send us bad bytes, I'm afraid.
     params.values.each do |v|
-      EnsureValidEncoding.ensure_valid_encoding!(v, :invalid => :replace)
+      v.scrub!
     end
     # Create an UmlautRequest object.
     options = {}
@@ -201,10 +188,7 @@ class ResolveController < UmlautController
       # Services to skip for?
       skip[:service_types].each do | service |
         service = ServiceTypeValue[service] unless service.kind_of?(ServiceTypeValue)
-        candidates =
-        @user_request.service_responses.find(:all,
-          :conditions => ["service_type_value_name = ?", service.name])
-        return_value = candidates.first
+        return_value = @user_request.service_responses.where(:service_type_value_name => service.name).first
       end
 
       # But wait, make sure it's included in :services if present.

@@ -35,11 +35,14 @@ module UmlautHttp
 
     # Bunch of headers we proxy as-is from the original client request,
     # supplying reasonable defaults. 
-    
     header["User-Agent"] = orig_env['HTTP_USER_AGENT'] || 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9) Gecko/2008061015 Firefox/3.0'
     header['Accept'] = orig_env['HTTP_ACCEPT'] || 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
     header['Accept-Language'] = orig_env['HTTP_ACCEPT_LANGUAGE'] || 'en-us,en;q=0.5'
-    header['Accept-Encoding'] = orig_env['HTTP_ACCEPT_ENCODING'] || ''
+
+    # Do NOT pass on accept-encoding, we don't want gzip or compressed response. 
+    #header['Accept-Encoding'] = orig_env['HTTP_ACCEPT_ENCODING'] || ''
+    header['Accept-Encoding'] = "identity"
+
     header["Accept-Charset"] = orig_env['HTTP_ACCEPT_CHARSET'] || 'UTF-8,*'
 
     # Set referrer to be, well, an Umlaut page, like the one we are

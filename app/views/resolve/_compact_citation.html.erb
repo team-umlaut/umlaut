@@ -4,9 +4,9 @@
   cite = @user_request.referent.to_citation 
   pub = []
   pub << '.' << date_format(cite[:date]) unless cite[:date].blank?	
-  pub << '. Volume:&nbsp;'+cite[:volume] unless cite[:volume].blank?
-  pub << '. Issue:&nbsp;'+cite[:issue] unless cite[:issue].blank?	
-  pub << '. Page:&nbsp;'+cite[:page] unless cite[:page].blank? %>
+  pub << '. ' + t(:volume).titlecase + ':&nbsp;'+cite[:volume] unless cite[:volume].blank?
+  pub << '. ' + t(:issue).titlecase + ':&nbsp;'+cite[:issue] unless cite[:issue].blank?
+  pub << '. ' + t(:page).titlecase + ':&nbsp;'+cite[:page] unless cite[:page].blank? %>
 <%= content_tag(:span, h(cite[:author].chomp), :class => "text-small") if cite[:author] %>
 <%= content_tag(:span, h(truncate(cite[:title], :length => 70, :seperator => '...'), :class => "text-small") %>
 <%= content_tag(((@user_request.referent.format =~ /article|journal|issue|report/i) ? 'em' : 'span'), cite[:subtitle], :class => "text-small") if cite[:subtitle] %>

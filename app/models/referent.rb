@@ -1,3 +1,5 @@
+require 'i18n'
+
 # Note: There are a few actual attributes stored as Columns in referent --
 # these were originally used for identifying a Referent identifying the
 # 'same thing' as an incoming OpenURL, to re-use it. But we don't re-use
@@ -15,9 +17,9 @@ class Referent < ActiveRecord::Base
   has_many :referent_values
   has_many :permalinks
 
-  # Does call save! on referent created.
-  # :permalink => false if you already have a permalink and don't
-  # need to create one. Caller should attach that permalink to this referent!
+  # Pass in :permalink => :force to force creation of a permalink, otherwise
+  # no permalink is created by this method, one can be lazily created when
+  # needed. 
   def self.create_by_context_object(co, options = {})    
     self.clean_up_context_object(co)    
     
@@ -40,10 +42,10 @@ class Referent < ActiveRecord::Base
       rft.referent_values.each do | val |
         rft.atitle = val.normalized_value if val.key_name == 'atitle' and val.metadata?
         rft.title = val.normalized_value if val.key_name.match(/^[bj]?title$/) and val.metadata? 
-        rft.issn = val.normalized_value if val.key_name == 'issn' and val.metadata?
-        rft.isbn = val.normalized_value if val.key_name == 'isbn' and val.metadata?      
+        rft.issn = val.normalized_value.gsub(/[^\d]/, '')[0,8] if val.key_name == 'issn' and val.metadata?
+        rft.isbn = val.normalized_value.gsub(/[^\d]/, '')[0,13] if val.key_name == 'isbn' and val.metadata?      
         rft.volume = val.normalized_value if val.key_name == 'volume' and val.metadata?
-        rft.year = val.normalized_value if val.key_name == 'date' and val.metadata?
+        rft.year = val.normalized_value.gsub(/[^\d]/, '')[0,4] if val.key_name == 'date' and val.metadata?
       end
       rft.save!
 
@@ -107,61 +109,44 @@ class Referent < ActiveRecord::Base
   end
 
 
-  # Find or create a ReferentValue object hanging off this
-  # Referent, with given key name and value. key_name can
-  # be 'identifier', 'format', or any metadata key.
-  def ensure_value!(key_name, value)
-     normalized_value = ReferentValue.normalize(value)
-     
-     rv = ReferentValue.find(:first, 
-                       :conditions => { :referent_id => self.id,
-                                        :key_name => key_name,
-                                        :normalized_value => normalized_value })
-      unless (rv)
-        rv = ReferentValue.new
-        rv.referent = self
-        
-        rv.key_name = key_name
-        rv.value = value
-        rv.normalized_value = normalized_value
-        
-        if key_name == "private_data"
-          rv.private_data = true
-        elsif key_name != "identifier" && key_name != "format"
-          rv.metadata = true
-        end
-
-        rv.save!
-      end
-      return rv
+  # private use. Adds a referent_value and returns it, does NOT persist
+  # it to db. referent_value is constructed with ActiveRecord build, and
+  # will be saved when Referent (self) is saved, works on persisted or
+  # unpersisted Referent. 
+  def build_referent_value(key_name, value)
+    return self.referent_values.build(
+      :key_name         => key_name, 
+      :value            => value, 
+      :normalized_value => ReferentValue.normalize(value),
+      :private_data     => (key_name == "private_data"),
+      :metadata         => (key_name != "identifier" && key_name != "format")
+    )
   end
+
   
   # Populate the referent_values table with a ropenurl contextobject object
+  # Note, does NOT save self, self may still be unsaved. 
   def set_values_from_context_object(co)
-    
     rft = co.referent
-
   
     # Multiple identifiers are possible! 
     rft.identifiers.each do |id_string|
-      ensure_value!('identifier', id_string)            
+      build_referent_value('identifier', id_string)            
     end
     if rft.format
-      ensure_value!('format', rft.format)
+      build_referent_value('format', rft.format)
     end
     if rft.private_data
       # this comes in as "pid" or "rft_dat", we store it in
       # our database as "private_data", sorry, easiest way to
       # fit this in at the moment. 
-      ensure_value!("private_data", rft.private_data)
+      build_referent_value("private_data", rft.private_data)
     end
     
     rft.metadata.each { | key, value |
-      next unless value
-      ensure_value!( key, value)      
-    }
-
-    
+      next unless value.present?
+      build_referent_value( key, value)      
+    }    
   end
 
   # pass in a Referent, or a ropenurl ContextObjectEntity that has a metadata
@@ -219,17 +204,14 @@ class Referent < ActiveRecord::Base
 
   def add_identifier(id)
     unless ( identifiers.find{|i| i == id}  )
-      self.referent_values.create(:key_name => 'identifier', :value => id, :normalized_value => ReferentValue.normalize(id), :metadata => false, :private_data => false).save!            
+      Referent.with_connection do 
+        self.referent_values.create(:key_name => 'identifier', :value => id, :normalized_value => ReferentValue.normalize(id), :metadata => false, :private_data => false).save!            
+      end
     end
   end
   
   def format
-    self.referent_values
-    self.referent_values.each { | val |    
-      if val.key_name == 'format'
-        return val.value
-      end
-    }    
+    self.referent_values.to_a.find { | val | val.key_name == 'format'}.try(:value)
   end
 
   # Some shortcuts for pulling out/manipulating specific especially
@@ -281,7 +263,8 @@ class Referent < ActiveRecord::Base
 
   # Creates a hash for use in View code to display a citation
   #
-  # Crazy if/else tree logic, should be refactored, needs more tests first prob. 
+  # TODO, move to_citation, type_of_thing, and container_type_of_thing OUT
+  # of Refernet, to helper module or own class. 
   def to_citation
     citation = {}
     # call self.metadata once and use the array for efficiency, don't
@@ -290,43 +273,24 @@ class Referent < ActiveRecord::Base
 
     if my_metadata['atitle'].present?
       citation[:title] = my_metadata['atitle']
-      citation[:title_label], citation[:container_label] = 
-        case my_metadata['genre']
-          when /article|journal|issue/ then ['Article Title', 'Journal']
-          when /bookitem|book/ then ['Chapter/Part Title', 'book']
-          when /proceeding|conference/ then ['Proceeding Title', 'conference']
-          when 'report' then ['Report Title','report']    
-          else
-          if self.format == 'book'
-            ['Chapter/Part Title', 'book']
-          elsif self.format == 'journal'
-            ['Article Title', 'Journal']
-          else # default fall through, use much what SFX uses. 
-            ['Title', '']
-          end
-        end
       ['title','btitle','jtitle'].each do | t_type |
-        if ! my_metadata[t_type].blank?
-          citation[:subtitle] = my_metadata[t_type]
-          citation[:container_title] = my_metadata[t_type]
+        if my_metadata[t_type].present?
+          citation[:container_title] = my_metadata[t_type]      
           break
         end
       end
-    else      
-      citation[:title_label] = case my_metadata["genre"]
-        when /article|journal|issue/i then 'Journal'
-        when /bookitem|book/i then 'Book'
-        when /proceeding|conference/i then 'Conference'
-        when 'report' then 'Report'
-        else nil
-      end
+    else # only top-level thing, no sub-thing
       ['title','btitle','jtitle'].each do | t_type |
-        if ! my_metadata[t_type].blank?
+        if my_metadata[t_type].present?
           citation[:title] = my_metadata[t_type]
           break
         end
       end      
     end
+
+    citation[:title_label] = I18n.t("umlaut.citation.title_of_x", :x =>  self.type_of_thing, :default => "umlaut.citation.title_label")
+    citation[:container_label] = self.container_type_of_thing    
+
     # add publisher for books
     if (my_metadata['genre'] =~ /book/i)
       citation[:pub] = my_metadata['pub'] unless my_metadata['pub'].blank?
@@ -372,26 +336,40 @@ class Referent < ActiveRecord::Base
   end
 
   def type_of_thing
-    genre = self.metadata["genre"]
-    genre = nil if genre =~ /^unknown$/i
-    genre = "book section" if genre =~ /^bookitem$/i
+    metadata = self.metadata
 
-    return genre
+    key = metadata["genre"]
+    key = self.format if key.blank?
+    key = key.downcase
+
+    if key == "journal" && metadata['atitle'].present?
+      key = 'article'
+    end
+    
+    label = I18n.t(key, :scope => "umlaut.citation.genre", :default => "")
+    label = nil if label.blank?
+
+    return label
   end
 
   # Like type_of_thing, but if it's a contained item, give container name instead. 
-  # TODO: All of this should be I18n'd. 
   def container_type_of_thing
-    case self.metadata["genre"]
-    when 'article'  then 'journal'
-    when 'bookitem' then 'book'
-    else self.metadata['genre'] || self.format
+    i18n_key = case self.metadata['genre']    
+      when 'article'  then 'journal'
+      when 'bookitem' then 'book'
+      else self.metadata['genre'] || self.format
     end
+
+    label = I18n.t(i18n_key, :scope => "umlaut.citation.genre", :default => "")
+    label = nil if label.blank?
+
+    return label
   end
 
 
   def remove_value(key)
-    referent_values.find(:all, :conditions=> ['key_name =?', key]).each do |rv|
+    referent_values.where(:key_name => key).to_a.each do |rv|
+      rv.delete
       referent_values.delete(rv)
     end    
   end

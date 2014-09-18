@@ -31,7 +31,7 @@ class HipHoldingSearch < Hip3Service
   def handle(request)
     
     # Only do anything if we have no holdings results from someone else.
-    holdings = request.service_types.find(:all, :conditions=>["service_type_value_name = ?", "holding"])
+    holdings = request.service_types.where(:service_type_value_name => "holding")
     
     if (holdings.length > 0)
       return request.dispatched(self, true)

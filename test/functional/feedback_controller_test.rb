@@ -27,7 +27,7 @@ class FeedbackControllerTest < ActionController::TestCase
 
     assert_equal ["librarian@example.org"], email.to
     assert_equal ["joe@example.org"], email.reply_to
-    assert_include email.body, "Some feedback"
+    assert email.body.include? "Some feedback"
 
     assert_present flash[:alert_success]
 

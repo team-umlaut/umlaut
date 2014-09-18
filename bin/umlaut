@@ -1,0 +1,141 @@
+#!/usr/bin/env ruby
+
+
+# This is a command line executable installed as part of the umlaut gem. 
+
+# All it does is install a new umlaut rails app, by simply running
+# 'rails new' with certain arguments, and the umlaut rails application
+# template. The rails application template basically just runs the
+# umlaut generator.
+
+
+# Add the lib path from the copy of Umlaut we're in to the load path, so we
+# can find umlaut/version. Normally when run from rubygems not neccesary,
+# but helpful in testing running from a checked out copy. 
+umlaut_lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(umlaut_lib) if File.directory?(umlaut_lib) && !$LOAD_PATH.include?(umlaut_lib)
+
+
+require 'optparse'
+require 'ostruct'
+require 'shellwords'
+
+
+# We intentionally do NOT `require 'umlaut'` here, no need to load it all, but
+# we need the version and RAILS_COMPAT_SPEC
+require 'umlaut/version'
+
+
+def run
+  options = parse_options!
+  command = command_line( options )
+
+  puts "\n"
+
+  if options.umlaut_path
+    # Only way to pass arg to the generator is with an ENV variable, needs
+    # to be ABSOLUTE path, cause relative will end up relative to generated
+    # Gemfile, not current command CWD. 
+    expanded = File.expand_path options.umlaut_path
+    ENV["UMLAUT_GEM_PATH"] = expanded
+    puts "UMLAUT_GEM_PATH=#{expanded}"
+  end
+
+  puts "#{command}\n\n"
+
+  system command
+
+  post_install_message!
+end
+
+def command_line(options)
+  umlaut_template_path = File.expand_path(File.dirname(__FILE__) + '/../lib/generators/umlaut_app_template.rb')
+
+  return "rails _#{options.rails_version}_ new -d mysql --skip-spring #{options.app_path} -m #{umlaut_template_path}"
+end
+
+def parse_options!
+  options = OpenStruct.new
+  parser = OptionParser.new do |opts|
+    opts.banner = "Usage: umlaut your_app_name [--umlaut-path PATH]"
+
+    opts.separator ""
+    opts.separator "Umlaut #{Umlaut::VERSION}"
+    opts.separator ""
+    opts.separator "Specific options:"
+
+    opts.on("-u", "--umlaut-path PATH", "Gemfile :path to local umlaut") do |umlaut_path|
+      options.umlaut_path = umlaut_path
+    end
+
+    opts.on("-r", "--rails-version VERSION", "Rails version to use to install") do |rails_version|
+      options.rails_version = rails_version
+    end
+
+    opts.on_tail("-h", "--help", "Show this message") do
+      $stderr.puts opts
+      exit
+    end
+  end
+
+  begin
+    parser.parse!
+  rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
+    $stderr.puts "\n#{e.message}\n\n"
+    $stderr.puts parser
+    exit 1
+  end
+
+  options.app_path = ARGV.first
+
+  if options.app_path.nil? || options.app_path.empty?
+    $stderr.puts "\nNo application name provided!\n\n"
+    $stderr.puts parser
+    exit 1
+  elsif File.basename(options.app_path) == "umlaut"
+    $stderr.puts "\nYour umlaut rails app can not be called 'umlaut'\n\n"
+    $stderr.puts parser
+    exit 1
+  end  
+
+  unless options.rails_version 
+    # Trick bundler into telling us the most recent installed
+    # version of Rails compatible with this version of Umlaut
+    gem 'rails', *Umlaut::RAILS_COMPAT_SPEC
+    require 'rails/version'
+    options.rails_version = Rails::VERSION::STRING
+  end
+
+  return options
+end
+
+def word_wrap(text, options = {})
+  line_width = options.fetch(:line_width, 80)
+  indent     = options.fetch(:indent, 0).to_i
+
+  indent_str = " " * indent
+
+  lines = text.split("\n").collect! do |line|
+    line.length > line_width ? line.gsub(/(.{1,#{line_width}})(\s+|$)/, "\\1\n").strip : line
+  end.join("\n").split("\n")
+
+  indent_str + lines.join("\n#{indent_str}") + "\n"
+end
+
+def post_install_message!
+  $stdout.puts "\n#{" " * 8}Umlaut installed, now:\n\n"
+
+  $stdout.puts  word_wrap("After setting up your 'development' database in `config/databases.yml`, run `rake db:migrate`", 
+      :line_width => 70, :indent => 8)
+
+  $stdout.puts "\n"
+
+  $stdout.puts word_wrap("Then configure your app in `config/umlaut_services.yml` and `app/controllers/umlaut_controller.rb`",
+    :line_width => 70, :indent => 8)
+
+  $stdout.puts "\n"
+end
+
+
+
+run

@@ -1,4 +1,5 @@
 require 'cron_tab' # for understanding CronTab format for expiring responses.
+require 'confstruct'
 
 # A Collection object encapsulates a given UmlautRequest, and a given
 # list of Umlaut services that should be run off that request.
@@ -12,13 +13,15 @@ require 'cron_tab' # for understanding CronTab format for expiring responses.
 # foreground and background, making sure no service is run twice if it's
 # already in progress, timing out expired services, etc.
 class Collection
-
   attr_accessor :umlaut_request
   attr_accessor :logger
   # configs
   attr_accessor :response_expire_interval, :response_expire_crontab_format, :background_service_timeout, :requeue_failedtemporary_services
 
-
+  # generally only set to true in testing, can be set for the whole class
+  # or for particular Collection instances. 
+  class_attribute :forward_background_exceptions
+  self.forward_background_exceptions = true
   
   # a_umlaut_request is an UmlautRequest, representing a request for services for a context
   # object.
@@ -60,12 +63,15 @@ class Collection
   #
   # Sets all services in collection to have a 'queued' status if appropriate.
   # Then actually executes the services that are dispatchable (queued).
+  #
+  # Returns the Thread object used for dispatching background services
   def dispatch_services!
     queued_service_ids = prepare_for_dispatch!
 
     dispatch_foreground!(queued_service_ids)
 
-    dispatch_background!(queued_service_ids)
+    # return main thread for background services.
+    return dispatch_background!(queued_service_ids)
   end
 
   # Call prepare_for_dispatch! first, the return value from that call
@@ -96,6 +102,8 @@ class Collection
   # marked queued in the DispatchedService table.
   #
   # Will run such services in background priority waves.
+  #
+  # Returns the Thread object used for dispatching background services. 
   def dispatch_background!(queued_service_ids)
     # Now we do some crazy magic, start a Thread to run our background
     # services. We are NOT going to wait for this thread to join,
@@ -134,7 +142,14 @@ class Collection
         # and logged to db as well as logfile if possible, only bugs in ServiceWave
         # itself should wind up caught here.
         Thread.current[:exception] = e
-        logger.error("Background Service execution exception: #{e}\n\n   " + clean_backtrace(e).join("\n"))
+        logger.error("Background Service execution exception: #{e}\n\n   " + Rails.backtrace_cleaner.clean(e.backtrace).join("\n"))
+
+        # One exception is in test environment, when we may be intentionally
+        # trying to get exceptions to propagate up from ServiceWave to here,
+        # and then onward, in order to be caught by tests. 
+        if self.forward_background_exceptions
+          raise e
+        end
       end
     end
   end
@@ -155,6 +170,7 @@ class Collection
     # Go through currently dispatched services, looking for timed out
     # services -- services still in progress that have taken too long,
     # as well as service responses that are too old to be used.
+
     queued_service_ids = []
     DispatchedService.transaction do
       umlaut_request.dispatched_services.each do | ds |
@@ -193,8 +209,7 @@ class Collection
               end
             end
 
-            umlaut_request.dispatched_services.delete(ds)
-            ds.destroy
+            umlaut_request.dispatched_services.destroy(ds)            
           end
       end
 

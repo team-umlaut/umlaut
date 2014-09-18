@@ -36,11 +36,13 @@ class GoogleScholarLink < Service
     link = "http://scholar.google.com/scholar?q=#{CGI.escape construct_query(request)}"
     
     request.add_service_response(
-      :service      => self,      
-      :display_text => "Look for article on Google Scholar",
-      :url          => link,
+      :service            => self,      
+      :display_text       => "Look for article on Google Scholar",
+      :display_text_i18n  => "display_text",
+      :url                => link,
       :service_type_value => @service_type,
-      :notes        => "This article <b>may</b> be available on the public web, look for links labelled <span class='gscholar_example'>[html]</span> or <span class='gscholar_example'>[pdf]</span>".html_safe
+      :notes              => "This article <b>may</b> be available on the public web, look for links labelled <span class='gscholar_example'>[html]</span> or <span class='gscholar_example'>[pdf]</span>".html_safe,
+      :notes_i18n         => "notes_html"
     )
     
     return request.dispatched(self, true)
