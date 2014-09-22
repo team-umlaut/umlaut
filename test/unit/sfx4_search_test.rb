@@ -89,12 +89,7 @@ class Sfx4SearchTest < ActiveSupport::TestCase
       }
     end
   end
-  
-  test "fetch_urls?" do
-    assert(SearchMethods::Sfx4.fetch_urls?, 
-      ":sfx_db is not configured in database.yml. SFX controlled URLs will not be loaded.")
-  end
-  
+    
   private
   def sfx4_connection_configured?
     Sfx4::Local::AzTitle.connection_configured?
