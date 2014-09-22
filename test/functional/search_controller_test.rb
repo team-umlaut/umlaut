@@ -18,7 +18,9 @@ class SearchControllerTest < ActionController::TestCase
     return unless Sfx4::Local::AzTitle.connection_configured?
     get :journal_search, "rft.jtitle"=>"Account", "umlaut.title_search_type"=>"begins"
     assert_response :success
-    assert_select "title", "Find It | Journal titles that begin with &#39;Account&#39;"
+
+    # some versions of rails escape apostrophes here others don't, we don't care
+    assert_select "title", /\AFind It | Journal titles that begin with (&#39;)|(\')Account(&#39;)|(\')\Z/
     assert_select ".umlaut-search-form", 1
     assert_select ".umlaut-results", 1
     assert_select ".umlaut-results .umlaut-result", :minimum => 1

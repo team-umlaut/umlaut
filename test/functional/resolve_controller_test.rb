@@ -186,8 +186,10 @@ class ResolveControllerTest < ActionController::TestCase
       assert_equal(1, elements.size)
       elements.each do |element|
         assert_select element, "a", {:count => 1, :href => "", :text => "the Internet Archive: Open Source Book"}
+
+        # Some versions of rails html-escape apostrophes here, some don't, we don't care
         assert_select element, 'div.edition_warning', {:count => 1,
-          :text => "Edition information Momo, ovvero l&#39;arcana storia dei ladri di tempo e della bambina che restituÃ¬ agli uomini il tempo trafugato"}
+          :text => /\AEdition information Momo, ovvero l(&#39;)|(\')arcana storia dei ladri di tempo e della bambina che restituÃ¬ agli uomini il tempo trafugato\Z/}
       end
     end
 
