@@ -14,11 +14,16 @@ Gem::Specification.new do |s|
   #s.description = "TODO: Description of Umlaut."
 
   s.files = Dir["{app,config,db,lib,active_record_patch}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
-  s.test_files = Dir["./test/**/*"].reject do |f|
-    f =~ %r{^(\./)?test/dummy/log}
-  end.reject do |f|
-    f =~ %r{^(\./)?test/dummy/config/database[^ ]*\.yml}
-  end
+
+
+  # Keep test files out of gemspec, they don't seem to be used for anything,
+  # and add significant bytes to the distributed gem, with dummy app and
+  # VCR recordings. 
+  #s.test_files = Dir["./test/**/*"].reject do |f|
+  #  f =~ %r{^(\./)?test/dummy/log}
+  #end.reject do |f|
+  #  f =~ %r{^(\./)?test/dummy/config/database[^ ]*\.yml}
+  #end
 
   s.executables  = ["umlaut"]
 
