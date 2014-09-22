@@ -4,7 +4,7 @@
 // well with our design, and the Bootstrap 3.x colors seem
 // too muted and hard to read in our design. 
 $link-color:           #08c !default;
-$link-hover-color:     darken($linkColor, 15%) !default;
+$link-hover-color:     darken($link-color, 15%) !default;
 
 
 @import "bootstrap-sprockets";
