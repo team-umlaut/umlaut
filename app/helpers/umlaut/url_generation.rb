@@ -15,8 +15,9 @@ module Umlaut::UrlGeneration
   def url_for(*arguments)
     url = super
     if @generate_urls_with_host && url.starts_with?("/")
-      #regex replace trailing slashes or trailing locale if present
-      url = root_url.gsub(/(\/$)?(\/\?.*)?/, '') + url
+      #regex take root url and get just scheme/port part, no path. 
+      # the path we want is in our own url we will add on. 
+      url = root_url.gsub(/\A(.*\/\/[^\/]+)\/.*\Z/, '\1') + url
     end
     return url
   end
