@@ -12,10 +12,14 @@ class Referent < ActiveRecord::Base
   # for shortcut metadata manipulations
   include MetadataHelper
   
-
   has_many :requests
   has_many :referent_values
   has_many :permalinks
+
+  # Make sure years get truncated to 4 chars
+  def year=(y)
+    super(y.slice(0,4))
+  end
 
   # Pass in :permalink => :force to force creation of a permalink, otherwise
   # no permalink is created by this method, one can be lazily created when
