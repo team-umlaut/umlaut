@@ -106,6 +106,48 @@ class CollectionTest < ActiveSupport::TestCase
 
         assert dispatch.completed?, "Dispatch status '#{dispatch.status}' is not a finished status for #{service[0]}"
       end
-    end   
+    end
+
+
+    # A mess to test, indicates messy architecture, but we do what we can. 
+    def test_retries_failed_temporary
+      service_def = { "DummyService" => 
+        { "type" => "DummyService",
+          "priority" => 3,            
+          "responses" => [
+            { "service_type_value" => "fulltext",
+              "display_text" => "created"
+            }
+          ]
+        }
+      }
+      config = {"default" => {"services" => service_def}}
+
+
+      with_service_config(config) do 
+        retry_after = 10
+        original_updated_at = Time.now - retry_after - 1
+
+        request = fake_umlaut_request("/?foo=bar")
+        request.dispatched_services.create(
+          :status     => DispatchedService::FailedTemporary,
+          :service_id => "DummyService",
+          :updated_at => original_updated_at
+        )
+
+        collection = Collection.new(request, 
+          ServiceStore.global_service_store.determine_services,
+          Confstruct::Configuration.new(:requeue_failedtemporary_services => retry_after))
+        collection.dispatch_services!.join
+
+        ds = request.dispatched_services(true).find {|ds| ds.service_id == "DummyService"}
+
+        assert ds, "DispatchedService does not exist for DummyService"
+        assert ds.status == DispatchedService::Successful, "DispatchedService not marked successful"
+        assert ds.updated_at > original_updated_at, "DispatchedService updated_at not updated"
+
+        assert request.service_responses.to_a.find {|sr| sr.service_id == "DummyService" }, "ServiceResponse not created"
+      end
+    end
 
 end
