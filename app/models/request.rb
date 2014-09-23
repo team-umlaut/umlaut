@@ -436,13 +436,21 @@ class Request < ActiveRecord::Base
     # Umlaut schema changes maybe. 
     #
     # One problem we're running into is exceeding width of db column. 
-    # We'll only save REQUEST_URI if it's not too long to try and avoid. 
+    # We'll only save REQUEST_URI AND HTTP_REFERER if they're not too long to try and avoid. 
+    #
+    # Also mark as "ISO-8859-1" to save space in the YAML encoding, current YAML uuencodes
+    # 'binary' taking up too much space. HTTP headers are usually ascii, theoretically
+    # can be ISO-8859-1, theoretically can but never are something else with proper marking,
+    # we won't worry about. 
     req.http_env = {}
     a_rails_request.env.each do |k, v| 
-      if ((k.slice(0,5) == 'HTTP_' && k != 'HTTP_COOKIE') || 
-        (k == 'REQUEST_URI' && v.length <= 1024) || 
+      if ((k.slice(0,5) == 'HTTP_' && k != 'HTTP_COOKIE' ) || 
+        (k == 'REQUEST_URI') || 
         k == 'SERVER_NAME')
-        req.http_env[k] = v 
+        k = k.dup.force_encoding("ISO-8859-1")
+        v.force_encoding("ISO-8859-1")
+        v.scrub!
+        req.http_env[k] = v.slice(0, 800) # only first 800 chars sorry
       end
     end
     #["HTTP_X_FORWARDED_FOR", "SERVER_NAME", "HTTP_USER_AGENT", "HTTP_ACCEPT", 'HTTP_ACCEPT_LANGUAGE', 'HTTP_ACCEPT_CHARSET', 'HTTP_ACCEPT_ENCODING']
