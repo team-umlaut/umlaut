@@ -16,8 +16,15 @@
   }
 }
 
-.collapsible .collapse {
-  margin-top:  $line-height-computed / 2; 
+.collapsible {
+  // Difficult to get space between the toggle and the expanded
+  // content, that's only there when content is expanded, without
+  // causing a jump on expand/contract. 
+  // We give up and provide the space even when collapsed. 
+  .collapse-toggle {
+    display: block;
+    margin-bottom:  $line-height-computed / 2; 
+  }
 }
 
 /* Google Scholar Link: 
