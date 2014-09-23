@@ -3,7 +3,7 @@
     [:alert_success, :alert_info, :alert_error].each do |key|
         if flash[key]
             text = flash[key]
-            css_class = key.to_s.parameterize
+            css_class = key.to_s.dasherize
         end
     end
 -%>
