@@ -16,7 +16,7 @@ class Collection
   attr_accessor :umlaut_request
   attr_accessor :logger
   # configs
-  attr_accessor :response_expire_interval, :response_expire_crontab_format, :background_service_timeout, :requeue_failedtemporary_services
+  attr_accessor :response_expire_interval, :response_expire_crontab_format, :background_service_timeout, :requeue_failedtemporary_services_in
 
   # generally only set to true in testing, can be set for the whole class
   # or for particular Collection instances. 
@@ -30,7 +30,7 @@ class Collection
   # config is a Confstruct::Configuration associated with the current controller,
   # has a few config options in it relevant to collection service exec; but
   # don't pass in, we'll use a blank one with default values, no prob.
-  def initialize(a_umlaut_request, service_hash, config = Confstruct::Configuration.new)
+  def initialize(a_umlaut_request, service_hash, config = Confstruct::Configuration.new) 
     self.umlaut_request = a_umlaut_request
 
     self.logger = Rails.logger
@@ -38,7 +38,7 @@ class Collection
     self.response_expire_interval = config.lookup!("response_expire_interval", 1.day)
     self.response_expire_crontab_format = config.lookup!("response_expire_crontab_format", nil)
     self.background_service_timeout =  config.lookup!("background_service_timeout", 30.seconds)
-    self.requeue_failedtemporary_services = config.lookup!("requeue_failedtemporary_services", 500.seconds)
+    self.requeue_failedtemporary_services_in = config.lookup!("requeue_failedtemporary_services_in", 500.seconds)
 
     # @service_definitions will be a two-level hash, pointing to an array.. Task is Standard, LinkOut, etc.
     # { [task] => { [priority_level] => [config1, config2, config3],
@@ -186,6 +186,8 @@ class Collection
                 logger.warn("Background service timed out, thread assumed dead. #{umlaut_request.id} / #{ds.service_id}")
            end
 
+
+
           # go through dispatched_services and delete:
           # 1) old completed dispatches, too old to use.
           # 2) failedtemporary dispatches that are older than our resurrection time
@@ -193,7 +195,7 @@ class Collection
           # After being deleted, they'll end up re-queued.
           if ( (ds.completed? && completed_dispatch_expired?(ds) ) ||
                (  ds.status == DispatchedService::FailedTemporary &&
-                 (Time.now - ds.updated_at) > self.requeue_failedtemporary_services
+                 (Time.now - ds.updated_at) > self.requeue_failedtemporary_services_in
                 )
               )
 

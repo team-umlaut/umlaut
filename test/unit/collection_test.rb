@@ -137,7 +137,7 @@ class CollectionTest < ActiveSupport::TestCase
 
         collection = Collection.new(request, 
           ServiceStore.global_service_store.determine_services,
-          Confstruct::Configuration.new(:requeue_failedtemporary_services => retry_after))
+          Confstruct::Configuration.new(:requeue_failedtemporary_services_in => retry_after))
         collection.dispatch_services!.join
 
         ds = request.dispatched_services(true).find {|ds| ds.service_id == "DummyService"}

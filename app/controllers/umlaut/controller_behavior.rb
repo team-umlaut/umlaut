@@ -74,7 +74,7 @@ module Umlaut::ControllerBehavior
   # See https://github.com/team-umlaut/umlaut/wiki/Alternate-service-groups
   def create_collection
     services = ServiceStore.global_service_store.determine_services( self.specified_service_groups.uniq )
-    return Collection.new(@user_request, services)
+    return Collection.new(@user_request, services, umlaut_config)
   end
   protected :create_collection
 
