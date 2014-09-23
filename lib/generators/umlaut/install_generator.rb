@@ -21,7 +21,7 @@ module Umlaut
 #{$1}# UMLAUT: Umlaut's use of threading makes Rails dev-mode class reloading tricky
 #{$1}# It seems to be be mostly okay with cache_classes=false AND eager_load=true
 #{$1}# but beware of editing files while background requests are running. 
-#{$1}config.eager_loading = true
+#{$1}config.eager_load = true
             EOS
         end
       end
