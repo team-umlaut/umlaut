@@ -431,9 +431,23 @@ class Request < ActiveRecord::Base
     req.client_ip_is_simulated = true if req.client_ip_addr != a_rails_request.remote_ip()
 
     # Save selected http headers, keep some out to avoid being too long to
-    # serialize. 
+    # serialize. This is in retrospect not a great design to save http hash,
+    # should be individual columns of things we want to save. When we next make
+    # Umlaut schema changes maybe. 
+    #
+    # One problem we're running into is exceeding width of db column. 
+    # We'll only save REQUEST_URI if it's not too long to try and avoid. 
     req.http_env = {}
-    a_rails_request.env.each {|k, v| req.http_env[k] = v if ((k.slice(0,5) == 'HTTP_' && k != 'HTTP_COOKIE') || k == 'REQUEST_URI' || k == 'SERVER_NAME') }
+    a_rails_request.env.each do |k, v| 
+      if ((k.slice(0,5) == 'HTTP_' && k != 'HTTP_COOKIE') || 
+        (k == 'REQUEST_URI' && v.length <= 1024) || 
+        k == 'SERVER_NAME')
+        req.http_env[k] = v 
+      end
+    end
+    #["HTTP_X_FORWARDED_FOR", "SERVER_NAME", "HTTP_USER_AGENT", "HTTP_ACCEPT", 'HTTP_ACCEPT_LANGUAGE', 'HTTP_ACCEPT_CHARSET', 'HTTP_ACCEPT_ENCODING']
+
+
     
     req.save!
     return req
