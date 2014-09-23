@@ -142,7 +142,7 @@ class ResolveController < UmlautController
     # no end of problems later. We can't just refuse to process, sources
     # do send us bad bytes, I'm afraid.
     params.values.each do |v|
-      v.scrub!
+      v.scrub! if v.respond_to?(:'scrub!')
     end
     # Create an UmlautRequest object.
     options = {}
