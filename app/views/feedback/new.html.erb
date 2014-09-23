@@ -1,32 +1,32 @@
 <h1>Contact Us <small>Send us questions, problems, or comments</small></h1>
 
-<%= form_tag(feedback_path(params[:request_id], :contact_id => params[:contact_id]) , :method => :post, :class => "feedback-form form-horizontal") do %>
+<%= form_tag(feedback_path(params[:request_id], :contact_id => params[:contact_id]) , :method => :post, :class => "feedback-form form-horizontal", :role => "form") do %>
     
     <div class="form-group">
-        <label class="control-label" for="name">Your Name</label>
-        <div class="controls">
-          <input type="text" id="name" name="name">
+        <label class="control-label col-sm-2" for="name">Your Name</label>
+        <div class="controls col-sm-10">
+          <input type="text" id="name" name="name" class="form-control">
         </div>
     </div>
 
     <div class="form-group">
-        <label class="control-label" for="email">Your Email</label>
-        <div class="controls">
-          <input type="text" id="email" name="email">
+        <label class="control-label col-sm-2" for="email">Your Email</label>
+        <div class="controls col-sm-10">
+          <input type="text" id="email" name="email" class="form-control">
         </div>
     </div>
 
     <div class="form-group">
-        <label class="control-label" for="feedback">Question or Comment</label>
-        <div class="controls">
-          <textarea id="feedback" name="feedback" class="input-xxlarge" rows=6></textarea>
+        <label class="control-label col-sm-2" for="feedback">Question or Comment</label>
+        <div class="controls col-sm-10">
+          <textarea id="feedback" name="feedback" class="form-control" rows=6></textarea>
         </div>
     </div>
 
 
     <div class="form-group">
-        <div class="controls">
-          <button type="submit" class="btn btn-default">Send</button>
+        <div class="controls col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-primary">Send</button>
         </div>
     </div>
     
