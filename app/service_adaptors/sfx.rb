@@ -266,11 +266,8 @@ class Sfx < Service
         end
 
         if ( umlaut_service ) # Okay, it's in services or targets of interest
-          if (target/"./displayer")
-            source = "SFX/"+(target/"./displayer").inner_text
-          else
-            source = "SFX"+URI.parse(self.url).path
-          end
+
+          source = @display_name || "SFX"
 
           target_service_id = (target/"./target_service_id").inner_text
 
