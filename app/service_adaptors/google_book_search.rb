@@ -55,15 +55,18 @@ class GoogleBookSearch < Service
   attr_reader :url, :display_name, :num_full_views 
   
   def service_types_generated
-    types= [
-      ServiceTypeValue[:fulltext], 
-      ServiceTypeValue[:cover_image],
-      ServiceTypeValue[:highlighted_link],
-      ServiceTypeValue[:search_inside],
-      ServiceTypeValue[:excerpts]]
+    types= []
 
+    if @web_links
+      types.push ServiceTypeValue[:highlighted_link]
+      types.push ServiceTypeValue[:excerpts]
+    end
+    types.push(ServiceTypeValue[:search_inside]) if @search_inside
+    types.push(ServiceTypeValue[:fulltext]) if @fulltext
+    types.push(ServiceTypeValue[:cover_image]) if @cover_image
     types.push(ServiceTypeValue[:referent_enhance]) if @referent_enhance
     types.push(ServiceTypeValue[:abstract]) if @abstract
+
     return types
   end
   
@@ -80,6 +83,12 @@ class GoogleBookSearch < Service
 
     # default OFF, add description/abstract from GBS
     @abstract = false
+
+    # Other responses on by default but can be turned off
+    @cover_image   = true
+    @fulltext      = true
+    @search_inside = true
+    @web_links     = true # to partial view :excerpts or :fulltext
 
     # google api key strongly recommended, otherwise you'll
     # probably get rate limited. 
@@ -118,19 +127,25 @@ class GoogleBookSearch < Service
     add_abstract(request, data) if @abstract
     
     #return full views first
-    full_views_shown = create_fulltext_service_response(request, data)
+    if @fulltext
+      full_views_shown = create_fulltext_service_response(request, data)
+    end
     
-    # Add search_inside link if appropriate
-    add_search_inside(request, data)
+    if @search_inside
+      # Add search_inside link if appropriate
+      add_search_inside(request, data)
+    end
     
     # only if no full view is shown, add links for partial view or noview
     unless full_views_shown
       do_web_links(request, data)
     end
     
-    thumbnail_url = find_thumbnail_url(data)
-    if thumbnail_url
-      add_cover_image(request, thumbnail_url)    
+    if @cover_image
+      thumbnail_url = find_thumbnail_url(data)
+      if thumbnail_url
+        add_cover_image(request, thumbnail_url)    
+      end
     end
 
     return request.dispatched(self, true)
