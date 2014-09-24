@@ -31,28 +31,33 @@ default:
         base_url: YOUR_SFX_BASE_URL
         priority: 3
 
+      # We have GoogleBookSearch running early because it can take a bare ISBN
+      # and look up bibliographic metadata, which is useful to happen early. 
+      # By running at the same priority as SFX, 3, it will run concurrently
+      # and maximize fast response time. You could also have it run before SFX,
+      # if you needed SFX to have the enhanced metadata from GoogleBookSearch. 
+      #
+      # It can also find cover images, abstracts, and links to
+      # previews and search-inside-the-book. You can turn
+      # each of those off if you want. 
+      GoogleBookSearch:
+        type: GoogleBookSearch
+        disabled: true
+        priority: 3
+        api_key: 'YOUR_GBS_API_KEY'
+        referent_enhance: true
+        fulltext: true
+        cover_image: true
+        abstract: true
+        web_links: true
+
       # blind link to price comparison site AllBooks.com. 
       # just a blind link with no API pre-check, will be near
       # instantaneous to calculate. 
       AllBooksDotCom:
         type: AllBooksDotCom
         priority: 3
-      
-        
-      # First half of Amazon, run in foreground, get metadata and cover images.
-      Amazon:
-        disabled: true
-        display_name: Amazon.com
-        type: Amazon
-        url: http://webservices.amazon.com/onca/xml
-        api_key: "NEED_API_KEY"
-        secret_key: "NEED_SECRET_KEY"
-        associate_tag: "NEED_ASSOCIATE_ID"
-        priority: 3
-        service_types:
-          - abstract
-          - referent_enhance
-          - cover_image
+
           
       
       # Priority c  : Background          
@@ -61,20 +66,7 @@ default:
       # be put in the same bg wave, to increase perceived responsiveness
       # by ending the spinner in the fulltext area. 
       
-      # Second half of Amazon. It's Slow to lookup highlighted_link and search_inside
-      # availability, so we do it in a bg wave.  
-      Amazon_bg:
-        type: Amazon
-        disabled: true        
-        api_key: "NEED_API_KEY"
-        secret_key: "NEED_SECRET_KEY"
-        associate_tag: "NEED_ASSOCIATE_ID"
-        priority: c        
-        make_aws_call: false
-        service_types:
-          - highlighted_link
-          - search_inside
-          - excerpts          
+         
       
       CoverThing:
         type: CoverThing
@@ -93,12 +85,6 @@ default:
       UlrichsCover:
         type: UlrichsCover
         priority: c      
-          
-      GoogleBookSearch:
-        type: GoogleBookSearch
-        disabled: true
-        priority: c        
-        api_key: 'YOUR_GBS_API_KEY'                
         
       InternetArchive:
         display_name: the Internet Archive
