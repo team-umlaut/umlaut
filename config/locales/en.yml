@@ -157,6 +157,7 @@ en:
         notes_html: "This article <b>may</b> be available on the public web, look for links labelled <span class='gscholar_example'>[html]</span> or <span class='gscholar_example'>[pdf]</span>"
       google_book_search:
         book_information: "Book information"
+        description: "Description from Google Books"
       amazon:
         display_text: "Amazon's page"
         description: "Description from Amazon.com"

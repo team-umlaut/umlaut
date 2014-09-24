@@ -29,17 +29,39 @@ class GoogleBookSearchTest < ActiveSupport::TestCase
     assert_equal(expected, keys)
   end
 
-  # Actually a live test of GBS server, not great, but oh well. 
-  # This doesn't check much of the response, but just enough to know we got
-  # something back. The server for the thumbnail changes, so we can't do a 
-  # simple match and a huge regexp was making my head hurt.
-  # UPDATE: Use VCR to provide a deterministic GBS search.
-  # TODO: Check more of the response
+
+
   test_with_cassette("frankenstein by OCLC number", :google_book_search) do
     hashified_response = @gbs_default.do_query('OCLC2364071', @frankenstein_request)
     assert_not_nil hashified_response
     assert_not_nil hashified_response["totalItems"]
     assert_operator hashified_response["totalItems"], :>, 0 
+  end
+
+  test_with_cassette("enhances referent and other data", :google_book_search) do
+    request = fake_umlaut_request("/?isbn=1416573461") # an edition of gone with the wind
+    @gbs_default.handle(request)
+
+    ref_metadata = request.referent.metadata
+
+    assert_equal "Gone with the Wind", ref_metadata["title"]
+    assert_equal "Margaret Mitchell", ref_metadata["au"]
+    assert_equal "Simon and Schuster", ref_metadata["pub"]
+    assert_equal "960", ref_metadata["tpages"]
+    assert_equal "2007", ref_metadata["date"]
+  end
+
+  test_with_cassette("adds abstract", :google_book_search) do
+    # an edition of gone with the wind
+    request               = fake_umlaut_request("/?isbn=1416573461") 
+    service_with_abstract = GoogleBookSearch.new('priority' => 1, 'abstract' => true, 'service_id' => 'GoogleBookSearch')
+
+    service_with_abstract.handle(request)
+
+    abstract = request.service_responses.to_a.find {|sr| sr.service_type_value == ServiceTypeValue["abstract"] && sr.service_id == "GoogleBookSearch"}
+    assert abstract, "Did not create an `abstract` ServiceResponse"
+    assert_present abstract.display_text , "`abstract` ServiceResponse missing content"
+    assert_present abstract.url, "`abstract` ServiceResposne missing url"
   end
 
   def test_create_fulltext_service_response

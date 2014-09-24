@@ -14,6 +14,11 @@
 # 
 # If a thumbnail_url is returned in the responses, a cover image is displayed.
 #
+# Can also enhances with an abstract, if available. -- off by default, set `abstract: true` to turn on.  
+#
+# And fleshes out bibliographic details from an identifier -- if all you had was an
+# ISBN, will fill in title, author, etc in referent from GBS response.  
+#
 # = Google API Key
 # 
 # Setting an api key in :api_key STRONGLY recommended, or you'll
@@ -56,7 +61,9 @@ class GoogleBookSearch < Service
       ServiceTypeValue[:highlighted_link],
       ServiceTypeValue[:search_inside],
       ServiceTypeValue[:excerpts]]
+
     types.push(ServiceTypeValue[:referent_enhance]) if @referent_enhance
+    types.push(ServiceTypeValue[:abstract]) if @abstract
     return types
   end
   
@@ -64,10 +71,16 @@ class GoogleBookSearch < Service
     @url = 'https://www.googleapis.com/books/v1/volumes?q='
     
     @display_name = 'Google Books'
+    
     # number of full views to show
     @num_full_views = 1
+    
     # default on, to enhance our metadata with stuff from google
     @referent_enhance = true
+
+    # default OFF, add description/abstract from GBS
+    @abstract = false
+
     # google api key strongly recommended, otherwise you'll
     # probably get rate limited. 
     @api_key = nil
@@ -101,6 +114,8 @@ class GoogleBookSearch < Service
     return request.dispatched(self, true) if data["totalItems"] == 0
     
     enhance_referent(request, data) if @referent_enhance
+
+    add_abstract(request, data) if @abstract
     
     #return full views first
     full_views_shown = create_fulltext_service_response(request, data)
@@ -139,7 +154,7 @@ class GoogleBookSearch < Service
       
       element_enhance(request, "tpages", volumeInfo["pageCount"])
       
-      if (date = volumeInfo["publishedDate"] && date =~ /^(\d\d\d\d)/)
+      if (date = volumeInfo["publishedDate"]) && date =~ /^(\d\d\d\d)/
         element_enhance(request, "date", $1)
       end
       
@@ -166,6 +181,21 @@ class GoogleBookSearch < Service
       
       end              
     end            
+  end
+
+  def add_abstract(request, data)
+    info = data["items"].first.try {|h| h["volumeInfo"]}
+    if description = info["description"]
+
+      url = info["infoLink"]
+      request.add_service_response(
+          :service => self, 
+          :display_text => "Description from Google Books", 
+          :display_text_i18n => "description",
+          :url => remove_query_context(url),
+          :service_type_value =>  :abstract  
+      )
+    end
   end
 
   # Will not over-write existing referent values. 
