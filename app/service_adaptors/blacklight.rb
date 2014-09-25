@@ -97,7 +97,7 @@ class Blacklight < Service
         doc = Nokogiri::XML( http_fetch(url).body )
         # filter out matches whose titles don't really match at all, or
         # which have already been seen in identifier search. 
-        entries = filter_keyword_entries( doc.xpath("atom:feed/atom:entry", xml_ns) , :exclude_ids => ids_processed, :remove_subtitle => (! title_is_serial?(request.referent)) )
+        entries = filter_keyword_entries(request, doc.xpath("atom:feed/atom:entry", xml_ns) , :exclude_ids => ids_processed, :remove_subtitle => (! title_is_serial?(request.referent)) )
         
         
         marc_by_atom_id = {}
@@ -286,7 +286,7 @@ class Blacklight < Service
     return service_data.length
   end
 
-  def filter_keyword_entries(atom_entries, options = {})
+  def filter_keyword_entries(request, atom_entries, options = {})
     options[:exclude_ids] ||= []
     options[:remove_subtitle] ||= true
     
