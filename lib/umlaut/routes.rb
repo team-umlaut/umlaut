@@ -98,7 +98,11 @@ module Umlaut
       
       def link_router
         add_routes do |options|
-          get 'link_router(/index)' => "link_router#index"
+          # legacy with the index, to keep old bookmarks working, needs to come first
+          get 'link_router/index(/:id)' => "link_router#index"
+
+          get 'link_router/:id'        => "link_router#index"
+
         end
       end
       
