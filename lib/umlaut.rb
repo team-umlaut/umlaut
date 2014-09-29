@@ -8,6 +8,16 @@ require 'bootstrap-sass'
 module Umlaut
   class Engine < Rails::Engine
     engine_name "umlaut"
+
+    ## Umlaut patches assets:precompile rake task to make non-digest-named
+    # copies of files matching this config. LOGICAL names of assets. 
+    # These can be dirglobs if desired. 
+    #
+    # See lib/tasks/umlaut_asset_compile.rake
+    # 
+    # umlaut_ui.js and spinner.gif prob should have been put under umlaut/
+    # dir, but we didn't. 
+    config.non_digest_named_assets = ["umlaut/*.js", "umlaut_ui.js", "spinner.gif"]
     
     # We need the update_html.js script to be available as it's own
     # JS file too, not just compiled into application.js, so we can
