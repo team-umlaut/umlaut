@@ -25,6 +25,16 @@ class ServiceResponseTest < ActiveSupport::TestCase
     assert_equal "fulltext", sr.view_data[:service_type_value]
   end
 
+  def test_truncates_really_long_display_text
+    sr = ServiceResponse.new
+    sr.take_key_values(
+      :service_id => "DummyService",
+      :display_text => ("really really long and " * 10000),
+      :service_type_value => :fulltext
+    )
+    sr.save!
+  end
+
   # A service that does nothing!
   class DummyService < Service
     def handle(request)

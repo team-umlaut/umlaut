@@ -1,4 +1,5 @@
 require 'i18n'
+require 'truncate_to_db_limit'
 
 # Note: There are a few actual attributes stored as Columns in referent --
 # these were originally used for identifying a Referent identifying the
@@ -16,11 +17,12 @@ class Referent < ActiveRecord::Base
   has_many :referent_values
   has_many :permalinks
 
-  # Make sure years get truncated to 4 chars
-  def year=(y)
-    super(y.slice(0,4))
-  end
+  # We really should get rid of these 'mirror' attributes, but
+  # in the meantime truncate them. 
+  extend TruncateToDbLimit
+  truncate_to_db_limit :volume, :year, :issn, :isbn
 
+  
   # Pass in :permalink => :force to force creation of a permalink, otherwise
   # no permalink is created by this method, one can be lazily created when
   # needed. 

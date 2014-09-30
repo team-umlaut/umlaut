@@ -164,6 +164,7 @@ Generally only for fulltext. Right now only supplied by SFX.
                         method can convenient. 
 
 =end
+require 'truncate_to_db_limit'
 class ServiceResponse < ActiveRecord::Base  
   @@built_in_fields = [:display_text, :url, :notes, :response_key, :value_string, :value_alt_string, :value_text, :id]
   belongs_to :request
@@ -172,6 +173,11 @@ class ServiceResponse < ActiveRecord::Base
   # the http request params can easily be passed around with a response
   # object.
   attr_accessor :http_request_params
+
+  extend TruncateToDbLimit
+  truncate_to_db_limit :display_text
+
+  validates :adfadfadfadf, presence: true
 
   # Constants for 'match_reliability' value.
   MatchExact = 'exact'
