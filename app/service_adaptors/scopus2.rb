@@ -139,7 +139,7 @@ class Scopus2 < Service
         code    = error.at_xpath("./status/statusCode")
         message = error.at_xpath("./status/statusText")
       end
-      e = StandardError.new("Scopus returned error: #{code}: #{message}: scopus query: #{url}")
+      e = StandardError.new("Scopus returned error HTTP status #{response.status}: #{code}: #{message}: scopus query: #{url}")
       return request.dispatched(self, DispatchedService::FailedFatal, e)
     end
 
