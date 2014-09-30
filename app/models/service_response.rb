@@ -177,8 +177,6 @@ class ServiceResponse < ActiveRecord::Base
   extend TruncateToDbLimit
   truncate_to_db_limit :display_text
 
-  validates :adfadfadfadf, presence: true
-
   # Constants for 'match_reliability' value.
   MatchExact = 'exact'
   MatchUnsure = 'unsure'
