@@ -55,7 +55,7 @@ end
 def command_line(options)
   umlaut_template_path = File.expand_path(File.dirname(__FILE__) + '/../lib/generators/umlaut_app_template.rb')
 
-  return "rails _#{options.rails_version}_ new -d mysql --skip-spring #{options.app_path} -m #{umlaut_template_path}"
+  return "rails _#{options.rails_version}_ new #{options.app_path} -d mysql --skip-spring -m #{umlaut_template_path}"
 end
 
 def parse_options!
