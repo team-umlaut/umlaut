@@ -109,6 +109,7 @@ class Amazon < Service
 
       selected_aws_vals = {}
       if ( @make_aws_call )
+
         aws_response = make_aws_request( isbn )
         
         return request.dispatched(self, true) if aws_response.blank?
@@ -189,7 +190,8 @@ class Amazon < Service
     err = (aws.at("ItemLookupErrorResponse")) if err.blank?
     
     unless (err.blank?)
-      if (err.at('Code').text == 'AWS.InvalidParameterValue')
+      if ((err.at('Code').text == 'AWS.InvalidParameterValue') ||
+          (err.at('Code').text == 'AWS.ECommerceService.ItemNotAccessible'))
         # Indicates an ISBN that Amazon doesn't know about, or that
         # was mal-formed. We can't tell the difference, so either
         # way let's silently ignore. 
