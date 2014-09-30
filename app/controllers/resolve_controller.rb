@@ -9,10 +9,7 @@ class ResolveController < UmlautController
   skip_before_action :verify_authenticity_token, only: [:index, :background_status, :partial_html_sections, :api]
 
   before_filter :init_processing
-
-  # We need to NOT require a CSRF token on post to #index,
-  # to allow POSTed OpenURLs
-  protect_from_forgery :except => :index
+  
   # POST'ed OpenURLs are a mess, redirect them to GETs
   before_filter :post_to_get, :only => :index
 
