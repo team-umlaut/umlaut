@@ -306,9 +306,9 @@ class Amazon < Service
       look_inside = false
 
       # Check for search_inside or look_inside if we're configured
-      # to supply highlighted_link or search_inside, that's what we
+      # to supply "excerpts" or search_inside, that's what we
       # need it for.
-      if ( @service_types.include?("highlighted_link") ||
+      if ( @service_types.include?("excerpts") ||
            @service_types.include?("search_inside"))
         
         
