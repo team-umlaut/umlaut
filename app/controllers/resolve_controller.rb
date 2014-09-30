@@ -6,7 +6,7 @@ class ResolveController < UmlautController
   # These methods are meant as API called from other sites via Javascript
   # with JS responses. We don't want Rails to keep it from happening. 
   # http://api.rubyonrails.org/classes/ActionController/RequestForgeryProtection.html
-  skip_before_action :verify_authenticity_token, only: [:index, :background_status, :partial_html_sections, :api]
+  skip_before_filter :verify_authenticity_token, only: [:index, :background_status, :partial_html_sections, :api]
 
   before_filter :init_processing
   
