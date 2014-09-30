@@ -18,22 +18,14 @@ class Scopus2Test < ActiveSupport::TestCase
     @service       = Scopus2.new('service_id' => 'test_scopus2', 'api_key' => @@api_key, 'priority' => 0)
   end
 
-  def make_rails_request(umlaut_url)  
-    # hard to figure out how to mock a request, this seems to work
-    ActionController::TestRequest.new(Rack::MockRequest.env_for(umlaut_url))    
-  end
 
-  def make_umlaut_request(umlaut_url)
-    rails_request = make_rails_request(umlaut_url)
-    Request.find_or_create(rails_request.params, {}, rails_request)
-  end
 
   
   # Actual openurl sent by google scholar, including a doi. 
   # Do we correctly create a scopus doi query?  
   def test_doi_query  
     doi = '10.1007/s10350-006-0578-2'
-    umlaut_request = make_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&id=doi:#{CGI.escape doi}&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939&issn=0012-3706")
+    umlaut_request = fake_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&id=doi:#{CGI.escape doi}&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939&issn=0012-3706")
     
     scopus_query = @service.scopus_query(umlaut_request)
 
@@ -42,7 +34,7 @@ class Scopus2Test < ActiveSupport::TestCase
 
   # No doi, but full citation. scopus query?
   def test_non_doi_query
-    umlaut_request = make_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939&issn=0012-3706")
+    umlaut_request = fake_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939&issn=0012-3706")
 
     scopus_query = @service.scopus_query(umlaut_request)
 
@@ -52,7 +44,7 @@ class Scopus2Test < ActiveSupport::TestCase
 
   # journal title but no issn
   def test_no_issn_query
-    umlaut_request = make_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939&jtitle=Diseases+of+the+colon+%26+rectum")
+    umlaut_request = fake_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939&jtitle=Diseases+of+the+colon+%26+rectum")
 
     scopus_query = @service.scopus_query(umlaut_request)
 
@@ -62,7 +54,7 @@ class Scopus2Test < ActiveSupport::TestCase
 
   # Not enough to make a query, no journal title or issn
   def test_insufficient_metadata_query
-    umlaut_request = make_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939")
+    umlaut_request = fake_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939")
 
     scopus_query = @service.scopus_query(umlaut_request)
 
@@ -70,7 +62,7 @@ class Scopus2Test < ActiveSupport::TestCase
   end
 
   def test_pmid_query
-    umlaut_request = make_umlaut_request("/resolve?sid=google&pmid=123456&atitle=ignore&aulast=ignore&issn=12345678")
+    umlaut_request = fake_umlaut_request("/resolve?sid=google&pmid=123456&atitle=ignore&aulast=ignore&issn=12345678")
 
     scopus_query = @service.scopus_query(umlaut_request)
 
@@ -78,7 +70,7 @@ class Scopus2Test < ActiveSupport::TestCase
   end
 
   def test_isbn_query
-    umlaut_request = make_umlaut_request("/resolve?sid=google&isbn=1234567890&title=ignore&aulast=ignore")
+    umlaut_request = fake_umlaut_request("/resolve?sid=google&isbn=1234567890&title=ignore&aulast=ignore")
 
     scopus_query = @service.scopus_query(umlaut_request)
 
@@ -87,7 +79,7 @@ class Scopus2Test < ActiveSupport::TestCase
 
   # Live test, with VCR recording
   test_with_cassette("live test with result", :scopus) do    
-    umlaut_request = make_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939&issn=0012-3706")
+    umlaut_request = fake_umlaut_request("/resolve?sid=google&auinit=J&aulast=Rafferty&atitle=Practice+parameters+for+sigmoid+diverticulitis&title=Diseases+of+the+colon+%26+rectum&volume=49&issue=7&date=2006&spage=939&issn=0012-3706")
       
     @service.handle_wrapper(umlaut_request)
 
@@ -112,7 +104,7 @@ class Scopus2Test < ActiveSupport::TestCase
   end
 
   test_with_cassette("live test with no hits", :scopus) do
-    umlaut_request = make_umlaut_request("/resolve?sid=google&atitle=adfadfadf&title=adfadf&volume=4900&issue=700&date=1900&spage=93900&issn=0012-3706")
+    umlaut_request = fake_umlaut_request("/resolve?sid=google&atitle=adfadfadf&title=adfadf&volume=4900&issue=700&date=1900&spage=93900&issn=0012-3706")
 
     @service.handle_wrapper(umlaut_request)
 
@@ -134,7 +126,7 @@ class Scopus2Test < ActiveSupport::TestCase
       end
     end)
 
-    umlaut_request = make_umlaut_request("/resolve?sid=google&atitle=adfadfadf&title=adfadf&volume=4900&issue=700&date=1900&spage=93900&issn=0012-3706")
+    umlaut_request = fake_umlaut_request("/resolve?sid=google&atitle=adfadfadf&title=adfadf&volume=4900&issue=700&date=1900&spage=93900&issn=0012-3706")
     service.handle_wrapper(umlaut_request)
 
     assert_empty umlaut_request.service_responses
