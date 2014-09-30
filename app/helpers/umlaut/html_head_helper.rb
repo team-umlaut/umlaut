@@ -7,7 +7,7 @@ module Umlaut::HtmlHeadHelper
   def render_opensearch_link
     tag("link", :rel => "search", :type => "application/opensearchdescription+xml",
         :title =>  umlaut_config.opensearch_short_name,
-        :href => url_for(:controller=>'open_search', :only_path=>false))
+        :href => url_for(:controller=>'/open_search', :only_path=>false))
   end
 
   # used on non-js progress page, we need to refresh the page
