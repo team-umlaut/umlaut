@@ -43,9 +43,13 @@ def run
 
   puts "#{command}\n\n"
 
-  system command
+  success = system command
 
-  post_install_message!
+  if success
+    post_install_message!
+  else
+    puts "\nError installing Umlaut app.\n\n"
+  end
 end
 
 def command_line(options)
