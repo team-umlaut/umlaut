@@ -96,7 +96,13 @@ module Umlaut
     
     def asset_hooks
       guarded(:asset_hooks) do
-        generate("umlaut:asset_hooks")
+        # generate tries to invoke rails from the command line, at which point
+        # it will complain about not yet having a db defined. 
+        #generate("umlaut:asset_hooks")
+
+        # try like so instead which seems to work, and is faster too. 
+        log :generate, "umlaut:asset_hooks"
+        Rails::Generators.invoke("umlaut:asset_hooks")
       end
     end
     
