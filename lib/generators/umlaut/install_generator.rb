@@ -111,6 +111,16 @@ module Umlaut
         copy_file("app/controllers/umlaut_controller.rb")
       end
     end
+
+    def config_colorize_logging
+      guarded(:config_colorize_logging) do
+        application(nil, env: "production") do
+          "# Umlaut generated this, because Umlaut does some colorized\n" +
+          "  # logging, and Rails really ought to default to false in production.\n" +
+          "  config.colorize_logging = false\n"
+        end
+      end
+    end
       
     def post_install_message            
         say("\n              Umlaut installed, now:", :yellow)
