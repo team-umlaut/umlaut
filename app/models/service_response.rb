@@ -174,7 +174,7 @@ class ServiceResponse < ActiveRecord::Base
   # object.
   attr_accessor :http_request_params
 
-  extend TruncateToDbLimit
+  include TruncateToDbLimit
   truncate_to_db_limit :display_text
 
   # Constants for 'match_reliability' value.

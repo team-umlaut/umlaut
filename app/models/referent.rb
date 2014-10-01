@@ -19,7 +19,7 @@ class Referent < ActiveRecord::Base
 
   # We really should get rid of these 'mirror' attributes, but
   # in the meantime truncate them. 
-  extend TruncateToDbLimit
+  include TruncateToDbLimit
   truncate_to_db_limit :volume, :year, :issn, :isbn
 
   

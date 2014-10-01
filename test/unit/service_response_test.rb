@@ -29,7 +29,7 @@ class ServiceResponseTest < ActiveSupport::TestCase
     sr = ServiceResponse.new
     sr.take_key_values(
       :service_id => "DummyService",
-      :display_text => ("really really long and " * 10000),
+      :display_text => ("really really long and " * 300),
       :service_type_value => :fulltext
     )
     sr.save!
