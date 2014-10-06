@@ -46,7 +46,7 @@ if ENV["RAILS_GEM_SPEC"]
   gem "rails", ENV["RAILS_GEM_SPEC"]
   # Our tests assume minitest, but Rails 3 is only compatible with
   # older versions of minitest. This works for now. 
-  if ENV["RAILS_GEM_SPEC"].split(".")[0].to_i < 4
+  if ENV["RAILS_GEM_SPEC"] =~ /([\d.]+)/ && $1.split(".")[0].to_i < 4
     gem "minitest", "~> 4.0"
   end
 end
