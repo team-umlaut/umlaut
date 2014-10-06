@@ -189,7 +189,7 @@ class ResolveControllerTest < ActionController::TestCase
 
         # Some versions of rails html-escape apostrophes here, some don't, we don't care
         assert_select element, 'div.edition_warning', {:count => 1,
-          :text => /\AEdition information Momo, ovvero l(&#39;)|(\')arcana storia dei ladri di tempo e della bambina che restituÃ¬ agli uomini il tempo trafugato\Z/}
+          :text => /\AEdition information Momo, ovvero l(&#39;)|(\')|(&#x27;)arcana storia dei ladri di tempo e della bambina che restituÃ¬ agli uomini il tempo trafugato\Z/}
       end
     end
 
