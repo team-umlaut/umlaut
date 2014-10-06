@@ -44,6 +44,8 @@ module Dummy
     config.assets.version = '1.0'
 
     config.secret_key_base = "adfadf"
+
+    I18n.enforce_available_locales = true
   end
 end
 

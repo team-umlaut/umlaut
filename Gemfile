@@ -38,6 +38,19 @@ end
 # Add coveralls for testing.
 gem "coveralls", "~> 0.6.0", :require => false, :group => :test
 
+# This is experimental and mainly used for testing. If you want to test against
+# Rails 3.2, try:
+#     $ RAILS_GEM_SPEC="~> 3.2.0" bundle update
+#     $ RAILS_GEM_SPEC="~> 3.2.0" bundle exec rake test
+if ENV["RAILS_GEM_SPEC"]
+  gem "rails", ENV["RAILS_GEM_SPEC"]
+  # Our tests assume minitest, but Rails 3 is only compatible with
+  # older versions of minitest. This works for now. 
+  if ENV["RAILS_GEM_SPEC"].split(".")[0].to_i < 4
+    gem "minitest", "~> 4.0"
+  end
+end
+
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
 # Git. Remember to move these dependencies to your gemspec before releasing

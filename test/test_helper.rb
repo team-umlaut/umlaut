@@ -4,8 +4,9 @@ require File.expand_path('../dummy/config/environment', __FILE__)
 #require 'engine_cart'
 #EngineCart.load_application!
 
-require 'rails/test_help'
+require 'minitest/autorun'
 require 'minitest/unit'
+require 'rails/test_help'
 
 require 'coveralls'
 Coveralls.wear!
@@ -35,7 +36,9 @@ require 'collection'
 Collection.forward_background_exceptions = true
 
 class ActiveSupport::TestCase
-  ActiveRecord::Migration.check_pending!
+  if ActiveRecord::Migration.respond_to? :"check_pending!"
+    ActiveRecord::Migration.check_pending!
+  end
 
   # Load SFX 4 fixtures only if we are explicitly creating a mock_instance
   # which should really only be the case for travis-ci.org
