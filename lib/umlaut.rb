@@ -46,17 +46,20 @@ module Umlaut
         line.sub(/^#{engine_root_regex}/, "#{engine_name} ")
       end
 
+      # This actually seemed not to be neccesary, and wasn't behaving right? Let's
+      # try without it...
+      #
       # Keep Umlaut's own stacktrace in the backtrace -- we have to remove Rails
       # silencers and re-add them how we want. 
-      Rails.backtrace_cleaner.remove_silencers!
+      #Rails.backtrace_cleaner.remove_silencers!
 
       # Silence what Rails silenced, UNLESS it looks like
       # it's from Umlaut engine
-      Rails.backtrace_cleaner.add_silencer do |line|
-        (line !~ Rails::BacktraceCleaner::APP_DIRS_PATTERN) &&
-        (line !~ /^#{engine_root_regex}/  ) &&
-        (line !~ /^#{engine_name} /)
-      end
+      #Rails.backtrace_cleaner.add_silencer do |line|
+        #(line !~ Rails::BacktraceCleaner::APP_DIRS_PATTERN) &&
+        #(line !~ /^#{engine_root_regex}/  ) &&
+        #(line !~ /^#{engine_name} /)
+      #end
     end
     
     # Patch with fixed 'fair' version of ConnectionPool, see 
