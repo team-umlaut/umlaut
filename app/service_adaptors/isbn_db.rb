@@ -1,3 +1,6 @@
+# NOT recommended anymore, jrochkind has found IsbnDb to be pretty flaky, and
+# hard to deal with. See book_finder.rb or all_books_dot_com.rb as alternatives. 
+#
 # Talks to the ISBNDb (isbndb.com) to get pricing info and links to pricing
 # info for online sellers. There are potentially other services we could
 # make use of there in the future too.
