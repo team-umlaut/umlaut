@@ -101,7 +101,7 @@ class ServiceWave
             
             # Log it too, although experience shows it may never make it to the 
             # log for mysterious reasons. 
-            log_msg = TermColor.color("Umlaut: Threaded service raised exception.", :red, true) + " Service: #{service.service_id}, #{e.class} #{e.message}. Backtrace:\n  #{e.backtrace.join("\n  ")}"
+            log_msg = TermColor.color("Umlaut: Threaded service raised exception.", :red, true) + " Service: #{service.service_id}, #{e.class} #{e.message}. Backtrace:\n  #{clean_backtrace(e.backtrace).join("\n  ")}"
             Rails.logger.error(log_msg)
             
             # And stick it in a thread variable too
@@ -162,10 +162,14 @@ class ServiceWave
   end
   
   protected
-    def clean_backtrace(exception, *args)
-      defined?(Rails) && Rails.respond_to?(:backtrace_cleaner) ?
-        Rails.backtrace_cleaner.clean(exception.backtrace, *args) :
-        exception.backtrace
+    def clean_backtrace(exception)
+      if defined?(Rails) && Rails.respond_to?(:backtrace_cleaner)
+        trace = Rails.backtrace_cleaner.clean(exception.backtrace)
+        trace = Rails.backtrace_cleaner.clean(exception.backtrace, :all) if trace.empty?
+        return trace
+      else
+        return exception.backtrace
+      end
     end
 
   
