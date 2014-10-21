@@ -1,5 +1,5 @@
 module Umlaut
-  VERSION = "4.0.0"
+  VERSION = "4.0.1"
 
   # This is used in Umlaut's .gemspec for generating the gem,
   # and is also used in the umlaut app generator to make sure
