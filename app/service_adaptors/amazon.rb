@@ -277,8 +277,9 @@ class Amazon < Service
         end
 
       end
-			# Enhance with full author name string even if aulast is already present, because full string may be useful for worldcat identities. 
-      unless (metadata['au'] )
+
+      # Don't overwrite aulast with our full au
+      unless (metadata['au'] || metadata['aulast'])
         if author = (item_attributes.at("Author"))
           request.referent.enhance_referent('au', author.inner_text)
         end
