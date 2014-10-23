@@ -60,6 +60,11 @@ class ReferentToCitationTest < ActiveSupport::TestCase
     assert_equal I18n.t("umlaut.citation.genre.bookitem"), ref.type_of_thing
     assert_equal I18n.t("umlaut.citation.genre.book"), ref.container_type_of_thing
 
+    # it looks like a book, but it's really a book chapter
+    ref = make_test_referent("genre=book&title=a+book&atitle=a+chapter")
+    assert_equal I18n.t("umlaut.citation.genre.bookitem"), ref.type_of_thing
+    assert_equal I18n.t("umlaut.citation.genre.book"), ref.container_type_of_thing
+
     ref = make_test_referent("genre=unknown&atitle=a+chapter&title=a+book")
     assert_nil ref.type_of_thing
     assert_nil ref.container_type_of_thing

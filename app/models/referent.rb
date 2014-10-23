@@ -244,6 +244,10 @@ class Referent < ActiveRecord::Base
   def oclcnum
     return get_oclcnum(self)
   end
+
+  def doi
+    return get_doi(self)
+  end
   
   # Creates an OpenURL::ContextObject assembling all the data in this
   # referrent. 
@@ -350,6 +354,10 @@ class Referent < ActiveRecord::Base
 
     if key == "journal" && metadata['atitle'].present?
       key = 'article'
+    end
+
+    if key == "book" && metadata['atitle'].present?
+      key = "bookitem"
     end
     
     label = I18n.t(key, :scope => "umlaut.citation.genre", :default => "")
