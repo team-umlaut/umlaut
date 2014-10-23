@@ -28,7 +28,10 @@ class IsbnLink < Service
   def handle(umlaut_request)
     
     isbn = get_isbn(umlaut_request.referent)
-    
+
+    # remove hyphens, some services don't like them.
+    isbn = isbn.gsub('-', '') if isbn.present?
+  
     # No isbn, nothing we can do. 
     return umlaut_request.dispatched(self, true) if isbn.blank?
 
