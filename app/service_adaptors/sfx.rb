@@ -399,6 +399,7 @@ class Sfx < Service
          :service_type_value => "highlighted_link")
     end
 
+
     # Did we find a ctx best fit for enhancement?
     if best_fulltext_ctx
       enhance_referent(request, best_fulltext_ctx)
@@ -673,6 +674,8 @@ class Sfx < Service
   # Second argument is a Nokogiri element representing the <perldata>
   # tag and children.
   def enhance_referent(request, perl_data)
+
+
     ActiveRecord::Base.connection_pool.with_connection do
       metadata = request.referent.metadata
 
@@ -680,8 +683,8 @@ class Sfx < Service
 
       sfx_metadata = sfx_co.referent.metadata
       # Do NOT enhance for metadata type 'BOOK', unreliable matching from
-      # SFX!
-      return if sfx_metadata["object_type"] == "BOOK" || sfx_metadata["genre"] == "book"
+      # SFX! UNLESS we have a DOI, that's reliable. 
+      return if ! sfx_metadata["doi"] && (sfx_metadata["object_type"] == "BOOK" || sfx_metadata["genre"] == "book")
 
       # If we already had metadata for journal title and the SFX one
       # differs, we want to over-write it. This is good for ambiguous
