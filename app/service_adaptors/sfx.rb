@@ -100,7 +100,7 @@ class Sfx < Service
     return @base_url
   end
 
-  def handle(request)
+  def handle(request)      
     client = self.initialize_client(request)
     begin
       response = self.do_request(client)
@@ -256,13 +256,11 @@ class Sfx < Service
 
 
         # Okay, keep track of best fit ctx for metadata enhancement
-        if request.referent.format == "journal"
-          if ( umlaut_service == 'fulltext')
-            best_fulltext_ctx = perl_data
-            best_nofulltext_ctx = nil
-          elsif best_nofulltext_ctx == nil
-            best_nofulltext_ctx = perl_data
-          end
+        if ( umlaut_service == 'fulltext')
+          best_fulltext_ctx = perl_data
+          best_nofulltext_ctx = nil
+        elsif best_nofulltext_ctx == nil
+          best_nofulltext_ctx = perl_data
         end
 
         if ( umlaut_service ) # Okay, it's in services or targets of interest
@@ -401,6 +399,7 @@ class Sfx < Service
 
 
     # Did we find a ctx best fit for enhancement?
+
     if best_fulltext_ctx
       enhance_referent(request, best_fulltext_ctx)
     elsif best_nofulltext_ctx
@@ -682,9 +681,10 @@ class Sfx < Service
       sfx_co = Sfx.parse_perl_data(perl_data)
 
       sfx_metadata = sfx_co.referent.metadata
+
       # Do NOT enhance for metadata type 'BOOK', unreliable matching from
-      # SFX! UNLESS we have a DOI, that's reliable. 
-      return if ! sfx_metadata["doi"] && (sfx_metadata["object_type"] == "BOOK" || sfx_metadata["genre"] == "book")
+      # SFX! UNLESS we requested based on a DOI or ISBN, that's reliable. 
+      return if request.referent.isbn.blank? && request.referent.doi.blank? && (sfx_metadata["object_type"] == "BOOK" || sfx_metadata["genre"] == "book")
 
       # If we already had metadata for journal title and the SFX one
       # differs, we want to over-write it. This is good for ambiguous
