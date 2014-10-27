@@ -163,13 +163,7 @@ class ServiceWave
   
   protected
     def clean_backtrace(exception)
-      if defined?(Rails) && Rails.respond_to?(:backtrace_cleaner)
-        trace = Rails.backtrace_cleaner.clean(exception.backtrace)
-        trace = Rails.backtrace_cleaner.clean(exception.backtrace, :all) if trace.empty?
-        return trace
-      else
-        return exception.backtrace
-      end
+      Umlaut::Util.clean_backtrace(exception)
     end
 
   

@@ -1,4 +1,6 @@
+require 'umlaut/version'
 require 'umlaut/routes'
+require 'umlaut/util'
 
 # not sure why including openurl gem doesn't do the require, but it
 # seems to need this. 
