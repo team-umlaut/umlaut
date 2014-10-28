@@ -142,7 +142,7 @@ class Collection
         # and logged to db as well as logfile if possible, only bugs in ServiceWave
         # itself should wind up caught here.
         Thread.current[:exception] = e
-        logger.error("Background Service execution exception: #{e}\n\n   " + Rails.backtrace_cleaner.clean(e.backtrace).join("\n"))
+        logger.error("Background Service execution exception: #{e.inspect}\n   " + Umlaut::Util.clean(e).join("\n   "))
 
         # One exception is in test environment, when we may be intentionally
         # trying to get exceptions to propagate up from ServiceWave to here,
