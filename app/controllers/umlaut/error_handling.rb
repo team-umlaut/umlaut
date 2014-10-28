@@ -36,8 +36,8 @@ module Umlaut::ErrorHandling
 
   def log_error_with_context(exception, severity = :fatal)
     message = "\n#{exception.class} (#{exception.message}):\n"
-    message << "  uri: #{request.fullpath}\n\n"
-    message << "  params: #{params.inspect}\n\n"
+    message << "  uri: #{request.fullpath}\n"
+    message << "  params: #{params.inspect}\n"
     message << "  Referer: #{request.referer}\n" if request.referer
     message << "  User-Agent: #{request.user_agent}\n"
     message << "  Client IP: #{request.remote_addr}\n\n"
