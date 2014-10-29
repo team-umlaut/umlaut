@@ -2,7 +2,7 @@ require 'yaml'
 
 
 # This model is the actual list of valid service types. Not ActiveRecord,
-# just load from config files into memory (loaded on file load). 
+# just load from config/service_type_values.yml into memory (loaded on file load, initialization)
 #
 # ServiceTypeValues have human-displayable names, that are controlled by Rails I18n, 
 # using standard Rails I18n pluralization forms, so for instance:
@@ -13,6 +13,10 @@ require 'yaml'
 #
 # Other languages may have more complex pluralization rules, but Umlaut at present only
 # looks up a plural form for 10 items, so 'other' is probably all that is used. 
+#
+# If you want to load additional custom service type values from your own custom .yml file
+# (say in a plugin), do `ServiceTypeValue.merge_yml_file!( filepath_to_yml )`, perhaps
+# in an initializer. 
 class ServiceTypeValue   
   attr_accessor :name, :id
   attr_writer :display_name, :display_name_plural
@@ -25,10 +29,10 @@ class ServiceTypeValue
     end
   end
   
-  def self.find(name)
-    load_values! if values.nil?
+  def self.find(name)    
     values[name.to_sym] or raise ArgumentError.new("No ServiceTypeValue found for #{name}")
   end
+
   def self.[](name)
     find(name)
   end
@@ -52,24 +56,30 @@ class ServiceTypeValue
   
   # Loads from config files, distro and local, into memory.   
   def self.load_values!
-      # Load in starting set of ServiceTypeValue, merge in local defines. 
-      
-      service_type_values = YAML.load_file( @@distro_conf_file )
-      local_overrides = File.exists?( @@local_conf_file ) ?
-            YAML.load_file(@@local_conf_file) :
-            nil
-      # Merge in the params for each service type with possible
-      # existing params.
-      if ( local_overrides )
-        local_overrides.each do |name, params|
-          service_type_values[name] ||= {}          
-          service_type_values[name].merge!( params )          
-        end
-      end
-      
-      self.values = {}
-      service_type_values.each_pair do |name, hash|
-        self.values[name.to_sym] = ServiceTypeValue.new(hash.merge(:name => name))                              
-      end            
+    # Load in starting set of ServiceTypeValue, merge in local defines.       
+    self.merge_yml_file! @@distro_conf_file 
+    
+
+    if File.exists?( @@local_conf_file )
+      self.merge_yml_file! @@local_conf_file
+    end
+
   end
+
+  def self.merge_hash!(definition_hash)
+    self.values ||= {}
+
+    definition_hash.each_pair do |name, value_hash|
+      self.values[name.to_sym] = ServiceTypeValue.new(value_hash.merge(:name =>  name))
+    end
+  end
+
+  def self.merge_yml_file!(filepath)
+    self.merge_hash! YAML.load_file(filepath)
+  end
+
+  # We're doing this outside of a method body on purpose, when this
+  # file gets loaded, immediately load the default values. 
+  self.load_values!
+
 end

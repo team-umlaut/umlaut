@@ -5,7 +5,7 @@
 # to do it over, we'd do this differently. 
 #
 # You can add your own additional service types in a local app config/service_type_values.yml, 
-# or by calling (TODO)
+# or by calling ServiceTypeValue.merge_yml_file!(path_to_yml_file)
 fulltext:
   display_name: Electronic Version
   display_name_plural: Electronic Versions
