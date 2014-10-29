@@ -3,26 +3,29 @@
 #
 # Which makes this file at present just a list of names and ids; if we had
 # to do it over, we'd do this differently. 
+#
+# You can add your own additional service types in a local app config/service_type_values.yml, 
+# or by calling (TODO)
 fulltext:
-  display_name: electronic_version
-  display_name_plural: electronic_versions
+  display_name: Electronic Version
+  display_name_plural: Electronic Versions
   
 holding:
   display_name: Copy in Library
-  display_name_plural: copies_in_library
+  display_name_plural: Copies in Library
   
 document_delivery:
   display_name: Request Service
-  display_name_plural: request_services
+  display_name_plural: Request Services
   
 help:
   display_name: Help Link
-  display_name_plural: help_links
+  display_name_plural: Help Links
 
 # Not currently used
 web_link:
   display_name: Web Result
-  display_name_plural: web_results
+  display_name_plural: Web Results
 
 # Not currently used. 
 relevant_link:
@@ -30,25 +33,25 @@ relevant_link:
   
 abstract:
   display_name: Abstract
-  display_name_plural: abstracts
+  display_name_plural: Abstracts
   
 table_of_contents:
   display_name: Table of Contents
-  display_name_plural: tables_of_content
+  display_name_plural: Tables of Contents
 
 cover_image:
   display_name: Cover Image
-  display_name_plural: cover_images
+  display_name_plural: Cover Images
 
 # "See also" links to known destinations, like Amazon or OCLC
 highlighted_link:
   display_name: See Also Link
-  display_name_plural: see_also_links
+  display_name_plural: See Also Links
   
 # Link to search holdings, generally with a count given, ie "5 possible matches". 
 holding_search:
   display_name: Copy in Library
-  display_name_plural: copies_in_library
+  display_name_plural: Copies in Library
   
 # This is meant for 'fulltext' from such sources as the OPAC/ILS, where
 # it will always be a title-level link, and dates of coverage usually
@@ -99,10 +102,8 @@ similar_item:
 # Used to save/send the citation/holdings
 export_citation:
   display_name: Export tool
-  display_name_plural: export_tools
+  display_name_plural: Export Tools
 
 primo_source:
   display_name: Primo Source
 
-# If you want to add your own custom ones, make them start with ids at 100000,
-# to leave plenty of space for future standard umlaut ones. 
