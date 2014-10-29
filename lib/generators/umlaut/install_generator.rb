@@ -1,3 +1,4 @@
+require 'umlaut'
 require 'rails/generators'
 
 module Umlaut
