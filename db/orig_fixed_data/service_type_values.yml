@@ -4,60 +4,49 @@
 # Which makes this file at present just a list of names and ids; if we had
 # to do it over, we'd do this differently. 
 fulltext:
-  id: 1
   display_name: electronic_version
   display_name_plural: electronic_versions
   
 holding:
-  id: 2
   display_name: Copy in Library
   display_name_plural: copies_in_library
   
 document_delivery:
-  id: 3
   display_name: Request Service
   display_name_plural: request_services
   
 help:
-  id: 4
   display_name: Help Link
   display_name_plural: help_links
 
 # Not currently used
 web_link:
-  id: 5
   display_name: Web Result
   display_name_plural: web_results
 
 # Not currently used. 
 relevant_link:
-  id: 6
   display_name: Closest Web Result
   
 abstract:
-  id: 11
   display_name: Abstract
   display_name_plural: abstracts
   
 table_of_contents:
-  id: 12
   display_name: Table of Contents
   display_name_plural: tables_of_content
 
 cover_image:
-  id: 13
   display_name: Cover Image
   display_name_plural: cover_images
 
 # "See also" links to known destinations, like Amazon or OCLC
 highlighted_link:
-  id: 14
   display_name: See Also Link
   display_name_plural: see_also_links
   
 # Link to search holdings, generally with a count given, ie "5 possible matches". 
 holding_search:
-  id: 15
   display_name: Copy in Library
   display_name_plural: copies_in_library
   
@@ -66,65 +55,53 @@ holding_search:
 # aren't checked. DEPRECATED. No longer used, use a fulltext wtih :coverage_checked
 # and/or :can_link_to_article set to false. 
 fulltext_title_level:
-  id: 16
   display_name: Electronic Text Version
   
 audio:
-  id: 17
   display_name: Digital Audio
 
 # A search inside tool, presented with a search box for user. 
 search_inside:
-  id: 18
   display_name: Search Inside Tool
 
 # A tool that will enhance the Referent metadata. Not always advertised
 # properly yet. 
 referent_enhance:
-  id: 19
   display_name: More Information
 
 # Link to partial text, as in Amazon or Google Books that don't have
 # full text, only excerpts. 
 excerpts:
-  id: 20
   display_name: Limited Excerpts
   
 cited_by:
-  id: 21
   display_name: Article that cites this
   display_name_plural: Articles that cite this
 
 # Used by ISI and Scopus at present. Maybe more later. 
 # "More like this" links. 
 similar:
-  id: 22
   display_name: "Similar Articles"
   
   
 # Not sure what this is used for. Think it's a typo for abstract. 
 description:
-  id: 100
   display_name: Description
   
 # Not sure if this is used for anything yet, but some services generate
 subject:
-  id: 101
   display_name: Subject
   
 # Not used yet by views
 similar_item:
-  id: 102
   display_name: Similar Item
 
 # Used to save/send the citation/holdings
 export_citation:
-  id: 103
   display_name: Export tool
   display_name_plural: export_tools
 
 primo_source:
-  id: 104
   display_name: Primo Source
 
 # If you want to add your own custom ones, make them start with ids at 100000,
