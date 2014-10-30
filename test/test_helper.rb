@@ -137,5 +137,5 @@ module ActiveSupport::Testing::Assertions
   end
 end
 
-require 'umlaut/test_helper'
-include Umlaut::TestHelper
+require 'umlaut/test_help'
+include Umlaut::TestHelp
