@@ -84,7 +84,7 @@ that tests are run in context of, at `./test/dummy`.
 The vcr gem is used to record HTTP transactions for tests. 
 
 There are some helpful methods for setting up and asserting in tests in
-Umlaut::TestHelper, which are used in Umlaut itself and can also be used
+Umlaut::TestHelp, which are used in Umlaut itself and can also be used
 in local apps or Umlaut plugins. 
 
 See also: https://github.com/team-umlaut/umlaut/wiki/Developing

@@ -5,9 +5,9 @@ module Umlaut
   #
   # Add to your test_helper.rb:
   #
-  #    require 'umlaut/test_helper'
-  #    include Umlaut::TestHelper
-  module TestHelper
+  #    require 'umlaut/test_help'
+  #    include Umlaut::TestHelp
+  module TestHelp
     # Methods you can use to make a mocked up Rails Request and corersponding Umlaut Request
     # Pass in a URL, absolute or partial, eg "/resolve?isbn=X"
     def fake_rails_request(umlaut_url)  
