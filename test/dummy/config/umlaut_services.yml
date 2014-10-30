@@ -95,7 +95,8 @@ default:
                 
       DummyService:
         type: DummyService
-        priority: c      
+        priority: c
+        value_from_erb: "<%= 'this value' + ' ' + 'comes from ERB: ' + Rails.env.to_s %>"
         responses:
           - service_type_value: holding
             display_text: Library holding

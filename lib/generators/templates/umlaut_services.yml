@@ -1,4 +1,3 @@
-
   # Configure what service plugins are used by Umlaut. This skeleton file
   # has been generated into your app to help you get started. 
   #
@@ -8,10 +7,14 @@
   # Most services take other options for custom configuration too, not
   # all options are neccesarily listed as examples here, see source
   # or source-generated docs for more info.   
-
+  #
   # The services in the 'default' group are loaded every time. 
   # You can optionally create other groups of services, that can be loaded
   # by URL query params, or based on other request params. More info?
+  #
+  # This file is run through ERB, so you can use <%= %> tags for dynamic
+  # ruby content if you like. 
+  # 
 
 default:
     services:

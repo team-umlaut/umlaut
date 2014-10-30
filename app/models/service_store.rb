@@ -33,12 +33,19 @@ class ServiceStore
   end
 
 
-  # Returns complete hash loaded from services.yml
+  # Returns complete hash loaded from config/umlaut_services.yml
+  # Passes through ERB first, allowing ERB in umlaut_services.yml
   def config
     # cache hash loaded from YAML, ensure it has the keys we expect.
     unless defined? @services_config_list
       yaml_path = File.expand_path("config/umlaut_services.yml", Rails.root)
-      @services_config_list = (File.exists? yaml_path) ? YAML::load(File.open(yaml_path)) : {}
+
+      @services_config_list = if File.exists? yaml_path 
+        YAML::load(ERB.new(File.open(yaml_path).read).result)
+      else
+        {}
+      end
+
       @services_config_list["default"] ||= {}
       @services_config_list["default"]["services"] ||= {}
     end

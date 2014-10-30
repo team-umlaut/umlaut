@@ -34,6 +34,11 @@ class ServiceStoreTest < ActiveSupport::TestCase
     assert_present ServiceStore.service_definition_for("dummy")
   end
 
+  test "ERB in umlaut_services.yml" do
+    dummy_service_config = ServiceStore.service_definition_for("DummyService")
+    assert_equal "this value comes from ERB: test", dummy_service_config["value_from_erb"]
+  end
+
   
   def reset_service_store
     ServiceStore.reset!    
