@@ -81,6 +81,12 @@ Tests use the vcr gem where appropriate. See `./test/support/test_with_cassette`
 gem skeleton was created with `rails plugin new`, which creates a dummy app
 that tests are run in context of, at `./test/dummy`. 
 
+The vcr gem is used to record HTTP transactions for tests. 
+
+There are some helpful methods for setting up and asserting in tests in
+Umlaut::TestHelper, which are used in Umlaut itself and can also be used
+in local apps or Umlaut plugins. 
+
 See also: https://github.com/team-umlaut/umlaut/wiki/Developing
 
 ## Source
