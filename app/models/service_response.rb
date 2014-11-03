@@ -279,7 +279,7 @@ class ServiceResponse < ActiveRecord::Base
     if key = hash[:display_text_i18n]
       hash[:display_text] = self.service.translate(key, :default => hash[:display_text])
     end
-    if key = self[:notes_i18n]
+    if key = hash[:notes_i18n]
       hash[:notes] = self.service.translate(key, :default => hash[:notes])
     end
   end

@@ -63,9 +63,10 @@ class ServiceResponseTest < ActiveSupport::TestCase
     I18n.with_locale("en") do
       sr = ServiceResponse.new
       sr.instance_variable_set("@service", DummyService.new({'service_id' => "dummy", 'priority' => '3'}))      
-      sr.take_key_values(:display_text => "raw text", :display_text_i18n => "localized_text")
+      sr.take_key_values(:display_text => "raw text", :display_text_i18n => "localized_text", :notes_i18n => "localized_text")
 
       assert_equal "localized text value", sr.view_data[:display_text]
+      assert_equal "localized text value", sr.view_data[:notes]
     end
   end
 
