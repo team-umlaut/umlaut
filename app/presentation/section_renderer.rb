@@ -510,14 +510,14 @@ class SectionRenderer
     if ( @options[:partial] == true)
       @options[:partial] = @section_id
     end
-    if (@options[:partial].blank?)
-      @options[:item_partial] = 
-        case @options[:item_partial]
-          when true then @section_id + "_item"
-          when String then options[:item_partial]
-          else "standard_response_item"
-        end
-    end
+    
+    @options[:item_partial] = 
+      case @options[:item_partial]
+        when true then @section_id + "_item"
+        when String then options[:item_partial]
+        else "standard_response_item"
+      end
+  
 
     # sanity check
     if ( @options[:show_partial_only] && ! @options[:partial])
