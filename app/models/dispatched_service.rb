@@ -68,4 +68,8 @@ class DispatchedService < ActiveRecord::Base
   def completed?
     return (self.status != InProgress) && (self.status != Queued)
   end
+
+  def failed?
+    return (self.status == FailedTemporary) || (self.status == FailedFatal)
+  end
 end
