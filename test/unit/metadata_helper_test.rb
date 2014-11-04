@@ -46,4 +46,24 @@ class MetadataHelperTest < ActiveSupport::TestCase
     co = ContextObject.new_from_kev("pages=20&foo=bar")
     assert_equal "20", get_epage(co.referent)
   end
+
+  def test_title_is_serial
+    # heuristics for guessing if a citation represents a Journal OR Article,
+    # even in the presence of bad metadata, although we should respect good metadata. 
+
+    assert_is_serial true,  "format=journal&genre=journal&issn=12345678&jtitle=Journal"
+    assert_is_serial false, "format=book&issn=12345678&btitle=Book"
+    assert_is_serial false, "genre=book&issn=12345678&title=Book"
+    assert_is_serial false, "genre=bookitem&issn=12345678&btitle=Book"
+    assert_is_serial true,  "jtitle=Journal&atitle=Article"
+    assert_is_serial true,  "title=Journal&issn=12345678"
+    assert_is_serial false, "genre=dissertation&title=Dissertation&issn=12345678"
+  end
+  # test title_is_serial? implementation, for use only there. 
+  def assert_is_serial(true_or_false, citation_kev)
+    co = ContextObject.new_from_kev(citation_kev)
+
+    assert (!true_or_false == !title_is_serial?(co.referent)), "Expect title_is_serial('#{citation_kev}') to be #{true_or_false}"
+  end
+
 end
