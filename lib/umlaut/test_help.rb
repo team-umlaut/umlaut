@@ -110,7 +110,7 @@ module Umlaut
       # with minitest/spec style and the minitest-vcr gem. I've had mixed
       # success with minitest/spec in rails. 
       #
-      #     include TestWithCassette
+      #     extend TestWithCassette
       #     test_with_cassette("do something", :group) do
       #       assert_...
       #     end
