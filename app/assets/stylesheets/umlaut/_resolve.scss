@@ -291,10 +291,6 @@
   font-size: $font-size-base;
 }
 
-// Resolve Errors
-#service_errors_content {
-  @include umlaut-well($umlautResolveErrorBackgroundColor, $umlautResolveErrorBorderColor);
-}
 
 a:not(:hover) .coverage_summary {
   /* even though it's part of a hyperlink, we make it black for distinction */
