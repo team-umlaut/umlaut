@@ -387,6 +387,25 @@ class Request < ActiveRecord::Base
     self.dispatched_services << ds
     return ds
   end
+
+  # Returns an array of 0 or more ServiceDispatch objects matching
+  # specified conditions. Right now only one condition is supported:
+  #
+  #    dispatch_objects_with(:service_type_values => values)
+  #      values can be one or more string names of service types, returns
+  #      DispatchedServices for services whose generated values include
+  #      one or more of what you specified. 
+  def dispatch_objects_with(options = {})
+    value_names = Array(options[:service_type_values])
+
+    raise ArgumentError.new("Need to supply a :service_type_values argument") unless value_names.present?
+
+    list = self.dispatched_services.to_a.find_all do |ds|
+      (value_names & ds.service.service_types_generated.collect(&:name)).present?
+    end
+
+    return list
+  end
   
   protected
 
@@ -464,6 +483,8 @@ class Request < ActiveRecord::Base
   def find_dispatch_object(service)
     return self.dispatched_services.where(:service_id => service.service_id).first
   end
+
+
 
   # Input is a CGI::parse style of HTTP params (array values)
   # output is a string "fingerprint" canonically representing the input
