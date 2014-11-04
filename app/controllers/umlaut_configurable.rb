@@ -234,13 +234,12 @@ module UmlautConfigurable
       # We add a custom method into the resolve_sections array, 
       # ensure_order!. 
       resolve_sections [].extend Module.new do         
-        # Convenience method for re-ordering sections 
-        # Swaps elements if necessary to ensure they are in the specified order.
-        # For example, make sure holding comes before document_delivery:
-        # resolve_sections.ensure_order!("holding", "document_delivery")
-        # Maybe in the future we'll expand this to take variable arguments. 
+
+        # Deprecated. This was a silly confusing way to do this. 
+        # See #remove and #insert below instead. 
         def self.ensure_order!(first, second)
-      
+          $stderr.puts "resolve_sections.ensure_order! is deprecated, please see resolve_sections.remove and resolve_sections.insert"
+
           list = self
       
           index1 = list.index {|s| s[:div_id].to_s == first.to_s}
@@ -250,7 +249,40 @@ module UmlautConfigurable
       
           list
         end
+
+        # Insert a section_config hash before or after an existing
+        # section, by the existing section's div_id
+        #
+        #      resolve_sections.insert_section({:div_id => "new"}, :after => "fulltext")
+        #      resolve_sections.insert_section(  resolve_sections.remove_section("document_deliver"), :before => "fulltext")
+        def self.insert_section(section_config, options = {})
+          list = self
+
+          if options[:before]
+            i = (list.find_index {|s| s[:div_id].to_s == options[:before].to_s}) || 0
+            list.insert(i, section_config)
+          elsif options[:after]
+            require 'debugger'
+            debugger
+            i = (list.find_index {|s| s[:div_id].to_s == options[:before].to_s}) || (list.length - 1)
+            list.insert(i + 1, section_config)
+          else
+            # just add at end of list
+            list << section_config
+          end
+        end
+
+        # Remove a configuration block with a certain div_id from the configuration entirely, 
+        # returning the removed configuration block (or nil if none exists). 
+        # You can re-insert it with #insert if you like. 
+        def self.remove_section(div_id)
+          i = list.find_index {|s| s[:div_id].to_s == div_id.to_s}
+          return list.delete_at(i) if i
+        end
+
       end
+
+
 
       ##########
       #
