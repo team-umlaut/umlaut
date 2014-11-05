@@ -236,7 +236,6 @@
 #    {:div_id => "search_inside", :partial => "search_inside", :show_partial_only => true}
 class SectionRenderer
   include ActionView::Helpers::TagHelper
-  @@bg_update_sections = @@partial_update_sections = nil
 
   # First argument is the current umlaut Request object.
   # Second argument is a session description hash. See class overview
