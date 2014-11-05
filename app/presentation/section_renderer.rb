@@ -265,12 +265,12 @@ class SectionRenderer
   def initialize(a_umlaut_request, section_def = {})
     @umlaut_request = a_umlaut_request
     
-    @section_id = section_def[:id] || section_def[:div_id]
-    raise Exception.new("SectionRenderer needs an :id passed in arguments hash") unless @section_id
+    @div_id = section_def[:div_id] || section_def[:id]
+    raise Exception.new("SectionRenderer needs a :div_id passed in arguments hash") unless @div_id
+    
 
     # Merge in default arguments for this section from config. 
     construct_options(section_def)
-
   end
 
   # Returns all ServiceTypeValue objects contained in this section, as
@@ -318,7 +318,7 @@ class SectionRenderer
   end
 
   def div_id
-    return @section_id
+    return @div_id
   end
 
   def show_heading?
@@ -340,7 +340,7 @@ class SectionRenderer
 
     { :partial => "background_progress",
       :locals =>{ :svc_types => service_type_values,
-                  :div_id => "progress_#{@section_id}",
+                  :div_id => "progress_#{self.div_id}",
                   :current_set_empty => responses_empty?,
                   :item_name => custom_item_name
                 }
@@ -403,7 +403,7 @@ class SectionRenderer
       when :complete_with_responses
         (! responses.empty?) && ! (services_in_progress?)
       when Proc
-        # It's a lambda, which takes @umlaut_request as an arg
+        # It's a lambda, which takes this SectionRenderer as an arg
         @options[:visibility].call(self)
       else true        
     end
@@ -503,16 +503,16 @@ class SectionRenderer
     
 
     # service type value default to same name as section_id
-    @options[:service_type_values] ||= [@section_id]    
+    @options[:service_type_values] ||= [self.div_id]    
 
     # Partials to display. Default to _standard_response_item item partial.
     if ( @options[:partial] == true)
-      @options[:partial] = @section_id
+      @options[:partial] = self.div_id
     end
     
     @options[:item_partial] = 
       case @options[:item_partial]
-        when true then @section_id + "_item"
+        when true then self.div_id + "_item"
         when String then options[:item_partial]
         else "standard_response_item"
       end
