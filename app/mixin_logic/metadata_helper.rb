@@ -349,5 +349,8 @@ module MetadataHelper
       (rft.metadata["genre"].blank? && rft.metadata["issn"].present?)
     )  
   end
+  # Mark it a module function so it can be called as a utility as
+  # MetadataHelper.title_is_serial?(referent)
+  module_function :title_is_serial?
   
 end
