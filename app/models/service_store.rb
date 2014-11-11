@@ -127,13 +127,19 @@ class ServiceStore
   # pass in string unique key OR a service definition hash,
   # and a current UmlautRequest.
   # get back instantiated Service object.
+  #
+  # If string service_id is passed in, but is not defined in application services,
+  # a ServiceStore::NoSuchService exception will be raised. 
   def instantiate_service!(service, request)
     definition = service.kind_of?(Hash) ? service : service_definition_for(service.to_s)
-    raise "Service '#{service}'' does not exist in umlaut-services.yml" if definition.nil?
+    raise NoSuchService.new("Service '#{service}'' does not exist in umlaut-services.yml") if definition.nil?
     className = definition["type"] || definition["service_id"]
     classConst = Kernel.const_get(className)
     service = classConst.new(definition)
     service.request = request
     return service
   end
+
+  class NoSuchService < RuntimeError ; end
+
 end
