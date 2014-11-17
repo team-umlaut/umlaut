@@ -95,7 +95,7 @@ module ResolveHelper
   def user_entered_citation?(uml_request)
     return false unless uml_request && uml_request.referrer_id
     id = uml_request.referrer_id
-    return id == 'info:sid/sfxit.com:citation' || id == umlaut_config.lookup("rfr_ids.citation") || id == umlaut_config.lookup('rfr_ids.opensearch')
+    return id == 'info:sid/sfxit.com:citation' || id == umlaut_config.lookup!("rfr_ids.citation") || id == umlaut_config.lookup!('rfr_ids.opensearch')
   end
 
   def display_not_found_warning?(uml_request)
