@@ -8,7 +8,8 @@
   <div class="umlaut-search-form">
     <fieldset>                                      
       <legend><%=t 'umlaut.search.journals_instructions' %></legend>
-      <%= hidden_field_tag "rfr_id", "info:sid/sfxit.com:citation" %> 
+
+      <%= hidden_field_tag "rfr_id", umlaut_config.lookup!("rfr_ids.citation") %> 
       <%= hidden_field_tag "rft.date", "" %> 
       <%= hidden_field_tag "rft.title", "", {:class => "rft_title"} %> 
       <%= hidden_field_tag "rft.object_id", "", {:class => "rft_object_id"} %> 

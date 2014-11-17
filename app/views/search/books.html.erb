@@ -3,7 +3,7 @@
   <h1>Books</h1>
   <%= form_tag({:controller=>'resolve', :action=>@submit_action}, {:method=>'get', :class=>"form-horizontal"}) %>
     <fieldset class="citationLinker">                                      
-      <%= hidden_field_tag "rfr_id", "info:sid/umlaut.code4lib.org:citation" %> 
+      <%= hidden_field_tag "rfr_id", umlaut_config.lookup!("rfr_ids.citation") %> 
       <%= hidden_field_tag "url_ver", "Z39.88-2004" %> 
       <%= hidden_field_tag "url_ctx_fmt", "info:ofi/fmt:kev:mtx:ctx" %> 
       <%= hidden_field_tag "ctx_ver", "Z39.88-2004" %> 
