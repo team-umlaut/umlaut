@@ -7,6 +7,8 @@ module Umlaut
   # app routes.rb, that line is generated into local app by Umlaut generator.
   # options include :only and :except to limit what route groups are generated. 
   class Routes
+    class_attribute :default_route_sets
+    self.default_route_sets = [:root, :permalinks, :a_z, :resolve, :open_search, :link_router, :export_email, :resources, :search, :javascript, :feedback]
 
     def initialize(router, options ={})
       @router = router
@@ -19,6 +21,37 @@ module Umlaut
       end
     end
 
+
+    # Experimental functionality for a plugin to add routes that automatically
+    # will get applied by Umlaut::Routes
+    #
+    #     Umlaut::Routes.register_routes( YourPlugin::RouteSets )
+    #
+    # Where YourPlugin::RouteSets is a module containing methods that defines
+    # routes similar to Umlaut::Routes::RouteSets below. 
+    #
+    # If some methods included in the module are not route-defining methods,
+    # pass a second arg listing just those that are:
+    #
+    #     Umlaut::Routes.register_routes(YourPlugin::RouteSets, [:magic, :underwater])
+    #
+    # All route_set_methods will be applied by default, but can be excluded
+    # on application with the standard Umlaut::RouteSet :only and :except args. 
+    #
+    # This design is somewhat experimental, we'll see if it meets real world use cases
+    # with maintainable code. 
+    def self.register_routes(module_obj, route_set_methods = nil)
+      if route_set_methods.nil?
+        # default to all methods defined in module
+        route_set_methods = module_obj.instance_methods
+      end
+
+      include module_obj
+      self.default_route_sets.concat route_set_methods
+
+      return self
+    end
+
     protected
 
     def add_routes &blk
@@ -28,10 +61,6 @@ module Umlaut
     def route_sets
       # :admin is not included by default, needs to be turned on. 
       (@options[:only] || default_route_sets) - (@options[:except] || []) + (@options[:admin] == true ? [:admin] : [])
-    end
-
-    def default_route_sets
-      [:root, :permalinks, :a_z, :resolve, :open_search, :link_router, :export_email, :resources, :search, :javascript, :feedback]
     end
 
     module RouteSets
