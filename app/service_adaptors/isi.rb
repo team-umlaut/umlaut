@@ -11,8 +11,9 @@
 # (LAMR) service api, which is used here. To register, see:
 # http://wokinfo.com/products_tools/products/related/amr/
 #
-# You register by IP address, so no API key is needed once your registration
-# goes through. 
+# You can register by IP address, so no auth key is needed once your registration
+# goes through -- or fill out 'username' and 'password' config elements in service
+# setup, and they will be used.
 #
 # If you later need to change the IP addresses entitled to use this API, use
 # http://scientific.thomson.com/scientific/techsupport/cpe/form.html.
@@ -126,8 +127,17 @@ class Isi < Service
     builder.request(:xmlns => "http://www.isinet.com/xrpc41", :src => "app.id=Umlaut") do
       builder.fn(:name => "LinksAMR.retrieve") do
         builder.list do
-          # first map is authentication info. empty 'map' element since we are IP authenticated. 
-          builder.map
+          # first map is authentication info. empty 'map' element if we are IP authenticated.
+          if @username && @password
+            builder.map do
+              builder.val(@username, :name => "username")
+              builder.val(@password, :name => "password")
+            end
+          else
+            builder.map
+          end
+
+
           # specify what we're requesting
           builder.map do
             builder.list(:name=>"WOS") do

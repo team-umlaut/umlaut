@@ -12,8 +12,9 @@
 # register, see:
 # http://wokinfo.com/products_tools/products/related/amr/
 #
-# You register by IP address, so no API key is needed once your registration
-# goes through. 
+# You register by IP address, so no auth info is needed once your registration
+# goes through -- or you can receive a username and password, in which case
+# you should configure keys 'username' and 'password'
 #
 # If you later need to change the IP addresses entitled to use this API, use
 # http://scientific.thomson.com/scientific/techsupport/cpe/form.html.
@@ -76,8 +77,16 @@ class Jcr < Service
     builder.request(:xmlns => "http://www.isinet.com/xrpc41", :src => "app.id=Umlaut") do
       builder.fn(:name => "LinksAMR.retrieve") do
         builder.list do
-          # first map is authentication info. empty 'map' element since we are IP authenticated. 
-          builder.map
+          # first map is authentication info. empty 'map' element if we are IP authenticated.
+          if @username && @password
+            builder.map do
+              builder.val(@username, :name => "username")
+              builder.val(@password, :name => "password")
+            end
+          else
+            builder.map
+          end
+
           # specify what we're requesting
           builder.map do
             builder.list(:name=>"JCR") do
