@@ -235,9 +235,26 @@ module ResolveHelper
   # in application config resolve_sections list for a specific
   # part of the page. :main, :sidebar, or :resource_info.
   def html_sections(area)
-    umlaut_config.lookup!("resolve_sections", []).find_all do |section|
+    config_resolve_sections.find_all do |section|
       section[:html_area] == area
     end
+  end
+
+  # Looks up umlaut_config.lookup!("resolve_sections"), then passes it through
+  # resolve_sections_filter config if available -- caches result in an iVar, for this
+  # action. 
+  def config_resolve_sections
+    unless defined? @_config_resolve_sections
+      @_config_resolve_sections = umlaut_config.lookup!("resolve_sections", [])
+
+      if reorder_proc = umlaut_config.lookup!("resolve_sections_filter")
+        # clone it, so we aren't reordering the original
+        @_config_resolve_sections = @_config_resolve_sections.clone
+        reorder_proc.call(@user_request, @_config_resolve_sections)
+      end
+    end
+
+    return @_config_resolve_sections
   end
 
   def html_section_by_div_id(div_id)
