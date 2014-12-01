@@ -34,7 +34,13 @@
     @extend .text-muted;
   }
 
-
+  /* In the sidebar, search_inside heading looks better without
+     bottom margin, cause of spacing needed for form, it just does. */
+  .umlaut-sidebar &.search_inside {
+    .section_heading h3 {
+      margin-bottom: 0;
+    }
+  }
 
   // Special looks for particular sections
   &.fulltext {

@@ -309,21 +309,7 @@ module UmlautConfigurable
         html_area :main
         partial :fulltext
         show_partial_only true
-      end
-
-      add_resolve_sections! do
-        div_id "search_inside"
-        html_area :main
-        partial "search_inside"
-        show_partial_only true
-      end
-      
-      add_resolve_sections! do
-        div_id "excerpts"
-        html_area :main
-        list_visible_limit 5
-        visibility :responses_exist
-      end
+      end      
       
       add_resolve_sections! do
         div_id "audio"        
@@ -382,6 +368,20 @@ module UmlautConfigurable
         div_id "export_citation"
         html_area :sidebar
         visibility :in_progress
+      end
+
+      add_resolve_sections! do
+        div_id "search_inside"
+        html_area :sidebar
+        partial "search_inside"
+        show_partial_only true
+      end
+      
+      add_resolve_sections! do
+        div_id "excerpts"
+        html_area :sidebar
+        list_visible_limit 5
+        visibility :responses_exist
       end
       
       add_resolve_sections! do
