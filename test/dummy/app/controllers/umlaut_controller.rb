@@ -104,9 +104,10 @@ class UmlautController < ApplicationController
         
       end
       
-      # Advanced topic, you can declaratively configure
-      # what sections of the resolve page are output where
-      # and how using resolve_sections and add_resolve_sections!            
+      # You can change the order of sections on the resolve menu page,
+      # or otherwise change the behavior of the resolve sections, by modifying
+      # the resolve_sections configuration. 
+      # See https://github.com/team-umlaut/umlaut/wiki/Customizing#display-section-configuration
       
     end
     

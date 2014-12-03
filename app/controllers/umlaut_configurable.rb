@@ -262,9 +262,7 @@ module UmlautConfigurable
             i = (list.find_index {|s| s[:div_id].to_s == options[:before].to_s}) || 0
             list.insert(i, section_config)
           elsif options[:after]
-            require 'debugger'
-            debugger
-            i = (list.find_index {|s| s[:div_id].to_s == options[:before].to_s}) || (list.length - 1)
+            i = (list.find_index {|s| s[:div_id].to_s == options[:after].to_s}) || (list.length - 1)
             list.insert(i + 1, section_config)
           else
             # just add at end of list
@@ -276,6 +274,7 @@ module UmlautConfigurable
         # returning the removed configuration block (or nil if none exists). 
         # You can re-insert it with #insert if you like. 
         def self.remove_section(div_id)
+          list = self
           i = list.find_index {|s| s[:div_id].to_s == div_id.to_s}
           return list.delete_at(i) if i
         end
