@@ -32,7 +32,7 @@ group :development, :test do
 end
 
 group :debug do
-  gem 'debugger', :platform => :mri
+  gem 'debugger', :platform => :mri_19
 end
 
 # Add coveralls for testing.
