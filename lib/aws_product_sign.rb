@@ -85,7 +85,7 @@ class AwsProductSign
     
     # chomp is important!  the base64 encoded version will have a newline at the end
     # which amazon does not want. 
-    digest  = OpenSSL::Digest::Digest.new('sha256')
+    digest  = OpenSSL::Digest.new('sha256')
     signature = Base64.encode64(OpenSSL::HMAC.digest(digest, secret_key, string_to_sign)).chomp
     
     params["Signature"] = signature
