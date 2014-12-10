@@ -6,7 +6,7 @@ end
 # order em with full fulltxt before title_level_fulltxt
 all_responses = fulltxt + title_level_fulltxt
 %>
-<div class="<%= section_css_classes(@user_request, "fulltext", all_responses).join(" ") %>">
+<div class="<%= section_css_classes(@user_request, "fulltext").join(" ") %>">
   <%= render 'section_heading', :presenter => renderer, :force_render => true %>
   <div class="umlaut_section_content">
     <%= list_with_limit('umlaut_fulltext', all_responses,

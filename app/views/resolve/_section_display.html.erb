@@ -4,7 +4,7 @@
 -%>
 <% if presenter.visible? %>
   <% unless presenter.show_partial_only? %>
-    <div class="<%= section_css_classes(@user_request, presenter.div_id, []).join(" ") %>">
+    <div class="<%= section_css_classes(@user_request, presenter.div_id).join(" ") %>">
   <% end %>
   <%= render 'section_heading', :presenter => presenter %>
   <% unless presenter.show_partial_only? %>
