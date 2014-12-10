@@ -5,9 +5,14 @@ module Umlaut
   # methods. (For instance, fulltext if it's available, or maybe
   # document_delivery if it's not, but it gets more complicated.)
   class SectionHighlights
-    attr_reader :umlaut_request
+    attr_reader :umlaut_request, :umlaut_config
 
-    def initialize(umlaut_request)
+    # * First arg is the umlaut Request
+    # * Second optional is an UmlautConfiguration object, used for 
+    #   `section_highlights_filter` lambda -- will default to
+    #   UmlautController.umlaut_config
+    def initialize(umlaut_request, umlaut_config = UmlautController.umlaut_config)
+      @umlaut_config  = umlaut_config
       @umlaut_request = umlaut_request
     end
 
@@ -52,7 +57,21 @@ module Umlaut
           )
         sections << "document_delivery"
       end
-      
+
+      sections = apply_filters!(sections)
+
+      return sections
+    end
+
+
+    def apply_filters!(sections)
+      sections = sections.dup
+
+      (umlaut_config.section_highlights_filter || []).each do |filter|
+        # filters are expected to mutate 'sections' if they want
+        filter.call(umlaut_request, sections, self)
+      end
+
       return sections
     end
 

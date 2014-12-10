@@ -86,6 +86,25 @@ class ServiceResponseTest < ActiveSupport::TestCase
     assert_equal ["holding", "document_delivery"].sort, highlights.highlighted_sections.sort
   end
 
+  def test_section_highlights_filter
+    request = fake_umlaut_request("resolve?isbn=1")
+    request.add_service_response(
+      :service => @service,
+      :service_type_value => "fulltext",
+      :display_text => "foo"
+    )
+
+    config = Confstruct::Configuration.new
+    # Filters has to mutate 'sections' if it wants to change it
+    config.add_section_highlights_filter! Proc.new {|request, sections, highlights|
+      sections.clear
+    }
+
+    highlights = Umlaut::SectionHighlights.new(request, config)
+
+    assert_equal [], highlights.highlighted_sections
+  end
+
 
 
 
