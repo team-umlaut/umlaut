@@ -138,6 +138,24 @@
 .umlaut-section-highlighted {
   @include umlaut-well($umlautHighlightedSectionBackgroundColor, $umlautHighlightedSectionBorderColor);
   border-radius: $umlautBorderRadiusExtraLarge;
+
+  // If a p.alert is in a highlighted section, give it special styling
+  // as a ribbon, not a box-in-box. 
+  p.alert {
+    margin-left: -12px;
+    margin-right: -12px;
+
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+  // If it's the LAST thing in the highlighted section, do better and merge
+  // it with the box itself
+  .umlaut_section_content > p.alert:last-child {
+    margin-bottom: -12px;
+    border-bottom-right-radius: $umlautBorderRadiusExtraLarge;
+    border-bottom-left-radius: $umlautBorderRadiusExtraLarge;
+  }
 }
 
 .section_prompt {
