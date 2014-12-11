@@ -141,7 +141,7 @@
 
   // If a p.alert is in a highlighted section, give it special styling
   // as a ribbon, not a box-in-box. 
-  p.alert {
+  .alert {
     margin-left: -12px;
     margin-right: -12px;
 
@@ -151,7 +151,7 @@
   }
   // If it's the LAST thing in the highlighted section, do better and merge
   // it with the box itself
-  .umlaut_section_content > p.alert:last-child {
+  .umlaut_section_content > .alert:last-child {
     margin-bottom: -12px;
     border-bottom-right-radius: $umlautBorderRadiusExtraLarge;
     border-bottom-left-radius: $umlautBorderRadiusExtraLarge;
