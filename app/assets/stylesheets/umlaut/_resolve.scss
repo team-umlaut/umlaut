@@ -19,6 +19,10 @@
     padding-left: $umlautIndent;
     text-indent: -$umlautIndent;
   }
+  // default bold response link if it's in the main section
+  .umlaut-main & .response_link {
+    font-weight: bold;
+  }
 }
 
 .umlaut-section {
