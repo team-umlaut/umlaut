@@ -12,6 +12,8 @@ require 'confstruct'
 # The Collection holds and executes the logic for running those services,
 # foreground and background, making sure no service is run twice if it's
 # already in progress, timing out expired services, etc.
+#
+# This code is a mess, sorry. 
 class Collection
   attr_accessor :umlaut_request
   attr_accessor :logger
@@ -66,26 +68,22 @@ class Collection
   #
   # Returns the Thread object used for dispatching background services
   def dispatch_services!
-    queued_service_ids = prepare_for_dispatch!
-
-    dispatch_foreground!(queued_service_ids)
+    freshen_dispatches!
+    mark_queued_if_empty!
+    
+    dispatch_foreground!
 
     # return main thread for background services.
-    return dispatch_background!(queued_service_ids)
+    return dispatch_background!
   end
 
-  # Call prepare_for_dispatch! first, the return value from that call
-  # is suitable as argument for this call: queued_service_ids, list of
-  # service id's already identified as suitable for running, and
-  # marked queued in the DispatchedService table.
-  #
   # Will run such services in foreground priority waves. And then reload
   # the UmlautRequest object in the current thread, to pick up any
   # changes made in service threads.
-  def dispatch_foreground!(queued_service_ids)
+  def dispatch_foreground!
     # Foreground services
     (0..9).each do | priority |
-      services_to_run = self.instantiate_services!(:level => priority, :ids => queued_service_ids)
+      services_to_run = self.instantiate_services!(:level => priority, :ids => runnable_services_for_priority(priority))
       next if services_to_run.empty?
       ServiceWave.new(services_to_run , priority).handle(umlaut_request, umlaut_request.session_id)
     end
@@ -96,15 +94,13 @@ class Collection
     umlaut_request.reload
   end
 
-  # Call prepare_for_dispatch! first, the return value from that call
-  # is suitable as argument for this call: queued_service_ids, list of
-  # service id's already identified as suitable for running, and
-  # marked queued in the DispatchedService table.
-  #
-  # Will run such services in background priority waves.
+  # Will run such services in background priority waves. If some
+  # services are already running, will not run services in subsequent
+  # waves until they are done -- guard against multiple HTTP
+  # requests while services in progress. 
   #
   # Returns the Thread object used for dispatching background services. 
-  def dispatch_background!(queued_service_ids)
+  def dispatch_background!
     # Now we do some crazy magic, start a Thread to run our background
     # services. We are NOT going to wait for this thread to join,
     # we're going to let it keep doing it's thing in the background after
@@ -124,11 +120,22 @@ class Collection
         # other stuff done before this thread.
         Thread.pass
 
+        force_refresh = false
 
         ('a'..'z').each do | priority |
-            services_to_run = self.instantiate_services!(:level => priority, :ids => queued_service_ids)
-          next if services_to_run.empty?
+          # force refresh only if we just ran some services, otherwise not enough
+          # time has gone by to be worthwhile. 
+          runnable_ids = runnable_services_for_priority(priority, :refresh => force_refresh)
+
+          services_to_run = self.instantiate_services!(:level => priority, :ids => runnable_ids)
+          
+          if services_to_run.empty?
+            force_refresh = false
+            next
+          end
+
           ServiceWave.new(services_to_run , priority).handle(umlaut_request, umlaut_request.session_id)
+          force_refresh = true
         end
       rescue Exception => e
         # We are divorced from any HTTP request at this point, and may not
@@ -154,89 +161,115 @@ class Collection
     end
   end
 
+  # Goes through existing DispatchedService objects, and freshens them up:
+  # * If a service is marked in progress longer than timeout, mark
+  #   it failed temporary.
+  # * If an existing failed temporary is older than our resurrection time,
+  #   delete the dispatch (and all it's responses), so it can be re-queued. 
+  def freshen_dispatches!
+    umlaut_request.dispatched_services.each do | ds |
+      # go through dispatched_services and set still in progress but too long to failed temporary
+      if ( (ds.status == DispatchedService::InProgress ||
+            ds.status == DispatchedService::Queued ) &&
+            (Time.now - ds.updated_at) > self.background_service_timeout)
 
-  # Goes through all services and marks them with a DispatchedService
-  # record in 'queued' state.
-  #
-  # Will time out any too-old services in a running state.
-  #
-  # Will remove DispatchedService status for
-  # any services marked failed that are old enough to re-run, or services
-  # that are too old to re-use.   Such services are then queuable.
-  #
-  # Returns array of Service identifiers for services that are now
-  # queued and execable.
-  def prepare_for_dispatch!
-    # Go through currently dispatched services, looking for timed out
-    # services -- services still in progress that have taken too long,
-    # as well as service responses that are too old to be used.
-
-    queued_service_ids = []
-    DispatchedService.transaction do
-      umlaut_request.dispatched_services.each do | ds |
-          # go through dispatched_services and set stil in progress but too long to failed temporary
-          if ( (ds.status == DispatchedService::InProgress ||
-                ds.status == DispatchedService::Queued ) &&
-                (Time.now - ds.updated_at) > self.background_service_timeout)
-
-                ds.store_exception( Exception.new("background service timed out (took longer than #{self.background_service_timeout} to run); thread assumed dead.")) unless ds.exception_info
-                # Fail it temporary, it'll be run again.
-                ds.status = DispatchedService::FailedTemporary
-                ds.save!
-                logger.warn("Background service timed out, thread assumed dead. #{umlaut_request.id} / #{ds.service_id}")
-           end
+            ds.store_exception( Exception.new("background service timed out (took longer than #{self.background_service_timeout} to run); thread assumed dead.")) unless ds.exception_info
+            # Fail it temporary, it'll be run again.
+            ds.status = DispatchedService::FailedTemporary
+            ds.save!
+            logger.warn("Background service timed out, thread assumed dead. #{umlaut_request.id} / #{ds.service_id}")
+       end
 
 
 
-          # go through dispatched_services and delete:
-          # 1) old completed dispatches, too old to use.
-          # 2) failedtemporary dispatches that are older than our resurrection time
-          # -> And all responses associated with those dispatches.
-          # After being deleted, they'll end up re-queued.
-          if ( (ds.completed? && completed_dispatch_expired?(ds) ) ||
-               (  ds.status == DispatchedService::FailedTemporary &&
-                 (Time.now - ds.updated_at) > self.requeue_failedtemporary_services_in
-                )
-              )
+      # go through dispatched_services and delete:
+      # 1) old completed dispatches, too old to use.
+      # 2) failedtemporary dispatches that are older than our resurrection time
+      # -> And all responses associated with those dispatches.
+      # After being deleted, they'll end up re-queued.
+      if ( (ds.completed? && completed_dispatch_expired?(ds) ) ||
+           (  ds.status == DispatchedService::FailedTemporary &&
+             (Time.now - ds.updated_at) > self.requeue_failedtemporary_services_in
+            )
+          )
 
-            # Need to expire. Delete all the service responses, and
-            # the DispatchedService record, and service will be automatically
-            # run again.
-            serv_id = ds.service_id
+        # Need to expire. Delete all the service responses, and
+        # the DispatchedService record, and service will be automatically
+        # run again.
+        serv_id = ds.service_id
 
-            umlaut_request.service_responses.each do |response|
-              if response.service_id == serv_id
-                umlaut_request.service_responses.delete(response)
-                response.destroy
-              end
-            end
-
-            umlaut_request.dispatched_services.destroy(ds)            
+        umlaut_request.service_responses.each do |response|
+          if response.service_id == serv_id
+            umlaut_request.service_responses.delete(response)
+            response.destroy
           end
-      end
-
-      # Queue any services without a dispatch marker at all, keeping
-      # track of queued services, already existing or newly created.
-
-      # Just in case, we're going to refetch dispatched_services from the db,
-      # in case some other http request or background service updated things
-      # recently.
-      umlaut_request.dispatched_services.reset
-
-      self.get_service_definitions.each do |service|
-        service_id = service['service_id']
-        # use in-memory #to_a search, don't go to db each time!
-        if found = umlaut_request.dispatched_services.to_a.find {|s| s.service_id == service_id}
-          queued_service_ids.push(service_id) if found.status == DispatchedService::Queued
-        else
-          umlaut_request.new_dispatch_object!(service_id, DispatchedService::Queued).save!
-          queued_service_ids.push(service_id)
         end
+
+        umlaut_request.dispatched_services.destroy(ds)            
       end
     end
-
-    return queued_service_ids
   end
+
+  # For all configured services, if they have NO DispatchedService
+  # object, then create one with status Queued
+  def mark_queued_if_empty!
+    our_service_ids = self.get_service_definitions.collect {|d| d["service_id"]}
+
+    existing_dispatches = umlaut_request.dispatched_services.collect {|d| d.service_id}
+
+    not_yet_existing = our_service_ids - existing_dispatches
+
+    not_yet_existing.each do |service_id|
+      umlaut_request.new_dispatch_object!(service_id, DispatchedService::Queued).save!
+    end    
+  end
+
+  # All services for priority that are marked Queued, so long as
+  # no previous waves are still marked running. 
+  #
+  # Pass `:refresh => true` as second argument to force trip
+  # to the database to get fresh DispatchedService objects. 
+  #
+  # Returns array of service_id's, or empty array. 
+  def runnable_services_for_priority(priority, options = {})
+    DispatchedService.connection_pool.with_connection do
+      service_definitions = self.get_service_definitions
+
+      # Make a hash where key is service id, and value is priority.to_s
+      service_to_priority = Hash[
+        service_definitions.collect do |d|
+          [ d["service_id"], d["priority"].to_s ]
+        end
+      ]
+
+      if options[:refresh]
+        # force a refresh
+        umlaut_request.dispatched_services(true)
+      end
+
+      # If there is any service earlier than this wave still marked InProgress, 
+      # we're not ready to run this wave, return empty array. 
+      # Important to avoid race condition on HTTP requests, don't
+      # dispatch later background waves unless earlier are actually complete,
+      # even on an HTTP status check. 
+      previous_waves_running = umlaut_request.dispatched_services.find do |ds|
+        ds.status == DispatchedService::InProgress &&
+        service_to_priority[ ds.service_id ] < priority.to_s
+      end.present?
+      return [] if previous_waves_running
+
+      # otherwise, the services for this priority are runnable if
+      # they are already marked Queued
+      # We use .to_a, we want to use the already in memory array, not
+      # go to the db here. 
+      return umlaut_request.dispatched_services.to_a.find_all do |ds|
+        ds.status == DispatchedService::Queued &&
+        service_to_priority[ ds.service_id ] == priority.to_s
+      end.collect {|ds| ds.service_id}
+    end
+  end
+
+
 
   def completed_dispatch_expired?(ds)
     interval = self.response_expire_interval
