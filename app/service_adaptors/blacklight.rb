@@ -90,6 +90,7 @@ class Blacklight < Service
       holdings_url = blacklight_precise_search_url( request, "dlf_expanded" )
       holdings_added += add_holdings( holdings_url ) if holdings_url
     end
+
     #keyword search.    
     if (@keyword_search &&
         url = blacklight_keyword_search_url(request))
@@ -210,8 +211,8 @@ class Blacklight < Service
     # phrase search for title, just raw dismax for author
     # Embed quotes inside the quoted value, need to backslash-quote for CQL,
     # and backslash the backslashes for ruby literal. 
-    clauses.push("#{@bl_fields["title"]} = \"\\\"#{remove_quotes_for_phrase_value title}\\\"\"")    
-    clauses.push("#{@bl_fields["author"]} = \"#{remove_quotes_for_phrase_value author}\"") if author
+    clauses.push("#{@bl_fields["title"]} = \"\\\"#{escape_for_cql_double_quotes title}\\\"\"")    
+    clauses.push("#{@bl_fields["author"]} = \"#{escape_for_cql_double_quotes author}\"") if author
     
     url = base_url + "?search_field=#{@cql_search_field}&content_format=#{options[:content_format]}&q=#{CGI.escape(clauses.join(" AND "))}"
 
@@ -228,8 +229,14 @@ class Blacklight < Service
   # error if we do nothing. Can we escape it somehow? CQL is really
   # unclear, we're ALREADY backslash escaping the phrase quotes themselves!
   # We just replace them with space, should work for our actual indexing. 
-  def remove_quotes_for_phrase_value(str)
-    str.gsub('"', " ")
+  #
+  # Single quotes (apostrophes) need to be escaped with an apostrophe itself,
+    # `''`, apparently. http://mail-archives.apache.org/mod_mbox/cassandra-user/201108.mbox/%3C20110803152250.294300@gmx.net%3E
+  def escape_for_cql_double_quotes(str)
+    str = str.gsub('"', " ")
+    str = str.gsub("'", "''")
+
+    return str
   end
 
 
