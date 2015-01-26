@@ -1,6 +1,8 @@
 ENV["RAILS_ENV"] ||= "test"
 
 require File.expand_path('../dummy/config/environment', __FILE__)
+ActiveRecord::Migrator.migrations_paths = [File.expand_path("../../test/dummy/db/migrate", __FILE__)]
+
 #require 'engine_cart'
 #EngineCart.load_application!
 
