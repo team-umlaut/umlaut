@@ -44,7 +44,7 @@ class ConfigurationReorderTest < ActionController::TestCase
         # We have to use Proc.new instead of `proc do` or `lambda do` becuase
         # of some current weirdness in Confstrut in ruby 2.1.
         # https://github.com/mbklein/confstruct/pull/21 
-        resolve_sections_filter Proc.new { |request, sections|
+        add_resolve_sections_filter! Proc.new { |request, sections|
           last_section = sections.remove_section(div_id)
           sections.insert_section(last_section, :before => 'fulltext')
         }

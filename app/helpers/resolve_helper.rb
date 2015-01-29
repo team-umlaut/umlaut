@@ -231,7 +231,7 @@ module ResolveHelper
     unless defined? @_config_resolve_sections
       @_config_resolve_sections = umlaut_config.lookup!("resolve_sections", [])
       
-      if reorder_proc = umlaut_config.lookup!("resolve_sections_filter")
+      umlaut_config.lookup!("resolve_sections_filter", []).each do |reorder_proc|
         # clone it, so we aren't reordering the original
         @_config_resolve_sections = @_config_resolve_sections.clone
         reorder_proc.call(@user_request, @_config_resolve_sections)
