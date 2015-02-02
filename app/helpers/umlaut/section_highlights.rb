@@ -38,7 +38,13 @@ module Umlaut
 
       if umlaut_request.get_service_type("fulltext").present?
         sections << "fulltext"
-      elsif umlaut_request.get_service_type("holding").present?
+      end
+
+      # Highlight holdings if it's present AND:
+      #   no fulltext is present OR it's a book (non-serial) type
+      # We think people want print for books more often. 
+      if umlaut_request.get_service_type("holding").present? &&
+         ( umlaut_request.get_service_type("fulltext").blank? ||  (! MetadataHelper.title_is_serial?(umlaut_request.referent)) )
         sections << "holding"
       end
 
