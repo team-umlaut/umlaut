@@ -6,8 +6,8 @@ class ServiceResponseTest < ActiveSupport::TestCase
   end
 
 
-  def test_fulltext_highlighted
-    request = fake_umlaut_request("resolve?isbn=1")
+  def test_fulltext_and_holding_highlighted_for_book
+    request = fake_umlaut_request("resolve?isbn=1&genre=book")
     request.add_service_response(
       :service => @service,
       :service_type_value => "fulltext",
@@ -26,7 +26,30 @@ class ServiceResponseTest < ActiveSupport::TestCase
 
     highlights = Umlaut::SectionHighlights.new(request)
 
-    assert_equal ["fulltext"], highlights.highlighted_sections
+    assert_equal ["fulltext", "holding"].sort, highlights.highlighted_sections.sort
+  end
+
+  def test_fulltext_only_highlighted_for_article
+    request = fake_umlaut_request("resolve?issn=99999999&genre=article&atitle=article&jtitle=journal&au=author")
+    request.add_service_response(
+      :service => @service,
+      :service_type_value => "fulltext",
+      :display_text => "foo"
+    )
+    request.add_service_response(
+      :service => @service,
+      :service_type_value => "holding",
+      :display_text => "foo"
+    )
+    request.add_service_response(
+      :service => @service,
+      :service_type_value => "document_delivery",
+      :display_text => "foo"
+    )
+
+    highlights = Umlaut::SectionHighlights.new(request)
+
+    assert_equal ["fulltext"].sort, highlights.highlighted_sections.sort
   end
 
   def test_docdel_highlighted
