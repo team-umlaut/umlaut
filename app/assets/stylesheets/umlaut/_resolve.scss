@@ -160,7 +160,15 @@
     border-bottom-right-radius: $umlautBorderRadiusExtraLarge;
     border-bottom-left-radius: $umlautBorderRadiusExtraLarge;
   }
+  .umlaut_section_content > hr {
+    border-color: $umlautHighlightedSectionBorderColor;
+    margin-left: -12px;
+    margin-right: -12px;
+  }
+
 }
+
+
 
 .section_prompt {
   @extend .text-muted;
