@@ -1,3 +1,5 @@
+# Encoding: UTF-8
+
 # Doesn't yet cover everything, but started it to cover new func we wrote at least
 
 require 'test_helper'
@@ -6,6 +8,11 @@ class MetadataHelperTest < ActiveSupport::TestCase
 
   ContextObject = OpenURL::ContextObject
 
+
+  def test_get_search_title_i18n
+    co = ContextObject.new_from_kev("sid=google&auinit=R&aulast=Dunayevskaya&title=Filosofía.+y+revolución:+de+Hegel+a+Sartre+y+de+Marx+a+Mao") 
+    assert_equal "filosofía y revolución", get_search_title(co.referent)
+  end
 
   def test_get_month    
     co = ContextObject.new_from_kev("date=2012-9-01&foo=bar")

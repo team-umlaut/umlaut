@@ -74,7 +74,7 @@ module MetadataHelper
     title.gsub!(/\&/, ' and ') if options[:normalize_ampersand]
       
     # remove non-alphanumeric, excluding apostrophe
-    title.gsub!(/[^\w\s\']/, ' ') if options[:remove_punctuation]
+    title.gsub!(/[^[[:alnum:]][[:space:]]\']/, ' ') if options[:remove_punctuation]
 
     # apostrophe not to space, just eat it.
     title.gsub!(/[\']/, '') if options[:remove_punctuation] && ! options[:keep_apostrophes]
