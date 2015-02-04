@@ -2,6 +2,7 @@ require 'umlaut/version'
 require 'umlaut/routes'
 require 'umlaut/util'
 
+
 # not sure why including openurl gem doesn't do the require, but it
 # seems to need this. 
 require 'openurl'
@@ -30,6 +31,10 @@ module Umlaut
     initializer "#{engine_name}.asset_pipeline" do |app|
       app.config.assets.precompile << 'umlaut/update_html.js'
       app.config.assets.precompile << "umlaut_ui.js"
+    end
+
+    initializer "#{engine_name}.preload" do
+      require 'service_type_value' # stored in lib, load it ourselves, after Umlaut::Engine is loaded
     end
 
     config.whitelisted_backtrace = {}
@@ -95,5 +100,9 @@ module Umlaut
     #initializer("#{engine_name}.patch_connection_pool", :before => "active_record.initialize_database") do |app|
       load File.join(self.root, "active_record_patch", "connection_pool.rb")
     #end
+
   end
 end
+
+
+

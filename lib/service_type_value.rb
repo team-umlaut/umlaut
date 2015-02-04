@@ -4,6 +4,10 @@ require 'yaml'
 # This model is the actual list of valid service types. Not ActiveRecord,
 # just load from config/service_type_values.yml into memory (loaded on file load, initialization)
 #
+# This is stored in lib/ intentionally, to avoid Rails dev-mode auto-reloading, 
+# because we store state in this class, and reloading was losing state we
+# intentionally set, eg for plugins adding new service types. 
+#
 # ServiceTypeValues have human-displayable names, that are controlled by Rails I18n, 
 # using standard Rails I18n pluralization forms, so for instance:
 #
