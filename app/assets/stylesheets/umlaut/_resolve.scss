@@ -47,21 +47,21 @@
   }
 
   // Special looks for particular sections
-  &.fulltext {
+  &.fulltext, .page-icons {
     @include iconed-response;
     .response_item i {
       @extend .umlaut_icons-famfamfam-page-text;
     }
   }
 
-  &.audio {
+  &.audio, .sound-icons {
     @include iconed-response;
     .response_item i {
       @extend .umlaut_icons-famfamfam-page-sound;
     }
   }
 
-  &.excerpts {
+  &.excerpts, .book-open-icons {
     @include iconed-response;
     .response_item i {
       @extend .umlaut_icons-famfamfam-book-open;
@@ -72,12 +72,14 @@
     border: none;
   }
 
-  &.document_delivery {
+  &.document_delivery, .book-go-icons {
     @include iconed-response;
     .response_item i {
       @extend .umlaut_icons-famfamfam-book-go;
     }
   }
+
+  .response_item 
 
   &.related_items {
     // Margin between the 'cited by' and 'similar' lists
@@ -87,7 +89,7 @@
 
   }
 
-  &.holding {
+  &.holding, &.book-icons {
     .response_item i {
       @extend .umlaut_icons-famfamfam-book;
     }
