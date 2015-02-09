@@ -1,0 +1,82 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&q=title:%22stalin%22%20AND%20creator:(souvarine)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Mon, 09 Feb 2015 22:48:03 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22stalin%22+AND+creator:%28souvarine%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Tue, 10 Feb 2015 04:48:03 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Mon, 09 Feb 2015 22:48:03 GMT
+- request:
+    method: get
+    uri: http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&q=title:%22stalin%22%20AND%20creator:(souvarine)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Mon, 09 Feb 2015 22:48:03 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Powered-By:
+      - PHP/5.3.10-1ubuntu3.2
+    body:
+      encoding: US-ASCII
+      string: ! '{"responseHeader":{"status":0,"QTime":17,"params":{"qin":"title:\"stalin\"
+        AND creator:(souvarine) AND (mediatype:texts OR mediatype:audio)","fl":"*","start":"0","q":"title:\"stalin\"
+        AND creator:(souvarine ) AND ( mediatype:texts OR mediatype:audio )","wt":"json","rows":"999"}},"response":{"numFound":1,"start":0,"docs":[{"mediatype":"texts","call_number":"27965","imagecount":711,"title":"Stalin
+        A Critical Survey Of Bolshevism","date":"1939-01-01T00:00:00Z","publicdate":"2006-11-10T20:52:32Z","downloads":1420,"week":7,"month":31,"identifier":"stalinacriticals027965mbp","contributor":["Universal
+        Digital Library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu
+        XML","Flippy ZIP","Metadata","Million Books Original Metadata","Million Books
+        Original TIFF ZIP","Scandata","Single Page Processed TIFF ZIP","Standard LuraTech
+        PDF"],"language":["eng"],"collection":["universallibrary"],"oai_updatedate":["2006-11-10T20:52:32Z","2009-06-08T12:21:13Z"],"publisher":["Alliance
+        Book Corporation"],"creator":["Boris Souvarine"]}]}}'
+    http_version: 
+  recorded_at: Mon, 09 Feb 2015 22:48:03 GMT
+recorded_with: VCR 2.9.3

@@ -1,0 +1,741 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&q=title:%22mark%20twain%22%20AND%20creator:(paine)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: Moved Temporarily
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Mon, 09 Feb 2015 22:48:05 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '161'
+      Connection:
+      - keep-alive
+      Location:
+      - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22mark+twain%22+AND+creator:%28paine%29+AND+(mediatype:texts+OR+mediatype:audio)
+      Expires:
+      - Tue, 10 Feb 2015 04:48:05 GMT
+      Cache-Control:
+      - max-age=21600
+    body:
+      encoding: US-ASCII
+      string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
+        Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Mon, 09 Feb 2015 22:48:05 GMT
+- request:
+    method: get
+    uri: http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&q=title:%22mark%20twain%22%20AND%20creator:(paine)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.1.19
+      Date:
+      - Mon, 09 Feb 2015 22:48:06 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Powered-By:
+      - PHP/5.3.10-1ubuntu3.2
+    body:
+      encoding: US-ASCII
+      string: ! '{"responseHeader":{"status":0,"QTime":8,"params":{"wt":"json","rows":"999","qin":"title:\"mark
+        twain\" AND creator:(paine) AND (mediatype:texts OR mediatype:audio)","fl":"*","start":"0","q":"title:\"mark
+        twain\" AND creator:(paine ) AND ( mediatype:texts OR mediatype:audio )"}},"response":{"numFound":91,"start":0,"docs":[{"title":"mark
+        twain''s letters","mediatype":"texts","year":1917,"date":"1917-01-01T00:00:00Z","description":"Book
+        digitized by Google and uploaded to the Internet Archive by user tpb.","imagecount":461,"publicdate":"2008-10-19T02:38:26Z","source":"http://books.google.com/books?id=qqKmd9tNlfYC&oe=UTF-8","downloads":238,"week":0,"month":19,"identifier":"marktwainslette00paingoog","contributor":["unknown
+        library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Flippy
+        ZIP","Image Container PDF","Metadata","Scandata","Single Page Processed TIFF
+        ZIP"],"language":["Dutch"],"collection":["americana"],"oai_updatedate":["2008-10-19T02:38:26Z","2009-05-30T10:56:50Z"],"creator":["albert
+        bigelow paine"]},{"mediatype":"texts","scanningcentre":"Ccl,Hyderabad","type":"Text","title":"Mark
+        twain''S notebook","downloads":4188,"week":48,"month":158,"identifier":"MarkTwainsNotebook","subject":["-"],"format":["Book
+        Cover","DjVu","HTML","JPEG","Metadata","TIFF"],"collection":["millionbooks","universallibrary"],"language":["English"],"oai_updatedate":["2003-11-21T09:56:35Z","2003-11-14T17:15:00Z"],"creator":["Albert_bigelow_paine"]},{"title":"Moments
+        with Mark Twain","description":"1","date":"1920-01-01T00:00:00Z","mediatype":"texts","call_number":"ps
+        1331 p32","publicdate":"2009-08-19T15:11:38Z","imagecount":334,"foldoutcount":0,"downloads":496,"week":3,"month":10,"identifier":"momentswithmarkt00painuoft","contributor":["Scott
+        - York University Libraries"],"subject":["Twain, Mark, 1835-1910"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Grayscale LuraTech PDF","MARC","MARC Binary","MARC Source","Metadata","Scribe
+        Scandata ZIP","Single Page Processed JP2 ZIP","Single Page Raw JP2 ZIP","Text
+        PDF"],"collection":["YorkUniversity","toronto"],"language":["eng"],"oai_updatedate":["2009-08-19T15:11:29Z","2009-08-19T15:11:31Z","2009-08-19T15:11:38Z","2012-08-03T07:56:45Z"],"publisher":["New
+        York : Harper"],"creator":["Paine, Albert Bigelow, 1861-1937"]},{"mediatype":"texts","title":"Moments
+        with Mark Twain","description":"The metadata below describe the original scanning.
+        Follow the \"All Files: HTTP\" link in the \"View the book\" box to the left
+        to find XML files that contain more metadata about the original images and
+        the derived formats (OCR results, PDF etc.). See also the <a href=\"http://www.archive.org/about/faqs.php#140\"
+        rel=\"nofollow\">What is the directory structure for the texts?</a> FAQ for
+        information about file content and naming conventions.","call_number":"ps1303
+        .p3 1920","date":"1920-01-01T00:00:00Z","imagecount":330,"foldoutcount":0,"publicdate":"2009-11-01T14:10:16Z","downloads":198,"week":5,"month":10,"identifier":"cu31924014388593","contributor":["Cornell
+        University Library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","Flippy ZIP","MARC","MARC Binary","Metadata","Raw Cornell
+        Book Zip","Scandata","Single Page Processed JP2 ZIP","Text PDF"],"language":["eng"],"collection":["cornell","americana"],"oai_updatedate":["2009-10-29T05:12:02Z","2009-11-01T14:10:16Z","2011-01-05T04:10:27Z"],"publisher":["New
+        York, and London, Harper & brothers"],"creator":["Twain, Mark, 1835-1910","Paine,
+        Albert Bigelow, 1861-1937"]},{"title":"Mark Twain''s letters","source":"http://books.google.com/books?id=bYZaAAAAMAAJ&oe=UTF-8","mediatype":"texts","description":"Book
+        digitized by Google from the library of University of Michigan and uploaded
+        to the Internet Archive by user tpb.","date":"1917-01-01T00:00:00Z","imagecount":466,"publicdate":"2009-12-26T13:19:18Z","downloads":452,"week":7,"month":29,"identifier":"marktwainslette00unkngoog","subject":["Twain,
+        Mark, 1835-1910"],"contributor":["University of Michigan"],"format":["Abbyy
+        GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin Core","Image Container
+        PDF","MARC","MARC Binary","Metadata","Scandata","Single Page Processed JP2
+        ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2009-12-26T13:19:18Z","2009-12-26T13:19:18Z"],"creator":["Clemens,
+        Samuel Langhorne, 1835-1910","Paine, Albert Bigelow, 1861-1937"],"publisher":["New
+        York, Harper"]},{"date":"1917-01-01T00:00:00Z","licenseurl":"http://creativecommons.org/publicdomain/mark/1.0/","mediatype":"texts","source":"http://books.google.com/books?id=4KZhv9y8sMIC&hl=&source=gbs_api","title":"Mark
+        Twain''s letters [microform]","year":1917,"publicdate":"2015-01-22T07:33:19Z","description":"Paged
+        continuously","imagecount":444,"downloads":4,"week":2,"month":4,"identifier":"bub_gb_4KZhv9y8sMIC","contributor":["Harvard
+        University"],"subject":["bub_upload"],"format":["Abbyy GZ","Animated GIF","Archive
+        BitTorrent","DjVu","DjVuTXT","Djvu XML","Dublin Core","EPUB","Generic Raw
+        Book Tar","MARC","MARC Binary","Metadata","Scandata","Single Page Processed
+        JP2 ZIP","Text PDF"],"collection":["americana"],"language":["eng"],"oai_updatedate":["2015-01-22T07:33:19Z","2015-01-22T07:33:19Z","2015-01-22T10:18:29Z"],"publisher":["New
+        York : Harper & Brothers"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"title":"Mark Twain''s letters","call_number":"ucb:glad-16981828","volume":"01","mediatype":"texts","description":"Vol.
+        1","imagecount":474,"publicdate":"2006-09-12T22:25:10Z","foldoutcount":0,"downloads":733,"week":7,"month":24,"identifier":"marksletters01twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-09-12T18:45:44Z","2006-09-12T18:45:54Z","2006-09-12T22:25:10Z","2012-08-03T05:20:43Z"],"publisher":["New
+        York, London, Harper & Brothers"],"creator":["Twain, Mark, 1835-1910","Paine,
+        Albert Bigelow, 1861-1937","Judd, Ida Benfry"]},{"title":"Mark Twain''s letters","call_number":"ucb:glad-16981828","volume":"02","mediatype":"texts","description":"Vol.
+        2","imagecount":470,"publicdate":"2006-09-13T13:39:05Z","foldoutcount":0,"downloads":553,"week":2,"month":6,"identifier":"marksletters02twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-09-12T18:46:38Z","2006-09-12T18:46:47Z","2006-09-13T13:39:05Z","2012-08-03T05:20:39Z"],"publisher":["New
+        York, London, Harper & Brothers"],"creator":["Twain, Mark, 1835-1910","Paine,
+        Albert Bigelow, 1861-1937","Judd, Ida Benfry"]},{"title":"Mark Twain, a Biography.
+        Complete","mediatype":"texts","description":"Book from Project Gutenberg:
+        Mark Twain, a Biography. Complete Library of Congress Classification: PS","call_number":"gutenberg
+        etext# 2988","publicdate":"2006-12-07T00:00:00Z","downloads":1938,"week":14,"month":44,"identifier":"marktwainabiogra02988gut","contributor":["Project
+        Gutenberg"],"format":["Text","XML","ZIP"],"language":["eng"],"collection":["gutenberg"],"oai_updatedate":["2006-12-07T00:00:00Z","2006-12-07T00:00:00Z","2006-12-08T02:09:24Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937"]},{"title":"Mark Twain''s letters","mediatype":"texts","year":1917,"date":"1917-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of the New York Public Library and uploaded
+        to the Internet Archive by user tpb.","imagecount":465,"publicdate":"2008-04-12T19:58:51Z","source":"http://books.google.com/books?id=sK8hAAAAMAAJ&oe=UTF-8","volume":"2","downloads":423,"week":1,"month":2,"identifier":"marktwainslette02twaigoog","subject":["Twain,
+        Mark, 1835-1910","Authors, American","Humorists, American","Journalists"],"contributor":["New
+        York Public Library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-04-12T19:58:51Z","2009-05-30T10:56:48Z"],"creator":["Twain,
+        Mark, 1835-1910","Paine, Albert Bigelow, 1861-1937","Roy J. Friedman Mark
+        Twain Collection (Library of Congress) DLC"],"publisher":["New York : Harper
+        & Bros."]},{"title":"Moments with Mark Twain","mediatype":"texts","year":1920,"date":"1920-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of the New York Public Library and uploaded
+        to the Internet Archive by user tpb.","imagecount":325,"publicdate":"2008-09-07T14:50:12Z","source":"http://books.google.com/books?id=w7svAAAAMAAJ&oe=UTF-8","downloads":155,"week":2,"month":5,"identifier":"momentswithmark01paingoog","contributor":["New
+        York Public Library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-09-07T14:50:12Z","2009-05-30T16:32:30Z"],"creator":["Twain,
+        Mark, 1835-1910","Paine, Albert Bigelow, 1861-1937","Roy J. Friedman Mark
+        Twain Collection (Library of Congress) DLC"],"publisher":["New York : Harper
+        & Bros."]},{"title":"Moments with Mark Twain","mediatype":"texts","year":1920,"date":"1920-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of the University of Michigan and uploaded
+        to the Internet Archive by user tpb.","imagecount":320,"publicdate":"2008-09-07T13:48:00Z","source":"http://books.google.com/books?id=0VUqAAAAMAAJ&oe=UTF-8","downloads":222,"week":3,"month":5,"identifier":"momentswithmark00paingoog","contributor":["University
+        of Michigan"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-09-07T13:48:00Z","2009-05-30T16:32:19Z"],"creator":["Twain,
+        Mark, 1835-1910","Paine, Albert Bigelow, 1861-1937","Roy J. Friedman Mark
+        Twain Collection (Library of Congress) DLC"],"publisher":["New York : Harper
+        & Bros."]},{"title":"Mark Twain''s letters","mediatype":"texts","year":1917,"date":"1917-01-01T00:00:00Z","description":"Book
+        digitized by Google and uploaded to the Internet Archive by user tpb.","imagecount":437,"publicdate":"2008-04-19T08:01:55Z","source":"http://books.google.com/books?id=gkYLAAAAIAAJ&oe=UTF-8","volume":"2","downloads":408,"week":5,"month":18,"identifier":"marktwainslette00twaigoog","subject":["Twain,
+        Mark, 1835-1910","Authors, American","Humorists, American","Journalists"],"contributor":["unknown
+        library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-04-19T08:01:55Z","2009-05-30T10:57:56Z"],"creator":["Twain,
+        Mark, 1835-1910","Paine, Albert Bigelow, 1861-1937","Roy J. Friedman Mark
+        Twain Collection (Library of Congress) DLC"],"publisher":["New York : Harper
+        & Bros."]},{"title":"Mark Twain''s letters","mediatype":"texts","year":1917,"date":"1917-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of Harvard University and uploaded to
+        the Internet Archive by user tpb.","imagecount":457,"publicdate":"2008-04-11T23:20:14Z","source":"http://books.google.com/books?id=4KZhv9y8sMIC&oe=UTF-8","volume":"2","downloads":483,"week":3,"month":9,"identifier":"marktwainslette04twaigoog","subject":["Twain,
+        Mark, 1835-1910","Authors, American","Humorists, American","Journalists"],"contributor":["Harvard
+        University"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-04-11T23:20:14Z","2009-05-30T10:57:02Z"],"creator":["Twain,
+        Mark, 1835-1910","Paine, Albert Bigelow, 1861-1937","Roy J. Friedman Mark
+        Twain Collection (Library of Congress) DLC"],"publisher":["New York : Harper
+        & Bros."]},{"title":"Mark Twain''s letters","mediatype":"texts","year":1917,"date":"1917-01-01T00:00:00Z","description":"Book
+        digitized by Google and uploaded to the Internet Archive by user tpb.","imagecount":467,"publicdate":"2008-04-13T02:20:53Z","source":"http://books.google.com/books?id=VEYLAAAAIAAJ&oe=UTF-8","volume":"1","downloads":622,"week":3,"month":19,"identifier":"marktwainslette01twaigoog","subject":["Twain,
+        Mark, 1835-1910","Authors, American","Humorists, American","Journalists"],"contributor":["unknown
+        library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-04-13T02:20:53Z","2009-05-30T10:54:50Z"],"creator":["Twain,
+        Mark, 1835-1910","Paine, Albert Bigelow, 1861-1937","Roy J. Friedman Mark
+        Twain Collection (Library of Congress) DLC"],"publisher":["New York : Harper
+        & Bros."]},{"title":"Mark Twain''s letters","mediatype":"texts","year":1917,"date":"1917-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of the New York Public Library and uploaded
+        to the Internet Archive by user tpb.","imagecount":474,"publicdate":"2008-04-11T20:44:31Z","source":"http://books.google.com/books?id=Ia8hAAAAMAAJ&oe=UTF-8","volume":"1","downloads":417,"week":2,"month":9,"identifier":"marktwainslette05twaigoog","subject":["Twain,
+        Mark, 1835-1910","Authors, American","Humorists, American","Journalists"],"contributor":["New
+        York Public Library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-04-11T20:44:31Z","2009-05-30T10:56:57Z"],"creator":["Twain,
+        Mark, 1835-1910","Paine, Albert Bigelow, 1861-1937","Roy J. Friedman Mark
+        Twain Collection (Library of Congress) DLC"],"publisher":["New York : Harper
+        & Bros."]},{"title":"Mark Twain''s letters","mediatype":"texts","year":1917,"date":"1917-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of Harvard University and uploaded to
+        the Internet Archive by user tpb.","imagecount":475,"publicdate":"2008-04-12T23:17:54Z","source":"http://books.google.com/books?id=oWajwevvkDMC&oe=UTF-8","volume":"1","downloads":969,"week":12,"month":36,"identifier":"marktwainslette03twaigoog","subject":["Twain,
+        Mark, 1835-1910","Authors, American","Humorists, American","Journalists"],"contributor":["Harvard
+        University"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-04-12T23:17:54Z","2009-05-30T10:56:57Z"],"creator":["Twain,
+        Mark, 1835-1910","Paine, Albert Bigelow, 1861-1937","Roy J. Friedman Mark
+        Twain Collection (Library of Congress) DLC"],"publisher":["New York : Harper
+        & Bros."]},{"call_number":"33723871","volume":"14","mediatype":"texts","description":"Vol.
+        14","title":"The writings of Mark Twain","imagecount":502,"publicdate":"2006-06-20T14:35:34Z","foldoutcount":0,"downloads":509,"week":1,"month":2,"identifier":"marktworkswrite14twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T21:14:25Z","2006-06-20T14:35:34Z","2012-08-03T05:21:10Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"17","mediatype":"texts","description":"Vol.
+        17","title":"The writings of Mark Twain","imagecount":380,"publicdate":"2006-06-10T15:14:56Z","foldoutcount":0,"downloads":341,"week":1,"month":2,"identifier":"marktworkswrite17twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T21:21:39Z","2006-06-10T15:14:56Z","2012-08-03T05:21:07Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"25","mediatype":"texts","description":"Vol.
+        25","title":"The writings of Mark Twain","imagecount":306,"publicdate":"2006-06-11T07:26:04Z","foldoutcount":0,"downloads":405,"week":1,"month":4,"identifier":"mtworkswrite25twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:33:56Z","2006-06-11T07:26:04Z","2012-08-03T08:44:05Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"35","mediatype":"texts","description":"Vol.
+        35","title":"The writings of Mark Twain","imagecount":464,"publicdate":"2006-06-09T23:47:05Z","foldoutcount":0,"downloads":698,"week":2,"month":9,"identifier":"mtworkswrite35twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:55:31Z","2006-06-09T23:47:05Z","2012-08-03T08:44:18Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"11","mediatype":"texts","description":"Vol.
+        11","title":"The writings of Mark Twain","imagecount":346,"publicdate":"2006-06-11T08:17:56Z","foldoutcount":0,"downloads":383,"week":0,"month":1,"identifier":"marktworkswrite11twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T21:08:08Z","2006-06-11T08:17:56Z","2012-08-03T05:21:30Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"title":"The Writings of Mark Twain","mediatype":"texts","year":1899,"date":"1899-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of the University of California and uploaded
+        to the Internet Archive by user tpb.","imagecount":417,"publicdate":"2008-09-12T07:47:02Z","source":"http://books.google.com/books?id=uUkrAAAAIAAJ&oe=UTF-8","volume":"21","downloads":179,"week":2,"month":4,"identifier":"writingsmarktwa01paingoog","contributor":["University
+        of California"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu
+        XML","Flippy ZIP","Image Container PDF","Metadata","Scandata","Single Page
+        Processed TIFF ZIP"],"language":["English"],"collection":["americana"],"oai_updatedate":["2008-09-12T07:47:02Z","2009-06-05T09:23:37Z"],"creator":["Mark
+        Twain, Charles Dudley Warner, Albert Bigelow Paine"],"publisher":["G. Wells"]},{"call_number":"33723871","volume":"31","mediatype":"texts","description":"Vol.
+        31","title":"The writings of Mark Twain","imagecount":484,"publicdate":"2006-06-10T01:36:30Z","foldoutcount":0,"downloads":379,"week":3,"month":5,"identifier":"mtworkswrite31twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:46:52Z","2006-06-10T01:36:30Z","2012-08-03T08:44:15Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"title":"The writings of Mark Twain","call_number":"33723871","volume":"21","description":"Vol.
+        21","mediatype":"texts","imagecount":434,"publicdate":"2006-05-27T08:57:27Z","foldoutcount":0,"downloads":386,"week":2,"month":5,"identifier":"workswritings21twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-05-26T16:12:50Z","2006-05-27T08:57:27Z","2012-08-05T13:45:38Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"18","mediatype":"texts","description":"Vol.
+        18","title":"The writings of Mark Twain","imagecount":336,"publicdate":"2006-06-10T00:06:37Z","foldoutcount":0,"downloads":438,"week":1,"month":5,"identifier":"marktworkswrite18twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T21:24:10Z","2006-06-10T00:06:37Z","2012-08-03T05:21:10Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"15","mediatype":"texts","description":"Vol.
+        15","title":"The writings of Mark Twain","imagecount":442,"publicdate":"2006-06-20T13:25:38Z","foldoutcount":0,"downloads":429,"week":3,"month":13,"identifier":"marktworkswrite15twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T21:16:36Z","2006-06-20T13:25:38Z","2012-08-03T05:21:32Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"5","mediatype":"texts","description":"Vol.
+        5","title":"The writings of Mark Twain","imagecount":378,"publicdate":"2006-06-10T02:24:03Z","foldoutcount":0,"downloads":400,"week":1,"month":5,"identifier":"marktworkswrite05twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T20:51:54Z","2006-06-10T02:24:03Z","2012-08-03T05:21:14Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"title":"The Writings of Mark Twain","mediatype":"texts","year":1899,"date":"1899-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of the University of California and uploaded
+        to the Internet Archive by user tpb.","imagecount":375,"publicdate":"2008-04-13T06:54:46Z","source":"http://books.google.com/books?id=ukkrAAAAIAAJ&oe=UTF-8","volume":"20","downloads":216,"week":1,"month":2,"identifier":"writingsmarktwa00paingoog","contributor":["University
+        of California"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu
+        XML","Flippy ZIP","Image Container PDF","Metadata","Scandata","Single Page
+        Processed TIFF ZIP"],"language":["English"],"collection":["americana"],"oai_updatedate":["2008-04-13T06:54:46Z","2009-06-05T09:23:34Z"],"creator":["Mark
+        Twain, Charles Dudley Warner, Albert Bigelow Paine"],"publisher":["G. Wells"]},{"call_number":"33723871","volume":"8","mediatype":"texts","description":"Vol.
+        8","title":"The writings of Mark Twain","imagecount":350,"publicdate":"2006-06-10T17:09:04Z","foldoutcount":0,"downloads":372,"week":2,"month":6,"identifier":"marktworkswrite08twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T20:59:56Z","2006-06-10T17:09:04Z","2012-08-03T05:21:11Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"13","mediatype":"texts","description":"Vol.
+        13","title":"The writings of Mark Twain","imagecount":466,"publicdate":"2006-06-11T11:30:57Z","foldoutcount":0,"downloads":403,"week":1,"month":4,"identifier":"marktworkswrite13twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T21:12:08Z","2006-06-11T11:30:57Z","2012-08-03T05:21:11Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"7","mediatype":"texts","description":"Vol.
+        7","title":"The writings of Mark Twain","imagecount":448,"publicdate":"2006-06-11T03:43:51Z","foldoutcount":0,"downloads":530,"week":3,"month":10,"identifier":"marktworkswrite07twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T20:57:26Z","2006-06-11T03:43:51Z","2012-08-03T05:21:10Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"10","mediatype":"texts","description":"Vol.
+        10","title":"The writings of Mark Twain","imagecount":342,"publicdate":"2006-06-11T15:25:13Z","foldoutcount":0,"downloads":475,"week":0,"month":2,"identifier":"marktworkswrite10twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T21:06:06Z","2006-06-11T15:25:13Z","2012-08-03T05:21:08Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"2","mediatype":"texts","description":"Vol.
+        2","title":"The writings of Mark Twain","imagecount":460,"publicdate":"2006-06-11T03:06:17Z","foldoutcount":0,"downloads":441,"week":1,"month":2,"identifier":"marktworkswrite02twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T20:41:04Z","2006-06-11T03:06:17Z","2012-08-03T05:21:13Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"9","mediatype":"texts","description":"vol.
+        9","title":"The writings of Mark Twain","imagecount":338,"publicdate":"2006-06-11T09:16:39Z","foldoutcount":0,"downloads":419,"week":0,"month":2,"identifier":"marktworkswrite09twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T21:02:49Z","2006-06-11T09:16:39Z","2012-08-03T05:21:10Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"1","mediatype":"texts","description":"Vol.
+        1","title":"The writings of Mark Twain","imagecount":372,"publicdate":"2006-06-09T22:11:08Z","foldoutcount":0,"downloads":526,"week":3,"month":7,"identifier":"marktworkswrite01twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T20:37:37Z","2006-06-09T22:11:08Z","2012-08-03T05:21:15Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"title":"The writings of Mark Twain","call_number":"33723871","volume":"20","description":"Vol.
+        20","mediatype":"texts","imagecount":386,"publicdate":"2006-05-27T08:12:20Z","foldoutcount":0,"downloads":509,"week":0,"month":3,"identifier":"workswritings20twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-05-26T16:14:37Z","2006-05-27T08:12:20Z","2012-08-05T13:45:36Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"30","mediatype":"texts","description":"Vol.
+        30","title":"The writings of Mark Twain","imagecount":454,"publicdate":"2006-06-11T09:40:29Z","foldoutcount":0,"downloads":546,"week":3,"month":12,"identifier":"mtworkswrite30twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:44:23Z","2006-06-11T09:40:29Z","2012-08-03T08:44:12Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"12","mediatype":"texts","description":"Vol.
+        12","title":"The writings of Mark Twain","imagecount":588,"publicdate":"2006-06-21T02:33:59Z","foldoutcount":0,"downloads":441,"week":2,"month":7,"identifier":"marktworkswrite12twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T21:09:53Z","2006-06-21T02:33:59Z","2012-08-03T05:21:15Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"4","mediatype":"texts","description":"Vol.
+        4","title":"The writings of Mark Twain","imagecount":378,"publicdate":"2006-06-10T02:18:03Z","foldoutcount":0,"downloads":407,"week":1,"month":7,"identifier":"marktworkswrite04twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T20:44:34Z","2006-06-10T02:18:03Z","2012-08-03T05:21:14Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"33","mediatype":"texts","description":"Vol.
+        33","title":"The writings of Mark Twain","imagecount":508,"publicdate":"2006-06-10T08:26:56Z","foldoutcount":0,"downloads":669,"week":1,"month":11,"identifier":"mtworkswrite33twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:50:36Z","2006-06-10T08:26:56Z","2012-08-03T08:44:20Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"22","mediatype":"texts","description":"Vol.
+        22","title":"The writings of Mark Twain","imagecount":456,"publicdate":"2006-06-11T11:37:09Z","foldoutcount":0,"downloads":446,"week":1,"month":2,"identifier":"mtworkswrite22twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:25:15Z","2006-06-11T11:37:09Z","2012-08-03T08:44:04Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"title":"The writings of Mark Twain","call_number":"33723871","volume":"26","mediatype":"texts","description":"Vol.
+        26","imagecount":424,"publicdate":"2006-06-10T23:09:02Z","foldoutcount":0,"downloads":662,"week":1,"month":4,"identifier":"mtworkswrite26twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:35:33Z","2006-06-08T22:35:46Z","2006-06-10T23:09:02Z","2012-08-03T08:44:11Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"32","mediatype":"texts","description":"Vol.
+        32","title":"The writings of Mark Twain","imagecount":478,"publicdate":"2006-06-11T11:34:57Z","foldoutcount":0,"downloads":574,"week":1,"month":5,"identifier":"mtworkswrite32twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:49:13Z","2006-06-11T11:34:57Z","2012-08-03T08:44:27Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"19","mediatype":"texts","description":"Vol.
+        19","title":"The writings of Mark Twain","imagecount":498,"publicdate":"2006-06-10T03:12:53Z","foldoutcount":0,"downloads":573,"week":1,"month":5,"identifier":"mtworkswrite19twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:22:49Z","2006-06-10T03:12:53Z","2012-08-03T08:44:08Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"3","mediatype":"texts","description":"Vol.
+        3","title":"The writings of Mark Twain","imagecount":346,"publicdate":"2006-06-10T20:03:10Z","foldoutcount":0,"downloads":518,"week":1,"month":10,"identifier":"marktworkswrite03twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T20:42:15Z","2006-06-10T20:03:10Z","2012-08-03T05:21:13Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"16","mediatype":"texts","description":"Vol.
+        16","title":"The writings of Mark Twain","imagecount":360,"publicdate":"2006-06-10T16:13:08Z","foldoutcount":0,"downloads":393,"week":0,"month":5,"identifier":"marktworkswrite16twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T21:18:21Z","2006-06-10T16:13:08Z","2012-08-03T05:21:10Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"24","mediatype":"texts","description":"Vol.
+        24","title":"The writings of Mark Twain","imagecount":430,"publicdate":"2006-06-11T12:01:21Z","foldoutcount":0,"downloads":379,"week":4,"month":14,"identifier":"mtworkswrite24twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:29:11Z","2006-06-11T12:01:21Z","2012-08-03T08:44:08Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"29","mediatype":"texts","description":"Vol.
+        29","title":"The writings of Mark Twain","imagecount":476,"publicdate":"2006-06-11T13:37:32Z","foldoutcount":0,"downloads":633,"week":5,"month":24,"identifier":"mtworkswrite29twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:42:27Z","2006-06-11T13:37:32Z","2012-08-03T08:44:10Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"23","mediatype":"texts","description":"Vol.
+        23","title":"The writings of Mark Twain","imagecount":408,"publicdate":"2006-06-10T02:33:53Z","foldoutcount":0,"downloads":446,"week":2,"month":17,"identifier":"mtworkswrite23twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:27:17Z","2006-06-10T02:33:53Z","2012-08-03T08:44:06Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"34","mediatype":"texts","description":"Vol.
+        34","title":"The writings of Mark Twain","imagecount":480,"publicdate":"2006-06-11T05:10:27Z","foldoutcount":0,"downloads":790,"week":4,"month":13,"identifier":"mtworkswrite34twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:53:24Z","2006-06-11T05:10:27Z","2012-08-03T08:44:17Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"call_number":"33723871","volume":"27","mediatype":"texts","description":"Vol.
+        27","title":"The writings of Mark Twain","imagecount":374,"publicdate":"2006-06-10T16:07:25Z","foldoutcount":0,"downloads":470,"week":1,"month":5,"identifier":"mtworkswrite27twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T22:38:26Z","2006-06-10T16:07:25Z","2012-08-03T08:44:07Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"title":"The writings of Mark Twain","call_number":"33723871","volume":"6","mediatype":"texts","description":"Vol.
+        6","imagecount":384,"publicdate":"2006-06-10T04:31:54Z","foldoutcount":0,"downloads":392,"week":1,"month":2,"identifier":"marktworkswrite06twairich","contributor":["University
+        of California Libraries"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Processed JPEG ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-06-08T20:55:00Z","2006-06-08T20:55:15Z","2006-06-10T04:31:54Z","2012-08-03T05:21:10Z"],"publisher":["New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Paine, Albert
+        Bigelow, 1861-1937"]},{"mediatype":"texts","scanningcentre":"State Central
+        Library, Hyderabad","date":"1920-01-01T00:00:00Z","type":"Text","title":"Lettersof
+        Mark Twain With A Biographical Sketch","publicdate":"2014-12-09T17:04:19Z","downloads":110,"week":0,"month":0,"identifier":"LettersofMarkTwainWithABiographicalSketch","subject":["Literature"],"format":["Archive
+        BitTorrent","Book Cover","DjVu","JPEG Thumb","Metadata","TIFF"],"collection":["millionbooks","millionbooks","universallibrary"],"language":["English"],"oai_updatedate":["2003-07-07T10:11:44Z","2014-12-09T17:04:19Z","2014-12-09T17:04:36Z"],"creator":["Albert
+        Bigelow Paine"]},{"mediatype":"texts","type":"Text","title":"Mark Twain, A
+        Biography, 1875-86","downloads":308,"week":4,"month":6,"identifier":"mt3bg11","contributor":["Project
+        Gutenberg"],"format":["Metadata","Text","ZIP"],"collection":["gutenberg"],"oai_updatedate":["2007-03-06T22:07:53Z"],"creator":["Albert
+        Bigelow Paine"]},{"mediatype":"texts","title":"A short life of Mark Twain","description":"The
+        metadata below describe the original scanning. Follow the \"All Files: HTTP\"
+        link in the \"View the book\" box to the left to find XML files that contain
+        more metadata about the original images and the derived formats (OCR results,
+        PDF etc.). See also the <a href=\"http://www.archive.org/about/faqs.php#140\"
+        rel=\"nofollow\">What is the directory structure for the texts?</a> FAQ for
+        information about file content and naming conventions.","call_number":"ps1331
+        .p4 1920","date":"1920-01-01T00:00:00Z","imagecount":376,"foldoutcount":0,"publicdate":"2009-10-30T20:26:55Z","downloads":374,"week":0,"month":2,"identifier":"cu31924022022465","subject":["Twain,
+        Mark, 1835-1910"],"contributor":["Cornell University Library"],"format":["Abbyy
+        GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin Core","Flippy ZIP","MARC","MARC
+        Binary","Metadata","Raw Cornell Book Zip","Scandata","Single Page Processed
+        JP2 ZIP","Text PDF"],"language":["eng"],"collection":["cornell","americana"],"oai_updatedate":["2009-10-27T18:16:17Z","2009-10-30T20:26:55Z","2011-01-05T02:16:19Z"],"publisher":["New
+        York and London, Harper & brothers"],"creator":["Paine, Albert Bigelow, 1861-1937"]},{"title":"The
+        Boys'' Life of Mark Twain","mediatype":"texts","description":"Book from Project
+        Gutenberg: The Boys'' Life of Mark Twain Library of Congress Classification:
+        PS","call_number":"gutenberg etext# 3463","publicdate":"2006-12-07T00:00:00Z","downloads":621,"week":2,"month":8,"identifier":"theboyslifeofmar03463gut","contributor":["Project
+        Gutenberg"],"format":["Text","XML","ZIP"],"language":["eng"],"collection":["gutenberg"],"oai_updatedate":["2006-12-07T00:00:00Z","2006-12-07T00:00:00Z","2006-12-08T02:18:04Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937"]},{"title":"The writings of Mark Twain","source":"http://books.google.com/books?id=NHetAAAAIAAJ&oe=UTF-8","mediatype":"texts","description":"Book
+        digitized by Google from the library of University of California and uploaded
+        to the Internet Archive by user tpb.","date":"1922-01-01T00:00:00Z","imagecount":453,"publicdate":"2009-09-27T17:18:54Z","downloads":346,"week":8,"month":23,"identifier":"writingsmarktwa02paingoog","contributor":["University
+        of California"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed JP2 ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2009-09-27T17:18:54Z","2009-09-27T17:18:54Z"],"publisher":["[New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Twain, Mark, 1835-1910,
+        signer","Paine, Albert Bigelow, 1861-1937, signer","Roy J. Friedman Mark Twain
+        Collection (Library of Congress) DLC"]},{"title":"The writings of Mark Twain","source":"http://books.google.com/books?id=LEmsAAAAIAAJ&oe=UTF-8","mediatype":"texts","description":"Book
+        digitized by Google from the library of University of California and uploaded
+        to the Internet Archive by user tpb.","date":"1922-01-01T00:00:00Z","imagecount":443,"publicdate":"2009-10-05T15:59:29Z","downloads":273,"week":3,"month":11,"identifier":"writingsmarktwa03paingoog","contributor":["University
+        of California"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed JP2 ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2009-10-05T15:59:29Z","2009-10-05T15:59:29Z"],"publisher":["[New
+        York : Gabriel Wells"],"creator":["Twain, Mark, 1835-1910","Twain, Mark, 1835-1910,
+        signer","Paine, Albert Bigelow, 1861-1937, signer","Roy J. Friedman Mark Twain
+        Collection (Library of Congress) DLC"]},{"title":"Mark Twain''s letters. Arranged
+        with comment","volume":"2","description":"26","mediatype":"texts","call_number":"abv-5194","publicdate":"2007-11-27T01:21:00Z","imagecount":462,"foldoutcount":0,"downloads":1094,"week":2,"month":13,"identifier":"marktwainsletter02twaiuoft","contributor":["Robarts
+        - University of Toronto"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Raw JP2 ZIP","Text PDF"],"collection":["robarts","toronto"],"language":["eng"],"oai_updatedate":["2007-11-27T01:20:57Z","2007-11-27T01:20:59Z","2007-11-27T01:21:00Z","2012-08-03T05:20:55Z"],"publisher":["New
+        York Harper"],"creator":["Twain, Mark, 1835-1910","Paine, Albert Bigelow,
+        1861-1937"]},{"title":"Mark Twain''s letters. Arranged with comment","description":"26","mediatype":"texts","call_number":"abv-5194","publicdate":"2007-11-27T02:34:20Z","imagecount":478,"foldoutcount":0,"downloads":696,"week":1,"month":9,"identifier":"marktwainsletter00twaiuoft","contributor":["Robarts
+        - University of Toronto"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Raw JP2 ZIP","Text PDF"],"collection":["robarts","toronto"],"language":["eng"],"oai_updatedate":["2007-11-27T02:34:16Z","2007-11-27T02:34:18Z","2007-11-27T02:34:20Z","2012-08-03T05:20:54Z"],"publisher":["New
+        York Harper"],"creator":["Twain, Mark, 1835-1910","Paine, Albert Bigelow,
+        1861-1937"]},{"title":"Mark Twain, a Biography - Volume III, Part 2: 1907-1910","mediatype":"texts","description":"Book
+        from Project Gutenberg: Mark Twain, a Biography - Volume III, Part 2: 1907-1910
+        Library of Congress Classification: PS","call_number":"gutenberg etext# 2987","publicdate":"2006-12-07T00:00:00Z","downloads":645,"week":1,"month":8,"identifier":"marktwainabiogra02987gut","contributor":["Project
+        Gutenberg"],"format":["Text","XML","ZIP"],"language":["eng"],"collection":["gutenberg"],"oai_updatedate":["2006-12-07T00:00:00Z","2006-12-07T00:00:00Z","2006-12-08T02:09:24Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937"]},{"title":"Mark Twain, a Biography - Volume I,
+        Part 2: 1835-1866","mediatype":"texts","description":"Book from Project Gutenberg:
+        Mark Twain, a Biography - Volume I, Part 2: 1835-1866 Library of Congress
+        Classification: PS","call_number":"gutenberg etext# 2983","publicdate":"2006-12-07T00:00:00Z","downloads":413,"week":2,"month":10,"identifier":"marktwainabiogra02983gut","contributor":["Project
+        Gutenberg"],"format":["Text","XML","ZIP"],"language":["eng"],"collection":["gutenberg"],"oai_updatedate":["2006-12-07T00:00:00Z","2006-12-07T00:00:00Z","2006-12-08T02:09:24Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937"]},{"title":"Mark Twain, a Biography - Volume II,
+        Part 1: 1886-1900","mediatype":"texts","description":"Book from Project Gutenberg:
+        Mark Twain, a Biography - Volume II, Part 1: 1886-1900 Library of Congress
+        Classification: PS","call_number":"gutenberg etext# 2984","publicdate":"2006-12-07T00:00:00Z","downloads":822,"week":9,"month":52,"identifier":"marktwainabiogra02984gut","contributor":["Project
+        Gutenberg"],"format":["Text","XML","ZIP"],"language":["eng"],"collection":["gutenberg"],"oai_updatedate":["2006-12-07T00:00:00Z","2006-12-07T00:00:00Z","2006-12-08T02:09:24Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937"]},{"title":"Mark Twain, a Biography - Volume II,
+        Part 2: 1886-1900","mediatype":"texts","description":"Book from Project Gutenberg:
+        Mark Twain, a Biography - Volume II, Part 2: 1886-1900 Library of Congress
+        Classification: PS","call_number":"gutenberg etext# 2985","publicdate":"2006-12-07T00:00:00Z","downloads":584,"week":5,"month":40,"identifier":"marktwainabiogra02985gut","contributor":["Project
+        Gutenberg"],"format":["Text","XML","ZIP"],"language":["eng"],"collection":["gutenberg"],"oai_updatedate":["2006-12-07T00:00:00Z","2006-12-07T00:00:00Z","2006-12-08T02:09:24Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937"]},{"title":"Mark Twain, a Biography - Volume I,
+        Part 1: 1835-1866","mediatype":"texts","description":"Book from Project Gutenberg:
+        Mark Twain, a Biography - Volume I, Part 1: 1835-1866 Library of Congress
+        Classification: PS","call_number":"gutenberg etext# 2982","publicdate":"2006-12-07T00:00:00Z","downloads":668,"week":0,"month":6,"identifier":"marktwainabiogra02982gut","contributor":["Project
+        Gutenberg"],"format":["Text","XML","ZIP"],"language":["eng"],"collection":["gutenberg"],"oai_updatedate":["2006-12-07T00:00:00Z","2006-12-07T00:00:00Z","2006-12-08T02:09:23Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937"]},{"title":"Mark Twain, a Biography - Volume III,
+        Part 1: 1900-1907","mediatype":"texts","description":"Book from Project Gutenberg:
+        Mark Twain, a Biography - Volume III, Part 1: 1900-1907 Library of Congress
+        Classification: PS","call_number":"gutenberg etext# 2986","publicdate":"2006-12-07T00:00:00Z","downloads":653,"week":11,"month":19,"identifier":"marktwainabiogra02986gut","contributor":["Project
+        Gutenberg"],"format":["Text","XML","ZIP"],"language":["eng"],"collection":["gutenberg"],"oai_updatedate":["2006-12-07T00:00:00Z","2006-12-07T00:00:00Z","2006-12-08T02:09:24Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937"]},{"title":"Moments with Mark Twain, selected by
+        Albert Bigelow Paine","description":"26","mediatype":"texts","call_number":"afn-3568","publicdate":"2007-12-03T19:22:09Z","imagecount":332,"foldoutcount":0,"downloads":603,"week":3,"month":11,"identifier":"momentswithmarkt00twaiuoft","contributor":["Robarts
+        - University of Toronto"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC
+        Source","Metadata","Scribe Scandata ZIP","Single Page Processed JP2 ZIP","Single
+        Page Raw JP2 ZIP","Text PDF"],"collection":["robarts","toronto"],"language":["eng"],"oai_updatedate":["2007-12-03T19:21:14Z","2007-12-03T19:21:16Z","2007-12-03T19:22:09Z","2012-08-03T07:56:45Z"],"publisher":["New
+        York Harper"],"creator":["Twain, Mark, 1835-1910","Paine, Albert Bigelow,
+        1861-1937"]},{"title":"Widger''s Quotations from the Project Gutenberg Editions
+        of Paine''s Writings on Mark Twain","mediatype":"texts","description":"Book
+        from Project Gutenberg: Widger''s Quotations from the Project Gutenberg Editions
+        of Paine''s Writings on Mark Twain Library of Congress Classification: PS","call_number":"gutenberg
+        etext# 3643","downloads":277,"week":0,"month":3,"identifier":"widgersquotation03643gut","contributor":["Project
+        Gutenberg"],"format":["Text","XML","ZIP"],"language":["eng"],"collection":["gutenberg"],"oai_updatedate":["2006-12-06T00:00:00Z","2006-12-15T11:26:23Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937"]},{"title":"Mark Twain, a biography : the personal
+        and literary life of Samuel Langhorne Clemens","description":"\"A chronological
+        list of Mark Twain''s work - published and otherwise - from 1851-1910\": v.
+        3, p. 1674-1684","date":"1912-01-01T00:00:00Z","mediatype":"texts","call_number":"aju-8181","publicdate":"2007-11-27T02:56:11Z","imagecount":642,"foldoutcount":0,"downloads":742,"week":5,"month":28,"identifier":"marktwainbiograp00painuoft","contributor":["Robarts
+        - University of Toronto"],"subject":["Twain, Mark, 1835-1910"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC Source","Metadata","Scribe
+        Scandata ZIP","Single Page Processed JP2 ZIP","Single Page Raw JP2 ZIP","Text
+        PDF"],"collection":["robarts","toronto"],"language":["eng"],"oai_updatedate":["2007-11-27T02:56:07Z","2007-11-27T02:56:10Z","2007-11-27T02:56:11Z","2012-08-03T05:20:49Z"],"publisher":["N.Y.
+        : Harper"],"creator":["Paine, Albert Bigelow, 1861-1937"]},{"title":"The Boys''
+        Life of Mark Twain: The Story of a Man who Made the World Laugh and Love Him","mediatype":"texts","year":1916,"date":"1916-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of the New York Public Library and uploaded
+        to the Internet Archive by user tpb.","imagecount":409,"publicdate":"2008-03-17T16:52:31Z","source":"http://books.google.com/books?id=gWoDAAAAYAAJ&oe=UTF-8","downloads":126,"week":0,"month":2,"identifier":"boyslifemarktwa00paingoog","contributor":["New
+        York Public Library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu
+        XML","Flippy ZIP","Image Container PDF","Metadata","Scandata","Single Page
+        Processed TIFF ZIP"],"language":["English"],"collection":["americana"],"oai_updatedate":["2008-03-17T16:52:31Z","2009-05-24T04:36:45Z"],"creator":["Albert
+        Bigelow Paine"],"publisher":["Harper & Brothers"]},{"title":"The boys'' life
+        of Mark Twain; the story of a man who made the world laugh and love him","mediatype":"texts","year":1916,"publicdate":"2007-12-03T14:40:49Z","call_number":"b3921518","imagecount":416,"foldoutcount":0,"downloads":449,"week":0,"month":5,"identifier":"boyslifeofmarktw00pain","contributor":["New
+        York Public Library"],"subject":["Twain, Mark, 1835-1910"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC Source","Metadata","Scandata","Single
+        Page Processed JP2 ZIP","Single Page Raw JPEG Tar","Text PDF"],"language":["eng"],"collection":["newyorkpubliclibrary","americana"],"oai_updatedate":["2007-12-03T14:40:49Z","2007-12-03T14:39:51Z","2007-12-03T14:39:49Z","2007-12-13T13:51:09Z","2012-08-01T17:50:17Z"],"publisher":["New
+        York, London, Harper & Brothers"],"creator":["Paine, Albert Bigelow, 1861-1937"]},{"mediatype":"texts","title":"The
+        boys'' life of Mark Twain; the story of a man who made the world laugh and
+        love him","description":"The metadata below describe the original scanning.
+        Follow the \"All Files: HTTP\" link in the \"View the book\" box to the left
+        to find XML files that contain more metadata about the original images and
+        the derived formats (OCR results, PDF etc.). See also the <a href=\"http://www.archive.org/about/faqs.php#140\"
+        rel=\"nofollow\">What is the directory structure for the texts?</a> FAQ for
+        information about file content and naming conventions.","call_number":"ps1331
+        .p25","date":"1916-01-01T00:00:00Z","imagecount":410,"foldoutcount":0,"publicdate":"2009-11-21T16:23:47Z","downloads":210,"week":1,"month":3,"identifier":"cu31924086360975","subject":["Twain,
+        Mark, 1835-1910"],"contributor":["Cornell University Library"],"format":["Abbyy
+        GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin Core","Flippy ZIP","MARC","MARC
+        Binary","Metadata","Raw Cornell Book Zip","Scandata","Single Page Processed
+        JP2 ZIP","Text PDF"],"language":["eng"],"collection":["cornell","americana"],"oai_updatedate":["2009-11-06T02:29:03Z","2009-11-21T16:23:47Z","2011-01-05T03:43:44Z"],"publisher":["New
+        York, Harper"],"creator":["Paine, Albert Bigelow, 1861-1937"]},{"title":"The
+        boys'' life of Mark Twain; the story of a man who made the world laugh and
+        love him","mediatype":"texts","call_number":"srlf_ucla:lage-2459113","publicdate":"2006-12-05T21:20:22Z","imagecount":412,"foldoutcount":0,"downloads":791,"week":0,"month":9,"identifier":"boyslifeofmarktw00painiala","contributor":["University
+        of California Libraries"],"subject":["Twain, Mark, 1835-1910"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC Source","Metadata","Scribe
+        Scandata ZIP","Single Page Processed JP2 ZIP","Single Page Raw JP2 ZIP","Text
+        PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-12-06T05:20:17Z","2006-12-06T05:20:19Z","2006-12-05T21:20:22Z","2012-08-01T17:50:18Z"],"publisher":["New
+        York, London : Harper & Brothers"],"creator":["Paine, Albert Bigelow, 1861-1937"]},{"title":"Mark
+        Twain : a biography : the personal and literary life of Samuel Langhorne Clemens","mediatype":"texts","year":1912,"date":"1912-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of Harvard University and uploaded to
+        the Internet Archive by user tpb.","imagecount":659,"publicdate":"2008-09-08T12:01:24Z","source":"http://books.google.com/books?id=uf8QAAAAYAAJ&oe=UTF-8","volume":"3","downloads":58,"week":0,"month":0,"identifier":"marktwainperson00paingoog","subject":["Twain,
+        Mark, 1835-1910","Humorists, American","Authors, American","Journalists"],"contributor":["Harvard
+        University"],"format":["Abbyy GZ","Animated GIF","Djvu XML","Dublin Core","Flippy
+        ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-09-08T12:01:24Z","2009-05-30T10:56:54Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937","Roy J. Friedman Mark Twain Collection (Library
+        of Congress) DLC"],"publisher":["New York : Harper & Bros."]},{"title":"Mark
+        Twain : a biography : the personal and literary life of Samuel Langhorne Clemens","mediatype":"texts","year":1912,"date":"1912-01-01T00:00:00Z","description":"Book
+        digitized by Google and uploaded to the Internet Archive by user tpb.","imagecount":485,"publicdate":"2008-09-08T18:17:33Z","source":"http://books.google.com/books?id=FkcLAAAAIAAJ&oe=UTF-8","volume":"2","downloads":385,"week":1,"month":3,"identifier":"marktwainabiogr01paingoog","subject":["Twain,
+        Mark, 1835-1910","Humorists, American","Authors, American","Journalists"],"contributor":["unknown
+        library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-09-08T18:17:33Z","2009-05-30T10:56:40Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937","Roy J. Friedman Mark Twain Collection (Library
+        of Congress) DLC"],"publisher":["New York : Harper & Bros."]},{"title":"Mark
+        Twain : a biography : the personal and literary life of Samuel Langhorne Clemens","description":"Includes
+        bibliographical references and index","date":"1912-01-01T00:00:00Z","mediatype":"texts","publicdate":"2012-05-23T18:26:40Z","imagecount":518,"foldoutcount":0,"downloads":489,"week":4,"month":14,"identifier":"marktwainbiograp00pain","contributor":["Brigham
+        Young University-Idaho, David O. McKay Library"],"subject":["Twain, Mark,
+        1835-1910","Humorists, American","Authors, American","Journalists"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","Contents","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","MARC","MARC Binary","MARC Source","Metadata","Scandata","Single
+        Page Original JP2 Tar","Single Page Processed JP2 ZIP","Text PDF"],"collection":["family_history_library","brighamyounguniversityidaho","americana"],"language":["eng"],"oai_updatedate":["2012-05-23T18:26:33Z","2012-05-23T18:26:35Z","2012-05-23T18:26:40Z","2013-01-03T15:25:07Z"],"publisher":["New
+        York : Harper & Bros."],"creator":["Paine, Albert Bigelow, 1861-1937","Roy
+        J. Friedman Mark Twain Collection (Library of Congress) DLC"]},{"title":"Mark
+        Twain : a biography : the personal and literary life of Samuel Langhorne Clemens","mediatype":"texts","year":1912,"date":"1912-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of Harvard University and uploaded to
+        the Internet Archive by user tpb.","imagecount":510,"publicdate":"2008-04-12T13:50:00Z","source":"http://books.google.com/books?id=EqridR2zyJcC&oe=UTF-8","volume":"4","downloads":231,"week":1,"month":7,"identifier":"marktwainabiogr05paingoog","subject":["Twain,
+        Mark, 1835-1910","Humorists, American","Authors, American","Journalists"],"contributor":["Harvard
+        University"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-04-12T13:50:00Z","2009-05-30T10:56:34Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937","Roy J. Friedman Mark Twain Collection (Library
+        of Congress) DLC"],"publisher":["New York : Harper & Bros."]},{"date":"1912-01-01T00:00:00Z","licenseurl":"http://creativecommons.org/publicdomain/mark/1.0/","mediatype":"texts","source":"http://books.google.com/books?id=7EMLAAAAIAAJ&hl=&source=gbs_api","title":"Mark
+        Twain : a biography : the personal and literary life of Samuel Langhorne Clemens","year":1912,"publicdate":"2014-11-17T16:55:14Z","description":"Includes
+        bibliographical references and index","imagecount":649,"downloads":9,"week":1,"month":5,"identifier":"bub_gb_7EMLAAAAIAAJ","contributor":["unknown
+        library"],"subject":["bub_upload","Twain, Mark, 1835-1910","Humorists, American","Authors,
+        American","Journalists"],"format":["Abbyy GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","Generic Raw Book Tar","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed JP2 ZIP","Text PDF"],"collection":["europeanlibraries"],"language":["eng"],"oai_updatedate":["2014-11-17T16:55:14Z","2014-11-17T16:55:14Z","2014-11-18T23:07:16Z"],"publisher":["New
+        York : Harper & Bros."],"creator":["Paine, Albert Bigelow, 1861-1937","Roy
+        J. Friedman Mark Twain Collection (Library of Congress) DLC"]},{"title":"Mark
+        Twain : a biography : the personal and literary life of Samuel Langhorne Clemens","mediatype":"texts","year":1912,"date":"1912-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of Harvard University and uploaded to
+        the Internet Archive by user tpb.","imagecount":468,"publicdate":"2008-09-08T18:51:08Z","source":"http://books.google.com/books?id=HvBoC3RH7t4C&oe=UTF-8","volume":"2","downloads":485,"week":4,"month":7,"identifier":"marktwainabiogr00paingoog","subject":["Twain,
+        Mark, 1835-1910","Humorists, American","Authors, American","Journalists"],"contributor":["Harvard
+        University"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-09-08T18:51:08Z","2009-05-30T10:57:08Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937","Roy J. Friedman Mark Twain Collection (Library
+        of Congress) DLC"],"publisher":["New York : Harper & Bros."]},{"title":"Mark
+        Twain : a biography : the personal and literary life of Samuel Langhorne Clemens","mediatype":"texts","year":1912,"date":"1912-01-01T00:00:00Z","description":"Book
+        digitized by Google and uploaded to the Internet Archive by user tpb.","imagecount":480,"publicdate":"2008-04-19T18:38:28Z","source":"http://books.google.com/books?id=eUYLAAAAIAAJ&oe=UTF-8","volume":"3","downloads":520,"week":3,"month":11,"identifier":"marktwainabiogr02paingoog","subject":["Twain,
+        Mark, 1835-1910","Humorists, American","Authors, American","Journalists"],"contributor":["unknown
+        library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-04-19T18:38:28Z","2009-05-30T10:56:49Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937","Roy J. Friedman Mark Twain Collection (Library
+        of Congress) DLC"],"publisher":["New York : Harper & Bros."]},{"call_number":"ucb:glad-16981817","volume":"03","mediatype":"texts","description":"Vol.
+        3","title":"Mark Twain, a biography : the personal and literary life of Samuel
+        Langhorne Clemens","date":"1912-01-01T00:00:00Z","imagecount":674,"publicdate":"2006-09-14T00:00:58Z","foldoutcount":0,"downloads":1261,"week":11,"month":37,"identifier":"marktwainbio03painrich","subject":["Twain,
+        Mark, 1835-1910"],"contributor":["University of California Libraries"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC Source","Metadata","Scribe
+        Scandata ZIP","Single Page Processed JP2 ZIP","Single Page Processed JPEG
+        ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-09-12T23:22:30Z","2006-09-14T00:00:58Z","2012-08-03T05:21:07Z"],"publisher":["New
+        York ; London : Harper & Brothers"],"creator":["Paine, Albert Bigelow, 1861-1937","Williams,
+        Roberton F","Judd, Ida Benfry","Rank, Otto, 1884-1939"]},{"title":"Mark Twain
+        : a biography : the personal and literary life of Samuel Langhorne Clemens","volume":"vol
+        2","description":"Includes bibliographical references and index","date":"1912-01-01T00:00:00Z","mediatype":"texts","publicdate":"2012-05-23T18:32:17Z","imagecount":490,"foldoutcount":0,"downloads":273,"week":3,"month":14,"identifier":"marktwainbiograp2pain","contributor":["Brigham
+        Young University-Idaho, David O. McKay Library"],"subject":["Twain, Mark,
+        1835-1910","Humorists, American","Authors, American","Journalists"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","Contents","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","MARC","MARC Binary","MARC Source","Metadata","Scandata","Single
+        Page Original JP2 Tar","Single Page Processed JP2 ZIP","Text PDF"],"collection":["family_history_library","brighamyounguniversityidaho","americana"],"language":["eng"],"oai_updatedate":["2012-05-23T18:32:12Z","2012-05-23T18:32:14Z","2012-05-23T18:32:17Z","2013-01-03T15:23:25Z"],"publisher":["New
+        York : Harper & Bros."],"creator":["Paine, Albert Bigelow, 1861-1937","Roy
+        J. Friedman Mark Twain Collection (Library of Congress) DLC"]},{"title":"Mark
+        Twain : a biography : the personal and literary life of Samuel Langhorne Clemens","volume":"vol.
+        3","description":"Includes bibliographical references and index","date":"1912-01-01T00:00:00Z","mediatype":"texts","publicdate":"2012-05-23T18:31:36Z","imagecount":484,"foldoutcount":0,"downloads":253,"week":5,"month":18,"identifier":"marktwainbiograp3pain","contributor":["Brigham
+        Young University-Idaho, David O. McKay Library"],"subject":["Twain, Mark,
+        1835-1910","Humorists, American","Authors, American","Journalists"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","Contents","DjVu","DjVuTXT","Djvu
+        XML","Dublin Core","EPUB","MARC","MARC Binary","MARC Source","Metadata","Scandata","Single
+        Page Original JP2 Tar","Single Page Processed JP2 ZIP","Text PDF"],"collection":["family_history_library","brighamyounguniversityidaho","americana"],"language":["eng"],"oai_updatedate":["2012-05-23T18:31:30Z","2012-05-23T18:31:32Z","2012-05-23T18:31:36Z","2013-01-03T15:24:59Z"],"publisher":["New
+        York : Harper & Bros."],"creator":["Paine, Albert Bigelow, 1861-1937","Roy
+        J. Friedman Mark Twain Collection (Library of Congress) DLC"]},{"call_number":"ucb:glad-16981817","volume":"01","mediatype":"texts","description":"Vol.
+        1","title":"Mark Twain, a biography : the personal and literary life of Samuel
+        Langhorne Clemens","date":"1912-01-01T00:00:00Z","imagecount":626,"publicdate":"2006-09-14T00:22:21Z","foldoutcount":0,"downloads":1041,"week":3,"month":17,"identifier":"marktwainbio01painrich","subject":["Twain,
+        Mark, 1835-1910"],"contributor":["University of California Libraries"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC Source","Metadata","Scribe
+        Scandata ZIP","Single Page Processed JP2 ZIP","Single Page Processed JPEG
+        ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-09-12T23:17:18Z","2006-09-14T00:22:21Z","2012-08-03T05:21:06Z"],"publisher":["New
+        York ; London : Harper & Brothers"],"creator":["Paine, Albert Bigelow, 1861-1937","Williams,
+        Roberton F","Judd, Ida Benfry","Rank, Otto, 1884-1939"]},{"title":"Mark Twain,
+        a biography : the personal and literary life of Samuel Langhorne Clemens","date":"1912-01-01T00:00:00Z","call_number":"ucb:glad-16981817","volume":"02","mediatype":"texts","description":"Vol.
+        2","imagecount":610,"publicdate":"2006-09-14T01:36:11Z","foldoutcount":0,"downloads":703,"week":6,"month":15,"identifier":"marktwainbio02painrich","contributor":["University
+        of California Libraries"],"subject":["Twain, Mark, 1835-1910"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC Source","Metadata","Scribe
+        Scandata ZIP","Single Page Processed JP2 ZIP","Single Page Processed JPEG
+        ZIP","Single Page Raw JP2 ZIP","Text PDF"],"collection":["cdl","americana"],"language":["eng"],"oai_updatedate":["2006-09-12T23:18:58Z","2006-09-12T23:19:21Z","2006-09-14T01:36:11Z","2012-08-03T05:21:01Z"],"publisher":["New
+        York ; London : Harper & Brothers"],"creator":["Paine, Albert Bigelow, 1861-1937","Williams,
+        Roberton F","Judd, Ida Benfry","Rank, Otto, 1884-1939"]},{"title":"Mark Twain
+        : a biography : the personal and literary life of Samuel Langhorne Clemens","mediatype":"texts","year":1912,"date":"1912-01-01T00:00:00Z","description":"Book
+        digitized by Google and uploaded to the Internet Archive by user tpb.","imagecount":609,"publicdate":"2008-04-13T02:18:39Z","source":"http://books.google.com/books?id=2UYLAAAAIAAJ&oe=UTF-8","volume":"2","downloads":374,"week":1,"month":9,"identifier":"marktwainabiogr04paingoog","subject":["Twain,
+        Mark, 1835-1910","Humorists, American","Authors, American","Journalists"],"contributor":["unknown
+        library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-04-13T02:18:39Z","2009-05-30T11:02:18Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937","Roy J. Friedman Mark Twain Collection (Library
+        of Congress) DLC"],"publisher":["New York : Harper & Bros."]},{"title":"Mark
+        Twain : a biography : the personal and literary life of Samuel Langhorne Clemens","mediatype":"texts","year":1912,"date":"1912-01-01T00:00:00Z","description":"Book
+        digitized by Google and uploaded to the Internet Archive by user tpb.","imagecount":675,"publicdate":"2008-04-19T20:48:35Z","source":"http://books.google.com/books?id=7EMLAAAAIAAJ&oe=UTF-8","volume":"3","downloads":1428,"week":8,"month":22,"identifier":"marktwainabiogr03paingoog","subject":["Twain,
+        Mark, 1835-1910","Humorists, American","Authors, American","Journalists"],"contributor":["unknown
+        library"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","Metadata","Scandata","Single
+        Page Processed JP2 ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-04-19T20:48:35Z","2009-05-30T10:56:31Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937","Roy J. Friedman Mark Twain Collection (Library
+        of Congress) DLC"],"publisher":["New York : Harper & Bros."]},{"title":"Mark
+        Twain : a biography : the personal and literary life of Samuel Langhorne Clemens","mediatype":"texts","year":1912,"date":"1912-01-01T00:00:00Z","description":"Book
+        digitized by Google from the library of the University of Michigan and uploaded
+        to the Internet Archive by user tpb.","publicdate":"2008-01-11T21:17:07Z","source":"http://books.google.com/books?id=ZLkfAAAAMAAJ&oe=UTF-8","volume":"1-2","imagecount":868,"downloads":249,"week":2,"month":8,"identifier":"marktwainabiogr06paingoog","subject":["Twain,
+        Mark, 1835-1910","Humorists, American","Authors, American","Journalists"],"contributor":["University
+        of Michigan"],"format":["Abbyy GZ","Animated GIF","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","Flippy ZIP","Image Container PDF","MARC","MARC Binary","Metadata","Scandata","Single
+        Page Processed TIFF ZIP"],"language":["eng"],"collection":["americana"],"oai_updatedate":["2008-01-11T21:17:07Z","2009-05-30T10:56:42Z"],"creator":["Paine,
+        Albert Bigelow, 1861-1937","Roy J. Friedman Mark Twain Collection (Library
+        of Congress) DLC"],"publisher":["New York : Harper & Bros."]},{"title":"Mark
+        Twain, a biography; the personal and literary life of Samuel Langhorne Clemens,
+        with letters, comments and incidental writings hitherto unpublished; also
+        new episodes, anecdotes, etc","volume":"1","mediatype":"texts","call_number":"644764","publicdate":"2007-08-30T11:57:21Z","imagecount":640,"foldoutcount":0,"downloads":852,"week":6,"month":17,"identifier":"marktwainbiograp01pain","contributor":["New
+        York Public Library"],"subject":["Twain, Mark, 1835-1910"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC Source","Metadata","Scandata","Single
+        Page Processed JP2 ZIP","Single Page Raw JPEG Tar","Text PDF"],"collection":["newyorkpubliclibrary","americana"],"language":["eng"],"oai_updatedate":["2007-08-30T07:59:58Z","2007-08-30T11:57:05Z","2007-08-30T11:57:21Z","2012-08-03T05:20:48Z"],"publisher":["New
+        York : Harper"],"creator":["Paine, Albert Bigelow, 1861-1937"]},{"title":"Mark
+        Twain, a biography; the personal and literary life of Samuel Langhorne Clemens,
+        with letters, comments and incidental writings hitherto unpublished; also
+        new episodes, anecdotes, etc","volume":"2","mediatype":"texts","call_number":"644764","publicdate":"2007-08-30T12:01:23Z","imagecount":614,"foldoutcount":0,"downloads":1546,"week":10,"month":45,"identifier":"marktwainbiograp02pain","contributor":["New
+        York Public Library"],"subject":["Twain, Mark, 1835-1910"],"format":["Abbyy
+        GZ","Animated GIF","Archive BitTorrent","DjVu","DjVuTXT","Djvu XML","Dublin
+        Core","EPUB","Grayscale LuraTech PDF","MARC","MARC Binary","MARC Source","Metadata","Scandata","Single
+        Page Processed JP2 ZIP","Single Page Raw JPEG Tar","Text PDF"],"collection":["newyorkpubliclibrary","americana"],"language":["eng"],"oai_updatedate":["2007-08-30T08:04:04Z","2007-08-30T12:01:10Z","2007-08-30T12:01:23Z","2012-08-03T05:20:49Z"],"publisher":["New
+        York : Harper"],"creator":["Paine, Albert Bigelow, 1861-1937"]}]}}'
+    http_version: 
+  recorded_at: Mon, 09 Feb 2015 22:48:06 GMT
+recorded_with: VCR 2.9.3

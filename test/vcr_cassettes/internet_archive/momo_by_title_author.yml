@@ -19,7 +19,7 @@ http_interactions:
       Server:
       - nginx/1.1.19
       Date:
-      - Tue, 30 Sep 2014 01:55:16 GMT
+      - Mon, 09 Feb 2015 22:48:04 GMT
       Content-Type:
       - text/html
       Content-Length:
@@ -29,7 +29,7 @@ http_interactions:
       Location:
       - http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&xmlsearch=Search&rows=999&q=title:%22momo%22+AND+creator:%28ende%29+AND+(mediatype:texts+OR+mediatype:audio)
       Expires:
-      - Tue, 30 Sep 2014 07:55:16 GMT
+      - Tue, 10 Feb 2015 04:48:04 GMT
       Cache-Control:
       - max-age=21600
     body:
@@ -37,7 +37,7 @@ http_interactions:
       string: ! "<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>302
         Found</h1></center>\r\n<hr><center>nginx/1.1.19</center>\r\n</body>\r\n</html>\r\n"
     http_version: 
-  recorded_at: Tue, 30 Sep 2014 01:55:16 GMT
+  recorded_at: Mon, 09 Feb 2015 22:48:04 GMT
 - request:
     method: get
     uri: http://archive.org/advancedsearch.php?fl%5B%5D=*&fmt=json&q=title:%22momo%22%20AND%20creator:(ende)%20AND%20(mediatype:texts%20OR%20mediatype:audio)&rows=999&xmlsearch=Search
@@ -60,7 +60,7 @@ http_interactions:
         bmdpbngvMS4xLjE5
       !binary "RGF0ZQ==":
       - !binary |-
-        VHVlLCAzMCBTZXAgMjAxNCAwMTo1NToxNiBHTVQ=
+        TW9uLCAwOSBGZWIgMjAxNSAyMjo0ODowNCBHTVQ=
       !binary "Q29udGVudC1UeXBl":
       - !binary |-
         YXBwbGljYXRpb24vanNvbg==
@@ -76,12 +76,12 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        eyJyZXNwb25zZUhlYWRlciI6eyJzdGF0dXMiOjAsIlFUaW1lIjoxLCJwYXJh
-        bXMiOnsid3QiOiJqc29uIiwicm93cyI6Ijk5OSIsInFpbiI6InRpdGxlOlwi
-        bW9tb1wiIEFORCBjcmVhdG9yOihlbmRlKSBBTkQgKG1lZGlhdHlwZTp0ZXh0
-        cyBPUiBtZWRpYXR5cGU6YXVkaW8pIiwiZmwiOiIqIiwic3RhcnQiOiIwIiwi
-        cSI6InRpdGxlOlwibW9tb1wiIEFORCBjcmVhdG9yOihlbmRlICkgQU5EICgg
-        bWVkaWF0eXBlOnRleHRzIE9SIG1lZGlhdHlwZTphdWRpbyApIn19LCJyZXNw
+        eyJyZXNwb25zZUhlYWRlciI6eyJzdGF0dXMiOjAsIlFUaW1lIjoyLCJwYXJh
+        bXMiOnsicWluIjoidGl0bGU6XCJtb21vXCIgQU5EIGNyZWF0b3I6KGVuZGUp
+        IEFORCAobWVkaWF0eXBlOnRleHRzIE9SIG1lZGlhdHlwZTphdWRpbykiLCJm
+        bCI6IioiLCJzdGFydCI6IjAiLCJxIjoidGl0bGU6XCJtb21vXCIgQU5EIGNy
+        ZWF0b3I6KGVuZGUgKSBBTkQgKCBtZWRpYXR5cGU6dGV4dHMgT1IgbWVkaWF0
+        eXBlOmF1ZGlvICkiLCJ3dCI6Impzb24iLCJyb3dzIjoiOTk5In19LCJyZXNw
         b25zZSI6eyJudW1Gb3VuZCI6MSwic3RhcnQiOjAsImRvY3MiOlt7Im1lZGlh
         dHlwZSI6InRleHRzIiwidGl0bGUiOiJNb21vLCBvdnZlcm8gbCdhcmNhbmEg
         c3RvcmlhIGRlaSBsYWRyaSBkaSB0ZW1wbyBlIGRlbGxhIGJhbWJpbmEgY2hl
@@ -104,14 +104,17 @@ http_interactions:
         b3JpIGdyaWdpLCB2ZXN0aXRpIGRpIHNjdXJvIGUgZGFsIHZvbHRvIGNpbmVy
         ZW8sIGNoZSBtaXJhbm8gYWQgaW1wYWRyb25pcnNpIGRlbCB0ZW1wbyBkZWds
         aSB1b21pbmkuLi4iLCJwdWJsaWNkYXRlIjoiMjAxNC0wMy0yOVQwNzowMjox
-        NVoiLCJkb3dubG9hZHMiOjc5MSwid2VlayI6MTIsIm1vbnRoIjo0NCwiaWRl
+        NVoiLCJkb3dubG9hZHMiOjExNjYsIndlZWsiOjgsIm1vbnRoIjo1OSwiaWRl
         bnRpZmllciI6Ik1vbW9PdnZlcm9MYXJjYW5hU3RvcmlhRGVpTGFkcmlEaVRl
         bXBvRURlbGxhQmFtYmluYUNoZVJlc3RpdHUiLCJzdWJqZWN0IjpbIm1vbW8g
-        bWljaGFlbCBlbmRlIl0sImZvcm1hdCI6WyJBcmNoaXZlIEJpdFRvcnJlbnQi
-        LCJNZXRhZGF0YSIsIlRleHQgUERGIl0sImNvbGxlY3Rpb24iOlsib3BlbnNv
-        dXJjZSJdLCJvYWlfdXBkYXRlZGF0ZSI6WyIyMDExLTA0LTAxVDE1OjU5OjU0
-        WiIsIjIwMTQtMDMtMjlUMDc6MDI6MTVaIiwiMjAxNC0wMy0yOVQwNzowMjox
-        NloiXSwiY3JlYXRvciI6WyJNaWNoYWVsIEVuZGUiXX1dfX0=
+        bWljaGFlbCBlbmRlIl0sImZvcm1hdCI6WyJBYmJ5eSBHWiIsIkFuaW1hdGVk
+        IEdJRiIsIkFyY2hpdmUgQml0VG9ycmVudCIsIkRqVnUiLCJEalZ1VFhUIiwi
+        RGp2dSBYTUwiLCJFUFVCIiwiTWV0YWRhdGEiLCJTY2FuZGF0YSIsIlNpbmds
+        ZSBQYWdlIFByb2Nlc3NlZCBKUDIgWklQIiwiVGV4dCBQREYiXSwibGFuZ3Vh
+        Z2UiOlsiSXRhbGlhbiJdLCJjb2xsZWN0aW9uIjpbIm9wZW5zb3VyY2UiXSwi
+        b2FpX3VwZGF0ZWRhdGUiOlsiMjAxMS0wNC0wMVQxNTo1OTo1NFoiLCIyMDE0
+        LTAzLTI5VDA3OjAyOjE1WiIsIjIwMTQtMTItMTFUMDc6Mzc6NTNaIl0sImNy
+        ZWF0b3IiOlsiTWljaGFlbCBFbmRlIl19XX19
     http_version: 
-  recorded_at: Tue, 30 Sep 2014 01:55:16 GMT
+  recorded_at: Mon, 09 Feb 2015 22:48:05 GMT
 recorded_with: VCR 2.9.3

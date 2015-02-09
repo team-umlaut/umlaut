@@ -108,31 +108,30 @@ class InternetArchive < Service
     timeout(@http_timeout.to_i) {
       response = open(link).read
     }
+
     if response.blank?
       raise Exception.new("InternetArchive returned empty response for #{link}")      
     end
-    
     
     doc = MultiJson.load(response)
     results = doc['response']['docs']
     
     @mediatypes.each do |type|
-     type_results = get_results_by_type(results, type)
-
-
+      hits = matching_hits(request, search_terms, results, type)
 
      
       # if we have more results than we want to show in the main view
       # we can ceate a link (highlighted_link) to the search in the sidebar 
-      num_found = type_results.length #doc['response']['numFound']
-      if (@show_web_link and not type_results.empty? and @num_results_for_types[type] < num_found )
+
+      num_found = hits.length #doc['response']['numFound']
+      if (@show_web_link and not hits.empty? and @num_results_for_types[type] < num_found )
         do_web_link(request, search_terms, type, num_found) 
       end
 
       # Check for search inside only for first result of type 'text'
       if (@include_search_inside &&
           type == 'texts' &&
-          (first_hit = type_results[0]) && 
+          (first_hit = hits[0]) && 
           (identifier = first_hit["identifier"])
           )
         direct_url = URI.parse("http://www.archive.org/stream/" + identifier)
@@ -152,21 +151,21 @@ class InternetArchive < Service
           )
         end        
       end
-      
+
+
+
       # add a service response for each result for this mediatype
-      type_results.each_with_index do |result, index|
-        break if index == @num_results_for_types[type] 
+      hits.each_with_index do |result, index|
+        break if index >= @num_results_for_types[type] 
+
         display_name = @display_name
         
-        if ( result["collection"] && COLLECTION_LABELS[result["collection"][0]])
+        if result["contributor"] && result["contributor"].first
+          display_name += ": " + result["contributor"].first
+        elsif ( result["collection"] && COLLECTION_LABELS[result["collection"][0]])
           display_name += ": " + COLLECTION_LABELS[result["collection"][0]]
-        elsif ( result["collection"])
-          display_name += ": " + result["collection"][0].titlecase
         end
         
-        #note = result['title']
-        #note << " by " << result['creator'].join(', ') if result['creator']
-
         service_type = SERVICE_TYPE_MAP[type]
         request.add_service_response(
             :service=>self, 
@@ -175,7 +174,7 @@ class InternetArchive < Service
             :url=>create_result_url(result),
             :match_reliability => ServiceResponse::MatchUnsure,
             :edition_str => edition_str(result),
-            :service_type_value => service_type )
+            :service_type_value => service_type )        
       end  
     end
   end
@@ -262,20 +261,54 @@ class InternetArchive < Service
     
     return output
   end
-
   
-  def get_results_by_type(results, type)
-    results.map{|doc| doc if doc["mediatype"] == type}.compact
+  def matching_hits(request, search_terms, results, type)    
+    full_title = raw_search_title(request.referent)
+
+    hits =  results.find_all do |r|      
+      r["mediatype"] == type &&
+      titles_sufficiently_matched(search_terms[:title], full_title, r["title"])   
+    end
+
+    return hits
+  end
+
+  # Some obtuse code to heuristically decide if our query title and a result
+  # title fuzzily match sufficiently to be considered a match. 
+  def titles_sufficiently_matched(query_title, full_title, result)    
+    normalized_query      = normalize_title(query_title)
+    normalized_full_title = normalize_title(full_title)
+    # If the title has more than 3 words, and our IA query returned
+    # a result for it -- that's probably good enough. 
+    return true if normalized_query.split(" ").length > 3
+
+
+    # Otherwise, make multiple versions of the candidate
+    # title -- the whole thing, the title until the first colon,
+    # and the title until the first comma or semi-colon or other punct. Normalize
+    # them all. See if any of them match EITHER our search title or
+    # our full title. 
+    candidates = [
+      result,
+      result.split(":").first,
+      result.split(/[\;\,\(\)]/).first
+    ].compact.uniq.collect {|a| normalize_title(a)}
+    
+    return (candidates & [normalized_query, normalized_full_title]).present?
   end
 
   def edition_str(result)
-    parts = []
+    edition_str = ""
     
-    parts.push( result['title']) unless result['title'].blank?
-    parts.push( result['publisher'] ) unless result['publisher'].blank?
-    parts.push( result['year']) unless result['year'].blank?
+    edition_str << result['title'] unless result['title'].blank?
 
-    edition_str = parts.join(', ')
+    edition_str << " / #{result['creator'].first}" unless result['creator'].blank?
+    edition_str << ". #{result["publisher"].first}" unless result['publisher'].blank?
+    unless result['date'].blank?
+      year = result['date'].slice(0,4)
+      edition_str << ": #{year}"
+    end
+    
     edition_str = nil if edition_str.blank?
 
     return edition_str
