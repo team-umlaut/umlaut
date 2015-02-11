@@ -82,7 +82,7 @@ module Umlaut
       end
 
       type_names.each do |kind|
-        assert responses.find {|sr| sr.service_type_value_name == kind.to_s}, "The generated ServiceResponses for service id `#{service_id}` must include type #{kind}" if number > 0
+        assert responses.find {|sr| sr.service_type_value_name == kind.to_s}, "The generated ServiceResponses for service id `#{service_id}` must include type #{kind}" if number.to_i > 0
       end
 
       if number == 1
