@@ -17,7 +17,7 @@ class FeedbackMailerTest < ActionMailer::TestCase
     feedback_email = "joe@example.org"
     feedback_text = "This is my feedback, yes it is"
 
-    email = FeedbackMailer.feedback(@host, @to_email, :umlaut_request => umlaut_request, :name => feedback_name, :email => feedback_email, :feedback => feedback_text).deliver
+    email = FeedbackMailer.feedback(@host, @to_email, :umlaut_request => umlaut_request, :name => feedback_name, :email => feedback_email, :feedback => feedback_text).deliver_now
 
     assert ActionMailer::Base.deliveries.present?
     assert_equal [UmlautController.umlaut_config.from_email_addr], email.from
@@ -48,7 +48,7 @@ class FeedbackMailerTest < ActionMailer::TestCase
     feedback_email = "joe@example.org"
     feedback_text = "This is my feedback, yes it is"
 
-    email = FeedbackMailer.feedback(@host, @to_email, :name => feedback_name, :email => feedback_email, :feedback => feedback_text).deliver
+    email = FeedbackMailer.feedback(@host, @to_email, :name => feedback_name, :email => feedback_email, :feedback => feedback_text).deliver_now
     # just no raise is good enough for this test for now, mostly
 
     assert_includes email.body, "No citation supplied"
