@@ -15,7 +15,7 @@ class FeedbackController < UmlautController
       )
     end
 
-    FeedbackMailer.feedback(request.host_with_port, to_address, options).deliver
+    action_mailer_deliver FeedbackMailer.feedback(request.host_with_port, to_address, options)
 
     flash[:alert_success] = "Thanks, your message has been sent."
 
