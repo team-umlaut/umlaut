@@ -130,7 +130,7 @@ module Umlaut
           # legacy with the index, to keep old bookmarks working, needs to come first
           get 'link_router/index(/:id)' => "link_router#index"
 
-          get 'link_router/:id'        => "link_router#index"
+          get 'link_router/:id'        => "link_router#index", :as => "link_router"
 
         end
       end
