@@ -11,7 +11,7 @@ class ExportEmailController < UmlautController
     @fulltexts = @user_request.get_service_type('fulltext', { :refresh=>true })
     @holdings = @user_request.get_service_type('holding', { :refresh=>true })
     if valid_email?
-      action_mailer_deliver Emailer.citation(@email, @user_request, @fulltexts, @holdings)
+      Emailer.citation(@email, @user_request, @fulltexts, @holdings).deliver
     else
       flash[:alert] = email_validation_error
       render :email and return
@@ -29,7 +29,7 @@ class ExportEmailController < UmlautController
     @email = "#{@number}@#{@provider}" unless @number.nil? or @provider.nil?
     @holding = params[:holding]
     if valid_txt_number? && valid_txt_holding?
-      action_mailer_deliver Emailer.short_citation(@email, @user_request, holding_location(@holding), call_number(@holding))
+      Emailer.short_citation(@email, @user_request, holding_location(@holding), call_number(@holding)).deliver
     else
       flash[:alert] = txt_validation_error
       render :txt and return

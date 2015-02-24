@@ -87,20 +87,6 @@ module Umlaut::ControllerBehavior
   end
   protected :specified_service_groups
 
-  # Call an ActionMailer::Base without deprecation warnings in Rails 4.3,
-  # but still work in earlier rails without deliver_later
-  #
-  # Calls with deliver_later in Rails 4.3. If no ActiveJob queue
-  # is set up, no problem default is immediate executor anyway. 
-  def action_mailer_deliver(mailer)
-    if mailer.respond_to?(:deliver_later)
-      mailer.deliver_later
-    else
-      mailer.deliver
-    end
-  end
-  protected :action_mailer_deliver
-
 
 
 end
