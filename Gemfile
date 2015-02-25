@@ -33,6 +33,7 @@ end
 
 group :debug do
   gem 'debugger', :platform => :mri_19
+  gem 'ruby-debug', :platform => :jruby
 end
 
 # Add coveralls for testing.
