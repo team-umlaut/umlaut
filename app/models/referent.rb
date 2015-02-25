@@ -390,11 +390,17 @@ class Referent < ActiveRecord::Base
 
   # options => { :overwrite => false } to only enhance if not already there
   def enhance_referent(key, value, metadata=true, private_data=false, options = {})
+
+
     ActiveRecord::Base.connection_pool.with_connection do
       return if value.nil?
   
       matches = self.referent_values.to_a.find_all do |rv| 
-        (rv.key_name == key) && (rv.metadata == metadata) && (rv.private_data == private_data) 
+        # We ignore #metadata and #private_data matches in overwriting
+        # existing value. We used to take them into account, but it triggered
+        # a bug in Jruby, and pretty much isn't neccesary, those fields
+        # are pretty useless and mostly not used and should prob be removed. 
+        (rv.key_name == key) # && (rv.metadata == metadata) && (rv.private_data == private_data) 
       end
       
       matches.each do |rv|
