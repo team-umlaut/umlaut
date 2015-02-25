@@ -106,7 +106,14 @@ class ResolveControllerTest < ActionController::TestCase
           assert_equal 1, holdings.size
           holdings.each do |holding|
             # Make sure the edition warning shows up.
-            assert_select holding, ".umlaut-holding-match-reliability", 1
+            #assert_select holding, ".umlaut-holding-match-reliability", 1
+            #
+            # For some reason above triggering a bug in Rails 4.2 and Jruby,
+            # doesn't make sense, so we'll do it this way which mysteriously works,
+            # and does the same thing. 
+            match_reliability_warning = css_select(".umlaut-holding-match-reliability")
+            assert match_reliability_warning.length == 1, "Expected exactly 1 element matching '.umlaut-holding-match-reliability', found #{match_reliability_warning.length}"
+
             # Make sure the coverage shows up.
             assert_select holding, ".umlaut-holding-coverage", 1
             assert_select holding, ".umlaut-holding-coverage li", 2
