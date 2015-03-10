@@ -69,7 +69,7 @@
   //
   //     var updater = new Umlaut.HtmlUpdater({
   //        umlaut_base: "http://umlaut.example.edu",
-  //        openurl:     "au=Smith&ti=Book",
+  //        context_object:     "au=Smith&ti=Book",
   //        locale:      "de",
   //        container:  "#selector"
   //     });
@@ -97,8 +97,13 @@
       this.locale         = third_arg;
     }
 
-    if (typeof(this.context_object) === undefined)
-      this.context_object = "";
+    // Argument checking
+    if (typeof(this.umlaut_base) == "undefined") {
+      throw new Error("new Umlaut.HtmlUpdater: missing umlaut_base (String) argument");
+    }
+    if (typeof(this.context_object) == "undefined") {
+      throw new Error("new Umlaut.HtmlUpdater: missing context_object (String) argument");
+    }
 
 
 
