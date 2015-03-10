@@ -1,4 +1,12 @@
-/* update_html.js:  Provide functions to update content on page with background responses from Umlaut. Used by Umlaut itself, as well as by third party callers.*/
+/* update_html.js:
+ *     Provide functions to update content on page with background responses from Umlaut.
+ *     Used by Umlaut itself, as well as by third party callers.
+ *
+ *     This is compiled into a standalone top-level JS file, for src'ing by third
+ *     party callers.
+ *
+ *     More information on use at https://github.com/team-umlaut/umlaut/wiki/JQuery-Content-Utility
+ */
 (function($) {
    
     function SectionTarget(config) {
@@ -6,11 +14,14 @@
        $.extend(this, config);
        
        //Defaults
-       if (this.selector == undefined)
+       if (typeof(this.selector) == 'undefined')
          this.selector = "#" + this.umlaut_section_id;
-       if (this.position == undefined)
+       if (typeof(this.position) == 'undefined')
          this.position = "html";
-              
+       // Container must be a JQuery object, if it's not
+       // passed in, use $(document)
+       if (typeof(this.container) == 'undefined')
+         this.container = $(document); // default container is document
     }
     //Callback default to no-op function please.    
     var noop = function() {};
@@ -19,53 +30,95 @@
     SectionTarget.prototype.complete = noop;
     
     SectionTarget.prototype.ensure_placement_destination = function() {
-        if ( this.selector == undefined) {
+        if ( typeof(this.selector) == 'undefined') {
           return null; 
         }
         
         //Already have it cached?
         if ( this.host_div_element ) {
           return this.host_div_element;
-        }                        
+        }
         
-        var new_div = $('<div class="umlaut" style="display:none"></div>');        
+        // Create an empty div to hold our content
+        var new_div = $('<div class="umlaut" style="display:none"></div>');
+
         // Find the first thing matched by selector, and call the
-        // method specified in "action" string on it, giving it our
+        // method specified in "position" string on it, giving it our
         // HTML to replace. This works because our actions are
         // all arguments that will take one method: html, before, after, append,
         // prepend.                       
-        $(this.selector).eq(0)[ this.position  ]( new_div );
+        this.container.find(this.selector).eq(0)[ this.position  ]( new_div );
         
         //Cache for later
         this.host_div_element = new_div;
         return this.host_div_element;
       };
-    
 
   // Define an object constructor on the global window object
   // For our UmlautHtmlUpdater object. 
   //
-  // Third 'locale' arg is optional locale string eg 'en', 'de'
+  // You need to pass the Umlaut Base URL, as well as an OpenURL kev context
+  // object.  There are additional optional parameters. 
+  //
+  // There are two argument formats you can call `new HTMLUpdater` with.
+  // Positional allows you to pass umlaut base and OpenURL:
+  //     var updater = new Umlaut.HtmlUpdater("http://umlaut.example.edu", "au=Smith&ti=Book")
+  //
+  // Or named argument style allows you to pass additional parameters,
+  // including locale and container. 
+  //
+  //     var updater = new Umlaut.HtmlUpdater({
+  //        umlaut_base: "http://umlaut.example.edu",
+  //        openurl:     "au=Smith&ti=Book",
+  //        locale:      "de",
+  //        container:  "#selector"
+  //     });
+  //
+  //  
+  //
+  // The optional 'locale' arg is a locale string eg 'en', 'de'
+  //
+  // The optional 'container' argument is a selector, DOM element, OR
+  // jQuery object. The container limits the updater's content
+  // replacements (controlled by selectors on individual sections) to within
+  // the container given. 
   //
   // Note this object is used by external sites as part of the JQuery updater
   // javascript API. This is API, which has to be callable by non-Umlaut sites.
   // Try not to change the method signature in incompatible ways. 
-  function HtmlUpdater(umlaut_base, context_object, locale) {
-    if (context_object == undefined)
-      context_object = "";
+  function HtmlUpdater(first_arg, second_arg, third_arg) {
+    if (typeof(first_arg) == "object") {
+      // Simply merge arguments object as properties on ourselves. 
+     $.extend(this, first_arg);
+    } else {
+      // positional args
+      this.umlaut_base    = first_arg;
+      this.context_object = second_arg;
+      this.locale         = third_arg;
+    }
+
+    if (typeof(this.context_object) === undefined)
+      this.context_object = "";
+
+
 
     // Remove query string (if present)
-    umlaut_base = umlaut_base.replace(/\?.*$/, '')
+    this.umlaut_base = this.umlaut_base.replace(/\?.*$/, '')
     // Remove trailing slash
-    umlaut_base = umlaut_base.replace(/\/$/,'');
-    this.umlaut_uri =  umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=json&' + context_object;
-    if (locale)
-      this.umlaut_uri += "&umlaut.locale=" + locale;
+    this.umlaut_base = this.umlaut_base.replace(/\/$/,'');
+    this.umlaut_uri =  this.umlaut_base + '/resolve/partial_html_sections?umlaut.response_format=json&' + this.context_object;
+    if (this.locale)
+      this.umlaut_uri += "&umlaut.locale=" + this.locale;
 
     this.section_targets = [];
            
     this.add_section_target = function(config) {
-      this.section_targets.push( new SectionTarget(config) ); 
+      var target = new SectionTarget(config);
+      if (typeof(this.container) !== "undefined") {
+        // Turn it into a JQuery object if it wasn't already. 
+        target.container = $(this.container);
+      }
+      this.section_targets.push( target ); 
     };
     
     //default no-op call-backs
@@ -99,11 +152,11 @@
                  
                   var umlaut_html_section = myself.find_umlaut_response_section(umlaut_response, section_target.umlaut_section_id);
                                     
-                  if (umlaut_html_section == undefined) {
+                  if (typeof(umlaut_html_section) == 'undefined') {
                     continue;
                   }                  
                   var count = null;
-                  if (typeof umlaut_html_section.response_count != "undefined") { 
+                  if (typeof(umlaut_html_section.response_count) != "undefined") {
                     count = parseInt(umlaut_html_section.response_count.value);
                   }
                   var existing_element = section_target.ensure_placement_destination();
@@ -162,7 +215,7 @@
   };
   
   //Put it in a global object, leave space for other things in "Umlaut" later.
-  if (window.Umlaut == undefined)
+  if (typeof(window.Umlaut) == 'undefined')
     window.Umlaut = new Object();
   window.Umlaut.HtmlUpdater = HtmlUpdater; 
   
