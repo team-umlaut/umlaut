@@ -1,0 +1,7 @@
+Migrations that are ordinarily created in an Umlaut-enabled app are 
+_not_ included here in this test/dummy app used for testing. 
+
+In a Rails plugin gem, Rails db:migrate seems to be able to use
+the migrations from the actual gem itself, in the gem source
+./db/migrate, and if they are doubly included here, we get
+duplicate migration errors trying to db:migrate. 
