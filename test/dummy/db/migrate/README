@@ -5,3 +5,6 @@ In a Rails plugin gem, Rails db:migrate seems to be able to use
 the migrations from the actual gem itself, in the gem source
 ./db/migrate, and if they are doubly included here, we get
 duplicate migration errors trying to db:migrate. 
+
+We do have one migration in here, to create the mock SFX database for testing,
+something an ordinary real Umlaut app does not do. 
