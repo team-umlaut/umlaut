@@ -1,3 +1,62 @@
+## 4.1
+
+This release is expected to be entirely backwards compatible with 4.0, and
+should be an easy upgrade. But testing in a non-production environment
+is always advisable. 
+
+COMPATIBILITY
+
+Rails 4.2 is now supported. Rails down to 3.2.12 is also supported, but
+we always suggest keeping your Rails current. http://edgeguides.rubyonrails.org/4_2_release_notes.html
+
+USER INTERFACE
+
+"Search Inside" and "Limited Preview" display sections now appear by
+default in the sidebar. This is based on experience at multiple institutions,
+but if you'd like to restore them to the center column, it is easily
+configurable, see: https://github.com/team-umlaut/umlaut/wiki/Customizing#display-section-configuration
+
+NEW FEATURES
+
+Most new features are focused on adding hooks for additional
+configuration and customization. 
+
+* The umlaut_services.yml file is now run through ERB, so you can
+  include dynamic ERB code (executed on boot)
+* `remove_section` and `insert_section` hooks for changing
+  display section order. https://github.com/team-umlaut/umlaut/wiki/Customizing#display-section-configuration
+* `add_resolve_sections_filter!` configuration method, for
+  per-request customization of resolve display sections. 
+  https://github.com/team-umlaut/umlaut/wiki/Customizing#per-request-resolve-section-configuration
+* `add_section_highlights_filter!` configuration method, to 
+  add per-request logic for determining which display sections receive
+  highlight styling. https://github.com/team-umlaut/umlaut/wiki/Customizing#customize-section-highlighting
+* JQuery Content Utility adds new js constructor, and support for 'container' restrictions. See https://github.com/team-umlaut/umlaut/wiki/JQuery-Content-Utility#more-than-one-citation-on-a-page
+* Umlaut.register_routes method for plugins to add their own routing to Umlaut. 
+* Umlaut::TestHelp module with convenience methods for writing tests against umlaut. 
+
+BUG FIXES
+
+* Better description of errors in logs. 
+* In some cases background services would be executed before their
+properly assigned service wave, and/or executed more than once. This has been fixed. 
+* MetadataHelper#normalize_title work properly for non-ascii unicode. 
+* MetadataHelper#title_is_serial? more complex logic. 
+* Assorted other minor bug fixes. 
+
+
+SERVICE-SPECIFIC
+
+* InternetArchive: Require closer title match to count as a hit. 
+* SFX: TODO
+* Web of Science and JCR: Optionally support username/password-based auth
+
+## 4.0
+
+Sorry, no release were compiled for this release. I18n coverage hitting most
+parts of Umlaut was first added in this release, along with upgrade to
+Bootstrap 3 and support for Rails 4. 
+
 ## 3.3.0
 
 * New ILLiad service
