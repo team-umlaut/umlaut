@@ -34,7 +34,4 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = false
 end
 
-require 'single_test'
-SingleTest.load_tasks
-
 task :default => :test
