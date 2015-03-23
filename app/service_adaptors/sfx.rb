@@ -311,7 +311,7 @@ class Sfx < Service
               next
             end
 
-            related_note = "This version provided from related title:  <em>" + CGI.unescapeHTML( title ) + "</em>.\n"
+            related_note = "May be available under related title:  <em>" + CGI.unescapeHTML( title ) + "</em>.\n"
           end
 
           if ( sfx_service_type == 'getDocumentDelivery' )
