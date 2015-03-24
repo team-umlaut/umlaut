@@ -42,6 +42,17 @@
 #      in response. For TITLE-LEVEL (rather than article-level) requests,
 #      the roll-up algorithm is sensitive to COVERAGES, and will only suppress
 #      targets that have coverages included in remaining non-suppressed targets.
+# related_title_label: The label prefixed in front of the message denoting a full
+#      related title.
+# preferred_targets: ARRAY of STRINGS containing SFX target names in the form of
+#      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
+#      the top of the full-text results list. Multiple matching targets will be displayed
+#      in alpha order. This fires AFTER 'roll_up_prefixes'  
+# sunk_targets: ARRAY of STRINGS containing SFX target names in the form of
+#      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
+#      the bottom of the full-text results list. Multiple matching targets will be displayed
+#      in alpha order. This fires AFTER 'roll_up_prefixes'
+#      
 class Sfx < Service
   require 'uri'
   require 'htmlentities'
@@ -232,6 +243,7 @@ class Sfx < Service
 
       # For each target delivered by SFX
       sfx_obj.search("./ctx_obj_targets/target").each_with_index do|target, target_index|
+        
         response_data = {}
 
         # First check @extra_targets_of_interest
@@ -378,6 +390,8 @@ class Sfx < Service
 
     if response_queue["fulltext"].present?
       response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => request.title_level_citation? )
+      response_queue["fulltext"] = sort_preferred_responses(response_queue["fulltext"])
+      response_queue["fulltext"] = sort_sunk_responses(response_queue["fulltext"])
     end
 
     # Now that they've been post-processed, actually commit them.
@@ -517,6 +531,33 @@ class Sfx < Service
     return list
   end
 
+  def sort_preferred_responses(list)
+    
+    preferred_targets = @preferred_targets
+    return list unless preferred_targets.present?
+
+    other_targets = list.reject {|a| preferred_targets.include?(a[:sfx_target_name])}
+    avail_preferred_targets = list.select {|a| preferred_targets.include?(a[:sfx_target_name])}
+    avail_preferred_targets = avail_preferred_targets.sort do |item1, item2|
+      preferred_targets.index(item1[:sfx_target_name]) <=> preferred_targets.index(item2[:sfx_target_name])
+    end
+    
+    return avail_preferred_targets + other_targets
+  end
+
+  def sort_sunk_responses(list)
+    
+    sunk_targets = @sunk_targets
+    return list unless sunk_targets.present?
+
+    better_targets = list.reject {|a| sunk_targets.include?(a[:sfx_target_name])}
+    available_sunk_targets = list.select {|a| sunk_targets.include?(a[:sfx_target_name])}
+    available_sunk_targets = available_sunk_targets.sort do |item1, item2|
+      sunk_targets.index(item1[:sfx_target_name]) <=> sunk_targets.index(item2[:sfx_target_name])
+    end
+
+    return better_targets + available_sunk_targets
+  end
 
   def sfx_click_passthrough
     # From config, or default to false.
@@ -726,5 +767,4 @@ class Sfx < Service
     return display
   end
 
-  end
-
+end
