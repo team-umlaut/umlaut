@@ -2,29 +2,29 @@ require 'test_helper'
 ### 
 ### Tests adding the followig config values to the SFX service adaptor
 ###
-### @preferred_targets - float specific targets to the top of full-text options
+### @boosted_targets - float specific targets to the top of full-text options
 ### @sunk_targets - sink specified targets to the bottom of full-text options
 
 class SfxTargetPrecedenceTest < ActiveSupport::TestCase
 
-  def test_preferred_target_appears_first
+  def test_boosted_target_appears_first
     sfx = Sfx.new({'priority' => 1, 
                    'base_url' => "http://example.org",
-                   'preferred_targets' => ['HIGHWIRE_PRESS_JOURNALS']
+                   'boosted_targets' => ['HIGHWIRE_PRESS_JOURNALS']
     })
-    new_list = sfx.sort_preferred_responses(@@svc_list_example)
+    new_list = sfx.sort_boosted_responses(@@svc_list_example)
     assert_not_same @@svc_list_example, new_list
     assert_equal @@svc_list_example.length, new_list.length
       
     assert_equal new_list.first[:sfx_target_name], 'HIGHWIRE_PRESS_JOURNALS'
   end
 
-  def test_preferred_wildcard
+  def test_boosted_wildcard
     sfx = Sfx.new({'priority' => 1, 
                    'base_url' => "http://example.org",
-                   'preferred_targets' => ['GALEGROUP_*']
+                   'boosted_targets' => ['GALEGROUP_*']
     })
-    new_list = sfx.sort_preferred_responses(@@svc_list_example)
+    new_list = sfx.sort_boosted_responses(@@svc_list_example)
     assert_not_same @@svc_list_example, new_list
       
     assert_equal new_list.first[:sfx_target_name], 'GALEGROUP_GREENR'
@@ -57,12 +57,12 @@ class SfxTargetPrecedenceTest < ActiveSupport::TestCase
     assert_equal new_list.last[:sfx_target_name], 'PROQUEST_MEDLINE_WITH_FULLTEXT'
   end
 
-  def test_preferred_targets_appear_in_order
+  def test_boosted_targets_appear_in_order
     sfx = Sfx.new({'priority' => 1, 
                    'base_url' => "http://example.org",
-                   'preferred_targets' => ['PROQUEST_CENTRAL_NEW_PLATFORM', 'HIGHWIRE_PRESS_JOURNALS']
+                   'boosted_targets' => ['PROQUEST_CENTRAL_NEW_PLATFORM', 'HIGHWIRE_PRESS_JOURNALS']
     })
-    new_list = sfx.sort_preferred_responses(@@svc_list_example)
+    new_list = sfx.sort_boosted_responses(@@svc_list_example)
     assert_not_same @@svc_list_example, new_list
     first_target = new_list[0]
     second_target = new_list[1]

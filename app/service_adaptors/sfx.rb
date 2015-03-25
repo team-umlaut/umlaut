@@ -42,9 +42,9 @@
 #      in response. For TITLE-LEVEL (rather than article-level) requests,
 #      the roll-up algorithm is sensitive to COVERAGES, and will only suppress
 #      targets that have coverages included in remaining non-suppressed targets.
-# preferred_targets: ARRAY of STRINGS containing SFX target names in the form of
+# boosted_targets: ARRAY of STRINGS containing SFX target names in the form of
 #      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
-#      the top of the full-text results list. You can end your preferred target
+#      the top of the full-text results list. You can end your boosted target
 #      in a "*" to wildcard: "EBSCOHOST_*". Multiple matching targets will be displayed
 #      in alpha order. This fires AFTER 'roll_up_prefixes'  
 # sunk_targets: ARRAY of STRINGS containing SFX target names in the form of
@@ -390,7 +390,7 @@ class Sfx < Service
 
     if response_queue["fulltext"].present?
       response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => request.title_level_citation? )
-      response_queue["fulltext"] = sort_preferred_responses(response_queue["fulltext"])
+      response_queue["fulltext"] = sort_boosted_responses(response_queue["fulltext"])
       response_queue["fulltext"] = sort_sunk_responses(response_queue["fulltext"])
     end
 
@@ -531,13 +531,13 @@ class Sfx < Service
     return list
   end
 
-  def sort_preferred_responses(list)
-    return list unless @preferred_targets.present?
+  def sort_boosted_responses(list)
+    return list unless @boosted_targets.present?
 
     preferred = []
     other_targets = list
 
-    @preferred_targets.each do |spec|
+    @boosted_targets.each do |spec|
       (picked, other_targets) = other_targets.partition do |a| 
         if spec.end_with?("*")
           a[:sfx_target_name].start_with? spec[0..-2]
