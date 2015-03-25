@@ -14,8 +14,21 @@ class SfxTargetPrecedenceTest < ActiveSupport::TestCase
     })
     new_list = sfx.sort_preferred_responses(@@svc_list_example)
     assert_not_same @@svc_list_example, new_list
+    assert_equal @@svc_list_example.length, new_list.length
       
     assert_equal new_list.first[:sfx_target_name], 'HIGHWIRE_PRESS_JOURNALS'
+  end
+
+  def test_preferred_wildcard
+    sfx = Sfx.new({'priority' => 1, 
+                   'base_url' => "http://example.org",
+                   'preferred_targets' => ['GALEGROUP_*']
+    })
+    new_list = sfx.sort_preferred_responses(@@svc_list_example)
+    assert_not_same @@svc_list_example, new_list
+      
+    assert_equal new_list.first[:sfx_target_name], 'GALEGROUP_GREENR'
+    assert_equal new_list.second[:sfx_target_name], 'GALEGROUP_BIOGRAPHY_IN_CONTEXT'
   end
 
   def test_sunk_target_appears_last
@@ -26,7 +39,22 @@ class SfxTargetPrecedenceTest < ActiveSupport::TestCase
     
     new_list = sfx.sort_sunk_responses(@@svc_list_example)
     assert_not_same @@svc_list_example, new_list
+    assert_equal @@svc_list_example.length, new_list.length
+
     assert_equal new_list.last[:sfx_target_name], 'JSTOR_EARLY_JOURNAL_CONTENT_FREE'
+  end
+
+  def test_sunk_wildcard
+    sfx = Sfx.new({'priority' => 1, 
+                   'base_url' => "http://example.org",
+                   'sunk_targets' => ['PROQUEST_*']
+    })
+    
+    new_list = sfx.sort_sunk_responses(@@svc_list_example)
+    assert_not_same @@svc_list_example, new_list
+    assert_equal @@svc_list_example.length, new_list.length
+
+    assert_equal new_list.last[:sfx_target_name], 'PROQUEST_MEDLINE_WITH_FULLTEXT'
   end
 
   def test_preferred_targets_appear_in_order
@@ -113,7 +141,7 @@ class SfxTargetPrecedenceTest < ActiveSupport::TestCase
       :coverage_end_date => Date.new(2005,12,31)
     },
     { :display_text => "GALEGROUP_BIOGRAPHY_IN_CONTEXT",
-      :sfx_target_name => "GALEGROUP_GREENR",
+      :sfx_target_name => "GALEGROUP_BIOGRAPHY_IN_CONTEXT",
       :coverage_begin_date => Date.new(1983,1,1),
       :coverage_end_date => Date.new(2005,12,31)
     }

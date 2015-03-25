@@ -44,11 +44,13 @@
 #      targets that have coverages included in remaining non-suppressed targets.
 # preferred_targets: ARRAY of STRINGS containing SFX target names in the form of
 #      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
-#      the top of the full-text results list. Multiple matching targets will be displayed
+#      the top of the full-text results list. You can end your preferred target
+#      in a "*" to wildcard: "EBSCOHOST_*". Multiple matching targets will be displayed
 #      in alpha order. This fires AFTER 'roll_up_prefixes'  
 # sunk_targets: ARRAY of STRINGS containing SFX target names in the form of
 #      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
-#      the bottom of the full-text results list. Multiple matching targets will be displayed
+#      the bottom of the full-text results list. You an end your sunk target
+#      in a "*" to wildcard: "EBSCOHOST_*". Multiple matching targets will be displayed
 #      in alpha order. This fires AFTER 'roll_up_prefixes'
 #      
 class Sfx < Service
@@ -534,8 +536,16 @@ class Sfx < Service
 
     preferred = []
     other_targets = list
+
     @preferred_targets.each do |spec|
-      (picked, other_targets) = other_targets.partition {|a| spec == a[:sfx_target_name] }
+      (picked, other_targets) = other_targets.partition do |a| 
+        if spec.end_with?("*")
+          a[:sfx_target_name].start_with? spec[0..-2]
+        else
+          spec == a[:sfx_target_name] 
+        end
+      end
+
       preferred.concat picked
     end
             
@@ -548,7 +558,13 @@ class Sfx < Service
     sunk = []
     other_targets = list
     @sunk_targets.each do |spec|
-      (picked, other_targets) = other_targets.partition {|a| spec == a[:sfx_target_name] }
+      (picked, other_targets) = other_targets.partition do |a| 
+        if spec.end_with?("*")
+          a[:sfx_target_name].start_with? spec[0..-2]
+        else
+          spec == a[:sfx_target_name] 
+        end
+      end
       sunk.concat picked
     end
             
