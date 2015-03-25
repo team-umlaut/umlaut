@@ -390,8 +390,8 @@ class Sfx < Service
 
     if response_queue["fulltext"].present?
       response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => request.title_level_citation? )
-      response_queue["fulltext"] = sort_boosted_responses(response_queue["fulltext"])
       response_queue["fulltext"] = sort_sunk_responses(response_queue["fulltext"])
+      response_queue["fulltext"] = sort_boosted_responses(response_queue["fulltext"])
     end
 
     # Now that they've been post-processed, actually commit them.
@@ -540,7 +540,7 @@ class Sfx < Service
     @boosted_targets.each do |spec|
       (picked, other_targets) = other_targets.partition do |a| 
         if spec.end_with?("*")
-          a[:sfx_target_name].start_with? spec[0..-2]
+          a[:sfx_target_name] && a[:sfx_target_name].start_with?(spec[0..-2])
         else
           spec == a[:sfx_target_name] 
         end
@@ -560,7 +560,7 @@ class Sfx < Service
     @sunk_targets.each do |spec|
       (picked, other_targets) = other_targets.partition do |a| 
         if spec.end_with?("*")
-          a[:sfx_target_name].start_with? spec[0..-2]
+          a[:sfx_target_name] && a[:sfx_target_name].start_with?(spec[0..-2])
         else
           spec == a[:sfx_target_name] 
         end
