@@ -530,31 +530,29 @@ class Sfx < Service
   end
 
   def sort_preferred_responses(list)
-    
-    preferred_targets = @preferred_targets
-    return list unless preferred_targets.present?
+    return list unless @preferred_targets.present?
 
-    other_targets = list.reject {|a| preferred_targets.include?(a[:sfx_target_name])}
-    avail_preferred_targets = list.select {|a| preferred_targets.include?(a[:sfx_target_name])}
-    avail_preferred_targets = avail_preferred_targets.sort do |item1, item2|
-      preferred_targets.index(item1[:sfx_target_name]) <=> preferred_targets.index(item2[:sfx_target_name])
+    preferred = []
+    other_targets = list
+    @preferred_targets.each do |spec|
+      (picked, other_targets) = other_targets.partition {|a| spec == a[:sfx_target_name] }
+      preferred.concat picked
     end
-    
-    return avail_preferred_targets + other_targets
+            
+    return preferred + other_targets
   end
 
   def sort_sunk_responses(list)
+    return list unless @sunk_targets.present?
     
-    sunk_targets = @sunk_targets
-    return list unless sunk_targets.present?
-
-    better_targets = list.reject {|a| sunk_targets.include?(a[:sfx_target_name])}
-    available_sunk_targets = list.select {|a| sunk_targets.include?(a[:sfx_target_name])}
-    available_sunk_targets = available_sunk_targets.sort do |item1, item2|
-      sunk_targets.index(item1[:sfx_target_name]) <=> sunk_targets.index(item2[:sfx_target_name])
+    sunk = []
+    other_targets = list
+    @sunk_targets.each do |spec|
+      (picked, other_targets) = other_targets.partition {|a| spec == a[:sfx_target_name] }
+      sunk.concat picked
     end
-
-    return better_targets + available_sunk_targets
+            
+    return other_targets + sunk
   end
 
   def sfx_click_passthrough
