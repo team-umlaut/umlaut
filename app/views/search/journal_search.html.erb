@@ -34,7 +34,7 @@
 <% unless @hits == 0%>
   <h3><%= t( 'umlaut.search.showing_results', start: @start_result_num, until:  @end_result_num, total: @hits) %></h3>
 <% end %>
-<% if params["rft.jtitle"] %>
+<% if params["rft.jtitle"] && (@display_results.size > 0) %>
   <div class="note"><em><strong><%= t 'umlaut.search.note' %>:</strong> <%= t 'umlaut.search.other_titles_might' %> </em></div>
 <% end %>
 <div class='umlaut-pagination pagination'>
