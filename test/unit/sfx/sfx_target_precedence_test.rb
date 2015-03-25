@@ -10,7 +10,7 @@ class SfxTargetPrecedenceTest < ActiveSupport::TestCase
   def test_boosted_target_appears_first
     sfx = Sfx.new({'priority' => 1, 
                    'base_url' => "http://example.org",
-                   'boosted_targets' => ['HIGHWIRE_PRESS_JOURNALS']
+                   'boost_targets' => ['HIGHWIRE_PRESS_JOURNALS']
     })
     new_list = sfx.sort_boosted_responses(@@svc_list_example)
     assert_not_same @@svc_list_example, new_list
@@ -22,7 +22,7 @@ class SfxTargetPrecedenceTest < ActiveSupport::TestCase
   def test_boosted_wildcard
     sfx = Sfx.new({'priority' => 1, 
                    'base_url' => "http://example.org",
-                   'boosted_targets' => ['GALEGROUP_*']
+                   'boost_targets' => ['GALEGROUP_*']
     })
     new_list = sfx.sort_boosted_responses(@@svc_list_example)
     assert_not_same @@svc_list_example, new_list
@@ -34,7 +34,7 @@ class SfxTargetPrecedenceTest < ActiveSupport::TestCase
   def test_sunk_target_appears_last
     sfx = Sfx.new({'priority' => 1, 
                    'base_url' => "http://example.org",
-                   'sunk_targets' => ['JSTOR_EARLY_JOURNAL_CONTENT_FREE']
+                   'sink_targets' => ['JSTOR_EARLY_JOURNAL_CONTENT_FREE']
     })
     
     new_list = sfx.sort_sunk_responses(@@svc_list_example)
@@ -47,7 +47,7 @@ class SfxTargetPrecedenceTest < ActiveSupport::TestCase
   def test_sunk_wildcard
     sfx = Sfx.new({'priority' => 1, 
                    'base_url' => "http://example.org",
-                   'sunk_targets' => ['PROQUEST_*']
+                   'sink_targets' => ['PROQUEST_*']
     })
     
     new_list = sfx.sort_sunk_responses(@@svc_list_example)
@@ -60,7 +60,7 @@ class SfxTargetPrecedenceTest < ActiveSupport::TestCase
   def test_boosted_targets_appear_in_order
     sfx = Sfx.new({'priority' => 1, 
                    'base_url' => "http://example.org",
-                   'boosted_targets' => ['PROQUEST_CENTRAL_NEW_PLATFORM', 'HIGHWIRE_PRESS_JOURNALS']
+                   'boost_targets' => ['PROQUEST_CENTRAL_NEW_PLATFORM', 'HIGHWIRE_PRESS_JOURNALS']
     })
     new_list = sfx.sort_boosted_responses(@@svc_list_example)
     assert_not_same @@svc_list_example, new_list
@@ -73,7 +73,7 @@ class SfxTargetPrecedenceTest < ActiveSupport::TestCase
   def test_sunk_targets_appear_in_order
     sfx = Sfx.new({'priority' => 1, 
                    'base_url' => "http://example.org",
-                   'sunk_targets' => ['GALEGROUP_GREENR', 'EBSCOHOST_MAS_ULTRA_SCHOOL_EDITION']
+                   'sink_targets' => ['GALEGROUP_GREENR', 'EBSCOHOST_MAS_ULTRA_SCHOOL_EDITION']
     })
     new_list = sfx.sort_sunk_responses(@@svc_list_example)
     assert_not_same @@svc_list_example, new_list

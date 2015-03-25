@@ -36,22 +36,20 @@
 #     relationships, set to empty array [] to eliminate defaults.
 # sfx_timeout: in seconds, for both open/read timeout value for SFX connection.
 #          Defaults to 8.
+# boost_targets: ARRAY of STRINGS containing SFX target names in the form of
+#      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
+#      the top of the full-text results list. You can end your boosted target
+#      in a "*" to wildcard: "EBSCOHOST_*". 
+# sink_targets: ARRAY of STRINGS containing SFX target names in the form of
+#      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
+#      the bottom of the full-text results list. You an end your sunk target
+#      in a "*" to wildcard: "EBSCOHOST_*". 
 # roll_up_prefixes: ARRAY of STRINGs, prefixes like "EBSCOHOST_". If multiple
 #      targets sharing one of the specified prefixes are supplied from SFX,
 #      they will be "rolled up" and collapsed, just the first one included
 #      in response. For TITLE-LEVEL (rather than article-level) requests,
 #      the roll-up algorithm is sensitive to COVERAGES, and will only suppress
 #      targets that have coverages included in remaining non-suppressed targets.
-# boosted_targets: ARRAY of STRINGS containing SFX target names in the form of
-#      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
-#      the top of the full-text results list. You can end your boosted target
-#      in a "*" to wildcard: "EBSCOHOST_*". Multiple matching targets will be displayed
-#      in alpha order. This fires AFTER 'roll_up_prefixes'  
-# sunk_targets: ARRAY of STRINGS containing SFX target names in the form of
-#      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
-#      the bottom of the full-text results list. You an end your sunk target
-#      in a "*" to wildcard: "EBSCOHOST_*". Multiple matching targets will be displayed
-#      in alpha order. This fires AFTER 'roll_up_prefixes'
 #      
 class Sfx < Service
   require 'uri'
@@ -389,9 +387,9 @@ class Sfx < Service
     end
 
     if response_queue["fulltext"].present?
-      response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => request.title_level_citation? )
       response_queue["fulltext"] = sort_sunk_responses(response_queue["fulltext"])
       response_queue["fulltext"] = sort_boosted_responses(response_queue["fulltext"])
+      response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => request.title_level_citation? )
     end
 
     # Now that they've been post-processed, actually commit them.
@@ -532,12 +530,12 @@ class Sfx < Service
   end
 
   def sort_boosted_responses(list)
-    return list unless @boosted_targets.present?
+    return list unless @boost_targets.present?
 
     preferred = []
     other_targets = list
 
-    @boosted_targets.each do |spec|
+    @boost_targets.each do |spec|
       (picked, other_targets) = other_targets.partition do |a| 
         if spec.end_with?("*")
           a[:sfx_target_name] && a[:sfx_target_name].start_with?(spec[0..-2])
@@ -553,11 +551,11 @@ class Sfx < Service
   end
 
   def sort_sunk_responses(list)
-    return list unless @sunk_targets.present?
+    return list unless @sink_targets.present?
     
     sunk = []
     other_targets = list
-    @sunk_targets.each do |spec|
+    @sink_targets.each do |spec|
       (picked, other_targets) = other_targets.partition do |a| 
         if spec.end_with?("*")
           a[:sfx_target_name] && a[:sfx_target_name].start_with?(spec[0..-2])
