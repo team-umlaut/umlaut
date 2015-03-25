@@ -98,8 +98,12 @@ class SearchController < UmlautController
       # If we narrowed down to one result redirect
       # to resolve action.
       redirect_to( url_for_with_co({:controller => 'resolve'}, @display_results[0]) )
+    elsif (@display_results.length == 0) && (umlaut_config.lookup!("search.display_zero_hit_results") != true)
+      # If we have 0 hits, also redirect to resolve, unless config tells
+      # us not to.
+      redirect_to(  url_for_with_co({:controller => 'resolve'}, @search_context_object) )
     end
-    #Tell the user if we have no results to show
+
     @page_title = @display_results.length > 0 ? 'Journal titles that ' : 'No journal titles found that '
     @page_title +=
       (params["umlaut.title_search_type"] == "begins") ?
