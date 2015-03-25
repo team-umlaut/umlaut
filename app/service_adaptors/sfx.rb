@@ -42,8 +42,6 @@
 #      in response. For TITLE-LEVEL (rather than article-level) requests,
 #      the roll-up algorithm is sensitive to COVERAGES, and will only suppress
 #      targets that have coverages included in remaining non-suppressed targets.
-# related_title_label: The label prefixed in front of the message denoting a full
-#      related title.
 # preferred_targets: ARRAY of STRINGS containing SFX target names in the form of
 #      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
 #      the top of the full-text results list. Multiple matching targets will be displayed
