@@ -90,6 +90,12 @@ class UmlautController < ApplicationController
 
         # can set to "_blank" etc.
         # result_link_target nil
+
+        # On 0 hits from search screen, ordinarily we redirect to resolve
+        # screen becuase Resolve might be able to provide other useful
+        # services such as ILL or backed by other KB's. But to instead
+        # display a "no results" page, set:
+        # display_zero_hit_results true
       end
 
       # config only relevant to SFX use
