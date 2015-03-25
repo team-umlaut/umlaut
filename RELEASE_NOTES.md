@@ -48,7 +48,7 @@ properly assigned service wave, and/or executed more than once. This has been fi
 SERVICE-SPECIFIC
 
 * InternetArchive: Require closer title match to count as a hit. 
-* SFX: TODO
+* SFX: Add boost_targets and sink_targets options to reorder targets. 
 * Web of Science and JCR: Optionally support username/password-based auth
 
 ## 4.0

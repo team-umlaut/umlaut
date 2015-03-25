@@ -36,12 +36,21 @@
 #     relationships, set to empty array [] to eliminate defaults.
 # sfx_timeout: in seconds, for both open/read timeout value for SFX connection.
 #          Defaults to 8.
+# boost_targets: ARRAY of STRINGS containing SFX target names in the form of
+#      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
+#      the top of the full-text results list. You can end your boosted target
+#      in a "*" to wildcard: "EBSCOHOST_*". 
+# sink_targets: ARRAY of STRINGS containing SFX target names in the form of
+#      "HIGHWIRE_PRESS_JOURNALS". Any target names listed here will be floated to 
+#      the bottom of the full-text results list. You an end your sunk target
+#      in a "*" to wildcard: "EBSCOHOST_*". 
 # roll_up_prefixes: ARRAY of STRINGs, prefixes like "EBSCOHOST_". If multiple
 #      targets sharing one of the specified prefixes are supplied from SFX,
 #      they will be "rolled up" and collapsed, just the first one included
 #      in response. For TITLE-LEVEL (rather than article-level) requests,
 #      the roll-up algorithm is sensitive to COVERAGES, and will only suppress
 #      targets that have coverages included in remaining non-suppressed targets.
+#      
 class Sfx < Service
   require 'uri'
   require 'htmlentities'
@@ -232,6 +241,7 @@ class Sfx < Service
 
       # For each target delivered by SFX
       sfx_obj.search("./ctx_obj_targets/target").each_with_index do|target, target_index|
+        
         response_data = {}
 
         # First check @extra_targets_of_interest
@@ -377,6 +387,8 @@ class Sfx < Service
     end
 
     if response_queue["fulltext"].present?
+      response_queue["fulltext"] = sort_sunk_responses(response_queue["fulltext"])
+      response_queue["fulltext"] = sort_boosted_responses(response_queue["fulltext"])
       response_queue["fulltext"] = roll_up_responses(response_queue["fulltext"], :coverage_sensitive => request.title_level_citation? )
     end
 
@@ -517,6 +529,45 @@ class Sfx < Service
     return list
   end
 
+  def sort_boosted_responses(list)
+    return list unless @boost_targets.present?
+
+    preferred = []
+    other_targets = list
+
+    @boost_targets.each do |spec|
+      (picked, other_targets) = other_targets.partition do |a| 
+        if spec.end_with?("*")
+          a[:sfx_target_name] && a[:sfx_target_name].start_with?(spec[0..-2])
+        else
+          spec == a[:sfx_target_name] 
+        end
+      end
+
+      preferred.concat picked
+    end
+            
+    return preferred + other_targets
+  end
+
+  def sort_sunk_responses(list)
+    return list unless @sink_targets.present?
+    
+    sunk = []
+    other_targets = list
+    @sink_targets.each do |spec|
+      (picked, other_targets) = other_targets.partition do |a| 
+        if spec.end_with?("*")
+          a[:sfx_target_name] && a[:sfx_target_name].start_with?(spec[0..-2])
+        else
+          spec == a[:sfx_target_name] 
+        end
+      end
+      sunk.concat picked
+    end
+            
+    return other_targets + sunk
+  end
 
   def sfx_click_passthrough
     # From config, or default to false.
@@ -726,5 +777,4 @@ class Sfx < Service
     return display
   end
 
-  end
-
+end
