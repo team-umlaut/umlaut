@@ -116,7 +116,7 @@ class IlliadTest < ActiveSupport::TestCase
     assert_equal ['bookitem'], out_params['genre']
     assert_equal [params['atitle']], out_params['atitle']
     assert_equal [params['title']], out_params['title']
-    assert_equal [params['isbn']], out_params['isbn']
+    assert_equal [params['isbn'].gsub('-', '')], out_params['isbn']
   end
 
   def test_genre_force_issn_article

@@ -14,6 +14,20 @@ class MetadataHelperTest < ActiveSupport::TestCase
     assert_equal "filosofía y revolución", get_search_title(co.referent)
   end
 
+  def test_get_isbn
+    co = ContextObject.new_from_kev("isbn=079284937X")
+    assert_equal "079284937X", get_isbn(co.referent)
+
+    co = ContextObject.new_from_kev("rft.isbn=079284937X")
+    assert_equal "079284937X", get_isbn(co.referent)
+
+    co = ContextObject.new_from_kev("isbn=0-435-08441-0")
+    assert_equal "0435084410", get_isbn(co.referent)
+
+    co = ContextObject.new_from_kev("isbn=0435084410+%28pbk.%29")
+    assert_equal "0435084410", get_isbn(co.referent)
+  end
+
   def test_get_month    
     co = ContextObject.new_from_kev("date=2012-9-01&foo=bar")
     assert_equal "9", get_month(co.referent)
