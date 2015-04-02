@@ -42,7 +42,15 @@ class RequestTest < ActiveSupport::TestCase
     )
 
     assert_length 1, request.get_service_type(:highlighted_link)
-
   end
+
+  test "DC format metadata does not raise" do
+    # Can't promise we can do much useful with it, but it shouldn't raise
+    params = Rack::Utils.parse_nested_query 'rfr_id=info%3Asid%2Fzotero.org%3A2&rft.source=The+New+Yorker&rft.type=webpage&rft.description=How+Xi+Jinping+took+control+of+China.&rft.identifier=http%3A%2F%2Fwww.newyorker.com%2Fmagazine%2F2015%2F04%2F06%2Fborn-red&ctx_ver=Z39.88-2004&url_ver=Z39.88-2004&rft.title=Rise+of+the+Red+Prince&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&umlaut.force_new_request=true'
+    co = OpenURL::ContextObject.new_from_form_vars( params )
+    rft = Referent.create_by_context_object(co)
+  end
+
+
 
 end

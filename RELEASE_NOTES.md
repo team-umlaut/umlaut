@@ -42,7 +42,10 @@ BUG FIXES
 properly assigned service wave, and/or executed more than once. This has been fixed. 
 * MetadataHelper#normalize_title work properly for non-ascii unicode. 
 * MetadataHelper#title_is_serial? more complex logic. 
+* Dublin Core format OpenURL doesn't cause an exception anymore (but don't count
+  on Umlaut doing anything very useful with it)
 * Assorted other minor bug fixes. 
+
 
 
 SERVICE-SPECIFIC

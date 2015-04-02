@@ -151,7 +151,11 @@ class Referent < ActiveRecord::Base
     
     rft.metadata.each { | key, value |
       next unless value.present?
-      build_referent_value( key, value)      
+      # Sometimes value is an array, for DC for instance. Do the best we
+      # can. 
+      Array(value).each do |v|
+        build_referent_value( key, v)
+      end
     }    
   end
 
