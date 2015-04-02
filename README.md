@@ -63,6 +63,7 @@ in your application's Gemfile in order to get the described functionality.
 | Add on | Description |
 |:---|:---|
 | [`umlaut-primo`](https://github.com/team-umlaut/umlaut-primo) | Umlaut services to provide full text service responses, holdings, etc. from the Primo discovery solution. |
+| [`umlaut_borrow_direct`](https://github.com/team-umlaut/umlaut_borrow_direct/tree/master) | Links and embedded availability from BorrowDirect consortial borrowing service |
 
 
 ## Developing
