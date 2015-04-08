@@ -1,12 +1,17 @@
 language: ruby
+sudo: false
+cache: bundler
 bundler_args: --without debug
 rvm:
   - 1.9.3
   - jruby-19mode
   # - rbx-19mode
   - 2.0
-  - 2.1
-  - 2.2
+  - 2.1.5
+  - 2.2.1
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 before_script:
   - mysql -e 'create database umlaut3_test;'
   - mysql -e 'create database sfxlcl41_test;'
