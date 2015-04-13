@@ -202,9 +202,12 @@ class Blacklight < Service
     
     # Also need to use appropriate 'container' title if avail, not
     # article title. 
-    title = request.referent['jtitle']     
-    title = request.referent['btitle'] if title.blank?
-    title = request.referent['title'] if title.blank?
+    metadata = request.referent.metadata
+    title = metadata['jtitle']     
+    title = metadata['btitle'] if title.blank?
+    title = metadata['title'] if title.blank?
+    # remove sub-title for better search
+    title.gsub!(/\:.*\Z/, '')
 
     author = get_top_level_creator(request.referent)
     return nil unless title && (author || (@bl_fields["serials_limit_clause"] && title_is_serial?(request.referent)))
