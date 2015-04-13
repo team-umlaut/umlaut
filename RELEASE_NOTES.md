@@ -52,6 +52,7 @@ SERVICE-SPECIFIC
 
 * InternetArchive: Require closer title match to count as a hit. 
 * SFX: Add boost_targets and sink_targets options to reorder targets. 
+* SFX: More conservative referent enhancement, try to avoid bad data. 
 * Web of Science and JCR: Optionally support username/password-based auth
 
 ## 4.0

@@ -750,12 +750,27 @@ class Sfx < Service
       end
 
 
+
+      # Don't overwrite a title with a btitle
+      unless (metadata['btitle'].present? || metadata['title'].present?)
+        request.referent.enhance_referent("title", sfx_metadata["title"]) if sfx_metadata["title"].present?
+        request.referent.enhance_referent("btitle", sfx_metadata["btitle"]) if sfx_metadata["btitle"].present?
+      end
+
+
+
       # The rest,  we write only if blank, we don't over-write
       sfx_metadata.each do |key, value|
-        if (metadata[key].blank?)
+        next if value.blank?
 
-          # watch out for SFX's weird array values.
-            request.referent.enhance_referent(key, value)
+        # Skip certain internal SFX stuff we don't want to add
+        if %w{title btitle isbn_10 isbn_13 eisbn_10 eisbn_13 object_type}.include? key
+          next
+        end
+
+        # Don't overwrite a currently existing one
+        if (metadata[key].blank?)
+          request.referent.enhance_referent(key, value)
         end
       end
     end
