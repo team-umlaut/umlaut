@@ -45,8 +45,12 @@ class ConfigurationReorderTest < ActionController::TestCase
         # of some current weirdness in Confstrut in ruby 2.1.
         # https://github.com/mbklein/confstruct/pull/21 
         add_resolve_sections_filter! Proc.new { |request, sections|
-          last_section = sections.remove_section(div_id)
-          sections.insert_section(last_section, :before => 'fulltext')
+          our_section = sections.remove_section(div_id)
+
+
+          our_section[:newkey] = "newvalue" 
+
+          sections.insert_section(our_section, :before => 'fulltext')
         }
       end
 
@@ -58,6 +62,10 @@ class ConfigurationReorderTest < ActionController::TestCase
 
       # But we didn't reorder the config still saved on the controller
       assert_equal original_docdel_index, @controller.umlaut_config.resolve_sections.index {|s| s[:div_id] == "document_delivery"}, "config index of document_delivery is unchanged"
+
+      # And we didn't add a new key to it either
+      our_section = @controller.umlaut_config.resolve_sections.find {|s| s[:div_id] == "document_delivery"}
+      assert (!our_section.has_key?(:newkey)), "mutated original array, bad"
     end
   end
 end

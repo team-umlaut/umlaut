@@ -15,7 +15,68 @@ module UmlautConfigurable
     helper_method :umlaut_config
     self.umlaut_config = Confstruct::Configuration.new
   end
-   
+
+  # Used for `resolve_sections` config, like an Array but
+  # we add a some custom methods into the resolve_sections array, 
+  # insert_section, remove_section. With a sub-class. 
+  class ResolveSectionsArray < Array
+    # Deprecated. This was a silly confusing way to do this. 
+    # See #remove and #insert below instead. 
+    def ensure_order!(first, second)
+      $stderr.puts "resolve_sections.ensure_order! is deprecated, please see resolve_sections.remove and resolve_sections.insert"
+
+      list = self
+  
+      index1 = list.index {|s| s[:div_id].to_s == first.to_s}
+      index2 = list.index {|s| s[:div_id].to_s == second.to_s}
+  
+      (list[index1], list[index2] = list[index2], list[index1]) if index1 && index2 && (index1 > index2)
+  
+      list
+    end
+
+    # Insert a section_config hash before or after an existing
+    # section, by the existing section's div_id
+    #
+    #      resolve_sections.insert_section({:div_id => "new"}, :after => "fulltext")
+    #      resolve_sections.insert_section(  resolve_sections.remove_section("document_deliver"), :before => "fulltext")
+    def insert_section(section_config, options = {})
+      list = self
+
+      if options[:before]
+        i = (list.find_index {|s| s[:div_id].to_s == options[:before].to_s}) || 0
+        list.insert(i, section_config)
+      elsif options[:after]
+        i = (list.find_index {|s| s[:div_id].to_s == options[:after].to_s}) || (list.length - 1)
+        list.insert(i + 1, section_config)
+      else
+        # just add at end of list
+        list << section_config
+      end
+    end
+
+    # Remove a configuration block with a certain div_id from the configuration entirely, 
+    # returning the removed configuration block (or nil if none exists). 
+    # You can re-insert it with #insert if you like. 
+    def remove_section(div_id)
+      list = self
+      i = list.find_index {|s| s[:div_id].to_s == div_id.to_s}
+      return list.delete_at(i) if i
+    end
+
+    # Make deep_dup work
+    def deep_dup
+      self.class.new.concat super
+    end
+
+    # Make map work returning same class, to avoid breaking Hashie::Mash. 
+    # Bah, this is a mess, yep. 
+    def map(*args, &block)
+      self.class.new.concat super
+    end
+    alias_method :collect, :map
+
+  end   
 
 
   
@@ -229,59 +290,11 @@ module UmlautConfigurable
       #
       # Look in comments at top of SectionRenderer class for what the keys
       # in each entry mean. 
-      
-      
-      # We add a custom method into the resolve_sections array, 
-      # ensure_order!. 
-      resolve_sections [].extend Module.new do         
-
-        # Deprecated. This was a silly confusing way to do this. 
-        # See #remove and #insert below instead. 
-        def self.ensure_order!(first, second)
-          $stderr.puts "resolve_sections.ensure_order! is deprecated, please see resolve_sections.remove and resolve_sections.insert"
-
-          list = self
-      
-          index1 = list.index {|s| s[:div_id].to_s == first.to_s}
-          index2 = list.index {|s| s[:div_id].to_s == second.to_s}
-      
-          (list[index1], list[index2] = list[index2], list[index1]) if index1 && index2 && (index1 > index2)
-      
-          list
-        end
-
-        # Insert a section_config hash before or after an existing
-        # section, by the existing section's div_id
-        #
-        #      resolve_sections.insert_section({:div_id => "new"}, :after => "fulltext")
-        #      resolve_sections.insert_section(  resolve_sections.remove_section("document_deliver"), :before => "fulltext")
-        def self.insert_section(section_config, options = {})
-          list = self
-
-          if options[:before]
-            i = (list.find_index {|s| s[:div_id].to_s == options[:before].to_s}) || 0
-            list.insert(i, section_config)
-          elsif options[:after]
-            i = (list.find_index {|s| s[:div_id].to_s == options[:after].to_s}) || (list.length - 1)
-            list.insert(i + 1, section_config)
-          else
-            # just add at end of list
-            list << section_config
-          end
-        end
-
-        # Remove a configuration block with a certain div_id from the configuration entirely, 
-        # returning the removed configuration block (or nil if none exists). 
-        # You can re-insert it with #insert if you like. 
-        def self.remove_section(div_id)
-          list = self
-          i = list.find_index {|s| s[:div_id].to_s == div_id.to_s}
-          return list.delete_at(i) if i
-        end
-
-      end
-
-
+          
+      # ResolveSectionsArray is like an Array, but with
+      # some additional methods making it easier to do common
+      # configuration tasks. 
+      resolve_sections ResolveSectionsArray.new
 
       ##########
       #
@@ -412,6 +425,7 @@ module UmlautConfigurable
       end
       
     end
+    
   end
   
   
