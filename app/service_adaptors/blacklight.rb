@@ -207,7 +207,7 @@ class Blacklight < Service
     title = metadata['btitle'] if title.blank?
     title = metadata['title'] if title.blank?
     # remove sub-title for better search
-    title.gsub!(/\:.*\Z/, '')
+    title.gsub!(/\:.*\Z/, '') if title
 
     author = get_top_level_creator(request.referent)
     return nil unless title && (author || (@bl_fields["serials_limit_clause"] && title_is_serial?(request.referent)))
