@@ -4,6 +4,9 @@ This release is expected to be entirely backwards compatible with 4.0, and
 should be an easy upgrade. But testing in a non-production environment
 is always advisable. 
 
+We recommend upgrading to Umlaut 4.1, Rails 4.2, and using ruby 2.2.x, as soon
+as convenient. Note that ruby 1.9.3 is no longer supported by the ruby project. 
+
 COMPATIBILITY
 
 Rails 4.2 is now supported. Rails down to 3.2.12 is also supported, but
