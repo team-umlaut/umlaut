@@ -402,11 +402,13 @@ class GoogleBookSearch < Service
     type = nil
     if (viewability == ViewPartialValue && 
         url = iv["volumeInfo"]["previewLink"])
+      url = fix_pg_gbs_link(url)
       display_text = @display_name
       display_text_i18n = "display_name"
       type = ServiceTypeValue[:excerpts]
     else
-      url = url = iv["volumeInfo"]["infoLink"]
+      url = iv["volumeInfo"]["infoLink"]
+      url = fix_pg_gbs_link(url)
       display_text = "Book Information"
       display_text_i18n = "book_information"
       type = ServiceTypeValue[:highlighted_link]
@@ -422,6 +424,14 @@ class GoogleBookSearch < Service
      )
   end
   
+  # google books direct links do weird things with linking to
+  # internal pages, perhaps intending to be based on our
+  # search criteria, which pages matched, but we're not
+  # using it like that for links to excerpts or full page. 
+  # reverse engineer it to go to full page. 
+  def fix_pg_gbs_link(url)
+    url.sub(/([\?\;\&])(pg=[^;&]+)/, '\1pg=1')
+  end
 
   
  
