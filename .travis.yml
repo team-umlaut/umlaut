@@ -12,6 +12,10 @@ rvm:
 env:
   global:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+# We need to install latest version of bundler, because one in travis
+# image is too old to recognize platform => :mri_22 in Gemfile. 
+before_install:
+  - gem install bundler
 before_script:
   - mysql -e 'create database umlaut3_test;'
   - mysql -e 'create database sfxlcl41_test;'

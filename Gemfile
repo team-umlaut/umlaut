@@ -33,6 +33,7 @@ end
 
 group :debug do
   gem 'debugger', :platform => :mri_19
+  gem 'byebug',   :platform => [:mri_21, :mri_22]
   gem 'ruby-debug', :platform => :jruby
 end
 
