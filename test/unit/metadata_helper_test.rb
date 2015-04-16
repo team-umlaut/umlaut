@@ -14,6 +14,12 @@ class MetadataHelperTest < ActiveSupport::TestCase
     assert_equal "filosofía y revolución", get_search_title(co.referent)
   end
 
+  def test_raw_search_title_regression
+    co = ContextObject.new_from_kev("resolve?ctx_ver=Z39.88-2004&ctx_enc=info:ofi/enc:UTF-8&ctx_tim=2013-11-25T10%3A59%3A44IST&url_ver=Z39.88-2004&url_ctx_fmt=infofi/fmt:kev:mtx:ctx&rfr_id=info:sid/primo.exlibrisgroup.com:primo3-Article-sciversesciencedirect_elsevier&rft_val_fmt=info:ofi/fmt:kev:mtx:&rft.genre=article&rft.atitle=Supercritical water gasification of biomass: Thermodynamic constraints&rft.jtitle=Bioresource Technology&rft.btitle=&rft.aulast=Castello&rft.auinit=&rft.auinit1=&rft.auinitm=&rft.ausuffix=&rft.au=Castello%2C Daniele&rft.aucorp=&rft.date=2011&rft.volume=102&rft.issue=16&rft.part=&rft.quarter=&rft.ssn=&rft.spage=7574&rft.epage=7582&rft.pages=7574-7582&rft.artnum=&rft.issn=0960-8524&rft.eissn=&rft.isbn=&rft.sici=&rft.coden=&rft_id=info:doi/10.1016/j.biortech.2011.05.017&rft_dat=S0960-8524(11)00656-0&rft.eisbn=&rft_id=info:oai/")
+
+    assert_equal "Bioresource Technology", raw_search_title(co.referent)
+  end
+
   def test_get_isbn
     co = ContextObject.new_from_kev("isbn=079284937X")
     assert_equal "079284937X", get_isbn(co.referent)
