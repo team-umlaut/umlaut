@@ -197,7 +197,7 @@ module ResolveHelper
   # background updates.
   def bg_update_sections
     unless (@@bg_update_sections)
-      @@bg_update_sections = umlaut_config.lookup!("resolve_sections", []).find_all do |section|
+      @@bg_update_sections = config_resolve_sections.find_all do |section|
         section[:bg_update] != false
       end
     end
@@ -208,7 +208,7 @@ module ResolveHelper
   # that should be included in the partial_html_sections api response.
   def partial_html_sections
     unless (@@partial_update_sections)
-      @@partial_update_sections = umlaut_config.lookup!("resolve_sections", []).find_all do |section|
+      @@partial_update_sections = config_resolve_sections.find_all do |section|
         section[:partial_html_api] != false
       end
     end
@@ -230,10 +230,10 @@ module ResolveHelper
   def config_resolve_sections
     unless defined? @_config_resolve_sections
       @_config_resolve_sections = umlaut_config.lookup!("resolve_sections", UmlautConfigurable::ResolveSectionsArray.new)
+      # deep dup it, so we aren't reordering the original
+      @_config_resolve_sections = @_config_resolve_sections.deep_dup
       
       umlaut_config.lookup!("resolve_sections_filter", []).each do |reorder_proc|
-        # deep dup it, so we aren't reordering the original
-        @_config_resolve_sections = @_config_resolve_sections.deep_dup
         reorder_proc.call(@user_request, @_config_resolve_sections)
       end
     end
@@ -242,7 +242,7 @@ module ResolveHelper
   end
 
   def html_section_by_div_id(div_id)
-    umlaut_config.lookup!("resolve_sections", []).find do |defn|
+    config_resolve_sections.find do |defn|
       defn[:div_id] == div_id
     end
   end
