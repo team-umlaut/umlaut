@@ -17,7 +17,10 @@ namespace :umlaut do
         hosts = urls.collect do |u|
           begin
             uri = URI.parse(u)
-            uri.host
+            # host should clearly never be more than 200 chars, but sometimes is usually
+            # due to a malformed URL, and we don't want to trigger a too-big-for-db-column
+            # error, so we trim it. 
+            uri.host.slice(0..200)
           rescue Exception
           end
         end
