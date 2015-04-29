@@ -335,7 +335,7 @@ a:not(:hover) .coverage_summary {
   color: black; 
 }
 
-@media (max-width: $screen-sm-min) {
+@media (max-width: ($screen-sm-min - 1)) {
   /* hacky taking account of bootstrap3, without a major refactor
     of our css for it */
   .umlaut-main-container-fluid .row {

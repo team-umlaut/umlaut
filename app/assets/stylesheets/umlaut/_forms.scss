@@ -15,7 +15,7 @@ input[type="submit"] {
   }
 }
 
-@media (max-width: $screen-sm-min) {
+@media (max-width: ($screen-sm-min - 1)) {
   .umlaut-citation-link {
     text-align: left;
   }
