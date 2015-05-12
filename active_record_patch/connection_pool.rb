@@ -54,6 +54,28 @@ module ActiveRecord
   # We're refusing to give a connection when asked for. Same outcome
   # as if the pool timed out on checkout, so let's subclass the exception
   # used for that.   
-  class ImplicitConnectionForbiddenError < ActiveRecord::ConnectionTimeoutError ; end  
+  class ImplicitConnectionForbiddenError < ActiveRecord::ConnectionTimeoutError ; end
+
+  # Workaround to leaked connections database outage/recovery, 
+  # https://github.com/rails/rails/issues/20114
+  # Fix expected in 4.2.2, workaround only applies to 4.x, you're on your
+  # own for Rails 3.x, upgrade. 
+  rails_version = Gem::Version.new(Rails.version)
+  if (rails_version >= Gem::Version.new("4.0")) && (rails_version < Gem::Version.new("4.2.2"))
+    class ConnectionAdapters::ConnectionPool
+
+      def checkout_and_verify_with_rescue(c)
+        checkout_and_verify_without_rescue(c)
+      rescue Exception
+        remove c
+        c.disconnect!
+
+        raise
+      end
+      alias_method_chain :checkout_and_verify, :rescue
+
+    end  
+  end
+
 end
 
