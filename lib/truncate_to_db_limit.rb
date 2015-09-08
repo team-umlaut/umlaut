@@ -40,7 +40,8 @@ module TruncateToDbLimit
       limit   = ar_attr.limit
 
       unless limit && limit.to_i != 0
-        raise ArgumentError.new("truncate_to_db_limit #{attribute_name}: Limit not known")
+        return # we can do nothing
+        #raise ArgumentError.new("truncate_to_db_limit #{attribute_name}: Limit not known")
       end
 
       normalized = send(attribute_name).try {|v| v.slice(0, limit)}
