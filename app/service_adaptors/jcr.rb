@@ -133,7 +133,7 @@ class Jcr < Service
 
     # Check for errors.
     if (error = (nokogiri.at('val[@name = "error"]') || nokogiri.at('error') || nokogiri.at('null[@name = "error"]')))
-      raise Exception.new("Third party service error: #{error.inner_text}")
+      raise JcrResponseException.new("Third party service error: #{error.inner_text}")
     end
 
 
@@ -150,6 +150,9 @@ class Jcr < Service
     end
     
     
+  end
+
+  class JcrResponseException < StandardError
   end
   
 end
