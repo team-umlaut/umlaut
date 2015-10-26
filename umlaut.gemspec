@@ -42,6 +42,14 @@ Gem::Specification.new do |s|
   s.add_dependency "htmlentities"               # used by SFX adapter to unescape &ent;s
   s.add_dependency "multi_json"                 # use best locally installed json gem for json parsing
   s.add_dependency "confstruct", "~> 1.0", ">= 1.0.1" # used for our configuration object
+
+  # Hashie is used by confstruct. But hashie 3.4.3 is giving us trouble,
+  # until it's fixed we lock to less than. We kinda regret hashie/confstruct
+  # in general these days. 
+  # https://github.com/intridea/hashie/issues/320
+  s.add_dependency "hashie", "~> 3.3", "< 3.4.3"
+
+
   s.add_dependency "scrub_rb", ">= 1.0.1", "<2" # used for correcting bad char enc bytes in input, polyfill pre ruby 2.1
   s.add_dependency "bootstrap-sass", "~> 3.2"   # used for bootstrap
   s.add_dependency "sass-rails", ">= 3.2.5"     # umlaut uses sass stylesheets
